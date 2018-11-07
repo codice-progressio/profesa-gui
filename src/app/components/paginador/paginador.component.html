@@ -1,0 +1,22 @@
+<nav *ngIf="_s.totalDeElementos !== 0">
+    <ul class="pagination pagination-sm justify-content-end ">
+
+        <li class="page-item pointer" [ngClass]="{'disabled': 0=== _s.desde }">
+            <a (click)="_s.cambiarPagina( (-1 *_s.limite))" class="page-link " aria-label="Previous ">
+                <i class="fa fa-arrow-circle-left fa-2x"></i>
+            </a>
+        </li>
+        <li class="page-item disabled text-center" style="width: 100px;">
+            <span class="page-link " aria-label="Next ">
+                {{_s.actual}} de {{_s.total}}
+            </span>
+        </li>
+        <li class="page-item pointer " [ngClass]="{'disabled': _s.actual === _s.total }">
+            <a (click)="_s.cambiarPagina(_s.limite)" class="page-link " aria-label="Next ">
+                <i class="fa fa-arrow-circle-right fa-2x"></i>
+            </a>
+        </li>
+        <li class="page-item disabled "><a class="page-link "><small>Elem/Pag</small></a></li>
+        <li *ngFor="let lim of _s.porHoja" class="page-item pointer" [ngClass]="{'active': lim === _s.limite}"><a (click)="_s.cambiarCantidad(lim)" class="page-link ">{{lim}}</a></li>
+    </ul>
+</nav>

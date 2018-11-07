@@ -1,0 +1,87 @@
+<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <app-qr-scanner></app-qr-scanner>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+    <div class="col-12">
+        <div class="card border-dark">
+            <div class="card-header bg-success">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
+                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
+
+                    </div>
+                    <div class="col-6">
+                        <h2>
+                            <strong>
+                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                            </strong>
+                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12 ">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <form #f (ngSubmit)="onSubmit()" [formGroup]="transformacionForm">
+
+                                            <div class="form-group">
+                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadDeBoton" placeholder="Cantidad de botón">
+                                                <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorBoton" placeholder="Espesor botón">
+                                                <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(bl), 'is-valid':_validacionesService.valid(bl)}" type="number" formControlName="bl" placeholder="BL">
+                                                <app-validacion-inputs [campo]="bl"></app-validacion-inputs>
+                                            </div>
+
+                                            <h3>Máquina que trabajó:</h3>
+                                            <ng-container *ngFor="let maquina of maquinas; let i = index">
+                                                <input type="radio" [id]="i" formControlName="maquinaActual" [value]="maquina._id">
+                                                <label [for]="i">{{maquina.clave}}</label>
+                                            </ng-container>
+
+
+                                            <br>
+
+                                            <button type="submit" [ngClass]="{'btn-success': transformacionForm.valid, 'btn-outline-dark': transformacionForm.invalid}" [disabled]="transformacionForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+
+                                            <br>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo "> </app-lista-de-ordenes>

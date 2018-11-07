@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body justify-content-between">
+
+                <a class="btn btn-outline-warning" onclick="
+                    function printDiv() {
+                      $('#print').clone().appendTo('body').addClass('print').attr('id', 'zona_imp');
+                      $('#no_print').addClass('no-print');
+                      
+                      window.print();
+                      $('#zona_imp').remove();
+                      $('#no-print').removeClass('no-print');
+                      
+                    }
+                    printDiv();
+                    return;">
+                    <i class="fa fa-print"></i> Imprimir órdenes de folio:
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <app-pre-loader></app-pre-loader>
+
+                <div id="print">
+                    <ng-container *ngFor="let linea of folio.folioLineas; let i_numPed = index">
+
+                        <div class="card text-white bg-dark mb-3 no-print">
+                            <div class="card-header">PEDIDO #{{i_numPed+1}}</div>
+                            <div class="card-body">
+                                <h5 class="card-title text-white"><span><app-modelo-completo [linea]="linea"></app-modelo-completo></span></h5>
+                                <p class="card-text">
+                                    Cantidad de piezas: {{linea.cantidad}}
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-bordered ">
+                            <tbody>
+                                <tr *ngFor="let orden of linea.ordenes">
+                                    <td>
+                                        <h3>
+                                            <small>ORDEN VIAJERA: </small>
+                                            <div class="badge badge-dark size-2 mr-3"> {{folio.numeroDeFolio}}-{{i_numPed+1}}-{{orden.numeroDeOrden}} </div>
+                                            <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
+                                        </h3>
+
+                                        <h3><strong><app-modelo-completo [linea]="linea"></app-modelo-completo></strong></h3>
+
+                                        <!-- <span>
+                                            <h6><strong>INFO ADICIONAL:</strong> </h6>
+                                            pendiente
+                                        </span> -->
+                                        <ng-container *ngIf="linea.laserCliente">
+                                            <br>
+                                            <small><strong>MARCA LASER:</strong></small>
+
+                                            <span class="bg-dark text-white ml-2 pt-1 pb-1 pr-3 pl-3 ">
+                                                <strong>
+                                                    {{linea.laserCliente.laser}}
+                                                </strong>
+                                            </span>
+                                            <br>
+                                        </ng-container>
+                                        <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones">
+                                            <small>
+                                                <strong >OBSERVACIONES:</strong> <br>
+                                                <span *ngIf="folio.observaciones">{{folio.observaciones}}  <br></span>
+                                                <span *ngIf="orden.observaciones">{{orden.observaciones}}</span>
+                                            </small>
+
+                                        </ng-container>
+
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{folio.fechaFolio | fecha:'D/MM/Y'}}
+                                            
+                                        </span>
+                                        <qrcode [qrdata]="orden._id" size="100"></qrcode>
+                                        <span>
+                                            # {{orden.numeroDeOrden}}/{{linea.ordenes.length}}
+                                          
+                                        </span>
+                                        <br>
+                                        <span>PZ: {{orden.piezasTeoricas}}</span>
+                                        <br>
+                                        <span>unidad: {{orden.unidad}}</span>
+                                    </td>
+                                    <!-- <td class="no-print">
+                                        <button class="btn btn-outline-info"> <i class="fa fa-print"></i></button>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <app-modal-general>
+    holaasflasdjflkj
+    <div modal-header>Login</div>
+    <div modal-body>Login body</div>
+    <div modal-footer>Login footer</div>
+    <div class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal-general> -->

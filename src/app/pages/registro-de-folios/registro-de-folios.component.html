@@ -1,0 +1,171 @@
+<ng-container *ngIf="sePuedeRegistrarFolio">
+
+    <!-- 
+=====================================
+ Registro de folios
+=====================================
+-->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" [ngClass]="{'animated pulse': modificando}">
+                <div class="card-body" [ngClass]="{'bg-inverse text-white': modificando}">
+                    <h4 class="card-title" [ngClass]="{' text-white': modificando}">
+                        <span *ngIf="!modificando">Registrar un nuevo folio</span>
+                        <span *ngIf="modificando">Modificar folio</span>
+                    </h4>
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar()">
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <input [(ngModel)]="folio.numeroDeFolio" name="numeroDeFolio" type="text" class="form-control" placeholder="# de folio" required>
+
+                                    <span class="help-block text-muted">
+                                    <small>El número de folio que asigna ventas.</small>
+                                </span>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <input name="fechaFolio" [ngModel]="folio.fechaFolio| fecha:'YYYY-MM-DD'" (ngModelChange)="folio.fechaFolio = $event" name="fechaFolio" class="form-control" type="date" required>
+                                    <span class="help-block text-muted">
+                                    <small>La fecha de creación del folio.</small>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+
+                                <div class="form-group">
+                                    <input name="fechaEntrega" [ngModel]="folio.fechaEntrega| fecha:'YYYY-MM-DD'" (ngModelChange)="folio.fechaEntrega = $event" name="fechaEntrega" class="form-control" type="date" required>
+                                    <span class="help-block text-muted">
+                                    <small>La fecha en la que se debe entregar la producción .</small>
+                                </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group ">
+                                    <input #fa id="buscarCliente" [(value)]='this.termino' (keyup)="buscarClientes(fa.value)" type="text" class="form-control " placeholder="...">
+                                    <span class="help-block text-muted">
+                                    <small>Escribe para empezar a buscar un cliente.</small>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <app-buscador-rapido></app-buscador-rapido>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <select class="form-control" name="vendedorSeleccionado" [ngModel]="vendedorSeleccionado" (ngModelChange)="seleccionarVendedor( $event );" required>
+                            <option value="-" disabled selected>Seleccionar vendedor</option>
+                            <option  selected *ngFor='let vendedor of this.vendedores' [ngValue]="vendedor._id" >{{vendedor.nombre}}</option>
+                            
+                        </select>
+                            <span class="help-block text-muted">
+                            <small>Vendedor responsable. </small>
+                        </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Observaciones</label>
+                            <textarea [(ngModel)]="folio.observaciones" name="observaciones" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn " [ngClass]="{'btn-success': true}">
+                            <i class="fa fa-save"> </i> 
+                            <span *ngIf="modificando"> Guardar modificaciones</span>
+                            <span *ngIf="!modificando"> Guardar</span>
+                        </button>
+                            <button *ngIf="modificando" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
+                            <i class="fa fa-times"> </i> 
+                            <span *ngIf="modificando"> Cancelar</span>
+                        </button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 
+=====================================
+ END Registro de folios
+=====================================
+-->
+
+    <!-- 
+=====================================
+ Lista de folios en producción.
+=====================================
+-->
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"> Folios nuevos </h4>
+                    <h6 class="card-subtitle">Folios que estan pendientes de generar órdenes. Para consultar los folios en producción ve a <a [routerLink]="['/produccion']"> seguimiento de folios</a>. </h6>
+                    <app-pre-loader></app-pre-loader>
+                    <app-paginador></app-paginador>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Folio</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha Folio</th>
+                                    <th>Fecha de Entrega</th>
+                                    <th>Importancia</th>
+                                    <th>Vendedor</th>
+                                    <th>Observaciones</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let fol of folios" [ngClass]="{'animated zoomOut': fol.eliminar}">
+                                    <td class="align-middle align-content-center w-auto">
+                                        <a data-toggle="tooltip" title="Agregar pedidos" class="btn btn-outline-info text-center w-100" [routerLink]="['/folio', fol._id]">{{fol.numeroDeFolio}}</a>
+                                    </td>
+                                    <td class="align-middle align-content-center w-auto">{{fol.cliente.nombre}}</td>
+                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaFolio | fecha}}</span> </td>
+                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaEntrega | fecha}}</span> </td>
+                                    <td class="align-middle text-center  align-content-center w-auto">
+                                        <app-nivel-urgencia [nivel]="fol.nivelDeUrgencia"></app-nivel-urgencia>
+                                    </td>
+                                    <td class="align-middle  align-content-center w-auto">{{fol.vendedor.nombre}}</td>
+                                    <td class="align-middle   align-content-center w-auto">{{fol.observaciones}}</td>
+
+                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="modificar(fol)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
+                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="eliminarFolio( fol )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+                                    <td class="align-middle text-center  align-content-center w-auto" *ngIf="fol.folioLineas.length>0"><a [routerLink]="['/ordenes/', fol._id]" class="btn btn-outline-warning"><i class="fa fa-plus"></i> Generar Ordenes</a></td>
+                                    <td class="align-middle text-center  align-content-center w-auto" *ngIf="fol.folioLineas.length===0">
+                                        <div class="label label-warning align-middle d-flex align-items-center ">
+                                            <i class="fa fa-exclamation-circle fa-2x mr-3 w-25"></i> SIN PEDIDOS
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <app-paginador></app-paginador>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+=====================================
+ END de Lista de folios en producción.
+=====================================
+-->
+</ng-container>

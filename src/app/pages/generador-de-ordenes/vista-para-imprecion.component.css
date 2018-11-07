@@ -1,0 +1,8 @@
+.salto {
+    page-break-after: always;
+    page-break-before: always;
+}
+
+table {
+    font-family: Helvetica, Futura, Arial, Verdana, sans-serif;
+}

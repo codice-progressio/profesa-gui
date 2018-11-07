@@ -1,0 +1,4 @@
+<div *ngIf="nivel==='ALMACEN'" class="  badge badge-info">{{nivel}}</div>
+<div *ngIf="nivel==='PRODUCCIÓN'" class="badge badge-inverse">{{nivel}}</div>
+<div *ngIf="nivel==='URGENTE'" class="badge badge-danger " [ngClass]="{'animated  tada ': animar}"> <i [ngClass]="{'animated infinite tada delay-2s': animar}" class="fa fa-exclamation-triangle  "></i> <span> {{nivel}}</span></div>
+<div *ngIf="nivel==='MUESTRA'" class="badge badge-warning " [ngClass]="{'animated  fadeIn ': animar}"> <i class="fa fa-exclamation-circle  "></i> <span> {{nivel}}</span></div>

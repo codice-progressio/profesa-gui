@@ -1,0 +1,69 @@
+<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <app-qr-scanner></app-qr-scanner>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+    <div class="col-12">
+        <div class="card border-dark">
+            <div class="card-header bg-success">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="box-title m-b-0"><strong>Pastilla</strong></h3>
+                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
+
+                    </div>
+                    <div class="col-6">
+                        <h2>
+                            <strong>
+                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                            </strong>
+                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <form #f (ngSubmit)="onSubmit(pastillaForm)" [formGroup]="pastillaForm">
+
+                            <div class="form-group">
+                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadPastilla" placeholder="Cantidad pastilla">
+                                <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorPastilla" placeholder="Espesor Pastilla">
+                                <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
+                            </div>
+
+                            <h3>Contado por:</h3>
+                            <ng-container *ngFor="let empleado of empleados; let i = index">
+                                <input type="radio" [id]="i" formControlName="conto" [value]="empleado._id">
+                                <label [for]="i">{{empleado.nombre}}</label>
+                                <br>
+                            </ng-container>
+
+                            <br>
+                            <br>
+
+                            <button type="submit" [ngClass]="{'btn-success': pastillaForm.valid, 'btn-outline-dark': pastillaForm.invalid}" [disabled]="pastillaForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+
+                            <br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo "> </app-lista-de-ordenes>

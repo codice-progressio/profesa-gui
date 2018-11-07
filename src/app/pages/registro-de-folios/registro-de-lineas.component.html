@@ -1,0 +1,266 @@
+<!-- 
+=====================================
+ END Registro de lineas
+=====================================
+-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="card bg-light-inverse">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-0 ">
+                            <a class="text-white" data-toggle="collapse" href="#collapse-info">Detalle de folio</a></h4>
+
+                    </div>
+                    <div class="card-body collapse" id="collapse-info">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-body">
+                                <h3 class="box-title">Cliente</h3>
+                                <hr class="m-t-0 m-b-40">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Nombre:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{cliente?.nombre}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Código administración:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{cliente?.sae}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+
+
+                                <!--/row-->
+                                <h3 class="box-title">Folio</h3>
+                                <hr class="m-t-0 m-b-40">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Numero de folio:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{folio?.numeroDeFolio}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Fecha de creación:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{folio?.fechaFolio | fecha}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Fecha de entrega:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{folio?.fechaEntrega | fecha }} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Vendedor:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{folio?.vendedor.nombre}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Observaciones:</label>
+                                            <div class="col-md-9">
+                                                <p class="form-control-static"> {{folio?.observaciones}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body" [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}">
+                <h3 class="card-title" *ngIf="!modificandoLinea">Agregar nuevo pedido </h3>
+                <h3 class="card-title" *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido </h3>
+
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar()" class=" m-t-40">
+
+                    <div class="row">
+                        <div class="col-12 col-sm-3">
+                            <div class="form-group ">
+                                <input class="border-danger" #fa [(value)]='this.termino' (keyup)="buscarModelo(fa.value)" type="text" class="form-control " placeholder="...">
+                                <span class="help-block text-muted">
+                                          <small>Modelo</small>
+                                  </span>
+                            </div>
+
+                        </div>
+                        <div class="col text-inverse">
+                            <app-buscador-rapido></app-buscador-rapido>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 col-lg-3">
+                            <div class="form-group">
+                                <input [(ngModel)]="folioLinea.cantidad" name="cantidad" class="form-control" required placeholder="Cantidad de pedido" type="number" min="1">
+                                <span class="help-block text-muted">
+                                    <small>Cantidad.</small>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="form-check " *ngFor="let nivel of nivelDeUrgencia">
+                                <input [(ngModel)]="folioLinea.nivelDeUrgencia" name="nivelDeUrgencia" [value]="nivel.nivel" [class]="'form-check-input ' + nivel.class" type="radio" [id]="'exampleRadios1'+nivel.nivel">
+                                <label class="form-check-label" [for]="'exampleRadios1'+nivel.nivel">
+                                    {{nivel.nivel}}
+                                </label>
+                            </div>
+
+                            <span class="help-block text-muted">
+                                <small>Prioridad</small>
+                            </span>
+
+                        </div>
+                        <div class="col-12 col-lg-6">
+
+                            <div class="form-check">
+                                <input name="almacen" class="form-check-input" type="checkbox" value="" id="laserado" [(ngModel)]="laserarPedido" [checked]=folioLinea.almacen>
+                                <label class="form-check-label" for="laserado">
+                                    Laserado 
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <select [disabled]="!laserarPedido" [ngModel]="laserSeleccionado" (ngModelChange)="seleccionarLaserado( $event );" name="folioLinea.laserCliente" class="form-control">
+                                    <option value="" disabled selected>Seleccionar marca laser</option>
+                                    <option [ngValue]="laser._id"  *ngFor='let laser of cliente?.laserados'   >{{laser.laser}}</option>
+                                </select>
+                                <span class="help-block text-muted">
+                                    <small  >Laser cliente. </small>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <a (click)="nuevaMarcaLaser()" class="btn btn-outline-dark">
+                                    <i class="fa fa-plus"> </i> Añadir nuevo marca laser al cliente
+                                </a>
+                            </div>
+
+                            <div class="form-check">
+                                <input [(ngModel)]="folioLinea.almacen" [checked]="folioLinea.almacen" name="almacen" class="form-check-input" type="checkbox" id="surtirAlmacen">
+                                <label class="form-check-label" for="surtirAlmacen">
+                                          Surtir desde almacen. 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"> </i> 
+                            <span *ngIf="modificandoLinea"> Guardar modificaciones</span>
+                            <span *ngIf="!modificandoLinea"> Guardar</span>
+                        </button>
+                        <button *ngIf="modificandoLinea" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
+                            <i class="fa fa-times"> </i> 
+                            <span *ngIf="modificandoLinea"> Cancelar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
+=====================================
+ Lista de pedidos en producción.
+=====================================
+-->
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"> Pedidos del folio </h4>
+                <h6 class="card-subtitle">Pedidos que estan actualmente en el folio. </h6>
+                <app-pre-loader></app-pre-loader>
+                <div class="table-responsive">
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Modelo</th>
+                                <th>Cantidad</th>
+                                <th>Prioridad</th>
+                                <th>Laser del cliente</th>
+                                <th class="align-middle text-center">Surtir de almacen</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let linea of folio?.folioLineas" [ngClass]="{'animated zoomOut': linea.eliminar}">
+                                <td class="align-middle">
+                                    {{linea.modeloCompleto.modelo.modelo}} {{linea.modeloCompleto.tamano.tamano}} {{linea.modeloCompleto.color.color}} {{linea.modeloCompleto.terminado.terminado}}
+                                    <span *ngIf="linea.modeloCompleto?.laserAlmacen.laser">-</span>{{linea.modeloCompleto?.laserAlmacen.laser}}
+                                    <span *ngIf="linea.modeloCompleto?.versionModelo.versionModelo">-</span>{{linea.modeloCompleto?.versionModelo.versionModelo}}
+                                </td>
+
+                                <td class="align-middle">{{linea.cantidad}}</td>
+
+                                <td class="align-middle">
+                                    <app-nivel-urgencia [nivel]="linea.nivelDeUrgencia"></app-nivel-urgencia>
+                                </td>
+
+                                <td class="align-middle">{{linea.laserCliente?.laser}}</td>
+                                <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fa fa-check fa-2x"></i></td>
+                                <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
+                                <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 
+    =====================================
+     END de Lista de pedidos en producción.
+    =====================================
+    -->

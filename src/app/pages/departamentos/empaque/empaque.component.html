@@ -1,0 +1,77 @@
+<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <app-qr-scanner></app-qr-scanner>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+    <div class="col-12">
+        <div class="card border-dark">
+            <div class="card-header bg-success">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="box-title m-b-0"><strong>Selección</strong></h3>
+                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
+
+                    </div>
+                    <div class="col-6">
+                        <h2>
+                            <strong>
+                          <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                      </strong>
+                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12 ">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <form (ngSubmit)="onSubmit()" [formGroup]="seleccionForm">
+
+                                            <div class="form-group">
+                                                <input formControlName="cantidadDeBoton" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getCantidadDeBoton), 'is-valid':_validacionesService.valid(getCantidadDeBoton)}" type="number" placeholder="Cantidad de botón">
+                                                <app-validacion-inputs [campo]="getCantidadDeBoton"></app-validacion-inputs>
+                                            </div>
+
+
+
+                                            <h3>Contado por:</h3>
+                                            <ng-container *ngFor="let usuario of _usuarioService.cargarEmpacadores(); let i = index">
+                                                <input type="radio" [id]="i" formControlName="contadoPor" [value]="usuario._id">
+                                                <label [for]="i">{{usuario.nombre}}</label>
+                                            </ng-container>
+
+                                            <br>
+
+                                            <button type="submit" [ngClass]="{'btn-success': seleccionForm.valid, 'btn-outline-dark': seleccionForm.invalid}" [disabled]="seleccionForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+
+                                            <br>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo "> </app-lista-de-ordenes>

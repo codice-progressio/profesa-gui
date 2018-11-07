@@ -1,0 +1,16 @@
+<div class="list-group">
+    <a *ngFor="let elemento of _ser.elementos" (click)="_ser.seleccionarElemento(elemento)" class="list-group-item list-group-item-action">
+        {{elemento.nombre}}
+    </a>
+</div>
+
+<div class="form-group " disabled>
+    <div class="list-group">
+        <h3>
+            <span class="list-group-item bg-dark text-white  ">{{_ser.leyenda}}</span>
+        </h3>
+    </div>
+    <span class="help-block text-muted">
+        <small>Selecciona un elemento de la lista.</small>
+    </span>
+</div>

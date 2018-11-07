@@ -1,0 +1,9 @@
+<div *ngIf="_s.cargando" [ngClass]="{'animated zoomIn': _s.cargando}" class="jumbotron jumbotron-fluid bg-light">
+    <div class="container">
+        <div class="row text-center" [ngClass]="{'animated infinite bounce delay-2s': _s.cargando}">
+            <span class="text-center col text-dark"><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></span>
+            <h1 class="display-4 text-dark col-12">CARGANDO</h1>
+        </div>
+
+    </div>
+</div>
