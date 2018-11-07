@@ -7,7 +7,6 @@ import { FolioLinea } from '../../../models/folioLinea.models';
 import { Orden } from '../../../models/orden.models';
 import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
 import { Usuario } from '../../../models/usuario.model';
-import { mensaje } from '../../../../../../pruebas/src/app/basicas/string/string';
 
 import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { ValidacionesService } from '../../../services/utilidades/validaciones.service';

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import swal from 'sweetalert2';
-import { mensaje } from '../../../../../pruebas/src/app/basicas/string/string';
-import { stringify } from 'querystring';
-import { truncate } from 'fs';
 
 @Injectable({
   providedIn: 'root'
