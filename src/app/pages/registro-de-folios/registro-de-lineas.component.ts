@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
 import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
-import { ModeloService, ClienteService, UtilidadesService } from '../../services/service.index';
+import { ModeloService, ClienteService, UtilidadesService, OrdenadorVisualService } from '../../services/service.index';
 import { FolioLinea } from '../../models/folioLinea.models';
 import { FolioService } from '../../services/folio/folio.service';
 import { Cliente } from '../../models/cliente.models';
@@ -43,6 +43,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
   modificandoLinea: boolean = false;
 
+
   constructor(
     public _modeloService: ModeloService,
     public _folioService: FolioService,
@@ -51,22 +52,15 @@ export class RegistroDeLineasComponent implements OnInit {
     public _buscadorRapidoService: BuscadorRapidoService,
     public router: Router,
     public _util: UtilidadesService,
-    public _preLoaderService: PreLoaderService
+    public _preLoaderService: PreLoaderService,
+    public _ordenadorVisualService: OrdenadorVisualService
   ) {
 
     activatedRoute.params.subscribe(params => {
       // Si trae un id entonces lo buscamos.
       const id = params['id'];
       if (id) {
-        this._preLoaderService.cargando = true;
-        this._folioService.cargarFolio(id).subscribe((folio: any) => {
-          this.folio = folio;
-          this.folio.folioLineas.forEach(linea => {
-            linea.eliminar = false;
-          });
-          this.cliente = this.folio.cliente;
-          this._preLoaderService.cargando = false;
-        });
+        this.cargarDatosDeFolio(id);
       }
     });
 
@@ -75,6 +69,8 @@ export class RegistroDeLineasComponent implements OnInit {
       // Este callback retorna el objeto modeloCompleto para asignarlo
       // y despues guardarlo.
       this.folioLinea.modeloCompleto = modelo;
+      this._ordenadorVisualService.modeloCompleto = modelo;
+      this._ordenadorVisualService.generar();
       this.termino = '';
     };
 
@@ -85,7 +81,18 @@ export class RegistroDeLineasComponent implements OnInit {
   }
 
   ngOnInit() {}
-
+  
+  cargarDatosDeFolio( id: string ) {
+    this._preLoaderService.cargando = true;
+        this._folioService.cargarFolio(id).subscribe((folio: any) => {
+          this.folio = folio;
+          this.folio.folioLineas.forEach(linea => {
+            linea.eliminar = false;
+          });
+          this.cliente = this.folio.cliente;
+          this._preLoaderService.cargando = false;
+        });
+  }
 
   guardar() {
     // Comprobar si hay un modelo seleccioando.
@@ -116,6 +123,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
         swal(
           'Marca laser no seleccionada.',
+          // TODO: Cambiar a: "El pedido esta marcado para laserarse..."
           'El pedido esta marcado como laserado pero no seleccionaste una marca laser .',
           'error'
         );
@@ -124,6 +132,9 @@ export class RegistroDeLineasComponent implements OnInit {
     } else {
       this.folioLinea.laserCliente = null;
     }
+
+    // Cargamos los procesos especiales en el folio si es que hay. 
+    this.folioLinea.procesos = this._ordenadorVisualService.obtenerProcesos();
 
     // Lo guardamos.
     this._folioService
@@ -140,11 +151,13 @@ export class RegistroDeLineasComponent implements OnInit {
       this.modificandoLinea = false;
       this.folioLinea.nivelDeUrgencia = 'PRODUCCIÓN';
       this.laserarPedido = false;  
+      this._ordenadorVisualService.limpiar();
 
     });
   }
 
   seleccionarLaserado( id: string ) {
+    // TODO: LIMPIAR ESTE LOG  . 
     console.log('El id del laserado: ' + id);
 
     // Filtramos los laserados
@@ -179,6 +192,7 @@ export class RegistroDeLineasComponent implements OnInit {
   }
 
   nombrarModelo (modelo: ModeloCompleto) {
+    // TODO: Sustituir esta linea por la constante para nombres completos. 
     let nombreCompleto: string =
       modelo.modelo.modelo +
       '-' +
@@ -199,6 +213,7 @@ export class RegistroDeLineasComponent implements OnInit {
       return nombreCompleto;
   }
 
+  // TODO: LIMPIAR ESTE COMENTARIO. 
   // seleccionarModelo(modelo: ModeloCompleto) {
   //   this.modelo = modelo;
   //   this.termino = '';
@@ -227,16 +242,19 @@ export class RegistroDeLineasComponent implements OnInit {
   }
 
   modificar(linea: FolioLinea) {
+    this._buscadorRapidoService.reiniciar();
+    this.termino = '';
+    
     this.folioLinea = linea;
     if (this.folioLinea.laserCliente) {
       this.laserSeleccionado = this.folioLinea.laserCliente._id;
       this.laserarPedido = true;
-      console.log('Laserar pedido');
-      
     }
     this.modificandoLinea = true;
-    // this._buscadorRapidoService.nombreDeElemento = this.nombrarModelo(linea.modeloCompleto);
+    // Seleccionamos el modelo completo en el buscador rápido. 
     this._buscadorRapidoService.seleccionarElemento(null, this.nombrarModelo(linea.modeloCompleto), linea.modeloCompleto);
+    // Cargamos los modelos completos en el servicio de selección de procesos. 
+    this._ordenadorVisualService.cargarParaModifcarLinea(linea);
   }
 
   eliminarLinea( linea: FolioLinea ) {
@@ -272,12 +290,16 @@ export class RegistroDeLineasComponent implements OnInit {
 
 
   cancelarModificacion() {
+
     this.folioLinea = new FolioLinea();
     this.laserSeleccionado = '';
     this.laserarPedido = false;
     this.modificandoLinea = false;
+    this.termino = '';
     this._buscadorRapidoService.reiniciar();
-
+    this.folioLinea.nivelDeUrgencia = 'PRODUCCIÓN';
+    this.cargarDatosDeFolio(this.folio._id);
+    this._ordenadorVisualService.limpiar();
   }
 
   

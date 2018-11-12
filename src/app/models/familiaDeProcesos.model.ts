@@ -39,6 +39,8 @@ export class Procesos {
 
         // Solo para GUI
         public esDeFamilia: boolean = true,
+        // Para ordenador visual. 
+        public dragEnable: boolean = true,
     ) {
         
     }

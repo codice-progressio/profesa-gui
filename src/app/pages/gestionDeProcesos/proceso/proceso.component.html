@@ -378,11 +378,11 @@
 
                 <h3>Procesos dentro de la familia</h3>
                 <div class="list-group" dnd-sortable-container [sortableData]="familiaEditandose.procesos">
-                    <ng-container *ngFor="let proceso of familiaEditandose.procesos, let i = index;">
+                    <ng-container *ngFor="let proc of familiaEditandose.procesos, let i = index;">
                         <a dnd-sortable (onDropSuccess)="reordenarProceso(familiaEditandose)" [sortableIndex]="i" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <span>
-                                    <i class="fa fa-bars mr-3"></i> <strong class="text-inverse"> {{proceso.orden}} </strong>  - {{proceso.proceso.nombre}}
+                                    <i class="fa fa-bars mr-3"></i> <strong class="text-inverse"> {{proc.orden}} </strong>  - {{proc.proceso?.nombre}}
                                 </span>
                                 <button (click)="eliminarProceso(i)" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
                             </div>
@@ -398,7 +398,7 @@
                                 <span>
                                     {{proceso.nombre}}
                                 </span>
-                                <button (click)="agregarProceso(proceso)" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
                             </div>
                         </a>
                     </ng-container>

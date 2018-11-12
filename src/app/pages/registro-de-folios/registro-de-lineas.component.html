@@ -1,6 +1,6 @@
 <!-- 
 =====================================
- END Registro de lineas
+Registro de lineas
 =====================================
 -->
 
@@ -157,7 +157,7 @@
                         <div class="col-12 col-lg-6">
 
                             <div class="form-check">
-                                <input name="almacen" class="form-check-input" type="checkbox" value="" id="laserado" [(ngModel)]="laserarPedido" [checked]=folioLinea.almacen>
+                                <input name="almacen" class="form-check-input" type="checkbox" id="laserado" [(ngModel)]="laserarPedido" [checked]="laserarPedido">
                                 <label class="form-check-label" for="laserado">
                                     Laserado 
                                 </label>
@@ -179,13 +179,21 @@
                             </div>
 
                             <div class="form-check">
-                                <input [(ngModel)]="folioLinea.almacen" [checked]="folioLinea.almacen" name="almacen" class="form-check-input" type="checkbox" id="surtirAlmacen">
+                                <input [(ngModel)]="folioLinea.almacen" [checked]="folioLinea.almacen" name="folioLinea.almacen" class="form-check-input" type="checkbox" id="surtirAlmacen">
                                 <label class="form-check-label" for="surtirAlmacen">
                                           Surtir desde almacen. 
                                 </label>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-5 mb-5">
+                        <div class="col-12">
+                            <app-ordenador-visual></app-ordenador-visual>
+                        </div>
+                    </div>
+
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">
                             <i class="fa fa-save"> </i> 
@@ -210,7 +218,7 @@
 -->
 
 
-<div class="row">
+<div *ngIf="!this.modificandoLinea" class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">

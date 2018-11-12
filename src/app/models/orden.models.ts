@@ -3,7 +3,6 @@ import { Transformacion } from './transformacion.models';
 import { Pulido } from './pulido.models';
 import { Seleccion } from './seleccion.models';
 import { Trayecto } from './trayecto.models';
-import { TrayectoNormal } from './trayectoNormal.models';
  
 export class Orden {
     constructor(
@@ -24,7 +23,7 @@ export class Orden {
         public terminada: boolean = false,
         public porcentajeAvance: number = 0,
 
-        public trayectoNormal?: TrayectoNormal,
+        public trayectoNormal?: Trayecto[],
         public trayectoRecorrido?: Trayecto [],
         public ubicacionActual?: Trayecto,
         public siguienteDepartamento?: Trayecto,

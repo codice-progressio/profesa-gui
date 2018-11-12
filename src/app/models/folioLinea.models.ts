@@ -1,6 +1,7 @@
 import { ModeloCompleto } from './modeloCompleto.modelo';
 import { Laser } from './laser.models';
 import { Orden } from './orden.models';
+import { Procesos } from './familiaDeProcesos.model';
 
 export class FolioLinea {
     constructor(
@@ -13,6 +14,11 @@ export class FolioLinea {
         public createdAt?: Date,
         public updatedAt?: Date,
         public porcentajeAvance?: number,
+        public coloresTenidos?: {
+            color?: string,
+            cantidad?: number,
+        },
+        public procesos?: Procesos[],
 
         // Esta es solo para eliminar con animación.
         public eliminar: boolean = false,

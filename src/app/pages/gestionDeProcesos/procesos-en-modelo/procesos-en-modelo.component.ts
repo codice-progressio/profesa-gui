@@ -157,11 +157,11 @@ export class ProcesosEnModeloComponent implements OnInit {
 
   cargarModelosCompletos( ) {
     this._modeloService.cargarModelosCompletosParaCostos( ).subscribe( (mC) => {
-      console.log(mC.length);
-      
-      this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
-      this.modelosCompletos.map(x => x.nombreCompleto = ModeloCompleto.nombreCom(x));
-      this._utilidadesService.ordenarArreglo( this.modelosCompletos, 'nombreCompleto');
+      if ( mC ) {
+        this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
+        this.modelosCompletos.map(x => x.nombreCompleto = ModeloCompleto.nombreCom(x));
+        this._utilidadesService.ordenarArreglo( this.modelosCompletos, 'nombreCompleto');
+      }
     });
   }
 
@@ -278,6 +278,7 @@ export class ProcesosEnModeloComponent implements OnInit {
         const element = this.arreglosDrop[x];
         
         const proc = new Procesos();
+        // TODO: Guardar el id del padre aquí. Viene en X ???
         proc.proceso = proceso;
         proc.orden = 0;
         element.arreglo.push( proc );
@@ -292,7 +293,7 @@ export class ProcesosEnModeloComponent implements OnInit {
    for (const x in this.arreglosDrop) {
      if (this.arreglosDrop.hasOwnProperty(x)) {
        const element = this.arreglosDrop[x];
-       
+      //  TODO: Modificar aqui tambien el id del pradre del proceso. (Ver notas relacionadas en TODO.)
        for (let i = 0; i < element.arreglo.length; i++) {
         const pro = element.arreglo[i];
         pro.orden = (( i + 1) / 10) + element.proc.orden ;

@@ -281,13 +281,20 @@ export class ProcesoComponent implements OnInit {
   }
 
   agregarProceso(proceso: Proceso) {
+    console.log(proceso);
+    
     this.reordenarProceso(this.familiaEditandose);
-    this.familiaEditandose.procesos.push(
-      new Procesos({
-        proceso: proceso,
-        orden: this.familiaEditandose.procesos.length + 1
-      })
-    );
+    
+    console.log(proceso);
+    const proc = new Procesos();
+    proc.proceso = proceso;
+    proc.orden = this.familiaEditandose.procesos.length + 1;
+    console.log(proc);
+    
+    this.familiaEditandose.procesos.push(proc);
+    
+    console.log(this.familiaEditandose);
+    
   }
 
   eliminarProceso(i: number) {

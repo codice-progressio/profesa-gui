@@ -149,8 +149,8 @@ export class FolioService {
       url += `/folioLinea/${idFolio}/${linea._id}`;
       return this.http.put(url, linea).pipe(
         map( (resp: any) => {
+          // TODO: Estandarizar esto.
           swal('Pedido modificado.', `Se modifico el pedido correctamente.`, 'success');
-          console.log('=>' + JSON.stringify( resp));
           return;
         }), catchError( err => {
           swal('Error al modificar el pedido.', err.error.mensaje, 'error') ;

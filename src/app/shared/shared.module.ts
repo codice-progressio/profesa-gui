@@ -19,6 +19,7 @@ import { ModeloCompletoComponent } from '../components/modelo-completo/modelo-co
 import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component';
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component';
 import {DndModule} from 'ng2-dnd';
+import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component';
 
 
 @NgModule({
@@ -43,10 +44,7 @@ import {DndModule} from 'ng2-dnd';
         ModeloCompletoComponent,
         QrScannerComponent,
         ValidacionInputsComponent,
-        
-        
-        
-        
+        OrdenadorVisualComponent
     ],
     exports: [
         NopagefoundComponent,
@@ -62,11 +60,8 @@ import {DndModule} from 'ng2-dnd';
         ModeloCompletoComponent,
         QrScannerComponent,
         ValidacionInputsComponent,
-        
         DndModule,
-        
-        
-        
+        OrdenadorVisualComponent
     ]
 })
 

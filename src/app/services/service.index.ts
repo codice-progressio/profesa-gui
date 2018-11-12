@@ -28,3 +28,5 @@ export { UtilidadesService } from './utilidades/utilidades.service';
 export { ManejoDeMensajesService } from './utilidades/manejo-de-mensajes.service';
 export { ValidacionesService } from './utilidades/validaciones.service';
 export { CalculosDeCostosService } from './gastos/calculos-de-costos.service';
+
+export { OrdenadorVisualService } from '../components/ordenador-visual/ordenador-visual.service';
