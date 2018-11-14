@@ -75,7 +75,7 @@ export class IndicadorDeChecadasComponent implements OnInit {
             console.log(`${d}-${m}-${a}- => ${dia}`);
             day.dia = new Date();
             day.dia.setDate(d);
-            day.dia.setFullYear( a),
+            day.dia.setFullYear( a);
             day.dia.setMonth(m);
 
             day.checadas.push( linea[2] == null ? '' : linea[2].split(' ')[1]);
@@ -102,8 +102,6 @@ export class IndicadorDeChecadasComponent implements OnInit {
         
       // });
 
-  }
+  });
 
-}
-
-
+}}
