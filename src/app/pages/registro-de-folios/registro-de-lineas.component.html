@@ -187,11 +187,35 @@ Registro de lineas
                         </div>
                     </div>
 
+                    <hr>
+
                     <div class="row mt-5 mb-5">
                         <div class="col-12">
                             <app-ordenador-visual></app-ordenador-visual>
                         </div>
                     </div>
+
+                    <hr>
+
+                    <ng-container *ngIf="folioLinea.cantidad > 0">
+                        {{folioLinea.coloresTenidos | json}}
+                        <h3>Colores para teñido <a (click)="folioLinea.coloresTenidos.push({color:'', cantidad:'0'})" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></a></h3>
+                        <ng-container *ngIf="folioLinea.coloresTenidos.length > 0">
+
+                            <div *ngFor="let item of folioLinea.coloresTenidos; let i =index;" class="col-lg-12 mt-5 mb-5">
+                                <div class="input-group">
+                                    <input name="color" [(ngModel)]="folioLinea.coloresTenidos[i].color" type="text" class="form-control" placeholder="Color de teñido">
+                                    <input name="cantidad" [(ngModel)]="folioLinea.coloresTenidos[i].cantidad" type="number" min="1" class="form-control" placeholder="Cantidad">
+                                    <span class="input-group-btn">
+                                        <button  class="btn btn-outline-success" type="button"><i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-outline-danger" type="button"><i class="fa fa-times"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </ng-container>
+
 
 
                     <div class="form-group">

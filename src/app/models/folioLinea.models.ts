@@ -14,10 +14,7 @@ export class FolioLinea {
         public createdAt?: Date,
         public updatedAt?: Date,
         public porcentajeAvance?: number,
-        public coloresTenidos?: {
-            color?: string,
-            cantidad?: number,
-        },
+        public coloresTenidos: ColoresTenidos[] = [],
         public procesos?: Procesos[],
 
         // Esta es solo para eliminar con animación.
@@ -28,4 +25,16 @@ export class FolioLinea {
         // Para mostrar la info 
         public mostrandoInfo: boolean = false
     ) {}
+}
+
+
+export class ColoresTenidos {
+    constructor(
+        color?: string,
+        cantidad?: number,
+        // Para gui
+        valido: boolean = true,
+    ) {
+        
+    }
 }

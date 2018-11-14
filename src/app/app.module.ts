@@ -1,5 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+
+// FECHAS EN ESPAÑOL
+import { NgModule, LOCALE_ID } from '@angular/core';
+import localePy from '@angular/common/locales/es-PY';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localePy, 'es');
 
 // Rutas
 import { APP_ROUTES } from './app.routes';
@@ -46,7 +51,9 @@ import {DndModule} from 'ng2-dnd';
     DndModule.forRoot()
     
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

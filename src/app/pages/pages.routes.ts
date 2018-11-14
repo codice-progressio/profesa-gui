@@ -30,6 +30,7 @@ import { GestionDepartamentoComponent } from './departamentos/gestion-departamen
 import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component';
 import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
+import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -104,7 +105,14 @@ const pagesRoutes: Routes = [
         {path: 'procesos', component: ProcesoComponent, data: {titulo: 'Gestión de procesos'}},
         // {path: 'procesos/costos', component: CostosDeProcesoComponent, data: {titulo: 'Gestión de costos de proceso'}},
         {path: 'procesos/modelos', component: ProcesosEnModeloComponent, data: {titulo: 'Gestión de procesos de modelo'}},
-
+        
+        // reportes
+        
+        {
+            path: 'reportes/indicadorChecadas', 
+            component: IndicadorDeChecadasComponent,
+            data: {titulo: 'Indicador de checas personal ( Beta )'}
+        },
         
         
         

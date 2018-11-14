@@ -44,6 +44,7 @@ import { GestionDepartamentoComponent } from './departamentos/gestion-departamen
 import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component';
 import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
+import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-model
        ProcesoComponent,
        CostosDeProcesoComponent,
        ProcesosEnModeloComponent,
+       IndicadorDeChecadasComponent,
 
 
       ],
