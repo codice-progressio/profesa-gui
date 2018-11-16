@@ -43,7 +43,9 @@ export class ListaDeOrdenesService {
     this._folioService.cargarOrdenesDepartamento(depto, opciones)
     .subscribe( (resp: any ) => {
       this.ordenes = resp;
-      console.log(this.ordenes);
+      console.log('Estamos aqui.');
+      
+      console.log(this.ordenes); 
       
       if ( this.ordenes ) {
         this.niveles = Object.keys(this.ordenes);

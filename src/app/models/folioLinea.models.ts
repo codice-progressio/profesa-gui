@@ -30,10 +30,10 @@ export class FolioLinea {
 
 export class ColoresTenidos {
     constructor(
-        color?: string,
-        cantidad?: number,
+        public color?: string,
+        public cantidad?: number,
         // Para gui
-        valido: boolean = true,
+        public valido: boolean = true,
     ) {
         
     }

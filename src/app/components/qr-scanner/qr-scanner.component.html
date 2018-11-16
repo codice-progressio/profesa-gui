@@ -1,3 +1,18 @@
 <app-pre-loader *ngIf="_s.leyendo">
 </app-pre-loader>
-<div class="text-center col-12" id="reader" style="width:600px;height:300px;"></div>
+<h1 *ngIf="!_s.recivir" class="animated fadeIn">Registrar una órden.</h1>
+<h1 *ngIf="_s.recivir" class="animated fadeIn">Recivir una órden.</h1>
+<div class="w-100 justify-content-between align-content-center d-flex" [ngClass]="{'bg-inverse': _s.recivir}">
+    <div class="text-center col-8" id="reader" style="height:400px; width: 600px;">
+    </div>
+
+    <button (click)="_s.recivir = !_s.recivir" class="btn btn-lg " [ngClass]="{'btn-primary':  _s.recivir, 'btn-success':  !_s.recivir}">
+        <span *ngIf="!_s.recivir">
+            <i  class="fa fa-check fa-2x"></i> Recivir órdenes.
+        </span>
+        <span *ngIf="_s.recivir">
+            <i  class="fa fa-save fa-2x"></i> Registrar órdenes.
+        </span>
+    </button>
+
+</div>

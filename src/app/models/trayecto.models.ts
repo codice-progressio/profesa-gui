@@ -7,6 +7,7 @@ export class Trayecto {
     // public anterior?: Departamento,
     public entrada?: Date,
     public salida?: Date,
+    public recivida: boolean = false,
 
     ) {}
 

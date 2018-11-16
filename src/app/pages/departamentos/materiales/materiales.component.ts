@@ -44,33 +44,41 @@ export class MaterialesComponent implements OnInit {
     public _listaDeOrdenesService: ListaDeOrdenesService
   ) {
 
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.materiales();
+    this.cargarOrdenesDeDepartamento();
     
     this._usuarioService.buscarUsuarioPorROLE('MATERIALES_REGISTRO_ROLE')
         .subscribe( (usuarios: Usuario[]) => {
           this.empleados = usuarios;
         });
+      
+    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
 
-    this._qrScannerService.callback = (data) => {
-      this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError ).subscribe(
-        ( resp: any ) => {
-          this.orden = resp.orden;
-          this.modeloCompleto = resp.modeloCompleto;
-          this.linea.modeloCompleto = this.modeloCompleto;
-          this._qrScannerService.lecturaCorrecta = true;
-        }
-      );
-    };
+    // this._qrScannerService.callback = (data) => {
+    
 
-    this._qrScannerService.callbackError = ( ) => {
-      this.limpiar();
-    };
+    //   this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError ).subscribe(
+    //     ( resp: any ) => {
+    //       this.orden = resp.orden;
+    //       this.modeloCompleto = resp.modeloCompleto;
+    //       this.linea.modeloCompleto = this.modeloCompleto;
+    //       this._qrScannerService.lecturaCorrecta = true;
+    //     }
+    //   );
+    // };
+
+    // this._qrScannerService.callbackError = ( ) => {
+    //   this.limpiar();
+    // };
 
    }
 
   ngOnInit() {
     this._qrScannerService.iniciar();
+  }
+
+  cargarOrdenesDeDepartamento( ) {
+    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+    this._listaDeOrdenesService.materiales();
   }
 
   // noPunto =  function(e) {

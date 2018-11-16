@@ -6,3 +6,11 @@
 table {
     font-family: Helvetica, Futura, Arial, Verdana, sans-serif;
 }
+
+.fuentePequena {
+    font-size: 6pt;
+}
+
+.bg-light {
+    background-color: grey;
+}
