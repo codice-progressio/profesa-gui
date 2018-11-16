@@ -1,4 +1,4 @@
-<div class="row" *ngIf="!_s.hayOrdenes()">
+<div class="row animated fadeIn" *ngIf="!_s.hayOrdenes()">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -28,7 +28,7 @@
 
 
 <ng-container *ngFor="let lv of _s.niveles">
-    <div class="row" *ngIf=" _s.ordenes[lv].length !==0">
+    <div class="row row animated fadeIn" *ngIf=" _s.ordenes[lv].length !==0">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -58,6 +58,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center"></th>
+                                    <th class="text-center">con</th>
                                     <th class="text-center">#</th>
                                     <th class="text-center">Fecha/Folio</th>
                                     <th class="text-center">Modelo </th>
@@ -69,17 +70,29 @@
                             </thead>
                             <tbody>
                                 <ng-container *ngFor="let orden of _s.ordenes[lv]">
-                                    <tr>
-                                        <td class="fit">{{orden.numeroDeOrden}} / {{orden.totalOrdenes}}</td>
-                                        <td class="fit">{{orden.ordenViajera}}</td>
-                                        <td class="fit">{{orden.fechaFolio | fecha:'DD/MM/YYYY'}}</td>
-                                        <td class="fit">
+                                    <tr [ngClass]="
+                                        {    
+                                            
+                                            'text-white bg-danger ': 'URGENTE'=== lv && !orden.ubicacionActual.recivida,
+                                            'text-white bg-info ': 'ALMACEN'=== lv && !orden.ubicacionActual.recivida,
+                                            'text-white bg-inverse ': 'PRODUCCIÓN'=== lv && !orden.ubicacionActual.recivida,
+                                            'text-white bg-warning ': 'MUESTRA'=== lv && !orden.ubicacionActual.recivida
+                    
+                                        } ">
+
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">
+                                            <i *ngIf="!orden.ubicacionActual.recivida" [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fa fa-exclamation  animated tada infinite"></i>
+                                        </td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.numeroDeOrden}} / {{orden.totalOrdenes}}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.ordenViajera}}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.fechaFolio | fecha:'DD/MM/YYYY'}}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">
                                             <app-modelo-completo [modeloCompleto]="orden.modeloCompleto"></app-modelo-completo>
                                         </td>
-                                        <td class="fit">{{orden.laserCliente?.laser}}</td>
-                                        <td class="fit text-center">{{orden.unidad}}</td>
-                                        <td class="fit text-right">{{orden.piezasTeoricas | number }}</td>
-                                        <td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.laserCliente?.laser}}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-center">{{orden.unidad}}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-right">{{orden.piezasTeoricas | number }}</td>
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}">
                                             {{orden.observacionesFolio}}
                                             <br> {{orden.observaciones}}
                                         </td>

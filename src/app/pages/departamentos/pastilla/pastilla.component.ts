@@ -48,29 +48,34 @@ export class PastillaComponent implements OnInit {
     public _validacionesService: ValidacionesService
 
   ) { 
-
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.pastilla();
-    
+    this.cargarOrdenesDeDepartamento();
     this._usuarioService.buscarUsuarioPorROLE('MATERIALES_REGISTRO_ROLE')
         .subscribe( (usuarios: Usuario[]) => {
           this.empleados = usuarios;
         });
 
-    this._qrScannerService.callback = (data) => {
-      this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
-        ( resp: any ) => {
-          this.orden = resp.orden;
-          this.modeloCompleto = resp.modeloCompleto;
-          this.linea.modeloCompleto = this.modeloCompleto;
-          this._qrScannerService.lecturaCorrecta = true;
-        }
-      );
-    };
+    
+  
+      this._qrScannerService.buscarOrden(this, () => { this.limpiar(); });
+  //   this._qrScannerService.callback = (data) => {
+  //     this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
+  //       ( resp: any ) => {
+  //         this.orden = resp.orden;
+  //         this.modeloCompleto = resp.modeloCompleto;
+  //         this.linea.modeloCompleto = this.modeloCompleto;
+  //         this._qrScannerService.lecturaCorrecta = true;
+  //       }
+  //     );
+  //   };
 
-    this._qrScannerService.callbackError = ( ) => {
-      this.limpiar();
-    };
+  //   this._qrScannerService.callbackError = ( ) => {
+  //     this.limpiar();
+  //   };
+  }
+
+  cargarOrdenesDeDepartamento( ) {
+    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+    this._listaDeOrdenesService.pastilla();
   }
 
   ngOnInit() {

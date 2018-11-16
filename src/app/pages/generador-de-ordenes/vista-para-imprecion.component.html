@@ -3,6 +3,7 @@
         <div class="card">
             <div class="card-body justify-content-between">
 
+                <!-- Permite imprimir solo el área con las órdenes.  -->
                 <a class="btn btn-outline-warning" onclick="
                     function printDiv() {
                       $('#print').clone().appendTo('body').addClass('print').attr('id', 'zona_imp');
@@ -42,60 +43,80 @@
                         </div>
                         <table class="table table-bordered ">
                             <tbody>
-                                <tr *ngFor="let orden of linea.ordenes">
-                                    <td>
-                                        <h3>
-                                            <small>ORDEN VIAJERA: </small>
-                                            <div class="badge badge-dark size-2 mr-3"> {{folio.numeroDeFolio}}-{{i_numPed+1}}-{{orden.numeroDeOrden}} </div>
-                                            <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
-                                        </h3>
+                                <ng-container *ngFor="let orden of linea.ordenes">
+                                    <tr>
+                                        <td>
+                                            <h3>
+                                                <small>ORDEN VIAJERA: </small>
+                                                <div class="badge badge-dark size-2 mr-3"> {{folio.numeroDeFolio}}-{{i_numPed+1}}-{{orden.numeroDeOrden}} </div>
+                                                <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
+                                            </h3>
 
-                                        <h3><strong><app-modelo-completo [linea]="linea"></app-modelo-completo></strong></h3>
+                                            <h3><strong><app-modelo-completo [linea]="linea"></app-modelo-completo></strong></h3>
 
-                                        <!-- <span>
-                                            <h6><strong>INFO ADICIONAL:</strong> </h6>
-                                            pendiente
-                                        </span> -->
-                                        <ng-container *ngIf="linea.laserCliente">
-                                            <br>
-                                            <small><strong>MARCA LASER:</strong></small>
+                                            <!-- <span>
+                                                <h6><strong>INFO ADICIONAL:</strong> </h6>
+                                                pendiente
+                                            </span> -->
+                                            <ng-container *ngIf="linea.laserCliente">
+                                                <br>
+                                                <small><strong>MARCA LASER:</strong></small>
 
-                                            <span class="bg-dark text-white ml-2 pt-1 pb-1 pr-3 pl-3 ">
-                                                <strong>
-                                                    {{linea.laserCliente.laser}}
-                                                </strong>
+                                                <span class="bg-dark text-white ml-2 pt-1 pb-1 pr-3 pl-3 ">
+                                                    <strong>
+                                                        {{linea.laserCliente.laser}}
+                                                    </strong>
+                                                </span>
+                                                <br>
+                                            </ng-container>
+                                            <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones">
+                                                <small>
+                                                    <strong >OBSERVACIONES:</strong> <br>
+                                                    <span *ngIf="folio.observaciones">{{folio.observaciones}}  <br></span>
+                                                    <span *ngIf="orden.observaciones">{{orden.observaciones}}</span>
+                                                </small>
+
+                                            </ng-container>
+                                            <!-- Agregamos el trayecto de la órden. -->
+
+                                            <td>
+                                                <span>
+                                                {{folio.fechaFolio | fecha:'D/MM/Y'}}
+                                                
                                             </span>
-                                            <br>
-                                        </ng-container>
-                                        <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones">
-                                            <small>
-                                                <strong >OBSERVACIONES:</strong> <br>
-                                                <span *ngIf="folio.observaciones">{{folio.observaciones}}  <br></span>
-                                                <span *ngIf="orden.observaciones">{{orden.observaciones}}</span>
-                                            </small>
+                                                <qrcode [qrdata]="orden._id" size="100"></qrcode>
+                                                <span>
+                                                # {{orden.numeroDeOrden}}/{{linea.ordenes.length}}
+                                              
+                                            </span>
+                                                <br>
+                                                <span>PZ: {{orden.piezasTeoricas}}</span>
+                                                <br>
+                                                <span>unidad: {{orden.unidad}}</span>
+                                            </td>
 
-                                        </ng-container>
 
-                                    </td>
-                                    <td>
-                                        <span>
-                                            {{folio.fechaFolio | fecha:'D/MM/Y'}}
-                                            
-                                        </span>
-                                        <qrcode [qrdata]="orden._id" size="100"></qrcode>
-                                        <span>
-                                            # {{orden.numeroDeOrden}}/{{linea.ordenes.length}}
-                                          
-                                        </span>
-                                        <br>
-                                        <span>PZ: {{orden.piezasTeoricas}}</span>
-                                        <br>
-                                        <span>unidad: {{orden.unidad}}</span>
-                                    </td>
-                                    <!-- <td class="no-print">
-                                        <button class="btn btn-outline-info"> <i class="fa fa-print"></i></button>
-                                    </td> -->
-                                </tr>
+
+                                            <!-- <td class="no-print">
+                                            <button class="btn btn-outline-info"> <i class="fa fa-print"></i></button>
+                                        </td> -->
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="m-0 p-0">
+                                            <div class="w-100 h-100 bg-light  d-flex align-items-center text-center ">
+                                                <ng-container *ngFor="let trayecto of orden.trayectoNormal;let i = index">
+                                                    <small>
+                                                        <strong class="fuentePequena">
+                                                            {{trayecto.departamento.nombre}}
+                                                        </strong>
+                                                        <span *ngIf="i!==orden.trayectoNormal.length-1" > &#62; </span>
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
                             </tbody>
                         </table>
 

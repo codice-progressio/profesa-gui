@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
 import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
 import { ModeloService, ClienteService, UtilidadesService, OrdenadorVisualService } from '../../services/service.index';
-import { FolioLinea } from '../../models/folioLinea.models';
+import { FolioLinea, ColoresTenidos } from '../../models/folioLinea.models';
 import { FolioService } from '../../services/folio/folio.service';
 import { Cliente } from '../../models/cliente.models';
 import { ActivatedRoute, Router, Route } from '@angular/router';
@@ -28,6 +28,13 @@ export class RegistroDeLineasComponent implements OnInit {
     {nivel: 'URGENTE', checked: false, class: 'radio-col-red'},
     {nivel: 'MUESTRA', checked: false, class: 'radio-col-yellow'},
   ];
+
+  // Si la cantidad del pedido supera a la suma de los 
+  // colores de tenido se pone este en true para mostrar la alerta. 
+  sumaTenidoSuperaCantidad: boolean = false;
+
+  // Para mas y menos
+  mostrandoInfoFolio: boolean = false;
 
   termino: string = '';
   // modelo: ModeloCompleto;
@@ -113,6 +120,16 @@ export class RegistroDeLineasComponent implements OnInit {
         'error'
       );
       return;
+    }
+    
+    // Comprobar la cantidad a teñir. 
+    if ( this.sumaTenidoSuperaCantidad ) {
+        swal(
+          'Cantidad no concordante.',
+          'La cantidad a teñir supera la cantidad del pedido.',
+          'error'
+        );
+        return;
     }
 
     if ( this.laserarPedido ) {
@@ -301,6 +318,33 @@ export class RegistroDeLineasComponent implements OnInit {
     this.cargarDatosDeFolio(this.folio._id);
     this._ordenadorVisualService.limpiar();
   }
+
+  agregarColorTenido( ) {
+    const subTotal: number = this.calcularSumaTenido();
+    const ct = new ColoresTenidos();
+    ct.color = 'Color';
+    const restante = this.folioLinea.cantidad - subTotal;
+    ct.cantidad = restante > 0 ? restante : 0 ;
+    this.folioLinea.coloresTenidos.push(ct);
+  }
+
+  eliminarColorTenido(i: number ) {
+    this.folioLinea.coloresTenidos.splice(i, 1);
+    this.calcularSumaTenido();
+  }
+
+  calcularSumaTenido( ): number {
+    let t = 0;
+    this.folioLinea.coloresTenidos.forEach( x => { t += x.cantidad; });
+    this.sumaTenidoSuperaCantidad = t > this.folioLinea.cantidad;
+    return t;
+  }
+
+  trackByFn(index: any, item: any) {
+    return index;
+  }
+
+  
 
   
 }

@@ -246,6 +246,21 @@ export class FolioService {
   return limpio;
   }
 
+
+  // Recive una nueva órden.
+  recivirUnaOrden( id: string, depto: string, callbackError: any = null ) {
+    const url = URL_SERVICIOS + `/orden`;
+    return this.http.put(url, {_id: id, departamento: depto}).pipe(
+      map( (resp: any) => {
+        this._notificacionesService.ok_(resp);
+        return resp;        
+      }), catchError( err => {
+        this._notificacionesService.err( err, callbackError);
+        return throwError(err);
+      })
+    );
+  }
+
   buscarOrden( id: string, depto: string, callbackError: any = null ) {
 
     const url = URL_SERVICIOS + `/orden/${id}/${depto}`;
@@ -255,19 +270,6 @@ export class FolioService {
         // un objeto ModeloCompleto
         return resp;        
       }), catchError( err => {
-       
-
-        // swal('Error buscando la órden', err.error.mensaje, 'error')
-    
-        // .then(() => {
-          
-        //   if ( callbackError ) {
-        //     callbackError();
-        //   }
-          
-        // });
-        
-        console.log( err );
         
         this._notificacionesService.err( err, callbackError);
 

@@ -3,6 +3,12 @@ import * as $ from 'jquery';
 import swal from 'sweetalert2';
 import { Router, RouterEvent } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { FolioService } from 'src/app/services/service.index';
+import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { Orden } from 'src/app/models/orden.models';
+import { ListaDeOrdenesService } from '../lista-de-ordenes/lista-de-ordenes.service';
+import { PreLoaderService } from '../pre-loader/pre-loader.service';
 
 declare function qrCode();
 declare function qrDetener();
@@ -21,6 +27,10 @@ export class QrScannerService {
   mostrarMensaje: boolean = false;
   private urlActual: string;
 
+  // Prepara el escanner para recibir las órdenes
+  // en el departamento. 
+  recivir: boolean = false;
+
   // La acción que va a ejecutar el servicio cuando 
   // el escaner se ejecute. 
   callback: any;
@@ -35,8 +45,47 @@ export class QrScannerService {
 
 
     
-  constructor(public router: Router, ) {
+  constructor(public router: Router,
+    public _folioService: FolioService,
+    public _listaDeOrdenesService: ListaDeOrdenesService,
+    public _preLoaderService: PreLoaderService
+    ) {
     
+  }
+  // Es necesario que la clase que manda a llamar esta función tenga los 
+  // siguientes parametros accesibles
+  //     orden:Orden ,                    <= Recive la órden escaneada.   
+  //     modeloCompleto: modeloCompleto , <= Recive el modeloCompleto
+  //     linea: FolioLinea                <= Recive la Linea folio.       
+  //     NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
+  //     cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
+  // 
+  // El cb_Error es la función que se ejecutara cuando haya un error. 
+  buscarOrden(me, cb_Error) {
+    // Definimos el callback de error. La acción que se realizará
+    // cuando el api mande un error. 
+    this.callbackError = cb_Error;
+    // La acción que se va a ejecutar cuando se escanee
+    // correctamente la órden. 
+    this.callback = ( data ) => {
+      const call: any = (resp: any) => {
+        me.orden = resp.orden;
+            me.modeloCompleto = resp.modeloCompleto;
+            me.linea.modeloCompleto = me.modeloCompleto;
+            this.lecturaCorrecta = true;
+      };
+      if ( this.recivir ) {
+        this._folioService.recivirUnaOrden( data, me.NOMBRE_DEPTO, this.callbackError)
+          .subscribe(() => {
+           this.iniciar();
+           me.cargarOrdenesDeDepartamento();
+          });
+      } else {
+        this._folioService.buscarOrden( data, me.NOMBRE_DEPTO, this.callbackError)
+        .subscribe(call);
+      }
+      
+    };
   }
 
   iniciar() {
