@@ -13,10 +13,7 @@ export class Orden {
         public numeroDeOrden?: number,
         public unidad?: number,
         public piezasTeoricas?: number,
-        public materiales?: Materiales [],
-        public transformacion?: Transformacion [],
-        public pulido?: Pulido [],
-        public seleccion?: Seleccion [],
+        
         public piezasFinales?: number,
         public observaciones?: string,
         // True cuando la órden esta terminada.
