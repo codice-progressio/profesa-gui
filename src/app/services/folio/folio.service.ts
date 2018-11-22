@@ -10,12 +10,11 @@ import { FolioLinea } from '../../models/folioLinea.models';
 import { Orden } from '../../models/orden.models';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class FolioService {
-  
+ 
   
   totalFolios: number = 0;
 
@@ -225,10 +224,6 @@ export class FolioService {
       delete linea.ordenesGeneradas;
 
       linea.ordenes.forEach(orden => {
-        delete orden.materiales;
-        delete orden.transformacion;
-        delete orden.pulido;
-        delete orden.seleccion;
         delete orden.piezasFinales;
         delete orden.trayectoNormal;
         delete orden.trayectoRecorrido;
@@ -251,6 +246,25 @@ export class FolioService {
   recivirUnaOrden( id: string, depto: string, callbackError: any = null ) {
     const url = URL_SERVICIOS + `/orden`;
     return this.http.put(url, {_id: id, departamento: depto}).pipe(
+      map( (resp: any) => {
+        this._notificacionesService.ok_(resp);
+        return resp;        
+      }), catchError( err => {
+        this._notificacionesService.err( err, callbackError);
+        return throwError(err);
+      })
+    );
+  }
+
+  // Inicia el trabajo de una órden. 
+  iniciarTrabajoDeOrden(orden: Orden , depto: string , callbackError: any = null) {
+    const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
+    return this.http.put(url, 
+      {
+        _id: orden._id,
+        departamento: depto, 
+        deptoTrabajado: orden.ubicacionActual[depto.toLowerCase()]
+      }).pipe(
       map( (resp: any) => {
         this._notificacionesService.ok_(resp);
         return resp;        
@@ -310,6 +324,8 @@ export class FolioService {
       })
     );
   }
+
+
 
 
 }

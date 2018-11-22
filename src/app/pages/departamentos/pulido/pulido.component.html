@@ -51,16 +51,9 @@
                                                 <app-validacion-inputs [campo]="pesoTotal"></app-validacion-inputs>
                                             </div>
 
-                                            <!-- <div class="form-group">
-                                                <input formControlName="cantidad" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cant), 'is-valid':_validacionesService.valid(cant)}" type="number" placeholder="Cantidad">
-                                                <app-validacion-inputs [campo]="cant"></app-validacion-inputs>
-                                            </div> -->
-
                                             <h1>
-                                                <small>Cantidad de botón:</small> {{ (pesoTotal.value*1000)/(peso10.value/10) | number:'0.0-0'}}
+                                                <small>Cantidad de botón:</small> {{ (pesoTotal.value*1000)/(peso10.value/10) | number:'1.0-0'}}
                                             </h1>
-
-
 
                                             <br>
 

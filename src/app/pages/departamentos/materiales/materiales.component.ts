@@ -33,9 +33,6 @@ export class MaterialesComponent implements OnInit {
   orden: Orden = null;
   modeloCompleto: ModeloCompleto = new ModeloCompleto();
   linea: FolioLinea = new FolioLinea();
-  
-
-
 
   constructor(
     public _usuarioService: UsuarioService,
@@ -53,23 +50,6 @@ export class MaterialesComponent implements OnInit {
       
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
 
-    // this._qrScannerService.callback = (data) => {
-    
-
-    //   this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError ).subscribe(
-    //     ( resp: any ) => {
-    //       this.orden = resp.orden;
-    //       this.modeloCompleto = resp.modeloCompleto;
-    //       this.linea.modeloCompleto = this.modeloCompleto;
-    //       this._qrScannerService.lecturaCorrecta = true;
-    //     }
-    //   );
-    // };
-
-    // this._qrScannerService.callbackError = ( ) => {
-    //   this.limpiar();
-    // };
-
    }
 
   ngOnInit() {
@@ -81,21 +61,6 @@ export class MaterialesComponent implements OnInit {
     this._listaDeOrdenesService.materiales();
   }
 
-  // noPunto =  function(e) {
-
-  //   console.log(e);
-  //   const keyCode = (e.keyCode ? e.keyCode : e.which);
-  //   const numeros =  48 >= keyCode || keyCode <= 57 || 95 >= keyCode || keyCode < 105;
-  //   if ( keyCode === 8) {
-  //     return;
-  //   }
-  //   if (!numeros ) {
-  //     console.log('Prevent!');
-  //     e.preventDefault();
-  //   }
-  // };
-
-  
   guardar() {
 
     // Creamos el objeto nuevo para guardar en el departamento.
@@ -115,10 +80,8 @@ export class MaterialesComponent implements OnInit {
   }
 
   limpiar ( ) {
-     // Elimnamos la órden de la lista de órdenes.
-     if ( this.orden != null) {
-       this._listaDeOrdenesService.remover( this.orden._id);
-     }
+ 
+    this.cargarOrdenesDeDepartamento();
 
      // Reiniciamos el escanner. 
      this._qrScannerService.iniciar();

@@ -60,8 +60,10 @@ export class QrScannerService {
   //     NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
   //     cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
   // 
+  // El me es la clase completa que pasamos para trabajarla desde aqui.. 
   // El cb_Error es la función que se ejecutara cuando haya un error. 
-  buscarOrden(me, cb_Error) {
+  // El cb_Optional es por si queremos hacer algo más con los datos. 
+  buscarOrden(me, cb_Error, cb_Optional: any = null) {
     // Definimos el callback de error. La acción que se realizará
     // cuando el api mande un error. 
     this.callbackError = cb_Error;
@@ -70,9 +72,12 @@ export class QrScannerService {
     this.callback = ( data ) => {
       const call: any = (resp: any) => {
         me.orden = resp.orden;
-            me.modeloCompleto = resp.modeloCompleto;
-            me.linea.modeloCompleto = me.modeloCompleto;
-            this.lecturaCorrecta = true;
+        me.modeloCompleto = resp.modeloCompleto;
+        me.linea.modeloCompleto = me.modeloCompleto;
+        this.lecturaCorrecta = true;
+        if ( !!cb_Optional ) {
+          cb_Optional();
+        }  
       };
       if ( this.recivir ) {
         this._folioService.recivirUnaOrden( data, me.NOMBRE_DEPTO, this.callbackError)

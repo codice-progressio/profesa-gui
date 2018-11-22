@@ -8,7 +8,9 @@
     </div>
 </div>
 
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta 
+                                        && orden.ubicacionActual.recivida 
+                                        && orden.ubicacionActual.transformacion.trabajando">
     <div class="col-12">
         <div class="card border-dark">
             <div class="card-header bg-success">
@@ -57,10 +59,12 @@
                                             </div>
 
                                             <h3>Máquina que trabajó:</h3>
+                                            <h1>{{orden.ubicacionActual.transformacion.maquinaActual.clave}}</h1>
+                                            <!--                                        
                                             <ng-container *ngFor="let maquina of maquinas; let i = index">
                                                 <input type="radio" [id]="i" formControlName="maquinaActual" [value]="maquina._id">
                                                 <label [for]="i">{{maquina.clave}}</label>
-                                            </ng-container>
+                                            </ng-container> -->
 
 
                                             <br>
@@ -75,6 +79,58 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta 
+                                && orden.ubicacionActual.recivida 
+                                && !orden.ubicacionActual.transformacion.trabajando">
+    <div class="col-12">
+        <div class="card border-dark">
+            <div class="card-header bg-success">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
+                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
+
+                    </div>
+                    <div class="col-6">
+                        <h2>
+                            <strong>
+                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                            </strong>
+                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body bg-inverse text-white">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <h5 class="text-white">Esta órden no se esta trabajando.</h5>
+                        <h1 class="text-white">Selecciona la máquina en que se trabajara:</h1>
+                        <br>
+                        <br>
+                        <ng-container *ngFor="let maquina of maquinas; let i = index">
+
+                            <a (click)="orden.ubicacionActual.transformacion.maquinaActual = maquina" class="btn btn-outline-success btn-lg m-2">
+                                <i *ngIf="orden.ubicacionActual?.transformacion?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
+                                </i> {{maquina.clave}}</a>
+                        </ng-container>
+
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <a *ngIf="orden.ubicacionActual.transformacion.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fa fa-save"></i> Guardar</a>
+                        <button (click)="limpiar(); orden.ubicacionActual.transformacion.maquinaActual = null " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+
                     </div>
                 </div>
             </div>

@@ -49,7 +49,7 @@
 
 
                                             <h3>Contado por:</h3>
-                                            <ng-container *ngFor="let usuario of _usuarioService.cargarEmpacadores(); let i = index">
+                                            <ng-container *ngFor="let usuario of usuarios; let i = index">
                                                 <input type="radio" [id]="i" formControlName="contadoPor" [value]="usuario._id">
                                                 <label [for]="i">{{usuario.nombre}}</label>
                                             </ng-container>

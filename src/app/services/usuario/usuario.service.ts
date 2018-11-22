@@ -43,11 +43,12 @@ export class UsuarioService {
         localStorage.setItem('token', this.token);
         // Si lo hace recive true
         // console.log('token renovado. ');
-
+        this._msj.ok_('Token renovado');
         return true;
       }),
       catchError( err => {
-        swal( 'No se pudo renovar token', 'No fue posible renovar token.', 'error');
+        // swal( 'No se pudo renovar token', 'No fue posible renovar token.', 'error');
+        this._msj.err( err);
         this.router.navigate(['login']);
         return throwError(err);
       })
@@ -153,8 +154,7 @@ export class UsuarioService {
         return resp.usuario;
       }),
       catchError( err => {
-        // console.log( err.error);
-        swal(err.error.mensaje, err.error.errors.message, 'error') ;
+        this._msj.err( err );
         return throwError(err);
       })
     );
@@ -181,8 +181,7 @@ export class UsuarioService {
         swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
       }), catchError( err => {
-        // console.log( err.error);
-        swal(err.error.mensaje, err.error.errors.message, 'error') ;
+        this._msj.err( err );
         return throwError(err);
       })
 
@@ -194,13 +193,13 @@ export class UsuarioService {
     this._subirArchivoService.subirArchivo( archivo, 'usuarios', id)
     .then((resp: any) =>  {
       this.usuario.img = resp.usuario.img;
-      // console.log('Imagen: ' + this.usuario.img);
+    
 
       swal('Imagen actualizada', this.usuario.nombre, 'success');
       this.guardarStorage(id, this.token, this.usuario, this.menu);
-    }).catch( resp => {
-      // console.log(resp);
-
+    }).catch( err => {
+      this._msj.err(err);
+      return throwError( err );
     });
   }
 
@@ -212,8 +211,11 @@ export class UsuarioService {
   buscarUsuario ( termino: string ) {
     const url = URL_SERVICIOS + `/busqueda/coleccion/usuarios/${termino}`;
     return this.http.get(url).pipe(
-      map((resp: any ) =>  resp.usuarios )
-
+      map((resp: any ) =>  resp.usuarios ),
+      catchError( err => {
+        this._msj.err( err );
+        return throwError( err );
+      })
     );
   }
 
@@ -224,27 +226,43 @@ export class UsuarioService {
       map( () => {
         swal('¡Eliminado!', 'El usuario a sido eliminado correctamente.', 'success');
         return true;
+      }),
+      catchError( err => {
+        this._msj.err( err );
+        return throwError( err );
       })
     );
   }
 
   buscarUsuarioPorROLE (role: string ) {
     const url = URL_SERVICIOS + `/busqueda/coleccion/usuariosRole/${role}`;
+    
     return this.http.get( url ).pipe(
-      map( (resp: any) =>  {
+      map( ( resp: any ) => {
         return resp.usuariosRole;
+      }),
+      catchError( err => {
+        this._msj.err( err );
+        return throwError( err );
       })
     );
+
+    // return this.http.get( url ).pipe(
+    //   map( (resp: any) =>  {
+    //     return resp.usuariosRole;
+    //   })
+    // );
+
   }
 
   cargarVendedores ( ) {
-    return this.buscarUsuarioPorROLE('ROLE_VENDEDOR');
+    return this.buscarUsuarioPorROLE('VENDEDOR_ROLE');
   }
 
   cargarSeleccionadores() {
-    return this.buscarUsuarioPorROLE( 'ROLE_SELECCION' );
+    return this.buscarUsuarioPorROLE( 'SELECCION_CONTEO_ROLE' );
   }
-  cargarEmpacadires() {
-    return this.buscarUsuarioPorROLE( 'ROLE_SELECCION' );
+  cargarEmpacadores() {
+    return this.buscarUsuarioPorROLE( 'EMPAQUE_ROLE' );
   }
 }

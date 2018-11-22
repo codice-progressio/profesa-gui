@@ -7,6 +7,7 @@ import { QrScannerService } from '../../../components/qrScanner/qr-scanner.servi
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
 import { FolioService, ValidacionesService, UsuarioService } from '../../../services/service.index';
 import { Seleccion } from 'src/app/models/seleccion.models';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-seleccion',
@@ -23,6 +24,7 @@ export class SeleccionComponent implements OnInit {
   orden: Orden;
   modeloCompleto: ModeloCompleto;
   linea: FolioLinea = new FolioLinea();
+  usuarios: Usuario[] = [];
 
 
 
@@ -34,25 +36,16 @@ export class SeleccionComponent implements OnInit {
     private _validacionesService: ValidacionesService,
     public _usuarioService: UsuarioService
   ) { 
+    this.cargarOrdenesDeDepartamento();
+    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this._usuarioService.cargarSeleccionadores().subscribe( resp => {
+      this.usuarios = resp;
+    });
+  }
+
+  cargarOrdenesDeDepartamento() {
     this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
     this._listaDeOrdenesService.pastilla();
-
-    
-    this._qrScannerService.callback = (data) => {
-      this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
-        ( resp: any ) => {
-          this.orden = resp.orden;
-          this.modeloCompleto = resp.modeloCompleto;
-          this.linea.modeloCompleto = this.modeloCompleto;
-          this._qrScannerService.lecturaCorrecta = true;
-        }
-      );
-    };
-
-    this._qrScannerService.callbackError = ( ) => {
-      this.limpiar();
-    };
-
   }
 
   ngOnInit() {
@@ -87,10 +80,8 @@ export class SeleccionComponent implements OnInit {
   }
 
   limpiar( ) {
-    // Eliminamos la órde de la lista de órdenes. 
-    if ( this.orden != null) {
-      this._listaDeOrdenesService.remover( this.orden._id);
-    }
+    this.cargarOrdenesDeDepartamento();
+
     // Reiniciamos el escanner. 
     this._qrScannerService.iniciar();
 

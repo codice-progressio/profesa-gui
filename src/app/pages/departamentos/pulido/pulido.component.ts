@@ -38,32 +38,22 @@ export class PulidoComponent implements OnInit {
     private _validacionesService: ValidacionesService,
     // public _usuarioService: UsuarioService
   ) { 
+    
+    this.cargarOrdenesDeDepartamento();
+    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+
+
+  }
+
+  cargarOrdenesDeDepartamento( ) {
     this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
     this._listaDeOrdenesService.pastilla();
-
-    
-    this._qrScannerService.callback = (data) => {
-      this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
-        ( resp: any ) => {
-          this.orden = resp.orden;
-          this.modeloCompleto = resp.modeloCompleto;
-          this.linea.modeloCompleto = this.modeloCompleto;
-          this._qrScannerService.lecturaCorrecta = true;
-        }
-      );
-    };
-
-    this._qrScannerService.callbackError = ( ) => {
-      this.limpiar();
-    };
-
   }
 
   ngOnInit() {
     this._qrScannerService.iniciar();
     
     // Iniciamos el formulario.
-
     this.pulidoForm = this.formBuilder.group({
       peso10Botones: ['', 
       [
@@ -85,10 +75,7 @@ export class PulidoComponent implements OnInit {
   }
 
   limpiar( ) {
-    // Eliminamos la órde de la lista de órdenes. 
-    if ( this.orden != null) {
-      this._listaDeOrdenesService.remover( this.orden._id);
-    }
+    this.cargarOrdenesDeDepartamento();
     // Reiniciamos el escanner. 
     this._qrScannerService.iniciar();
 
