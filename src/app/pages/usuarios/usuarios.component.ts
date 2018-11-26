@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { URL_SERVICIOS } from '../../config/config';
-import { UsuarioService } from '../../services/service.index';
+import { UsuarioService, ManejoDeMensajesService } from '../../services/service.index';
 import { log } from 'util';
 import swal from 'sweetalert2';
 import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
+import { Roles } from 'src/app/models/roles.models';
+import { _ROLES } from '../../config/roles.const';
 
 @Component({
   selector: 'app-usuarios',
@@ -12,8 +14,14 @@ import { ModalUploadService } from '../../components/modal-upload/modal-upload.s
   styles: []
 })
 export class UsuariosComponent implements OnInit {
+  
 
   usuarios: Usuario[] = [];
+  usuarioEditando: Usuario;
+  
+  roles = _ROLES;
+  rolesArray = Object.values(_ROLES);
+  
 
   // La variable que manejara la paginación.
   desde: number = 0;
@@ -23,11 +31,18 @@ export class UsuariosComponent implements OnInit {
   cargando: boolean = true;
 
   termino: String;
+  // roles:Roles;
+  Object = Object;
 
   constructor(
     public _usuarioServivce: UsuarioService,
-    public _modalUploadService: ModalUploadService
-  ) { }
+    public _modalUploadService: ModalUploadService,
+    public _msjService: ManejoDeMensajesService
+  ) {
+    // this.roles = new Roles(_ROLES);
+   }
+
+
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -46,7 +61,7 @@ export class UsuariosComponent implements OnInit {
     this._modalUploadService.mostrarModal( 'usuarios', id);
   }
 
-  cargarUsuarios( desde: number = 0) {
+  cargarUsuarios() {
 
     this.cargando = true;
 
@@ -122,8 +137,60 @@ export class UsuariosComponent implements OnInit {
   guardarUsuario( usuario: Usuario ) {
     // console.log( usuario);
     
-    this._usuarioServivce.actualizarUsuario(usuario)
-    .subscribe();
+    const a: any = () => {if ( usuario._id ) {
+        this._usuarioServivce.actualizarUsuario(usuario)
+        .subscribe(() => {
+          this.cargarUsuarios();
+          this.usuarioEditando = null;
+        });
+      } else {
+        this.guardarNuevoUsuario( usuario );
+      }
+    };
+    
+    let msj = 'No definiste ningún rol para este usuario. Esto significa que ';
+    msj += 'no tendra permisos para acceder.¿Quieres continuar?';
+    if ( usuario.role.length === 0) {
+      this._msjService.confirmarAccion(msj, a);
+    } else {
+      a();
+    }
+
   }
+
+  
+
+  guardarNuevoUsuario( usuario: Usuario) {
+    this._usuarioServivce.crearUsuario(usuario).subscribe( resp => {
+      this.cargarUsuarios();
+      this.usuarioEditando = null;
+    });
+  }
+
+  editar( usuario: Usuario ) {
+    // Guardamos una copia. 
+    this.usuarioEditando = usuario;
+  }
+
+  cancelarEdicion( ) {
+    this.usuarioEditando = null;
+    this.cargarUsuarios();
+  }
+
+  cambiarVisibilidad( e ) {
+    console.log(e.target.id);
+    const role = e.target.id;
+    if ( this.usuarioEditando.role.includes(role)) {
+      this.usuarioEditando.role = this.usuarioEditando.role.filter( x =>  x !== role );
+    } else {
+      this.usuarioEditando.role.push(role);
+    }
+    
+  }
+
+  nuevoUsuario( ) {
+    this.usuarioEditando = new Usuario();
+  }
+
 
 }

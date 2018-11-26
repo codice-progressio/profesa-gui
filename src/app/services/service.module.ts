@@ -24,7 +24,8 @@ import {
   ProcesoService,
   GastoService,
   CalculosDeCostosService,
-  OrdenadorVisualService
+  OrdenadorVisualService,
+  PermisosGuard
   
 } from './service.index';
 import { ValidacionesService } from './utilidades/validaciones.service';
@@ -60,7 +61,8 @@ import { ValidacionesService } from './utilidades/validaciones.service';
     ProcesoService,
     GastoService,
     CalculosDeCostosService,
-    OrdenadorVisualService
+    OrdenadorVisualService,
+    PermisosGuard
 ]
 })
 export class ServiceModule { }

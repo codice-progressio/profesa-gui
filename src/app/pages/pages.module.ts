@@ -47,6 +47,7 @@ import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-model
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 
 
+
 @NgModule({
     declarations: [
         // PagesComponent,

@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
+import { Roles } from 'src/app/models/roles.models';
+import { _ROLES } from 'src/app/config/roles.const';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +21,8 @@ export class UsuarioService {
   // Cuando se recarga la página la tratamos de leer (en el login)
   // y si no la inicializamos (cargando del storage) va a dar error.
   token: string;
+
+  // roles: Roles;
 
   menu: any[] = [];
 
@@ -75,6 +80,7 @@ export class UsuarioService {
       map((resp: any) => {
         // console.log(resp.menu);
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
+        // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         // Retorna la respuesta de true de autenticación correcta para capturarla en
         // el subscribe de login.component.ts y hacer algo bonito.
         return true;
@@ -91,6 +97,7 @@ export class UsuarioService {
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
       // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
       this.menu = JSON.parse(localStorage.getItem('menu'));
+      // this.roles = JSON.parse(localStorage.getItem('roles'));
     } else {
       this.token = '';
       this.usuario = null;
@@ -100,6 +107,7 @@ export class UsuarioService {
   }
 
   guardarStorage (id: string, token: string, usuario: Usuario, menu: any) {
+  // guardarStorage (id: string, token: string, usuario: Usuario, menu: any, roles: Roles) {
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
     // En el local storage no se pueden grabar objetos.
@@ -107,10 +115,12 @@ export class UsuarioService {
     localStorage.setItem('usuario', JSON.stringify(usuario));
 
     localStorage.setItem('menu', JSON.stringify(menu));
+    // localStorage.setItem('roles', JSON.stringify(roles));
 
     this.usuario = usuario;
     this.token = token;
     this.menu = menu;
+    // this.roles = roles;
   }
 
 
@@ -131,6 +141,8 @@ export class UsuarioService {
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
       map( (resp: any) => {
+       
+        // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
         return true;
       }),
@@ -154,7 +166,7 @@ export class UsuarioService {
       }),
       catchError( err => {
         // console.log( err.error);
-        swal(err.error.mensaje, err.error.errors.message, 'error') ;
+        this._msj.err(err);
         return throwError(err);
       })
     );
@@ -176,13 +188,14 @@ export class UsuarioService {
         // la de la BD
         if ( usuario._id === this.usuario._id) {
           const usuarioDB: Usuario = resp.usuario;
+          // this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu, this.roles);
           this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu);
         }
-        swal('Usuario actualizado', usuario.nombre, 'success');
+        this._msj.ok_(resp);
         return true;
       }), catchError( err => {
         // console.log( err.error);
-        swal(err.error.mensaje, err.error.errors.message, 'error') ;
+        this._msj.err(err);
         return throwError(err);
       })
 
@@ -198,6 +211,7 @@ export class UsuarioService {
 
       swal('Imagen actualizada', this.usuario.nombre, 'success');
       this.guardarStorage(id, this.token, this.usuario, this.menu);
+      // this.guardarStorage(id, this.token, this.usuario, this.menu, this.roles);
     }).catch( resp => {
       // console.log(resp);
 
@@ -238,13 +252,20 @@ export class UsuarioService {
   }
 
   cargarVendedores ( ) {
-    return this.buscarUsuarioPorROLE('ROLE_VENDEDOR');
+    return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE);
   }
 
   cargarSeleccionadores() {
-    return this.buscarUsuarioPorROLE( 'ROLE_SELECCION' );
+    return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE );
   }
-  cargarEmpacadires() {
-    return this.buscarUsuarioPorROLE( 'ROLE_SELECCION' );
+  cargarEmpacadores() {
+    return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE );
+  }
+
+  // Concatena a la url URL_SERVICIOS y el token=?
+  st( url: string ): string {
+    const u = URL_SERVICIOS + url;
+    const token = `token=${this.token}`;
+    return url.includes('?') ? u + `&${token}` : u + `?${token}`;
   }
 }

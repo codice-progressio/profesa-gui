@@ -8,7 +8,12 @@ export class ManejoDeMensajesService {
 
   
   datos: any;
-
+  swalWithBootstrapButtons = swal.mixin({
+    confirmButtonClass: 'btn btn-success',
+    cancelButtonClass: 'btn btn-danger',
+    buttonsStyling: false,
+  });
+  
   constructor() { }
 
   err( err: any, callback: any = null ) {
@@ -121,17 +126,33 @@ export class ManejoDeMensajesService {
     swal(d);
   } 
   
+  confirmarAccion( msj: string, callback: any) {
+    this.swalWithBootstrapButtons({
+      title: '¿Estas segúro de lo que haces?',
+      text: msj,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '¡Si, hazlo!',
+      cancelButtonText: '¡No, no lo hagas!',
+      reverseButtons: true
+    }).then( result => {
+      if ( result.value ) {
+        callback();
+      } else if (result.dismiss === swal.DismissReason.cancel ) {
+        this.swalWithBootstrapButtons(
+          'Cancelado',
+          'No se ejecuto la acción.',
+          'error'
+        );
+      }
+    });
+  }
   
   
   confirmacionDeEliminacion( msj: string , callback: any) {
     
-    const swalWithBootstrapButtons = swal.mixin({
-      confirmButtonClass: 'btn btn-success',
-      cancelButtonClass: 'btn btn-danger',
-      buttonsStyling: false,
-    });
-    
-    swalWithBootstrapButtons({
+   
+    this.swalWithBootstrapButtons({
       title: '¿Estas segúro que quieres eliminar?',
       text: msj,
       type: 'warning',
@@ -148,7 +169,7 @@ export class ManejoDeMensajesService {
         // Read more about handling dismissals
         result.dismiss === swal.DismissReason.cancel
       ) {
-        swalWithBootstrapButtons(
+        this.swalWithBootstrapButtons(
           'Cancelado',
           'No se elimino nada.',
           'error'

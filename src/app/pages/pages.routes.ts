@@ -1,4 +1,4 @@
-import {RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { ProgressComponent } from './progress/progress.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -6,7 +6,7 @@ import { Graficas1Component } from './graficas1/graficas1.component';
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
-import { LoginGuardGuard, VerificaTokenGuard } from '../services/service.index';
+import { LoginGuardGuard, VerificaTokenGuard, PermisosGuard } from '../services/service.index';
 import { ProfileComponent } from './profile/profile.component';
 import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
@@ -31,6 +31,8 @@ import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component'
 import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
+import { Roles } from '../models/roles.models';
+import { _ROLES } from '../config/roles.const';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -49,78 +51,322 @@ const pagesRoutes: Routes = [
             canActivate: [ VerificaTokenGuard],
             data: {titulo: 'Dashboard'}
         },
-        {path: 'progress', component: ProgressComponent, data: {titulo: 'Progress'}},
-        {path: 'graficas1', component: Graficas1Component, data: {titulo: 'Graficas'}},
-        {path: 'promesas', component: PromesasComponent, data: {titulo: 'Promesas'}},
-        {path: 'account-settings', component: AccountsSettingsComponent, data: {titulo: 'Información de la cuenta'}},
-        {path: 'rxjs', component: RxjsComponent, data: {titulo: 'RxJs'}},
-        {path: 'busqueda/:termino', component: BusquedaComponent, data: {titulo: 'Buscador'}},
+
+        {
+            path: 'busqueda/:termino', 
+            component: BusquedaComponent, 
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'Buscador', 
+                roles: [
+                    _ROLES.ADMIN_ROLE,
+                ]
+            }
+        },
+
         // Mantenimientos
         {
             path: 'usuarios',
             component: UsuariosComponent,
-            canActivate: [AdminGuard],
-            data: {titulo: 'Mantenimientos de usuarios'}},
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'Mantenimientos de usuarios',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
             
         {
             path: 'departamentos',
             component: GestionDepartamentoComponent,
-            canActivate: [AdminGuard],
-            data: {titulo: 'Mantenimientos de departamentos'}},
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'Mantenimientos de departamentos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
 
         {path: 'perfil', component: ProfileComponent, data: {titulo: 'Perfil de usuario.'}},
-        // {path: 'hospitales', component: HospitalesComponent, data: {titulo: 'Mantenimientos de hospitales'}},
-        // {path: 'medicos', component: MedicosComponent, data: {titulo: 'Mantenimientos de médicos'}},
-        // {path: 'medico/:id', component: MedicoComponent, data: {titulo: 'Actualizar médico.'}},
-
-
-
-
 
         // Esta sección es para el trabajo
-        {path: 'folios', component: RegistroDeFoliosComponent, data: {titulo: 'Registro de Folios'}},
-        {path: 'folio/:id', component: RegistroDeLineasComponent, data: {titulo: 'Registrar pedidos'}},
-        
-        {path: 'ordenes/:idFolio', component: RevisionDeOrdenesComponent, data: {titulo: 'Revisión de órdenes'}},
         {
-            path: 'ordenes/imprecion/:idFolio', 
-            component: VistaParaImprecionComponent, 
-            data: {titulo: 'Impreción de órdenes'}, 
+            path: 'folios', 
+            component: RegistroDeFoliosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de Folios',
+                roles : [ 
+                    // _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'folio/:id', 
+            component: RegistroDeLineasComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registrar pedidos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
         },
         
-        {path: 'produccion', component: SeguimientoDeFoliosComponent, data: {titulo: 'Seguimiento de folios'}},
+        {
+            path: 'ordenes/:idFolio', 
+            component: RevisionDeOrdenesComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Revisión de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]}
+            },
+        {
+            path: 'ordenes/imprecion/:idFolio', 
+            component: VistaParaImprecionComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Impreción de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+
+        },
         
-        {path: 'produccion/materiales', component: MaterialesComponent, data: {titulo: 'Registro de órdenes'}},
-        {path: 'produccion/pastilla', component: PastillaComponent, data: {titulo: 'Registro de órdenes'}},
-        {path: 'produccion/transformacion', component: TransformacionComponent, data: {titulo: 'Registro de órdenes'}},
-        {path: 'produccion/pulido', component: PulidoComponent, data: {titulo: 'Registro de órdenes'}},
-        {path: 'produccion/seleccion', component: SeleccionComponent, data: {titulo: 'Registro de órdenes'}},
-        {path: 'produccion/empaque', component: EmpaqueComponent, data: {titulo: 'Registro de órdenes'}},
+        {
+            path: 'produccion', 
+            component: SeguimientoDeFoliosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Seguimiento de folios',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        
+        {
+            path: 'produccion/materiales', 
+            component: MaterialesComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/pastilla', 
+            component: PastillaComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/transformacion', 
+            component: TransformacionComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/pulido', 
+            component: PulidoComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/seleccion', 
+            component: SeleccionComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/empaque', component: EmpaqueComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         
 
-        {path: 'modelos', component: ModelosComponent, data: {titulo: 'Registro y administración de modelos'}},
-        
-        
+        {    
+            path: 'modelos', 
+            component: ModelosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro y administración de modelos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         // Gestión de procesos
-        {path: 'procesos', component: ProcesoComponent, data: {titulo: 'Gestión de procesos'}},
-        // {path: 'procesos/costos', component: CostosDeProcesoComponent, data: {titulo: 'Gestión de costos de proceso'}},
-        {path: 'procesos/modelos', component: ProcesosEnModeloComponent, data: {titulo: 'Gestión de procesos de modelo'}},
-        
+        {
+            path: 'procesos', 
+            component: ProcesoComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Gestión de procesos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'procesos/modelos', 
+            component: ProcesosEnModeloComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Gestión de procesos de modelo',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         // reportes
-        
         {
             path: 'reportes/indicadorChecadas', 
             component: IndicadorDeChecadasComponent,
-            data: {titulo: 'Indicador de checas personal ( Beta )'}
+            canActivate: [PermisosGuard],
+            
+            data: {
+                titulo: 'Indicador de checas personal ( Beta )',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
         },
-        
-        
-        
         // Redirige al dashboard cuando no se ha puesto nada en la url.
-        {path: '', redirectTo: '/dashboard', pathMatch: 'full'}
+        {
+            path: '', 
+            redirectTo: '/dashboard', 
+            pathMatch: 'full'
+        }
 
-    //     ]
-    // }
+  
 ];
 
-export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes);
+const routsSuperAdmin: Routes = [
+    
+    {
+        path: 'medicos', 
+        component: MedicosComponent, 
+        canActivate: [PermisosGuard],
+        data: {
+            titulo: 'Medicos',
+            roles: [
+                // _ROLES.SUPER_ADMIN,
+                _ROLES.EMPAQUE_REGISTRO_ROLE,
+                _ROLES.SELECCION_REGISTRO_ROLE,
+            ]
+        }
+    },
+    {
+        path: 'hospitales', 
+        component: HospitalesComponent, 
+        canActivate: [PermisosGuard],
+        data: {
+            titulo: 'hOSPITALES DESDE ROUTES',
+            roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+    {
+        path: 'progress', 
+        component: ProgressComponent, 
+        canActivate: [PermisosGuard],
+
+        data: {
+            titulo: 'Progress', 
+            roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+        
+    {
+        path: 'graficas1', 
+        component: Graficas1Component, 
+        canActivate: [PermisosGuard],
+
+        data: {
+            titulo: 'Graficas', 
+            roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+        
+    {
+        path: 'promesas', 
+        component: PromesasComponent, 
+        canActivate: [PermisosGuard],
+
+        data: {
+            titulo: 'Promesas', 
+            roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+        
+    {
+        path: 'account-settings', 
+        component: AccountsSettingsComponent, 
+        canActivate: [PermisosGuard],
+
+        data: {
+            titulo: 'Informaciónde la cuenta', 
+            roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+        
+    {
+        path: 'rxjs', 
+        component: RxjsComponent, 
+        canActivate: [PermisosGuard],
+
+        data: {
+            titulo: 'RxJs', roles: [
+                _ROLES.SUPER_ADMIN,
+            ]
+        }
+        },
+        
+   
+];
+
+
+
+export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes.concat(routsSuperAdmin));
