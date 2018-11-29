@@ -23,10 +23,14 @@ export class PermisosGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       // Obtenemos los roles que son necesarios. 
       const rolesNecesarios = next.data['roles'] as Array<string>;
-      
+
       // Siendo super admin puede entrar a donde sea. s
       if ( this._usuarioservice.usuario.role.includes(_ROLES.SUPER_ADMIN)) {
         return true;
+      }
+      // Si no hay roles entonces solo el super admin puede entrar.
+      if( rolesNecesarios.length === 0 ) {
+        rolesNecesarios.push(_ROLES.SUPER_ADMIN);
       }
       
       // El usuario debe contener todos los roles que se enlistan

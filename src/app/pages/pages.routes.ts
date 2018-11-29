@@ -1,20 +1,17 @@
-import { RouterModule, Routes, CanActivate } from '@angular/router';
-import { PagesComponent } from './pages.component';
+import { RouterModule, Routes } from '@angular/router';
 import { ProgressComponent } from './progress/progress.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
-import { LoginGuardGuard, VerificaTokenGuard, PermisosGuard } from '../services/service.index';
+import { VerificaTokenGuard, PermisosGuard } from '../services/service.index';
 import { ProfileComponent } from './profile/profile.component';
 import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { HospitalesComponent } from './hospitales/hospitales.component';
 import { MedicosComponent } from './medicos/medicos.component';
-import { MedicoComponent } from './medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
-import { AdminGuard } from '../services/service.index';
 import { RegistroDeLineasComponent } from './registro-de-folios/registro-de-lineas.component';
 import { RevisionDeOrdenesComponent } from './generador-de-ordenes/revision-de-ordenes.component';
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component';
@@ -28,10 +25,8 @@ import { PastillaComponent } from './departamentos/pastilla/pastilla.component';
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component';
 import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component';
 import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component';
-import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
-import { Roles } from '../models/roles.models';
 import { _ROLES } from '../config/roles.const';
 
 const pagesRoutes: Routes = [

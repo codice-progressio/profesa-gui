@@ -9,6 +9,7 @@ import { FolioLinea } from '../../models/folioLinea.models';
 import { Orden } from '../../models/orden.models';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 import { UsuarioService } from '../usuario/usuario.service';
+import { URL_SERVICIOS } from 'src/app/config/config';
 
 
 @Injectable({
@@ -29,7 +30,7 @@ export class FolioService {
 
 
   guardarFolio ( folio: Folio) {
-    let url = this._u.st(`/folio`);
+    let url =`/folio`;
     if ( folio._id) {
       url += `/${folio._id}`;
       // Si tiene un id queiere decir que hay que modificar. 
@@ -81,7 +82,7 @@ export class FolioService {
   
   cargarFolio ( id: string ) {
     // Carga todos los datos del folio y sus lineas
-    const url = this._u.st(`/folio/${id}`);
+    const url =`${URL_SERVICIOS}/folio/${id}`;
     
     return this.http.get(url).pipe(
       map( (resp: any) => {
@@ -99,13 +100,13 @@ export class FolioService {
   cargarFolios (desde: number = 0, limite: number = 5) {
     // Es necesario siempre el signo al final para 
     // que no haya problemas con los otros parametros. 
-    const url = this._u.st(`/folio?`);
+    const url =`${URL_SERVICIOS}/folio?`;
     return this.cargaDeFolios(url, limite, desde);
   }
   
   cargarFoliosConOrdenes( desde: number = 0, limite: number = 5) {
     // Carga los folios que ya tienen órdenes generadas. 
-    const url = this._u.st(`/folio/?conOrdenes=true`);
+    const url =`${URL_SERVICIOS}/folio?conOrdenes=true`;
     return this.cargaDeFolios(url, limite, desde);
   }
 
@@ -113,12 +114,12 @@ export class FolioService {
     // Carga los folios de los cuales aún no se generan órdenes. 
     // Esto aunque un solo pedido no se haya genera órdenes. 
     // Los pedidos que ya se generón del folio no aparecen aqui. 
-    const url = this._u.st(`/folio/?sinOrdenes=true`);
+    const url =`${URL_SERVICIOS}/folio?sinOrdenes=true`;
     return this.cargaDeFolios( url, limite, desde);
   }
 
   cargarFolioPorPrioridad(desde: number = 0, limite: number = 5, prioridad: string) {
-    const url = this._u.st(`/folio/?prioridad=${prioridad}`);
+    const url =`${URL_SERVICIOS}/folio?prioridad=${prioridad}`;
     return this.cargaDeFolios( url, limite, desde);
   }
 
@@ -145,7 +146,7 @@ export class FolioService {
     
     if (linea._id) {
       // Modificamos.
-      const url = this._u.st(`/folioLinea/${idFolio}/${linea._id}`);
+      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${linea._id}`;
       return this.http.put(url, linea).pipe(
         map( (resp: any) => {
           // TODO: Estandarizar esto.
@@ -157,7 +158,7 @@ export class FolioService {
         })
       );
     } else {
-      const url = this._u.st(`/folioLinea/${idFolio}`);
+      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}`;
       return this.http.post(url, linea).pipe(
         map( (resp: any) => {
           swal('Pedido agregado.', `Se agrego el nuevo pedido correctamente.`, 'success');
@@ -172,7 +173,7 @@ export class FolioService {
   }
 
   eliminarLinea( idFolio: string , idLinea: string ) {
-    const url = this._u.st(`/folioLinea/${idFolio}/${idLinea}`);
+    const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${idLinea}`;
     return this.http.delete(url).pipe(
       map( (resp: any) => {
         return;
@@ -185,7 +186,7 @@ export class FolioService {
   }
   
   eliminarFolio( idFolio: string) {
-    const url = this._u.st(`/folio/${idFolio}`);
+    const url =`${URL_SERVICIOS}/folio/${idFolio}`;
     return this.http.delete(url).pipe(
       catchError( err => {
         swal('Error eliminando el folio', err.error.mensaje, 'error');
@@ -199,7 +200,7 @@ export class FolioService {
     const limpio = this.limpiarParaOrdenes( folio );
     console.log(limpio);
     
-    const url = this._u.st(`/orden`);
+    const url =`${URL_SERVICIOS}/orden`;
     return this.http.post( url, limpio ).pipe( 
       map( () => {
         swal('Órdenes guardadas', 'Las órdenes se guardarón de manera correcta', 'success');
@@ -244,7 +245,7 @@ export class FolioService {
 
   // Recive una nueva órden.
   recivirUnaOrden( id: string, depto: string, callbackError: any = null ) {
-    const url = this._u.st(`/orden`);
+    const url =`${URL_SERVICIOS}/orden`;
     return this.http.put(url, {_id: id, departamento: depto}).pipe(
       map( (resp: any) => {
         this._notificacionesService.ok_(resp);
@@ -258,7 +259,7 @@ export class FolioService {
 
   buscarOrden( id: string, depto: string, callbackError: any = null ) {
 
-    const url = this._u.st(`/orden/${id}/${depto}`);
+    const url =`${URL_SERVICIOS}/orden/${id}/${depto}`;
     return this.http.get(url).pipe(
       map( (resp: any) => {
         // Se retorna un objeto Orden y
@@ -278,7 +279,7 @@ export class FolioService {
   // Este dato solo lo vamos a acceder desde el servicio de lista 
   // de ordenes
   cargarOrdenesDepartamento( depto: string, opciones = {}) {
-    const url = this._u.st(`/orden/${depto}`);
+    const url =`${URL_SERVICIOS}/orden/${depto}`;
     return this.http.get( url ).pipe(
       map ( (resp: any)  => {
         return resp.ordenes;
@@ -293,7 +294,7 @@ export class FolioService {
   // Guardamos los cambios de la órden. 
   modificarOrden(dato: any, idOrden: string, depto: string): any {
     
-    const url = this._u.st(`/orden/${idOrden}?depto='${depto}'`);
+    const url =`${URL_SERVICIOS}/orden/${idOrden}?depto='${depto}'`;
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
         this._notificacionesService.ok_(resp);

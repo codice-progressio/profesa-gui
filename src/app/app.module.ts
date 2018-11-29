@@ -27,6 +27,9 @@ import { ServiceModule } from './services/service.module';
 import { SharedModule } from './shared/shared.module';
 import {DndModule} from 'ng2-dnd';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+
 
 
 
@@ -52,7 +55,12 @@ import {DndModule} from 'ng2-dnd';
     
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'es' }
+    // Configuraciones de idioma. 
+    { provide: LOCALE_ID, useValue: 'es' },
+    // Interceptor para agregar Bearer token. 
+    {provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true}
   ],
   bootstrap: [AppComponent]
 })

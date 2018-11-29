@@ -1,0 +1,161 @@
+
+NUEVAS FUNCIONES:@high 
+
+  Usuarios:
+    ✔ API El modelo de usuario almacena el id del trabajador. @done(18-11-22 13:26)
+    ✔ API El usuario debe recivir una serie de roles. @started(18-11-22 13:26) @done(18-11-26 08:41) @lasted(3d19h15m45s)
+    ✔ GUI El usuario debe recivir una serie de roles. @started(18-11-22 13:26) @done(18-11-26 08:41) @lasted(3d19h15m45s)
+    ✔ GUI Permitir multiples tipos roles para los usuarios. @started(18-11-22 15:42) @done(18-11-26 08:41) @lasted(3d16h59m45s)
+    ✔ Registro de usuarios y consulta. @started(18-11-26 08:41) @done(18-11-26 08:41) @lasted(45s)
+
+  Departamentos:
+    ☐ GUI Folios terminados no deben aparecer "Folios en producción"
+    ☐ API Cuando un folio ya no tiene más órdenes debe señalarse como terminado. 
+      
+    Modelos Completos:
+      ☐ No se eliminan los procesos extras que agregamos a la familia cuando estamos creando el modelo completo. 
+      ☐ FIX No podemos seleccionar si las órdenes se van a generar como medias o completas. 
+      
+    Registro y modificacion de procesos:
+      Registro de procesos:
+        ☐ El color de la alerta de gastos faltantes debe ser danger y no warning por que es obligatorio por lo menos un gasto. 
+    Registro de familias:
+      ☐ FIX Despues de estar creaando procesos y crear una familia de procesos da un error de castID. Es necesario recargar la página para que funcione. 
+
+  Sidebar:
+    GESTION DE PROCESOS:
+      ✔ FIX Falta a este menu su icono. @done(18-11-26 09:32)
+      ☐ FIX Los menús de "registro y modificación de procesos" y "Gestión de procesos en modelo" se mantienen iluminados ambos. 
+      ☐ FIX Los menús de "registro y modificación de procesos" y "Gestión de procesos en modelo" se mantienen iluminados ambos. 
+  
+  Roles:
+    ☐ Guardar roles directamente en la BD(Crear schema).
+
+  FIX:
+    ☐ Si una órden tiene un solo proceso los folios no cargan.
+
+POR IMPLEMENTAR:
+  DB: 
+    ☐ Respaldo periódico de la base. (Script)
+  
+  REGISTRO DE FOLIOS:
+    ☐ Agregar paginador.
+    ☐ Formatear las cantidades de los inputs para facilitar la captura. 
+    ☐ Formatear cantidades numericas de generación de órdenes. 
+  PROCESOS:
+    ☐ Quitar separación entre procesos especiales y normales. 
+    ☐ Crear un schema para todos los procesos dentro de folioLinea, Modelo Completo y familiaDeProcesos.
+    ☐ FIX. Debemos guardar tambien el id del proceso al que pertenece el grupo para facilitar la integridad de datos. Notas en TODO embbeded. 
+    ☐ Validar el órden de procesos corresponda contra cada tipo. Por ejemplo si es familia debe ser 1, 2, 3. Si es especial o agregado debe ser 1.1, 2.2, etc.
+  ROLES:
+    ✔ Configurar multiples permisos. (GUI Y API) @done(18-11-26 09:33)
+    ☐ Configurar guard de gui y middleware de api para seguridad. @started(18-11-26 09:33)
+    ☐ Separar por pestañas los modelos completos (Mod, tam, color, ...)
+  ☐ Tiempos de espera de las órdenes. En cualquier departamento. 
+  ☐ Reporte de defectos. 
+
+  Proveedor:
+    ☐ Datos del proveedor:;
+      Nombre
+      Razon social
+      Domicilio completo
+      =>Quienes atienden
+        Nombre
+        Telefono
+        Correo
+        Puesto
+      # Consecutivo
+      Tiempo de entrega
+      Monedas
+
+  Articulos:
+    ☐ Tiene que tener un proveedor que sea prioritario( Si tiene tres, que se seleccione al que se le da prioridad.)
+    ☐ Datos del articulo:
+      ??Codigo de localización.
+      Cod interno.
+      =>Almacen
+        ?? Ubicacion 
+      Descripcion
+      =>Proveedores
+        Proveedor
+        Precio
+      =>Existencias
+        Entradas
+        Salidas
+        Solicitado - En espera?
+      Presentacion ( Unidad , tambor, cubeta, etc)
+      Unidad de medida. 
+  
+  Ficha de compra:
+    Hoja de requisición:
+      ☐ Datos de la requisicion
+        Articulo
+        Fecha
+        Usuario => Quien realiza la requisición.
+        Cantidad
+        Costo unitario
+        ???Costo total???
+        Fecha de espera para recivirlo (Cuando se necesita)
+        Provedor => El seleccionado 
+    Hoja de compra:
+      ☐ Datos de la compra:
+        Fecha
+        Usuario => Empleado que la realiza. 
+        Requisición
+        # Consecutivo de órden.
+        => Recivido
+          Fecha de recivido
+          Quien recive. 
+
+          control-de-produccion-API:
+            TODO:
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/config/defaultData.js
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/models/modeloCompleto.js
+                ☐ // TODO: Aqui debe de ir el proces del que viene para facilitar el óren y mantener integridad de datos.  @file:///c%3A/control-de-produccion/control-de-produccion-API/models/modeloCompleto.js#73
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/models/procesos/familiaDeProcesos.js
+                ☐ // TODO: Debe mantener integridad y usar un solo schema. Ver notda de Modelo completo.  @file:///c%3A/control-de-produccion/control-de-produccion-API/models/procesos/familiaDeProcesos.js#12
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/models/usuario.js
+                ☐ // TODO: Estos valores tienen que ir en el archivo config.js @file:///c%3A/control-de-produccion/control-de-produccion-API/models/usuario.js#8
+                ☐ // TODO: Un usuario debe poder tener varios roles.  @file:///c%3A/control-de-produccion/control-de-produccion-API/models/usuario.js#18
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/folio.js
+                ☐ // TODO: Quitar comentario.  @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/folio.js#69
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/folioLinea.js
+                ☐ // TODO: Actualziar para promesas.  @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/folioLinea.js#78
+              @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/orden.js
+                ☐ // TODO: Mover a catch. @file:///c%3A/control-de-produccion/control-de-produccion-API/routes/orden.js#341
+          
+          control-de-produccion-GUI:
+            TODO:
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/components/ordenador-visual/ordenador-visual.service.js
+                ☐ // TODO: Cuando se modifique el guardado de proceos y que almacene el id del padre hay que modificar aquí tambien??? @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/components/ordenador-visual/ordenador-visual.service.js#139
+                ☐ // TODO: Debe buscar por id que esta almacenado en el Proceso.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/components/ordenador-visual/ordenador-visual.service.js#141
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.js
+                ☐ // TODO: Guardar el id del padre aquí. Viene en X ??? @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.js#247
+                ☐ //  TODO: Modificar aqui tambien el id del pradre del proceso. (Ver notas relacionadas en TODO.) @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.js#260
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/registro-de-folios/registro-de-lineas.component.js
+                ☐ // TODO: Cambiar a: "El pedido esta marcado para laserarse..." @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/registro-de-folios/registro-de-lineas.component.js#108
+                ☐ // TODO: LIMPIAR ESTE LOG  .  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/registro-de-folios/registro-de-lineas.component.js#136
+                ☐ // TODO: Sustituir esta linea por la constante para nombres completos.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/registro-de-folios/registro-de-lineas.component.js#166
+                ☐ // TODO: LIMPIAR ESTE COMENTARIO.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/pages/registro-de-folios/registro-de-lineas.component.js#183
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/services/folio/folio.service.js
+                ☐ // TODO: Estandarizar esto. @file:///c%3A/control-de-produccion/control-de-produccion-GUI/out-tsc/app/app/services/folio/folio.service.js#130
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/components/ordenador-visual/ordenador-visual.service.ts
+                ☐ // TODO: Cuando se modifique el guardado de proceos y que almacene el id del padre hay que modificar aquí tambien??? @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/components/ordenador-visual/ordenador-visual.service.ts#160
+                ☐ // TODO: Debe buscar por id que esta almacenado en el Proceso.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/components/ordenador-visual/ordenador-visual.service.ts#162
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.ts
+                ☐ // TODO: Guardar el id del padre aquí. Viene en X ??? @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.ts#281
+                ☐ //  TODO: Modificar aqui tambien el id del pradre del proceso. (Ver notas relacionadas en TODO.) @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component.ts#296
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/registro-de-folios/registro-de-lineas.component.ts
+                ☐ // TODO: Cambiar a: "El pedido esta marcado para laserarse..." @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/registro-de-folios/registro-de-lineas.component.ts#143
+                ☐ // TODO: LIMPIAR ESTE LOG  .  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/registro-de-folios/registro-de-lineas.component.ts#177
+                ☐ // TODO: Sustituir esta linea por la constante para nombres completos.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/registro-de-folios/registro-de-lineas.component.ts#212
+                ☐ // TODO: LIMPIAR ESTE COMENTARIO.  @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/pages/registro-de-folios/registro-de-lineas.component.ts#233
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/services/folio/folio.service.ts
+                ☐ // TODO: Estandarizar esto. @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/app/services/folio/folio.service.ts#152
+              @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/assets/plugins/bootstrap/js/bootstrap.js
+                ☐ // todo (fat): these should probably be refactored out of modal.js @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/assets/plugins/bootstrap/js/bootstrap.js#2217
+                ☐ // todo (fat): remove sketch reliance on jQuery position/offset @file:///c%3A/control-de-produccion/control-de-produccion-GUI/src/assets/plugins/bootstrap/js/bootstrap.js#2518
+          
+Archive:
+  
+
