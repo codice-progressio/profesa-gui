@@ -25,6 +25,7 @@ export class TransformacionComponent implements OnInit {
   modeloCompleto: ModeloCompleto;
   linea: FolioLinea = new FolioLinea();
   maquinas: Maquina[];
+  
 
   constructor(
     public _qrScannerService: QrScannerService,
@@ -34,28 +35,33 @@ export class TransformacionComponent implements OnInit {
     private _validacionesService: ValidacionesService,
     private _maquinaService: MaquinaService
   ) { 
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.pastilla();
-
+    this.cargarOrdenesDeDepartamento();
+    
     this._maquinaService.buscarMaquinasPorDepartamento( this.NOMBRE_DEPTO )
     .subscribe( (maquinas: Maquina[]) => {
           this.maquinas = maquinas;
     });
     
-    this._qrScannerService.callback = (data) => {
-      this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
-        ( resp: any ) => {
-          this.orden = resp.orden;
-          this.modeloCompleto = resp.modeloCompleto;
-          this.linea.modeloCompleto = this.modeloCompleto;
-          this._qrScannerService.lecturaCorrecta = true;
-        }
-      );
-    };
+    this._qrScannerService.buscarOrden( 
+      this, 
+      () => { this.limpiar(); }, 
+      () => {
 
-    this._qrScannerService.callbackError = ( ) => {
-      this.limpiar();
-    };
+        if ( this.orden.ubicacionActual.transformacion == null ) {
+          // Creamos el departamento transformación para que no nos de error. 
+          this.orden.ubicacionActual.transformacion = new Transformacion();
+          // False por que a esta altura solo vamos a guardar la máquina. 
+          this.orden.ubicacionActual.transformacion.guardar = false;
+          this.orden.ubicacionActual.transformacion.maquinaActual = null;
+          
+        }
+      });
+
+  }
+
+  cargarOrdenesDeDepartamento() {
+    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+    this._listaDeOrdenesService.pastilla();
 
   }
 
@@ -86,10 +92,10 @@ export class TransformacionComponent implements OnInit {
       Validators.max(300),
       this._validacionesService.onlyIntegers
     ]],
-    maquinaActual: ['', 
-    [
-      Validators.required,
-    ]],
+    // maquinaActual: ['', 
+    // [
+    //   Validators.required,
+    // ]],
     });
     
     
@@ -112,10 +118,11 @@ export class TransformacionComponent implements OnInit {
     const transformacion: Transformacion = new Transformacion();
     transformacion.cantidadDeBoton = this.transformacionForm.value.cantidadDeBoton;
     transformacion.espesorBoton = this.transformacionForm.value.espesorBoton;
-    transformacion.maquinaActual = this.transformacionForm.value.maquinaActual;
+    transformacion.maquinaActual = this.orden.ubicacionActual.transformacion.maquinaActual;
     transformacion.bl = this.transformacionForm.value.bl;
-
-    console.log(JSON.stringify(transformacion));
+    
+    // Esto es necesario para que la BD valide. 
+    transformacion.guardar = true;
     
     this._folioService.modificarOrden( 
       transformacion, 
@@ -142,6 +149,17 @@ export class TransformacionComponent implements OnInit {
     
   public get maquinaActual(): AbstractControl {
     return this.transformacionForm.get('maquinaActual');
+  }
+
+  public iniciarTrabajoDeOrden( ) {
+    // enviamos solo la modificación de la órden con el id 
+    // para empezarla a trabajar. La modificación que necesitamos
+    // es la de al ubicación actual.
+    
+    this._folioService.iniciarTrabajoDeOrden(this.orden, this.NOMBRE_DEPTO, () => { this.limpiar(); } ).subscribe( orden => {
+     this.limpiar();
+    });
+
   }
     
 }

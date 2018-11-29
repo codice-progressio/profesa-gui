@@ -34,15 +34,40 @@
                     <div class="col-sm-12 ">
                         <form #f (ngSubmit)="onSubmit(pastillaForm)" [formGroup]="pastillaForm">
 
-                            <div class="form-group">
-                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadPastilla" placeholder="Cantidad pastilla">
-                                <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
-                            </div>
+                            <ng-container *ngFor="let cp of cantidadesPastilla; let i = index ;trackBy:trackByFn">
 
-                            <div class="form-group">
-                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorPastilla" placeholder="Espesor Pastilla">
-                                <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
-                            </div>
+                                <!-- PESO DE 10 BOTONES -->
+                                <div class="row">
+                                    <div class="form-group col">
+                                        <input [formControlName]="'peso10Botones'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('peso10Botones'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('peso10Botones'+i))}"
+                                            type="number" placeholder="Peso de 10 botones">
+                                        <app-validacion-inputs [campo]="this.pastillaForm.get('peso10Botones'+i)"></app-validacion-inputs>
+                                    </div>
+                                    <!-- PESO TOTAL DE BOTÓN -->
+                                    <div class="form-group col">
+                                        <input [formControlName]="'pesoTotalBoton'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('pesoTotalBoton'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('pesoTotalBoton'+i))}"
+                                            type="number" placeholder="Peso del botón">
+                                        <app-validacion-inputs [campo]="this.pastillaForm.get('pesoTotalBoton'+i)"></app-validacion-inputs>
+                                    </div>
+                                    <!-- ESPESOR DE PASTILLA -->
+                                    <div class="form-group col">
+                                        <input [formControlName]="'espesorPastilla'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('espesorPastilla'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('espesorPastilla'+i))}"
+                                            type="number" placeholder="Espesor de la pastilla">
+                                        <app-validacion-inputs [campo]="this.pastillaForm.get('espesorPastilla'+i)"></app-validacion-inputs>
+                                    </div>
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                        <h3><small>Piezas: </small> {{ (cantidadesPastilla[i].pesoTotalBoton*1000)/(cantidadesPastilla[i].peso10Botones/10) | number:'1.0-0'}}</h3>
+                                    </div>
+
+                                    <div class="form-group col-1 d-flex align-items-center ">
+                                        <a (click)="agregarCantidades()" *ngIf="i === (cantidadesPastilla.length-1)" class="btn btn-outline-success "><i class="fa fa-plus"></i></a>
+                                        <a (click)="eliminarCantidades(i)" *ngIf="i !== (cantidadesPastilla.length-1)" class="btn btn-outline-danger "><i class="fa fa-times"></i></a>
+                                    </div>
+
+                                </div>
+                            </ng-container>
+
+
 
                             <h3>Contado por:</h3>
                             <ng-container *ngFor="let empleado of empleados; let i = index">

@@ -5,13 +5,14 @@ import { Pulido } from './pulido.models';
 import { Seleccion } from './seleccion.models';
 export class Trayecto {
     constructor(
+
     public orden?: number,
     public departamento?:  Departamento,
 
-    public materiales?: Materiales [],
-    public transformacion?: Transformacion [],
-    public pulido?: Pulido [],
-    public seleccion?: Seleccion [],
+    public materiales: Materiales = new Materiales() ,
+    public transformacion: Transformacion = new Transformacion() ,
+    public pulido: Pulido = new Pulido() ,
+    public seleccion: Seleccion = new Seleccion() ,
 
     // public siguiente?: Departamento, 
     // public anterior?: Departamento,

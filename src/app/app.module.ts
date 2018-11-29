@@ -2,9 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 // FECHAS EN ESPAÑOL
 import { NgModule, LOCALE_ID } from '@angular/core';
-import localePy from '@angular/common/locales/es-PY';
+import localePy from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
-registerLocaleData(localePy, 'es');
+registerLocaleData(localePy, 'es-MX');
 
 // Rutas
 import { APP_ROUTES } from './app.routes';

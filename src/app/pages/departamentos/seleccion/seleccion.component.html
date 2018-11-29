@@ -52,7 +52,7 @@
                                             </div>
 
                                             <h3>Seleccionado por:</h3>
-                                            <ng-container *ngFor="let usuario of _usuarioService.cargarSeleccionadores; let i = index">
+                                            <ng-container *ngFor="let usuario of usuarios; let i = index">
                                                 <input type="radio" [id]="i" formControlName="seleccionadoPor" [value]="usuario._id">
                                                 <label [for]="i">{{usuario.nombre}}</label>
                                             </ng-container>

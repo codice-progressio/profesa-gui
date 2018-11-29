@@ -11,12 +11,11 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { UsuarioService } from '../usuario/usuario.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class FolioService {
-  
+ 
   
   totalFolios: number = 0;
 
@@ -257,6 +256,25 @@ export class FolioService {
     );
   }
 
+  // Inicia el trabajo de una órden. 
+  iniciarTrabajoDeOrden(orden: Orden , depto: string , callbackError: any = null) {
+    const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
+    return this.http.put(url, 
+      {
+        _id: orden._id,
+        departamento: depto, 
+        deptoTrabajado: orden.ubicacionActual[depto.toLowerCase()]
+      }).pipe(
+      map( (resp: any) => {
+        this._notificacionesService.ok_(resp);
+        return resp;        
+      }), catchError( err => {
+        this._notificacionesService.err( err, callbackError);
+        return throwError(err);
+      })
+    );
+  }
+
   buscarOrden( id: string, depto: string, callbackError: any = null ) {
 
     const url =`${URL_SERVICIOS}/orden/${id}/${depto}`;
@@ -306,6 +324,8 @@ export class FolioService {
       })
     );
   }
+
+
 
 
 }

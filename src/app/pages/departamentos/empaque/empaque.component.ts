@@ -8,6 +8,7 @@ import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista
 import { FolioService, ValidacionesService, UsuarioService } from 'src/app/services/service.index';
 import { Seleccion } from 'src/app/models/seleccion.models';
 import { Empaque } from 'src/app/models/empaque.models';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Component({
   selector: 'app-empaque',
@@ -23,6 +24,7 @@ seleccionForm: FormGroup;
 orden: Orden;
 modeloCompleto: ModeloCompleto;
 linea: FolioLinea = new FolioLinea();
+usuarios: Usuario [] = [];
 
 
 
@@ -34,29 +36,19 @@ constructor(
   private _validacionesService: ValidacionesService,
   public _usuarioService: UsuarioService
 ) { 
-  this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-  this._listaDeOrdenesService.pastilla();
-
+ 
+  this.cargarOrdenesDeDepartamento();
+  this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
   
-  this._qrScannerService.callback = (data) => {
-    this._folioService.buscarOrden( data, this.NOMBRE_DEPTO, this._qrScannerService.callbackError).subscribe(
-      ( resp: any ) => {
-        this.orden = resp.orden;
-        this.modeloCompleto = resp.modeloCompleto;
-        this.linea.modeloCompleto = this.modeloCompleto;
-        this._qrScannerService.lecturaCorrecta = true;
-      }
-    );
-  };
-
-  this._qrScannerService.callbackError = ( ) => {
-    this.limpiar();
-  };
+  this._usuarioService.cargarEmpacadores().subscribe( resp => {
+    this.usuarios = resp;
+  });
 
 }
 
 ngOnInit() {
   this._qrScannerService.iniciar();
+  
   
   // Iniciamos el formulario.
 
@@ -69,7 +61,7 @@ ngOnInit() {
       this._validacionesService.numberValidator,
     ]
   ],
-  cantidad: ['', 
+  contadoPor: ['', 
     [
       Validators.required,
     ]
@@ -78,11 +70,15 @@ ngOnInit() {
   });
 }
 
+cargarOrdenesDeDepartamento() {
+  this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+  this._listaDeOrdenesService.pastilla();
+
+}
+
+
 limpiar( ) {
-  // Eliminamos la órde de la lista de órdenes. 
-  if ( this.orden != null) {
-    this._listaDeOrdenesService.remover( this.orden._id);
-  }
+  this.cargarOrdenesDeDepartamento();
   // Reiniciamos el escanner. 
   this._qrScannerService.iniciar();
 
