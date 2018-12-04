@@ -15,9 +15,9 @@ export class ListaDeOrdenesService {
   
   
   constructor(
-    private _folioService: FolioService,
-    private _preLoaderService: PreLoaderService,
-    private _util: UtilidadesService,
+    public _folioService: FolioService,
+    public _preLoaderService: PreLoaderService,
+    public _util: UtilidadesService,
     ) {
       
       

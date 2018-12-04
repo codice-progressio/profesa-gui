@@ -108,31 +108,3 @@ DEPRECATE:
 Archive:
 
 
-✔ FIX Locale es-MX @done(18-12-04 15:51)
-☐ FIX El laser ahora es parte del modelo completo.
-☐ DEPRECATED modelo-completo.component Pronto sera eliminado.
-☐ FEATURE Pipe para el modelo completo.
-
-☐ FEATURE lista-de-ordenes.service servicios privados. 
-☐ FEATURE lista-de-ordenes.service carga ordenes de control de produccion.
-☐ FEATURE lista-de-ordenes.service Funcion para obtener las ordenes del departamento actual. 
-☐ FEATURE lista-de-ordenes.service Funcion para obtener las ordenes del departamento actual(Solo id). 
-☐ CLEAN paginador.service limpieza de logs irrelevantes. 
-☐ FIX validacion-inputs.component Error de hasHerror
-☐ CLEAN token-interceptor limpieaza de log.
-☐ FIX cliente.modelo Campo nombre es ahora optativo. 
-☐ FIX departamento.models Si no hay datos no se ejecutafromJSON_Array.
-☐ CLEAN laser.models Limpieza de funcion inutil.
-☐ FIX modeloCompleto.modelo La version modelo es ahora un string y no un objeto. 
-☐ DELETE version.modelo Eliminado. Ahora se guarda como un string. 
-☐ FEATURE clientes.component.html Intefaz administrativa de clientes creada. 
-☐ FEATURE clientes.component.ts Clase creada.
-☐ FEATURE control-de-produccion.component.html creada para recepcion y entrega de ordenes. 
-☐ FEATURE control-de-produccion.component.ts creada para recepcion y entrega de ordenes. 
-☐ FEATURE control-de-produccion.component.ts creada para recepcion y entrega de ordenes. 
-☐ DEPRECATED FIX revision-de-ordenes.component version modelo modificada para obtener solo string
-☐ FIX procesos-en-modelo.component eliminado gestion de version-modelo. 
-☐ FIX procesos-en-modelo.component eliminado gestion de marcaLaser. Debe de hacerse desde el cliente.  
-
-
-

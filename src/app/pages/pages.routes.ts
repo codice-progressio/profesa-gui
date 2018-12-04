@@ -288,104 +288,100 @@ const pagesRoutes: Routes = [
             path: '', 
             redirectTo: '/dashboard', 
             pathMatch: 'full'
-        }
-
-  
-];
-
-const routsSuperAdmin: Routes = [
-    
-    {
-        path: 'medicos', 
-        component: MedicosComponent, 
-        canActivate: [PermisosGuard],
-        data: {
-            titulo: 'Medicos',
-            roles: [
-                // _ROLES.SUPER_ADMIN,
-                _ROLES.EMPAQUE_REGISTRO_ROLE,
-                _ROLES.SELECCION_REGISTRO_ROLE,
-            ]
-        }
-    },
-    {
-        path: 'hospitales', 
-        component: HospitalesComponent, 
-        canActivate: [PermisosGuard],
-        data: {
-            titulo: 'hOSPITALES DESDE ROUTES',
-            roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
-        },
-    {
-        path: 'progress', 
-        component: ProgressComponent, 
-        canActivate: [PermisosGuard],
-
-        data: {
-            titulo: 'Progress', 
-            roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
         },
         
-    {
-        path: 'graficas1', 
-        component: Graficas1Component, 
-        canActivate: [PermisosGuard],
-
-        data: {
-            titulo: 'Graficas', 
-            roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
+        {
+            path: 'medicos', 
+            component: MedicosComponent, 
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'Medicos',
+                roles: [
+                    // _ROLES.SUPER_ADMIN,
+                    _ROLES.EMPAQUE_REGISTRO_ROLE,
+                    _ROLES.SELECCION_REGISTRO_ROLE,
+                ]
+            }
         },
         
-    {
-        path: 'promesas', 
-        component: PromesasComponent, 
-        canActivate: [PermisosGuard],
-
-        data: {
-            titulo: 'Promesas', 
-            roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
-        },
         
-    {
-        path: 'account-settings', 
-        component: AccountsSettingsComponent, 
-        canActivate: [PermisosGuard],
-
-        data: {
-            titulo: 'Informaciónde la cuenta', 
-            roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
-        },
+        {
+            path: 'hospitales', 
+            component: HospitalesComponent, 
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'hOSPITALES DESDE ROUTES',
+                roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            }
+            },
+        {
+            path: 'progress', 
+            component: ProgressComponent, 
+            canActivate: [PermisosGuard],
         
-    {
-        path: 'rxjs', 
-        component: RxjsComponent, 
-        canActivate: [PermisosGuard],
-
-        data: {
-            titulo: 'RxJs', roles: [
-                _ROLES.SUPER_ADMIN,
-            ]
-        }
-        },
+            data: {
+                titulo: 'Progress', 
+                roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            }
+            },
+            
+        {
+            path: 'graficas1', 
+            component: Graficas1Component, 
+            canActivate: [PermisosGuard],
         
-   
+            data: {
+                titulo: 'Graficas', 
+                roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            },
+            },
+            
+        {
+            path: 'promesas', 
+            component: PromesasComponent, 
+            canActivate: [PermisosGuard],
+        
+            data: {
+                titulo: 'Promesas', 
+                roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            }
+            },
+            
+        {
+            path: 'account-settings', 
+            component: AccountsSettingsComponent, 
+            canActivate: [PermisosGuard],
+        
+            data: {
+                titulo: 'Informaciónde la cuenta', 
+                roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            }
+            },
+            
+        {
+            path: 'rxjs', 
+            component: RxjsComponent, 
+            canActivate: [PermisosGuard],
+        
+            data: {
+                titulo: 'RxJs', roles: [
+                    _ROLES.SUPER_ADMIN,
+                ]
+            }
+            },
 ];
 
 
 
-export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes.concat(routsSuperAdmin));
+
+export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes);
