@@ -11,7 +11,6 @@ import { Modelo } from 'src/app/models/modelo.models';
 import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
-import { VersionModelo } from 'src/app/models/versionModelo.models';
 import { Laser } from 'src/app/models/laser.models';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 import { Subscriber } from 'rxjs';
@@ -33,8 +32,6 @@ export class ProcesosEnModeloComponent implements OnInit {
 
   modeloCompletoCostos: ModeloCompleto = null;
 
-  
-  
   modelo: string = '';
   tamano: string = '';
   color: string = '';
@@ -51,7 +48,6 @@ export class ProcesosEnModeloComponent implements OnInit {
   colores: Color [] = [];
   terminados: Terminado [] = [];
   marcasLaser: Laser [] = [];
-  versionModelos: VersionModelo [] = [];
 
   familiaDeProcesos: FamiliaDeProcesos[] = [];
   procesosNormales: Proceso[] = [];
@@ -74,12 +70,7 @@ export class ProcesosEnModeloComponent implements OnInit {
       terminado: {
         editandose: null,
         modificar: ( a ) => {this._modeloService.modificarTerminado( a ).subscribe(m => { this.modificadoGeneral( a ); }); }},
-      marcaLaser: {
-        editandose: null,
-        modificar: ( a ) => {this._modeloService.modificarLaser( a ).subscribe(m => { this.modificadoGeneral( a ); }); }},
-      versionModelo: {
-        editandose: null,
-        modificar: ( a ) => {this._modeloService.modificarVersionModelo( a ).subscribe(m => { this.modificadoGeneral( a ); }); }},
+      
   };
 
   constructor(
@@ -115,6 +106,7 @@ export class ProcesosEnModeloComponent implements OnInit {
         }),
       this._modeloService.cargarColores().subscribe( 
         colores => {
+          
           this.colores = Color.fromJSON_Array( colores );
           // this._utilidadesService.ordenarArreglo( this.colores, 'color');
           this.colores.map(x => x.cb_Modificar = this.visorDeCambios.color.modificar);
@@ -125,18 +117,8 @@ export class ProcesosEnModeloComponent implements OnInit {
           // this._utilidadesService.ordenarArreglo( this.terminados, 'terminado');
           this.terminados.map(x => x.cb_Modificar = this.visorDeCambios.terminado.modificar);
         }),
-      this._modeloService.cargarMarcasLaser().subscribe( 
-        marcasLaser => {
-          this.marcasLaser = Laser.fromJSON_Array( marcasLaser );
-          // this._utilidadesService.ordenarArreglo( this.marcasLaser, 'laser');
-          this.marcasLaser.map(x => x.cb_Modificar = this.visorDeCambios.marcaLaser.modificar);
-        }),
-      this._modeloService.cargarVersionModelos().subscribe( 
-        versionesModelos => {
-          this.versionModelos = VersionModelo.fromJSON_Array( versionesModelos );
-          // this._utilidadesService.ordenarArreglo( this.versionModelos, 'versionesModelos');
-          this.versionModelos.map(x => x.cb_Modificar = this.visorDeCambios.versionModelo.modificar);
-        }),
+      
+     
         this._procesos.obtenerTodosLosProcesos().subscribe(resp => {
           this.familiaDeProcesos = resp.familiaDeProcesos;  
           this.procesosEspeciales = resp.procesosEspeciales;
@@ -348,6 +330,7 @@ export class ProcesosEnModeloComponent implements OnInit {
   id( ...id): string {
     return this._calculosService.id(id);
   }
+
 
 
 

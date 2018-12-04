@@ -113,8 +113,8 @@ Registro de lineas
     <div class="col-12">
         <div class="card">
             <div class="card-body" [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}">
-                <h3 class="card-title" *ngIf="!modificandoLinea">Agregar nuevo pedido </h3>
-                <h3 class="card-title" *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido </h3>
+                <h1 class="card-title" *ngIf="!modificandoLinea">Agregar nuevo pedido </h1>
+                <h1 class="card-title" *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido </h1>
 
                 <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar()" class=" m-t-40">
 
@@ -272,18 +272,16 @@ Registro de lineas
                         <tbody>
                             <tr *ngFor="let linea of folio?.folioLineas" [ngClass]="{'animated zoomOut': linea.eliminar}">
                                 <td class="align-middle">
-                                    {{linea.modeloCompleto.modelo.modelo}} {{linea.modeloCompleto.tamano.tamano}} {{linea.modeloCompleto.color.color}} {{linea.modeloCompleto.terminado.terminado}}
-                                    <span *ngIf="linea.modeloCompleto?.laserAlmacen.laser">-</span>{{linea.modeloCompleto?.laserAlmacen.laser}}
-                                    <span *ngIf="linea.modeloCompleto?.versionModelo.versionModelo">-</span>{{linea.modeloCompleto?.versionModelo.versionModelo}}
+                                    {{linea.modeloCompleto | modeloCompleto}}
                                 </td>
 
-                                <td class="align-middle">{{linea.cantidad}}</td>
+                                <td class="align-middle">{{linea.cantidad | number:'1.0-0'}}</td>
 
                                 <td class="align-middle">
                                     <app-nivel-urgencia [nivel]="linea.nivelDeUrgencia"></app-nivel-urgencia>
                                 </td>
 
-                                <td class="align-middle">{{linea.laserCliente?.laser}}</td>
+                                <td class="align-middle">{{linea?.laserCliente?.laser}}</td>
                                 <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fa fa-check fa-2x"></i></td>
                                 <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
                                 <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>

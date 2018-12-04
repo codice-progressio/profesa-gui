@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { Laser } from '../../models/laser.models';
 import { IfStmt } from '@angular/compiler';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
+import { Modelo } from '../../models/modelo.models';
 
 @Component({
   selector: 'app-registro-de-lineas',
@@ -134,9 +135,9 @@ export class RegistroDeLineasComponent implements OnInit {
 
     if ( this.laserarPedido ) {
       if ( this.laserSeleccionado) {
-        this.folioLinea.laserCliente._id = this.laserSeleccionado;
+        this.folioLinea.laserCliente = this.cliente.laserados.find(x => x._id === this.laserSeleccionado);
+        console.log(this.folioLinea.laserCliente  );
       } else {
-        console.log(this.laserSeleccionado);
 
         swal(
           'Marca laser no seleccionada.',
@@ -175,7 +176,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
   seleccionarLaserado( id: string ) {
     // TODO: LIMPIAR ESTE LOG  . 
-    console.log('El id del laserado: ' + id);
+
 
     // Filtramos los laserados
     const laserado: Laser = this.cliente.laserados.find( laser => {
@@ -186,6 +187,8 @@ export class RegistroDeLineasComponent implements OnInit {
       this.folioLinea.laserCliente = laserado;
       this.laserSeleccionado = laserado._id;
     }
+
+
   }
 
   buscarModelo(dato: string) {
@@ -198,8 +201,7 @@ export class RegistroDeLineasComponent implements OnInit {
     }
 
     this._modeloService.buscarModeloCompleto(this.termino).subscribe(resp => {
-      // console.log(resp);
-      // this.modelosBuscados = resp;
+      
       const datos: BuscadorRapido[] = [];
       resp.forEach(modelo => {
         datos.push( new BuscadorRapido(this.nombrarModelo(modelo), modelo));
@@ -210,23 +212,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
   nombrarModelo (modelo: ModeloCompleto) {
     // TODO: Sustituir esta linea por la constante para nombres completos. 
-    let nombreCompleto: string =
-      modelo.modelo.modelo +
-      '-' +
-      modelo.tamano.tamano +
-      '-' +
-      modelo.color.color;
-
-    nombreCompleto = modelo.terminado.terminado
-      ? nombreCompleto + '-' + modelo.terminado.terminado
-      : nombreCompleto;
-    nombreCompleto = modelo.laserAlmacen.laser
-      ? nombreCompleto + '-' + modelo.laserAlmacen.laser
-      : nombreCompleto;
-    nombreCompleto = modelo.versionModelo.versionModelo
-      ? nombreCompleto + '-' + modelo.versionModelo.versionModelo
-      : nombreCompleto;
-
+    let nombreCompleto: string = ModeloCompleto.nombreCom(modelo);
       return nombreCompleto;
   }
 
@@ -343,6 +329,11 @@ export class RegistroDeLineasComponent implements OnInit {
   trackByFn(index: any, item: any) {
     return index;
   }
+
+  nombreCompleto( mc: ModeloCompleto ){
+    return ModeloCompleto.nombreCom(mc);
+  }
+
 
   
 

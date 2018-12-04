@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ImagenPipe } from './imagen.pipe';
 import { FechaPipe } from './fecha.pipe';
+import { ModeloCompletoPipe } from './modelo-completo.pipe';
 // Esto no se utiliza. ngIf, nfFor.
 // import { CommonModule } from '@angular/common';
 
@@ -13,11 +14,13 @@ import { FechaPipe } from './fecha.pipe';
   ],
   declarations: [
     ImagenPipe,
-    FechaPipe
+    FechaPipe,
+    ModeloCompletoPipe
   ],
   exports: [
     ImagenPipe,
-    FechaPipe
+    FechaPipe,
+    ModeloCompletoPipe
   ]
 })
 export class PipesModule { }

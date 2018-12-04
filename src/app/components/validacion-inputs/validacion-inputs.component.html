@@ -1,5 +1,5 @@
 <ng-container *ngIf="campo">
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('requiered')"> <i class="fa fa-times animated tada"></i> Este campo es obligatorio</span>
+    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('required')"> <i class="fa fa-times animated tada"></i> Este campo es obligatorio</span>
     <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('min')"> <i class="fa fa-times animated tada"></i> El valor mínimo permitido es {{campo.getError('min').min}}.</span>
     <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('max')"> <i class="fa fa-times animated tada"></i> El valor máximo permitido es {{campo.getError('max').max}}. </span>
     <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('notInteger')"> <i class="fa fa-times animated tada"></i> Se necesita un número entero positivo. </span>

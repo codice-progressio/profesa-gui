@@ -15,15 +15,22 @@ export class ListaDeOrdenesService {
   
   
   constructor(
-    public _folioService: FolioService,
-    public _preLoaderService: PreLoaderService,
-    public _util: UtilidadesService,
-  ) {
-
+    private _folioService: FolioService,
+    private _preLoaderService: PreLoaderService,
+    private _util: UtilidadesService,
+    ) {
+      
+      
+    }
     
-  }
-  
-  materiales() {
+    controlDeProduccion(): any {
+      if ( this.depto ) {
+        this._preLoaderService.cargando = true;
+        this.cargarOrdenes(this.depto, this.opciones);
+      }
+    }
+
+    materiales() {
     if ( this.depto ) {
       this._preLoaderService.cargando = true;
       this.cargarOrdenes(this.depto, this.opciones);
@@ -43,13 +50,8 @@ export class ListaDeOrdenesService {
     this._folioService.cargarOrdenesDepartamento(depto, opciones)
     .subscribe( (resp: any ) => {
       this.ordenes = resp;
-      console.log('Estamos aqui.');
-      
-      console.log(this.ordenes); 
-      
       if ( this.ordenes ) {
         this.niveles = Object.keys(this.ordenes);
-
       }
       this._preLoaderService.cargando = false;
     });
@@ -78,4 +80,36 @@ export class ListaDeOrdenesService {
       });
     }
   }
+
+  obtenerTodasLasOrdenesDeEsteDepartamentoEnArray( ): Orden[] {
+    let a: Orden[] = [];
+    for (const x in this.ordenes) {
+      if (this.ordenes.hasOwnProperty(x)) {
+        const ordenes = this.ordenes[x];
+        
+        a = a.concat(ordenes)
+        console.log('agregar');
+        console.log(a);
+      }
+    }
+   
+    console.log('concatenado');
+    console.log(a);
+    
+    return a;
+  }
+
+  obtenerTodasLasOrdenesDeEsteDepartamentoEnArrayYSoloId(): string[] {
+    const ordenes:Orden []= this.obtenerTodasLasOrdenesDeEsteDepartamentoEnArray();
+    const ids: string [] = [];
+    ordenes.forEach((orden:Orden) => {
+
+      ids.push(orden._id);
+    });
+    console.log(ids);
+    
+    return ids;
+    
+  }
+
 }

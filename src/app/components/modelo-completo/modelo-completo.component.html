@@ -1,13 +1,13 @@
 <ng-container *ngIf="linea">
     {{linea.modeloCompleto?.modelo.modelo}}-{{linea.modeloCompleto?.tamano.tamano}}-{{linea.modeloCompleto?.color.color}}-{{linea.modeloCompleto?.terminado.terminado}}
     <span *ngIf="linea.modeloCompleto?.laserAlmacen?.laser">-</span>{{linea.modeloCompleto?.laserAlmacen?.laser}}
-    <span *ngIf="linea.modeloCompleto?.versionModelo?.versionModelo">-</span>{{linea.modeloCompleto?.versionModelo?.versionModelo}}
+    <span *ngIf="linea.modeloCompleto?.versionModelo">-</span>{{linea.modeloCompleto?.versionModelo}}
 
 </ng-container>
 
 <ng-container *ngIf="modeloCompleto">
     {{modeloCompleto?.modelo.modelo}}-{{modeloCompleto?.tamano.tamano}}-{{modeloCompleto?.color.color}}-{{modeloCompleto?.terminado.terminado}}
     <span *ngIf="modeloCompleto?.laserAlmacen?.laser">-</span>{{modeloCompleto?.laserAlmacen?.laser}}
-    <span *ngIf="modeloCompleto?.versionModelo?.versionModelo">-</span>{{modeloCompleto?.versionModelo?.versionModelo}}
+    <span *ngIf="modeloCompleto?.versionModelo">-</span>{{modeloCompleto?.versionModelo}}
 
 </ng-container>

@@ -28,7 +28,6 @@ export class PaginadorService {
       this.desde = 0;
       this.actual = 1;
     }
-    console.log('this.desde' + this.desde);
 
     this.callback( this.desde, this.limite);
   }
@@ -47,12 +46,7 @@ export class PaginadorService {
 
   calcular () {
     this.total = this.totalDeElementos / this.limite;
-    console.log('this.limite:' + this.limite);
-    console.log('this.totalDeElementos:' + this.totalDeElementos);
-    
     if ( this.total % 1) {
-      console.log('total con decimal: ' + this.total);
-      
       this.total = Math.ceil(this.total);
       this.total = this.total === 0 ? 1 : this.total;
     }

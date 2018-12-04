@@ -3,9 +3,9 @@ import { Tamano } from './tamano.models';
 import { Color } from './color.models';
 import { Terminado } from './terminado.models';
 import { Laser } from './laser.models';
-import { VersionModelo } from './versionModelo.models';
 import { FamiliaDeProcesos, Procesos } from './familiaDeProcesos.model';
 import { BasicosGUI } from './basicosGUI.model';
+import { log } from 'util';
 
 export class ModeloCompleto implements BasicosGUI {
     convertido: boolean;
@@ -19,7 +19,7 @@ export class ModeloCompleto implements BasicosGUI {
         public color?: Color,
         public terminado?: Terminado,
         public laserAlmacen?: Laser,
-        public versionModelo?: VersionModelo,
+        public versionModelo?: String,
         public medias: boolean = false,
         public nombreCompleto?: string,
         public familiaDeProcesos?: FamiliaDeProcesos,
@@ -47,8 +47,7 @@ export class ModeloCompleto implements BasicosGUI {
         data.tamano = Tamano.fromJSON(data.tamano);
         data.color = Color.fromJSON(data.color);
         data.terminado = Terminado.fromJSON(data.terminado);
-        data.laserAlmacen = Laser.fromJSON(data.laser);
-        data.versionModelo = VersionModelo.fromJSON(data.versionModelo);
+        data.laserAlmacen = Laser.fromJSON(data.laserAlmacen);
         data.familiaDeProcesos = FamiliaDeProcesos.fromJSON(data.familiaDeProcesos);
         data.procesosEspeciales = Procesos.fromJSON_Array(data.procesosEspeciales);
         return Object.assign(new this, data);
@@ -60,8 +59,8 @@ export class ModeloCompleto implements BasicosGUI {
         nombreCompleto += x.tamano ? '-' + x.tamano.tamano : '';
         nombreCompleto += x.color ? '-' + x.color.color : '';
         nombreCompleto += x.terminado ? '-' + x.terminado.terminado : '';
-        nombreCompleto += x.laserAlmacen ? '-' + x.laserAlmacen.laser : '';
-        nombreCompleto += x.versionModelo ? '-' + x.versionModelo.versionModelo : '';
+        nombreCompleto += x.laserAlmacen.laser ? '-' + x.laserAlmacen.laser : '';
+        nombreCompleto += x.versionModelo ? '-' + x.versionModelo : '';
         return nombreCompleto;
     }
 

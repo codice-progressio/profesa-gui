@@ -45,6 +45,8 @@ import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component'
 import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
+import { ClientesComponent } from './clientes/clientes.component';
+import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
 
 
 
@@ -84,6 +86,8 @@ import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/i
        CostosDeProcesoComponent,
        ProcesosEnModeloComponent,
        IndicadorDeChecadasComponent,
+       ClientesComponent,
+       ControlDeProduccionComponent,
 
 
       ],

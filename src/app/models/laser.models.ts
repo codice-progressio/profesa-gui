@@ -16,7 +16,4 @@ export class Laser extends OperacionesEnGUI {
         return data.map( x => x = Laser.fromJSON(x));
     }
 
-    hacerAlgo( ) {
-        console.log('Hacer algo desde: ' + this.constructor.name);
-    }
-}
+ }

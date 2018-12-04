@@ -8,7 +8,6 @@ import {
 
 import { Observable } from 'rxjs';
 import { UsuarioService } from '../services/service.index';
-import { log } from 'util';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -23,8 +22,6 @@ export class TokenInterceptor implements HttpInterceptor {
       },
       withCredentials: true
     });
-
-    console.log(request.headers)
 
     return next.handle(request);
   }

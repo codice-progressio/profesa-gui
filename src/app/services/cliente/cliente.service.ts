@@ -5,19 +5,23 @@ import { map, catchError } from 'rxjs/operators';
 import { Laser } from '../../models/laser.models';
 import swal from 'sweetalert2';
 import { throwError } from '../../../../node_modules/rxjs';
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
+import { Cliente } from 'src/app/models/cliente.models';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
+  
 
   constructor(
-    public http: HttpClient
+    public http: HttpClient,
+    private _msjService: ManejoDeMensajesService
   ) { }
 
 
-  buscarCliente( termino: string ) {
+  buscar( termino: string ) {
     const url = URL_SERVICIOS + `/busqueda/coleccion/clientes/${termino}`;
     return this.http.get( url ).pipe( map( (resp: any) => resp.clientes)
     );
@@ -40,6 +44,65 @@ export class ClienteService {
       })
     );
   }
+
+  obtenerTodos( ){
+    const url = `${URL_SERVICIOS}/cliente`;
+    return this.http.get(url).pipe(
+      map((resp:any) => {
+        this._msjService.ok_(resp);
+        return resp.clientes;
+      }),
+      catchError( err => {
+        this._msjService.err(err);
+        return throwError (err );
+      })
+    );
+  }
+
+  guardaNuevo( cliente: Cliente) {
+    const url =`${URL_SERVICIOS}/cliente`;
+    return this.http.post(url, cliente).pipe(
+      map((resp:any) => {
+        this._msjService.ok_(resp);
+        return resp.clientes;
+      }),
+      catchError( err => {
+        this._msjService.err(err);
+        return throwError (err );
+      })
+    );
+  }
+  modificar( cliente: Cliente) {
+    const url =`${URL_SERVICIOS}/cliente/${cliente._id}`;
+    return this.http.put(url, cliente).pipe(
+      map((resp:any) => {
+        this._msjService.ok_(resp);
+        return resp.clientes;
+      }),
+      catchError( err => {
+        this._msjService.err(err);
+        return throwError (err );
+      })
+    );
+  }
+
+  // buscarLaserado(idLaser: string): any {
+  //   const url =`${URL_SERVICIOS}/cliente/${idLaser}`;
+  //   console.log(idLaser);
+    
+  //   return this.http.get(url).pipe(
+  //     map((resp:any) => {
+  //       console.log(resp);
+        
+  //       this._msjService.ok_(resp);
+  //       return resp.marcaLaser;
+  //     }),
+  //     catchError( err => {
+  //       this._msjService.err(err);
+  //       return throwError (err );
+  //     })
+  //   );
+  // }
 
 
 }

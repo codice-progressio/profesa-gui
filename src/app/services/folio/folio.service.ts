@@ -15,88 +15,67 @@ import { URL_SERVICIOS } from 'src/app/config/config';
   providedIn: 'root'
 })
 export class FolioService {
- 
   
   totalFolios: number = 0;
-
+  
   constructor(  
     public http: HttpClient,
     public router: Router,
-    private _notificacionesService: ManejoDeMensajesService,
+    private _msjService: ManejoDeMensajesService,
     private _u: UsuarioService
-  ) { }
-
-
-
-  guardarFolio ( folio: Folio) {
-    let url =`/folio`;
-    if ( folio._id) {
-      url += `/${folio._id}`;
-      // Si tiene un id queiere decir que hay que modificar. 
-      return this.http.put(url, folio).pipe(
-        map( (resp: any) => {
-          swal({
-            // position: 'center',
-            type: 'success',
-            title: 'Folio modificado.',
-            html: 'Se modifico el folio de manera exitosa.',
-            showConfirmButton: false,
-            timer: 1500
-          });
-          return;
-        }), 
-        catchError( err => {
-          swal( 'Error con el folio',
-          err.error.mensaje + '<br>'
-          + err.error.errors.message
-          , 'error' );
-          return throwError(err);
-        })
-      );
-    } else {
-      // Si no tiene id creamos un objeto nuevo.
-      return this.http.post( url, folio).pipe(
-        map( (resp: any) => {
-          swal({
-            // position: 'center',
-            type: 'success',
-            title: 'Folio creado.',
-            html: 'Ahora puedes agregar pedidos.',
-            showConfirmButton: false,
-            timer: 1500
-          });
-          return resp.folio;
-        }), catchError( err => {
-          swal( 'Error con el folio',
-          err.error.mensaje + '<br>'
-          + err.error.errors.message
-          , 'error' );
-          return throwError(err);
-        })
-      );
-    }
-  }
-
-  
-  
-  cargarFolio ( id: string ) {
-    // Carga todos los datos del folio y sus lineas
-    const url =`${URL_SERVICIOS}/folio/${id}`;
+    ) { }
     
-    return this.http.get(url).pipe(
-      map( (resp: any) => {
-        this.totalFolios = resp.total;
-        return resp.folio;
-      }), catchError( err => {
-        swal( 'Error con el folio', 'Algo paso y no se pudo cargar el folio.', 'error' );
-        this.router.navigate(['/folios']);
-        return throwError(err);
-      })
-      
-    );
-  }
-  
-  cargarFolios (desde: number = 0, limite: number = 5) {
+    
+    
+    guardarFolio ( folio: Folio) {
+      let url =`${URL_SERVICIOS}/folio`; 
+      if ( folio._id) {
+        url += `/${folio._id}`;
+        // Si tiene un id queiere decir que hay que modificar. 
+        return this.http.put(url, folio).pipe(
+          map( (resp: any) => {
+            this._msjService.ok_(resp);
+            return;
+          }), 
+          catchError( err => {
+            this._msjService.err(err);
+            return throwError(err);
+          })
+          );
+        } else {
+          // Si no tiene id creamos un objeto nuevo.
+          return this.http.post( url, folio).pipe(
+            map( (resp: any) => {
+              this._msjService.ok_(resp);
+              return resp.folio;
+            }), catchError( err => {
+              this._msjService.err(err);
+              return throwError(err);
+            })
+            );
+          }
+        }
+        
+        
+        
+        cargarFolio ( id: string ) {
+          // Carga todos los datos del folio y sus lineas
+          const url =`${URL_SERVICIOS}/folio/${id}`;
+          
+          return this.http.get(url).pipe(
+            map( (resp: any) => {
+              this.totalFolios = resp.total;
+              return resp.folio;
+            }), catchError( err => {
+              swal( 'Error con el folio', 'Algo paso y no se pudo cargar el folio.', 'error' );
+              this.router.navigate(['/folios']);
+              return throwError(err);
+            })
+            
+            );
+          }
+          
+          cargarFolios (desde: number = 0, limite: number = 5) {
     // Es necesario siempre el signo al final para 
     // que no haya problemas con los otros parametros. 
     const url =`${URL_SERVICIOS}/folio?`;
@@ -108,7 +87,7 @@ export class FolioService {
     const url =`${URL_SERVICIOS}/folio?conOrdenes=true`;
     return this.cargaDeFolios(url, limite, desde);
   }
-
+  
   cargarFoliosSinOrdenes(desde: number = 0, limite: number = 5) {
     // Carga los folios de los cuales aún no se generan órdenes. 
     // Esto aunque un solo pedido no se haya genera órdenes. 
@@ -116,81 +95,81 @@ export class FolioService {
     const url =`${URL_SERVICIOS}/folio?sinOrdenes=true`;
     return this.cargaDeFolios( url, limite, desde);
   }
-
+  
   cargarFolioPorPrioridad(desde: number = 0, limite: number = 5, prioridad: string) {
     const url =`${URL_SERVICIOS}/folio?prioridad=${prioridad}`;
     return this.cargaDeFolios( url, limite, desde);
   }
-
+  
   private cargaDeFolios (url: string, limite: number = 5, desde: number = 0) {
     
     url += `&limite=${limite}`; 
     url += `&desde=${desde}`;
-
+    
     return this.http.get( url ).pipe(
       map( (resp: any) => {
         this.totalFolios = resp.total;
         return resp.folios;
       }),
       catchError ( err => {
-       this._notificacionesService.err(err);
+        this._msjService.err(err);
         return throwError(err);
       })
-    );
-  }
-
-  guardarLinea (idFolio: string, linea: FolioLinea) {
-
-    // Si la linea tiene un id entonces es para modificar.
+      );
+    }
     
-    if (linea._id) {
-      // Modificamos.
-      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${linea._id}`;
-      return this.http.put(url, linea).pipe(
-        map( (resp: any) => {
-          // TODO: Estandarizar esto.
-          swal('Pedido modificado.', `Se modifico el pedido correctamente.`, 'success');
+    guardarLinea (idFolio: string, linea: FolioLinea) {
+      
+      // Si la linea tiene un id entonces es para modificar.
+      
+      if (linea._id) {
+        // Modificamos.
+        const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${linea._id}`;
+        return this.http.put(url, linea).pipe(
+          map( (resp: any) => {
+            // TODO: Estandarizar esto.
+            swal('Pedido modificado.', `Se modifico el pedido correctamente.`, 'success');
           return;
         }), catchError( err => {
           swal('Error al modificar el pedido.', err.error.mensaje, 'error') ;
           return throwError(err);
         })
-      );
-    } else {
-      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}`;
-      return this.http.post(url, linea).pipe(
-        map( (resp: any) => {
-          swal('Pedido agregado.', `Se agrego el nuevo pedido correctamente.`, 'success');
-          return resp.folioLinea;
-        }), catchError( err => {
+        );
+      } else {
+        const url =`${URL_SERVICIOS}/folioLinea/${idFolio}`;
+        return this.http.post(url, linea).pipe(
+          map( (resp: any) => {
+            swal('Pedido agregado.', `Se agrego el nuevo pedido correctamente.`, 'success');
+            return resp.folioLinea;
+          }), catchError( err => {
           swal('Error al guardar el pedido.', err.error.mensaje, 'error') ;
           return throwError(err);
         })
-      );
+        );
+      }
+      
     }
-
-  }
-
-  eliminarLinea( idFolio: string , idLinea: string ) {
-    const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${idLinea}`;
-    return this.http.delete(url).pipe(
-      map( (resp: any) => {
-        return;
-      }),
-      catchError( err => {
-        swal('Error eliminando el pedido', err.error.mensaje, 'error');
-        return throwError(err);
-      })
-    );
-  }
-  
-  eliminarFolio( idFolio: string) {
-    const url =`${URL_SERVICIOS}/folio/${idFolio}`;
-    return this.http.delete(url).pipe(
-      catchError( err => {
-        swal('Error eliminando el folio', err.error.mensaje, 'error');
-        return throwError(err);
-      })
+    
+    eliminarLinea( idFolio: string , idLinea: string ) {
+      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${idLinea}`;
+      return this.http.delete(url).pipe(
+        map( (resp: any) => {
+          return;
+        }),
+        catchError( err => {
+          swal('Error eliminando el pedido', err.error.mensaje, 'error');
+          return throwError(err);
+        })
+        );
+      }
+      
+      eliminarFolio( idFolio: string) {
+        const url =`${URL_SERVICIOS}/folio/${idFolio}`;
+        return this.http.delete(url).pipe(
+          catchError( err => {
+            swal('Error eliminando el folio', err.error.mensaje, 'error');
+            return throwError(err);
+          })
     );
   }
   
@@ -208,11 +187,11 @@ export class FolioService {
         swal('Error guardando las órdenes.', err.error.mensaje, 'error');
         return throwError(err);
       })
-    );
-  }
-
-  limpiarParaOrdenes (folio: Folio ) {
-    folio.folioLineas.forEach(linea => {
+      );
+    }
+    
+    limpiarParaOrdenes (folio: Folio ) {
+      folio.folioLineas.forEach(linea => {
       delete linea.modeloCompleto;
       delete linea.cantidad;
       delete linea.nivelDeUrgencia;
@@ -222,7 +201,7 @@ export class FolioService {
       delete linea.updatedAt;
       delete linea.eliminar;
       delete linea.ordenesGeneradas;
-
+      
       linea.ordenes.forEach(orden => {
         delete orden.piezasFinales;
         delete orden.trayectoNormal;
@@ -230,32 +209,32 @@ export class FolioService {
         delete orden.ubicacionActual;
         delete orden.editando;
       });
-  });
-  
-  const limpio = {
-     folioLineas: folio.folioLineas,
-     idFolio: folio._id
-  };
-  
-  folio = new Folio;
-  return limpio;
+    });
+    
+    const limpio = {
+      folioLineas: folio.folioLineas,
+      idFolio: folio._id
+    };
+    
+    folio = new Folio;
+    return limpio;
   }
-
-
+  
+  
   // Recive una nueva órden.
   recivirUnaOrden( id: string, depto: string, callbackError: any = null ) {
     const url =`${URL_SERVICIOS}/orden`;
     return this.http.put(url, {_id: id, departamento: depto}).pipe(
       map( (resp: any) => {
-        this._notificacionesService.ok_(resp);
+        this._msjService.ok_(resp);
         return resp;        
       }), catchError( err => {
-        this._notificacionesService.err( err, callbackError);
+        this._msjService.err( err, callbackError);
         return throwError(err);
       })
-    );
+      );
   }
-
+  
   // Inicia el trabajo de una órden. 
   iniciarTrabajoDeOrden(orden: Orden , depto: string , callbackError: any = null) {
     const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
@@ -265,14 +244,14 @@ export class FolioService {
         departamento: depto, 
         deptoTrabajado: orden.ubicacionActual[depto.toLowerCase()]
       }).pipe(
-      map( (resp: any) => {
-        this._notificacionesService.ok_(resp);
+        map( (resp: any) => {
+        this._msjService.ok_(resp);
         return resp;        
       }), catchError( err => {
-        this._notificacionesService.err( err, callbackError);
+        this._msjService.err( err, callbackError);
         return throwError(err);
       })
-    );
+      );
   }
 
   buscarOrden( id: string, depto: string, callbackError: any = null ) {
@@ -285,7 +264,7 @@ export class FolioService {
         return resp;        
       }), catchError( err => {
         
-        this._notificacionesService.err( err, callbackError);
+        this._msjService.err( err, callbackError);
 
         return throwError(err);
       })
@@ -315,15 +294,30 @@ export class FolioService {
     const url =`${URL_SERVICIOS}/orden/${idOrden}?depto='${depto}'`;
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
-        this._notificacionesService.ok_(resp);
+        this._msjService.ok_(resp);
         return resp;
       }),
       catchError( err => {
-        this._notificacionesService.err(err);
+        this._msjService.err(err);
         return throwError(err);
       })
     );
   }
+
+  controlDeProduccion_RecivirYEntregar(idOrdenes: String[]): any {
+   const url =`${URL_SERVICIOS}/orden/controlDeProduccionRecivirYEntregar`;
+   return this.http.put( url, idOrdenes ).pipe(
+    map( (resp: any) => {
+      this._msjService.ok_(resp);
+      return resp;
+    }),
+    catchError( err => {
+      this._msjService.err(err);
+      return throwError(err);
+    })
+  );
+  }
+
 
 
 

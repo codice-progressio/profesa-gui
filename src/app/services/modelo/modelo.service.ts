@@ -13,7 +13,6 @@ import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
 import { Laser } from 'src/app/models/laser.models';
-import { VersionModelo } from 'src/app/models/versionModelo.models';
 
 @Injectable({
   providedIn: 'root'
@@ -157,36 +156,6 @@ export class ModeloService {
     );
   }
 
-  cargarMarcasLaser () {
-    const url = URL_SERVICIOS + `/laser`;
-    return this.http.get(url).pipe(
-      map(
-        (resp: any ) => {
-          this._msjService.ok_( resp );
-          return resp.marcasLaser;
-        }
-      ), catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
-  }
-
-  cargarVersionModelos () {
-    const url = URL_SERVICIOS + `/versionModelo`;
-    return this.http.get(url).pipe(
-      map(
-        (resp: any ) => {
-          this._msjService.ok_( resp );
-          
-          return resp.versionModelos;
-        }
-      ), catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
-  }
 
   modificarModelo( m: Modelo) {
     const url = URL_SERVICIOS + `/modelo`;
@@ -245,34 +214,7 @@ export class ModeloService {
       })
     );
   }
-  modificarLaser( m: Laser) {
-    const url = URL_SERVICIOS + `/laser`;
-    return this.http.put(url, m).pipe(
-      map(
-        (resp: any ) => {
-          this._msjService.ok_( resp );
-          return resp.laser;
-        }
-      ), catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
-  }
-  modificarVersionModelo( m: VersionModelo) {
-    const url = URL_SERVICIOS + `/versionModelo`;
-    return this.http.put(url, m).pipe(
-      map(
-        (resp: any ) => {
-          this._msjService.ok_( resp );
-          return resp.versionModelo;
-        }
-      ), catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
-  }
+
 
   
 
@@ -282,7 +224,7 @@ export class ModeloService {
       map(
         (resp: any ) => {
           this._msjService.ok_( resp );
-          return resp.versionModelo;
+          return resp.modeloCompleto;
         }
       ), catchError( err => {
         this._msjService.err( err );

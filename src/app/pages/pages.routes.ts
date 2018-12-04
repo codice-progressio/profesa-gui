@@ -28,6 +28,8 @@ import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component'
 import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 import { _ROLES } from '../config/roles.const';
+import { ClientesComponent } from './clientes/clientes.component';
+import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -83,6 +85,17 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
+        {
+            path: 'clientes',
+            component: ClientesComponent,
+            canActivate: [PermisosGuard],
+            data: {
+                titulo: 'Mantenimientos de clientes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
 
         {path: 'perfil', component: ProfileComponent, data: {titulo: 'Perfil de usuario.'}},
 
@@ -94,7 +107,7 @@ const pagesRoutes: Routes = [
             data: {
                 titulo: 'Registro de Folios',
                 roles : [ 
-                    // _ROLES.ADMIN_ROLE
+                    _ROLES.ADMIN_ROLE
                 ]
             }
         },
@@ -145,6 +158,17 @@ const pagesRoutes: Routes = [
             }
         },
         
+        {
+            path: 'produccion/controlDeProduccion', 
+            component: ControlDeProduccionComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         {
             path: 'produccion/materiales', 
             component: MaterialesComponent,

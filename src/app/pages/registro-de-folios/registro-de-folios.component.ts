@@ -87,8 +87,8 @@ export class RegistroDeFoliosComponent implements OnInit {
 
   seleccionarVendedor( id: string ) {
     // Filtramos los vendedores
-    const vendedor: Usuario = this.vendedores.find( laser => {
-      return laser._id === id;
+    const vendedor: Usuario = this.vendedores.find( v => {
+      return v._id === id;
     });
 
     if ( vendedor ) {
@@ -114,7 +114,7 @@ export class RegistroDeFoliosComponent implements OnInit {
       this._buscadorRapidoService.elementos = [];
       return;
     }
-    this._clienteService.buscarCliente( this.termino ).subscribe(
+    this._clienteService.buscar( this.termino ).subscribe(
       clientes => {
         // this.clientesBuscados = clientes;
         const datos: BuscadorRapido[] = [];
@@ -154,9 +154,6 @@ export class RegistroDeFoliosComponent implements OnInit {
     const  fechaMinima = new Date();
     fechaMinima.setDate(fechaMinima.getDate() - 5);
     
-    console.log(fechaMinima);
-    
-
     if ( this.folio.fechaFolio.getTime() <= fechaMinima.getTime()  ) {
       swal('Error en la fecha.', `La fecha de creación del folio no puede ser anterior a 4 días de la fecha de hoy.`, 'error');
       return;
@@ -179,7 +176,6 @@ export class RegistroDeFoliosComponent implements OnInit {
   }
 
   eliminarFolio ( folio: Folio) {
-    console.log(' modifcar folio');
     swal({
       title: '¿Quieres eliminar este folio?',
       text: 'Esta acción no se puede deshacer.',
@@ -225,7 +221,6 @@ export class RegistroDeFoliosComponent implements OnInit {
     this.folio.fechaFolio = new Date();
     this._buscadorRapidoService.reiniciar();
     this.vendedorSeleccionado = '-';
-    
   }
 
 }

@@ -11,6 +11,8 @@ export class Departamento {
     }
   
     static fromJSON_Array( data: any []) {
+        if( !data ) return;
+        
         return data.map( x => x = Departamento.fromJSON(x));
     }
 }

@@ -15,7 +15,8 @@
                     <ng-container *ngFor="let modeloCompleto of modelosCompletos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
-                                <app-modelo-completo [modeloCompleto]="modeloCompleto"></app-modelo-completo>
+                                <!-- <app-modelo-completo [modeloCompleto]="modeloCompleto"></app-modelo-completo> -->
+                                {{modeloCompleto.nombreCompleto}}
                                 <div>
 
                                     <button *ngIf="modeloCompleto.editado" (click)="guardarCambiosDeModeloCompleto( modeloCompleto )" class="btn btn-outline-success btn-sm mr-1"> <i class="fa fa-save"></i></button>
@@ -31,7 +32,7 @@
     </div>
 </div>
 
-<!-- 
+<!--
 =====================================
  Editar modelo completo
 =====================================
@@ -71,13 +72,14 @@
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" [(ngModel)]="terminado" required #_terminado="ngModel">
-                <small class="form-text text-muted">terminado</small>
+                <small class="form-text text-muted">Terminado</small>
                 <ng-container *ngIf="_terminado.invalid">
                     <ng-container *ngIf="_terminado?.errors.required">
                         <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
                     </ng-container>
                 </ng-container>
             </div>
+
             <div class="form-group">
                 <input type="text" class="form-control" [(ngModel)]="laserAlmacen">
                 <small class="form-text text-muted">Laser almacen</small>
@@ -318,50 +320,7 @@
             </div>
         </div>
     </div>
-    <div class="col-auto" *ngIf="!editando()">
-        <div class="card">
-            <div class="card-body">
-                <h1>Laserados</h1>
-                <div class="list-group">
-                    <ng-container *ngFor="let laser of marcasLaser; let i_mc = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <div class="d-flex w-100 justify-content-between mr-3">
-                                    {{laser.laser}}
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button (click)="laser.modificar()" *ngIf="laser.editado" class="btn btn-sm btn-outline-success mr-3"><i class="fa fa-save"></i></button>
-                                    <button (click)="laser.editado = true; visorDeCambios.marcaLaser.editandose=laser" class="btn btn-outline-inverse btn-sm"><i class="fa fa-edit"></i>Editar</button>
-                                </div>
-                            </div>
-                        </a>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-auto" *ngIf="!editando()">
-        <div class="card">
-            <div class="card-body">
-                <h1>Versiones de Modelo</h1>
-                <div class="list-group">
-                    <ng-container *ngFor="let versionModelo of versionModelos; let i_mc = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <div class="d-flex w-100 justify-content-between mr-3">
-                                    {{versionModelo.versionModelo}}
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <button (click)="versionModelo.modificar()" *ngIf="versionModelo.editado" class="btn btn-sm btn-outline-success mr-3"><i class="fa fa-save"></i></button>
-                                    <button (click)="versionModelo.editado = true; visorDeCambios.versionModelo.editandose=versionModelo" class="btn btn-outline-inverse btn-sm"><i class="fa fa-edit"></i>Editar</button>
-                                </div>
-                            </div>
-                        </a>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 
@@ -399,20 +358,8 @@
                     <div class="form-group"><input [(ngModel)]="visorDeCambios.terminado.editandose.terminado" type="text" class="form-control" placeholder="Terminado"></div>
                 </ng-container>
 
-                <ng-container *ngIf="visorDeCambios.marcaLaser.editandose">
-                    <h1>Laser: <small>{{visorDeCambios.marcaLaser.editandose.marcaLaser}}</small></h1>
-                    <hr>
 
-                    <div class="form-group"><input [(ngModel)]="visorDeCambios.marcaLaser.editandose.laser" type="text" class="form-control" placeholder="Terminado"></div>
-                    <h4>Imagenes</h4>
-                    <img *ngFor="let imagen of visorDeCambios.marcaLaser.editandose.imagenes" [src]="imagen">
-                </ng-container>
 
-                <ng-container *ngIf="visorDeCambios.versionModelo.editandose">
-                    <h1>Versión de modelo: <small>{{visorDeCambios.versionModelo.editandose.versionModelo}}</small></h1>
-                    <hr>
-                    <div class="form-group"><input [(ngModel)]="visorDeCambios.versionModelo.editandose.versionModelo" type="text" class="form-control" placeholder="VersionModelo"></div>
-                </ng-container>
 
                 <hr>
                 <br>

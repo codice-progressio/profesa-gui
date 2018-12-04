@@ -41,8 +41,6 @@ export class VerificaTokenGuard implements CanActivate {
       // console.log(ahora);
 
       if ( tokenExp.getTime() > ahora.getTime() ) {
-        console.log('No se renueva el token');
-
         resolve(true);
       } else {
         this._usuarioService.renuevaToken()

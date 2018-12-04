@@ -56,7 +56,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
   ],
   providers: [
     // Configuraciones de idioma. 
-    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: LOCALE_ID, useValue: 'es-MX' },
     // Interceptor para agregar Bearer token. 
     {provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
