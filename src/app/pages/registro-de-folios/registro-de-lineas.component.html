@@ -1,10 +1,80 @@
 <!-- 
 =====================================
+ Lista de pedidos en producción.
+=====================================
+-->
+<div *ngIf="!folioLinea" class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>
+                        <h1 > Folio <strong>{{folio?.numeroDeFolio}}</strong>  del cliente <strong>{{cliente?.nombre}}</strong> </h1>
+                        <h6 class="card-subtitle">Pedidos que estan actualmente en el folio. </h6>
+
+                    </span>
+                    <span>
+                        <button (click)="agregarPedido()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Agregar pedido a este folio.</button>
+                    </span>
+                </div>
+
+                <h1 class="display-1" *ngIf="0 >= folio?.folioLineas.length">Este folio <strong> no tiene</strong> pedidos.</h1>
+
+                <div class="table-resp;onsive" *ngIf="folio?.folioLineas.length >0">
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Modelo</th>
+                                <th>Cantidad</th>
+                                <th>Prioridad</th>
+                                <th>Laser del cliente</th>
+                                <th class="align-middle text-center">Surtir de almacen</th>
+                                <th>Observaciones</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let linea of folio?.folioLineas" [ngClass]="{'animated zoomOut': linea.eliminar}">
+                                <td class="align-middle">
+                                    {{linea.modeloCompleto | modeloCompleto}}
+                                </td>
+
+                                <td class="align-middle">{{linea.cantidad | number:'1.0-0'}}</td>
+
+                                <td class="align-middle">
+                                    <app-nivel-urgencia [nivel]="linea.nivelDeUrgencia"></app-nivel-urgencia>
+                                </td>
+
+                                <td class="align-middle">{{linea?.laserCliente?.laser}}</td>
+                                <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fa fa-check fa-2x"></i></td>
+                                <td> {{linea.observaciones}}</td>
+                                <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
+                                <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 
+        =====================================
+         END de Lista de pedidos en producción.
+        =====================================
+        -->
+
+<!-- 
+=====================================
 Registro de lineas
 =====================================
 -->
 
-<div class="row">
+<div class="row" *ngIf="!folioLinea">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -19,7 +89,7 @@ Registro de lineas
                         </h4>
 
                     </div>
-                    <div class="card-body collapse" id="collapse-info">
+                    <div class="card-body collapse show" id="collapse-info">
                         <form class="form-horizontal" role="form">
                             <div class="form-body">
                                 <h3 class="box-title">Cliente</h3>
@@ -109,35 +179,36 @@ Registro de lineas
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="folioLinea">
     <div class="col-12">
         <div class="card">
             <div class="card-body" [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}">
-                <h1 class="card-title" *ngIf="!modificandoLinea">Agregar nuevo pedido </h1>
-                <h1 class="card-title" *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido </h1>
+                <h1 [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}" class="d-flex justify-content-between align-items-center">
+                    <span *ngIf="!modificandoLinea">Nuevo pedido </span>
+                    <span *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido. </span>
+                    <span>
+
+                         Folio <strong>{{folio.numeroDeFolio}}</strong> Cliente <strong>{{cliente.nombre}}</strong>
+                    </span>
+                </h1>
+
 
                 <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar()" class=" m-t-40">
 
-                    <div class="row">
-                        <div class="col-12 col-sm-3">
-                            <div class="form-group ">
-                                <input class="border-danger" #fa [(value)]='this.termino' (keyup)="buscarModelo(fa.value)" type="text" class="form-control " placeholder="...">
-                                <span class="help-block text-muted">
-                                          <small>Modelo</small>
-                                  </span>
-                            </div>
+                    <div class="row ">
+                        <div class="col-4">
 
+                            <app-buscador-rapido [input]="true"></app-buscador-rapido>
                         </div>
-                        <div class="col text-inverse">
-                            <app-buscador-rapido></app-buscador-rapido>
+                        <div class="col-8">
+                            <app-buscador-rapido [lista]="true"></app-buscador-rapido>
                         </div>
-
-
                     </div>
 
                     <div class="row">
                         <div class="col-6 col-lg-3">
                             <div class="form-group">
+
                                 <input [(ngModel)]="folioLinea.cantidad" name="cantidad" class="form-control" required placeholder="Cantidad de pedido" type="number" min="1">
                                 <span class="help-block text-muted">
                                     <small>Cantidad.</small>
@@ -191,15 +262,23 @@ Registro de lineas
                         </div>
                     </div>
 
-                    <hr>
-
-                    <div class="row mt-5 mb-5">
+                    <div class="row m t-3">
                         <div class="col-12">
-                            <app-ordenador-visual></app-ordenador-visual>
+                            <div class="form-group">
+                                <textarea [(ngModel)]="folioLinea.observaciones" name="folioLinea.observaciones" class="form-control" type="text-box" id="observaciones"></textarea>
+                                <span class="help-block text-muted">
+                                                                <small>Observaciones.</small>
+                                                            </span>
+                            </div>
+
                         </div>
                     </div>
 
-                    <hr>
+
+
+                    <app-ordenador-visual></app-ordenador-visual>
+
+
 
                     <ng-container *ngIf="folioLinea.cantidad > 0">
                         <h3>Colores para teñido <a (click)="agregarColorTenido()" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></a></h3>
@@ -230,7 +309,7 @@ Registro de lineas
                             <span *ngIf="modificandoLinea"> Guardar modificaciones</span>
                             <span *ngIf="!modificandoLinea"> Guardar</span>
                         </button>
-                        <a *ngIf="!modificandoLinea" class="btn btn-warning ml-2" (click)="cancelarModificacion()"><i class="fa fa-paint-brush"></i> Limpiar</a>
+                        <a *ngIf="!modificandoLinea" class="btn btn-danger ml-2 text-white" (click)="cancelarModificacion()"><i class="fa fa-times"></i> Cancelar</a>
                         <button *ngIf="modificandoLinea" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
                             <i class="fa fa-times"> </i> 
                             <span > Cancelar</span>
@@ -241,63 +320,3 @@ Registro de lineas
         </div>
     </div>
 </div>
-
-<!-- 
-=====================================
- Lista de pedidos en producción.
-=====================================
--->
-
-
-<div *ngIf="!this.modificandoLinea" class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"> Pedidos del folio </h4>
-                <h6 class="card-subtitle">Pedidos que estan actualmente en el folio. </h6>
-                <app-pre-loader></app-pre-loader>
-                <div class="table-responsive">
-                    <table class="table table-hover table-borderless">
-                        <thead>
-                            <tr>
-                                <th>Modelo</th>
-                                <th>Cantidad</th>
-                                <th>Prioridad</th>
-                                <th>Laser del cliente</th>
-                                <th class="align-middle text-center">Surtir de almacen</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let linea of folio?.folioLineas" [ngClass]="{'animated zoomOut': linea.eliminar}">
-                                <td class="align-middle">
-                                    {{linea.modeloCompleto | modeloCompleto}}
-                                </td>
-
-                                <td class="align-middle">{{linea.cantidad | number:'1.0-0'}}</td>
-
-                                <td class="align-middle">
-                                    <app-nivel-urgencia [nivel]="linea.nivelDeUrgencia"></app-nivel-urgencia>
-                                </td>
-
-                                <td class="align-middle">{{linea?.laserCliente?.laser}}</td>
-                                <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fa fa-check fa-2x"></i></td>
-                                <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
-                                <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- 
-    =====================================
-     END de Lista de pedidos en producción.
-    =====================================
-    -->

@@ -4,7 +4,10 @@
             <div class="card-body justify-content-between">
 
                 <!-- Permite imprimir solo el área con las órdenes.  -->
-                <a class="btn btn-outline-warning" onclick="
+                <a (click)="seImprimio()" class="btn " [ngClass]="{
+                    'btn-warning': folio.impreso,
+                    'btn-outline-warning': !folio.impreso
+                }" onclick="
                     function printDiv() {
                       $('#print').clone().appendTo('body').addClass('print').attr('id', 'zona_imp');
                       $('#no_print').addClass('no-print');
@@ -35,7 +38,10 @@
                         <div class="card text-white bg-dark mb-3 no-print">
                             <div class="card-header">PEDIDO #{{i_numPed+1}}</div>
                             <div class="card-body">
-                                <h5 class="card-title text-white"><span><app-modelo-completo [linea]="linea"></app-modelo-completo></span></h5>
+                                <h5 class="card-title text-white">
+                                    <span>
+                                        {{linea.modeloCompleto | modeloCompleto }}
+                                    </span></h5>
                                 <p class="card-text">
                                     Cantidad de piezas: {{linea.cantidad}}
                                 </p>
@@ -52,7 +58,11 @@
                                                 <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
                                             </h3>
 
-                                            <h3><strong><app-modelo-completo [linea]="linea"></app-modelo-completo></strong></h3>
+                                            <h3>
+                                                <strong>
+                                                {{linea.modeloCompleto | modeloCompleto}}
+                                                </strong>
+                                            </h3>
 
                                             <!-- <span>
                                                 <h6><strong>INFO ADICIONAL:</strong> </h6>
@@ -72,8 +82,9 @@
                                             <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones">
                                                 <small>
                                                     <strong >OBSERVACIONES:</strong> <br>
-                                                    <span *ngIf="folio.observaciones">{{folio.observaciones}}  <br></span>
-                                                    <span *ngIf="orden.observaciones">{{orden.observaciones}}</span>
+                                                    <span *ngIf="folio.observaciones">>>{{folio.observaciones}}  <br></span>
+                                                    <span *ngIf="folio.observaciones">>>{{linea.observaciones}}  <br></span>
+                                                    <span *ngIf="orden.observaciones">>>{{orden.observaciones}}</span>
                                                 </small>
 
                                             </ng-container>

@@ -13,6 +13,7 @@ import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
 import { Laser } from 'src/app/models/laser.models';
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +25,18 @@ export class ModeloService {
   constructor(
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,
-    public _utiliadesService: UtilidadesService
+    public _utiliadesService: UtilidadesService,
+    public _preLoaderService: PreLoaderService
   ) { }
 
   
   guardar( mod: any ) {
+    const a: number = this._preLoaderService.loading('Guardando modelo.');
+    
     const url = URL_SERVICIOS + `/modeloCompleto`;
     return this.http.post(url, mod).pipe(
       map( (resp: any) => {
-        this._msjService.ok_( resp );
+        this._msjService.ok_( resp , null, a );
         return resp.modeloCompleto;
       }), catchError(err => {
         this._msjService.err( err );
@@ -41,11 +45,14 @@ export class ModeloService {
     );
   } 
 
-  buscarModeloCompleto( termino: string ) {
-    const url = URL_SERVICIOS + `/busqueda/coleccion/modelosCompletos/${termino}`;
+  buscarModeloCompleto( termino: string, desde:number=0, limite:number=0 ) {
+    // NO REQUIERE PRELOADER.
+    
+    const url = URL_SERVICIOS + `/modeloCompleto/buscar/${termino}?desde=${desde}&limite=${limite}`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
+          this.total = resp.total;
           this._msjService.ok_( resp );
           return resp.modelosCompletos;
         }
@@ -57,18 +64,21 @@ export class ModeloService {
   }
 
   cagarModelosCompletos(desde: number = 0, limite: number = 5 ) {
+    const a: number = this._preLoaderService.loading('Cargando modelos.');
+    
     // Siempre con el signo de interrogación para las concatenaciones posteriores. 
     const url = URL_SERVICIOS + `/modeloCompleto?`;
-    return this.cargaDeModelosCompletos( url, limite, desde);
+    return this.cargaDeModelosCompletos( url, limite, desde, a);
   }
 
 
-  private cargaDeModelosCompletos (url: string, limite: number = 5, desde: number = 0) {
+  private cargaDeModelosCompletos (url: string, limite: number = 5, desde: number = 0, a: number ) {
     url += `&limite=${limite}`; 
     url += `&desde=${desde}`;
    return this.http.get( url ).pipe(
       map( (resp: any)  => {
         this.total = resp.total;
+        this._msjService.ok_(resp);
         return resp.modelosCompletos;
       }), 
       catchError( err => {
@@ -81,11 +91,13 @@ export class ModeloService {
 
   // Obtiene todos los datos con costos. 
   cargarModelosCompletosParaCostos( ) {
+    const a: number = this._preLoaderService.loading('Cargando modelos con sus costos.');
+    
     const url = URL_SERVICIOS + `/modeloCompleto/costos`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null , a );
           return resp.modelosCompletos;
         }
       ), catchError( err => {
@@ -97,11 +109,13 @@ export class ModeloService {
 
 
   cargarModelos () {
+  const a: number = this._preLoaderService.loading('Cargando modelos.');
+  
     const url = URL_SERVICIOS + `/modelo`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.modelos;
         }
       ), catchError( err => {
@@ -112,11 +126,13 @@ export class ModeloService {
   }
 
   cargarTamanos () {
+    const a: number = this._preLoaderService.loading('Cargando tamanos.');
+    
     const url = URL_SERVICIOS + `/tamano`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.tamanos;
         }
       ), catchError( err => {
@@ -127,11 +143,13 @@ export class ModeloService {
   }
 
   cargarColores () {
+    const a: number = this._preLoaderService.loading('Cargando colores.');
+    
     const url = URL_SERVICIOS + `/color`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.colores;
         }
       ), catchError( err => {
@@ -142,11 +160,13 @@ export class ModeloService {
   }
   
   cargarTerminados () {
+    const a: number = this._preLoaderService.loading('Cargando terminados.');
+    
     const url = URL_SERVICIOS + `/terminado`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.terminados;
         }
       ), catchError( err => {
@@ -158,11 +178,13 @@ export class ModeloService {
 
 
   modificarModelo( m: Modelo) {
+    const a: number = this._preLoaderService.loading('Guardando cambios a modelo.');
+    
     const url = URL_SERVICIOS + `/modelo`;
     return this.http.put(url, m).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.modelo;
         }
       ), catchError( err => {
@@ -173,11 +195,13 @@ export class ModeloService {
   }
 
   modificarTamano( m: Tamano) {
+    const a: number = this._preLoaderService.loading('Guardando cambios a tamano.');
+    
     const url = URL_SERVICIOS + `/tamano`;
     return this.http.put(url, m).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.tamano;
         }
       ), catchError( err => {
@@ -187,11 +211,13 @@ export class ModeloService {
     );
   }
   modificarColor( m: Color) {
+    const a: number = this._preLoaderService.loading('Guardando cambios a color.');
+    
     const url = URL_SERVICIOS + `/color`;
     return this.http.put(url, m).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.color;
         }
       ), catchError( err => {
@@ -201,11 +227,13 @@ export class ModeloService {
     );
   }
   modificarTerminado( m: Terminado) {
+    const a: number = this._preLoaderService.loading('Guardando cambios a terminado.');
+    
     const url = URL_SERVICIOS + `/terminado`;
     return this.http.put(url, m).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.terminado;
         }
       ), catchError( err => {
@@ -219,11 +247,13 @@ export class ModeloService {
   
 
   eliminarModeloCompleto(mc: ModeloCompleto): any {
+    const a: number = this._preLoaderService.loading('Eliminado el modelo.');
+    
     const url = URL_SERVICIOS + `/modeloCompleto/${mc._id}`;
     return this.http.delete(url).pipe(
       map(
         (resp: any ) => {
-          this._msjService.ok_( resp );
+          this._msjService.ok_( resp , null, a );
           return resp.modeloCompleto;
         }
       ), catchError( err => {

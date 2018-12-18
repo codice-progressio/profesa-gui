@@ -10,6 +10,7 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 import { Roles } from 'src/app/models/roles.models';
 import { _ROLES } from 'src/app/config/roles.const';
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 
 
 @Injectable({
@@ -32,9 +33,8 @@ export class UsuarioService {
     public http: HttpClient,
     public router: Router,
     public _subirArchivoService: SubirArchivoService,
-    public _msj: ManejoDeMensajesService
-  
-    
+    public _msjService: ManejoDeMensajesService,
+    public _preLoaderService: PreLoaderService
   ) {
     // console.log('Servicio de usuario listo');
     this.cargarStorage();
@@ -48,12 +48,12 @@ export class UsuarioService {
         localStorage.setItem('token', this.token);
         // Si lo hace recive true
         // console.log('token renovado. ');
-        this._msj.ok_('Token renovado');
+        this._msjService.ok_('Token renovado');
         return true;
       }),
       catchError( err => {
         // swal( 'No se pudo renovar token', 'No fue posible renovar token.', 'error');
-        this._msj.err( err);
+        this._msjService.err( err);
         this.router.navigate(['login']);
         return throwError(err);
       })
@@ -61,6 +61,8 @@ export class UsuarioService {
   }
 
   logout() {
+
+    
     this.usuario = null;
     this.token = '';
     this.menu = [null];
@@ -68,6 +70,7 @@ export class UsuarioService {
     localStorage.removeItem('usuario');
     localStorage.removeItem('menu');
     this.router.navigate(['/login']);
+    
   }
 
   loginGoogle ( token: string) {
@@ -127,7 +130,8 @@ export class UsuarioService {
 
 
   login (usuario: Usuario, recordar: boolean = false) {
-
+    const a: number = this._preLoaderService.loading('Iniciando secion.');
+    
     // Recordamos el email guardandolo en el localStorage. Esto
     // se activa con el input de "Recuerdame" que esta en la
     // pagina del login.
@@ -136,7 +140,6 @@ export class UsuarioService {
     } else {
       localStorage.removeItem('email');
     }
-
     const url = URL_SERVICIOS + '/login';
     return this.http.post(url, usuario).pipe(
       // Guardamos la información en el local storage para que quede
@@ -145,28 +148,30 @@ export class UsuarioService {
        
         // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
+        this._msjService.ok_(resp,null, a);
         return true;
       }),
       catchError( err => {
         // console.log( err.error);
-       swal('Error en el login', err.error.mensaje, 'error') ;
+       this._msjService.err(err);
         return throwError(err);
       })
     );
   }
 
   crearUsuario (usuario: Usuario) {
+    const a: number = this._preLoaderService.loading('Guardando usuario.');
+    
     const url = URL_SERVICIOS + '/usuario';
 
     return this.http.post(url, usuario).pipe(
       // Si todo salio bien mandamos un mensaje.
       map((resp: any) => {
-        swal('Usuario creado',
-        `El usuario ${usuario.nombre} ha sido creado`, 'success');
+        this._msjService.ok_(resp,null, a);
         return resp.usuario;
       }),
       catchError( err => {
-        this._msj.err( err );
+        this._msjService.err( err );
         return throwError(err);
       })
     );
@@ -175,6 +180,8 @@ export class UsuarioService {
   // Actualiza los datos de un usuario en el local storage
   // y el la BD.
   actualizarUsuario( usuario: Usuario) {
+    const a: number = this._preLoaderService.loading('Actualizando datos del usuario.');
+    
     let url = URL_SERVICIOS + '/usuario/' + usuario._id;
     url += '?token=' + localStorage.getItem('token');
 
@@ -191,10 +198,10 @@ export class UsuarioService {
           // this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu, this.roles);
           this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu);
         }
-        this._msj.ok_(resp);
+        this._msjService.ok_(resp,null, a);
         return true;
       }), catchError( err => {
-        this._msj.err( err );
+        this._msjService.err( err );
         return throwError(err);
       })
 
@@ -203,30 +210,47 @@ export class UsuarioService {
   }
 
   cambiarImagen( archivo: File, id: string) {
+    const a: number = this._preLoaderService.loading('Subiendo imagen para el usuario.');
+    
     this._subirArchivoService.subirArchivo( archivo, 'usuarios', id)
     .then((resp: any) =>  {
       this.usuario.img = resp.usuario.img;
-    
-
-      swal('Imagen actualizada', this.usuario.nombre, 'success');
+      this._msjService.ok_(resp,null, a);
       this.guardarStorage(id, this.token, this.usuario, this.menu);
     }).catch( err => {
-      this._msj.err(err);
+      this._msjService.err(err);
       return throwError( err );
     });
   }
 
   cargarUsuarios ( desde: number = 0) {
+    const a: number = this._preLoaderService.loading('Cargando usuarios.');
+    
     const url = URL_SERVICIOS + `/usuario?desde=${desde}`;
-    return this.http.get(url);
+    return this.http.get(url).pipe( 
+      map(resp =>{ 
+        this._msjService.ok_(resp,null, a);
+        return resp;
+      }),
+      catchError( err => {
+        this._msjService.err(err);
+        return throwError(err);
+      })
+      );
   }
 
   buscarUsuario ( termino: string ) {
+    this._preLoaderService.miniCarga = true;
+    const a: number = this._preLoaderService.loading('Buscando usuario: ' + termino);
+    
     const url = URL_SERVICIOS + `/busqueda/coleccion/usuarios/${termino}`;
     return this.http.get(url).pipe(
-      map((resp: any ) =>  resp.usuarios ),
+      map((resp: any ) =>  {
+        this._msjService.ok_(resp,null, a);
+        return resp.usuarios;
+      } ),
       catchError( err => {
-        this._msj.err( err );
+        this._msjService.err( err );
         return throwError( err );
       })
     );
@@ -241,21 +265,24 @@ export class UsuarioService {
         return true;
       }),
       catchError( err => {
-        this._msj.err( err );
+        this._msjService.err( err );
         return throwError( err );
       })
     );
   }
 
-  buscarUsuarioPorROLE (role: string ) {
+  buscarUsuarioPorROLE (role: string , a:number ) {
+    
     const url = URL_SERVICIOS + `/busqueda/coleccion/usuariosRole/${role}`;
     
     return this.http.get( url ).pipe(
       map( ( resp: any ) => {
+        this._msjService.ok_(resp,null, a);
+        
         return resp.usuariosRole;
       }),
       catchError( err => {
-        this._msj.err( err );
+        this._msjService.err( err );
         return throwError( err );
       })
     );
@@ -269,14 +296,24 @@ export class UsuarioService {
   }
 
   cargarVendedores ( ) {
-    return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE);
+    const a: number = this._preLoaderService.loading('Cargando vendedores.');
+    
+    return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE, a);
   }
 
   cargarSeleccionadores() {
-    return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE );
+    const a: number = this._preLoaderService.loading('Cargando seleccionadores.');
+    
+    return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE , a);
   }
   cargarEmpacadores() {
-    return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE );
+    const a: number = this._preLoaderService.loading('Cargando empacadores.');
+    return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE, a );
+  }
+
+  cargarMateriales( ) {
+    const a: number = this._preLoaderService.loading('Cargando empleados de materiales.');
+    return this.buscarUsuarioPorROLE(_ROLES.MATERIALES_CARGA_ROLE, a);
   }
 
   // // Concatena a la url URL_SERVICIOS y el token=?

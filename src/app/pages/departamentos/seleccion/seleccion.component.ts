@@ -8,6 +8,7 @@ import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/list
 import { FolioService, ValidacionesService, UsuarioService } from '../../../services/service.index';
 import { Seleccion } from 'src/app/models/seleccion.models';
 import { Usuario } from 'src/app/models/usuario.model';
+import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 
 @Component({
   selector: 'app-seleccion',
@@ -17,7 +18,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 export class SeleccionComponent implements OnInit {
 
   // =========================================
-  private NOMBRE_DEPTO: string = 'SELECCION';
+  private NOMBRE_DEPTO: string = DEPARTAMENTOS.SELECCION._n;
   // =========================================
 
   seleccionForm: FormGroup;
@@ -38,14 +39,15 @@ export class SeleccionComponent implements OnInit {
   ) { 
     this.cargarOrdenesDeDepartamento();
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this._qrScannerService.titulo = DEPARTAMENTOS.SELECCION._n;
     this._usuarioService.cargarSeleccionadores().subscribe( resp => {
       this.usuarios = resp;
     });
   }
 
   cargarOrdenesDeDepartamento() {
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.pastilla();
+    this._listaDeOrdenesService.depto = DEPARTAMENTOS.SELECCION._n;
+    this._listaDeOrdenesService.seleccion();
   }
 
   ngOnInit() {
@@ -56,18 +58,19 @@ export class SeleccionComponent implements OnInit {
     this.seleccionForm = this.formBuilder.group({
       quebrados: ['', 
       [
-        Validators.required,
         Validators.min(1),
         Validators.max(99999),
         this._validacionesService.numberValidator,
+        this._validacionesService.onlyIntegers,
+        this._validacionesService.onlyIntegers,
       ]
     ],
     paraNegro: ['', 
-      [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(99999),
-        this._validacionesService.numberValidator,
+    [
+      Validators.min(1),
+      Validators.max(99999),
+      this._validacionesService.numberValidator,
+      this._validacionesService.onlyIntegers,
       ]
     ],
     seleccionadoPor: ['', 

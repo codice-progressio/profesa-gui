@@ -76,13 +76,12 @@ export class ProcesosEnModeloComponent implements OnInit {
   constructor(
     public _modeloService: ModeloService,
     public _utilidadesService: UtilidadesService,
-    public _preloaderService: PreLoaderService,
+    public _preLoaderService: PreLoaderService,
     public _procesos: ProcesoService,
     public _manejoDeMensajesService: ManejoDeMensajesService,
     public _calculosService: CalculosDeCostosService
     ) { 
       
-      _preloaderService.cargando = true;
       this.cargarTodosLosDatos();
     }
     ngOnInit() {
@@ -125,7 +124,6 @@ export class ProcesosEnModeloComponent implements OnInit {
           this.procesosNormales = resp.procesosNormales;
         }),
     ]).then(() => {
-       this._preloaderService.cargando = false;
     }).catch( err => {
       console.log(err);
     });
@@ -160,7 +158,6 @@ export class ProcesosEnModeloComponent implements OnInit {
   }
   
   guardarNuevoModelo ( ) {
-    this._preloaderService.cargando = true;
     if ( !this.familiaDeProceso ) {
       this._manejoDeMensajesService.invalido( 'Es necesario que definas la familia de procesos.');
       return;

@@ -1,30 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { BuscadorRapidoService } from './buscador-rapido.service';
-import { BuscadorRapido } from '../../models/buscador-rapido.models';
-import swal from 'sweetalert2';
+import { Input, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { BuscadorRapidoService } from '../buscador-rapido/buscador-rapido.service';
 
 @Component({
   selector: 'app-buscador-rapido',
-  templateUrl: './buscador-rapido.component.html',
-  styles: []
+  templateUrl: './buscador-rapido.component.html'
 })
 export class BuscadorRapidoComponent implements OnInit {
-
+  
+  @Input() input:boolean = false;
+  @Input() lista:boolean = false;
 
   constructor(
-    public _ser: BuscadorRapidoService
-  ) { }
+    public s: BuscadorRapidoService
+  ) {
+  }
+  ngOnInit() {
+   }
 
-  ngOnInit() {}
-
-  // seleccionarModelo( objeto: BuscadorRapido) {
-  //   // this._ser.elementoSeleccionado = objeto;
-  //   // this._ser.leyenda = objeto.nombre;
-  //   this._ser.seleccionarElemento(objeto);
-  //   this._ser.callback(objeto.objeto);
-  //   this._ser.limpiarLista();
-  // }
-
+  
 
 
 }

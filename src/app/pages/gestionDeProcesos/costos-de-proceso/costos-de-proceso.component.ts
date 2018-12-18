@@ -37,7 +37,7 @@ export class CostosDeProcesoComponent implements OnInit {
 
   constructor(
     public _procesoService: ProcesoService,
-    public _preloaderService: PreLoaderService,
+    public _preLoaderService: PreLoaderService,
     public _maquinaService: MaquinaService,
     public _gastoService: GastoService,
     public _departamentosService: DepartamentoService,
@@ -45,7 +45,6 @@ export class CostosDeProcesoComponent implements OnInit {
     public _calculosDeCostoService: CalculosDeCostosService,
   ) {
     this._procesoService.obtenerTodosLosProcesos().subscribe(resp => {
-      this._preloaderService.cargando = false;
       this.familiaDeProcesos = resp.familiaDeProcesos;
       this.procesosEspeciales = resp.procesosEspeciales;
       this.procesosNormales = resp.procesosNormales;
@@ -79,8 +78,6 @@ export class CostosDeProcesoComponent implements OnInit {
   // }
 
   guardarModificacionesAEstaMaquina(maquina: Maquina) {
-    this._preloaderService.cargando = true;
-
     // Debe tener por lo menos un gasto.
     if (maquina.gastos.length === 0) {
       swal(
@@ -106,14 +103,12 @@ export class CostosDeProcesoComponent implements OnInit {
         .guardarNuevaMaquina(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._maquinaService
         .modificarMaquina(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
-          this._preloaderService.cargando = false;
         });
     }
   }
@@ -228,22 +223,18 @@ export class CostosDeProcesoComponent implements OnInit {
   }
 
   guardarModificacionesAGasto(gasto: Gasto) {
-    this._preloaderService.cargando = true;
-
     if (!gasto._id) {
       this._gastoService
         .guardarUnGasto(gasto)
         .subscribe((gastoGuardado: Gasto) => {
           gasto._id = gastoGuardado._id;
           this.limpiarGasto(gasto);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._gastoService
         .modificarUnGasto(gasto)
         .subscribe((gastoGuardado: Gasto) => {
           this.limpiarGasto(gasto);
-          this._preloaderService.cargando = false;
         });
     }
   }
@@ -277,13 +268,12 @@ export class CostosDeProcesoComponent implements OnInit {
   }
 
   guardarModificacionesAEsteProceso(proceso: Proceso) {
-    this._preloaderService.cargando = true;
+  
 
     this._procesoService
       .modificarProceso(proceso)
       .subscribe((resp: Proceso) => {
         this.limpiarProceso();
-        this._preloaderService.cargando = false;
       });
   }
 }

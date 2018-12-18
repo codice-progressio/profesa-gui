@@ -1,3 +1,4 @@
+export { PreLoaderService } from '../components/pre-loader/pre-loader.service';
 
 // Guards
 export { LoginGuardGuard } from './guards/login-guard.guard';

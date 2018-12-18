@@ -15,11 +15,14 @@ declare function qrDetener();
 declare let qrLeyendo: any;
 declare let qrData: any;
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class QrScannerService {
   
+  titulo: string = 'Lector de QR';
   lector: string = '#reader';
   leyendo: boolean;
   data: string = qrData;

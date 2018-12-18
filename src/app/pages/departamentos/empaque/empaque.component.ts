@@ -9,6 +9,7 @@ import { FolioService, ValidacionesService, UsuarioService } from 'src/app/servi
 import { Seleccion } from 'src/app/models/seleccion.models';
 import { Empaque } from 'src/app/models/empaque.models';
 import { Usuario } from 'src/app/models/usuario.model';
+import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 
 @Component({
   selector: 'app-empaque',
@@ -17,7 +18,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 })
 export class EmpaqueComponent implements OnInit {
 // =========================================
-private NOMBRE_DEPTO: string = 'EMPAQUE';
+private NOMBRE_DEPTO: string = DEPARTAMENTOS.EMPAQUE._n;
 // =========================================
 
 seleccionForm: FormGroup;
@@ -39,6 +40,7 @@ constructor(
  
   this.cargarOrdenesDeDepartamento();
   this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+  this._qrScannerService.titulo = DEPARTAMENTOS.EMPAQUE._n;
   
   this._usuarioService.cargarEmpacadores().subscribe( resp => {
     this.usuarios = resp;
@@ -72,7 +74,7 @@ ngOnInit() {
 
 cargarOrdenesDeDepartamento() {
   this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-  this._listaDeOrdenesService.pastilla();
+  this._listaDeOrdenesService.empaque();
 
 }
 

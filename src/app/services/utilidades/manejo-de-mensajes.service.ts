@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import swal from 'sweetalert2';
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,11 @@ export class ManejoDeMensajesService {
     buttonsStyling: false,
   });
   
-  constructor() { }
+  constructor(
+    public _preLoaderService: PreLoaderService
+  ) { }
 
-  err( err: any, callback: any = null ) {
+  err( err: any, callback: any = null) {
     
     const datosSwal: any  = {
       type: 'error',
@@ -38,6 +41,9 @@ export class ManejoDeMensajesService {
         }
       }
     }
+
+    this._preLoaderService.err();
+    
     
     swal(datosSwal).then( () => {
       this.cb( callback );
@@ -52,9 +58,14 @@ export class ManejoDeMensajesService {
       if (errors.hasOwnProperty(key)) {
         const objetoError = errors[key];
         footer += `<hr /><span class="text-rigth"><strong class="text-primary" >${key}: </strong>${objetoError.message}`; 
-        if ( !!objetoError.properties.value  ) {
-          footer += `<br /> El valor erroneo es: <span class="text-danger">${objetoError.properties.value} </span></span> `; 
+        
+        if( objetoError.properties){
+          if ( !!objetoError.properties.value  ) {
+            footer += `<br /> El valor erroneo es: <span class="text-danger">${objetoError.properties.value} </span></span> `; 
+          }
+
         }
+        
         footer += '</br>';
         
       }
@@ -64,16 +75,21 @@ export class ManejoDeMensajesService {
 
   }
 
-  ok_( datos: any, callback: any = null ) {
+
+  ok_( datos: any, callback: any = null, idPreLoader?: number ) {
+    
+    this._preLoaderService.ok(idPreLoader);
     if ( datos.mensaje ) {
       swal({
         type: 'success',
         text: datos.mensaje,
         title: '¡Muy bien!',
-        timer: 2500,
+        timer: 3500,
         showConfirmButton: false,
         position: 'top-end',
         toast: true,
+        animation: false,
+        customClass: 'animated shake  '
        
       }).then( () => {
         this.cb( callback );
@@ -106,7 +122,7 @@ export class ManejoDeMensajesService {
         timer: timer, 
         toast: true,
         animation: false,
-        customClass: 'animated tada  '
+        customClass: 'animated bounceIn  '
       };
       swal(d);
   }
@@ -178,6 +194,29 @@ export class ManejoDeMensajesService {
     });
   
   }
+
+  solicitarPermiso( msj: string, callback: any) {
+    this.swalWithBootstrapButtons({
+      title: 'Es necesario autorizacion.',
+      text: msj,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Solicitar autorizacion',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then( result => {
+      if ( result.value ) {
+        callback();
+      } else if (result.dismiss === swal.DismissReason.cancel ) {
+        this.swalWithBootstrapButtons(
+          'Cancelado',
+          'No se solicito permiso..',
+          'error'
+        );
+      }
+    });
+  }
+  
 
 
 

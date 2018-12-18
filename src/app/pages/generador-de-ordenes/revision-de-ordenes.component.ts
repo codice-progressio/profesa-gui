@@ -37,20 +37,20 @@ export class RevisionDeOrdenesComponent implements OnInit {
 
     activatedRoute.params.subscribe(params => {
       const idFolio = params['idFolio'];
-      this._preLoaderService.cargando = true;
       this._folioService.cargarFolio(idFolio).subscribe( folio => {
         this.folio = folio;
         
         this.folio.folioLineas.forEach(linea => {
           if ( linea.modeloCompleto.medias ) {
+            
             this.generarOrdenes(linea, 0.5);
             
           } else {
             this.generarOrdenes(linea);
           }
         });
+      
 
-        this._preLoaderService.cargando = false;
       });
     });
 
@@ -260,12 +260,8 @@ export class RevisionDeOrdenesComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        console.log(this.folio.folioLineas);
-         
-        this._preLoaderService.cargando = true;
         this._folioService.guardarOrdenes( this.folio )
         .subscribe(resp => {
-          this._preLoaderService.cargando = false;
           this.router.navigate(['/folios']);
         } );
         

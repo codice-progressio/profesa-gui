@@ -16,6 +16,8 @@ export class FolioLinea {
         public porcentajeAvance?: number,
         public coloresTenidos: ColoresTenidos[] = [],
         public procesos?: Procesos[],
+        public observaciones?: string,
+        public terminado?: boolean,
 
         // Esta es solo para eliminar con animación.
         public eliminar: boolean = false,

@@ -1,15 +1,6 @@
-<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
+<app-qr-scanner></app-qr-scanner>
 
 
-                <app-qr-scanner></app-qr-scanner>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
     <div class="col-12">
@@ -23,8 +14,8 @@
                     </div>
                     <div class="col-6">
                         <h2>
-                            <strong>
-                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                            <strong class="mr-3" *ngIf="linea">
+                                {{linea.modeloCompleto | modeloCompleto}}
                             </strong>
                             <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
                         </h2>

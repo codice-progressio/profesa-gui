@@ -7,8 +7,8 @@ export class Folio {
         public _id?: string,
         public numeroDeFolio?: string,
         public cliente?: Cliente,
-        public fechaFolio?: Date,
-        public fechaEntrega?: Date,
+        public fechaFolio: Date = new Date(),
+        public fechaEntrega: Date = new Date(),
         public vendedor?: Usuario,
         public observaciones?: string,
         public folioLineas?: FolioLinea [],
@@ -17,6 +17,8 @@ export class Folio {
         public eliminar: boolean = false,
         public nivelDeUrgencia?: string,
         public porcentajeAvance?: number,
+        public impreso?: boolean,
+        public terminado?: boolean,
 
         // Este es propio del front para
         // interactuar con botones. 

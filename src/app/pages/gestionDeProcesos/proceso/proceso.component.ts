@@ -42,16 +42,13 @@ export class ProcesoComponent implements OnInit {
 
   constructor(
     private _procesoService: ProcesoService,
-    public _preloaderService: PreLoaderService,
     public _departamentosService: DepartamentoService,
     public _gastoService: GastoService,
     public _maquinaService: MaquinaService,
     public _manejoDeMensajesService: ManejoDeMensajesService,
     public _calculoDeCostosSerivice: CalculosDeCostosService
   ) {
-    this._preloaderService.cargando = true;
     this._procesoService.obtenerTodosLosProcesos().subscribe(resp => {
-      this._preloaderService.cargando = false;
       this.familiaDeProcesos = resp.familiaDeProcesos;
       this.procesosEspeciales = resp.procesosEspeciales;
       this.procesosNormales = resp.procesosNormales;
@@ -77,14 +74,12 @@ export class ProcesoComponent implements OnInit {
   ngOnInit() {}
 
   guardarModificacionesAEstaFamilia(familia: FamiliaDeProcesos) {
-    this._preloaderService.cargando = true;
     if (familia.procesos.length === 0) {
       swal(
         'Familia de procesos vacia. ',
         'La familia de procesos debe contener por lo menos un proceso.',
         'error'
       );
-      this._preloaderService.cargando = false;
       return;
     }
 
@@ -93,7 +88,6 @@ export class ProcesoComponent implements OnInit {
         .modificarFamiliaDeProcesos(familia)
         .subscribe((resp: any) => {
           this.limpiar(familia);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._procesoService
@@ -101,20 +95,17 @@ export class ProcesoComponent implements OnInit {
         .subscribe((resp: FamiliaDeProcesos) => {
           familia._id = resp._id;
           this.limpiar();
-          this._preloaderService.cargando = false;
         });
     }
   }
 
   guardarModificacionesAEsteProceso(proceso: Proceso) {
-    this._preloaderService.cargando = true;
     if (proceso.pasos.length === 0) {
       swal(
         'Proceso vacio.',
         'El proceso debe contener por lo menos un paso.',
         'error'
       );
-      this._preloaderService.cargando = false;
       return;
     }
 
@@ -124,7 +115,6 @@ export class ProcesoComponent implements OnInit {
         'Debes definir el nombre del proceso',
         'error'
       );
-      this._preloaderService.cargando = false;
       return;
     }
 
@@ -133,7 +123,6 @@ export class ProcesoComponent implements OnInit {
         .guardarNuevoProceso(proceso)
         .subscribe((resp: any) => {
           this.limpiarProceso(proceso);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._procesoService
@@ -141,7 +130,6 @@ export class ProcesoComponent implements OnInit {
         .subscribe((resp: Proceso) => {
           proceso._id = resp._id;
           this.limpiarProceso();
-          this._preloaderService.cargando = false;
         });
     }
   }
@@ -151,11 +139,9 @@ export class ProcesoComponent implements OnInit {
     const familia = this.familiaDeProcesos[i];
     if (!familia._id) {
       this.familiaDeProcesos.splice(i, 1);
-      swal(
-        'Se eliminó la familia.',
-        'La familia que aun no se grabada se elimino. ',
-        'success'
-      );
+
+      this._manejoDeMensajesService.correcto('La familia que aun no se grababa se elimo.');
+
     } else {
       swal({
         title: `Vas a eliminar la familia ${familia.nombre}.`,
@@ -394,7 +380,6 @@ export class ProcesoComponent implements OnInit {
   }
 
   guardarModificacionesAEstaMaquina(maquina: Maquina) {
-    this._preloaderService.cargando = true;
 
     // Debe tener por lo menos un gasto.
     if (maquina.gastos.length === 0) {
@@ -421,14 +406,12 @@ export class ProcesoComponent implements OnInit {
         .guardarNuevaMaquina(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._maquinaService
         .modificarMaquina(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
-          this._preloaderService.cargando = false;
         });
     }
   }
@@ -491,7 +474,6 @@ export class ProcesoComponent implements OnInit {
   }
 
   guardarModificacionesAGasto(gasto: Gasto) {
-    this._preloaderService.cargando = true;
 
     if (!gasto._id) {
       this._gastoService
@@ -499,14 +481,12 @@ export class ProcesoComponent implements OnInit {
         .subscribe((gastoGuardado: Gasto) => {
           gasto._id = gastoGuardado._id;
           this.limpiarGasto(gasto);
-          this._preloaderService.cargando = false;
         });
     } else {
       this._gastoService
         .modificarUnGasto(gasto)
         .subscribe((gastoGuardado: Gasto) => {
           this.limpiarGasto(gasto);
-          this._preloaderService.cargando = false;
         });
     }
   }

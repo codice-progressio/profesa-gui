@@ -15,11 +15,13 @@ import { PreLoaderComponent } from '../components/pre-loader/pre-loader.componen
 import { NivelUrgenciaComponent } from '../components/nivel-urgencia/nivel-urgencia.component';
 import { PaginadorComponent } from '../components/paginador/paginador.component';
 import { ListaDeOrdenesComponent } from '../components/lista-de-ordenes/lista-de-ordenes.component';
-import { ModeloCompletoComponent } from '../components/modelo-completo/modelo-completo.component';
 import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component';
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component';
 import {DndModule} from 'ng2-dnd';
 import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component';
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component';
+import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
+
 
 
 @NgModule({
@@ -41,10 +43,10 @@ import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenad
         NivelUrgenciaComponent,
         PaginadorComponent,
         ListaDeOrdenesComponent,
-        ModeloCompletoComponent,
         QrScannerComponent,
         ValidacionInputsComponent,
-        OrdenadorVisualComponent
+        OrdenadorVisualComponent,
+        ProgressBarComponent
     ],
     exports: [
         NopagefoundComponent,
@@ -57,12 +59,13 @@ import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenad
         NivelUrgenciaComponent,
         PaginadorComponent,
         ListaDeOrdenesComponent,
-        ModeloCompletoComponent,
         QrScannerComponent,
         ValidacionInputsComponent,
         DndModule,
-        OrdenadorVisualComponent
-    ]
+        OrdenadorVisualComponent,
+        ProgressBarComponent
+    ],
+    providers:[ModeloCompletoPipe]
 })
 
 export class SharedModule {}

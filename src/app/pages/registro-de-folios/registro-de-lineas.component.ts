@@ -1,56 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import swal from 'sweetalert2';
-import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
-import { ModeloService, ClienteService, UtilidadesService, OrdenadorVisualService } from '../../services/service.index';
-import { FolioLinea, ColoresTenidos } from '../../models/folioLinea.models';
-import { FolioService } from '../../services/folio/folio.service';
-import { Cliente } from '../../models/cliente.models';
-import { ActivatedRoute, Router, Route } from '@angular/router';
-import { Folio } from '../../models/folio.models';
-import { BuscadorRapidoService } from '../../components/buscador-rapido/buscador-rapido.service';
-import { BuscadorRapido } from '../../models/buscador-rapido.models';
-import Swal from 'sweetalert2';
-import { Laser } from '../../models/laser.models';
-import { IfStmt } from '@angular/compiler';
-import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
-import { Modelo } from '../../models/modelo.models';
+import { Component, OnInit } from "@angular/core";
+import swal from "sweetalert2";
+import { ModeloCompleto } from "../../models/modeloCompleto.modelo";
+import {
+  ModeloService,
+  ClienteService,
+  UtilidadesService,
+  OrdenadorVisualService,
+  ManejoDeMensajesService
+} from "../../services/service.index";
+import { FolioLinea, ColoresTenidos } from "../../models/folioLinea.models";
+import { FolioService } from "../../services/folio/folio.service";
+import { Cliente } from "../../models/cliente.models";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Folio } from "../../models/folio.models";
+import { BuscadorRapidoService } from "../../components/buscador-rapido/buscador-rapido.service";
+
+import { Laser } from "../../models/laser.models";
+import { PreLoaderService } from "../../components/pre-loader/pre-loader.service";
+import { ModeloCompletoPipe } from "../../pipes/modelo-completo.pipe";
+import { BuscadorRapido } from "src/app/components/buscador-rapido/buscador-rapido";
+import { log } from "util";
+import { ModeloCompletoAutorizacion } from "../../models/modeloCompletoAutorizacion.model";
+import { Subscriber } from "rxjs";
 
 @Component({
-  selector: 'app-registro-de-lineas',
-  templateUrl: './registro-de-lineas.component.html',
+  selector: "app-registro-de-lineas",
+  templateUrl: "./registro-de-lineas.component.html",
   styles: []
 })
 export class RegistroDeLineasComponent implements OnInit {
-
   nivelDeUrgencia = [
-    {nivel: 'ALMACEN', checked: false, class: 'radio-col-cyan'},
-    {nivel: 'PRODUCCIÓN', checked: true, class: 'radio-col-black'},
-    {nivel: 'URGENTE', checked: false, class: 'radio-col-red'},
-    {nivel: 'MUESTRA', checked: false, class: 'radio-col-yellow'},
+    { nivel: "ALMACEN", checked: false, class: "radio-col-cyan" },
+    { nivel: "PRODUCCIÓN", checked: true, class: "radio-col-black" },
+    { nivel: "URGENTE", checked: false, class: "radio-col-red" },
+    { nivel: "MUESTRA", checked: false, class: "radio-col-yellow" }
   ];
 
-  // Si la cantidad del pedido supera a la suma de los 
-  // colores de tenido se pone este en true para mostrar la alerta. 
+  // Si la cantidad del pedido supera a la suma de los
+  // colores de tenido se pone este en true para mostrar la alerta.
   sumaTenidoSuperaCantidad: boolean = false;
 
   // Para mas y menos
   mostrandoInfoFolio: boolean = false;
 
-  termino: string = '';
+  termino: string = "";
   // modelo: ModeloCompleto;
   modelosBuscados: ModeloCompleto[] = [];
   cliente: Cliente = null;
   folio: Folio;
-  folioLinea: FolioLinea = new FolioLinea();
+  folioLinea: FolioLinea = null;
   toStr = JSON.stringify;
 
-  laserSeleccionado: string = '';
+  laserSeleccionado: string = "";
 
   laserarPedido: boolean = false;
 
   modificandoLinea: boolean = false;
-
 
   constructor(
     public _modeloService: ModeloService,
@@ -61,54 +66,122 @@ export class RegistroDeLineasComponent implements OnInit {
     public router: Router,
     public _util: UtilidadesService,
     public _preLoaderService: PreLoaderService,
-    public _ordenadorVisualService: OrdenadorVisualService
+    public _ordenadorVisualService: OrdenadorVisualService,
+    private modeloCompletoPipe: ModeloCompletoPipe,
+    private _msjService: ManejoDeMensajesService
   ) {
-
     activatedRoute.params.subscribe(params => {
       // Si trae un id entonces lo buscamos.
-      const id = params['id'];
+      const id = params["id"];
       if (id) {
         this.cargarDatosDeFolio(id);
       }
     });
 
-    this._buscadorRapidoService.nombreDeElemento = 'modelo';
-    this._buscadorRapidoService.callback = (modelo: ModeloCompleto) => {
-      // Este callback retorna el objeto modeloCompleto para asignarlo
-      // y despues guardarlo.
-      this.folioLinea.modeloCompleto = modelo;
-      this._ordenadorVisualService.modeloCompleto = modelo;
+    this._buscadorRapidoService.limpiarTodo();
+    this._buscadorRapidoService.nombreDeElemento = "modelo";
+    this._buscadorRapidoService.promesa = () => {
+      return new Promise((resolve, reject) => {
+        // Primero nos aseguramos que los datos del client esten actualizados.
+        this._clienteService.findById(this.cliente._id).subscribe(resp => {
+          this.cliente = <Cliente>resp;
+          // Buscamos el modelo.
+          this._modeloService
+            .buscarModeloCompleto(
+              this._buscadorRapidoService.termino,
+              this._buscadorRapidoService.desde,
+              this._buscadorRapidoService.limite
+            )
+            .subscribe((resp: ModeloCompleto[]) => {
+              const d: BuscadorRapido[] = [];
+              resp.forEach(mc => {
+                const mca = <ModeloCompletoAutorizacion>(
+                  this.cliente.modelosCompletosAutorizados.find(x => {
+                    return x.modeloCompleto._id === mc._id;
+                  })
+                );
+
+                const br = new BuscadorRapido();
+                br.nombre = this.modeloCompletoPipe.transform(mc);
+                br.objeto = mc;
+
+                if (!mca) {
+                  br.atenuar = true;
+                  br.mensajeAtenuacion = "No autorizado.";
+                } else if (!mca.autorizado) {
+                  br.atenuar = true;
+                  if (mca.autorizacionSolicitada && !mca.autorizado) {
+                    br.mensajeAtenuacion = "Aut. pendiente.";
+                    br.claseAtenuacion = "text-warning";
+                  } else {
+                    br.mensajeAtenuacion = "No autorizado.";
+                    br.claseAtenuacion = "text-danger";
+                  }
+                } else {
+                  br.atenuar = false;
+                  br.mensajeAtenuacion = "Autorizado";
+                  br.claseAtenuacion = "text-success ";
+                }
+
+                d.push(br);
+              });
+              this._buscadorRapidoService.totalDeElementosBD = this._modeloService.total;
+              resolve(d);
+            });
+        });
+      });
+    };
+    this._buscadorRapidoService.callbackElementoSeleccionado = () => {
+      this.folioLinea.modeloCompleto = <ModeloCompleto>(
+        this._buscadorRapidoService.elementoSeleccionado.objeto
+      );
+      this._ordenadorVisualService.modeloCompleto = this.folioLinea.modeloCompleto;
       this._ordenadorVisualService.generar();
-      this.termino = '';
     };
 
-    this.folioLinea.nivelDeUrgencia = this.nivelDeUrgencia[1].nivel;
-    this.folioLinea.almacen = false;
-    this._buscadorRapidoService.reiniciar();      
-
+    this._buscadorRapidoService.callbackAtenuar = () => {
+      // Comprobamos que el clilente tenga autorizado el modelo.
+      const md: ModeloCompleto = <ModeloCompleto>(
+        this._buscadorRapidoService.elementoSeleccionado.objeto
+      );
+    
+      if (
+        this.cliente.modelosCompletosAutorizados.filter(x => x._id === md._id)
+          .length < 1
+      ) {
+        this._msjService.solicitarPermiso(
+          "El modelo no esta autorizado, quieres pedir autorizacion?",
+          () => {
+            this._clienteService
+              .solicitarAutorizacionDeModeloCompleto(this.cliente, md)
+              .subscribe();
+          }
+        );
+        return false;
+      }
+      return true;
+    };
   }
 
   ngOnInit() {}
-  
-  cargarDatosDeFolio( id: string ) {
-    this._preLoaderService.cargando = true;
-        this._folioService.cargarFolio(id).subscribe((folio: any) => {
-          this.folio = folio;
-          this.folio.folioLineas.forEach(linea => {
-            linea.eliminar = false;
-          });
-          this.cliente = this.folio.cliente;
-          this._preLoaderService.cargando = false;
-        });
+
+  cargarDatosDeFolio(id: string) {
+    this._folioService.cargarFolio(id).subscribe((folio: any) => {
+      this.folio = folio;
+      this.folio.folioLineas.forEach(linea => {
+        linea.eliminar = false;
+      });
+      this.cliente = this.folio.cliente;
+    });
   }
 
   guardar() {
     // Comprobar si hay un modelo seleccioando.
     if (!this.folioLinea.modeloCompleto) {
       swal(
-        'Modelo no seleccionado.',
-        'Es obligatorio seleccionar un modelo.',
-        'error'
+        "Modelo no seleccionado.",
+        "Es obligatorio seleccionar un modelo.",
+        "error"
       );
       return;
     }
@@ -116,34 +189,35 @@ export class RegistroDeLineasComponent implements OnInit {
 
     if (!this.folioLinea.nivelDeUrgencia) {
       swal(
-        'Prioridad no definida.',
-        'Es obligatorio definir la prioridad.',
-        'error'
+        "Prioridad no definida.",
+        "Es obligatorio definir la prioridad.",
+        "error"
       );
       return;
     }
-    
-    // Comprobar la cantidad a teñir. 
-    if ( this.sumaTenidoSuperaCantidad ) {
-        swal(
-          'Cantidad no concordante.',
-          'La cantidad a teñir supera la cantidad del pedido.',
-          'error'
-        );
-        return;
+
+    // Comprobar la cantidad a teñir.
+    if (this.sumaTenidoSuperaCantidad) {
+      swal(
+        "Cantidad no concordante.",
+        "La cantidad a teñir supera la cantidad del pedido.",
+        "error"
+      );
+      return;
     }
 
-    if ( this.laserarPedido ) {
-      if ( this.laserSeleccionado) {
-        this.folioLinea.laserCliente = this.cliente.laserados.find(x => x._id === this.laserSeleccionado);
-        console.log(this.folioLinea.laserCliente  );
+    if (this.laserarPedido) {
+      if (this.laserSeleccionado) {
+        this.folioLinea.laserCliente = this.cliente.laserados.find(
+          x => x._id === this.laserSeleccionado
+        );
+        console.log(this.folioLinea.laserCliente);
       } else {
-
         swal(
-          'Marca laser no seleccionada.',
+          "Marca laser no seleccionada.",
           // TODO: Cambiar a: "El pedido esta marcado para laserarse..."
-          'El pedido esta marcado como laserado pero no seleccionaste una marca laser .',
-          'error'
+          "El pedido esta marcado como laserado pero no seleccionaste una marca laser .",
+          "error"
         );
         return;
       }
@@ -151,90 +225,45 @@ export class RegistroDeLineasComponent implements OnInit {
       this.folioLinea.laserCliente = null;
     }
 
-    // Cargamos los procesos especiales en el folio si es que hay. 
+    // Cargamos los procesos especiales en el folio si es que hay.
     this.folioLinea.procesos = this._ordenadorVisualService.obtenerProcesos();
 
     // Lo guardamos.
     this._folioService
-    .guardarLinea(this.folio._id, this.folioLinea)
-    .subscribe(folioLinea1 => {
-      // Si no es nulo entonces si agregamos la nueva linea.
-      if (folioLinea1) {
-        this.folio.folioLineas.push(folioLinea1);
-      }
-      
-      this.folioLinea = new FolioLinea();
-      this._buscadorRapidoService.reiniciar();
-      this.laserSeleccionado = '';
-      this.modificandoLinea = false;
-      this.folioLinea.nivelDeUrgencia = 'PRODUCCIÓN';
-      this.laserarPedido = false;  
-      this._ordenadorVisualService.limpiar();
-
-    });
+      .guardarLinea(this.folio._id, this.folioLinea)
+      .subscribe(folioLinea1 => {
+        this.cargarDatosDeFolio(this.folio._id);
+        this.cancelarModificacion();
+        this._buscadorRapidoService.limpiarTodoMenosCallback();
+      });
   }
 
-  seleccionarLaserado( id: string ) {
-    // TODO: LIMPIAR ESTE LOG  . 
-
+  seleccionarLaserado(id: string) {
+    // TODO: LIMPIAR ESTE LOG  .
 
     // Filtramos los laserados
-    const laserado: Laser = this.cliente.laserados.find( laser => {
+    const laserado: Laser = this.cliente.laserados.find(laser => {
       return laser._id === id;
     });
 
-    if ( laserado ) {
+    if (laserado) {
       this.folioLinea.laserCliente = laserado;
       this.laserSeleccionado = laserado._id;
     }
-
-
   }
-
-  buscarModelo(dato: string) {
-    this.termino = dato;
-
-    if (!this.termino) {
-      // this.modelosBuscados = [];
-      this._buscadorRapidoService.limpiarLista();
-      return;
-    }
-
-    this._modeloService.buscarModeloCompleto(this.termino).subscribe(resp => {
-      
-      const datos: BuscadorRapido[] = [];
-      resp.forEach(modelo => {
-        datos.push( new BuscadorRapido(this.nombrarModelo(modelo), modelo));
-      });
-      this._buscadorRapidoService.elementos = datos;
-    });
-  }
-
-  nombrarModelo (modelo: ModeloCompleto) {
-    // TODO: Sustituir esta linea por la constante para nombres completos. 
-    let nombreCompleto: string = ModeloCompleto.nombreCom(modelo);
-      return nombreCompleto;
-  }
-
-  // TODO: LIMPIAR ESTE COMENTARIO. 
-  // seleccionarModelo(modelo: ModeloCompleto) {
-  //   this.modelo = modelo;
-  //   this.termino = '';
-  // }
 
   nuevaMarcaLaser() {
     swal({
       title: `Nueva marca laser`,
       html: `Ingresa la nueva marca laser para ${this.cliente.nombre}.`,
-      input: 'text',
-      inputValue: '',
+      input: "text",
+      inputValue: "",
       showCancelButton: true,
       inputValidator: value => {
-        return !value && '¡Necesitas escribir algo!';
+        return !value && "¡Necesitas escribir algo!";
       }
     }).then(resp => {
-
-      if ( resp.value) {
+      if (resp.value) {
         this._clienteService
           .guardarNuevaMarcaLaser(this.cliente._id, resp.value)
           .subscribe((cliente: any) => {
@@ -245,97 +274,95 @@ export class RegistroDeLineasComponent implements OnInit {
   }
 
   modificar(linea: FolioLinea) {
-    this._buscadorRapidoService.reiniciar();
-    this.termino = '';
-    
+    // this._buscadorRapidoService.reiniciar();
+    this.termino = "";
+
     this.folioLinea = linea;
     if (this.folioLinea.laserCliente) {
       this.laserSeleccionado = this.folioLinea.laserCliente._id;
       this.laserarPedido = true;
     }
     this.modificandoLinea = true;
-    // Seleccionamos el modelo completo en el buscador rápido. 
-    this._buscadorRapidoService.seleccionarElemento(null, this.nombrarModelo(linea.modeloCompleto), linea.modeloCompleto);
-    // Cargamos los modelos completos en el servicio de selección de procesos. 
+    // Seleccionamos el modelo completo en el buscador rápido.
+    // this._buscadorRapidoService.seleccionarElemento(null, this.nombrarModelo(linea.modeloCompleto), linea.modeloCompleto);
+    // Cargamos los modelos completos en el servicio de selección de procesos.
     this._ordenadorVisualService.cargarParaModifcarLinea(linea);
   }
 
-  eliminarLinea( linea: FolioLinea ) {
-
+  eliminarLinea(linea: FolioLinea) {
     swal({
-      title: '¿Quieres eliminar este pedido?',
-      text: 'Esta acción no se puede deshacer.',
-      type: 'warning',
+      title: "¿Quieres eliminar este pedido?",
+      text: "Esta acción no se puede deshacer.",
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'No, no lo elimines.',
-      confirmButtonText: '¡Si, elimínalo!'
-    }).then((result) => {
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "No, no lo elimines.",
+      confirmButtonText: "¡Si, elimínalo!"
+    }).then(result => {
       if (result.value) {
         linea.eliminar = true;
-        this._folioService.eliminarLinea( this.folio._id, linea._id).subscribe( ()  => {
-          // Removemos para no tener que recargar.
+        this._folioService
+          .eliminarLinea(this.folio._id, linea._id)
+          .subscribe(() => {
+            // Removemos para no tener que recargar.
 
-          linea.eliminar = true;
-          this._util.delay(700).then(() => {
-            this.folio.folioLineas = this.folio.folioLineas.filter( fila => {
-              if (linea._id !== fila._id) {
-                return true;
-              }
+            linea.eliminar = true;
+            this._util.delay(700).then(() => {
+              this.folio.folioLineas = this.folio.folioLineas.filter(fila => {
+                if (linea._id !== fila._id) {
+                  return true;
+                }
+              });
             });
           });
-
-        });
       }
     });
   }
 
-
   cancelarModificacion() {
-
-    this.folioLinea = new FolioLinea();
-    this.laserSeleccionado = '';
+    this.folioLinea = null;
+    this.laserSeleccionado = "";
     this.laserarPedido = false;
     this.modificandoLinea = false;
-    this.termino = '';
-    this._buscadorRapidoService.reiniciar();
-    this.folioLinea.nivelDeUrgencia = 'PRODUCCIÓN';
+    this.termino = "";
+    // this._buscadorRapidoService.reiniciar();
     this.cargarDatosDeFolio(this.folio._id);
     this._ordenadorVisualService.limpiar();
   }
 
-  agregarColorTenido( ) {
+  agregarColorTenido() {
     const subTotal: number = this.calcularSumaTenido();
     const ct = new ColoresTenidos();
-    ct.color = 'Color';
+    ct.color = "Color";
     const restante = this.folioLinea.cantidad - subTotal;
-    ct.cantidad = restante > 0 ? restante : 0 ;
+    ct.cantidad = restante > 0 ? restante : 0;
     this.folioLinea.coloresTenidos.push(ct);
   }
 
-  eliminarColorTenido(i: number ) {
+  eliminarColorTenido(i: number) {
     this.folioLinea.coloresTenidos.splice(i, 1);
     this.calcularSumaTenido();
   }
 
-  calcularSumaTenido( ): number {
+  calcularSumaTenido(): number {
     let t = 0;
-    this.folioLinea.coloresTenidos.forEach( x => { t += x.cantidad; });
+    this.folioLinea.coloresTenidos.forEach(x => {
+      t += x.cantidad;
+    });
     this.sumaTenidoSuperaCantidad = t > this.folioLinea.cantidad;
     return t;
   }
 
-  trackByFn(index: any, item: any) {
+  trackByFn(index: any) {
     return index;
   }
 
-  nombreCompleto( mc: ModeloCompleto ){
-    return ModeloCompleto.nombreCom(mc);
+  agregarPedido() {
+    this.folioLinea = new FolioLinea();
+
+    this.folioLinea.nivelDeUrgencia = this.nivelDeUrgencia[1].nivel;
+    this.folioLinea.almacen = false;
+    // this._buscadorRapidoService.reiniciar();
   }
-
-
-  
-
-  
 }

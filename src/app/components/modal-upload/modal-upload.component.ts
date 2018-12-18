@@ -20,7 +20,7 @@ export class ModalUploadComponent implements OnInit {
   // oculto: string = ''; Esta es la manera viejita como se ocultaba el modal.
   // Ahora se oculta desde el servicio. modalUploadService.
   imagenSubir: File;
-  imagenTemp: string;
+  imagenTemp: any;
 
   constructor(
     public _subirArchivoService: SubirArchivoService,

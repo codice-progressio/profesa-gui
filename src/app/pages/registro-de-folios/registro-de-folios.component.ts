@@ -3,14 +3,12 @@ import { Cliente } from '../../models/cliente.models';
 import { Folio } from '../../models/folio.models';
 import { ClienteService, UsuarioService, FolioService, UtilidadesService, ManejoDeMensajesService } from '../../services/service.index';
 import { Usuario } from '../../models/usuario.model';
-import { NgForm } from '@angular/forms';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { BuscadorRapidoService } from '../../components/buscador-rapido/buscador-rapido.service';
-import { BuscadorRapido } from '../../models/buscador-rapido.models';
-import * as moment from 'moment';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
 import { PaginadorService } from '../../components/paginador/paginador.service';
+import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
 
 
 @Component({
@@ -20,31 +18,10 @@ import { PaginadorService } from '../../components/paginador/paginador.service';
 })
 export class RegistroDeFoliosComponent implements OnInit {
 
-  constructor(
-    public _clienteService: ClienteService,
-    public _usuarioService: UsuarioService,
-    public _folioService: FolioService,
-    public router: Router,
-    public _buscadorRapidoService: BuscadorRapidoService,
-    public _util: UtilidadesService,
-    public _preLoaderService: PreLoaderService,
-    public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
-  ) {
-    this._buscadorRapidoService.nombreDeElemento = 'cliente';
-    this._buscadorRapidoService.reiniciar();
-    this._buscadorRapidoService.callback = () => {
-     this.folio.cliente = this._buscadorRapidoService.elementoSeleccionado.objeto;
-     this.termino = '';
-
-    };
-    this.folio.fechaEntrega = new Date();
-    this.folio.fechaFolio = new Date();
-  }
-
   selectorDeUsuarios: string = '';
   // clientesBuscados: Cliente[] = [] ;
-  folio: Folio = new Folio;
+  folio: Folio = null;
+
   
   // clienteSeleccionado: string;
   termino: string = '';
@@ -58,12 +35,55 @@ export class RegistroDeFoliosComponent implements OnInit {
 
   sePuedeRegistrarFolio: boolean = true;
 
+  constructor(
+    public _clienteService: ClienteService,
+    public _usuarioService: UsuarioService,
+    public _folioService: FolioService,
+    public router: Router,
+    public _buscadorRapidoService: BuscadorRapidoService,
+    public _util: UtilidadesService,
+    public _paginadorService: PaginadorService,
+    public _msjService: ManejoDeMensajesService,
+    public _preLoaderService: PreLoaderService
+  ) {
+    this._buscadorRapidoService.nombreDeElemento = 'cliente';
+    // this._buscadorRapidoService.reiniciar();
+    
+  
+    // this._buscadorRapidoService.callback = () => {
+    //  this.folio.cliente = this._buscadorRapidoService.elementoSeleccionado.objeto;
+    //  this.termino = '';
+
+    // };
+       
+    this.cargarFolios();
+    this._buscadorRapidoService.limpiarTodo();
+    this._buscadorRapidoService.nombreDeElemento = 'cliente';
+    this._buscadorRapidoService.promesa =()=>{
+      return new Promise( (resolve, reject )=>{
+        this._clienteService.buscar( this._buscadorRapidoService.termino ).subscribe(
+          (resp:Cliente[])=>{
+            const datosBuscados: BuscadorRapido[] = [];
+            resp.forEach((cliente:Cliente) => {
+              const a: BuscadorRapido =  new BuscadorRapido();
+              a.nombre = `${cliente.nombre} | ${cliente.sae}`;
+              a.objeto = cliente;
+              datosBuscados.push(a);
+
+            });
+            resolve( datosBuscados )
+        });
+      });
+    }
+  }
+
+
 
 
   ngOnInit() {
     
     
-    this._usuarioService.buscarUsuarioPorROLE('VENDEDOR_ROLE').subscribe(
+    this._usuarioService.cargarVendedores().subscribe(
         resp => { 
         
           this.vendedores = resp; 
@@ -78,11 +98,13 @@ export class RegistroDeFoliosComponent implements OnInit {
       this.cargarFolios(desde, limite);
     };
     
-    
-    this.cargarFolios();
-    this._buscadorRapidoService.nombreDeElemento = 'cliente';
-    this._buscadorRapidoService.reiniciar();  
+ 
+    // this._buscadorRapidoService.reiniciar();  
 
+  }
+
+  nuevoFolio( ) {
+    this.folio = new Folio();
   }
 
   seleccionarVendedor( id: string ) {
@@ -98,38 +120,23 @@ export class RegistroDeFoliosComponent implements OnInit {
   }
 
   cargarFolios(desde: number  = 0, limite: number = 5) {
-    this._preLoaderService.cargando = true;
     this._folioService.cargarFoliosSinOrdenes( desde, limite ).subscribe(resp => {
       this.folios = resp;
-      this._preLoaderService.cargando = false;
       this._paginadorService.activarPaginador(this._folioService.totalFolios );
     });
   }
 
-  buscarClientes(dato: string)  {
-    // console.log( 'entro_ ' + this.termino);
-    this.termino = dato;
-    if ( !this.termino ) {
-      // this.clientesBuscados = [];
-      this._buscadorRapidoService.elementos = [];
-      return;
-    }
-    this._clienteService.buscar( this.termino ).subscribe(
-      clientes => {
-        // this.clientesBuscados = clientes;
-        const datos: BuscadorRapido[] = [];
-        clientes.forEach(cliente => {
-          datos.push(new BuscadorRapido(cliente.nombre + ' | ' + cliente.sae , cliente));
-        });
-        this._buscadorRapidoService.elementos = datos;
-        // console.log(resp);
-      }
-    );
-  }
+
+   
+  
 
   
   guardar() {
     // Validamos que haya un cliente seleccionado.
+
+    this.folio.cliente =<Cliente> this._buscadorRapidoService.elementoSeleccionado.objeto;
+    console.log(` El cliente ${JSON.stringify(this._buscadorRapidoService.elementoSeleccionado.objeto)}`);
+
     if ( !this.folio.cliente   ) {
       swal('No has seleccionado un cliente', 'Es necesario que busques y selecciones un cliente.', 'error');
       return;
@@ -169,6 +176,7 @@ export class RegistroDeFoliosComponent implements OnInit {
           // Si no hay respuesta se modifico el folio.
           // regresamos todo los decoradores a su original. 
           this.modificando = false;
+          
         }
       }
     );
@@ -190,14 +198,16 @@ export class RegistroDeFoliosComponent implements OnInit {
         
         this._folioService.eliminarFolio( folio._id ).subscribe( ()  => {
           // Removemos para no tener que recargar.
-          folio.eliminar = true;
-          this._util.delay(700).then(() => {
-            this.folios = this.folios.filter( f => {
-              if (folio._id !== f._id) {
-                return true;
-              }
-            });
-          });
+          // folio.eliminar = true;
+          // this._util.delay(700).then(() => {
+          //   this.folios = this.folios.filter( f => {
+          //     if (folio._id !== f._id) {
+          //       return true;
+          //     }
+            // });
+          // });
+          this.cargarFolios();
+          
 
         });
       }
@@ -215,11 +225,10 @@ export class RegistroDeFoliosComponent implements OnInit {
   }
 
   cancelarModificacion() {
+    this.termino ='';
     this.modificando = false;
-    this.folio = new Folio();
-    this.folio.fechaEntrega = new Date();
-    this.folio.fechaFolio = new Date();
-    this._buscadorRapidoService.reiniciar();
+    this.folio = null;
+    this._buscadorRapidoService.limpiarTodo();
     this.vendedorSeleccionado = '-';
   }
 

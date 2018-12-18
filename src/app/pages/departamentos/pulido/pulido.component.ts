@@ -10,6 +10,7 @@ import { FolioService, ValidacionesService, MaquinaService, UsuarioService } fro
 import { Transformacion } from '../../../models/transformacion.models';
 import swal from 'sweetalert2';
 import { Pulido } from '../../../models/pulido.models';
+import { DEPARTAMENTOS } from '../../../config/departamentos';
 
 @Component({
   selector: 'app-pulido',
@@ -19,7 +20,7 @@ import { Pulido } from '../../../models/pulido.models';
 export class PulidoComponent implements OnInit {
 
   // =========================================
-  private NOMBRE_DEPTO: string = 'PULIDO';
+  private NOMBRE_DEPTO: string = DEPARTAMENTOS.PULIDO._n;
   // =========================================
 
   pulidoForm: FormGroup;
@@ -40,14 +41,16 @@ export class PulidoComponent implements OnInit {
   ) { 
     
     this.cargarOrdenesDeDepartamento();
+    this._qrScannerService.titulo = DEPARTAMENTOS.PULIDO._n;
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this._qrScannerService.titulo = DEPARTAMENTOS.PULIDO._n;
 
 
   }
 
   cargarOrdenesDeDepartamento( ) {
     this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.pastilla();
+    this._listaDeOrdenesService.pulido();
   }
 
   ngOnInit() {

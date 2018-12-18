@@ -9,6 +9,7 @@ import { FolioLinea } from '../../../models/folioLinea.models';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
 import { Materiales } from '../../../models/materiales.models';
 import swal from 'sweetalert2';
+import { DEPARTAMENTOS } from '../../../config/departamentos';
 
 
 
@@ -43,12 +44,13 @@ export class MaterialesComponent implements OnInit {
 
     this.cargarOrdenesDeDepartamento();
     
-    this._usuarioService.buscarUsuarioPorROLE('MATERIALES_REGISTRO_ROLE')
+    this._usuarioService.cargarMateriales()
         .subscribe( (usuarios: Usuario[]) => {
           this.empleados = usuarios;
         });
       
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this._qrScannerService.titulo = DEPARTAMENTOS.MATERIALES._n;
 
    }
 

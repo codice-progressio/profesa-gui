@@ -19,6 +19,8 @@ export class SeguimientoDeFoliosComponent implements OnInit {
   vendedores: Usuario [] = [];
   filtrando: boolean;
   filtro: string;
+  filtros = NIVEL
+  
   
 
   constructor(
@@ -27,14 +29,10 @@ export class SeguimientoDeFoliosComponent implements OnInit {
     public _paginadorService: PaginadorService,
 
   ) {
-    
-    
    }
 
    
   ngOnInit() {
-    this._preLoaderService.cargando = true;
-   
 
     this._paginadorService.callback = ( desde, limite ) => {
       this.cargarFolios(desde, limite);
@@ -45,21 +43,16 @@ export class SeguimientoDeFoliosComponent implements OnInit {
   }
 
   cargarFolios( desde: number = 0, limite: number = 5) {
-    this._folioService.cargarFoliosConOrdenes(desde, limite)
+    this._folioService.cargarFoliosConOrdenesSinTerminar(desde, limite)
     .subscribe( folios => {
-      console.log(folios);
-      
       this.folios = folios;
-      this._preLoaderService.cargando = false;
       this._paginadorService.activarPaginador(this._folioService.totalFolios);
     });
    }
 
    paginadorConFiltro(  desde: number = 0, limite: number = 5) {
      
-     this._preLoaderService.cargando = true;
      this._folioService.cargarFolioPorPrioridad(0, 15, this.filtro).subscribe( (folios: any) => {
-       this._preLoaderService.cargando = false;
        this.folios = folios;
        this._paginadorService.activarPaginador(this._folioService.totalFolios);
       });

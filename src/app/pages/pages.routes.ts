@@ -30,6 +30,8 @@ import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/i
 import { _ROLES } from '../config/roles.const';
 import { ClientesComponent } from './clientes/clientes.component';
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
+import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component';
+import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/historial-de-folios.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -112,6 +114,17 @@ const pagesRoutes: Routes = [
             }
         },
         {
+            path: 'folios/historial', 
+            component: HistorialDeFoliosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Historial de folios',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
             path: 'folio/:id', 
             component: RegistroDeLineasComponent,
             canActivate: [PermisosGuard], 
@@ -122,7 +135,6 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        
         {
             path: 'ordenes/:idFolio', 
             component: RevisionDeOrdenesComponent,
@@ -234,19 +246,29 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        
-
-        {    
-            path: 'modelos', 
-            component: ModelosComponent,
+        {
+            path: 'produccion/productoTerminado', component: ProductoTerminadoComponent,
             canActivate: [PermisosGuard], 
             data: {
-                titulo: 'Registro y administración de modelos',
+                titulo: 'Registro de órdenes',
                 roles : [ 
                     _ROLES.ADMIN_ROLE
                 ]
             }
         },
+        
+
+        // {    
+        //     path: 'modelos', 
+        //     component: ModelosComponent,
+        //     canActivate: [PermisosGuard], 
+        //     data: {
+        //         titulo: 'Registro y administración de modelos',
+        //         roles : [ 
+        //             _ROLES.ADMIN_ROLE
+        //         ]
+        //     }
+        // },
         // Gestión de procesos
         {
             path: 'procesos', 

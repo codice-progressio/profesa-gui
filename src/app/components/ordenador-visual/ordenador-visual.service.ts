@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { Procesos } from 'src/app/models/familiaDeProcesos.model';
-import { ProcesoService, ModeloService } from 'src/app/services/service.index';
+// import { ProcesoService, ModeloService, ManejoDeMensajesService } from 'src/app/services/service.index';
 import { Proceso } from 'src/app/models/proceso.model';
 import swal from 'sweetalert2';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { ProcesoService } from 'src/app/services/proceso/proceso.service';
+import { ModeloService } from 'src/app/services/modelo/modelo.service';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +38,9 @@ export class OrdenadorVisualService {
 
   constructor(
     public _procesosService: ProcesoService,
-    public _modeloService: ModeloService
+    public _modeloService: ModeloService,
+    public _msjService: ManejoDeMensajesService
+    
   ) { 
 
   }
@@ -81,6 +87,7 @@ export class OrdenadorVisualService {
   }
 
   agregarProceso( proceso: Proceso ) {
+
     for (const x in this.arreglosDrop) {
       if (this.arreglosDrop.hasOwnProperty(x)) {
         const element = this.arreglosDrop[x];
@@ -91,6 +98,7 @@ export class OrdenadorVisualService {
         proc.dragEnable = true;
         element.arreglo.push( proc );
         this.reordenarProcesos();
+        this._msjService.correcto('Se agrego un proceso temporal a este pedido.');
         return;
       }
     }

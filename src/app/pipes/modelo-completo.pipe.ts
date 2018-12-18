@@ -7,6 +7,7 @@ import { ModeloCompleto } from '../models/modeloCompleto.modelo';
 export class ModeloCompletoPipe implements PipeTransform {
 
   transform(mc: ModeloCompleto): any {
+    if ( !mc ) return '';
     return ModeloCompleto.nombreCom(mc);
   }
 

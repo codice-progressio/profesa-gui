@@ -33,6 +33,12 @@ File: scss
 Login register and recover password Page
 ******************/
 
+body,
+html,
+{
+    background-color: black;
+}
+
 .login-register {
     background-size: cover;
     background-repeat: no-repeat;
@@ -47,11 +53,28 @@ Login register and recover password Page
     width: 400px;
     margin: 0 auto;
     /* Personales */
-    -webkit-box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
+    /* -webkit-box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
     -moz-box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
-    box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
+    box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63); */
     /* opacity: 0.7; */
     /* transition: 0.5s; */
+}
+
+#div-fondo {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+#img-fondo {
+    height: 110%;
+    width: auto;
+    filter: blur(7px);
+    -webkit-filter: blur(7px);
+    -moz-filter: blur(7px);
+    -o-filter: blur(7px);
+    -ms-filter: blur(7px);
+    margin: -15px;
 }
 
 

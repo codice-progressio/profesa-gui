@@ -1,4 +1,5 @@
 
+
 FEATURES:@high 
 
   Departamentos:
@@ -86,7 +87,7 @@ FEATURES:@high
         Costo unitario
         ???Costo total???
         Fecha de espera para recivirlo (Cuando se necesita)
-        Provedor => El seleccionado 
+        Prowvedor => El seleccionado 
     Hoja de compra:
       ☐ Datos de la compra:
         Fecha
@@ -98,13 +99,12 @@ FEATURES:@high
           Quien recive. 
 
 FIX:
-  ☐ Si una órden tiene un solo proceso los folios no cargan.
-
+  
 DEPRECATE:
-  ☐ Sustituir modelo-completo.component por el pipe para elimianar.
-  ☐ Sustituir generacion de modelo completo en revision-de-ordenes.component html 46 y 100
+
 
 
 Archive:
+
 
 

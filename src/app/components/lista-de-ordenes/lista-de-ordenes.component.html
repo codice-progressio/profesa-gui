@@ -57,6 +57,7 @@
                            ">
                             <thead>
                                 <tr>
+                                    <!-- <th class="text-center"></th> -->
                                     <th class="text-center"></th>
                                     <th class="text-center">con</th>
                                     <th class="text-center">#</th>
@@ -80,14 +81,18 @@
                     
                                         } ">
 
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">
+                                        <!-- <td class='fit'>
+                                            <i *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando" class="fa fa-spin fa-cog text-warning"></i>
+                                        </td> -->
+                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-center">
+                                            <i *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando" class="fa fa-spin fa-2x fa-cog text-warning"></i>
                                             <i *ngIf="!orden.ubicacionActual.recivida" [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fa fa-exclamation  animated tada infinite"></i>
                                         </td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.numeroDeOrden}} / {{orden.totalOrdenes}}</td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.ordenViajera}}</td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.fechaFolio | fecha:'DD/MM/YYYY'}}</td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">
-                                            <app-modelo-completo [modeloCompleto]="orden.modeloCompleto"></app-modelo-completo>
+                                            {{orden.modeloCompleto | modeloCompleto}}
                                         </td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.laserCliente?.laser}}</td>
                                         <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-center">{{orden.unidad}}</td>

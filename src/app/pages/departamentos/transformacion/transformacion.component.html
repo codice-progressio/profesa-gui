@@ -1,12 +1,5 @@
-<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <app-qr-scanner></app-qr-scanner>
-            </div>
-        </div>
-    </div>
-</div>
+<app-qr-scanner>
+</app-qr-scanner>
 
 <div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta 
                                         && orden.ubicacionActual.recivida 
@@ -23,7 +16,7 @@
                     <div class="col-6">
                         <h2>
                             <strong>
-                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                                {{ linea.modeloCompleto | modeloCompleto }}
                             </strong>
                             <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
                         </h2>
@@ -42,29 +35,26 @@
 
 
                                         <form #f (ngSubmit)="onSubmit()" [formGroup]="transformacionForm">
+                                            <div class="row">
+                                                <div class="form-group col-4">
+                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadDeBoton" placeholder="Cantidad de botón">
+                                                    <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
+                                                </div>
 
-                                            <div class="form-group">
-                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadDeBoton" placeholder="Cantidad de botón">
-                                                <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
-                                            </div>
+                                                <div class="form-group col-4">
+                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorBoton" placeholder="Espesor botón">
+                                                    <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
+                                                </div>
 
-                                            <div class="form-group">
-                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorBoton" placeholder="Espesor botón">
-                                                <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
-                                            </div>
+                                                <div class="form-group col-4">
+                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(bl), 'is-valid':_validacionesService.valid(bl)}" type="number" formControlName="bl" placeholder="BL">
+                                                    <app-validacion-inputs [campo]="bl"></app-validacion-inputs>
+                                                </div>
 
-                                            <div class="form-group">
-                                                <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(bl), 'is-valid':_validacionesService.valid(bl)}" type="number" formControlName="bl" placeholder="BL">
-                                                <app-validacion-inputs [campo]="bl"></app-validacion-inputs>
                                             </div>
 
                                             <h3>Máquina que trabajó:</h3>
                                             <h1>{{orden.ubicacionActual.transformacion.maquinaActual.clave}}</h1>
-                                            <!--                                        
-                                            <ng-container *ngFor="let maquina of maquinas; let i = index">
-                                                <input type="radio" [id]="i" formControlName="maquinaActual" [value]="maquina._id">
-                                                <label [for]="i">{{maquina.clave}}</label>
-                                            </ng-container> -->
 
 
                                             <br>
@@ -102,7 +92,7 @@
                     <div class="col-6">
                         <h2>
                             <strong>
-                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                                {{ linea.modeloCompleto | modeloCompleto }}
                             </strong>
                             <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
                         </h2>

@@ -11,7 +11,7 @@ import { ProcesoService } from 'src/app/services/service.index';
 })
 export class OrdenadorVisualComponent implements OnInit {
   
-  
+  procesosOcultos: boolean = false
   constructor (
     public _s: OrdenadorVisualService,
     

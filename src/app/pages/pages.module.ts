@@ -47,6 +47,8 @@ import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-model
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
+import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component';
+import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/historial-de-folios.component';
 
 
 
@@ -88,6 +90,8 @@ import { ControlDeProduccionComponent } from './departamentos/control-de-producc
        IndicadorDeChecadasComponent,
        ClientesComponent,
        ControlDeProduccionComponent,
+       ProductoTerminadoComponent,
+       HistorialDeFoliosComponent,
 
 
       ],

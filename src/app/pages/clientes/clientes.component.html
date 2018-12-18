@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6" *ngIf="!clienteEditando">
+    <div class="col-12" *ngIf="!clienteEditando">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -7,26 +7,45 @@
                     <button (click)="nuevoCliente()" class="btn btn-success"><i class="fa fa-plus"></i> Nuevo cliente</button>
                 </div>
 
-                <table class="table table-hover">
+                <table class="table table-hover table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>SAE</th>
                             <th>Nombre</th>
                             <th>Marcas Laser</th>
+                            <th>MOD Aut.</th>
                             <th></th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let cliente of clientes">
-                            <td class='fit'>{{cliente.sae}}</td>
-                            <td class='fit'>{{cliente.nombre}}</td>
-                            <td class='fit text-center'>
+                            <td class='fit align-middle'>{{cliente.sae}}</td>
+                            <td class='fit align-middle'>{{cliente.nombre}}</td>
+                            <td class='fit '>
+
                                 <ng-container *ngFor="let marca of cliente.laserados; let i = index">
                                     {{marca.laser}}
                                     <hr *ngIf="!(cliente.laserados.length-1 === i)">
                                 </ng-container>
 
+                            </td>
+                            <td class='fit w-100'>
+                                <ng-container *ngFor="let mca of cliente.modelosCompletosAutorizados, let i = index;">
+                                    <span class="d-flex justify-content-between align-items-center">
+                                            {{mca.modeloCompleto | modeloCompleto}}
+                                            <span *ngIf="!mca.autorizado">
+                                                <small  class="text-muted ">
+                                                    <i class="fa fa-exclamation-circle text-danger animated fadeIn infinite"></i> 
+                                                    Autorizar?
+                                                    <button (click)="autorizarModeloCompleto(true, mca._id, cliente)" class="btn btn-success btn-sm mr-1"><i class="fa fa-check" aria-hidden="true"></i> </button>
+                                                    <button (click)="autorizarModeloCompleto(false, mca._id, cliente)" class="btn btn-danger btn-sm"><i class="fa fa-times " aria-hidden="true"></i> </button>
+                                                </small>
+
+                                            </span>
+                                    </span>
+                                    <hr *ngIf="!(cliente.modelosCompletosAutorizados.length-1 === i)">
+                                </ng-container>
                             </td>
                             <td class='text-right'> <button (click)="editarCliente(cliente)" class="btn btn-success"><i class="fa fa-edit"></i></button> </td>
                         </tr>
@@ -54,13 +73,13 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-baseline">
                         <span formArrayName='laserados'>
-                                <ng-container *ngFor="let las of clientesForm.controls?.laserados?.controls; let i = index;">
+                                <ng-container *ngFor="let las of clientesForm?.controls['laserados'].controls; let i = index;">
                                     
                                     <div [formGroupName]="i">
                                         <div class="form-group d-flex justify-content-between align-items-baseline">
                                             <div>
                                                 <input name='laser' formControlName="laser" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(las), 'is-valid':_validacionesService.valid(las)}" type="text" placeholder="Nueva marca laser.">
-                                                <app-validacion-inputs [campo]="_paso(las)"></app-validacion-inputs>
+                                                <app-validacion-inputs [campo]="las"></app-validacion-inputs>
         
                                             </div>
                                             <div>

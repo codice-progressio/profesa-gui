@@ -15,7 +15,6 @@
                     <ng-container *ngFor="let modeloCompleto of modelosCompletos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
-                                <!-- <app-modelo-completo [modeloCompleto]="modeloCompleto"></app-modelo-completo> -->
                                 {{modeloCompleto.nombreCompleto}}
                                 <div>
 
@@ -378,8 +377,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1>
-                        <small>Agregar costos:</small>
-                        <app-modelo-completo [modeloCompleto]="modeloCompletoCostos"></app-modelo-completo>
+                        <small>Agregar costos:</small> {{modeloCompletoCostos | modeloCompleto}}
                     </h1>
 
                 </div>

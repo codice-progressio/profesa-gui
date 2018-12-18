@@ -1,14 +1,7 @@
-<div class="row" [ngClass]="{'oculto': !_qrScannerService.leyendo}">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body text-center">
-                <app-qr-scanner></app-qr-scanner>
-            </div>
-        </div>
-    </div>
-</div>
+<app-qr-scanner></app-qr-scanner>
 
 <div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+    <!-- <div class="row animated tada"> -->
     <div class="col-12">
         <div class="card border-dark">
             <div class="card-header bg-success">
@@ -21,7 +14,7 @@
                     <div class="col-6">
                         <h2>
                             <strong>
-                                <app-modelo-completo class="mr-3" *ngIf="linea" [linea]="linea"></app-modelo-completo>
+                                {{ linea.modeloCompleto | modeloCompleto }}
                             </strong>
                             <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
                         </h2>
@@ -32,49 +25,64 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12 ">
-                        <form #f (ngSubmit)="onSubmit(pastillaForm)" [formGroup]="pastillaForm">
+                        <form #f (ngSubmit)="onSubmit(pastillaForm.value, pastillaForm.valid,$event)" [formGroup]="pastillaForm" novalidate>
+                            <span formArrayName='cantidades'>
 
-                            <ng-container *ngFor="let cp of cantidadesPastilla; let i = index ;trackBy:trackByFn">
+                                <ng-container *ngFor="let cp of pastillaForm?.controls['cantidades'].controls; let i = index;">
+    
+                                    <!-- PESO DE 10 BOTONES -->
+                                    <div class="row" [formGroupName]="i">
+                                        <div class="form-group col">
+                                            <input formControlName="peso10Botones" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cp.controls.peso10Botones), 'is-valid':_validacionesService.valid(cp.controls.peso10Botones)}"
+                                                type="number" placeholder="Peso de 10 botones">
+                                            <app-validacion-inputs [campo]="cp.controls.peso10Botones"></app-validacion-inputs>
+                                        </div>
+                                        <!-- PESO TOTAL DE BOTÓN -->
+                                        <div class="form-group col">
+                                            <input formControlName="pesoTotalBoton" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cp.controls.pesoTotalBoton), 'is-valid':_validacionesService.valid(cp.controls.pesoTotalBoton)}"
+                                                type="number" placeholder="Peso del botón">
+                                            <app-validacion-inputs [campo]="cp.controls.pesoTotalBoton"></app-validacion-inputs>
+                                        </div>
+                                        <!-- ESPESOR DE PASTILLA -->
+                                        <div class="form-group col">
+                                            <input formControlName="espesorPastilla" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cp.controls.espesorPastilla), 'is-valid':_validacionesService.valid(cp.controls.espesorPastilla)}"
+                                                type="number" placeholder="Espesor de la pastilla">
+                                            <app-validacion-inputs [campo]="cp.controls.espesorPastilla"></app-validacion-inputs>
+                                        </div>
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                            
+                                            <h3><small>Piezas: </small> <br> {{ (cp.controls.pesoTotalBoton.value*1000)/(cp.controls.peso10Botones.value/10) | number:'1.0-0'}}</h3>
+                                        </div>
+    
+                                        <div class="form-group col-1 d-flex align-items-center ">
+                                            <a (click)="agregarCantidades()" *ngIf="i === (pastillaForm?.controls['cantidades'].controls.length-1)" class="btn btn-outline-success "><i class="fa fa-plus"> </i></a>
+                                            <a (click)="eliminarCantidades(i)" *ngIf="i !== (pastillaForm?.controls['cantidades'].controls.length-1)" class="btn btn-outline-danger "><i class="fa fa-times"></i></a>
+                                        </div>
+    
+                                    </div>
+                                </ng-container>
 
-                                <!-- PESO DE 10 BOTONES -->
-                                <div class="row">
-                                    <div class="form-group col">
-                                        <input [formControlName]="'peso10Botones'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('peso10Botones'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('peso10Botones'+i))}"
-                                            type="number" placeholder="Peso de 10 botones">
-                                        <app-validacion-inputs [campo]="this.pastillaForm.get('peso10Botones'+i)"></app-validacion-inputs>
-                                    </div>
-                                    <!-- PESO TOTAL DE BOTÓN -->
-                                    <div class="form-group col">
-                                        <input [formControlName]="'pesoTotalBoton'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('pesoTotalBoton'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('pesoTotalBoton'+i))}"
-                                            type="number" placeholder="Peso del botón">
-                                        <app-validacion-inputs [campo]="this.pastillaForm.get('pesoTotalBoton'+i)"></app-validacion-inputs>
-                                    </div>
-                                    <!-- ESPESOR DE PASTILLA -->
-                                    <div class="form-group col">
-                                        <input [formControlName]="'espesorPastilla'+i" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(this.pastillaForm.get('espesorPastilla'+i)), 'is-valid':_validacionesService.valid(this.pastillaForm.get('espesorPastilla'+i))}"
-                                            type="number" placeholder="Espesor de la pastilla">
-                                        <app-validacion-inputs [campo]="this.pastillaForm.get('espesorPastilla'+i)"></app-validacion-inputs>
-                                    </div>
-                                    <div class="form-group col-2 d-flex align-items-center">
-                                        <h3><small>Piezas: </small> {{ (cantidadesPastilla[i].pesoTotalBoton*1000)/(cantidadesPastilla[i].peso10Botones/10) | number:'1.0-0'}}</h3>
-                                    </div>
+                            </span>
 
-                                    <div class="form-group col-1 d-flex align-items-center ">
-                                        <a (click)="agregarCantidades()" *ngIf="i === (cantidadesPastilla.length-1)" class="btn btn-outline-success "><i class="fa fa-plus"></i></a>
-                                        <a (click)="eliminarCantidades(i)" *ngIf="i !== (cantidadesPastilla.length-1)" class="btn btn-outline-danger "><i class="fa fa-times"></i></a>
-                                    </div>
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <h3>Contado por:</h3>
+                                    <ng-container *ngFor="let empleado of empleados; let i = index">
+                                        <input type="radio" [id]="i" formControlName="conto" [value]="empleado._id">
+                                        <label [for]="i">{{empleado.nombre}}</label>
+                                        <br>
+                                    </ng-container>
 
                                 </div>
-                            </ng-container>
+                                <div class="col-6 text-right">
+
+                                    <h1><small>Total de pastilla: </small> <strong>{{ totalBoton() | number:'1.0-0'}} </strong></h1>
+                                </div>
+                            </div>
 
 
 
-                            <h3>Contado por:</h3>
-                            <ng-container *ngFor="let empleado of empleados; let i = index">
-                                <input type="radio" [id]="i" formControlName="conto" [value]="empleado._id">
-                                <label [for]="i">{{empleado.nombre}}</label>
-                                <br>
-                            </ng-container>
 
                             <br>
                             <br>

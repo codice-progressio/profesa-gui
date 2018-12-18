@@ -1,19 +1,19 @@
 <ng-container *ngIf="sePuedeRegistrarFolio">
 
-    <!-- 
-=====================================
- Registro de folios
-=====================================
--->
 
-    <div class="row">
+    <!-- 
+    =====================================
+    Registro de folios
+    =====================================
+    -->
+    <div *ngIf="folio" class="row">
         <div class="col-12">
             <div class="card" [ngClass]="{'animated pulse': modificando}">
                 <div class="card-body" [ngClass]="{'bg-inverse text-white': modificando}">
-                    <h4 class="card-title" [ngClass]="{' text-white': modificando}">
+                    <h1 class="card-title" [ngClass]="{' text-white': modificando}">
                         <span *ngIf="!modificando">Registrar un nuevo folio</span>
                         <span *ngIf="modificando">Modificar folio</span>
-                    </h4>
+                    </h1>
                     <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar()">
 
                         <div class="row">
@@ -47,7 +47,7 @@
 
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col">
                                 <div class="form-group ">
                                     <input #fa id="buscarCliente" [(value)]='this.termino' (keyup)="buscarClientes(fa.value)" type="text" class="form-control " placeholder="...">
@@ -58,6 +58,15 @@
                             </div>
                             <div class="col-8">
                                 <app-buscador-rapido></app-buscador-rapido>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col">
+                                <app-buscador-rapido [input]='true'></app-buscador-rapido>
+
+                            </div>
+                            <div class="col-8">
+                                <app-buscador-rapido [lista]='true'></app-buscador-rapido>
                             </div>
                         </div>
 
@@ -78,15 +87,16 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn " [ngClass]="{'btn-success': true}">
-                            <i class="fa fa-save"> </i> 
-                            <span *ngIf="modificando"> Guardar modificaciones</span>
-                            <span *ngIf="!modificando"> Guardar</span>
-                        </button>
-                            <button *ngIf="modificando" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
-                            <i class="fa fa-times"> </i> 
-                            <span *ngIf="modificando"> Cancelar</span>
-                        </button></div>
+                            <button type="submit" class="btn " [ngClass]="{'btn-success': true}" [disabled]='_preLoaderService.cargando'>
+                                <i class="fa fa-save"> </i> 
+                                <span *ngIf="modificando"> Guardar modificaciones</span>
+                                <span *ngIf="!modificando"> Guardar</span>
+                            </button>
+                            <a (click)="cancelarModificacion()" class="btn btn-danger ml-2 text-white">
+                                <i class="fa fa-times"> </i> Cancelar
+                            </a>
+
+                        </div>
                     </form>
                 </div>
             </div>
@@ -105,15 +115,25 @@
 -->
 
 
-    <div class="row">
+    <div class="row" *ngIf="!folio">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"> Folios nuevos </h4>
-                    <h6 class="card-subtitle">Folios que estan pendientes de generar órdenes. Para consultar los folios en producción ve a <a [routerLink]="['/produccion']"> seguimiento de folios</a>. </h6>
-                    <app-pre-loader></app-pre-loader>
+                    <div class="d-flex justify-content-between ">
+                        <span class='w-50'>
+                            <h1 class="card-title"> Folios <strong>nuevos</strong> </h1>
+                            <h6 class="card-subtitle">Folios que estan pendientes de generar órdenes. Para consultar los folios en producción ve a <strong><a [routerLink]="['/produccion']"> seguimiento de folios</a>.</strong> </h6>
+    
+                        </span>
+                        <span>
+                            <button (click)="nuevoFolio()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Registrar nuevo folio.</button>
+
+                        </span>
+
+                    </div>
                     <app-paginador></app-paginador>
-                    <div class="table-responsive">
+                    <h1 class="display-1" *ngIf="folios.length === 0"><strong>No hay</strong> folios pendientes.</h1>
+                    <div class="table-responsive" *ngIf="folios.length !== 0">
                         <table class="table">
                             <thead>
                                 <tr>

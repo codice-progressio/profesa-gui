@@ -2,7 +2,11 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <section id="wrapper" class="login-register login-sidebar animated fadeIn">
-    <div class="div login-register login-sidebar grad" style="background-image:url(assets/images/background/emSvYMy.gif); -webkit-filter: blur(5px); "></div>
+    <!-- <div class="div login-register login-sidebar grad" style="background-image:url(assets/images/background/gif/+{{fondoRandom()}}.gif); -webkit-filter: blur(5px);"></div> -->
+    <div id="div-fondo" class=" login-register login-sidebar grad">
+        <img id="img-fondo" [src]="'assets/images/background/gif/'+ fondoRandom+ '.gif'" alt="">
+
+    </div>
     <div class="login-box card ">
         <div class="card-body">
             <form ngNativeValidate #f="ngForm" class="form-horizontal form-material" (ngSubmit)="ingresar(f)">

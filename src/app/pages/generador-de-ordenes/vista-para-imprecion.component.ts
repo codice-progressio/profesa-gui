@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Folio } from '../../models/folio.models';
 import { FolioService } from '../../services/folio/folio.service';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
-import {  ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Orden } from '../../models/orden.models';
+import { catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -16,8 +17,8 @@ export class VistaParaImprecionComponent implements OnInit {
   folio: Folio = new Folio();
   constructor(
     public _folioService: FolioService,
-    public _preLoaderService: PreLoaderService,
     public activatedRoute: ActivatedRoute,
+    public router: Router,
 
   ) {
   }
@@ -27,13 +28,21 @@ export class VistaParaImprecionComponent implements OnInit {
     const id = params['idFolio'];
     
     if (id) {
-      this._preLoaderService.cargando = true;
       this._folioService.cargarFolio(id).subscribe((folio: any) => {
         this.folio = folio;
-        this._preLoaderService.cargando = false;
       });
     }
   });
+  }
+
+  
+
+  seImprimio(){
+    this._folioService.ordenesImpresas( this.folio._id).subscribe(resp =>{
+      this.router.navigate(['/produccion']);
+    });
+
+
   }
 
 

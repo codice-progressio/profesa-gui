@@ -3,11 +3,8 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
-import { element } from 'protractor';
-import swal from 'sweetalert2';
 
 declare function init_plugins();
-declare function tooltip();
 declare const gapi: any;
 
 @Component({
@@ -17,14 +14,17 @@ declare const gapi: any;
 })
 export class LoginComponent implements OnInit {
 
-  email: string;
+    email: string;
   recuerdame: boolean = false;
   auth2: any;
+  fondoRandom: number
 
   constructor(
       public router: Router,
       public _usuarioService: UsuarioService
-    ) { }
+    ) {
+      this.fondoRandom = Math.floor(Math.random()*15)+1;
+     }
 
   ngOnInit() {
     init_plugins();
@@ -35,6 +35,8 @@ export class LoginComponent implements OnInit {
     }
 
   }
+
+  
 
   googleInit() {
     gapi.load('auth2', () => {
@@ -56,7 +58,7 @@ export class LoginComponent implements OnInit {
       const token = googleUser.getAuthResponse().id_token;
 
       this._usuarioService.loginGoogle(token)
-          .subscribe( resp => {
+          .subscribe( () => {
             window.location.href = '#/dashboard';
           });
 
@@ -71,7 +73,7 @@ export class LoginComponent implements OnInit {
 
     const usuario = new Usuario(null, forma.value.email, forma.value.password);
     this._usuarioService.login(usuario, forma.value.recuerdame)
-        .subscribe(resp => this.router.navigate(['/dashboard']) );
+        .subscribe(() => this.router.navigate(['/dashboard']) );
     // this.router.navigate([ '/dashboard' ]);
   }
 

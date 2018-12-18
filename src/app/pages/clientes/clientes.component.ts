@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Cliente } from 'src/app/models/cliente.models';
-import { ValidacionesService } from 'src/app/services/service.index';
+import { ValidacionesService, ModeloService } from 'src/app/services/service.index';
 import { ClienteService } from '../../services/cliente/cliente.service';
+import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { ModelosComponent } from '../modelos/modelos.component';
 
 @Component({
   selector: 'app-clientes',
@@ -15,13 +17,15 @@ export class ClientesComponent implements OnInit {
   clientesForm: FormGroup;
   clienteEditando: Cliente;
   clientes: Cliente[] 
+  
 
 
 
   constructor(
     private _validacionesService: ValidacionesService,
     private _fb: FormBuilder,
-    private _clienteService:ClienteService
+    private _clienteService:ClienteService,
+    private _modeloService: ModeloService
   ) {
 
    this.cargarClientes();
@@ -45,6 +49,9 @@ export class ClientesComponent implements OnInit {
       Validators.required,
     ]],
     laserados: this._fb.array([
+      // Este lo quitamos por que no
+      // queremos que por defecto aparezca 
+      // un espacio para laser. 
       // this.getLaserado()
    ])
     });
@@ -134,6 +141,21 @@ export class ClientesComponent implements OnInit {
 
   nuevoCliente( ){
     this.clienteEditando = new Cliente();
+  }
+
+  autorizarModeloCompleto( autorizar: boolean, idAut: string, c: Cliente ) {
+    
+    if(autorizar ){
+      const a = c.modelosCompletosAutorizados.find(x=>{ return x._id === idAut});
+      a.autorizado = true;
+    }else{
+      c.modelosCompletosAutorizados = c.modelosCompletosAutorizados.filter(x => x._id!== idAut);
+    }
+
+    this._clienteService.modificar(c).subscribe(resp=>{
+      this.cargarClientes();
+    });
+   
   }
 
   
