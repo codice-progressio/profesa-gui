@@ -334,7 +334,7 @@ export class RegistroDeLineasComponent implements OnInit {
   agregarColorTenido() {
     const subTotal: number = this.calcularSumaTenido();
     const ct = new ColoresTenidos();
-    ct.color = "Color";
+    // ct.color = "";
     const restante = this.folioLinea.cantidad - subTotal;
     ct.cantidad = restante > 0 ? restante : 0;
     this.folioLinea.coloresTenidos.push(ct);

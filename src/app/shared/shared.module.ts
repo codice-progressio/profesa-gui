@@ -21,6 +21,9 @@ import {DndModule} from 'ng2-dnd';
 import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component';
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
+import {NgxMaskModule} from 'ngx-mask'
+
+
 
 
 
@@ -30,7 +33,8 @@ import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
         // CommonModule trae el *ng-for
         CommonModule,
         PipesModule,
-        DndModule
+        DndModule,
+        NgxMaskModule
     ],
     declarations: [
         HeaderComponent,
@@ -63,7 +67,8 @@ import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
         ValidacionInputsComponent,
         DndModule,
         OrdenadorVisualComponent,
-        ProgressBarComponent
+        ProgressBarComponent,
+        NgxMaskModule
     ],
     providers:[ModeloCompletoPipe]
 })

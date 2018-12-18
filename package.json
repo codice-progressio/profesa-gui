@@ -29,6 +29,7 @@
     "moment": "^2.23.0",
     "ng2-charts": "^1.6.0",
     "ng2-dnd": "^5.0.2",
+    "ngx-mask": "^7.3.0",
     "react-dynamic-number": "^1.7.1",
     "rxjs": "^6.3.3",
     "sweetalert": "^2.1.2",

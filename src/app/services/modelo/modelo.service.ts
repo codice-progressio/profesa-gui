@@ -14,6 +14,7 @@ import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
 import { Laser } from 'src/app/models/laser.models';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,9 @@ export class ModeloService {
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
-    public _preLoaderService: PreLoaderService
-  ) { }
+    public _preLoaderService: PreLoaderService,
+    public _paginadorService: PaginadorService
+  ) {}
 
   
   guardar( mod: any ) {
@@ -37,6 +39,9 @@ export class ModeloService {
     return this.http.post(url, mod).pipe(
       map( (resp: any) => {
         this._msjService.ok_( resp , null, a );
+        this.total = resp.total;
+        console.log(` Total  ${this.total}`);
+        this._paginadorService.total = this.total;
         return resp.modeloCompleto;
       }), catchError(err => {
         this._msjService.err( err );
@@ -90,14 +95,15 @@ export class ModeloService {
   }
 
   // Obtiene todos los datos con costos. 
-  cargarModelosCompletosParaCostos( ) {
+  cargarModelosCompletosParaCostos( limite: number = 5, desde: number = 0) {
     const a: number = this._preLoaderService.loading('Cargando modelos con sus costos.');
-    
-    const url = URL_SERVICIOS + `/modeloCompleto/costos`;
+    const url = URL_SERVICIOS + `/modeloCompleto/costos?&limite=${limite}&desde=${desde}`;
     return this.http.get(url).pipe(
       map(
         (resp: any ) => {
           this._msjService.ok_( resp , null , a );
+          this.total = resp.total;
+          this._paginadorService.activarPaginador(this.total)
           return resp.modelosCompletos;
         }
       ), catchError( err => {

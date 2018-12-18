@@ -140,7 +140,7 @@ export class ProcesoComponent implements OnInit {
     if (!familia._id) {
       this.familiaDeProcesos.splice(i, 1);
 
-      this._manejoDeMensajesService.correcto('La familia que aun no se grababa se elimo.');
+      this._manejoDeMensajesService.correcto('La familia que aun no se grababa se elimino.');
 
     } else {
       swal({

@@ -3,18 +3,18 @@
 FEATURES:@high 
 
   Departamentos:
-    ☐ GUI Folios terminados no deben aparecer "Folios en producción"
-    ☐ API Cuando un folio ya no tiene más órdenes debe señalarse como terminado. 
+    ✔ GUI Folios terminados no deben aparecer "Folios en producción" @done(18-12-18 10:04)
+    ✔ API Cuando un folio ya no tiene más órdenes debe señalarse como terminado. @done(18-12-18 10:04)
     
   Modelos Completos:
-    ☐ No se eliminan los procesos extras que agregamos a la familia cuando estamos creando el modelo completo. 
-    ☐ FIX No podemos seleccionar si las órdenes se van a generar como medias o completas. 
+    ✔ No se eliminan los procesos extras que agregamos a la familia cuando estamos creando el modelo completo. @started(18-12-18 11:06) @done(18-12-18 12:03) @lasted(57m15s)
+    ✔ FIX No podemos seleccionar si las órdenes se van a generar como medias o completas. @started(18-12-18 12:03) @done(18-12-18 12:37) @lasted(34m52s)
       
   Registro y modificacion de procesos:
     Registro de procesos:
-      ☐ El color de la alerta de gastos faltantes debe ser danger y no warning por que es obligatorio por lo menos un gasto. 
+      ✔ El color de la alerta de gastos faltantes debe ser danger y no warning por que es obligatorio por lo menos un gasto. @started(18-12-18 12:39) @done(18-12-18 12:42) @lasted(3m7s)
   Registro de familias:
-    ☐ FIX Despues de estar creaando procesos y crear una familia de procesos da un error de castID. Es necesario recargar la página para que funcione. 
+    ☐ FIX Despues de estar creaando procesos y crear una familia de procesos da un error de castID. Es necesario recargar la página para que funcione. @started(18-12-18 12:42)
 
   Sidebar:
     GESTION DE PROCESOS:

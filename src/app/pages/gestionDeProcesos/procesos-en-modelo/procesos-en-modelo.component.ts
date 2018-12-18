@@ -18,6 +18,7 @@ import { mcall } from 'q';
 import { FamiliaDeProcesos, Procesos } from '../../../models/familiaDeProcesos.model';
 import { Proceso } from 'src/app/models/proceso.model';
 import { Orden } from 'src/app/models/orden.models';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 
 @Component({
   selector: 'app-procesos-en-modelo',
@@ -38,6 +39,7 @@ export class ProcesosEnModeloComponent implements OnInit {
   terminado: string = '';
   laserAlmacen: string = '';
   versionModelo: string = '';
+  mediasOrdenes: boolean = false;
   familiaDeProceso: FamiliaDeProcesos = null;
   procesosEspecialesModelo: Procesos[] = [];
 
@@ -79,10 +81,15 @@ export class ProcesosEnModeloComponent implements OnInit {
     public _preLoaderService: PreLoaderService,
     public _procesos: ProcesoService,
     public _manejoDeMensajesService: ManejoDeMensajesService,
-    public _calculosService: CalculosDeCostosService
+    public _calculosService: CalculosDeCostosService,
+    public _paginadorService: PaginadorService,
     ) { 
       
       this.cargarTodosLosDatos();
+      this._paginadorService.callback = ( desde, limite) =>{
+        this.cargarModelosCompletos(limite, desde);
+      }
+      
     }
     ngOnInit() {
 
@@ -135,8 +142,8 @@ export class ProcesosEnModeloComponent implements OnInit {
     this.cargarModelosCompletos();
   }
 
-  cargarModelosCompletos( ) {
-    this._modeloService.cargarModelosCompletosParaCostos( ).subscribe( (mC) => {
+  cargarModelosCompletos( limite:number = 5, desde: number =0 ) {
+    this._modeloService.cargarModelosCompletosParaCostos( limite, desde ).subscribe( (mC) => {
       if ( mC ) {
         this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
         this.modelosCompletos.map(x => x.nombreCompleto = ModeloCompleto.nombreCom(x));

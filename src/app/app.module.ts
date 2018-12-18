@@ -30,6 +30,8 @@ import {DndModule} from 'ng2-dnd';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
+import {NgxMaskModule} from 'ngx-mask'
+
 
 
 
@@ -51,7 +53,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     ServiceModule,
     ReactiveFormsModule,
     SharedModule,
-    DndModule.forRoot()
+    DndModule.forRoot(),
+    NgxMaskModule.forRoot()
     
   ],
   providers: [

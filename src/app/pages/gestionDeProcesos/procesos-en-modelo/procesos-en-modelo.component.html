@@ -11,6 +11,7 @@
                     </button>
                 </div>
 
+                <app-paginador></app-paginador>
                 <div class="list-group">
                     <ng-container *ngFor="let modeloCompleto of modelosCompletos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -26,6 +27,7 @@
                         </a>
                     </ng-container>
                 </div>
+                <app-paginador></app-paginador>
             </div>
         </div>
     </div>
@@ -40,170 +42,199 @@
 <div class="row" *ngIf="creandoModelo && modeloCompletoCostos === null">
     <div class="col-12">
         <div class="card">
+            <div class="card-body">
 
-            <h1>Crear nuevo modelo</h1>
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="modelo" required #_modelo="ngModel">
-                <small class="form-text text-muted">Modelo</small>
-                <ng-container *ngIf="_modelo.invalid">
-                    <ng-container *ngIf="_modelo?.errors.required">
-                        <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="tamano" required #_tamano="ngModel">
-                <small class="form-text text-muted">tamano</small>
-                <ng-container *ngIf="_tamano.invalid">
-                    <ng-container *ngIf="_tamano?.errors.required">
-                        <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="color" required #_color="ngModel">
-                <small class="form-text text-muted">color</small>
-                <ng-container *ngIf="_color.invalid">
-                    <ng-container *ngIf="_color?.errors.required">
-                        <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="terminado" required #_terminado="ngModel">
-                <small class="form-text text-muted">Terminado</small>
-                <ng-container *ngIf="_terminado.invalid">
-                    <ng-container *ngIf="_terminado?.errors.required">
-                        <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
-                    </ng-container>
-                </ng-container>
-            </div>
 
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="laserAlmacen">
-                <small class="form-text text-muted">Laser almacen</small>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" [(ngModel)]="versionModelo">
-                <small class="form-text text-muted">Versión del modelo</small>
-            </div>
+                <h1>Crear nuevo modelo</h1>
 
-            <br>
+                <div class="row">
 
-            <hr>
-            <h1>Agregar familias de proceso.</h1>
-            <h3>Familia del modelo </h3>
-
-            <div class="list-group">
-                <a *ngIf="!familiaDeProceso" class="bg-danger text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                    <i class="fa fa-exclamation-circle animated tada infinite fa-2x"></i> <strong> No has definido una familia de procesos. </strong>
-                </a>
-
-                <a *ngIf="familiaDeProceso" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                    <div class="d-flex w-100 justify-content-between align-items-center">
-                        <span>
-                                <strong class="text-inverse"> {{familiaDeProceso.nombre}} </strong>
-                            </span>
-                        <button (click)="eliminarFamiliaDeProceso( )" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="modelo" required #_modelo="ngModel">
+                        <small class="form-text text-muted">Modelo</small>
+                        <ng-container *ngIf="_modelo.invalid">
+                            <ng-container *ngIf="_modelo?.errors.required">
+                                <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
+                            </ng-container>
+                        </ng-container>
                     </div>
-                </a>
-            </div>
-
-            <ng-container *ngIf=" !familiaDeProceso">
-                <div class="animated fadeIn">
-                    <h3>Familias disponibles </h3>
-
-                    <div class="list-group">
-                        <ng-container *ngFor="let familia of familiaDeProcesos, let i = index;">
-                            <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <span>
-                                            <strong class="text-inverse"> {{familia.nombre}} </strong>
-                                        </span>
-                                    <button (click)="agregarFamiliaDeProceso( familia )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
-                                </div>
-                            </a>
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="tamano" required #_tamano="ngModel">
+                        <small class="form-text text-muted">tamano</small>
+                        <ng-container *ngIf="_tamano.invalid">
+                            <ng-container *ngIf="_tamano?.errors.required">
+                                <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="color" required #_color="ngModel">
+                        <small class="form-text text-muted">color</small>
+                        <ng-container *ngIf="_color.invalid">
+                            <ng-container *ngIf="_color?.errors.required">
+                                <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="terminado" required #_terminado="ngModel">
+                        <small class="form-text text-muted">Terminado</small>
+                        <ng-container *ngIf="_terminado.invalid">
+                            <ng-container *ngIf="_terminado?.errors.required">
+                                <app-validacion-inputs [especial]="'Este campo es obligatorio'"></app-validacion-inputs>
+                            </ng-container>
                         </ng-container>
                     </div>
 
+                    <div class=" col-3">
+
+                        <button (click)="mediasOrdenes=!mediasOrdenes" [ngClass]="{'btn-success': mediasOrdenes, 'btn-inverse': !mediasOrdenes}" class="btn ">
+                            <i *ngIf="mediasOrdenes" class="fa fa-check animated rollIn mr-1" aria-hidden="true"></i>
+                            Generar medias ordenes
+                        </button>
+                    </div>
+
+
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="laserAlmacen">
+                        <small class="form-text text-muted">Laser almacen</small>
+                    </div>
+                    <div class="form-group col-3">
+                        <input type="text" class="form-control" [(ngModel)]="versionModelo">
+                        <small class="form-text text-muted">Versión del modelo</small>
+                    </div>
                 </div>
-            </ng-container>
 
+                <br>
 
-            <hr>
-
-            <ng-container *ngIf="familiaDeProceso">
-
-                <h1>Agregar proceso:</h1>
-                <h3>Procesos del modelo</h3>
-                <div class="list-group">
-                    <a class="bg-success text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                        <strong> Define los procesos especiales para este modelo.</strong>
-                    </a>
-
-                    <ng-container *ngFor="let proc of familiaDeProceso.procesos, let i = index;">
-
-                        <a class="mt-3 bg-info text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                                {{proc.orden}}-<strong> {{proc.proceso.nombre}}</strong> {{proc._id}}
+                <hr>
+                <h1>Agregar familias de proceso.</h1>
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Familia del modelo </h3>
+                        <div class="list-group">
+                            <a *ngIf="!familiaDeProceso" class="bg-danger text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                <i class="fa fa-exclamation-circle animated tada infinite fa-2x"></i> <strong> No has definido una familia de procesos. </strong>
                             </a>
 
-                        <div dnd-sortable-container [sortableData]="arreglosDrop[proc._id].arreglo" dnd-draggable [dragEnabled]="true" dnd-droppable [dropZones]="['']" (onDropSuccess)="restrictedDrop1=$event">
-                            <ng-container *ngFor="let proc2 of arreglosDrop[proc._id].arreglo; let i_a = index;">
-                                <a dnd-sortable (drop)="reordenarProcesos(  )" (onDropSuccess)="reordenarProcesos(  )" [sortableIndex]="i_a" dnd-draggable [dragEnabled]="true" [dropZones]="['']" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                                    <i class="fa fa-bars"></i> {{proc2.orden}}<strong> {{proc2.proceso.nombre}}</strong>
-                                </a>
-                            </ng-container>
-                            <a *ngIf="!(arreglosDrop[proc?._id]?.arreglo?.length>0)" class="list-group-item bg-light-extra text-muted flex-column align-items-center animated fadeIn">
-                                <small>Arrastra un proceso para agregarlo.</small>
+                            <a *ngIf="familiaDeProceso" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                <div class="d-flex w-100 justify-content-between align-items-center">
+                                    <span>
+                                        <strong class="text-inverse"> {{familiaDeProceso.nombre}} </strong>
+                                    </span>
+                                    <button (click)="eliminarFamiliaDeProceso( )" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
+                                </div>
                             </a>
                         </div>
-                    </ng-container>
 
+                    </div>
+                    <div class="col-6">
+                        <ng-container *ngIf=" !familiaDeProceso">
+                            <h3>Familias disponibles </h3>
 
+                            <div class="list-group animated fadeIn">
+                                <ng-container *ngFor="let familia of familiaDeProcesos, let i = index;">
+                                    <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <span>
+                                                    <strong class="text-inverse"> {{familia.nombre}} </strong>
+                                                </span>
+                                            <button (click)="agregarFamiliaDeProceso( familia )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </a>
+                                </ng-container>
+                            </div>
+
+                        </ng-container>
+
+                    </div>
                 </div>
 
 
-                <h3>Procesos disponibles</h3>
+
                 <hr>
-                <h5>Normales</h5>
-                <div class="list-group">
-                    <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span>
-                                        <strong class="text-inverse"> {{proceso.nombre}} </strong>
-                                    </span>
-                                <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+
+                <ng-container *ngIf="familiaDeProceso">
+
+                    <h1>Agregar proceso:</h1>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <h3>Procesos del modelo</h3>
+                            <div class="list-group">
+                                <a class="bg-success text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                    <strong> Define los procesos especiales para este modelo.</strong>
+                                </a>
+
+                                <ng-container *ngFor="let proc of familiaDeProceso.procesos, let i = index;">
+
+                                    <a class="mt-3 bg-info text-white list-group-item list-group-item-action d-flex justify-content-between align-items-center animated fadeIn">
+                                        <span>
+                                            {{proc.orden}}-{{proc.proceso.nombre}}
+
+                                        </span>
+                                        <small><strong>{{proc.proceso.departamento.nombre}}</strong></small>
+                                    </a>
+
+                                    <div dnd-sortable-container [sortableData]="arreglosDrop[proc._id].arreglo" dnd-draggable [dragEnabled]="true" dnd-droppable [dropZones]="['']" (onDropSuccess)="restrictedDrop1=$event">
+                                        <ng-container *ngFor="let proc2 of arreglosDrop[proc._id].arreglo; let i_a = index;">
+                                            <a (dblclick)="arreglosDrop[proc._id].arreglo.splice(i_a, 1); reordenarProcesos()" dnd-sortable (drop)="reordenarProcesos(  )" (onDropSuccess)="reordenarProcesos(  )" [sortableIndex]="i_a" dnd-draggable [dragEnabled]="true" [dropZones]="['']" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center animated fadeIn">
+                                                <span>
+                                                        <i class="fa fa-bars"></i> {{proc2.orden}}
+                                                        {{proc2.proceso.nombre}}
+                                                </span>
+                                                <small class="mr-1"><strong>{{proc2.proceso.departamento.nombre}}</strong></small>
+                                            </a>
+                                        </ng-container>
+                                        <a *ngIf="!(arreglosDrop[proc?._id]?.arreglo?.length>0)" class="list-group-item bg-light-extra text-muted flex-column align-items-center animated fadeIn">
+                                            <small>Arrastra un proceso para agregarlo.</small>
+                                        </a>
+                                    </div>
+                                </ng-container>
+
+
                             </div>
-                        </a>
-                    </ng-container>
-                </div>
-                <br>
-                <h5>Especiales</h5>
-                <div class="list-group">
-                    <ng-container *ngFor="let proceso of procesosEspeciales, let i = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span>
-                                        <strong class="text-inverse"> {{proceso.nombre}} </strong>
-                                    </span>
-                                <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+
+                        </div>
+                        <div class="col-6">
+
+                            <h3>Procesos disponibles</h3>
+                            <h5>Normales</h5>
+                            <div class="list-group">
+                                <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
+                                    <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <span>
+                                                <strong class="text-inverse"> {{proceso.nombre}} </strong>
+                                            </span>
+                                            <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </a>
+                                </ng-container>
                             </div>
-                        </a>
-                    </ng-container>
-                </div>
-            </ng-container>
 
 
-            <hr>
+                        </div>
+                    </div>
+                    <hr>
 
-            <button (click)="guardarNuevoModelo( )" class="btn btn-success"><i class="fa fa-save"></i> Guardar </button>
-            <button (click)="creandoModelo = false" class="btn btn-danger ml-3"><i class="fa fa-times"></i> Cancelar </button>
+
+                </ng-container>
 
 
+
+
+                <button (click)="guardarNuevoModelo( )" class="btn btn-success"><i class="fa fa-save"></i> Guardar </button>
+                <button (click)="creandoModelo = false" class="btn btn-danger ml-3"><i class="fa fa-times"></i> Cancelar </button>
+
+
+
+
+            </div>
         </div>
     </div>
 </div>
+
 
 <!-- 
 =====================================

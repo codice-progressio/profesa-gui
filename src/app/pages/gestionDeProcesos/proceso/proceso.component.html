@@ -376,33 +376,47 @@
                     <small class="form-text text-muted">Este nombre afecta como se muestra la familia</small>
                 </div>
 
-                <h3>Procesos dentro de la familia</h3>
-                <div class="list-group" dnd-sortable-container [sortableData]="familiaEditandose.procesos">
-                    <ng-container *ngFor="let proc of familiaEditandose.procesos, let i = index;">
-                        <a dnd-sortable (onDropSuccess)="reordenarProceso(familiaEditandose)" [sortableIndex]="i" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span>
-                                    <i class="fa fa-bars mr-3"></i> <strong class="text-inverse"> {{proc.orden}} </strong>  - {{proc.proceso?.nombre}}
-                                </span>
-                                <button (click)="eliminarProceso(i)" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
-                            </div>
-                        </a>
-                    </ng-container>
+                <div class="row">
+                    <div class="col-6">
+
+                        <h1>Procesos dentro de la familia</h1>
+                        <div class="list-group" dnd-sortable-container [sortableData]="familiaEditandose.procesos">
+                            <ng-container *ngFor="let proc of familiaEditandose.procesos, let i = index;">
+                                <a dnd-sortable (onDropSuccess)="reordenarProceso(familiaEditandose)" [sortableIndex]="i" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <span>
+                                            <i class="fa fa-bars mr-3"></i> <strong class="text-inverse"> {{proc.orden}} </strong>  - {{proc.proceso?.nombre}}
+                                        </span>
+                                        <span>
+                                                <small class="mr-1"><strong>{{proc.proceso.departamento.nombre}}</strong></small>
+                                            <button (click)="eliminarProceso(i)" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
+                                        </span>
+                                    </div>
+                                </a>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <h1>Procesos disponibles</h1>
+                        <div class="list-group">
+                            <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
+                                <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <span>
+                                            {{proceso.nombre}}
+                                        </span>
+                                        <span>
+                                            <small class="mr-1"><strong>{{proceso.departamento.nombre}}</strong></small>
+                                            <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                        </span>
+                                    </div>
+                                </a>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
 
-                <h3>Procesos disponibles</h3>
-                <div class="list-group">
-                    <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span>
-                                    {{proceso.nombre}}
-                                </span>
-                                <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </a>
-                    </ng-container>
-                </div>
 
                 <br>
                 <br>
@@ -485,7 +499,7 @@
 
                 <h3>Gastos del proceso.</h3>
                 <div class="list-group">
-                    <a *ngIf="procesoEditandose.gastos.length === 0" class="bg-warning text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                    <a *ngIf="procesoEditandose.gastos.length === 0" class="bg-danger text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
                         <i class="fa fa-exclamation-circle animated tada infinite fa-2x"></i> <strong> Este proceso no tiene gastos asignados. </strong>
                     </a>
                     <ng-container *ngFor="let gastoConsumo of procesoEditandose.gastos, let i = index;">
