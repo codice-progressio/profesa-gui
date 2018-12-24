@@ -1,22 +1,23 @@
-<nav *ngIf="_s.totalDeElementos !== 0">
-    <ul class="pagination pagination-sm justify-content-end ">
-
-        <li class="page-item pointer" [ngClass]="{'disabled': 0=== _s.desde }">
-            <a (click)="_s.cambiarPagina( (-1 *_s.limite))" class="page-link " aria-label="Previous ">
+<span *ngIf=" s.porHoja[0] >s.totalDeElementos " class="text-muted text-right w-100"><small><strong>Mostrando todos los elementos existentes.</strong></small></span>
+<nav *ngIf="s.totalDeElementos > s.porHoja[0]">
+    <ul class="pagination pagination-sm justify-content-end align-items-center">
+        <small class="mr-3"><strong>{{s.totalDeElementos}}</strong> elementos.</small>
+        <li class="page-item pointer" [ngClass]="{'disabled': 0=== s.desde }">
+            <a (click)="s.cambiarPagina( (-1 *s.limite))" class="page-link " aria-label="Previous ">
                 <i class="fa fa-arrow-circle-left "></i>
             </a>
         </li>
         <li class="page-item disabled text-center" style="width: 100px;">
             <span class="page-link " aria-label="Next ">
-                {{_s.actual}} de {{_s.total}}
+                {{s.actual}} de {{s.total}}
             </span>
         </li>
-        <li class="page-item pointer " [ngClass]="{'disabled': _s.actual === _s.total }">
-            <a (click)="_s.cambiarPagina(_s.limite)" class="page-link " aria-label="Next ">
+        <li class="page-item pointer " [ngClass]="{'disabled': s.actual === s.total }">
+            <a (click)="s.cambiarPagina(s.limite)" class="page-link " aria-label="Next ">
                 <i class="fa fa-arrow-circle-right "></i>
             </a>
         </li>
         <li class="page-item disabled "><a class="page-link "><small>Elem/Pag</small></a></li>
-        <li *ngFor="let lim of _s.porHoja" class="page-item pointer" [ngClass]="{'active': lim === _s.limite}"><a (click)="_s.cambiarCantidad(lim)" class="page-link ">{{lim}}</a></li>
+        <li *ngFor="let lim of s.porHoja" class="page-item pointer" [ngClass]="{'active': lim === s.limite}"><a (click)="s.cambiarCantidad(lim)" class="page-link ">{{lim}}</a></li>
     </ul>
 </nav>

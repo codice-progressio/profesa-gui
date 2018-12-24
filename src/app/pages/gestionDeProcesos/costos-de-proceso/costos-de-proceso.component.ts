@@ -24,7 +24,7 @@ import { log } from 'util';
 })
 export class CostosDeProcesoComponent implements OnInit {
   procesosNormales: Proceso[];
-  procesosEspeciales: Proceso[];
+  // procesosEspeciales: Proceso[];
   familiaDeProcesos: FamiliaDeProcesos[];
 
   procesoEditandose: Proceso = null;
@@ -44,10 +44,9 @@ export class CostosDeProcesoComponent implements OnInit {
     public _manejoDeMensajesService: ManejoDeMensajesService,
     public _calculosDeCostoService: CalculosDeCostosService,
   ) {
-    this._procesoService.obtenerTodosLosProcesos().subscribe(resp => {
-      this.familiaDeProcesos = resp.familiaDeProcesos;
-      this.procesosEspeciales = resp.procesosEspeciales;
-      this.procesosNormales = resp.procesosNormales;
+    this._procesoService.todo().subscribe(resp => {
+      
+      this.procesosNormales = resp;
     });
 
     this._maquinaService

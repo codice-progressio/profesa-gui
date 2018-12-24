@@ -10,9 +10,8 @@
                       Crear nuevo modelo
                     </button>
                 </div>
-
-                <app-paginador></app-paginador>
-                <div class="list-group">
+                <app-paginador [paginador]="_PSModeloCompleto"></app-paginador>
+                <div class="list-group mb-3">
                     <ng-container *ngFor="let modeloCompleto of modelosCompletos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
@@ -27,7 +26,7 @@
                         </a>
                     </ng-container>
                 </div>
-                <app-paginador></app-paginador>
+                <app-paginador [paginador]="_PSModeloCompleto"></app-paginador>
             </div>
         </div>
     </div>
@@ -132,6 +131,7 @@
                         <ng-container *ngIf=" !familiaDeProceso">
                             <h3>Familias disponibles </h3>
 
+
                             <div class="list-group animated fadeIn">
                                 <ng-container *ngFor="let familia of familiaDeProcesos, let i = index;">
                                     <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
@@ -199,7 +199,6 @@
                         <div class="col-6">
 
                             <h3>Procesos disponibles</h3>
-                            <h5>Normales</h5>
                             <div class="list-group">
                                 <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
                                     <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
@@ -254,7 +253,14 @@
     <div class="col-auto" *ngIf="!editando() ">
         <div class="card">
             <div class="card-body">
-                <h1>Modelos</h1>
+                <span class="d-flex justify-content-between align-items-center mb-3">
+                    <h1>Modelos</h1>
+                    <button (click)="nuevoModelo()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Crear nuevo</button>
+
+                </span>
+
+                <app-paginador [paginador]="_PSModelos"></app-paginador>
+
                 <div class="list-group">
                     <ng-container *ngFor="let modelo of modelos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -277,7 +283,13 @@
     <div class="col-auto" *ngIf="!editando()">
         <div class="card">
             <div class="card-body">
-                <h1>Tamaños</h1>
+                <span class="d-flex justify-content-between align-items-center mb-3">
+                            <h1>Tamanos</h1>
+                            <button (click)="nuevoTamano()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Crear nuevo</button>
+        
+                        </span>
+
+                <app-paginador [paginador]="_PSTamano"></app-paginador>
                 <div class="list-group">
                     <ng-container *ngFor="let tamano of tamanos; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -309,7 +321,11 @@
     <div class="col-auto" *ngIf="!editando()">
         <div class="card">
             <div class="card-body">
-                <h1>Colores</h1>
+                <span class="d-flex justify-content-between align-items-center mb-3">
+                        <h1>Colores</h1>
+                        <button (click)="nuevoColor()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Crear nuevo</button>
+                    </span>
+                <app-paginador [paginador]="_PSColor"></app-paginador>
                 <div class="list-group">
                     <ng-container *ngFor="let color of colores; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -331,7 +347,11 @@
     <div class="col-auto" *ngIf="!editando()">
         <div class="card">
             <div class="card-body">
-                <h1>Terminado</h1>
+                <span class="d-flex justify-content-between align-items-center mb-3">
+                            <h1>Terminado</h1>
+                            <button (click)="nuevoTerminado()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Crear nuevo</button>
+                        </span>
+                <app-paginador [paginador]="_PSTerminado"></app-paginador>
                 <div class="list-group">
                     <ng-container *ngFor="let terminado of terminados; let i_mc = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -352,6 +372,12 @@
     </div>
 
 </div>
+
+<!-- 
+=====================================
+ Ediciones
+=====================================
+-->
 
 
 <div class="row" *ngIf="editando() && !creandoModelo && modeloCompletoCostos === null">

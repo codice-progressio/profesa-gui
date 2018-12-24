@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import swal from "sweetalert2";
 import { ModeloCompleto } from "../../models/modeloCompleto.modelo";
 import {
-  ModeloService,
+  ModeloCompletoService,
   ClienteService,
   UtilidadesService,
   OrdenadorVisualService,
@@ -19,9 +19,7 @@ import { Laser } from "../../models/laser.models";
 import { PreLoaderService } from "../../components/pre-loader/pre-loader.service";
 import { ModeloCompletoPipe } from "../../pipes/modelo-completo.pipe";
 import { BuscadorRapido } from "src/app/components/buscador-rapido/buscador-rapido";
-import { log } from "util";
-import { ModeloCompletoAutorizacion } from "../../models/modeloCompletoAutorizacion.model";
-import { Subscriber } from "rxjs";
+import { ModeloCompletoAutorizacion } from '../../models/modeloCompletoAutorizacion.model';
 
 @Component({
   selector: "app-registro-de-lineas",
@@ -58,7 +56,7 @@ export class RegistroDeLineasComponent implements OnInit {
   modificandoLinea: boolean = false;
 
   constructor(
-    public _modeloService: ModeloService,
+    public _modeloCompletoService: ModeloCompletoService,
     public _folioService: FolioService,
     public activatedRoute: ActivatedRoute,
     public _clienteService: ClienteService,
@@ -86,8 +84,8 @@ export class RegistroDeLineasComponent implements OnInit {
         this._clienteService.findById(this.cliente._id).subscribe(resp => {
           this.cliente = <Cliente>resp;
           // Buscamos el modelo.
-          this._modeloService
-            .buscarModeloCompleto(
+          this._modeloCompletoService
+            .buscar(
               this._buscadorRapidoService.termino,
               this._buscadorRapidoService.desde,
               this._buscadorRapidoService.limite
@@ -125,7 +123,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
                 d.push(br);
               });
-              this._buscadorRapidoService.totalDeElementosBD = this._modeloService.total;
+              this._buscadorRapidoService.totalDeElementosBD = this._modeloCompletoService.total;
               resolve(d);
             });
         });
@@ -144,11 +142,13 @@ export class RegistroDeLineasComponent implements OnInit {
       const md: ModeloCompleto = <ModeloCompleto>(
         this._buscadorRapidoService.elementoSeleccionado.objeto
       );
+
+      // Si el modelo no existe dentro de los autorizados quiere decir que 
+      // que no lo esta. 
+      const mdNoAutorizado = this.cliente.modelosCompletosAutorizados.find((x:ModeloCompletoAutorizacion) => x.modeloCompleto._id === md._id);
     
-      if (
-        this.cliente.modelosCompletosAutorizados.filter(x => x._id === md._id)
-          .length < 1
-      ) {
+      if (!mdNoAutorizado) {
+        
         this._msjService.solicitarPermiso(
           "El modelo no esta autorizado, quieres pedir autorizacion?",
           () => {
@@ -158,8 +158,15 @@ export class RegistroDeLineasComponent implements OnInit {
           }
         );
         return false;
+      }else{
+        // El modelo existe pero,  esta autorizado?
+        if( !mdNoAutorizado.autorizado){
+          this._msjService.ups('Ya han solicitato autorizacion para este modelo pero no lo han confirmado.', 'Autorizacion pendiente')
+          return false;
+        }
+        return true;
+        
       }
-      return true;
     };
   }
 

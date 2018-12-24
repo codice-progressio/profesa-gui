@@ -17,7 +17,7 @@ import {
   VerificaTokenGuard,
   // Sistema Carrduci
   ClienteService,
-  ModeloService,
+  ModeloCompletoService,
   UtilidadesService,
   ManejoDeMensajesService,
   MaquinaService,
@@ -26,7 +26,13 @@ import {
   GastoService,
   CalculosDeCostosService,
   OrdenadorVisualService,
-  PermisosGuard
+  PermisosGuard,
+  FamiliaDeProcesosService,
+  ModeloService,
+  TamanoService,
+  ColorService,
+  TerminadoService,
+  
   
 } from './service.index';
 import { ValidacionesService } from './utilidades/validaciones.service';
@@ -53,7 +59,7 @@ import { ValidacionesService } from './utilidades/validaciones.service';
     VerificaTokenGuard,
     // Sistema Carrduci
     ClienteService,
-    ModeloService,
+    ModeloCompletoService,
     BuscadorRapidoService,
     UtilidadesService,
     ManejoDeMensajesService,
@@ -64,7 +70,12 @@ import { ValidacionesService } from './utilidades/validaciones.service';
     GastoService,
     CalculosDeCostosService,
     OrdenadorVisualService,
-    PermisosGuard
+    PermisosGuard, 
+    FamiliaDeProcesosService,
+    ModeloService,
+    TamanoService,
+    ColorService,
+    TerminadoService,
 ]
 })
 export class ServiceModule { }

@@ -1,5 +1,3 @@
-import { BasicosGUI } from './basicosGUI.model';
-import { ModeloService } from 'src/app/services/service.index';
 import { OperacionesEnGUI } from './OperacionesEnGUI';
 
 

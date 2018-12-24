@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Cliente } from 'src/app/models/cliente.models';
-import { ValidacionesService, ModeloService } from 'src/app/services/service.index';
+import { ValidacionesService, ModeloCompletoService } from 'src/app/services/service.index';
 import { ClienteService } from '../../services/cliente/cliente.service';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { ModelosComponent } from '../modelos/modelos.component';
@@ -25,7 +25,7 @@ export class ClientesComponent implements OnInit {
     private _validacionesService: ValidacionesService,
     private _fb: FormBuilder,
     private _clienteService:ClienteService,
-    private _modeloService: ModeloService
+    private _modeloService: ModeloCompletoService
   ) {
 
    this.cargarClientes();

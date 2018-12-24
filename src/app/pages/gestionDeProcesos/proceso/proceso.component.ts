@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {
   ProcesoService,
   ManejoDeMensajesService,
   DepartamentoService,
   GastoService,
   MaquinaService,
-  CalculosDeCostosService
+  CalculosDeCostosService,
+  FamiliaDeProcesosService
 } from 'src/app/services/service.index';
 import { Proceso } from 'src/app/models/proceso.model';
 import {
@@ -19,11 +20,18 @@ import { Departamento } from 'src/app/models/departamento.models';
 import { Gasto } from 'src/app/models/gasto.model';
 import { GastoConsumo } from 'src/app/models/gastoConsumo.model';
 import { Maquina } from 'src/app/models/maquina.model';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+
+
 
 @Component({
   selector: 'app-proceso',
   templateUrl: './proceso.component.html',
-  styles: []
+  styles: [],
+  providers: [
+    { provide: 'PaginadorService1', useClass: PaginadorService },
+    { provide: 'PaginadorService2', useClass: PaginadorService },
+]
 })
 export class ProcesoComponent implements OnInit {
   familiaDeProcesos: FamiliaDeProcesos[];
@@ -34,11 +42,13 @@ export class ProcesoComponent implements OnInit {
   maquinaEditandose: Maquina = null;
   gastoEditandose: Gasto = null;
 
-  procesosEspeciales: Proceso[] = [];
+  // procesosEspeciales: Proceso[] = [];
   procesosNormales: Proceso[] = [];
   departamentos: Departamento[];
   gastos: Gasto[] = [];
   maquinas: Maquina[] = [];
+
+
 
   constructor(
     private _procesoService: ProcesoService,
@@ -46,29 +56,64 @@ export class ProcesoComponent implements OnInit {
     public _gastoService: GastoService,
     public _maquinaService: MaquinaService,
     public _manejoDeMensajesService: ManejoDeMensajesService,
-    public _calculoDeCostosSerivice: CalculosDeCostosService
+    public _calculoDeCostosSerivice: CalculosDeCostosService,
+    public _familiaDeProcesosService: FamiliaDeProcesosService,
+    @Inject('PaginadorService1') public _PSProcesos: PaginadorService,
+    @Inject('PaginadorService2') public _PSFamilias: PaginadorService
+    
   ) {
-    this._procesoService.obtenerTodosLosProcesos().subscribe(resp => {
-      this.familiaDeProcesos = resp.familiaDeProcesos;
-      this.procesosEspeciales = resp.procesosEspeciales;
-      this.procesosNormales = resp.procesosNormales;
+    this.cargarProcesos();
+    this.cargarFamilias();
+    this.cargarDepartamentos();
+    this.cargarGastos();
+    this.cargarMaquinas();
+
+    this._PSProcesos.callback = (desde, limite)=>{
+      this.cargarProcesos( desde, limite);
+    }
+
+    this._PSFamilias.callback = (desde, limite )=>{
+      this.cargarFamilias( desde, limite );
+    }
+
+
+
+  }
+
+  cargarProcesos( desde: number= 0, limite: number = this._PSProcesos.limite){
+    this._procesoService.todo(desde, limite, this._PSProcesos ).subscribe(procesos => {
+      // Este proceso no lo listamos por que se agrega de manera automatica. 
+      this.procesosNormales =procesos;
     });
+  }
+  
+  cargarFamilias(desde: number= 0, limite: number = this._PSFamilias.limite){
+    this._familiaDeProcesosService.todo(desde, limite, this._PSFamilias).subscribe( resp=>{
+      this.familiaDeProcesos = resp;
+    })
+  }
 
-    this._departamentosService
-      .cargarDepartamentos()
-      .subscribe((departamentos: Departamento[]) => {
-        this.departamentos = departamentos;
-      });
-
+  cargarGastos(){
     this._gastoService.cargarTodosLosGastos().subscribe((gastos: Gasto[]) => {
       this.gastos = gastos;
     });
+  }
 
+  cargarMaquinas(){
     this._maquinaService
-      .obtenerTodasLasMaquinas()
-      .subscribe((maquinas: Maquina[]) => {
-        this.maquinas = maquinas;
-      });
+    .obtenerTodasLasMaquinas()
+    .subscribe((maquinas: Maquina[]) => {
+      this.maquinas = maquinas;
+    });
+  }
+
+
+  cargarDepartamentos(){
+    this._departamentosService
+    .cargarDepartamentos()
+    .subscribe((departamentos: Departamento[]) => {
+      this.departamentos = departamentos;
+    });
   }
 
   ngOnInit() {}
@@ -84,17 +129,20 @@ export class ProcesoComponent implements OnInit {
     }
 
     if (familia._id) {
-      this._procesoService
-        .modificarFamiliaDeProcesos(familia)
+      this._familiaDeProcesosService
+        .modficar(familia)
         .subscribe((resp: any) => {
           this.limpiar(familia);
+          this.cargarFamilias()
         });
     } else {
-      this._procesoService
-        .guardarNuevaFamiliaDeProcesos(familia)
+      this._familiaDeProcesosService
+        .guardar(familia)
         .subscribe((resp: FamiliaDeProcesos) => {
           familia._id = resp._id;
           this.limpiar();
+          this.cargarFamilias(this._PSFamilias.desde, this._PSFamilias.limite);
+          
         });
     }
   }
@@ -122,13 +170,14 @@ export class ProcesoComponent implements OnInit {
       this._procesoService
         .guardarNuevoProceso(proceso)
         .subscribe((resp: any) => {
+          this.cargarProcesos();
           this.limpiarProceso(proceso);
         });
     } else {
       this._procesoService
         .modificarProceso(proceso)
         .subscribe((resp: Proceso) => {
-          proceso._id = resp._id;
+          this.cargarProcesos();
           this.limpiarProceso();
         });
     }
@@ -169,9 +218,9 @@ export class ProcesoComponent implements OnInit {
   eliminarProcesoNormal(i: number) {
     this.eliminarProcesoEntero(i, this.procesosNormales);
   }
-  eliminarProcesoEspecial(i: number) {
-    this.eliminarProcesoEntero(i, this.procesosEspeciales);
-  }
+  // eliminarProcesoEspecial(i: number) {
+  //   this.eliminarProcesoEntero(i, this.procesosEspeciales);
+  // }
 
   eliminarProcesoEntero(i: number, procesos) {
     const proceso = procesos[i];
@@ -246,24 +295,19 @@ export class ProcesoComponent implements OnInit {
     this.familiaDeProcesos.push(this.familiaEditandose);
   }
 
-  nuevoProceso(esp: boolean = false) {
+  nuevoProceso() {
     this.procesoEditandose = new Proceso();
     this.procesoEditandose.departamento = this.departamentos[0];
     this.procesoEditandose.editado = true;
-    this.procesoEditandose.especial = esp;
-    this.procesoEditandose.nombre = esp
-      ? 'Nuevo proceso especial'
-      : 'Nuevo proceso';
+    // this.procesoEditandose.especial = esp;
+    this.procesoEditandose.nombre = 'Nuevo proceso';
     this.procesoEditandose.observaciones = 'Observaciones del nuevo proceso.';
     this.procesoEditandose.pasos = [
       new Paso(1, 'Paso numero uno a realizar', true, true)
     ];
-    this.procesoEditandose.ver = true;
-    if (esp) {
-      this.procesosEspeciales.push(this.procesoEditandose);
-    } else {
+    
       this.procesosNormales.push(this.procesoEditandose);
-    }
+    
   }
 
   agregarProceso(proceso: Proceso) {

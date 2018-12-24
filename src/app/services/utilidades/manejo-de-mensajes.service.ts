@@ -6,6 +6,7 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
   providedIn: 'root'
 })
 export class ManejoDeMensajesService {
+  
 
   
   datos: any;
@@ -203,6 +204,7 @@ export class ManejoDeMensajesService {
       showCancelButton: true,
       confirmButtonText: 'Solicitar autorizacion',
       cancelButtonText: 'Cancelar',
+      cancelButtonClass: 'btn btn-danger mr-3',
       reverseButtons: true
     }).then( result => {
       if ( result.value ) {
@@ -211,10 +213,24 @@ export class ManejoDeMensajesService {
         this.swalWithBootstrapButtons(
           'Cancelado',
           'No se solicito permiso..',
-          'error'
+          'info'
         );
       }
     });
+  }
+
+  ups(msj: string, titulo: string = 'ups', timer:number = 10000): any {
+    const d: any = {
+      position: 'center',
+      type: 'warning',
+      title: titulo,
+      text: msj,
+      showConfirmButton: false,
+      timer: timer, 
+      animation: true,
+     
+    };
+    swal(d);
   }
   
 

@@ -1,3 +1,8 @@
+export { ModeloService } from './modelo/modelo.service';
+export { TamanoService } from './modelo/tamano.service';
+export { ColorService } from './modelo/color.service';
+export { TerminadoService } from './modelo/terminado.service';
+
 export { PreLoaderService } from '../components/pre-loader/pre-loader.service';
 
 // Guards
@@ -20,7 +25,7 @@ export { SidebarService } from './shared/sidebar.service';
 // Sitema Carrduci
 export { ClienteService } from './cliente/cliente.service';
 export { FolioService } from './folio/folio.service';
-export { ModeloService } from './modelo/modelo.service';
+export { ModeloCompletoService } from './modelo/modelo-completo.service';
 export { MaquinaService } from './maquina/maquina.service';
 export { DepartamentoService } from './departamento/departamento.service';
 export { ProcesoService } from './proceso/proceso.service';
@@ -32,3 +37,4 @@ export { ValidacionesService } from './utilidades/validaciones.service';
 export { CalculosDeCostosService } from './gastos/calculos-de-costos.service';
 
 export { OrdenadorVisualService } from '../components/ordenador-visual/ordenador-visual.service';
+export { FamiliaDeProcesosService } from './proceso/familia-de-procesos.service';

@@ -1,7 +1,65 @@
 FEATURES:
+Departamentos nuevos:
+  ☐ Metalizado.
+  ☐ Barnizado
+  ☐ Burato
+
+    
+  Sistema de alertas y notificaciones. :
+
+  ☐ Dashboard debe mostrar notificaciones y alertas.
+  ☐ Barra de arriba debe almacenar notificaciones recientes.
+  ☐ Subscripciones a ordenes, pedidos y folios cuando haya cambios.
+  
+
+  Logs:
+    ☐ Agregar hora y fecha a todos los logs. 
+
+  Reporte de defectos:
+    ☐ Reporte de defectos.
+    ☐ Alertas de tiempo de espera. 
+
+  Procesos:
+    ☐ Que permita el almacenaje del hit.
+    ☐ Quien lo va a hacer? > Usuarios capacitados. 
+    ☐ Con que lo va a hacer. Material y herramientas. 
+    ☐ Procesos disponibles al crear familia que se arrastre para agregar a la lista. 
+    ☐ Ordenar los procesos por nombre. 
+
+  Generacion de ordenes:
+    ☐ Que las obsevaciones de folio y pedido se vean, pero no se modifiquen al generar las ordenes.
+  
+  Seguimiento de folios:
+    ☐ Permitir que se filtre al dar click en las etiquetas de los folios (Una alternativa a los filtros)
+    ☐ Filtrar por fechas de entrega. (Calendario sobre la barra)
+    ☐ Filtrar por cliente. (Un menu desplegable sobre la barra que aparezca al escribir.)
+    ☐ Que se vea la fecha de entrada del folio. 
+    ☐ Filtrar por fecha de entrada. Igual que la fecha de entrega.
+
+  Impresion de ordenes:
+    ☐ Que la marca laser salga abajo de la etiqueta.
+
 
   
 FIX:
+  Sidebar:  
+    ✘ El scroll no se ve y desaparecen los menus. @started(18-12-20 07:21) @cancelled(18-12-20 07:50) @wasted(29m25s)
+  ✔ Quitar procesos especiales de registro y modificacion de procesos. @started(18-12-20 07:50) @done(18-12-20 08:00) @lasted(10m57s)
+  ✔ Entrega de ordenes a proceso no debe aparecer en la creacion de familias de procesos. Se agrega automaticamente. @started(18-12-20 08:30) @done(18-12-20 08:48) @lasted(18m29s)
+  ✔ Crear un proceso y luego una familia da error Arreglo de paginador y separacion de servicios (Familia y procesos). @started(18-12-20 08:48) @done(18-12-20 16:11) @lasted(7h23m17s) 
+  ✔ En pedidos se autoriza modelos cada vez. Es necesario que no lo haga si la aut. esta pendiente. Y se agrego nuevo tipo de mensaje en los msjservice @started(18-12-20 16:11) @done(18-12-20 16:44) @lasted(33m50s)
+
+  URGENTE:
+  ☐ Implementar certificado de seguridad para chrome.
+
+
+Gestion dde procesos en modelo:
+  ☐ Debe de mostrar seleccionable en modelo, tamano, color y terminado para facilitar la creacion del modelo.
+
+
+
+  
+
 DEPERECATED:
 DELETE:
 CLEAN:

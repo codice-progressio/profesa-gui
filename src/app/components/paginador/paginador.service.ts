@@ -11,7 +11,7 @@ export class PaginadorService {
   porHoja: number [] = [5, 15, 50];
   limite: number = 5;
   desde: number = 0;
-  totalDeElementos = 100;
+  totalDeElementos = 0;
 
   callback: any;
 
@@ -21,14 +21,12 @@ export class PaginadorService {
   cambiarPagina( cambio: number ) {
     
     this.actual += cambio > 0 ? 1 : -1;
-    console.log('actual' + this.actual);
     this.desde += cambio;
     
     if (this.desde <= 0) {
       this.desde = 0;
       this.actual = 1;
     }
-
     this.callback( this.desde, this.limite);
   }
 

@@ -6,8 +6,8 @@ import { Proceso } from 'src/app/models/proceso.model';
 import swal from 'sweetalert2';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { ProcesoService } from 'src/app/services/proceso/proceso.service';
-import { ModeloService } from 'src/app/services/modelo/modelo.service';
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
+import { ModeloCompletoService } from '../../services/modelo/modelo-completo.service';
 
 
 @Injectable({
@@ -33,12 +33,12 @@ export class OrdenadorVisualService {
   // alacenar los datos que el ordenador-visual va utilizar para generar las areas de dnd.
   arreglosDrop: any = {};
 
-  procesosNormales: Proceso;
-  procesosEspeciales: Proceso;
+  procesosNormales: Proceso[];
+  // procesosEspeciales: Proceso;
 
   constructor(
     public _procesosService: ProcesoService,
-    public _modeloService: ModeloService,
+    public _modeloService: ModeloCompletoService,
     public _msjService: ManejoDeMensajesService
     
   ) { 
@@ -46,10 +46,10 @@ export class OrdenadorVisualService {
   }
 
   cargarProcesos( ) {
-    this._procesosService.obtenerTodosLosProcesos().subscribe(resp => {
+    this._procesosService.todo().subscribe(procesos => {
       // this.familiaDeProcesos = resp.familiaDeProcesos;  
-      this.procesosEspeciales = resp.procesosEspeciales;
-      this.procesosNormales = resp.procesosNormales;
+      // this.procesosEspeciales = resp.procesosEspeciales;
+      this.procesosNormales = procesos;
     });
   }
 
@@ -133,7 +133,7 @@ export class OrdenadorVisualService {
     this.arreglosDrop = {};
     this.modeloCompleto = null;
     this.procesosNormales = null;
-    this.procesosEspeciales = null;
+    // this.procesosEspeciales = null;
     this.generarComponente = false;
   }
 

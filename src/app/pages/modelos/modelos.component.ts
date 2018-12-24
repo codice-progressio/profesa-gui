@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModeloService } from '../../services/service.index';
+import { ModeloCompletoService } from '../../services/service.index';
 import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
 
 @Component({
@@ -20,10 +20,10 @@ export class ModelosComponent implements OnInit {
   };
 
   constructor(
-    public _modeloService: ModeloService
+    public _modeloService: ModeloCompletoService
   ) {
 
-    _modeloService.cagarModelosCompletos().subscribe( modelos => { this.modelos = modelos; });
+    _modeloService.todos().subscribe( modelos => { this.modelos = modelos; });
 
    }
 

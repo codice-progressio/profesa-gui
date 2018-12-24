@@ -1,15 +1,14 @@
-<!-- 
-=====================================
- Gestión de familias.
-=====================================
--->
-<div class="row" *ngIf="!editando()">
-    <div class="col-12">
+<div class="row">
+    <!-- 
+    =====================================
+    Gestión de familias.
+    =====================================
+    -->
+    <div class="col-6 " *ngIf="!editando()">
         <div class="card">
             <div class="card-body">
-                <app-pre-loader></app-pre-loader>
                 <div class="d-flex w-100 justify-content-between mb-3">
-                    <h2>Familias de procesos</h2>
+                    <h1>Familias de procesos</h1>
                     <button (click)="nuevaFamilia()" class="btn btn-outline-success">
                         <i class="fa fa-plus"></i> 
                         Crear nueva familia
@@ -17,7 +16,9 @@
 
                 </div>
 
-                <div class="list-group">
+                <app-paginador [paginador]="_PSFamilias"></app-paginador>
+
+                <div class="list-group mt-3 mb-3">
                     <ng-container *ngFor="let familia of familiaDeProcesos; let i_f = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
@@ -60,37 +61,39 @@
                         </a>
                     </ng-container>
                 </div>
+
+                <app-paginador [paginador]="_PSFamilias"></app-paginador>
             </div>
         </div>
     </div>
-</div>
 
-<!-- 
-=====================================
- FIN gestión de familias. 
-=====================================
--->
 
-<!-- 
-=====================================
- Gestión de procesos
-=====================================
--->
-<div class="row" *ngIf="!editando()">
-    <div class="col-12">
+    <!-- 
+    =====================================
+    FIN gestión de familias. 
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+    Gestión de procesos
+    =====================================
+    -->
+    <div class="col-6" *ngIf="!editando()">
         <div class="card">
             <div class="card-body">
-                <app-pre-loader></app-pre-loader>
                 <div class="d-flex w-100 justify-content-between mb-3">
-                    <h3>Procesos Normarles</h3>
+                    <h1>Procesos</h1>
                     <button (click)="nuevoProceso()" class="btn btn-outline-success">
-                            <i class="fa fa-plus"></i> 
-                            Crear nuevo proceso
-                        </button>
+                                <i class="fa fa-plus"></i> 
+                                Crear nuevo proceso
+                            </button>
 
                 </div>
 
-                <div class="list-group">
+                <app-paginador [paginador]="_PSProcesos"></app-paginador>
+
+                <div class="list-group mt-3 mb-3">
                     <ng-container *ngFor="let proceso of procesosNormales; let i_p_n = index;">
                         <a class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
@@ -147,81 +150,22 @@
                     </ng-container>
                 </div>
 
-                <br class="mt-3 mb-3">
-                <div class="d-flex w-100 justify-content-between mb-3">
-                    <h3>Procesos Especiales</h3>
-                    <button (click)="nuevoProceso( true )" class="btn btn-outline-success">
-                            <i class="fa fa-plus"></i> 
-                            Crear nuevo proceso especial
-                        </button>
-                </div>
+                <app-paginador [paginador]="_PSProcesos"></app-paginador>
 
-                <div class="list-group">
-                    <ng-container *ngFor="let proceso of procesosEspeciales; let i_p_n = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-
-                                <a data-toggle="collapse" href="#{{proceso._id+'_f_'+i_p_n}}" (click)="proceso.ver = !proceso.ver">
-                                    <h3 class="mb-1"><i class="fa mr-2" [ngClass]="{'fa-plus': !proceso.ver, 'fa-minus': proceso.ver}"></i> {{proceso.nombre}} <br> <small class="text-secondary">{{proceso.departamento.nombre}}</small> </h3>
-                                </a>
-
-                                <div class=" flex-column align-items-end">
-                                    <small class="ml-2" *ngIf="proceso.editado">Cambios sin guardar.<a class="btn btn-link btn-outline-success btn-sm" (click)="guardarModificacionesAEsteProceso(proceso)"><i class="fa fa-save"></i></a></small>
-                                    <small class="ml-2">Pasos: <strong> {{proceso.pasos.length}}</strong></small>
-                                    <small class="ml-2">Costo:  <strong> ${{_calculoDeCostosSerivice.procesoMin(proceso) | number:'1.4-4'}} </strong>/min </small>
-                                    <small class="ml-2"><a class="btn btn-link btn-outline-inverse btn-sm" (click)="procesoEditandose = proceso; proceso.editado = true">Editar</a></small>
-                                    <small class="ml-2"><a class="btn btn-link btn-outline-danger btn-sm" (click)="eliminarProcesoNormal(i_p_n)"><i class="fa fa-times"></i></a></small>
-                                </div>
-                            </div>
-
-                            <div class="collapse" id="{{proceso._id+'_f_'+i_p_n}}">
-
-                                <h5>Pasos.</h5>
-                                <ng-container *ngFor="let paso of proceso.pasos; let i = index;">
-                                    <div class=" col-12 pt-3" [ngClass]="{'bg-light-extra': i%2===0}">
-                                        <div class="d-flex w-100 justify-content-between align-content-center">
-                                            <span> <strong> {{paso.orden}} </strong> - {{paso.descripcion}}</span>
-                                        </div>
-                                    </div>
-                                </ng-container>
-
-
-                                <hr>
-                                <h5>Gastos del proceso.</h5>
-                                <ng-container *ngFor="let gastoConsumo of proceso.gastos; let i = index;">
-
-                                    <div class=" col-12 pt-3" [ngClass]="{'bg-light-extra': i%2===0}">
-                                        <div class="d-flex w-100 justify-content-between align-content-center">
-                                            <span> <strong> {{gastoConsumo.gasto.nombre}} </strong> {{gastoConsumo.gasto.unidadPorHora}}</span>
-                                            <span> <strong> Consumo: </strong> {{gastoConsumo.consumo}}</span>
-                                        </div>
-                                    </div>
-                                </ng-container>
-
-                                <hr>
-                                <h5>Máquinas del proceso.</h5>
-                                <ng-container *ngFor="let maquina of proceso.maquinas; let i = index;">
-                                    <div class=" col-12 pt-3" [ngClass]="{'bg-light-extra': i%2===0}">
-                                        <div class="d-flex w-100 justify-content-between align-content-center">
-                                            <span> <strong> {{maquina.clave}} </strong> {{maquina.nombre + ' ' + maquina.anio}}</span>
-                                            <span>  Costo: $<strong> {{_calculoDeCostosSerivice.maquinaHora(maquina) | number:'1.4-4'}}</strong></span>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </a>
-                    </ng-container>
-                </div>
             </div>
         </div>
     </div>
+
+
+    <!-- 
+    =====================================
+    FIN gestión de procesos. 
+    =====================================
+    -->
+
 </div>
 
-<!-- 
-=====================================
- FIN gestión de procesos. 
-=====================================
--->
+
 
 
 
@@ -234,7 +178,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <app-pre-loader></app-pre-loader>
                 <div class="d-flex w-100 justify-content-between mb-3">
                     <div>
                         <h1>Máquinas</h1>
@@ -308,7 +251,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <app-pre-loader></app-pre-loader>
                 <div class="d-flex w-100 justify-content-between mb-3">
                     <div>
                         <h1>Gastos</h1>
@@ -399,7 +341,9 @@
                     <div class="col-6">
 
                         <h1>Procesos disponibles</h1>
-                        <div class="list-group">
+
+                        <app-paginador [paginador]="_PSProcesos"></app-paginador>
+                        <div class="list-group mb-3">
                             <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
                                 <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
                                     <div class="d-flex w-100 justify-content-between align-items-center">
@@ -414,6 +358,7 @@
                                 </a>
                             </ng-container>
                         </div>
+                        <app-paginador [paginador]="_PSProcesos"></app-paginador>
                     </div>
                 </div>
 
