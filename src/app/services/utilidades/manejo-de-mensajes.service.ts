@@ -176,6 +176,7 @@ export class ManejoDeMensajesService {
       showCancelButton: true,
       confirmButtonText: '¡Si, hazlo!',
       cancelButtonText: '¡No, no lo hagas!',
+      confirmButtonClass: ' ml-3 btn btn-success ',
       reverseButtons: true
     }).then((result) => {
       if (result.value) {

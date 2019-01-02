@@ -270,8 +270,8 @@ export class CostosDeProcesoComponent implements OnInit {
   
 
     this._procesoService
-      .modificarProceso(proceso)
-      .subscribe((resp: Proceso) => {
+      .modificar(proceso)
+      .subscribe(() => {
         this.limpiarProceso();
       });
   }

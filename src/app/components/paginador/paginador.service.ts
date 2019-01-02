@@ -27,7 +27,7 @@ export class PaginadorService {
       this.desde = 0;
       this.actual = 1;
     }
-    this.callback( this.desde, this.limite);
+    this.callback( );
   }
 
   cambiarCantidad( lim: number ) {
@@ -36,7 +36,7 @@ export class PaginadorService {
     this.desde = 0;
     this.actual = 1;
     // Cargamos de nuevo los elementos.
-    this.callback( this.desde, this.limite);
+    this.callback( );
     this.calcular();
 
   }
@@ -54,6 +54,8 @@ export class PaginadorService {
   activarPaginador( total: number  ) {
     this.totalDeElementos = total;
     this.calcular();
+
+
   }
 
 }

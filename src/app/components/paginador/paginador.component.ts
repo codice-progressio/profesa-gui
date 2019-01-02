@@ -26,11 +26,9 @@ export class PaginadorComponent implements OnInit {
     // Esto sirve para que los paginadores se puedan reutilizar
     // en la misma pagina.
     if( this.paginador ){
-      console.log(` Se usa el paginador externo `);
       this.s = this.paginador;
   
     }else{
-      console.log(` Se ussa el paginador general `);
       this.s = this._s;
       
     }

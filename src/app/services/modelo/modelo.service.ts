@@ -8,6 +8,7 @@ import { UtilidadesService } from '../utilidades/utilidades.service';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { CRUD } from '../crud';
+import { Tamano } from 'src/app/models/tamano.models';
 
 @Injectable({
   providedIn: 'root'

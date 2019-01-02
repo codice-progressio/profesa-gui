@@ -32,6 +32,9 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
 import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component';
 import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/historial-de-folios.component';
+import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component';
+import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
+import { BuratoComponent } from './departamentos/burato/burato.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -238,6 +241,36 @@ const pagesRoutes: Routes = [
         },
         {
             path: 'produccion/empaque', component: EmpaqueComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/metalizado', component: MetalizadoComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/barnizado', component: BarnizadoComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/burato', component: BuratoComponent,
             canActivate: [PermisosGuard], 
             data: {
                 titulo: 'Registro de órdenes',

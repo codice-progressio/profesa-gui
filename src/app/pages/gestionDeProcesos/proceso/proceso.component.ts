@@ -81,14 +81,14 @@ export class ProcesoComponent implements OnInit {
   }
 
   cargarProcesos( desde: number= 0, limite: number = this._PSProcesos.limite){
-    this._procesoService.todo(desde, limite, this._PSProcesos ).subscribe(procesos => {
+    this._procesoService.todo( this._PSProcesos ).subscribe(procesos => {
       // Este proceso no lo listamos por que se agrega de manera automatica. 
       this.procesosNormales =procesos;
     });
   }
   
   cargarFamilias(desde: number= 0, limite: number = this._PSFamilias.limite){
-    this._familiaDeProcesosService.todo(desde, limite, this._PSFamilias).subscribe( resp=>{
+    this._familiaDeProcesosService.todo( this._PSFamilias).subscribe( resp=>{
       this.familiaDeProcesos = resp;
     })
   }
@@ -130,7 +130,7 @@ export class ProcesoComponent implements OnInit {
 
     if (familia._id) {
       this._familiaDeProcesosService
-        .modficar(familia)
+        .modificar(familia)
         .subscribe((resp: any) => {
           this.limpiar(familia);
           this.cargarFamilias()
@@ -168,15 +168,15 @@ export class ProcesoComponent implements OnInit {
 
     if (!proceso._id) {
       this._procesoService
-        .guardarNuevoProceso(proceso)
+        .guardar(proceso)
         .subscribe((resp: any) => {
           this.cargarProcesos();
           this.limpiarProceso(proceso);
         });
     } else {
       this._procesoService
-        .modificarProceso(proceso)
-        .subscribe((resp: Proceso) => {
+        .modificar(proceso)
+        .subscribe(() => {
           this.cargarProcesos();
           this.limpiarProceso();
         });

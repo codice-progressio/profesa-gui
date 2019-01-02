@@ -11,7 +11,8 @@ import {
   ColorService,
   TerminadoService,
   ModeloService,
-  TamanoService } from 'src/app/services/service.index';
+  TamanoService, 
+  ValidacionesService} from 'src/app/services/service.index';
 import { Modelo } from 'src/app/models/modelo.models';
 import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
@@ -21,6 +22,7 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { FamiliaDeProcesos, Procesos } from '../../../models/familiaDeProcesos.model';
 import { Proceso } from 'src/app/models/proceso.model';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -40,20 +42,42 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
 export class ProcesosEnModeloComponent implements OnInit {
 
   
+  /**
+   * Define cuando se esta creando o modificando un modelo completo. 
+   *
+   * @type {boolean}
+   * @memberof ProcesosEnModeloComponent
+   */
   creandoModelo: boolean = false;
+
+  /**
+   * El id del modelo completo que se esta editando. 
+   * Lo guardamos para despues saber si estamos guardando un 
+   * modelo completo o queremos modificar uno existente.
+   *
+   * @type {string}
+   * @memberof ProcesosEnModeloComponent
+   */
+  idModeloCompletoEditando: string = null;
+
+
+
   modelosCompletos: ModeloCompleto[] = [];
 
   modeloCompletoCostos: ModeloCompleto = null;
 
-  modelo: string = '';
-  tamano: string = '';
-  color: string = '';
-  terminado: string = '';
-  laserAlmacen: string = '';
-  versionModelo: string = '';
-  mediasOrdenes: boolean = false;
+  // modelo: string = '';
+  // tamano: string = '';
+  // color: string = '';
+  // terminado: string = '';
+  // laserAlmacen: string = '';
+  // versionModelo: string = '';
+  // mediasOrdenes: boolean = false;
   familiaDeProceso: FamiliaDeProcesos = null;
   // procesosEspecialesModelo: Procesos[] = [];
+
+  // ReactiveForms
+
 
   procesosTemporales: Proceso[] = [];
 
@@ -68,6 +92,11 @@ export class ProcesosEnModeloComponent implements OnInit {
   procesosEspeciales: Proceso[] = [];
 
   arreglosDrop: any = {};
+  private msjEliminacion: string = `Eliminar esto siginifica que tambien toda la informacion 
+  relacionada como modelos autorizados de clientes, 
+  pedidos en transito y pendientes de ordenes asi 
+  como los modelos completos se eliminaran. 
+  No podras recuperar esta informacion.`
 
 
   // Estamos editando para que todo sea más facil. Un array de objetos para limpiar??? etc. 
@@ -77,51 +106,107 @@ export class ProcesosEnModeloComponent implements OnInit {
         modificar: ( a ) => {
           if( a._id){
             this._modeloService.modificar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this.cargarModelos();
           }else{
-            this._modeloService.guardar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
-            this._modeloService.todo().subscribe( resp=>{
-              this.modelos = resp;
-            })
+            this._modeloService.guardar( a ).subscribe(() => { 
+              this.modificadoGeneral( a ); 
+              this.cargarModelos();
+            }); 
+
           }
-        }},
+        }
+        ,eliminar: ( id: string ) => {
+          this._manejoDeMensajesService.confirmacionDeEliminacion(this.msjEliminacion, ()=>{
+            this._modeloService.eliminar( id ).subscribe(() => {
+              this.cargarTodosLosDatos();
+            });
+          });
+        }
+      },
       tamano: {
         editandose: null,
         modificar: ( a ) => {
           if( a._id){
-            this._tamanoService.modificar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this._tamanoService.modificar( a ).subscribe(() => { 
+              this.modificadoGeneral( a );
+              this.cargarTamano();
+            }); 
           }else{
-            this._tamanoService.guardar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
-            this._tamanoService.todo().subscribe( resp=>{
-              this.tamanos = resp;
-            })
+            this._tamanoService.guardar( a ).subscribe(() => { 
+              this.cargarTamano();
+              this.modificadoGeneral( a );
+          }); 
+            
           }
+        },eliminar: ( id: string ) => {
+          this._manejoDeMensajesService.confirmacionDeEliminacion(this.msjEliminacion, ()=>{
+            this._tamanoService.eliminar( id ).subscribe(() => {
+              this.cargarTodosLosDatos();
+            });
+          });
         }},
+        
       color: {
         editandose: null,
         modificar: ( a ) => {
           if( a._id){
-            this._colorService.modificar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this._colorService.modificar( a ).subscribe(() => { 
+              this.modificadoGeneral( a );
+              this.cargarColor();
+
+             }); 
           }else{
-            this._colorService.guardar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this._colorService.guardar( a ).subscribe(() => { 
+              this.modificadoGeneral( a );
+              this.cargarColor();
+              
+
+             }); 
             this._colorService.todo().subscribe( resp=>{
               this.colores = resp;
             })
           }
+        },eliminar: ( id: string ) => {
+          this._manejoDeMensajesService.confirmacionDeEliminacion(this.msjEliminacion, ()=>{
+            this._colorService.eliminar( id ).subscribe(() => {
+              this.cargarTodosLosDatos();
+            });
+          });
         }},
       terminado: {
         editandose: null,
         modificar: ( a ) => {
           if( a._id){
-            this._terminadoService.modificar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this._terminadoService.modificar( a ).subscribe(() => { 
+              this.modificadoGeneral( a );
+              this.cargarTerminado();
+
+
+             }); 
           }else{
-            this._terminadoService.guardar( a ).subscribe(() => { this.modificadoGeneral( a ); }); 
+            this._terminadoService.guardar( a ).subscribe(() => { 
+              this.modificadoGeneral( a );
+              this.cargarTerminado();
+
+
+
+             }); 
             this._terminadoService.todo().subscribe( resp=>{
               this.terminados = resp;
             })
           }
+        },eliminar: ( id: string ) => {
+          this._manejoDeMensajesService.confirmacionDeEliminacion(this.msjEliminacion, ()=>{
+            this._terminadoService.eliminar( id ).subscribe(() => {
+              this.cargarTodosLosDatos();
+            });
+          });
         }},
       
   };
+
+  modeloCompletoForm: FormGroup;
+
 
   constructor(
     public _modeloCompletoService: ModeloCompletoService,
@@ -135,6 +220,9 @@ export class ProcesosEnModeloComponent implements OnInit {
     public _familiaDeProcesosService: FamiliaDeProcesosService,
     public _manejoDeMensajesService: ManejoDeMensajesService,
     public _calculosService: CalculosDeCostosService,
+    private formBuilder: FormBuilder,
+    public _validacionesService: ValidacionesService,
+
     // public _paginadorService: PaginadorService,
     @Inject('PSModeloCompleto') public _PSModeloCompleto: PaginadorService,
     @Inject('PSModelos') public _PSModelos: PaginadorService,
@@ -144,37 +232,122 @@ export class ProcesosEnModeloComponent implements OnInit {
     @Inject('PSProceso') public _PSProceso: PaginadorService,
     @Inject('PSFamiliaDeProcesos') public _PSFamiliaDeProcesos: PaginadorService,
   ) { 
-    
-    
-    
   }
   
-  
-  
   ngOnInit() {
+
+    // ReactForm de modeloCompleto.
+    this.modeloCompletoForm = this.formBuilder.group({
+      modelo :['', [
+        Validators.required,
+        Validators.min(0.01),
+      ]],
+      tamano :['', [
+        Validators.required
+        
+      ]],
+      color :['', [
+        Validators.required
+        
+      ]],
+      terminado :['', [
+        Validators.required
+        
+      ]],
+      laserAlmacen :['', [
+        
+      ]],
+      versionModelo :['', [
+        
+      ]],
+      medias :['', [
+        
+      ]],
+      familiaDeProcesos :['', [
+        Validators.required
+
+      ]],
+    });
+
+
     this.cargarTodosLosDatos();
 
-    this._PSModeloCompleto.callback = ( desde, limite) =>{
-      this.cargarModelosCompletos(desde, limite);
+    this._PSModeloCompleto.callback = ( ) =>{
+      this.cargarModelosCompletos();
     }
-    this._PSModelos.callback = (desde, limite ) =>{
-      this.cargarModelos(desde, limite)
+    this._PSModelos.callback = ( ) =>{
+      this.cargarModelos()
     }
-    this._PSTamano.callback = (desde, limite ) =>{
-      this.cargarTamano(desde, limite)
+    this._PSTamano.callback = ( ) =>{
+      this.cargarTamano()
     }
-    this._PSColor.callback = (desde, limite ) =>{
-      this.cargarColor(desde, limite)
+    this._PSColor.callback = ( ) =>{
+      this.cargarColor()
     }
-    this._PSTerminado.callback = (desde, limite ) =>{
-      this.cargarTerminado(desde, limite)
+    this._PSTerminado.callback = ( ) =>{
+      this.cargarTerminado()
     }
-    this._PSProceso.callback = (desde, limite ) =>{
-      this.cargarProcesos(desde, limite)
+    this._PSProceso.callback = ( ) =>{
+      this.cargarProcesos()
     }
-    this._PSFamiliaDeProcesos.callback = (desde, limite ) =>{
-      this.cargarFamiliasDeProcesos(desde, limite)
+    this._PSFamiliaDeProcesos.callback = ( ) =>{
+      this.cargarFamiliasDeProcesos()
     }
+    
+  }
+
+  getModelo_FB( ){
+    return this.modeloCompletoForm.get('modelo') 
+  } 
+  getTamano_FB( ){
+    return this.modeloCompletoForm.get('tamano') 
+  } 
+  getColor_FB( ){
+    return this.modeloCompletoForm.get('color') 
+  } 
+  getTerminado_FB( ){
+    return this.modeloCompletoForm.get('terminado') 
+  } 
+  getLaserAlmacen_FB( ){
+    return this.modeloCompletoForm.get('laserAlmacen') 
+  } 
+  getVersionModelo_FB( ){
+    return this.modeloCompletoForm.get('versionModelo') 
+  } 
+  getMedias_FB( ){
+    return this.modeloCompletoForm.get('medias') 
+  } 
+  getFamiliaDeProcesos_FB( ){
+    return this.modeloCompletoForm.get('familiaDeProcesos') 
+  } 
+  
+
+  onSubmitModeloCompleto( modelo: ModeloCompleto, isValid: boolean, e ) {
+    e.preventDefault();
+   
+    if( !isValid ) return;
+    
+    // Reordenamos los procesos por si hubo algún fallo en el drop.
+    this.reordenarProcesos();
+    const datos: ModeloCompleto = modelo;
+    datos.familiaDeProcesos = this.familiaDeProceso;
+
+    // El callback para ambas operaciones. 
+
+    const call: any = ()=>{
+          // this.modelosCompletos.push( resp );
+          this.limpiarModeloCompleto();
+          this._utilidadesService.ordenarArreglo(this.modelosCompletos, 'nombreCompleto');
+          this.cargarTodosLosDatos();
+    }
+    
+    if( this.idModeloCompletoEditando ){
+      datos._id = this.idModeloCompletoEditando;
+      this._modeloCompletoService.modificar( datos ).subscribe( call );
+    } else {
+      this._modeloCompletoService.guardar( datos ).subscribe( call );
+    }
+
     
   }
 
@@ -200,54 +373,50 @@ export class ProcesosEnModeloComponent implements OnInit {
     this.cargarModelosCompletos();
   }
 
-  cargarModelos(  desde: number =0, limite:number = 5 ) {
-    this._modeloService.todo(desde, limite, this._PSModelos).subscribe( 
+  cargarModelos(  ) {
+    this._modeloService.todo(this._PSModelos).subscribe( 
       modelos => {
         this.modelos = Modelo.fromJSON_Array( modelos );
-        // this._utilidadesService.ordenarArreglo( this.modelos, 'modelo');
         this.modelos.map( x => x.cb_Modificar = this.visorDeCambios.modelo.modificar);
       })
   }
-  cargarTamano(  desde: number =0, limite:number = 5 ) {
-    this._tamanoService.todo(desde, limite, this._PSTamano).subscribe( 
+  cargarTamano(  ) {
+    this._tamanoService.todo(this._PSTamano).subscribe( 
       tamanos => {
         this.tamanos = Tamano.fromJSON_Array( tamanos );
-        // this._utilidadesService.ordenarArreglo( this.tamanos, 'tamano');
         this.tamanos.map(x => x.cb_Modificar = this.visorDeCambios.tamano.modificar);
       })
   }
-  cargarColor(  desde: number =0, limite:number = 5 ) {
-    this._colorService.todo(desde, limite, this._PSColor).subscribe( 
+  cargarColor(  ) {
+    this._colorService.todo(this._PSColor).subscribe( 
       colores => {
         
         this.colores = Color.fromJSON_Array( colores );
-        // this._utilidadesService.ordenarArreglo( this.colores, 'color');
         this.colores.map(x => x.cb_Modificar = this.visorDeCambios.color.modificar);
       })
   }
-  cargarTerminado(  desde: number =0, limite:number = 5 ) {
-    this._terminadoService.todo(desde, limite, this._PSTerminado).subscribe( 
+  cargarTerminado(  ) {
+    this._terminadoService.todo(this._PSTerminado).subscribe( 
       terminado => {
         this.terminados = Terminado.fromJSON_Array( terminado );
-        // this._utilidadesService.ordenarArreglo( this.terminados, 'terminado');
         this.terminados.map(x => x.cb_Modificar = this.visorDeCambios.terminado.modificar);
       })
   }
 
-  cargarProcesos(  desde: number =0, limite:number = 5 ) {
-    this._procesosService.todo(desde, limite, this._PSProceso).subscribe(resp => {
+  cargarProcesos(  ) {
+    this._procesosService.todo(this._PSProceso).subscribe(resp => {
       this.procesosNormales = resp;
     })
 
   }
-  cargarFamiliasDeProcesos(  desde: number =0, limite:number = 5 ) {
-    this._familiaDeProcesosService.todo(desde, limite, this._PSFamiliaDeProcesos).subscribe(resp=>{
+  cargarFamiliasDeProcesos(  ) {
+    this._familiaDeProcesosService.todo(this._PSFamiliaDeProcesos).subscribe(resp=>{
       this.familiaDeProcesos = resp;
     })
   }
 
-  cargarModelosCompletos(  desde: number =0, limite:number = 5 ) {
-    this._modeloCompletoService.todoConCostos( desde, limite, this._PSModeloCompleto ).subscribe( (mC) => {
+  cargarModelosCompletos(  ) {
+    this._modeloCompletoService.todo( this._PSModeloCompleto ).subscribe( (mC) => {
       if ( mC ) {
         this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
         this.modelosCompletos.map(x => x.nombreCompleto = ModeloCompleto.nombreCom(x));
@@ -268,51 +437,18 @@ export class ProcesosEnModeloComponent implements OnInit {
     return this.creandoModelo || this.modeloCompletoCostos !== null ;
   }
   
-  guardarNuevoModelo ( ) {
-    if ( !this.familiaDeProceso ) {
-      this._manejoDeMensajesService.invalido( 'Es necesario que definas la familia de procesos.');
-      return;
-    }
-    
-    // Reordenamos los procesos por si hubo algún fallo en el drop.
-    this.reordenarProcesos();
-    // Obtenemos todos los procesos especiales para guardarlos. 
-    // for (const x in this.arreglosDrop) {
-    //   if (this.arreglosDrop.hasOwnProperty(x)) {
-    //     const element = this.arreglosDrop[x];
-    //     for (let i = 0; i < element.arreglo.length; i++) {
-    //       const proc = element.arreglo[i];
-    //       // this.procesosEspecialesModelo.push( proc );
-    //     }
-    //   }
-    // }
-    const datos: any = { 
-         modelo : this.modelo,
-         tamano : this.tamano,
-         color : this.color,
-         terminado : this.terminado,
-         laserAlmacen : this.laserAlmacen,
-         versionModelo : this.versionModelo,
-         familiaDeProcesos : this.familiaDeProceso,
-        //  procesosEspeciales : this.procesosEspecialesModelo
-    };
-    this._modeloCompletoService.guardar( datos ).subscribe( () => {
-        // this.modelosCompletos.push( resp );
-        this.limpiarModeloCompleto();
-        this._utilidadesService.ordenarArreglo(this.modelosCompletos, 'nombreCompleto');
-        this.cargarTodosLosDatos();
-    });
-
-  }
+  // guardarNuevoModelo ( ) {
+   
+  // }
 
   limpiarModeloCompleto( ) {
     this.creandoModelo = false;
-    this.modelo = '';
-    this.tamano = '';
-    this.color = '';
-    this.terminado = '';
-    this.laserAlmacen = '';
-    this.versionModelo = '';
+    // this.modelo = '';
+    // this.tamano = '';
+    // this.color = '';
+    // this.terminado = '';
+    // this.laserAlmacen = '';
+    // this.versionModelo = '';
 
     this.familiaDeProceso = null;
     // this.procesosEspecialesModelo = [];
@@ -344,7 +480,10 @@ export class ProcesosEnModeloComponent implements OnInit {
   }
   
   crearNuevoModelo( ) {
+    this.modeloCompletoForm.reset(this.reiniciarFormularioModeloCompleto(true, null));
+    this.familiaDeProceso = null;
     this.creandoModelo = true;
+    this.idModeloCompletoEditando = null;
   }
   
   agregarFamiliaDeProceso( familia: FamiliaDeProcesos) {
@@ -404,14 +543,49 @@ export class ProcesosEnModeloComponent implements OnInit {
     this._manejoDeMensajesService.confirmacionDeEliminacion( 
       msj, () => {
         this._manejoDeMensajesService.confirmacionDeEliminacion( 'De verdad no te puedes arrepentir, ¿Aun así lo vas a eliminar?', () => {
-          this._modeloCompletoService.eliminar( mc ).subscribe( () => {
+          this._modeloCompletoService.eliminar( mc._id ).subscribe( () => {
             this.cargarModelosCompletos();
           });
         });
       });
   }
 
-  editarModeloCompleto( mc: ModeloCompleto ) {
+  /**
+   * Edita los datos de un modeloCompleto.
+   *
+   * @param {ModeloCompleto} mc El modelo completo del que se van a editar los datos. 
+   * @memberof ProcesosEnModeloComponent
+   */
+  editarModeloCompleto( mc: ModeloCompleto ){
+    this.modeloCompletoForm.reset(this.reiniciarFormularioModeloCompleto(false, mc));
+    
+    this.creandoModelo = true;
+    this.agregarFamiliaDeProceso( mc.familiaDeProcesos );
+    this.idModeloCompletoEditando = mc._id;
+  }
+
+  /**
+   * El objeto para reiniciar el formulario. 
+   *
+   * @param {boolean} reiniciarORellenar true cuando se quiera reiniciar y false cuando se quiera llenar. 
+   * @param {ModeloCompleto} mc El modelo completo de donde se sacaran los datos. 
+   * @returns {*}
+   * @memberof ProcesosEnModeloComponent
+   */
+  reiniciarFormularioModeloCompleto( reiniciarORellenar: boolean, mc: ModeloCompleto ): any{
+    return {
+      modelo: {value: reiniciarORellenar? '' :  mc.modelo.modelo, disabled: !reiniciarORellenar},
+      tamano: {value: reiniciarORellenar? '' :  mc.tamano.tamano, disabled: !reiniciarORellenar},
+      color: {value: reiniciarORellenar? '' :  mc.color.color, disabled: !reiniciarORellenar},
+      terminado: {value: reiniciarORellenar? '' :  mc.terminado.terminado, disabled: !reiniciarORellenar},
+      laserAlmacen: {value: reiniciarORellenar? '' :  mc.laserAlmacen.laser, disabled: !reiniciarORellenar},
+      versionModelo: {value: reiniciarORellenar? '' :  mc.versionModelo, disabled: !reiniciarORellenar},
+      medias: reiniciarORellenar? '' :  mc.medias,
+      familiaDeProcesos: {value: reiniciarORellenar? '' :  mc.familiaDeProcesos._id, disabled: !reiniciarORellenar}
+    }
+  }
+
+  editarCostosModeloCompleto( mc: ModeloCompleto ) {
     this.modeloCompletoCostos = mc;
     this.modeloCompletoCostos.editado = true;
 
@@ -445,12 +619,16 @@ export class ProcesosEnModeloComponent implements OnInit {
 
   }
   nuevoTamano(){
-
+    this.visorDeCambios.tamano.editandose = new Modelo();
+    
+    
   }
   nuevoColor(){
-
+    this.visorDeCambios.color.editandose = new Modelo();
+    
   }
-  ColorTerminado(){
+  nuevoTerminado(){
+    this.visorDeCambios.terminado.editandose = new Modelo();
 
   }
 

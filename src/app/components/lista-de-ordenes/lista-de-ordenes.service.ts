@@ -4,6 +4,13 @@ import { FolioService, UtilidadesService } from '../../services/service.index';
 import { PreLoaderService } from '../pre-loader/pre-loader.service';
 import { DEPARTAMENTOS } from '../../config/departamentos';
 
+/**
+ * Provee los elementos necesarios para mostrar las ordenes
+ * por departamento separado en prioridades. 
+ *
+ * @export
+ * @class ListaDeOrdenesService
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -11,10 +18,33 @@ export class ListaDeOrdenesService {
   
 
 
-  depto: string;
+  // depto: string;
+  /**
+   * Las ordenes ordenadas por prioridad. 
+   *
+   * @memberof ListaDeOrdenesService
+   */
   ordenes = {};
+  /**
+   * Los niveles de prioridad. Sirve para separar las ordenes ???
+   *
+   * @type {string[]}
+   * @memberof ListaDeOrdenesService
+   */
   niveles: string[] = [];
+  /**
+   * Opciones????
+   *
+   * @memberof ListaDeOrdenesService
+   */
   opciones = {};
+  /**
+   * El departamento del cual se van a obtener las ordenes. 
+   * Esta variable senala a un modelo. 
+   *
+   * @type {string}
+   * @memberof ListaDeOrdenesService
+   */
   depto_vm:string ='';
 
 
@@ -29,6 +59,12 @@ export class ListaDeOrdenesService {
       
     }
     
+    /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
     controlDeProduccion(): any {
       // if ( this.depto ) {
         const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.CONTROL_DE_PRODUCCION._n}`);
@@ -38,6 +74,12 @@ export class ListaDeOrdenesService {
       // }
     }
     
+    /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
     materiales() {
       // if ( this.depto ) {
         const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.MATERIALES._n}`);
@@ -47,6 +89,12 @@ export class ListaDeOrdenesService {
       // }
     }
     
+    /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
     pastilla() {
       // if ( this.depto ) {
         const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PASTILLA._n}`);
@@ -55,7 +103,13 @@ export class ListaDeOrdenesService {
       
     // }
   }
-    
+
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
   transformacion() {
       // if ( this.depto ) {
         const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.TRANSFORMACION._n}`);
@@ -64,7 +118,13 @@ export class ListaDeOrdenesService {
       
     // }
   }
-
+  
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
   pulido(): any {
     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PULIDO._n}`);
     this.cargarOrdenes(DEPARTAMENTOS.PULIDO._n, this.opciones,a);
@@ -72,18 +132,70 @@ export class ListaDeOrdenesService {
     
   }
   
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
   seleccion(): any {
     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.SELECCION._n}`);
     this.cargarOrdenes(DEPARTAMENTOS.SELECCION._n, this.opciones,a);
     this.depto_vm = DEPARTAMENTOS.SELECCION._vm
   }
   
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
   empaque(): any {
     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.EMPAQUE._n}`);
     this.cargarOrdenes(DEPARTAMENTOS.EMPAQUE._n, this.opciones,a);
     this.depto_vm = DEPARTAMENTOS.EMPAQUE._vm
   }
   
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
+  metalizado(): any {
+    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.METALIZADO._n}`);
+    this.cargarOrdenes(DEPARTAMENTOS.METALIZADO._n, this.opciones,a);
+    this.depto_vm = DEPARTAMENTOS.METALIZADO._vm
+  }
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
+  burato(): any {
+    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BURATO._n}`);
+    this.cargarOrdenes(DEPARTAMENTOS.BURATO._n, this.opciones,a);
+    this.depto_vm = DEPARTAMENTOS.BURATO._vm
+  }
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
+  barnizado(): any {
+    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BARNIZADO._n}`);
+    this.cargarOrdenes(DEPARTAMENTOS.BARNIZADO._n, this.opciones,a);
+    this.depto_vm = DEPARTAMENTOS.BARNIZADO._vm
+  }
+  
+  /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
   productoTerminado(): any {
     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PRODUCTO_TERMINADO._n}`);
     this.cargarOrdenes(DEPARTAMENTOS.PRODUCTO_TERMINADO._n, this.opciones,a);
@@ -92,6 +204,15 @@ export class ListaDeOrdenesService {
   }
   
   
+  /**
+   * Esta funcion carga las ordenes de manera genericia. Para un departamento
+   * en especifico utilizar las propiad de cada uno. 
+   *
+   * @param {string} depto El nombre del departamento ( corresponde a la variable de defaults _n)
+   * @param {*} [opciones={}] Opciones para algo????
+   * @param {number} a
+   * @memberof ListaDeOrdenesService
+   */
   cargarOrdenes(depto: string, opciones = {}, a:number) {
     this._folioService.cargarOrdenesDepartamento(depto, opciones)
     .subscribe( (resp: any ) => {
@@ -103,6 +224,12 @@ export class ListaDeOrdenesService {
     });
   }
 
+  /**
+   * Comprueba si hay ordenes cargadas. 
+   *
+   * @returns
+   * @memberof ListaDeOrdenesService
+   */
   hayOrdenes() {
     for (const x in this.ordenes) {
       if ( this.ordenes[x].length > 0 ) {
@@ -113,6 +240,15 @@ export class ListaDeOrdenesService {
     return false;
   }
 
+  /**
+   * Quita una orden de la lista. Esta funcion esta depecrated.
+   * Hay que cargar todas las ordenes cada vez que se elimine una
+   * para revisar si no se han agregado mas. 
+   * @deprecated 
+   *
+   * @param {string} id
+   * @memberof ListaDeOrdenesService
+   */
   remover( id: string ) {
     // Removemos la órden que acabamos de eliminar. 
     
@@ -127,6 +263,12 @@ export class ListaDeOrdenesService {
     }
   }
 
+  /**
+   * Retorna las ordenes del departamento sin los niveles de prioridad. 
+   *
+   * @returns {Orden[]} Un arreglo de todas las ordenes existentes. 
+   * @memberof ListaDeOrdenesService
+   */
   obtenerTodasLasOrdenesDeEsteDepartamentoEnArray( ): Orden[] {
     let a: Orden[] = [];
     for (const x in this.ordenes) {
@@ -141,6 +283,12 @@ export class ListaDeOrdenesService {
     return a;
   }
 
+  /**
+   *Obtiene id de las ordenes del departamento definido en un arreglo de strings. 
+   *
+   * @returns {string[]}
+   * @memberof ListaDeOrdenesService
+   */
   obtenerTodasLasOrdenesDeEsteDepartamentoEnArrayYSoloId(): string[] {
     const ordenes:Orden []= this.obtenerTodasLasOrdenesDeEsteDepartamentoEnArray();
     const ids: string [] = [];

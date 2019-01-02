@@ -12,6 +12,10 @@ export class PreLoaderService {
   leyenda: string[] = [];
   canceladoPorError:boolean = false;
   miniCarga:boolean = false;
+  tiempoDeEsperaAntesDePrecarga: number  = 1000;
+  mostrar: boolean = false;
+
+
 
   registro = {};
 
@@ -24,13 +28,25 @@ export class PreLoaderService {
   ) { }
 
 
+  /**
+   * Define el arranque de la precarga.
+   *
+   * @param {string} msj El mensaje que se va a mostrar ( Son acumulables)
+   * @returns {number} Retorna un numero que corresponde al tiempo de espera de la tarea en proceso. (Solo es un numero y visual. )
+   * @memberof PreLoaderService
+   */
   loading( msj: string ): number {
     this.definirMensajeParaMostrar( msj );
-        
+      
     if ( !this.cargando ) {
       
       this.cargando = true;
       this.canceladoPorError = false;
+
+      setTimeout(() => {
+        // Si todavia se esta cargando entonces si se muestra. 
+        this.mostrar = this.cargando;
+      }, this.tiempoDeEsperaAntesDePrecarga);
     }
 
     const id = Math.trunc(Math.random()*10000);
@@ -40,6 +56,12 @@ export class PreLoaderService {
 
   }
 
+  /**
+   * Termina la tarea que se le pase como parametro.
+   *
+   * @param {number} idPreLoader El id que genero loading()
+   * @memberof PreLoaderService
+   */
   ok(idPreLoader: number ) {
     
     delete this.registro[idPreLoader];
@@ -55,15 +77,26 @@ export class PreLoaderService {
       }
   }
 
+  /**
+   * Se lanza cuando hay un error. 
+   *
+   * @memberof PreLoaderService
+   */
   err(){
     
     this.canceladoPorError = true;
     this.limpiar();
   }
   
+  /**
+   * Limpia la precarga completamente. 
+   *
+   * @memberof PreLoaderService
+   */
   limpiar(){
     this.desvanecer = false
     this.cargando = false;
+    this.mostrar = false;
     this.leyenda = [];
     this.canceladoPorError = false;
     this.miniCarga = false;

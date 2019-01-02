@@ -23,7 +23,7 @@ export class ModelosComponent implements OnInit {
     public _modeloService: ModeloCompletoService
   ) {
 
-    _modeloService.todos().subscribe( modelos => { this.modelos = modelos; });
+    _modeloService.todo().subscribe( modelos => { this.modelos = modelos; });
 
    }
 

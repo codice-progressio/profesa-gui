@@ -10,21 +10,51 @@ import { Orden } from 'src/app/models/orden.models';
 import { ListaDeOrdenesService } from '../lista-de-ordenes/lista-de-ordenes.service';
 import { PreLoaderService } from '../pre-loader/pre-loader.service';
 
+/**
+ * Esta funcion esta declarada en el index e 
+ * inicializa el lector. 
+ *
+ */
 declare function qrCode();
+/**
+ * Detiene el lector. 
+ *
+ */
 declare function qrDetener();
 declare let qrLeyendo: any;
 declare let qrData: any;
 
 
 
+/**
+ * Esta clase gestiona el lector de qr. 
+ * 
+ * Hay que tener cuidado por que se requieren mas librerias 
+ * y cosas para que funcione que estan en el index. 
+ *
+ * @export
+ * @class QrScannerService
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class QrScannerService {
   
+  /**
+   *El titulo que aparecera en el lector. 
+   *
+   * @type {string}
+   * @memberof QrScannerService
+   */
   titulo: string = 'Lector de QR';
   lector: string = '#reader';
   leyendo: boolean;
+  /**
+   * La informacion que se obtiene del qr. 
+   *
+   * @type {string}
+   * @memberof QrScannerService
+   */
   data: string = qrData;
   mnsOk: string = 'QR Escanedado';
   mostrarMensaje: boolean = false;

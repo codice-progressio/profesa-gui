@@ -3,12 +3,9 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { Orden } from '../../../models/orden.models';
 import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
 import { FolioLinea } from '../../../models/folioLinea.models';
-import { Maquina } from '../../../models/maquina.model';
 import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
-import { FolioService, ValidacionesService, MaquinaService, UsuarioService } from '../../../services/service.index';
-import { Transformacion } from '../../../models/transformacion.models';
-import swal from 'sweetalert2';
+import { FolioService, ValidacionesService } from '../../../services/service.index';
 import { Pulido } from '../../../models/pulido.models';
 import { DEPARTAMENTOS } from '../../../config/departamentos';
 
@@ -49,7 +46,6 @@ export class PulidoComponent implements OnInit {
   }
 
   cargarOrdenesDeDepartamento( ) {
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
     this._listaDeOrdenesService.pulido();
   }
 
@@ -98,7 +94,7 @@ export class PulidoComponent implements OnInit {
       this.orden._id,
       this.NOMBRE_DEPTO
     ).subscribe(
-      resp => {
+      () => {
       this.limpiar();
     });
 

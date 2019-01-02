@@ -58,19 +58,18 @@
                                                 <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
                                             </h3>
 
+                                            <hr>
+
                                             <h3>
                                                 <strong>
                                                 {{linea.modeloCompleto | modeloCompleto}}
                                                 </strong>
                                             </h3>
 
-                                            <!-- <span>
-                                                <h6><strong>INFO ADICIONAL:</strong> </h6>
-                                                pendiente
-                                            </span> -->
                                             <ng-container *ngIf="linea.laserCliente">
-                                                <br>
+                                                <hr>
                                                 <small><strong>MARCA LASER:</strong></small>
+                                                <br>
 
                                                 <span class="bg-dark text-white ml-2 pt-1 pb-1 pr-3 pl-3 ">
                                                     <strong>
@@ -79,7 +78,10 @@
                                                 </span>
                                                 <br>
                                             </ng-container>
-                                            <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones">
+
+
+                                            <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones || !!linea.observaciones">
+                                                <hr>
                                                 <small>
                                                     <strong >OBSERVACIONES:</strong> <br>
                                                     <span *ngIf="folio.observaciones">>>{{folio.observaciones}}  <br></span>
@@ -101,16 +103,12 @@
                                               
                                             </span>
                                                 <br>
-                                                <span>PZ: {{orden.piezasTeoricas}}</span>
+                                                <span>PZ: {{orden.piezasTeoricas | number:'1.0-2'}}</span>
                                                 <br>
                                                 <span>unidad: {{orden.unidad}}</span>
                                             </td>
 
 
-
-                                            <!-- <td class="no-print">
-                                            <button class="btn btn-outline-info"> <i class="fa fa-print"></i></button>
-                                        </td> -->
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="m-0 p-0">
@@ -138,31 +136,3 @@
         </div>
     </div>
 </div>
-
-
-
-<!-- <app-modal-general>
-    holaasflasdjflkj
-    <div modal-header>Login</div>
-    <div modal-body>Login body</div>
-    <div modal-footer>Login footer</div>
-    <div class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</app-modal-general> -->

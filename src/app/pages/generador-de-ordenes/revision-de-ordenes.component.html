@@ -112,7 +112,12 @@
 
                                     </td>
                                     <td class="align-middle ">
-                                        <span *ngIf="!orden.editando ">{{orden.observaciones}}</span>
+                                        {{folio.observaciones}}
+                                        <hr> {{linea.observaciones}}
+                                        <hr>
+                                        <span *ngIf="!orden.editando ">
+                                            {{orden.observaciones}}
+                                        </span>
 
                                         <div class="input-group ">
                                             <textarea class="form-control " *ngIf="orden.editando " [(ngModel)]="orden.observaciones " name="orden.observacion "></textarea>

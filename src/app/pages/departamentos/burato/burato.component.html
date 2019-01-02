@@ -1,0 +1,45 @@
+<app-qr-scanner> </app-qr-scanner>
+
+<div *ngIf="_qrScannerService.lecturaCorrecta" class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h1>Burato</h1>
+
+                <form (ngSubmit)="onSubmit(buratoForm.value, buratoForm.valid, $event)" [formGroup]="buratoForm">
+
+                    <div class="row">
+                        <div class="form-group col-auto">
+                            <input formControlName="peso10Botones" [ngClass]="{'is-invalid': _validacionesService.invalid(peso10Botones_FB), 'is-valid':_validacionesService.valid(peso10Botones_FB)}" type="number" class="form-control form-control-lg" name="peso10Botones" id="peso10Botones"
+                                aria-describedby="peso10BotonesId" placeholder="Peso de 10 botones">
+                            <small id="peso10BotonesId" class="form-text text-muted">Ingresa el peso de 10 botones</small>
+                            <app-validacion-inputs [campo]='peso10Botones_FB'></app-validacion-inputs>
+                        </div>
+
+                        <div class="form-group col-auto">
+                            <input formControlName="pesoTotalBoton" [ngClass]="{'is-invalid': _validacionesService.invalid(pesoTotalBoton_FB), 'is-valid':_validacionesService.valid(pesoTotalBoton_FB)}" type="number" class="form-control form-control-lg" name="pesoTotalBoton" id="pesoTotalBoton"
+                                aria-describedby="helpId" placeholder="Peso total del boton">
+                            <small id="helpId" class="form-text text-muted">Ingresa el peso total del boton.</small>
+                            <app-validacion-inputs [campo]='pesoTotalBoton_FB'></app-validacion-inputs>
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <h1>
+                            <strong>{{ (pesoTotalBoton_FB.value*1000)/(peso10Botones_FB.value/10) | number:'1.0-0'}} <small> piezas</small></strong>
+                        </h1>
+
+                    </div>
+
+
+                    <button [disabled]='buratoForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <a (click)="limpiar()" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lista-de-ordenes></app-lista-de-ordenes>

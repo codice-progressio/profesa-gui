@@ -1,8 +1,8 @@
 <!-- <div *ngIf="_s.cargando" [ngClass]="{'animated zoomIn': _s.cargando}" class="jumbotron jumbotron-fluid bg-light fondo-negro"> -->
-<div *ngIf="_s.cargando && !_s.canceladoPorError && !_s.miniCarga" [ngClass]="
+<div *ngIf="!_s.canceladoPorError && !_s.miniCarga && _s.mostrar" [ngClass]="
 {
     'animated fadeOut': _s.desvanecer,
-    'animated fadeIn': _s.cargando
+    'animated fadeIn': _s.mostrar
 }
  " class="fondo-preloader">
 

@@ -23,7 +23,10 @@ export class ModeloCompleto implements BasicosGUI {
         public medias: boolean = false,
         public nombreCompleto?: string,
         public familiaDeProcesos?: FamiliaDeProcesos,
+        // Cualquier proceso fuera de los de la familia de 
+        // procesos.
         public procesosEspeciales: Procesos[] = [],
+        // Posiblemente es para los costos.
         public espesor?: number,
         public porcentajeDeMerma?: number,
         

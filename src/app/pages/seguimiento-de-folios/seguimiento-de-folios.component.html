@@ -86,7 +86,9 @@
                                     <!-- <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaFolio | fecha}}</span> </td> -->
                                     <td class="align-middle align-content-center fit"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaEntrega | fecha: ' DD/MM/YY ' }}</span> </td>
                                     <td class="align-middle text-center  align-content-center fit">
-                                        <app-nivel-urgencia [nivel]="fol.nivelDeUrgencia"></app-nivel-urgencia>
+                                        <span class="mr-2 pointer" (click)="filtrar(fol.nivelDeUrgencia)">
+                                            <app-nivel-urgencia [nivel]="fol.nivelDeUrgencia"></app-nivel-urgencia>
+                                        </span>
                                     </td>
                                     <!-- <td class="align-middle  align-content-center w-auto">{{fol.vendedor.nombre}}</td> -->
                                     <td class="align-middle   align-content-center fit">{{fol.observaciones}}</td>

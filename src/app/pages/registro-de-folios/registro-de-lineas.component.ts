@@ -85,11 +85,7 @@ export class RegistroDeLineasComponent implements OnInit {
           this.cliente = <Cliente>resp;
           // Buscamos el modelo.
           this._modeloCompletoService
-            .buscar(
-              this._buscadorRapidoService.termino,
-              this._buscadorRapidoService.desde,
-              this._buscadorRapidoService.limite
-            )
+            .buscar(this._buscadorRapidoService.termino)
             .subscribe((resp: ModeloCompleto[]) => {
               const d: BuscadorRapido[] = [];
               resp.forEach(mc => {

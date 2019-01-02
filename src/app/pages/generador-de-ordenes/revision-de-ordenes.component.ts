@@ -41,6 +41,7 @@ export class RevisionDeOrdenesComponent implements OnInit {
         this.folio = folio;
         
         this.folio.folioLineas.forEach(linea => {
+          console.log(` Generar medias? ${linea.modeloCompleto.medias}`);
           if ( linea.modeloCompleto.medias ) {
             
             this.generarOrdenes(linea, 0.5);
@@ -61,8 +62,9 @@ export class RevisionDeOrdenesComponent implements OnInit {
   }
 
   generarOrdenes(linea: FolioLinea, unidad: number = 1, ) {
-   
     
+    console.log(` Esta es la linea ${JSON.stringify(linea.modeloCompleto.tamano)}`);
+
     if ( !linea.modeloCompleto.tamano.estandar ) {
       // No se ha definido el estandar y no se pueden generar las órdenes. 
       this.sePuedenGenerarOrdenes = false;

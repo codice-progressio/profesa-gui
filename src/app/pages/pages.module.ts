@@ -49,6 +49,9 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
 import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component';
 import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/historial-de-folios.component';
+import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component';
+import { BuratoComponent } from './departamentos/burato/burato.component';
+import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
 
 
 
@@ -92,6 +95,9 @@ import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/histo
        ControlDeProduccionComponent,
        ProductoTerminadoComponent,
        HistorialDeFoliosComponent,
+       MetalizadoComponent,
+       BuratoComponent,
+       BarnizadoComponent,
 
 
       ],

@@ -29,6 +29,17 @@ export class CRUD<T>  {
      * @memberof CRUD
      */
     base: string;
+
+    
+    /**
+     * Esta url se utiliza para definirla ruta de busqueda cuando es diferente.
+     * No es necesario concatenarle la urlBase. Ejempo: [/busqueda]
+     *
+     * @type {string}
+     * @memberof CRUD
+     */
+    urlBusqueda: string = '';
+
    
     /**
      * El total de elementos en la base de datos. Este se
@@ -74,27 +85,47 @@ export class CRUD<T>  {
 
     ){}
 
+   
     /**
      *
      * Obtiene todos los elementos (Con sus respectivos limites)
-     * @param {number} [desde=0] El numero de registro desde el cual se va a empezar a tomar de la BD.
-     * @param {number} [limite=5] La cantidad de elementos a traer para mostrar en el paginador. 
-     * @param {PaginadorService} [paginador=null] Un paginador extra por si es necesario tener mas de uno en el mismo componente. 
+     * 
+     * @param {PaginadorService} [paginador=null]  Un paginador extra por si es necesario tener mas de uno en el mismo componente. 
      * @param {string} [msjLoading=`Cargando ${this.nombreDeDatos.plural}.`] El mensaje que va a mostrar el servicio de carga. 
+     * @param {boolean} [sort=true] Define la forma de4 ordenarse. True (por defecto) ordena ascendentemente y salse descendente.
+     * @param {string} [campo=null] El campo de ordenamiento. Si esta null la BD escoge el campo.
+     * @param {string} [urlAlternativa=null] Recive una nueva seccion para agregar a la EJEMPLO: Urlbase[/urlAlternativa]?parametros=
      * @returns {Observable<T[]>}
      * @memberof CRUD
      */
-    todo(desde: number = 0, limite: number = 5, paginador: PaginadorService = null, msjLoading:string=`Cargando ${this.nombreDeDatos.plural}.` ):Observable<T[]>{
+    todo( 
+        paginador: PaginadorService = null, 
+        msjLoading:string=`Cargando ${this.nombreDeDatos.plural}.` ,
+        sort: boolean = true,
+        campo: string = null,
+        urlAlternativa: string = null,
+        ):Observable<T[]>{
+
+        // Seleccionamos un paginador, si externo o el por defecto. 
+        let paginadorAUsar: PaginadorService = paginador ? paginador : this._paginadorService;
+
         const a: number = this._preLoaderService.loading(msjLoading);
-        const url = `${this.base}?desde=${desde}&limite=${limite}`
+        
+        // Valores de la url
+        let url  =  this.base + (urlAlternativa ? urlAlternativa : '') ;
+        
+        // Los valores para el paginador. 
+        
+        url += `?desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
+        // Valores para el ordenamiento. 
+        url+= `&sort=${ sort ? 1 : -1 }`;
+        url+= campo ? `&campo=${ campo }` : '';
+
+        
         return this.http.get(url).pipe(
             map( (resp: any )=> {
-                if (paginador) {
-                    paginador.activarPaginador(resp.total);
-                } else {
-                    this.total = resp.total;
-                    this._paginadorService.activarPaginador( this.total);
-                }
+                this.total = resp.total;
+                paginadorAUsar.activarPaginador( this.total);
                 this._msjService.ok_( resp, null, a)
                 return resp[this.nombreDeDatos.plural];
             } ),
@@ -137,10 +168,10 @@ export class CRUD<T>  {
      *
      * @param {T} dato El objeto que se va a modificar.
      * @param {string} [msjLoading=`Guardando ${this.nombreDeDatos.singular}.`] El mensaje que va a mostrar el servicio de carga.
-     * @returns {Observable<T[]>}
+     * @returns {Observable<T>}
      * @memberof CRUD
      */
-    guardar(dato:T, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T[]>{
+    guardar(dato:T, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.post(this.base, dato).pipe(
             map( (resp: any )=> {
@@ -160,10 +191,10 @@ export class CRUD<T>  {
      *
      * @param {string} id El id del objeto que se quiere eliminar. 
      * @param {string} [msjLoading=`Guardando ${this.nombreDeDatos.singular}.`] El mensaje que va a mostrar el servicio de carga.
-     * @returns {Observable<T[]>}
+     * @returns {Observable<T>}
      * @memberof CRUD
      */
-    eliminar(id:string, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T[]>{
+    eliminar(id:string, msjLoading:string=`Eliminando ${this.nombreDeDatos.singular}.` ):Observable<T>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.delete(this.base+'/'+id).pipe(
             map( (resp: any )=> {
@@ -182,13 +213,14 @@ export class CRUD<T>  {
      * Busca un dato por su id. 
      *
      * @param {string} id El id del objeto que se quiere buscar. 
+     * @param {string} [urlAlternativa=''] La url alternativa para la busqueda.
      * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.singular}`] El mensaje que va a mostrar el servicio de carga.
      * @returns {Observable<T>}
      * @memberof CRUD
      */
-    buscarPorId(id: string, msjLoading:string=`Buscando ${this.nombreDeDatos.singular}`):Observable<T>{
+    buscarPorId(id: string, urlAlternativa: string ='', msjLoading:string=`Buscando ${this.nombreDeDatos.singular}`):Observable<T>{
         const a: number = this._preLoaderService.loading(msjLoading);
-        return this.http.get(this.base+`/buscar`).pipe(
+        return this.http.get(this.base+urlAlternativa+this.urlBusqueda+`/${id}`).pipe(
             map( (resp: any )=> {
                 this._msjService.ok_( resp, null, a)
                 return resp[this.nombreDeDatos.singular];
@@ -203,15 +235,21 @@ export class CRUD<T>  {
 
     /**
      * Busca una serie de datos en base al termino que se le pase como parametro.
+     * Es necesario definir la url de busqueda para que este metodo 
+     * genere una url de esta manera. 
+     * 
+     * [urlBase/][urlAlternativa/][urlBusqueda/][termino]
      *
      * @param {string} termino El termino que se va a buscar. 
+     * @param {string} [urlAlternativa=''] La url alternativa para la busqueda.
      * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.plural}`]  El mensaje que va a mostrar el servicio de carga.
+     * @param {string} [urlAlternativa='']
      * @returns {Observable<T[]>}
      * @memberof CRUD
      */
-    buscar(termino: string, msjLoading:string=`Buscando ${this.nombreDeDatos.plural}`):Observable<T[]>{
+    buscar(termino: string, urlAlternativa:string='', msjLoading:string=`Buscando ${this.nombreDeDatos.plural}`):Observable<T[]>{
         const a: number = this._preLoaderService.loading(msjLoading);
-        return this.http.get(this.base+'/'+termino).pipe(
+        return this.http.get(this.base+urlAlternativa+this.urlBusqueda+'/'+termino).pipe(
             map( (resp: any )=> {
                 this._msjService.ok_( resp, null, a)
                 return resp[this.nombreDeDatos.plural];
@@ -222,6 +260,9 @@ export class CRUD<T>  {
             })
         );
     }
+
+
+
     
         
 }

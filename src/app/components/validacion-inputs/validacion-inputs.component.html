@@ -1,16 +1,18 @@
 <ng-container *ngIf="campo">
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('required')"> <i class="fa fa-times animated tada"></i> Este campo es obligatorio</span>
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('min')"> <i class="fa fa-times animated tada"></i> El valor mínimo permitido es {{campo.getError('min').min}}.</span>
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('max')"> <i class="fa fa-times animated tada"></i> El valor máximo permitido es {{campo.getError('max').max}}. </span>
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('notInteger')"> <i class="fa fa-times animated tada"></i> Se necesita un número entero positivo. </span>
-    <span class="form-text text-danger" *ngIf="campo?.touched && campo?.hasError('invalidNumber')"> <i class="fa fa-times animated tada"></i> No es un número válido.</span>
-    <div class="text-success mt-2" *ngIf="campo?.touched && campo?.valid">
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('required')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> Este campo es obligatorio</span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('min')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> El valor mínimo permitido es {{campo.getError('min').min}}.</span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('max')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> El valor máximo permitido es {{campo.getError('max').max}}. </span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('notInteger')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> Se necesita un número entero positivo. </span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('invalidNumber')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> No es un número válido.</span>
+    <div class="text-success mt-2 animated fadeIn fast " *ngIf="touched() && campo?.valid ">
         <small>
                 <i class="fa fa-check animated swing fa-2x"></i> ¡Se ve bien!
         </small>
     </div>
     <!-- {{j.stringify(campo?.errors)}} -->
 </ng-container>
+
+
 
 <ng-container *ngIf="especial">
     <span class="form-text text-danger"> <i class="fa fa-times animated tada"></i> {{especial}}.</span>
