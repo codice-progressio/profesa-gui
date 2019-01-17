@@ -36,6 +36,7 @@ import { MetalizadoComponent } from './departamentos/metalizado/metalizado.compo
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
 import { BuratoComponent } from './departamentos/burato/burato.component';
 import { LaserComponent } from './departamentos/laser/laser.component';
+import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -180,6 +181,17 @@ const pagesRoutes: Routes = [
             canActivate: [PermisosGuard], 
             data: {
                 titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/almacenDeBoton', 
+            component: AlmacenDeBotonComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Almacen de boton',
                 roles : [ 
                     _ROLES.ADMIN_ROLE
                 ]

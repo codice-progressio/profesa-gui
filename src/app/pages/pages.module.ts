@@ -53,6 +53,7 @@ import { MetalizadoComponent } from './departamentos/metalizado/metalizado.compo
 import { BuratoComponent } from './departamentos/burato/burato.component';
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
 import { LaserComponent } from './departamentos/laser/laser.component';
+import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component';
 
 
 
@@ -100,6 +101,7 @@ import { LaserComponent } from './departamentos/laser/laser.component';
        BuratoComponent,
        BarnizadoComponent,
        LaserComponent,
+       AlmacenDeBotonComponent,
 
 
       ],
