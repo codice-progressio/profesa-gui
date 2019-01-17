@@ -184,7 +184,7 @@ export class RegistroDeLineasComponent implements OnInit {
         this._buscadorRapidoService.elementoSeleccionado.objeto
       );
       
-      this.generarOrganizador( this.folioLinea.modeloCompleto );
+      this.generarOrganizador( this.folioLinea.modeloCompleto, this.folioLinea.procesos );
     };
 
     this._buscadorRapidoService.callbackAtenuar = () => {
@@ -230,13 +230,12 @@ export class RegistroDeLineasComponent implements OnInit {
    * @param {ModeloCompleto} mc
    * @memberof RegistroDeLineasComponent
    */
-  generarOrganizador( mc: ModeloCompleto, procesos: Procesos[] = null ){
+  generarOrganizador( mc: ModeloCompleto, procesos: Procesos[]  ){
 
     this._organizadorDragAndDropService.limpiar();
     // Obtenemos todos los procesos. 
     this.cargarProcesosSeleccionablesEnLista();
     // Cargamos los prcesos propios del modelo.
-
     this.cargarListaOrdenable(mc, procesos);
 
 
@@ -332,7 +331,6 @@ export class RegistroDeLineasComponent implements OnInit {
       // Como no es de almacen los pedidos propios de este folio
       // se tiene que agregar a sus padres y despues ordenarse.
       // Recorremos todos los especiales. 
-      console.log('No es de almacen')
       if( procesosDelPedido ){
         for (let i = 0; i < procesosDelPedido.length; i++) {
           const proc = procesosDelPedido[i];
