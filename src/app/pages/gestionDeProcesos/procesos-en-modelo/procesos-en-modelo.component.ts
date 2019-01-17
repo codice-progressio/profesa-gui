@@ -377,7 +377,6 @@ export class ProcesosEnModeloComponent implements OnInit {
     for (const key in this.arreglosDrop) {
       if (this.arreglosDrop.hasOwnProperty(key)) {
         const element = this.arreglosDrop[key];
-        console.log(element)
         let arregloProcesos: Procesos[] = element.arreglo;
         arregloProcesos.map( x =>{ 
           // El proceso padre tiene que se el id del proceso y
@@ -401,8 +400,6 @@ export class ProcesosEnModeloComponent implements OnInit {
           this.cargarTodosLosDatos();
     }
     
-    console.log(datos.procesosEspeciales);
-
 
     if( this.idModeloCompletoEditando ){
       datos._id = this.idModeloCompletoEditando;
@@ -426,7 +423,8 @@ export class ProcesosEnModeloComponent implements OnInit {
             
     ]).then(() => {
     }).catch( err => {
-      console.log(err);
+      throw err;
+      
     });
   }
 
