@@ -73,7 +73,7 @@ ngOnInit() {
 }
 
 cargarOrdenesDeDepartamento() {
-  this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+  // this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
   this._listaDeOrdenesService.empaque();
 
 }

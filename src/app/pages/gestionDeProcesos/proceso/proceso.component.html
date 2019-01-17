@@ -104,7 +104,7 @@
 
                                 <div class=" flex-column align-items-end">
                                     <small class="ml-2" *ngIf="proceso.editado">Cambios sin guardar.<a class="btn btn-link btn-outline-success btn-sm" (click)="guardarModificacionesAEsteProceso(proceso)"><i class="fa fa-save"></i></a></small>
-                                    <small class="ml-2">Pasos: <strong> {{proceso.pasos.length}}</strong></small>
+                                    <!-- <small class="ml-2">Pasos: <strong> {{proceso.pasos.length}}</strong></small> -->
                                     <small class="ml-2">Costo:  <strong> ${{_calculoDeCostosSerivice.procesoMin(proceso) | number:'1.4-4'}} </strong>/min </small>
                                     <small class="ml-2"><a class="btn btn-link btn-outline-inverse btn-sm" (click)="procesoEditandose = proceso; proceso.editado = true">Editar</a></small>
                                     <small class="ml-2"><a class="btn btn-link btn-outline-danger btn-sm" (click)="eliminarProcesoNormal(i_p_n)"><i class="fa fa-times"></i></a></small>
@@ -318,6 +318,11 @@
                     <small class="form-text text-muted">Este nombre afecta como se muestra la familia</small>
                 </div>
 
+                <div class="form-group">
+                    <button (click)="esParaProductoTerminado()" class="btn btn-lg btn-ligth mr-2" [ngClass]="{'btn-success': familiaEditandose.soloParaProductoTerminado }"><i *ngIf="familiaEditandose.soloParaProductoTerminado" class="fas fa-check"></i> Para producto terminado</button>
+                    <small class="form-text text-muted">Mostrar este proceso cuando se surte boton de almacen.</small>
+                </div>
+
                 <div class="row">
                     <div class="col-6">
 
@@ -345,14 +350,20 @@
                         <app-paginador [paginador]="_PSProcesos"></app-paginador>
                         <div class="list-group mb-3">
                             <ng-container *ngFor="let proceso of procesosNormales, let i = index;">
-                                <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                <a class="list-group-item flex-column align-items-center animated fadeIn" [ngClass]="{' list-group-item-action ': proceso.requiereProduccion}">
                                     <div class="d-flex w-100 justify-content-between align-items-center">
                                         <span>
                                             {{proceso.nombre}}
                                         </span>
                                         <span>
                                             <small class="mr-1"><strong>{{proceso.departamento.nombre}}</strong></small>
-                                            <button (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+
+                                            <button 
+                                                *ngIf=" !familiaEditandose.soloParaProductoTerminado " 
+                                            (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                            <button 
+                                                *ngIf=" familiaEditandose.soloParaProductoTerminado && !proceso.requiereProduccion" 
+                                            (click)="agregarProceso( proceso )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
                                         </span>
                                     </div>
                                 </a>
@@ -391,24 +402,43 @@
             <div class="card-body">
                 <h1>Editar proceso: {{procesoEditandose.nombre}}</h1>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" [(ngModel)]="procesoEditandose.nombre">
-                    <small class="form-text text-muted">Este nombre afecta como se muestra el proceso</small>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group ">
+                            <input type="text" class="form-control form-control-lg " [(ngModel)]="procesoEditandose.nombre">
+                            <small class="form-text text-muted">Este nombre afecta como se muestra el proceso</small>
+                        </div>
+
+                    </div>
+                    <div class="col-6 ">
+                        <div class="form-group ">
+                            <textarea class="form-control form-control-lg" [(ngModel)]="procesoEditandose.observaciones"></textarea>
+                            <small class="form-text text-muted">Descripición del proceso. </small>
+                        </div>
+
+                    </div>
+                    <div class="col-auto ">
+                        <div class="form-group ">
+                            <select class="form-contro form-control-lg" [(ngModel)]="procesoEditandose.departamento" [compareWith]="compareFn">
+                                <option *ngFor="let depto of departamentos" [ngValue]="depto">{{depto.nombre}}</option>
+                            </select>
+                            <small class="form-text text-muted">Departamento </small>
+                        </div>
+
+                    </div>
                 </div>
+
+
 
                 <div class="form-group mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="procesoEditandose.observaciones">
-                    <small class="form-text text-muted">Descripición del proceso. </small>
+                    <button (click)="procesoEditandose.requiereProduccion = !procesoEditandose.requiereProduccion" [ngClass]="{'btn-success text-white': procesoEditandose.requiereProduccion}" class="btn btn-light btn-lg">
+                        <i *ngIf="procesoEditandose.requiereProduccion" class="fas fa-check   fa-fw"></i> Requiere produccion. </button>
+                    <small class="form-text text-muted">Si no requiere solo se mostrara para familias que no se maquinen. </small>
                 </div>
 
-                <div class="form-group mt-3">
-                    <select class="form-control" [(ngModel)]="procesoEditandose.departamento" [compareWith]="compareFn">
-                        <option *ngFor="let depto of departamentos" [ngValue]="depto">{{depto.nombre}}</option>
-                    </select>
-                    <small class="form-text text-muted">Departamento </small>
-                </div>
+                <h3>Administrar hit</h3>
 
-                <h3>Pasos dentro del proceso</h3>
+                <!-- <h3>Pasos dentro del proceso</h3>
                 <div class="list-group" dnd-sortable-container [sortableData]="procesoEditandose.pasos">
                     <ng-container *ngFor="let paso of procesoEditandose.pasos, let i = index;">
                         <a dnd-sortable (onDropSuccess)="reordenarPasos(procesoEditandose)" [sortableIndex]="i" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
@@ -436,59 +466,68 @@
                             </div>
                         </a>
                     </ng-container>
-                </div>
+                </div> -->
 
-                <button (click)="agregarPaso(procesoEditandose)" class="btn btn-success mt-3"><i class="fa fa-plus"></i> Agregar paso</button>
+                <!-- <button (click)="agregarPaso(procesoEditandose)" class="btn btn-success mt-3"><i class="fa fa-plus"></i> Agregar paso</button> -->
 
                 <hr>
 
-                <h3>Gastos del proceso.</h3>
-                <div class="list-group">
-                    <a *ngIf="procesoEditandose.gastos.length === 0" class="bg-danger text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                        <i class="fa fa-exclamation-circle animated tada infinite fa-2x"></i> <strong> Este proceso no tiene gastos asignados. </strong>
-                    </a>
-                    <ng-container *ngFor="let gastoConsumo of procesoEditandose.gastos, let i = index;">
-                        <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span class="w-75">
-                                        
-                                     <h3  class="text-inverse"><i class="fa fa-check animated rollIn text-success fa-2x" *ngIf="!gastoConsumo.editando"></i> {{gastoConsumo.gasto.nombre}} </h3>
-                                    <br>
-                                    Consumo: <b>{{gastoConsumo.consumo}}</b> {{gastoConsumo.gasto.unidadPorHora}}
-                                    <div *ngIf="gastoConsumo.editando" class="form-group">
-                                        <input type="number" class="form-control" [(ngModel)]="gastoConsumo.consumo">
-                                        <small class="form-text text-muted">Ingresa el consumo </small>
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Gastos del proceso.</h3>
+                        <div class="list-group">
+                            <a *ngIf="procesoEditandose.gastos.length === 0" class="bg-danger text-white list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                <i class="fa fa-exclamation-circle animated tada infinite fa-2x"></i> <strong> Este proceso no tiene gastos asignados. </strong>
+                            </a>
+                            <ng-container *ngFor="let gastoConsumo of procesoEditandose.gastos, let i = index;">
+                                <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <span class="w-75">
+                                                
+                                             <h3  class="text-inverse"><i class="fa fa-check animated rollIn text-success fa-2x" *ngIf="!gastoConsumo.editando"></i> {{gastoConsumo.gasto.nombre}} </h3>
+                                            <br>
+                                            Consumo: <b>{{gastoConsumo.consumo}}</b> {{gastoConsumo.gasto.unidadPorHora}}
+                                            <div *ngIf="gastoConsumo.editando" class="form-group">
+                                                <input type="number" class="form-control" [(ngModel)]="gastoConsumo.consumo">
+                                                <small class="form-text text-muted">Ingresa el consumo </small>
+                                            </div>
+                                        </span>
+                                        <div class="text-right">
+                                            <button *ngIf="!gastoConsumo.editando" (click)="gastoConsumo.editando = !gastoConsumo.editando" class="animated fadeIn btn btn-outline-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                            <button *ngIf="gastoConsumo.editando" (click)="gastoConsumo.editando = !gastoConsumo.editando" class="animated fadeIn btn btn-outline-success"><i class="fa fa-check fa-2x"></i></button>
+                                            <button *ngIf="!gastoConsumo.editando" (click)="procesoEditandose.gastos.splice(i, 1)" class="animated fadeIn ml-3 btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
+
+                                        </div>
                                     </div>
-                                </span>
-                                <div class="text-right">
-                                    <button *ngIf="!gastoConsumo.editando" (click)="gastoConsumo.editando = !gastoConsumo.editando" class="animated fadeIn btn btn-outline-primary btn-sm"><i class="fa fa-edit"></i></button>
-                                    <button *ngIf="gastoConsumo.editando" (click)="gastoConsumo.editando = !gastoConsumo.editando" class="animated fadeIn btn btn-outline-success"><i class="fa fa-check fa-2x"></i></button>
-                                    <button *ngIf="!gastoConsumo.editando" (click)="procesoEditandose.gastos.splice(i, 1)" class="animated fadeIn ml-3 btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
-
-                                </div>
-                            </div>
-                        </a>
-                    </ng-container>
-                </div>
-
-                <h3>Gastos disponibles</h3>
-                <div class="list-group">
-                    <a *ngIf="procesoEditandose.gastos.length === gastos.length" class=" bg-light list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                        <div class="d-flex w-100 justify-content-between align-items-center">
-                            <h4 class="text-muted">No hay más gastos para asignar.</h4>
+                                </a>
+                            </ng-container>
                         </div>
-                    </a>
-                    <ng-container *ngFor="let gasto of gastos, let i = index;">
-                        <a *ngIf="!procesoContieneGasto( gasto )" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span>
-                                    {{gasto.nombre}} {{gasto.unidadPorHora}}
-                                </span>
-                                <button (click)="agregarGastoAProceso( gasto )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </a>
-                    </ng-container>
+
+                    </div>
+                    <div class="col-6">
+                        <h3>Gastos disponibles</h3>
+                        <div class="list-group">
+                            <a *ngIf="procesoEditandose.gastos.length === gastos.length" class=" bg-light list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                <div class="d-flex w-100 justify-content-between align-items-center">
+                                    <h4 class="text-muted">No hay más gastos para asignar.</h4>
+                                </div>
+                            </a>
+                            <ng-container *ngFor="let gasto of gastos, let i = index;">
+                                <a *ngIf="!procesoContieneGasto( gasto )" class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <span>
+                                            {{gasto.nombre}} {{gasto.unidadPorHora}}
+                                        </span>
+                                        <button (click)="agregarGastoAProceso( gasto )" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </a>
+                            </ng-container>
+                        </div>
+
+                    </div>
                 </div>
+
+
 
                 <hr>
 

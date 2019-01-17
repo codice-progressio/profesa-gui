@@ -58,7 +58,7 @@ export class ClientesComponent implements OnInit {
   }
 
   cargarClientes( ){
-    this._clienteService.obtenerTodos().subscribe(
+    this._clienteService.todo().subscribe(
       resp => {
         this.clientes = resp;
     });
@@ -105,7 +105,7 @@ export class ClientesComponent implements OnInit {
       });
 
     }else {
-      this._clienteService.guardaNuevo(cliente).subscribe(resp=> {
+      this._clienteService.guardar(cliente).subscribe(resp=> {
         this.limpiar();
       });
 

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
+import { DefaultsService } from '../services/configDefualts/defaults.service';
 
 declare function init_plugins();
 declare const gapi: any;
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
       public router: Router,
-      public _usuarioService: UsuarioService
+      public _usuarioService: UsuarioService,
     ) {
       this.fondoRandom = Math.floor(Math.random()*15)+1;
      }

@@ -19,10 +19,14 @@ import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
 import { Laser } from 'src/app/models/laser.models';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { FamiliaDeProcesos, Procesos } from '../../../models/familiaDeProcesos.model';
+import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model';
+import { Procesos } from "../../../models/procesos.model";
 import { Proceso } from 'src/app/models/proceso.model';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModeloCompletoPipe } from 'src/app/pipes/modelo-completo.pipe';
+import { OrganizadorDragAndDrop } from '../../../components/organizador-drag-and-drop/models/organizador-drag-and-drop.model';
+import { OrganizadorDragAndDropService } from 'src/app/components/organizador-drag-and-drop/organizador-drag-and-drop.service';
 
 
 @Component({
@@ -91,7 +95,24 @@ export class ProcesosEnModeloComponent implements OnInit {
   procesosNormales: Proceso[] = [];
   procesosEspeciales: Proceso[] = [];
 
+  
+  /**
+   *Alamcena los datos de la lista ordenable bajo la siguiente estructura:
+
+     arreglosDrop = { 
+       'idKeyPadre': {
+          arreglo: Procesos[],
+          proc: Procesos, => Este es un procesos y viene siendo el padre.
+       }
+     } 
+   *
+   * @type {*}
+   * @memberof ProcesosEnModeloComponent
+   */
   arreglosDrop: any = {};
+
+
+
   private msjEliminacion: string = `Eliminar esto siginifica que tambien toda la informacion 
   relacionada como modelos autorizados de clientes, 
   pedidos en transito y pendientes de ordenes asi 
@@ -222,6 +243,7 @@ export class ProcesosEnModeloComponent implements OnInit {
     public _calculosService: CalculosDeCostosService,
     private formBuilder: FormBuilder,
     public _validacionesService: ValidacionesService,
+    private modeloCompletoPipe: ModeloCompletoPipe,
 
     // public _paginadorService: PaginadorService,
     @Inject('PSModeloCompleto') public _PSModeloCompleto: PaginadorService,
@@ -322,6 +344,15 @@ export class ProcesosEnModeloComponent implements OnInit {
   } 
   
 
+  /**
+   *Guarda y modifica el modelo completo desde el formulario. 
+   *
+   * @param {ModeloCompleto} modelo El modelo que se genero en modeloCompletoForm
+   * @param {boolean} isValid Si el formulario es valido. 
+   * @param {*} e El evento para prevenir default.  
+   * @returns
+   * @memberof ProcesosEnModeloComponent
+   */
   onSubmitModeloCompleto( modelo: ModeloCompleto, isValid: boolean, e ) {
     e.preventDefault();
    
@@ -330,7 +361,36 @@ export class ProcesosEnModeloComponent implements OnInit {
     // Reordenamos los procesos por si hubo algún fallo en el drop.
     this.reordenarProcesos();
     const datos: ModeloCompleto = modelo;
+    
+
+    let laser: Laser = new Laser();
+    laser.laser = <string> <any> modelo.laserAlmacen;
+    datos.laserAlmacen = laser;
+
+    datos.medias = !!modelo.medias
     datos.familiaDeProcesos = this.familiaDeProceso;
+
+    // Obtenemos los procesos especiales. 
+    let pe: Procesos[] = [];
+    
+    datos.procesosEspeciales = pe;
+    for (const key in this.arreglosDrop) {
+      if (this.arreglosDrop.hasOwnProperty(key)) {
+        const element = this.arreglosDrop[key];
+        console.log(element)
+        let arregloProcesos: Procesos[] = element.arreglo;
+        arregloProcesos.map( x =>{ 
+          // El proceso padre tiene que se el id del proceso y
+          // el id del Procesos. Hay una gran diferencia.
+          x.procesoPadre = element.proc.proceso;
+          datos.procesosEspeciales.push( x) ;
+        });
+
+      }
+    }
+
+
+    datos.nombreCompleto = this.modeloCompletoPipe.transform(datos);
 
     // El callback para ambas operaciones. 
 
@@ -341,6 +401,9 @@ export class ProcesosEnModeloComponent implements OnInit {
           this.cargarTodosLosDatos();
     }
     
+    console.log(datos.procesosEspeciales);
+
+
     if( this.idModeloCompletoEditando ){
       datos._id = this.idModeloCompletoEditando;
       this._modeloCompletoService.modificar( datos ).subscribe( call );
@@ -416,11 +479,13 @@ export class ProcesosEnModeloComponent implements OnInit {
   }
 
   cargarModelosCompletos(  ) {
-    this._modeloCompletoService.todo( this._PSModeloCompleto ).subscribe( (mC) => {
+    this._modeloCompletoService.todo( this._PSModeloCompleto ).subscribe( (mC:ModeloCompleto[]) => {
       if ( mC ) {
-        this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
+        this.modelosCompletos = mC;
+        
+        // this.modelosCompletos = ModeloCompleto.fromJSON_Array( mC );
         this.modelosCompletos.map(x => x.nombreCompleto = ModeloCompleto.nombreCom(x));
-        this._utilidadesService.ordenarArreglo( this.modelosCompletos, 'nombreCompleto');
+        // this._utilidadesService.ordenarArreglo( this.modelosCompletos, 'nombreCompleto');
       }
     });
   }
@@ -518,14 +583,20 @@ export class ProcesosEnModeloComponent implements OnInit {
     }
   }
 
+  /**
+   *Reordena los procesos seleccionados para agregar
+   el numero en Procesos.orden. Tambien asiganmos el id del padre. 
+   *
+   * @memberof ProcesosEnModeloComponent
+   */
   reordenarProcesos( ) {
-   for (const x in this.arreglosDrop) {
-     if (this.arreglosDrop.hasOwnProperty(x)) {
-       const element = this.arreglosDrop[x];
-      //  TODO: Modificar aqui tambien el id del pradre del proceso. (Ver notas relacionadas en TODO.)
+   for (const key in this.arreglosDrop) {
+     if (this.arreglosDrop.hasOwnProperty(key)) {
+       const element = this.arreglosDrop[key];
        for (let i = 0; i < element.arreglo.length; i++) {
-        const pro = element.arreglo[i];
+        const pro:Procesos = element.arreglo[i];
         pro.orden = (( i + 1) / 10) + element.proc.orden ;
+        pro.procesoPadre._id = key
        }
      }
    }
@@ -557,11 +628,13 @@ export class ProcesosEnModeloComponent implements OnInit {
    * @memberof ProcesosEnModeloComponent
    */
   editarModeloCompleto( mc: ModeloCompleto ){
+
     this.modeloCompletoForm.reset(this.reiniciarFormularioModeloCompleto(false, mc));
     
     this.creandoModelo = true;
     this.agregarFamiliaDeProceso( mc.familiaDeProcesos );
     this.idModeloCompletoEditando = mc._id;
+
   }
 
   /**
@@ -574,10 +647,10 @@ export class ProcesosEnModeloComponent implements OnInit {
    */
   reiniciarFormularioModeloCompleto( reiniciarORellenar: boolean, mc: ModeloCompleto ): any{
     return {
-      modelo: {value: reiniciarORellenar? '' :  mc.modelo.modelo, disabled: !reiniciarORellenar},
-      tamano: {value: reiniciarORellenar? '' :  mc.tamano.tamano, disabled: !reiniciarORellenar},
-      color: {value: reiniciarORellenar? '' :  mc.color.color, disabled: !reiniciarORellenar},
-      terminado: {value: reiniciarORellenar? '' :  mc.terminado.terminado, disabled: !reiniciarORellenar},
+      modelo: {value: reiniciarORellenar? '' :  mc.modelo._id, disabled: !reiniciarORellenar},
+      tamano: {value: reiniciarORellenar? '' :  mc.tamano._id, disabled: !reiniciarORellenar},
+      color: {value: reiniciarORellenar? '' :  mc.color._id, disabled: !reiniciarORellenar},
+      terminado: {value: reiniciarORellenar? '' :  mc.terminado._id, disabled: !reiniciarORellenar},
       laserAlmacen: {value: reiniciarORellenar? '' :  mc.laserAlmacen.laser, disabled: !reiniciarORellenar},
       versionModelo: {value: reiniciarORellenar? '' :  mc.versionModelo, disabled: !reiniciarORellenar},
       medias: reiniciarORellenar? '' :  mc.medias,

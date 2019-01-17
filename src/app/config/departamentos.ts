@@ -14,4 +14,8 @@ export const DEPARTAMENTOS = {
     METALIZADO: { _v: 'METALIZADO', _n: 'METALIZADO', _vm:'metalizado' },
     BURATO: { _v: 'BURATO', _n: 'BURATO', _vm:'burato' },
     BARNIZADO: { _v: 'BARNIZADO', _n: 'BARNIZADO', _vm:'barnizado' },
+    LASER: { _v: 'LASER', _n: 'LASER', _vm: 'laser' },
+
+
+
 }

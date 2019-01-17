@@ -16,7 +16,7 @@
     <input [disabled]='s.elementoSeleccionado' #inputBuscador [(value)]='s.termino' (keyup)="s.buscar(inputBuscador.value, $event)" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
 </div>
 
-<div class="list-group mb-3 animated fadeIn delay-1s" *ngIf="lista">
+<div class="list-group mb-3 animated fadeIn " *ngIf="lista">
 
     <span class="list-group-item bg-dark text-white text-acenter">
       <!-- <h5 class="text-muted"> -->
@@ -29,10 +29,10 @@
     <!-- </h5> -->
     <h3 *ngIf="s.elementoSeleccionado " class="text-white d-flex justify-content-between align-items-center">
         <span class="text-left">
-            <i class="fa fa-check text-success animated fadeIn delay-0-5s"></i>
+            <i class="fa fa-check text-success animated fadeIn "></i>
             <strong  class="ml-3">{{s.elementoSeleccionado.nombre}} </strong> 
         </span>
-        <a (click)='s.limpiarTodo()' class="btn btn-link btn-sm text-danger animated fadeIn delay-2s"><i class="fa fa-times"></i></a>
+        <a (click)='s.limpiarSeleccionado()' class="btn btn-link btn-sm text-danger animated fadeIn "><i class="fa fa-times"></i></a>
     </h3>
     </span>
 

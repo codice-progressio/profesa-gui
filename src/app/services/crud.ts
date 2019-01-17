@@ -220,7 +220,7 @@ export class CRUD<T>  {
      */
     buscarPorId(id: string, urlAlternativa: string ='', msjLoading:string=`Buscando ${this.nombreDeDatos.singular}`):Observable<T>{
         const a: number = this._preLoaderService.loading(msjLoading);
-        return this.http.get(this.base+urlAlternativa+this.urlBusqueda+`/${id}`).pipe(
+        return this.http.get(this.base+urlAlternativa+`/${id}`).pipe(
             map( (resp: any )=> {
                 this._msjService.ok_( resp, null, a)
                 return resp[this.nombreDeDatos.singular];
@@ -251,7 +251,8 @@ export class CRUD<T>  {
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.get(this.base+urlAlternativa+this.urlBusqueda+'/'+termino).pipe(
             map( (resp: any )=> {
-                this._msjService.ok_( resp, null, a)
+                this._msjService.ok_( resp, null, a);
+                this.total = resp.total;
                 return resp[this.nombreDeDatos.plural];
             } ),
             catchError( err =>{

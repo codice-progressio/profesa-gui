@@ -1,7 +1,8 @@
 import { ModeloCompleto } from './modeloCompleto.modelo';
 import { Laser } from './laser.models';
 import { Orden } from './orden.models';
-import { Procesos } from './familiaDeProcesos.model';
+import { Procesos } from "./procesos.model";
+import { ColoresTenidos } from './ColoresTenidos';
 
 export class FolioLinea {
     constructor(
@@ -15,7 +16,10 @@ export class FolioLinea {
         public updatedAt?: Date,
         public porcentajeAvance?: number,
         public coloresTenidos: ColoresTenidos[] = [],
-        public procesos?: Procesos[],
+        
+        public procesos: Procesos[] = [],
+
+
         public observaciones?: string,
         public terminado?: boolean,
 
@@ -30,13 +34,4 @@ export class FolioLinea {
 }
 
 
-export class ColoresTenidos {
-    constructor(
-        public color?: string,
-        public cantidad?: number,
-        // Para gui
-        public valido: boolean = true,
-    ) {
-        
-    }
-}
+

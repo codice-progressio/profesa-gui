@@ -3,7 +3,8 @@ import { Tamano } from './tamano.models';
 import { Color } from './color.models';
 import { Terminado } from './terminado.models';
 import { Laser } from './laser.models';
-import { FamiliaDeProcesos, Procesos } from './familiaDeProcesos.model';
+import { FamiliaDeProcesos } from './familiaDeProcesos.model';
+import { Procesos } from "./procesos.model";
 import { BasicosGUI } from './basicosGUI.model';
 import { log } from 'util';
 

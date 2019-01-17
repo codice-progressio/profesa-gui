@@ -8,19 +8,16 @@ import {
   CalculosDeCostosService,
   FamiliaDeProcesosService
 } from 'src/app/services/service.index';
-import { Proceso } from 'src/app/models/proceso.model';
-import {
-  FamiliaDeProcesos,
-  Procesos
-} from 'src/app/models/familiaDeProcesos.model';
 import swal from 'sweetalert2';
-import { PreLoaderService } from '../../../components/pre-loader/pre-loader.service';
 import { Paso } from '../../../models/paso.model';
 import { Departamento } from 'src/app/models/departamento.models';
 import { Gasto } from 'src/app/models/gasto.model';
 import { GastoConsumo } from 'src/app/models/gastoConsumo.model';
 import { Maquina } from 'src/app/models/maquina.model';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { FamiliaDeProcesos } from 'src/app/models/familiaDeProcesos.model';
+import { Proceso } from 'src/app/models/proceso.model';
+import { Procesos } from 'src/app/models/procesos.model';
 
 
 
@@ -82,8 +79,7 @@ export class ProcesoComponent implements OnInit {
 
   cargarProcesos( desde: number= 0, limite: number = this._PSProcesos.limite){
     this._procesoService.todo( this._PSProcesos ).subscribe(procesos => {
-      // Este proceso no lo listamos por que se agrega de manera automatica. 
-      this.procesosNormales =procesos;
+      this.procesosNormales = procesos;
     });
   }
   
@@ -148,14 +144,14 @@ export class ProcesoComponent implements OnInit {
   }
 
   guardarModificacionesAEsteProceso(proceso: Proceso) {
-    if (proceso.pasos.length === 0) {
-      swal(
-        'Proceso vacio.',
-        'El proceso debe contener por lo menos un paso.',
-        'error'
-      );
-      return;
-    }
+    // if (proceso.pasos.length === 0) {
+    //   swal(
+    //     'Proceso vacio.',
+    //     'El proceso debe contener por lo menos un paso.',
+    //     'error'
+    //   );
+    //   return;
+    // }
 
     if (proceso.nombre === '' || proceso.nombre === null) {
       swal(
@@ -192,25 +188,14 @@ export class ProcesoComponent implements OnInit {
       this._manejoDeMensajesService.correcto('La familia que aun no se grababa se elimino.');
 
     } else {
-      swal({
-        title: `Vas a eliminar la familia ${familia.nombre}.`,
-        text:
-          '¿Estas segúro que lo quieres eliminar? Esta acción no se puede deshacer.',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Si, hazlo!'
-      }).then(result => {
-        if (result.value) {
-          swal(
-            '¡UPS!!',
-            'Actualmente no puedes borrar una familia de procesos.',
-            'warning'
-          );
-        } else {
-          swal('¡Cancelado!', 'Se cancelo la operación.', 'warning');
-        }
+
+      let msj = `Si eliminas esta familia tambien se eliminaran 
+      los modelos completos relacionados con el y toda la informacion referente a estadisticas. `
+
+      this._manejoDeMensajesService.confirmacionDeEliminacion(msj, ()=>{ 
+        this._familiaDeProcesosService.eliminar(familia._id).subscribe(resp =>{
+          this.cargarFamilias();
+        });
       });
     }
   }
@@ -223,7 +208,7 @@ export class ProcesoComponent implements OnInit {
   // }
 
   eliminarProcesoEntero(i: number, procesos) {
-    const proceso = procesos[i];
+    const proceso: Proceso = procesos[i];
     if (!proceso._id) {
       procesos.splice(i, 1);
       swal(
@@ -243,7 +228,13 @@ export class ProcesoComponent implements OnInit {
         confirmButtonText: '¡Si, hazlo!'
       }).then(result => {
         if (result.value) {
-          swal('¡UPS!!', 'Actualmente no puedes borrar proceso.', 'warning');
+          
+          this._procesoService.eliminar(proceso._id).subscribe(resp =>{
+            this.cargarProcesos();
+            this.cargarFamilias();
+          });
+
+
         } else {
           swal('¡Cancelado!', 'Se cancelo la operación.', 'warning');
         }
@@ -310,20 +301,37 @@ export class ProcesoComponent implements OnInit {
     
   }
 
-  agregarProceso(proceso: Proceso) {
-    console.log(proceso);
+  /**
+   * Setea una familia como solo para producto terminado y 
+   * elimina las procesos que esten agregado de tipo requiereProduccion. 
+   *
+   * @memberof ProcesoComponent
+   */
+  esParaProductoTerminado( ){
+    // Cambiamos el estatus.
+    this.familiaEditandose.soloParaProductoTerminado = !this.familiaEditandose.soloParaProductoTerminado
+
+    let cantidadAntesDeFiltrar = this.familiaEditandose.procesos.length;
+    if( this.familiaEditandose.soloParaProductoTerminado ) {
+      // Eliminamos todos los procesos que requieran producirse. 
+      this.familiaEditandose.procesos = this.familiaEditandose.procesos.filter( x => {return !x.proceso.requiereProduccion} );
+    }
+    let cantidadDespuesDeFiltrar = this.familiaEditandose.procesos.length;
     
+    if( cantidadAntesDeFiltrar !== cantidadDespuesDeFiltrar ){
+      this._manejoDeMensajesService.informar('Se quitaron los procesos incompatibles con esta opcion.')
+    }
+    
+
+  }
+
+  agregarProceso(proceso: Proceso) {
     this.reordenarProceso(this.familiaEditandose);
     
-    console.log(proceso);
     const proc = new Procesos();
     proc.proceso = proceso;
     proc.orden = this.familiaEditandose.procesos.length + 1;
-    console.log(proc);
-    
     this.familiaEditandose.procesos.push(proc);
-    
-    console.log(this.familiaEditandose);
     
   }
 

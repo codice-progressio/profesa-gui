@@ -46,7 +46,7 @@ export class SeleccionComponent implements OnInit {
   }
 
   cargarOrdenesDeDepartamento() {
-    this._listaDeOrdenesService.depto = DEPARTAMENTOS.SELECCION._n;
+    // this._listaDeOrdenesService.depto = DEPARTAMENTOS.SELECCION._n;
     this._listaDeOrdenesService.seleccion();
   }
 

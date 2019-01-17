@@ -14,22 +14,44 @@ FEATURES:
     ☐ Alertas de tiempo de espera. 
 
   Procesos:
+    ☐ Debe haber familias de procesos que se puedan aplicar desde el pedido en el (GUI) y que no requieran produccion.
+    ☐ Las familias que esten senaladas como soloParaProductoTerminado no deben permitir procesos senalados con requireProduccion
     ☐ Que permita el almacenaje del hit.
     ☐ Quien lo va a hacer? > Usuarios capacitados. 
     ☐ Con que lo va a hacer. Material y herramientas. 
     ☐ Procesos disponibles al crear familia que se arrastre para agregar a la lista. 
     ☐ Ordenar los procesos por nombre. 
+    ☐ Cuando un proceso no requiere produccion debe permitir diferenciarse entre uno que si ocupe. Esto afecta principalmente el GUI cuando se selecciona un modelo para el pedido. Deben desaparecer los que requieren proudccion cuando el modelo viene desde almacen. 
+        
 
   Seguimiento de folios:
     ☐ Filtrar por fechas de entrega. (Calendario sobre la barra)
     ☐ Filtrar por cliente. (Un menu desplegable sobre la barra que aparezca al escribir.)
     ☐ Que se vea la fecha de entrada del folio. 
     ☐ Filtrar por fecha de entrada. Igual que la fecha de entrega.
+    
+    
+    Ventanass:
+      ☐ Almacen
+    Tipos de ingenieria.:
+        ☐ Ingenieria de manufactura. 
+        ☐ Ingenieria de calidad
+        ☐ Ingenieria de diseno.
+    ☐ Produccion
+    ☐ Ventas
+    ☐ RH.
+
+    Transformacion:
+      ☐ Paros de la maquina. Una GUI para definir los paros que tuvo la maquina. Dejar que el admin adminsitre los tipos de paro. Dejar abierto para recivir los datos desde un plc. 
+
 
 FIX:
   
   URGENTE:
     ☐ Implementar certificado de seguridad para chrome.
+
+  Proceso:
+    ☐ Comprobar que el proceso no ocupa senalarse como especial. API arreglado. 
 
 Archive:
   ✔ Metalizado @started(18-12-30 13:21) @done(19-01-01 08:30) @lasted(1d19h9m) @project(FEATURES.Departamentos nuevos)

@@ -52,6 +52,7 @@ import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/histo
 import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component';
 import { BuratoComponent } from './departamentos/burato/burato.component';
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
+import { LaserComponent } from './departamentos/laser/laser.component';
 
 
 
@@ -98,6 +99,7 @@ import { BarnizadoComponent } from './departamentos/barnizado/barnizado.componen
        MetalizadoComponent,
        BuratoComponent,
        BarnizadoComponent,
+       LaserComponent,
 
 
       ],

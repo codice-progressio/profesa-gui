@@ -3,61 +3,150 @@ import { BuscadorRapido } from './../buscador-rapido/buscador-rapido';
 import { log } from 'util';
 
 @Injectable()
-export class BuscadorRapidoService {
+export class BuscadorRapidoService<T> {
   
+  /**
+   *
+   * El nombre del elemento que se va a listar. Este se usa
+   * cuando la lista esta vacia y pone una leyanda de tipo "No se a seleccionado ningún XXX ."
+   *
+   * @type {string}
+   * @memberof BuscadorRapidoService
+   */
   nombreDeElemento: string;
-  // El nombre del elemento que se va a listar. Este se usa
-  // cuando la lista esta vacia y pone una leyanda de tipo "No se a seleccionado ningún XXX ."
   
+  /**
+   *
+   * Muestra el icoo de carga al lado de la leyenda.
+   *
+   * @type {boolean}
+   * @memberof BuscadorRapidoService
+   */
   mostrarCarga: boolean = false;
-  // Muestra el icoo de carga al lado de la leyenda.
 
 
-  elementos: BuscadorRapido[] = [];
-  // Los elementos que se van a mostrar en la lista.
+  /**
+   * Los elementos que se van a mostrar en la lista.
+   *
+   *
+   * @type {BuscadorRapido<T>[]}
+   * @memberof BuscadorRapidoService
+   */
+  elementos: BuscadorRapido<T>[] = [];
 
   // seleccionado: string;
 
-  elementoSeleccionado: BuscadorRapido;
-  // Rellena el cuadro de elemento seleccionado con esta leyenda.
+  /**
+   *
+   * Rellena el cuadro de elemento seleccionado con esta leyenda.
+   * 
+   * @type {BuscadorRapido<T>}
+   * @memberof BuscadorRapidoService
+   */
+  elementoSeleccionado: BuscadorRapido<T>;
 
   
+  /**
+   *Debe de contener un callback que retorne una promesa. 
+   * 
+   *
+   * @type {*}
+   * @memberof BuscadorRapidoService
+   */
   promesa: any;
-  // Debe de contener un callback que retorne una promesa. 
 
+  /**
+   * El dato que el usuario esta escribiendo en el inp.
+   *
+   *
+   * @type {string}
+   * @memberof BuscadorRapidoService
+   */
   termino: string = '';
-  // El dato que el usuario esta escribiendo en el inp.
 
   
+  /**
+   * Tiempo para comprobar si el usuario ya dejo de escribir. 
+   *
+   *
+   * @type {number}
+   * @memberof BuscadorRapidoService
+   */
   tiempoDeEspera: number = 500;
-  // Tiempo para comprobar si el usuario ya dejo de escribir. 
   
+  /**
+   * La cantidad de caracteres que se van al espera para empezar
+   * a ejecutar la funcion de busqueda. 
+   *
+   *
+   * @memberof BuscadorRapidoService
+   */
   cantidadDeCaracteresParaEmpezarBusqueda = 1;
-  // La cantidad de caracteres que se van al espera para empezar
-  // a ejecutar la funcion de busqueda. 
 
+  /**
+   * El total de registros obtenidos 
+   * Este dato se agrega al instanciar la promesa. 
+   *
+   *
+   * @type {number}
+   * @memberof BuscadorRapidoService
+   */
   totalDeElementosBD: number = 0;
-  // El total de registros obtenidos 
-  // Este dato se agrega al instanciar la promesa. 
 
+  /**
+   * Desde el registrno numero #. Se va sumando 
+   * automaticanmente.
+   *
+   *
+   * @type {number}
+   * @memberof BuscadorRapidoService
+   */
   desde:number = 0;
-  // Desde el registrno numero #. Se va sumando 
-  // automaticanmente.
+  
+  
+  /**
+   * El intervalo para obtener resgistro
+   *
+   *
+   * @memberof BuscadorRapidoService
+   */
 
   limite: number =5;
-  // El intervalo para obtener resgistro
   
+  /**
+   La pagina actual seleccionada
+   * 
+   *
+   * @type {number}
+   * @memberof BuscadorRapidoService
+   */
   numeroDePaginaActual: number =1;
-  // La pagina actual seleccionada
   
-  promesaPendiente: boolean = false;
-  // Si hay una promesa que se ejecuto 
-  // entonces no se vuelve a ejecutar. 0
+  /**
+   *    Si hay una promesa que se ejecuto 
+   entonces no se vuelve a ejecutar. 0
 
-  // Cantidad de botones para definir intervalos. 
+   *
+   * @type {boolean}
+   * @memberof BuscadorRapidoService
+   */
+  promesaPendiente: boolean = false;
+
+  /**
+   Cantidad de botones para definir intervalos. 
+   * 
+   *
+   * @memberof BuscadorRapidoService
+   */
   botones = [5,10,20]
 
-  // Se llama cuando un elemento es seleccionado.
+  /**
+   * 
+   * Se llama cuando un elemento es seleccionado.
+   *
+   * @type {*}
+   * @memberof BuscadorRapidoService
+   */
   callbackElementoSeleccionado: any = null;
 
   // Se llama cuando se da click sobre un elemento de la lista y 
@@ -65,6 +154,14 @@ export class BuscadorRapidoService {
   // Si se cumplen las condiciones ejecuta el callback que debe retornar
   // true o false para continuar o no segun lo que se defina dentro del callback.
   callbackAtenuar: any = null;
+  
+  /**
+   * Se llama al eliminar el elemento seleccionado. 
+   *
+   * @memberof BuscadorRapidoService
+   */
+  callbackEliminar: any = null;
+
 
   constructor() { 
   
@@ -95,12 +192,10 @@ export class BuscadorRapidoService {
         // true para que espera y no mande multiples solicitudes. 
         // this.esperandoEscritura = true;
         //Lo ponemos a esperar.
-        console.log(`Hay un intervalo?:${!!this.interval}`)
         if( !this.interval){
           this.interval = setInterval( ()=>{
             
             const sonSuficientesCaracteres = this.cantidadDeCaracteresParaEmpezarBusqueda <= this.termino.length
-            console.log(`Termino esta vacio?:${this.vacio(this.termino)}`)
             // Si el termino esta vacio no ejecutamos la promesa
             if( this.vacio(this.termino) ){
               console.log('No se ejecuta la promesa.');
@@ -109,12 +204,10 @@ export class BuscadorRapidoService {
               return;
             }
 
-            console.log(`Termino tiene suficentes caracteres ${this.cantidadDeCaracteresParaEmpezarBusqueda}?:${sonSuficientesCaracteres}`)
             if( !sonSuficientesCaracteres ){
               this.limpiarIntervalo()
               return;
             }
-            console.log(`Esta escribiendo?:${this.estaEscribiendo}`)
             if( !this.estaEscribiendo ) {
               if( !this.promesaPendiente ){
                 this.promesaPendiente = true;
@@ -124,7 +217,7 @@ export class BuscadorRapidoService {
                   // Los datos resultantes de la promesa, por 
                   // fuerza debe ser un tipo BuscadorRapido. 
                   // Los cargamos en la lista. 
-                  this.elementos =  <BuscadorRapido[]> datos;
+                  this.elementos =  <BuscadorRapido<T>[]> datos;
                   console.log(this.elementos )
                   // Ojo con este, no se me te a limpiar.
                   this.promesaPendiente = false;
@@ -136,7 +229,6 @@ export class BuscadorRapidoService {
                   this.limpiar();
                 })
               }else{
-                console.log(`Hay una promesa pendiente. Borramos el intervalo`)     
                 clearInterval(this.interval);
                 this.interval = null;
                 this.estaEscribiendo =false;
@@ -145,25 +237,17 @@ export class BuscadorRapidoService {
               // Ponemos a false para que si ya no escribio y 
               // se ejecuta el intervalo ejecute la promesa.
               this.estaEscribiendo = false;
-              console.log('Ponemos en false estaEscribiendo')
             }
           }, this.tiempoDeEspera)
 
-        } else {
-          console.log('Hay un intervalo esperando.')
         }
 
       }catch( err ){
         this.limpiar();
       }
-    // }
-
-    
-  
   }
 
   private limpiarIntervalo( ){
-    console.log('Limpiando intervalo')
     // Solo limpia lo necesario para un intervalo. No usar el otro limpiar 
     // pues borra todo. 
     this.mostrarCarga= false
@@ -188,11 +272,30 @@ export class BuscadorRapidoService {
     this.desde = 0;
   }
 
+  /**
+   *Limpia todo, absolutamente todo. 
+   *
+   * @memberof BuscadorRapidoService
+   */
   limpiarTodo(){
     // Este se utiliza cuando se inicia el servicio. 
     this.limpiarTodoMenosCallback();
+    this.callbackEliminar = null;
     this.callbackElementoSeleccionado = null;
   }
+
+  /**
+   * Elimina el elemento seleccionado y ejecuta el callbackEliminar.
+   *
+   * @memberof BuscadorRapidoService
+   */
+  limpiarSeleccionado (){
+    this.limpiarTodoMenosCallback()
+    if( this.callbackEliminar) this.callbackEliminar();
+
+  }
+
+  
 
   limpiarTodoMenosCallback(){
     // Este se utiliza cunado se guarda, no borra 
@@ -231,20 +334,37 @@ export class BuscadorRapidoService {
        
     
     this.desde = this.limite*this.numeroDePaginaActual;
-    console.log('siguiente ' + this.desde)
     this.buscarElementos(this.termino);
   }
 
-  seleccionarElemento(ele:BuscadorRapido){
+  /**
+   * Muestra como seleccionado el elemento que se le pasa como parametro. 
+   *
+   * @param {BuscadorRapido} ele
+   * @returns
+   * @memberof BuscadorRapidoService
+   * @deprecated addElementoSeleccionado que retorna en modo notacion. 
+   */
+  seleccionarElemento(ele:BuscadorRapido<T>){
+    // <!-- 
+    // =====================================
+    //  NO ELIMINAR ESTA FUNCION AUNQUE SEA DEPRECATED. 
+    // =====================================
+    // -->
+    // La seguimos usuando ded manera interna pero con una que 
+    // provee mas comodidad.
+    // <!-- 
+    // =====================================
+    //  END NO ELIMINAR ESTA FUNCION AUNQUE SEA DEPRECATED. 
+    // =====================================
+    // -->
+
+
     // Tiene que ser el primero para hacer comprobaciones
     // dentro de los  callback, De todos modos al final lo borramos. 
     this.elementoSeleccionado = ele;
-
-    console.log(` atenuar  existe? ${ele.atenuar}`);
-    console.log(`  callback existe? ${this.callbackAtenuar}`);
     if (ele.atenuar && this.callbackAtenuar) {
       if( !this.callbackAtenuar() ){
-        console.log(`despues de atenuar? ${'sipo'}`);
         // Si el callback retorna false entonces
         // no seleccionamos nada y dejamos todo como estaba.
         this.limpiarTodoMenosCallback();
@@ -262,7 +382,17 @@ export class BuscadorRapidoService {
     
   }
 
-
-
+  /**
+   *Anade un elemento seleccionado al buscador rapido. 
+   *
+   * @returns {BuscadorRapido<T>}
+   * @memberof BuscadorRapidoService
+   */
+  addElementoSeleccionado():BuscadorRapido<T> {
+  
+    // let a = new BuscadorRapido<T>();
+    // this.seleccionarElemento(a);
+    return this.elementoSeleccionado;
+  }
 
 }

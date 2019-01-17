@@ -5,10 +5,10 @@ import {
   ModeloCompletoService,
   ClienteService,
   UtilidadesService,
-  OrdenadorVisualService,
   ManejoDeMensajesService
 } from "../../services/service.index";
-import { FolioLinea, ColoresTenidos } from "../../models/folioLinea.models";
+import { FolioLinea } from "../../models/folioLinea.models";
+import { ColoresTenidos } from "../../models/ColoresTenidos";
 import { FolioService } from "../../services/folio/folio.service";
 import { Cliente } from "../../models/cliente.models";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -20,6 +20,17 @@ import { PreLoaderService } from "../../components/pre-loader/pre-loader.service
 import { ModeloCompletoPipe } from "../../pipes/modelo-completo.pipe";
 import { BuscadorRapido } from "src/app/components/buscador-rapido/buscador-rapido";
 import { ModeloCompletoAutorizacion } from '../../models/modeloCompletoAutorizacion.model';
+import { PaginadorService } from '../../components/paginador/paginador.service';
+import { ProcesoService } from '../../services/proceso/proceso.service';
+import { OrganizadorDragAndDropService } from "src/app/components/organizador-drag-and-drop/organizador-drag-and-drop.service";
+import { OrganizadorDragAndDrop } from '../../components/organizador-drag-and-drop/models/organizador-drag-and-drop.model';
+import { Proceso } from "src/app/models/proceso.model";
+import { Procesos } from "src/app/models/procesos.model";
+import { DndObject } from '../../components/organizador-drag-and-drop/models/dndObject.model';
+import { ParsedEvent } from "@angular/compiler";
+import { PROCESOS } from "src/app/config/procesos";
+import { DefaultsService } from "src/app/services/configDefualts/defaults.service";
+import { DefaultModelData } from "src/app/config/defaultModelData";
 
 @Component({
   selector: "app-registro-de-lineas",
@@ -55,19 +66,36 @@ export class RegistroDeLineasComponent implements OnInit {
 
   modificandoLinea: boolean = false;
 
+  
+
+
+
+
+  defaultModelData: DefaultModelData;
+
   constructor(
     public _modeloCompletoService: ModeloCompletoService,
     public _folioService: FolioService,
     public activatedRoute: ActivatedRoute,
     public _clienteService: ClienteService,
-    public _buscadorRapidoService: BuscadorRapidoService,
+    public _buscadorRapidoService: BuscadorRapidoService<ModeloCompleto>,
     public router: Router,
     public _util: UtilidadesService,
     public _preLoaderService: PreLoaderService,
-    public _ordenadorVisualService: OrdenadorVisualService,
+    // public _ordenadorVisualService: OrdenadorVisualService,
     private modeloCompletoPipe: ModeloCompletoPipe,
-    private _msjService: ManejoDeMensajesService
+    private _msjService: ManejoDeMensajesService,
+    public _paginadorService: PaginadorService,
+    public _procesoService: ProcesoService,
+
+    public _organizadorDragAndDropService: OrganizadorDragAndDropService<Proceso>,
+    public _defaultsService: DefaultsService,
+    
   ) {
+
+    this._defaultsService.cargarDefaults().subscribe( resp=> this.defaultModelData=resp );
+
+
     activatedRoute.params.subscribe(params => {
       // Si trae un id entonces lo buscamos.
       const id = params["id"];
@@ -76,18 +104,43 @@ export class RegistroDeLineasComponent implements OnInit {
       }
     });
 
+    this._paginadorService.callback = ()=>{this.cargarProcesosSeleccionablesEnLista();};
+
+    this.generarBuscadorRapido();
+
+
+
+  }
+
+  ngOnInit() {}
+
+
+  /**
+   * Genera las configuraciones necearias para el buscador rapido y se 
+   * puede llamar cada vez para limpiarlo. 
+   *
+   * @memberof RegistroDeLineasComponent
+   */
+  generarBuscadorRapido() {
+    
     this._buscadorRapidoService.limpiarTodo();
     this._buscadorRapidoService.nombreDeElemento = "modelo";
     this._buscadorRapidoService.promesa = () => {
-      return new Promise((resolve, reject) => {
-        // Primero nos aseguramos que los datos del client esten actualizados.
-        this._clienteService.findById(this.cliente._id).subscribe(resp => {
-          this.cliente = <Cliente>resp;
+
+      // Esta promesa se encarga de buscar los modelos completos
+      // que esten autorizados para el cliente. 
+      return new Promise((resolve) => {
+        // Primero nos aseguramos que los datos del cliente esten actualizados.
+        this._clienteService.buscarPorId(this.cliente._id).subscribe(resp => {
+          this.cliente = resp;
+
           // Buscamos el modelo.
           this._modeloCompletoService
             .buscar(this._buscadorRapidoService.termino)
             .subscribe((resp: ModeloCompleto[]) => {
-              const d: BuscadorRapido[] = [];
+              
+              const d: BuscadorRapido<ModeloCompleto>[] = [];
+              // Buscamos si hay alguna coincidencia para resaltarla. 
               resp.forEach(mc => {
                 const mca = <ModeloCompletoAutorizacion>(
                   this.cliente.modelosCompletosAutorizados.find(x => {
@@ -95,7 +148,7 @@ export class RegistroDeLineasComponent implements OnInit {
                   })
                 );
 
-                const br = new BuscadorRapido();
+                const br = new BuscadorRapido<ModeloCompleto>();
                 br.nombre = this.modeloCompletoPipe.transform(mc);
                 br.objeto = mc;
 
@@ -119,6 +172,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
                 d.push(br);
               });
+
               this._buscadorRapidoService.totalDeElementosBD = this._modeloCompletoService.total;
               resolve(d);
             });
@@ -129,8 +183,8 @@ export class RegistroDeLineasComponent implements OnInit {
       this.folioLinea.modeloCompleto = <ModeloCompleto>(
         this._buscadorRapidoService.elementoSeleccionado.objeto
       );
-      this._ordenadorVisualService.modeloCompleto = this.folioLinea.modeloCompleto;
-      this._ordenadorVisualService.generar();
+      
+      this.generarOrganizador( this.folioLinea.modeloCompleto );
     };
 
     this._buscadorRapidoService.callbackAtenuar = () => {
@@ -164,10 +218,190 @@ export class RegistroDeLineasComponent implements OnInit {
         
       }
     };
+
+    this._buscadorRapidoService.callbackEliminar = ()=>{
+      this.folioLinea.modeloCompleto = null;
+    };
   }
 
-  ngOnInit() {}
+  /**
+   *Genera los datos para el organizador.
+   *
+   * @param {ModeloCompleto} mc
+   * @memberof RegistroDeLineasComponent
+   */
+  generarOrganizador( mc: ModeloCompleto, procesos: Procesos[] = null ){
 
+    this._organizadorDragAndDropService.limpiar();
+    // Obtenemos todos los procesos. 
+    this.cargarProcesosSeleccionablesEnLista();
+    // Cargamos los prcesos propios del modelo.
+
+    console.log('hay modeloCompleto en generarOrganizados?' + !! mc);
+    this.cargarListaOrdenable(mc, procesos);
+
+    // Cargamos los elementos ordenables para modificar.
+    this.cargarElementosExistentesOrdenables(procesos); 
+
+  }
+
+  /**
+   *Carga los elementos que son . Corresponde a los procesos de 
+   la linea. 
+   *
+   * @param {Procesos[]} procesos
+   * @memberof RegistroDeLineasComponent
+   */
+  cargarElementosExistentesOrdenables(procesos: Procesos[]){
+    
+  }
+
+  /**
+   *Carga los procesos de la familia padres e hijos fijos si no esta especificado que es para almacen.
+   Si se especifica que es para almacen entonces carga los procesos especiales como las areas que se van a trabajar
+   *
+   * @param {ModeloCompleto} mc El modelo completo. 
+   * @param {procesosDelPedido[]} procesos Los procesos especiales del folio. Se utizan para cargar
+   * de dos maneras. Si no es para almacen se agregan a los exitentes de la familia de procesos y 
+   * si son para almacen se crea una nueva area y se intercambia para solo mostrar los procesos de almacen. 
+   * @param {boolean} [esAlmacen=false]
+   * @memberof RegistroDeLineasComponent
+   * @param {Procesos} procesos Los procesos de la linea que hemos agregado para modificarlos. 
+   */
+  cargarListaOrdenable(mc: ModeloCompleto, procesosDelPedido:Procesos[], esAlmacen:boolean = false){
+    // Itineramos sobre la familia
+    let i = 0;
+   
+    // Agregamos todos los procesos padre.
+    let dndO: DndObject<Proceso>;
+    
+    console.log( 'HAY MODELO COMPLETO? ' + !!mc)
+    mc.familiaDeProcesos.procesos.forEach(x=>{
+
+      dndO = this._organizadorDragAndDropService
+        .nuevaArea(x.proceso._id)
+          .setPadre()
+            .setLeyenda(x.proceso.nombre)
+            .setLeyendaOptativa(x.proceso.departamento.nombre)
+            .setObjeto(x.proceso)
+            .setOrden(i.toString());
+
+      i++;
+    });
+
+    // Agregamos los procesos hijos FIJOS. 
+
+    mc.procesosEspeciales.forEach((x:Procesos)=>{
+      // Obtenemos el id del padre para agregarlo. 
+      let idPadre = <string><any> x.procesoPadre;
+      // Buscamos el padre. 
+      
+      let dndPadre =  this._organizadorDragAndDropService
+      .obtenerObjetoPadre(idPadre);
+
+      // Agregamos el hijo fijo. 
+      dndPadre.hijos
+        .addFijo()
+          .setObjeto(x.proceso)
+          .setOrden(x.orden.toString())
+          .setEliminable(false)
+          .setLeyenda(x.proceso.nombre)
+          .setLeyendaOptativa(x.proceso.departamento.nombre);
+
+    });
+
+    if( esAlmacen ){
+      console.log('es de almacen')
+      // Si es de almacen tenemos que cargar los datos en una nueva area
+      // para que no se muestren los procesos de la familia de procesos. 
+      this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
+
+
+        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION ).subscribe(
+          proceso=>{
+            let padre:Proceso = proceso;
+
+            let dndOPadre = this._organizadorDragAndDropService
+              .nuevaArea(padre._id)
+                .setPadre()
+                  .setEliminable(false)
+                  .setLeyenda(padre.nombre)
+                  .setLeyendaOptativa(padre.nombre)
+                  .setObjeto(padre)
+                  // .setOrden(padre.orden.toString());
+                  .setOrden('0');
+      
+            // Agregamos los hijos. Comenzamos de uno por que el padre es el 0.
+            for (let i = 0; i < procesosDelPedido.length; i++) {
+              const proc = procesosDelPedido[i];
+              dndOPadre.dnd
+                .hijos
+                  .addOrdenable()
+                    .setEliminable( true )
+                    .setLeyenda( proc.proceso.nombre)
+                    .setLeyendaOptativa( proc.proceso.departamento.nombre )
+                    .setOrden(proc.orden? proc.orden.toString(): '0' )
+                    .setObjeto( proc.proceso );
+            }
+      
+            // Ordenamos todos los datos por el campo orden. 
+            this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
+
+          }
+
+        );
+        
+
+    }else{
+      // Como no es de almacen los pedidos propios de este folio
+      // se tiene que agregar a sus padres y despues ordenarse.
+      // Recorremos todos los especiales. 
+      if( procesosDelPedido ){
+        for (let i = 0; i < procesosDelPedido.length; i++) {
+          const proc = procesosDelPedido[i];
+          // Buscamos el padre. 
+          this._organizadorDragAndDropService
+            .obtenerObjetoPadre(proc.procesoPadre.toString())
+              .hijos
+                .addOrdenable()
+                  .setEliminable( true )
+                  .setLeyenda( proc.proceso.nombre )
+                  .setLeyendaOptativa( proc.proceso.departamento.nombre )
+                  .setObjeto( proc.proceso )
+                  .setOrden( proc.orden.toString());
+                  // Ordenamos todos los datos por el campo orden. 
+                  this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
+        }
+      }
+    }
+  }
+
+  /**
+   *Carga los procesos en la lista para agregar al ordenador.
+   *
+   * @memberof RegistroDeLineasComponent
+   */
+  cargarProcesosSeleccionablesEnLista(){
+    
+    this._procesoService.todo().subscribe( todo=>{
+      this._organizadorDragAndDropService.limpiarListaDeElementos();
+      todo.forEach(x=>{
+        this._organizadorDragAndDropService
+          .addElemento()
+            .setEliminable(true)
+            .setLeyenda(x.nombre)
+            .setLeyendaOptativa(x.departamento.nombre)
+            .setObjeto(x);
+      });
+    });
+  }
+
+  /**
+   *Carga los datos del folio. 
+   *
+   * @param {string} id El id del folio que se va a cargar. 
+   * @memberof RegistroDeLineasComponent
+   */
   cargarDatosDeFolio(id: string) {
     this._folioService.cargarFolio(id).subscribe((folio: any) => {
       this.folio = folio;
@@ -178,6 +412,11 @@ export class RegistroDeLineasComponent implements OnInit {
     });
   }
 
+  /**
+   *Guarda los cambios echos a la linea o una nueva linea. 
+   *
+   * @memberof RegistroDeLineasComponent
+   */
   guardar() {
     // Comprobar si hay un modelo seleccioando.
     if (!this.folioLinea.modeloCompleto) {
@@ -214,31 +453,99 @@ export class RegistroDeLineasComponent implements OnInit {
         this.folioLinea.laserCliente = this.cliente.laserados.find(
           x => x._id === this.laserSeleccionado
         );
-        console.log(this.folioLinea.laserCliente);
+
+        if( !this.comprobarProcesoLaserSeleccionado() ){
+          this.agregarProcesoLaseradoFaltante();
+          return;
+        }
+
       } else {
         swal(
           "Marca laser no seleccionada.",
           // TODO: Cambiar a: "El pedido esta marcado para laserarse..."
-          "El pedido esta marcado como laserado pero no seleccionaste una marca laser .",
+          "El pedido esta marcado para laserarse pero no seleccionaste una marca.",
           "error"
         );
         return;
       }
     } else {
       this.folioLinea.laserCliente = null;
-    }
+    } 
 
-    // Cargamos los procesos especiales en el folio si es que hay.
-    this.folioLinea.procesos = this._ordenadorVisualService.obtenerProcesos();
+
+    // Contenedor para los procesos que seleccionemos. 
+    let procesosArr: Procesos[] = [];
+
+    // // Cargamos los procesos especiales en el folio si es que hay.
+    this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach(x => {
+      let procesos: Procesos = new Procesos();
+      procesos.orden = Number(x.orden);
+      procesos.proceso = x.objeto;
+      console.log('x.objetoPadre')
+      console.log(x.objetoPadre)
+      procesos.procesoPadre = x.objetoPadre;
+      procesosArr.push(procesos);
+
+    });
+
+    this.folioLinea.procesos = procesosArr;
+    console.log('cantidad de procesos: ' + this.folioLinea.procesos.length)
+    
 
     // Lo guardamos.
     this._folioService
       .guardarLinea(this.folio._id, this.folioLinea)
-      .subscribe(folioLinea1 => {
-        this.cargarDatosDeFolio(this.folio._id);
+      .subscribe(() => {
+        // cancelarModificacion limpia todo para un nuevo pedido..
         this.cancelarModificacion();
-        this._buscadorRapidoService.limpiarTodoMenosCallback();
+        // Cargamos los datos del folio para que aparezcan actualizados. 
+        this.cargarDatosDeFolio(this.folio._id);
       });
+  }
+
+  /**
+   *Emite una alerta de que el pedido es laserado pero no se ha seleccionado el proceso
+   y despues da opcion a agregarlo a la lista ordenable. 
+   *
+   * @memberof RegistroDeLineasComponent
+   */
+  agregarProcesoLaseradoFaltante(){
+    let msj = `El pedido va laserado pero 
+    no has seleccionado el proceso ${PROCESOS.LASER._n}. Quieres agregarlo al modelo? `
+    this._msjService.confirmarAccion(msj, ()=>{
+      // Cargamos el proceso laser en el ultimo
+
+      this._procesoService.buscarPorId( this.defaultModelData.PROCESOS.LASER ).subscribe( 
+          resp=>{
+            this._organizadorDragAndDropService
+              .addHijoAlFinal( )
+                .setEliminable(true)
+                .setLeyenda(resp.nombre)
+                .setLeyendaOptativa(resp.departamento.nombre)
+                .setObjeto(resp);
+            this._organizadorDragAndDropService.actualizarPropiedadOrden();
+            this._msjService.informar('Se anadio el proceso correctamente.');
+
+          }
+      );
+     
+    }, 'No puedes continuar si no defines el proceso de laserado o deseleccionas la opcion.');
+
+  }
+
+  /**
+   *Comprueba si el proceso de laserado esta seleccionado tomando su id desde
+   el defaultsService. 
+   *
+   * @returns {boolean}
+   * @memberof RegistroDeLineasComponent
+   */
+  comprobarProcesoLaserSeleccionado( ): boolean{
+    console.log(this.defaultModelData)   
+     console.log('entro a comprobarProcesoLaserSeleccionado')
+    return this._organizadorDragAndDropService
+      .existeObjectoPorCampo(this.defaultModelData.PROCESOS.LASER);
+
   }
 
   seleccionarLaserado(id: string) {
@@ -276,20 +583,65 @@ export class RegistroDeLineasComponent implements OnInit {
     });
   }
 
+  /**
+   *Carga los datos de la linea para para ser modificados. 
+   *
+   * @param {FolioLinea} linea
+   * @memberof RegistroDeLineasComponent
+   */
   modificar(linea: FolioLinea) {
-    // this._buscadorRapidoService.reiniciar();
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 0');
+    alert('modificar! 0');
+    this.generarBuscadorRapido();
+
+    // Limpiamos el termino de busqueda. 
     this.termino = "";
 
     this.folioLinea = linea;
+
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 1');
+    alert('modificar! 1');
     if (this.folioLinea.laserCliente) {
       this.laserSeleccionado = this.folioLinea.laserCliente._id;
       this.laserarPedido = true;
     }
     this.modificandoLinea = true;
-    // Seleccionamos el modelo completo en el buscador rápido.
-    // this._buscadorRapidoService.seleccionarElemento(null, this.nombrarModelo(linea.modeloCompleto), linea.modeloCompleto);
-    // Cargamos los modelos completos en el servicio de selección de procesos.
-    this._ordenadorVisualService.cargarParaModifcarLinea(linea);
+
+    // Cargamos la lista seleccionable del organizador. 
+    this.cargarProcesosSeleccionablesEnLista();
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 2');
+    alert('modificar! 2');
+    
+    
+    // Cargamos los datos organizados. 
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 3');
+    alert('modificar! 3');
+    this.cargarListaOrdenable(this.folioLinea.modeloCompleto, this.folioLinea.procesos, this.folioLinea.almacen);
+    // Seteamos el buscador rapido con un resultado pa que se vea gonito.
+
+    
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 4');
+    alert('modificar! 4');
+    
+    let a:BuscadorRapido<ModeloCompleto> = new BuscadorRapido();
+    a.setNombre(this.modeloCompletoPipe.transform(linea.modeloCompleto))
+    a.setObjeto(linea.modeloCompleto);
+  
+
+    this._buscadorRapidoService
+      .seleccionarElemento(a)
+
+    console.log(linea.modeloCompleto.familiaDeProcesos);
+    console.log('modificar! 5');   
+    alert('modificar! 5');   
+        
+
+    
   }
 
   eliminarLinea(linea: FolioLinea) {
@@ -329,9 +681,9 @@ export class RegistroDeLineasComponent implements OnInit {
     this.laserarPedido = false;
     this.modificandoLinea = false;
     this.termino = "";
-    // this._buscadorRapidoService.reiniciar();
     this.cargarDatosDeFolio(this.folio._id);
-    this._ordenadorVisualService.limpiar();
+    this.generarBuscadorRapido();
+
   }
 
   agregarColorTenido() {
@@ -360,12 +712,65 @@ export class RegistroDeLineasComponent implements OnInit {
   trackByFn(index: any) {
     return index;
   }
-
   agregarPedido() {
     this.folioLinea = new FolioLinea();
 
     this.folioLinea.nivelDeUrgencia = this.nivelDeUrgencia[1].nivel;
     this.folioLinea.almacen = false;
     // this._buscadorRapidoService.reiniciar();
+  }
+
+  /**
+   * Realiza las modificaciones en las line para que
+   * solo se admintan procesos para productoTerminado.
+   *
+   * @memberof RegistroDeLineasComponent
+   */
+  soloParaProductoTerminado( ){
+    console.log('soloParaProductoTermiando: ' +this.folioLinea.almacen )
+    if( !this.folioLinea.almacen ){
+
+
+      // Se surte desde almacen.
+      this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
+      // Si esta vacio creamos un padre que sea productoTerminado.
+      if( !this._organizadorDragAndDropService.tieneAreas() ){
+        
+        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION).subscribe( resp=>{
+          // Creamos una nueva de entrega de ordenes a produccion. 
+          this._organizadorDragAndDropService
+            .nuevaArea(resp._id)
+              .setPadre()
+                .setEliminable(false)
+                .setOrden('0')
+                .setLeyenda(resp.nombre)
+                .setObjeto(resp)
+                .setLeyendaOptativa(resp.departamento.nombre);
+                this._organizadorDragAndDropService.actualizarPropiedadOrden();
+
+          if( this.laserarPedido ){
+            // Si el pedido se va a laserar agregamos el proceso.
+            
+            this._procesoService.buscarPorId( this.defaultModelData.PROCESOS.LASER).subscribe( resp=>{
+              this._organizadorDragAndDropService
+                .addHijoAlFinal()
+                  .setEliminable(true)
+                  .setLeyenda(resp.nombre)
+                  .setLeyendaOptativa(resp.departamento.nombre)
+                  .setObjeto(resp);
+                  this._organizadorDragAndDropService.actualizarPropiedadOrden();
+                  
+                });
+                
+            }
+
+        });
+
+        
+      }
+    } else { 
+      this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
+    }
+    
   }
 }

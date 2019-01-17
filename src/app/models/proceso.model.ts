@@ -9,11 +9,12 @@ export class Proceso {
       public _id?: string,
       public departamento?: Departamento,
       public nombre?: string,
-      public pasos?: Paso[],
+      public pasos?: Paso[], //LO TENEMOS QUE ELIMINAR
       public observaciones?: string,
       public especial?: boolean,
       public gastos: GastoConsumo[] = [],
       public maquinas: Maquina[] = [],
+      public requiereProduccion: boolean = true,
       // SOLO PARA MOSTRAR INFO.
       public ver: boolean = false,
       public editado: boolean = false,

@@ -35,6 +35,7 @@ import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/histo
 import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component';
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
 import { BuratoComponent } from './departamentos/burato/burato.component';
+import { LaserComponent } from './departamentos/laser/laser.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -209,6 +210,17 @@ const pagesRoutes: Routes = [
         {
             path: 'produccion/transformacion', 
             component: TransformacionComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de órdenes',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'produccion/laser', 
+            component: LaserComponent,
             canActivate: [PermisosGuard], 
             data: {
                 titulo: 'Registro de órdenes',

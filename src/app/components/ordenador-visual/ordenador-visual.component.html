@@ -1,9 +1,9 @@
 <ng-container *ngIf="_s.generarComponente">
-    <div class="animated fadeIn delay-2s">
+    <div class="animated fadeIn ">
 
         <hr>
         <a href="#collapsar" data-toggle="collapse" class='btn btn-link text-inverse' (click)="procesosOcultos = !procesosOcultos">
-            <h1><i class="fa " [ngClass]="{'fa-chevron-up': procesosOcultos , 'fa-chevron-down': !procesosOcultos}"></i> Agregar procesos:</h1>
+            <h1><i class="fa " [ngClass]="{'fa-chevron-right': procesosOcultos , 'fa-chevron-down': !procesosOcultos}"></i> Agregar procesos:</h1>
         </a>
         <div class="collapse " id='collapsar'>
             <div class="row mt-5 mb-5">
@@ -65,21 +65,25 @@
                     </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-6">
 
                     <h3>Disponibles</h3>
                     <hr>
+                    <app-paginador> </app-paginador>
                     <div class="list-group w-100">
                         <ng-container *ngFor="let proceso of _s.procesosNormales, let i = index;">
                             <a class="list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <span>
-                                              <strong class="text-inverse"> {{proceso.nombre}} </strong>
-                                          </span>
-                                    <a (click)="_s.agregarProceso( proceso )" class="btn text-white btn-success btn-sm"><i class="fa fa-plus"></i></a>
+                                        <strong class="text-inverse"> {{proceso.nombre}} </strong>
+                                    </span>
+                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="!_s.soloParaProductoTerminado" class="btn text-white btn-success btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="_s.soloParaProductoTerminado && !proceso.requiereProduccion" class="btn text-white btn-success btn-sm"><i class="fa fa-plus"></i></a>
                                 </div>
                             </a>
                         </ng-container>
+                        <br>
+                        <app-paginador> </app-paginador>
                     </div>
                     <br>
                 </div>

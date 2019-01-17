@@ -135,7 +135,6 @@ export class RegistroDeFoliosComponent implements OnInit {
     // Validamos que haya un cliente seleccionado.
 
     this.folio.cliente =<Cliente> this._buscadorRapidoService.elementoSeleccionado.objeto;
- console.log(` El cliente ${JSON.stringify(this._buscadorRapidoService.elementoSeleccionado.objeto)}`);
 
     if ( !this.folio.cliente   ) {
       swal('No has seleccionado un cliente', 'Es necesario que busques y selecciones un cliente.', 'error');

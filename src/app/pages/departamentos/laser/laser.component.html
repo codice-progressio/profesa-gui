@@ -1,0 +1,33 @@
+<app-qr-scanner> </app-qr-scanner>
+
+<!-- <div *ngIf="_qrScannerService.lecturaCorrecta" class="row"> -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h1>Metalizado</h1>
+
+                <form (ngSubmit)="onSubmit(laserForm.value, laserForm.valid, $event)" [formGroup]="laserForm">
+
+                    <div class="row">
+                        <div class="form-group col-auto">
+                            <input formControlName="cantidadDeBotones" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidadDeBotones_FB), 'is-valid':_validacionesService.valid(cantidadDeBotones_FB)}" type="number" class="form-control form-control-lg" name="cantidadDeBotones"
+                                id="cantidadDeBotones" aria-describedby="cantidadDeBotonesId" placeholder="Peso de 10 botones">
+                            <small id="cantidadDeBotonesId" class="form-text text-muted">Ingresa la cantidad de botones</small>
+                            <app-validacion-inputs [campo]='cantidadDeBotones_FB'></app-validacion-inputs>
+                        </div>
+
+                    </div>
+
+
+                    <button [disabled]='laserForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lista-de-ordenes></app-lista-de-ordenes>

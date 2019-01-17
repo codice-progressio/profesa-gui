@@ -105,7 +105,7 @@ export class ListaDeOrdenesService {
   }
 
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -118,9 +118,23 @@ export class ListaDeOrdenesService {
       
     // }
   }
+  /**
+     * Extrae las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
+  laser() {
+      // if ( this.depto ) {
+      const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.LASER._n}`);
+      this.cargarOrdenes(DEPARTAMENTOS.LASER._n, this.opciones,a);
+      this.depto_vm = DEPARTAMENTOS.LASER._vm
+      
+    // }
+  }
   
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -133,7 +147,7 @@ export class ListaDeOrdenesService {
   }
   
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -145,7 +159,7 @@ export class ListaDeOrdenesService {
   }
   
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -157,7 +171,7 @@ export class ListaDeOrdenesService {
   }
   
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -168,7 +182,7 @@ export class ListaDeOrdenesService {
     this.depto_vm = DEPARTAMENTOS.METALIZADO._vm
   }
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -179,7 +193,7 @@ export class ListaDeOrdenesService {
     this.depto_vm = DEPARTAMENTOS.BURATO._vm
   }
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService
@@ -191,7 +205,7 @@ export class ListaDeOrdenesService {
   }
   
   /**
-     * Extra las ordenes correspondientes a este departamento.
+     * Extrae las ordenes correspondientes a este departamento.
      *
      * @returns {*}
      * @memberof ListaDeOrdenesService

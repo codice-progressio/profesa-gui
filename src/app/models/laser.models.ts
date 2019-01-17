@@ -4,6 +4,7 @@ export class Laser extends OperacionesEnGUI {
     constructor(
         public _id?: string,
         public laser?: string,
+        public imagenes?: string[]
     ) {
         super();
     }

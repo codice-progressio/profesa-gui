@@ -44,7 +44,7 @@ private NOMBRE_DEPTO: string = DEPARTAMENTOS.PRODUCTO_TERMINADO._n;
   }
 
   cargarOrdenesDeDepartamento() {
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+    // this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
     this._listaDeOrdenesService.productoTerminado();
   
   }

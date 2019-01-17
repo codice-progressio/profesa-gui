@@ -62,7 +62,7 @@ export class TransformacionComponent implements OnInit {
   }
 
   cargarOrdenesDeDepartamento() {
-    this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
+    // this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
     this._listaDeOrdenesService.transformacion();
 
   }

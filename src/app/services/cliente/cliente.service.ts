@@ -3,51 +3,36 @@ import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import { map, catchError } from 'rxjs/operators';
 import { Laser } from '../../models/laser.models';
-import swal from 'sweetalert2';
 import { throwError } from '../../../../node_modules/rxjs';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 import { Cliente } from 'src/app/models/cliente.models';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { Usuario } from '../../models/usuario.model';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { CRUD } from '../crud';
+
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { UtilidadesService } from '../utilidades/utilidades.service';
 import { UsuarioService } from '../usuario/usuario.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
+export class ClienteService extends CRUD<Cliente>{
   
-  findById(_id: string): any {
-    const a: number = this._preLoaderService.loading('Cargando cliente.');
-    const url = URL_SERVICIOS + `/cliente/id/${_id}`;
-    console.log(` Estemos findById ${_id}`);
-    return this.http.get(url).pipe(
-      map( (resp: any) => {
-        console.log(` Repuesta ${resp}`);
-        this._msjService.ok_(resp,null, a);
-        return resp.cliente;
-      }),
-      catchError (err => {
-        this._msjService.err(err);
-        return throwError(err);
-      })
-    );
-  }
-  
-
   constructor(
     public http: HttpClient,
-    private _msjService: ManejoDeMensajesService,
+    public _msjService: ManejoDeMensajesService,
+    public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
+    public _paginadorService: PaginadorService,
     public _usuarioService: UsuarioService
-  ) { }
-
-
-  buscar( termino: string ) {
-    const url = URL_SERVICIOS + `/busqueda/coleccion/clientes/${termino}`;
-    return this.http.get( url ).pipe( map( (resp: any) => resp.clientes)
-    );
+  ) {
+    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    this.base =  URL_SERVICIOS + `/cliente`;
+    this.nombreDeDatos.plural = 'clientes';
+    this.nombreDeDatos.singular = 'cliente';
+    this.urlBusqueda = '/buscar';
   }
 
   guardarNuevaMarcaLaser ( id: string, marca: string) {
@@ -68,51 +53,6 @@ export class ClienteService {
         
         this._msjService.err(err);
         return throwError(err);
-      })
-    );
-  }
-
-  obtenerTodos( ){
-    const a: number = this._preLoaderService.loading('Cargando clientes.');
-    const url = `${URL_SERVICIOS}/cliente`;
-    return this.http.get(url).pipe(
-      map((resp:any) => {
-        this._msjService.ok_(resp,null, a);
-        return resp.clientes;
-      }),
-      catchError( err => {
-        this._msjService.err(err);
-        return throwError (err );
-      })
-    );
-  }
-
-  guardaNuevo( cliente: Cliente) {
-    const a: number = this._preLoaderService.loading('Guardando nuevo cliente.');
-    const url =`${URL_SERVICIOS}/cliente`;
-    return this.http.post(url, cliente).pipe(
-      map((resp:any) => {
-        this._msjService.ok_(resp,null, a);
-        return resp.clientes;
-      }),
-      catchError( err => {
-        this._msjService.err(err);
-        return throwError (err );
-      })
-    );
-  }
-  modificar( cliente: Cliente) {
-    const a: number = this._preLoaderService.loading('Guardando modificaciones a cliente.');
-    
-    const url =`${URL_SERVICIOS}/cliente/${cliente._id}`;
-    return this.http.put(url, cliente).pipe(
-      map((resp:any) => {
-        this._msjService.ok_(resp,null, a);
-        return resp.clientes;
-      }),
-      catchError( err => {
-        this._msjService.err(err);
-        return throwError (err );
       })
     );
   }

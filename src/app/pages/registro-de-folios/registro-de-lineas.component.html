@@ -17,7 +17,7 @@
                         <button (click)="agregarPedido()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Agregar pedido a este folio.</button>
                     </span>
                 </div>
-
+                asdfasdfasdfasdf
                 <h1 class="display-1" *ngIf="0 >= folio?.folioLineas.length">Este folio <strong> no tiene</strong> pedidos.</h1>
 
                 <div class="table-resp;onsive" *ngIf="folio?.folioLineas.length >0">
@@ -35,6 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr *ngFor="let linea of folio?.folioLineas" [ngClass]="{'animated zoomOut': linea.eliminar}">
                                 <td class="align-middle">
                                     {{linea.modeloCompleto | modeloCompleto}}
@@ -182,13 +183,13 @@ Registro de lineas
 <div class="row" *ngIf="folioLinea">
     <div class="col-12">
         <div class="card">
-            <div class="card-body" [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}">
-                <h1 [ngClass]="{'bg-inverse text-white animated pulse': modificandoLinea}" class="d-flex justify-content-between align-items-center">
+            <div class="card-body" [ngClass]="{'animated pulse': modificandoLinea}">
+                <h1 class="d-flex justify-content-between align-items-center animated fadeInDown">
                     <span *ngIf="!modificandoLinea">Nuevo pedido </span>
-                    <span *ngIf="modificandoLinea" [ngClass]="{'text-white animated pulse': modificandoLinea}">Modificar pedido. </span>
+                    <span *ngIf="modificandoLinea">Modificar pedido. </span>
                     <span>
 
-                         Folio <strong>{{folio.numeroDeFolio}}</strong> Cliente <strong>{{cliente.nombre}}</strong>
+                         Folio <strong>{{folio.numeroDeFolio}}</strong> Cliente <strong>{{cliente?.nombre}}</strong>
                     </span>
                 </h1>
 
@@ -205,118 +206,133 @@ Registro de lineas
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-6 col-lg-3">
-                            <div class="form-group">
+                    <ng-container *ngIf="folioLinea.modeloCompleto">
 
-                                <input [(ngModel)]="folioLinea.cantidad" name="cantidad" class="form-control" placeholder="Cantidad de pedido" type="text" mask="separator">
+                        <div class="row">
+                            <div class="col-6 col-lg-3">
+                                <div class="form-group">
+
+                                    <input [(ngModel)]="folioLinea.cantidad" name="cantidad" class="form-control" placeholder="Cantidad de pedido" type="text" mask="separator">
+                                    <span class="help-block text-muted">
+                                        <small>Cantidad.</small>
+                                    </span>
+
+                                </div>
+
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <div class="form-check " *ngFor="let nivel of nivelDeUrgencia">
+                                    <input [(ngModel)]="folioLinea.nivelDeUrgencia" name="nivelDeUrgencia" [value]="nivel.nivel" [class]="'form-check-input ' + nivel.class" type="radio" [id]="'exampleRadios1'+nivel.nivel">
+                                    <label class="form-check-label" [for]="'exampleRadios1'+nivel.nivel">
+                                        {{nivel.nivel}}
+                                    </label>
+                                </div>
+
+
                                 <span class="help-block text-muted">
-                                    <small>Cantidad.</small>
+                                    <small>Prioridad</small>
                                 </span>
 
                             </div>
+                            <div class="col-12 col-lg-6">
 
-                        </div>
-                        <div class="col-6 col-lg-3">
-                            <div class="form-check " *ngFor="let nivel of nivelDeUrgencia">
-                                <input [(ngModel)]="folioLinea.nivelDeUrgencia" name="nivelDeUrgencia" [value]="nivel.nivel" [class]="'form-check-input ' + nivel.class" type="radio" [id]="'exampleRadios1'+nivel.nivel">
-                                <label class="form-check-label" [for]="'exampleRadios1'+nivel.nivel">
-                                    {{nivel.nivel}}
-                                </label>
-                            </div>
-
-
-                            <span class="help-block text-muted">
-                                <small>Prioridad</small>
-                            </span>
-
-                        </div>
-                        <div class="col-12 col-lg-6">
-
-                            <div class="form-check">
-                                <input name="almacen" class="form-check-input" type="checkbox" id="laserado" [(ngModel)]="laserarPedido" [checked]="laserarPedido">
-                                <label class="form-check-label" for="laserado">
-                                    Laserado 
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <select [disabled]="!laserarPedido" [ngModel]="laserSeleccionado" (ngModelChange)="seleccionarLaserado( $event );" name="folioLinea.laserCliente" class="form-control">
-                                    <option value="" disabled selected>Seleccionar marca laser</option>
-                                    <option [ngValue]="laser._id"  *ngFor='let laser of cliente?.laserados'   >{{laser.laser}}</option>
-                                </select>
-                                <span class="help-block text-muted">
-                                    <small  >Laser cliente. </small>
-                                </span>
-                            </div>
-
-                            <div class="form-group">
-                                <a (click)="nuevaMarcaLaser()" class="btn btn-outline-dark">
-                                    <i class="fa fa-plus"> </i> Añadir nuevo marca laser al cliente
-                                </a>
-                            </div>
-
-                            <div class="form-check">
-                                <input [(ngModel)]="folioLinea.almacen" [checked]="folioLinea.almacen" name="folioLinea.almacen" class="form-check-input" type="checkbox" id="surtirAlmacen">
-                                <label class="form-check-label" for="surtirAlmacen">
-                                          Surtir desde almacen. 
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row m t-3">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <textarea [(ngModel)]="folioLinea.observaciones" name="folioLinea.observaciones" class="form-control" type="text-box" id="observaciones"></textarea>
-                                <span class="help-block text-muted">
-                                                                <small>Observaciones.</small>
-                                                            </span>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-
-                    <app-ordenador-visual></app-ordenador-visual>
-
-
-
-                    <ng-container *ngIf="folioLinea.cantidad > 0">
-                        <h3>Colores para teñido <a (click)="agregarColorTenido()" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></a></h3>
-                        <ng-container *ngIf="folioLinea.coloresTenidos.length > 0">
-
-                            <div *ngFor="let item of folioLinea.coloresTenidos; let i =index; trackBy:trackByFn" class="col-lg-12 mb-1">
-                                <div class="input-group ">
-                                    <input [name]="'color'+i" [(ngModel)]="folioLinea.coloresTenidos[i].color" type="text" class="form-control" placeholder="Color de teñido">
-                                    <input (input)="calcularSumaTenido()" [name]="'cantidad'+i" [(ngModel)]="folioLinea.coloresTenidos[i].cantidad" type="text" mask="separator" class="form-control" placeholder="Cantidad">
-                                    <span class="input-group-btn">
-                                        <button (click)="eliminarColorTenido(i)" class="btn btn-outline-danger" type="button"><i class="fa fa-times"></i></button>
-                                        <button *ngIf="(i+1) === folioLinea.coloresTenidos.length " (click)="agregarColorTenido()" class="btn btn-outline-success" type="button"><i class="fa fa-plus"></i></button>
+                                <div class="form-check">
+                                    <input name="almacen" class="form-check-input" type="checkbox" id="laserado" [(ngModel)]="laserarPedido" [checked]="laserarPedido">
+                                    <label class="form-check-label" for="laserado">
+                                        Laserado 
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <select [disabled]="!laserarPedido" [ngModel]="laserSeleccionado" (ngModelChange)="seleccionarLaserado( $event );" name="folioLinea.laserCliente" class="form-control">
+                                        <option value="" disabled selected>Seleccionar marca laser</option>
+                                        <option [ngValue]="laser._id"  *ngFor='let laser of cliente?.laserados'   >{{laser.laser}}</option>
+                                    </select>
+                                    <span class="help-block text-muted">
+                                        <small  >Laser cliente. </small>
                                     </span>
                                 </div>
+
+                                <div class="form-group">
+                                    <a (click)="nuevaMarcaLaser()" class="btn btn-outline-dark">
+                                        <i class="fa fa-plus"> </i> Añadir nuevo marca laser al cliente
+                                    </a>
+                                </div>
+
+                                <div class="form-check">
+                                    <input (click)="soloParaProductoTerminado()" [(ngModel)]="folioLinea.almacen" [checked]="folioLinea.almacen" name="folioLinea.almacen" class="form-check-input" type="checkbox" id="surtirAlmacen">
+                                    <label class="form-check-label" for="surtirAlmacen">
+                                              Surtir desde almacen. 
+                                    </label>
+                                </div>
                             </div>
-                        </ng-container>
-                        <div *ngIf="sumaTenidoSuperaCantidad" class="alert alert-danger mt-2" role="alert">
-                            <i class="fa fa-exclamation-circle infinite animated fadeIn"></i> La cantidad a teñir supera la cantidad del pedido.
                         </div>
 
+                        <div class="row m t-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea [(ngModel)]="folioLinea.observaciones" name="folioLinea.observaciones" class="form-control" type="text-box" id="observaciones"></textarea>
+                                    <span class="help-block text-muted">
+                                                                    <small>Observaciones.</small>
+                                                                </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h3>Procesos agregados</h3>
+                                <hr>
+                                <app-organizador-drag-and-drop [listaOrdenable]='true'></app-organizador-drag-and-drop>
+                            </div>
+
+                            <div class="col-6">
+                                <h3>Procesos disponibles</h3>
+                                <hr>
+                                <app-paginador></app-paginador>
+                                <app-organizador-drag-and-drop [listaDeElementos]='true'></app-organizador-drag-and-drop>
+                                <app-paginador></app-paginador>
+                            </div>
+
+                        </div>
+
+                        <ng-container *ngIf="folioLinea.cantidad > 0">
+                            <h3>Colores para teñido <a (click)="agregarColorTenido()" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></a></h3>
+                            <ng-container *ngIf="folioLinea.coloresTenidos.length > 0">
+
+                                <div *ngFor="let item of folioLinea.coloresTenidos; let i =index; trackBy:trackByFn" class="col-lg-12 mb-1">
+                                    <div class="input-group ">
+                                        <input [name]="'color'+i" [(ngModel)]="folioLinea.coloresTenidos[i].color" type="text" class="form-control" placeholder="Color de teñido">
+                                        <input (input)="calcularSumaTenido()" [name]="'cantidad'+i" [(ngModel)]="folioLinea.coloresTenidos[i].cantidad" type="text" mask="separator" class="form-control" placeholder="Cantidad">
+                                        <span class="input-group-btn">
+                                            <button (click)="eliminarColorTenido(i)" class="btn btn-outline-danger" type="button"><i class="fa fa-times"></i></button>
+                                            <button *ngIf="(i+1) === folioLinea.coloresTenidos.length " (click)="agregarColorTenido()" class="btn btn-outline-success" type="button"><i class="fa fa-plus"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div *ngIf="sumaTenidoSuperaCantidad" class="alert alert-danger mt-2" role="alert">
+                                <i class="fa fa-exclamation-circle infinite animated fadeIn"></i> La cantidad a teñir supera la cantidad del pedido.
+                            </div>
+
+                        </ng-container>
+
+
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-save"> </i> 
+                                <span *ngIf="modificandoLinea"> Guardar modificaciones</span>
+                                <span *ngIf="!modificandoLinea"> Guardar</span>
+                            </button>
+                            <a *ngIf="!modificandoLinea" class="btn btn-danger ml-2 text-white" (click)="cancelarModificacion()"><i class="fa fa-times"></i> Cancelar</a>
+                            <button *ngIf="modificandoLinea" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
+                                <i class="fa fa-times"> </i> 
+                                <span > Cancelar</span>
+                            </button>
+                        </div>
                     </ng-container>
 
-
-
-                    <div class="form-group mt-3">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fa fa-save"> </i> 
-                            <span *ngIf="modificandoLinea"> Guardar modificaciones</span>
-                            <span *ngIf="!modificandoLinea"> Guardar</span>
-                        </button>
-                        <a *ngIf="!modificandoLinea" class="btn btn-danger ml-2 text-white" (click)="cancelarModificacion()"><i class="fa fa-times"></i> Cancelar</a>
-                        <button *ngIf="modificandoLinea" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
-                            <i class="fa fa-times"> </i> 
-                            <span > Cancelar</span>
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>

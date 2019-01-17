@@ -111,7 +111,15 @@ export class ManejoDeMensajesService {
     this.correcto( msj, 'Eliminado');
   }
   
-  // Cuando algúna acción se hizo correctamente como guardar o modificar.
+  /**
+   * Confirmacion en forma de toast. 
+   * Cuando algúna acción se hizo correctamente como guardar o modificar.
+   *
+   * @param {string} msj
+   * @param {string} [titulo='Acción realizada']
+   * @param {number} [timer=3000]
+   * @memberof ManejoDeMensajesService
+   */
   correcto (  msj: string, titulo: string = 'Acción realizada', timer: number = 3000) {
     
       const d: any = {
@@ -128,7 +136,40 @@ export class ManejoDeMensajesService {
       swal(d);
   }
 
-  // Una validación que fallo. 
+  /**
+   * Confirmacion en forma de toast. 
+   * Cuando algúna acción se hizo de manera instantanea y de tipo info.
+   *
+   * @param {string} msj
+   * @param {string} [titulo='Acción realizada']
+   * @param {number} [timer=3000]
+   * @memberof ManejoDeMensajesService
+   */
+  informar (  msj: string, titulo: string = 'INFO: ', timer: number = 7000) {
+    
+      const d: any = {
+        position: 'top-end',
+        type: 'info',
+        title: titulo,
+        text: msj,
+        showConfirmButton: false,
+        timer: timer, 
+        toast: true,
+        animation: false,
+        customClass: 'animated bounceIn  '
+      };
+      swal(d);
+  }
+
+   
+  /**
+   *Muestra un mensaje para una validacion fallida. 
+   *
+   * @param {string} msj El mensaje que se quiere mostrar.
+   * @param {string} [titulo='Datos erroneos'] El titulo del cuadro.
+   * @param {number} [timer=5000] El tiempo que se mostrara el mensaje. 
+   * @memberof ManejoDeMensajesService
+   */
   invalido( msj: string, titulo: string = 'Datos erroneos', timer: number = 5000) {
     const d: any = {
       position: 'center',
@@ -143,7 +184,18 @@ export class ManejoDeMensajesService {
     swal(d);
   } 
   
-  confirmarAccion( msj: string, callback: any) {
+  
+  /**
+   * Pide confirmacion antes de realizar una accion. Si la
+   * accion se confirma entonces se ejecuta el callback.
+   *
+   * @param {string} msj El mensaje que se mostrara para pedir confirmacion. 
+   * @param {*} callbackSuccess El callback cuando la accion sea correcta. 
+   * @param {string} [msjCancelacion=''] El mensaje que se mostrara cuando se cancele. 
+   * @param {*} [callbackCancel=null] El callback a ejecutar cuando se cancele. Null no ejecuta el callback. 
+   * @memberof ManejoDeMensajesService
+   */
+  confirmarAccion( msj: string, callbackSuccess: any, msjCancelacion: string = '', callbackCancel: any = null) {
     this.swalWithBootstrapButtons({
       title: '¿Estas segúro de lo que haces?',
       text: msj,
@@ -151,21 +203,30 @@ export class ManejoDeMensajesService {
       showCancelButton: true,
       confirmButtonText: '¡Si, hazlo!',
       cancelButtonText: '¡No, no lo hagas!',
+      cancelButtonClass: 'mr-3 btn btn-danger',
       reverseButtons: true
     }).then( result => {
       if ( result.value ) {
-        callback();
+        callbackSuccess();
       } else if (result.dismiss === swal.DismissReason.cancel ) {
         this.swalWithBootstrapButtons(
           'Cancelado',
-          'No se ejecuto la acción.',
+          'No se ejecuto la acción.' + msjCancelacion,
           'error'
         );
+        if( callbackCancel ) callbackCancel();
       }
     });
   }
   
   
+  /**
+   * Muestra un mensaje de confirmacion de eliminacion. 'Estas seguro que quieres eliminar?'
+   *
+   * @param {string} msj El mensaje que quieres mostrar. 
+   * @param {*} callback La accion que se va a ejecutar despues de confirmar con 'Si, hazlo!'.
+   * @memberof ManejoDeMensajesService
+   */
   confirmacionDeEliminacion( msj: string , callback: any) {
     
    

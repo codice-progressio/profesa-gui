@@ -144,38 +144,46 @@ export class FolioService {
       );
     }
     
-    guardarLinea (idFolio: string, linea: FolioLinea) {
-      const a: number = this._preLoaderService.loading('Guardando linea');
-      // Si la linea tiene un id entonces es para modificar.
-      
-      if (linea._id) {
-        // Modificamos.
-        const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${linea._id}`;
-        return this.http.put(url, linea).pipe(
-          map( (resp: any) => {
-            // swal('Pedido modificado.', `Se modifico el pedido correctamente.`, 'success');
-            this._msjService.ok_(resp,null, a);
-          return;
+  /**
+   *Guarda una linea. o la modifica.
+   *
+   * @param {string} idFolio El id del folio que se va a modificar. 
+   * @param {FolioLinea} linea La linea que vamos a guardar o modificar. 
+   * @returns
+   * @memberof FolioService
+   */
+  guardarLinea (idFolio: string, linea: FolioLinea) {
+    const a: number = this._preLoaderService.loading('Guardando linea');
+    // Si la linea tiene un id entonces es para modificar.
+    
+    if (linea._id) {
+      // Modificamos.
+      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}/${linea._id}`;
+      return this.http.put(url, linea).pipe(
+        map( (resp: any) => {
+          // swal('Pedido modificado.', `Se modifico el pedido correctamente.`, 'success');
+          this._msjService.ok_(resp,null, a);
+        return;
+      }), catchError( err => {
+        this._msjService.err(err);
+        return throwError(err);
+      })
+      );
+    } else {
+      const url =`${URL_SERVICIOS}/folioLinea/${idFolio}`;
+      return this.http.post(url, linea).pipe(
+        map( (resp: any) => {
+          this._msjService.ok_(resp,null, a);
+          return resp.folioLinea;
         }), catchError( err => {
           this._msjService.err(err);
-          return throwError(err);
-        })
-        );
-      } else {
-        const url =`${URL_SERVICIOS}/folioLinea/${idFolio}`;
-        return this.http.post(url, linea).pipe(
-          map( (resp: any) => {
-            this._msjService.ok_(resp,null, a);
-            return resp.folioLinea;
-          }), catchError( err => {
-            this._msjService.err(err);
-            
-          return throwError(err);
-        })
-        );
-      }
-      
+          
+        return throwError(err);
+      })
+      );
     }
+    
+  }
     
   eliminarLinea( idFolio: string , idLinea: string ) {
     const a: number = this._preLoaderService.loading('Eliminando linea');

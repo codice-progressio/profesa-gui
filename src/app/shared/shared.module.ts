@@ -22,6 +22,7 @@ import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenad
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component';
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
 import {NgxMaskModule} from 'ngx-mask'
+import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component';
 
 
 
@@ -50,6 +51,7 @@ import {NgxMaskModule} from 'ngx-mask'
         QrScannerComponent,
         ValidacionInputsComponent,
         OrdenadorVisualComponent,
+        OrganizadorDragAndDropComponent,
         ProgressBarComponent
     ],
     exports: [
@@ -67,6 +69,7 @@ import {NgxMaskModule} from 'ngx-mask'
         ValidacionInputsComponent,
         DndModule,
         OrdenadorVisualComponent,
+        OrganizadorDragAndDropComponent,
         ProgressBarComponent,
         NgxMaskModule
     ],

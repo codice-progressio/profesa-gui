@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GastoConsumo } from 'src/app/models/gastoConsumo.model';
 import { Maquina } from 'src/app/models/maquina.model';
 import { Proceso } from 'src/app/models/proceso.model';
-import { Procesos } from 'src/app/models/familiaDeProcesos.model';
+import { Procesos } from "src/app/models/procesos.model";
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { isNull } from 'util';
 
