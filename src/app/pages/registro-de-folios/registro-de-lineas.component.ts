@@ -239,21 +239,21 @@ export class RegistroDeLineasComponent implements OnInit {
 
     this.cargarListaOrdenable(mc, procesos);
 
-    // Cargamos los elementos ordenables para modificar.
-    this.cargarElementosExistentesOrdenables(procesos); 
+    // // Cargamos los elementos ordenables para modificar.
+    // this.cargarElementosExistentesOrdenables(procesos); 
 
   }
 
-  /**
-   *Carga los elementos que son . Corresponde a los procesos de 
-   la linea. 
-   *
-   * @param {Procesos[]} procesos
-   * @memberof RegistroDeLineasComponent
-   */
-  cargarElementosExistentesOrdenables(procesos: Procesos[]){
+  // /**
+  //  *Carga los elementos que son . Corresponde a los procesos de 
+  //  la linea. 
+  //  *
+  //  * @param {Procesos[]} procesos
+  //  * @memberof RegistroDeLineasComponent
+  //  */
+  // cargarElementosExistentesOrdenables(procesos: Procesos[]){
     
-  }
+  // }
 
   /**
    *Carga los procesos de la familia padres e hijos fijos si no esta especificado que es para almacen.
@@ -305,15 +305,12 @@ export class RegistroDeLineasComponent implements OnInit {
           .setEliminable(false)
           .setLeyenda(x.proceso.nombre)
           .setLeyendaOptativa(x.proceso.departamento.nombre);
-
     });
 
     if( esAlmacen ){
       // Si es de almacen tenemos que cargar los datos en una nueva area
       // para que no se muestren los procesos de la familia de procesos. 
       this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
-
-
         this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION ).subscribe(
           proceso=>{
             let padre:Proceso = proceso;
@@ -340,19 +337,15 @@ export class RegistroDeLineasComponent implements OnInit {
                     .setOrden(proc.orden? proc.orden.toString(): '0' )
                     .setObjeto( proc.proceso );
             }
-      
             // Ordenamos todos los datos por el campo orden. 
             this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
-
           }
-
         );
-        
-
     }else{
       // Como no es de almacen los pedidos propios de este folio
       // se tiene que agregar a sus padres y despues ordenarse.
       // Recorremos todos los especiales. 
+      console.log('No es de almacen')
       if( procesosDelPedido ){
         for (let i = 0; i < procesosDelPedido.length; i++) {
           const proc = procesosDelPedido[i];
@@ -366,8 +359,8 @@ export class RegistroDeLineasComponent implements OnInit {
                   .setLeyendaOptativa( proc.proceso.departamento.nombre )
                   .setObjeto( proc.proceso )
                   .setOrden( proc.orden.toString());
-                  // Ordenamos todos los datos por el campo orden. 
-                  this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
+          // Ordenamos todos los datos por el campo orden. 
+          this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
         }
       }
     }
@@ -598,13 +591,20 @@ export class RegistroDeLineasComponent implements OnInit {
 
     // Cargamos la lista seleccionable del organizador. 
     this.cargarProcesosSeleccionablesEnLista();
-  
-    
-    
-    // Cargamos los datos organizados. 
-    
-    this.cargarListaOrdenable(this.folioLinea.modeloCompleto, this.folioLinea.procesos, this.folioLinea.almacen);
-    // Seteamos el buscador rapido con un resultado pa que se vea gonito.
+
+    // <!-- 
+    // =====================================
+    //  NO ES NECESARIO GENERAR EL ORGANIZADOR
+    // =====================================
+    // -->
+    // this._buscadorRapidoService.seleccionarElemento(x) llama internamente
+    // el callback seleccionar donde ya tenemos definido 
+    // this.generarOrganizador()
+    // <!-- 
+    // =====================================
+    //  END NO ES NECESARIO GENERAR EL ORGANIZADOR
+    // =====================================
+    // -->
     
     let a:BuscadorRapido<ModeloCompleto> = new BuscadorRapido();
     a.setNombre(this.modeloCompletoPipe.transform(linea.modeloCompleto))
