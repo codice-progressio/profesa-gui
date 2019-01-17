@@ -23,11 +23,10 @@
             </li>
             <!-- Genera los hijos fijos. -->
             <li *ngFor="let hijoFijo of s.listaDeObjetos[key].hijos.fijos" class="py-1 list-group-item bg-dark text-white d-flex align-items-center justify-content-between">
-                <small><strong>{{hijoFijo.orden}}</strong></small> {{hijoFijo.leyenda}}
-                <small><strong>
-          {{hijoFijo.leyendaOptativa}}
-  
-        </strong></small>
+                <span>
+                    <small><strong>{{hijoFijo.orden}}.-</strong></small> {{hijoFijo.leyenda}}
+               </span>
+                <small><strong>{{hijoFijo.leyendaOptativa}} </strong></small>
 
             </li>
             <!-- Genera los hijos ordenables. -->

@@ -288,6 +288,8 @@ export class RegistroDeLineasComponent implements OnInit {
           .setLeyenda(x.proceso.nombre)
           .setLeyendaOptativa(x.proceso.departamento.nombre);
     });
+
+
     if( esAlmacen ){
      
 
@@ -321,9 +323,8 @@ export class RegistroDeLineasComponent implements OnInit {
                 .setEliminable(false)
                 .setLeyenda(almacenDeBoton.nombre)
                 .setLeyendaOptativa(almacenDeBoton.departamento.nombre)
-                .setObjeto(almacenDeBoton);
-
-                
+                .setObjeto(almacenDeBoton)
+                .setOrden('0.1');
     
           // Agregamos los hijos. Comenzamos de uno por que el padre es el 0.
           for (let i = 0; i < procesosDelPedido.length; i++) {
