@@ -32,7 +32,8 @@ export class RevisionDeOrdenesComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public _preLoaderService: PreLoaderService,
     public router: Router,
-    public _mms: ManejoDeMensajesService
+    public _msjService: ManejoDeMensajesService
+    
   ) { 
 
     activatedRoute.params.subscribe(params => {
@@ -67,9 +68,12 @@ export class RevisionDeOrdenesComponent implements OnInit {
     if ( !linea.modeloCompleto.tamano.estandar ) {
       // No se ha definido el estandar y no se pueden generar las órdenes. 
       this.sePuedenGenerarOrdenes = false;
-      swal( 'Imposible generar órdenes.', 
-      `No se ha definido el estandar del tamaño ${linea.modeloCompleto.tamano.tamano} `,
-       'error');
+
+      this._msjService.invalido( 
+        `No se ha definido el estandar del tamaño ${linea.modeloCompleto.tamano.tamano} `,
+        'Imposible generar órdenes.')
+      this.router.navigate(['/registroDeFolios']);
+      return;
     }
       
 
