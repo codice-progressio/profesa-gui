@@ -36,6 +36,7 @@ class DepartamentosDefaults {
         public BARNIZADO: string,
         public BURATO: string,
         public LASER: string,
+        public ALMACEN_DE_BOTON: string
     ) {
         
     }
@@ -45,7 +46,7 @@ class ProcesosDefaults {
     constructor(
         public CONTROL_DE_PRODUCCION?: string,
         public LASER?: string,
-
+        public ALMACEN_DE_BOTON?: string
     ) {
         
     }

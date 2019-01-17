@@ -28,6 +28,9 @@ import { Procesos } from "src/app/models/procesos.model";
 import { PROCESOS } from "src/app/config/procesos";
 import { DefaultsService } from "src/app/services/configDefualts/defaults.service";
 import { DefaultModelData } from "src/app/config/defaultModelData";
+import { AlmacenDeBoton } from '../../models/almacenDeBoton.model';
+import { DEPARTAMENTOS } from '../../config/departamentos';
+import { DndObject } from '../../components/organizador-drag-and-drop/models/dndObject.model';
 
 @Component({
   selector: "app-registro-de-lineas",
@@ -286,39 +289,62 @@ export class RegistroDeLineasComponent implements OnInit {
           .setLeyendaOptativa(x.proceso.departamento.nombre);
     });
     if( esAlmacen ){
-      // Si es de almacen tenemos que cargar los datos en una nueva area
-      // para que no se muestren los procesos de la familia de procesos. 
-      this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
-        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION ).subscribe(
-          proceso=>{
-            let padre:Proceso = proceso;
+     
 
-            let dndOPadre = this._organizadorDragAndDropService
-              .nuevaArea(padre._id)
-                .setPadre()
-                  .setEliminable(false)
-                  .setLeyenda(padre.nombre)
-                  .setLeyendaOptativa(padre.nombre)
-                  .setObjeto(padre)
-                  // .setOrden(padre.orden.toString());
-                  .setOrden('0');
-      
-            // Agregamos los hijos. Comenzamos de uno por que el padre es el 0.
-            for (let i = 0; i < procesosDelPedido.length; i++) {
-              const proc = procesosDelPedido[i];
-              dndOPadre.dnd
-                .hijos
-                  .addOrdenable()
-                    .setEliminable( true )
-                    .setLeyenda( proc.proceso.nombre)
-                    .setLeyendaOptativa( proc.proceso.departamento.nombre )
-                    .setOrden(proc.orden? proc.orden.toString(): '0' )
-                    .setObjeto( proc.proceso );
-            }
-            // Ordenamos todos los datos por el campo orden. 
-            this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
+      Promise.all([
+        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION).toPromise(),
+        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.ALMACEN_DE_BOTON).toPromise(),
+
+      ]).then((resp) => {
+           // Si es de almacen tenemos que cargar los datos en una nueva area
+          // para que no se muestren los procesos de la familia de procesos. 
+          this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
+        
+          let padre:Proceso = resp[0];
+          let almacenDeBoton = resp[1];
+
+          // Seteamos el padre siempre el entrega de ordenes a produccion. 
+          let dndOPadre = this._organizadorDragAndDropService
+            .nuevaArea(padre._id)
+              .setPadre()
+                .setEliminable(false)
+                .setLeyenda(padre.nombre)
+                .setLeyendaOptativa(padre.nombre)
+                .setObjeto(padre)
+                // .setOrden(padre.orden.toString());
+                .setOrden('0');
+
+          // Seteamos el hijo fijo, en este caso surtir de almacen. 
+          dndOPadre.dnd
+            .hijos
+              .addFijo()
+                .setEliminable(false)
+                .setLeyenda(almacenDeBoton.nombre)
+                .setLeyendaOptativa(almacenDeBoton.departamento.nombre)
+                .setObjeto(almacenDeBoton);
+
+                
+    
+          // Agregamos los hijos. Comenzamos de uno por que el padre es el 0.
+          for (let i = 0; i < procesosDelPedido.length; i++) {
+            const proc = procesosDelPedido[i];
+            dndOPadre.dnd
+              .hijos
+                .addOrdenable()
+                  .setEliminable( true )
+                  .setLeyenda( proc.proceso.nombre)
+                  .setLeyendaOptativa( proc.proceso.departamento.nombre )
+                  .setOrden(proc.orden? proc.orden.toString(): '0' )
+                  .setObjeto( proc.proceso );
           }
-        );
+          // Ordenamos todos los datos por el campo orden. 
+          this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
+         
+        
+      }).catch((err) => {
+        throw err;
+      });
+
     }else{
       // Como no es de almacen los pedidos propios de este folio
       // se tiene que agregar a sus padres y despues ordenarse.
@@ -686,37 +712,48 @@ export class RegistroDeLineasComponent implements OnInit {
       // Si esta vacio creamos un padre que sea productoTerminado.
       if( !this._organizadorDragAndDropService.tieneAreas() ){
         
-        this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION).subscribe( resp=>{
-          // Creamos una nueva de entrega de ordenes a produccion. 
-          this._organizadorDragAndDropService
-            .nuevaArea(resp._id)
+        Promise.all([
+          this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION).toPromise(),
+          this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.ALMACEN_DE_BOTON).toPromise(),
+          this._procesoService.buscarPorId(this.defaultModelData.PROCESOS.LASER).toPromise()
+        ]).then((resp ) => {
+          let padre: Proceso = resp[0];
+          let hijoFijo: Proceso = resp[1];
+          let laser: Proceso = resp[2];
+
+          // Agregamos el padre que siempre tiene que se entrega de procesos a produccion.
+          let dnd: DndObject<Proceso> = this._organizadorDragAndDropService
+            .nuevaArea(padre._id)
               .setPadre()
                 .setEliminable(false)
                 .setOrden('0')
-                .setLeyenda(resp.nombre)
-                .setObjeto(resp)
-                .setLeyendaOptativa(resp.departamento.nombre);
+                .setLeyenda(padre.nombre)
+                .setObjeto(padre)
+                .setLeyendaOptativa(padre.departamento.nombre);
+               
+          dnd.dnd
+            .hijos
+              .addFijo()
+                .setEliminable(false)
+                .setLeyenda( hijoFijo.nombre )
+                .setLeyendaOptativa( hijoFijo.departamento.nombre)
+                .setObjeto( hijoFijo )
+                .setOrden('0.1');
+
                 this._organizadorDragAndDropService.actualizarPropiedadOrden();
 
           if( this.laserarPedido ){
-            // Si el pedido se va a laserar agregamos el proceso.
-            
-            this._procesoService.buscarPorId( this.defaultModelData.PROCESOS.LASER).subscribe( resp=>{
-              this._organizadorDragAndDropService
-                .addHijoAlFinal()
-                  .setEliminable(true)
-                  .setLeyenda(resp.nombre)
-                  .setLeyendaOptativa(resp.departamento.nombre)
-                  .setObjeto(resp);
-                  this._organizadorDragAndDropService.actualizarPropiedadOrden();
-                  
-                });
-                
+            this._organizadorDragAndDropService
+              .addHijoAlFinal()
+                .setEliminable(true)
+                .setLeyenda(laser.nombre)
+                .setLeyendaOptativa(laser.departamento.nombre)
+                .setObjeto(laser);
+                this._organizadorDragAndDropService.actualizarPropiedadOrden();
             }
-
+        }).catch((err) => {
+          throw err;
         });
-
-        
       }
     } else { 
       this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
