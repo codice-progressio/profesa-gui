@@ -15,6 +15,7 @@ export const DEPARTAMENTOS = {
     BURATO: { _v: 'BURATO', _n: 'BURATO', _vm:'burato' },
     BARNIZADO: { _v: 'BARNIZADO', _n: 'BARNIZADO', _vm:'barnizado' },
     LASER: { _v: 'LASER', _n: 'LASER', _vm: 'laser' },
+    ALMACEN_DE_BOTON: { _v: 'ALMACEN_DE_BOTON', _n: 'ALMACEN DE BOTON', _vm: 'almacenDeBoton' },
 
 
 

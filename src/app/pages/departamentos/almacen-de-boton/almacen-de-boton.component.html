@@ -1,3 +1,33 @@
-<p>
-  almacen-de-boton works!
-</p>
+<app-qr-scanner> </app-qr-scanner>
+
+<div *ngIf="_qrScannerService.lecturaCorrecta" class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h1>Burato</h1>
+
+                <form (ngSubmit)="onSubmit(almacenDeBotonForm.value, almacenDeBotonForm.valid, $event)" [formGroup]="almacenDeBotonForm">
+
+                    <div class="row">
+                        <div class="form-group col-auto">
+                            <input formControlName="cantidadDeBoton" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidadDeBoton_FB), 'is-valid':_validacionesService.valid(cantidadDeBoton_FB)}" type="number" class="form-control form-control-lg" name="cantidadDeBoton"
+                                id="cantidadDeBoton" aria-describedby="cantidadDeBotonId" placeholder="Peso de 10 botones">
+                            <small id="cantidadDeBotonId" class="form-text text-muted">Ingresa la cantidad de boton surtida.</small>
+                            <app-validacion-inputs [campo]='cantidadDeBoton_FB'></app-validacion-inputs>
+                        </div>
+
+
+                    </div>
+
+
+                    <button [disabled]='almacenDeBotonForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <a (click)="limpiar()" class="btn btn-danger"><i class="fa fa-times"></i> Cancelar</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lista-de-ordenes></app-lista-de-ordenes>

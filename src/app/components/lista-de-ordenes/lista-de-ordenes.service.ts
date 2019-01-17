@@ -16,6 +16,7 @@ import { DEPARTAMENTOS } from '../../config/departamentos';
 })
 export class ListaDeOrdenesService {
   
+  
 
 
   // depto: string;
@@ -72,6 +73,18 @@ export class ListaDeOrdenesService {
         this.depto_vm = DEPARTAMENTOS.CONTROL_DE_PRODUCCION._vm;
         
       // }
+    }
+
+     /**
+     * Extra las ordenes correspondientes a este departamento.
+     *
+     * @returns {*}
+     * @memberof ListaDeOrdenesService
+     */
+    almacenDeBoton(): any {
+      const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.ALMACEN_DE_BOTON._n}`);
+      this.cargarOrdenes(DEPARTAMENTOS.ALMACEN_DE_BOTON._n, this.opciones,a);
+      this.depto_vm = DEPARTAMENTOS.ALMACEN_DE_BOTON._vm;
     }
     
     /**
