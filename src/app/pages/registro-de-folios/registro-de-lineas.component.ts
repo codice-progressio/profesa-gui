@@ -467,20 +467,36 @@ export class RegistroDeLineasComponent implements OnInit {
     } 
 
 
-    // Contenedor para los procesos que seleccionemos. 
-    let procesosArr: Procesos[] = [];
+  
 
-    // // Cargamos los procesos especiales en el folio si es que hay.
-    this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach(x => {
-      let procesos: Procesos = new Procesos();
-      procesos.orden = Number(x.orden);
-      procesos.proceso = x.objeto;
-      procesos.procesoPadre = x.objetoPadre;
-      procesosArr.push(procesos);
+    // <!-- 
+    // =====================================
+    // LOS PROCESOS DE ALMACEN SOLO GUARDAN LOS AGREGADOS Y NO
+    // LOS BASE COMO ENTREGA A PRODUCCION Y SURTIR DE ALMACEN.
+    // =====================================
+    // -->
+      // Contenedor para los procesos que seleccionemos. 
+      let procesosArr: Procesos[] = [];
 
-    });
+      // // Cargamos los procesos especiales en el folio si es que hay.
+      this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach(x => {
+        let procesos: Procesos = new Procesos();
+        procesos.orden = Number(x.orden);
+        procesos.proceso = x.objeto;
+        procesos.procesoPadre = x.objetoPadre;
+        procesosArr.push(procesos);
+  
+      });
+      this.folioLinea.procesos = procesosArr;
+      
+    // <!-- 
+    // =====================================
+    //  END LOS PROCESOS DE ALMACEN SOLO GUARDAN LOS AGREGADOS Y NO
+    //  LOS BASE COMO ENTREGA A PRODUCCION Y SURTIR DE ALMACEN.
+    // =====================================
+    // -->
 
-    this.folioLinea.procesos = procesosArr;
+    
 
     // Lo guardamos.
     this._folioService
