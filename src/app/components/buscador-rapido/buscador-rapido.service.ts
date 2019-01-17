@@ -382,17 +382,5 @@ export class BuscadorRapidoService<T> {
     
   }
 
-  /**
-   *Anade un elemento seleccionado al buscador rapido. 
-   *
-   * @returns {BuscadorRapido<T>}
-   * @memberof BuscadorRapidoService
-   */
-  addElementoSeleccionado():BuscadorRapido<T> {
-  
-    // let a = new BuscadorRapido<T>();
-    // this.seleccionarElemento(a);
-    return this.elementoSeleccionado;
-  }
 
 }

@@ -590,9 +590,7 @@ export class RegistroDeLineasComponent implements OnInit {
    * @memberof RegistroDeLineasComponent
    */
   modificar(linea: FolioLinea) {
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 0');
-    alert('modificar! 0');
+   
     this.generarBuscadorRapido();
 
     // Limpiamos el termino de busqueda. 
@@ -600,9 +598,7 @@ export class RegistroDeLineasComponent implements OnInit {
 
     this.folioLinea = linea;
 
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 1');
-    alert('modificar! 1');
+    
     if (this.folioLinea.laserCliente) {
       this.laserSeleccionado = this.folioLinea.laserCliente._id;
       this.laserarPedido = true;
@@ -611,22 +607,16 @@ export class RegistroDeLineasComponent implements OnInit {
 
     // Cargamos la lista seleccionable del organizador. 
     this.cargarProcesosSeleccionablesEnLista();
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 2');
-    alert('modificar! 2');
+  
     
     
     // Cargamos los datos organizados. 
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 3');
-    alert('modificar! 3');
+    
     this.cargarListaOrdenable(this.folioLinea.modeloCompleto, this.folioLinea.procesos, this.folioLinea.almacen);
     // Seteamos el buscador rapido con un resultado pa que se vea gonito.
 
     
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 4');
-    alert('modificar! 4');
+   
     
     let a:BuscadorRapido<ModeloCompleto> = new BuscadorRapido();
     a.setNombre(this.modeloCompletoPipe.transform(linea.modeloCompleto))
@@ -636,11 +626,7 @@ export class RegistroDeLineasComponent implements OnInit {
     this._buscadorRapidoService
       .seleccionarElemento(a)
 
-    console.log(linea.modeloCompleto.familiaDeProcesos);
-    console.log('modificar! 5');   
-    alert('modificar! 5');   
-        
-
+  
     
   }
 
