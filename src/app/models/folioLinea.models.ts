@@ -5,6 +5,27 @@ import { Procesos } from "./procesos.model";
 import { ColoresTenidos } from './ColoresTenidos';
 
 export class FolioLinea {
+    /**
+     *Creates an instance of FolioLinea.
+     * @param {string} [_id]
+     * @param {ModeloCompleto} [modeloCompleto]
+     * @param {number} [cantidad]
+     * @param {string} [nivelDeUrgencia]
+     * @param {Laser} [laserCliente]
+     * @param {boolean} [almacen=false] Define si se surte desde almacen. 
+     * @param {Date} [createdAt]
+     * @param {Date} [updatedAt]
+     * @param {number} [porcentajeAvance]
+     * @param {ColoresTenidos[]} [coloresTenidos=[]]
+     * @param {Procesos[]} [procesos=[]]
+     * @param {string} [observaciones]
+     * @param {boolean} [terminado]
+     * @param {boolean} [eliminar=false]
+     * @param {Orden[]} [ordenes=[]]
+     * @param {boolean} [ordenesGeneradas=false]
+     * @param {boolean} [mostrandoInfo=false]
+     * @memberof FolioLinea
+     */
     constructor(
         public _id?: string,
         public modeloCompleto?: ModeloCompleto,

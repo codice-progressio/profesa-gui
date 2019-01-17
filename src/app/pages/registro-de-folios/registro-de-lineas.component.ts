@@ -184,7 +184,7 @@ export class RegistroDeLineasComponent implements OnInit {
         this._buscadorRapidoService.elementoSeleccionado.objeto
       );
       
-      this.generarOrganizador( this.folioLinea.modeloCompleto, this.folioLinea.procesos );
+      this.generarOrganizador( this.folioLinea.modeloCompleto, this.folioLinea.procesos, this.folioLinea.almacen );
     };
 
     this._buscadorRapidoService.callbackAtenuar = () => {
@@ -230,13 +230,13 @@ export class RegistroDeLineasComponent implements OnInit {
    * @param {ModeloCompleto} mc
    * @memberof RegistroDeLineasComponent
    */
-  generarOrganizador( mc: ModeloCompleto, procesos: Procesos[]  ){
+  generarOrganizador( mc: ModeloCompleto, procesos: Procesos[], esAlmacen: boolean  ){
 
     this._organizadorDragAndDropService.limpiar();
     // Obtenemos todos los procesos. 
     this.cargarProcesosSeleccionablesEnLista();
     // Cargamos los prcesos propios del modelo.
-    this.cargarListaOrdenable(mc, procesos);
+    this.cargarListaOrdenable(mc, procesos, esAlmacen);
 
 
   }
@@ -253,7 +253,7 @@ export class RegistroDeLineasComponent implements OnInit {
    * @memberof RegistroDeLineasComponent
    * @param {Procesos} procesos Los procesos de la linea que hemos agregado para modificarlos. 
    */
-  cargarListaOrdenable(mc: ModeloCompleto, procesosDelPedido:Procesos[], esAlmacen:boolean = false){
+  cargarListaOrdenable(mc: ModeloCompleto, procesosDelPedido:Procesos[], esAlmacen:boolean){
     // Itineramos sobre la familia
     let i = 0;
    
@@ -292,7 +292,7 @@ export class RegistroDeLineasComponent implements OnInit {
           .setLeyenda(x.proceso.nombre)
           .setLeyendaOptativa(x.proceso.departamento.nombre);
     });
-
+    console.log('es de almacen?' + esAlmacen)
     if( esAlmacen ){
       // Si es de almacen tenemos que cargar los datos en una nueva area
       // para que no se muestren los procesos de la familia de procesos. 
