@@ -63,11 +63,6 @@ export class RegistroDeLineasComponent implements OnInit {
 
   modificandoLinea: boolean = false;
 
-  
-
-
-
-
   defaultModelData: DefaultModelData;
 
   constructor(
@@ -79,7 +74,6 @@ export class RegistroDeLineasComponent implements OnInit {
     public router: Router,
     public _util: UtilidadesService,
     public _preLoaderService: PreLoaderService,
-    // public _ordenadorVisualService: OrdenadorVisualService,
     private modeloCompletoPipe: ModeloCompletoPipe,
     private _msjService: ManejoDeMensajesService,
     public _paginadorService: PaginadorService,
@@ -91,7 +85,6 @@ export class RegistroDeLineasComponent implements OnInit {
   ) {
 
     this._defaultsService.cargarDefaults().subscribe( resp=> this.defaultModelData=resp );
-
 
     activatedRoute.params.subscribe(params => {
       // Si trae un id entonces lo buscamos.
@@ -217,7 +210,12 @@ export class RegistroDeLineasComponent implements OnInit {
     };
 
     this._buscadorRapidoService.callbackEliminar = ()=>{
+      console.log('se ejecuto el callback eliminar de buscador rapido')
+      this._organizadorDragAndDropService.limpiar()
       this.folioLinea.modeloCompleto = null;
+      this._buscadorRapidoService.limpiarTodo();
+      // Tiene que se el ultimo por que se generan los callbacks del orgnizados. 
+      this.generarBuscadorRapido();
     };
   }
 
