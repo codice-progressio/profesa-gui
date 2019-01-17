@@ -63,26 +63,35 @@ export class RevisionDeOrdenesComponent implements OnInit {
 
   generarOrdenes(linea: FolioLinea, unidad: number = 1, ) {
     
-
-
-    if ( !linea.modeloCompleto.tamano.estandar ) {
-      // No se ha definido el estandar y no se pueden generar las órdenes. 
-      this.sePuedenGenerarOrdenes = false;
-
-      this._msjService.invalido( 
-        `No se ha definido el estandar del tamaño ${linea.modeloCompleto.tamano.tamano} `,
-        'Imposible generar órdenes.')
-      this.router.navigate(['/registroDeFolios']);
-      return;
-    }
+    linea.ordenes = [];
       
+    if( linea.almacen ){
+      const orden = new Orden();
+        orden.numeroDeOrden = 1;
+        orden.observaciones = '';
+        orden.piezasTeoricas = linea.cantidad
+        orden.unidad = 1;
+        orden.nivelDeUrgencia = linea.nivelDeUrgencia;
+        linea.ordenes.push(orden);
 
+    }else{
+      if ( !linea.modeloCompleto.tamano.estandar ) {
+        // No se ha definido el estandar y no se pueden generar las órdenes. 
+        this.sePuedenGenerarOrdenes = false;
+  
+        this._msjService.invalido( 
+          `No se ha definido el estandar del tamaño ${linea.modeloCompleto.tamano.tamano} `,
+          `Imposible generar órdenes para el folio ${this.folio.numeroDeFolio}.`, 7000)
+        this.router.navigate(['/folios']);
+        return;
+      }
+      
       // Obtenemos la cantidad de órdenes contra la cantidad del estandar. 
       
       const estandar: number = linea.modeloCompleto.tamano.estandar;
       const cantidad: number = linea.cantidad;
       
-
+  
       let cantidadDeOrdenes: number = 0;
       let decimal: number = 0;
       cantidadDeOrdenes = (cantidad / estandar) ;
@@ -98,7 +107,6 @@ export class RevisionDeOrdenesComponent implements OnInit {
         linea.modeloCompleto.mediasGeneradas = true;
       } 
       
-      linea.ordenes = [];
       
       let ix: number = 1;
       // Ajustamos el contador a 1
@@ -113,7 +121,6 @@ export class RevisionDeOrdenesComponent implements OnInit {
         linea.ordenes.push(orden);
         ix++;
       }
-
       if (decimal > 0) {
         const orden = new Orden();
         orden.numeroDeOrden = ix++;
@@ -123,6 +130,10 @@ export class RevisionDeOrdenesComponent implements OnInit {
         orden.nivelDeUrgencia = linea.nivelDeUrgencia;
         linea.ordenes.push(orden);
       }
+    }
+      
+
+
   }
   
   recalcularUnidad( unidad: number, orden: Orden, linea: FolioLinea  ) {
