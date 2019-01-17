@@ -23,11 +23,8 @@ import { ModeloCompletoAutorizacion } from '../../models/modeloCompletoAutorizac
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { ProcesoService } from '../../services/proceso/proceso.service';
 import { OrganizadorDragAndDropService } from "src/app/components/organizador-drag-and-drop/organizador-drag-and-drop.service";
-import { OrganizadorDragAndDrop } from '../../components/organizador-drag-and-drop/models/organizador-drag-and-drop.model';
 import { Proceso } from "src/app/models/proceso.model";
 import { Procesos } from "src/app/models/procesos.model";
-import { DndObject } from '../../components/organizador-drag-and-drop/models/dndObject.model';
-import { ParsedEvent } from "@angular/compiler";
 import { PROCESOS } from "src/app/config/procesos";
 import { DefaultsService } from "src/app/services/configDefualts/defaults.service";
 import { DefaultModelData } from "src/app/config/defaultModelData";
