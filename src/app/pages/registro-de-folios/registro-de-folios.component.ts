@@ -9,6 +9,7 @@ import { BuscadorRapidoService } from '../../components/buscador-rapido/buscador
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
+import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class RegistroDeFoliosComponent implements OnInit {
     public _usuarioService: UsuarioService,
     public _folioService: FolioService,
     public router: Router,
-    public _buscadorRapidoService: BuscadorRapidoService,
+    public _buscadorRapidoService: BuscadorRapidoService<Cliente>,
     public _util: UtilidadesService,
     public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService,
@@ -63,9 +64,9 @@ export class RegistroDeFoliosComponent implements OnInit {
       return new Promise( (resolve, reject )=>{
         this._clienteService.buscar( this._buscadorRapidoService.termino ).subscribe(
           (resp:Cliente[])=>{
-            const datosBuscados: BuscadorRapido[] = [];
+            const datosBuscados: BuscadorRapido<Cliente>[] = [];
             resp.forEach((cliente:Cliente) => {
-              const a: BuscadorRapido =  new BuscadorRapido();
+              const a: BuscadorRapido<Cliente> =  new BuscadorRapido();
               a.nombre = `${cliente.nombre} | ${cliente.sae}`;
               a.objeto = cliente;
               datosBuscados.push(a);
@@ -220,6 +221,7 @@ export class RegistroDeFoliosComponent implements OnInit {
     this.folio = folio;
     const cliente: string = this.folio.cliente.nombre + ' | ' + this.folio.cliente.sae;
     this._buscadorRapidoService.seleccionarElemento(new BuscadorRapido(cliente, this.folio.cliente));
+    this._buscadorRapidoService.permitirCambioDeElementoSeleccionado(false);
     this.vendedorSeleccionado = this.folio.vendedor._id;
     
   }

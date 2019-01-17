@@ -5,13 +5,13 @@ import { BuscadorRapidoService } from '../buscador-rapido/buscador-rapido.servic
   selector: 'app-buscador-rapido',
   templateUrl: './buscador-rapido.component.html'
 })
-export class BuscadorRapidoComponent implements OnInit {
+export class BuscadorRapidoComponent<T> implements OnInit {
   
   @Input() input:boolean = false;
   @Input() lista:boolean = false;
 
   constructor(
-    public s: BuscadorRapidoService
+    public s: BuscadorRapidoService<T>
   ) {
   }
   ngOnInit() {

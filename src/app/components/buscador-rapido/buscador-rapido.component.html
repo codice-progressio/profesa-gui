@@ -32,7 +32,7 @@
             <i class="fa fa-check text-success animated fadeIn "></i>
             <strong  class="ml-3">{{s.elementoSeleccionado.nombre}} </strong> 
         </span>
-        <a (click)='s.limpiarSeleccionado()' class="btn btn-link btn-sm text-danger animated fadeIn "><i class="fa fa-times"></i></a>
+        <a *ngIf="s.permitirCambio" (click)='s.limpiarSeleccionado()' class="btn btn-link btn-sm text-danger animated fadeIn "><i class="fa fa-times"></i></a>
     </h3>
     </span>
 

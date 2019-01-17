@@ -4,7 +4,7 @@ import { log } from 'util';
 
 @Injectable()
 export class BuscadorRapidoService<T> {
-  
+ 
   /**
    *
    * El nombre del elemento que se va a listar. Este se usa
@@ -161,6 +161,17 @@ export class BuscadorRapidoService<T> {
    * @memberof BuscadorRapidoService
    */
   callbackEliminar: any = null;
+
+
+  /**
+   *Si se encentra en false no aparece la opcion para eliminar
+   el elemento selccionado. 
+   *
+   * @type {boolean}
+   * @memberof BuscadorRapidoService
+   */
+  permitirCambio: boolean = true;
+
 
 
   constructor() { 
@@ -380,6 +391,18 @@ export class BuscadorRapidoService<T> {
     this.limpiarIntervalo();
     
   }
+
+  /**
+   *Por defecto se permite el cambio con el paramentro permitirCambio=true. 
+   Si se pone el false la opcion para eliminar el elemento seleccionado desaprece.      
+   *
+   * @param {boolean} permitirCambio  
+   * @memberof BuscadorRapidoService
+   */
+  permitirCambioDeElementoSeleccionado(permitirCambio: boolean) {
+    this.permitirCambio = permitirCambio;
+  }
+  
 
 
 }
