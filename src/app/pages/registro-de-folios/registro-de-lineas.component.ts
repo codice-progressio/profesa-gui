@@ -239,21 +239,8 @@ export class RegistroDeLineasComponent implements OnInit {
 
     this.cargarListaOrdenable(mc, procesos);
 
-    // // Cargamos los elementos ordenables para modificar.
-    // this.cargarElementosExistentesOrdenables(procesos); 
 
   }
-
-  // /**
-  //  *Carga los elementos que son . Corresponde a los procesos de 
-  //  la linea. 
-  //  *
-  //  * @param {Procesos[]} procesos
-  //  * @memberof RegistroDeLineasComponent
-  //  */
-  // cargarElementosExistentesOrdenables(procesos: Procesos[]){
-    
-  // }
 
   /**
    *Carga los procesos de la familia padres e hijos fijos si no esta especificado que es para almacen.
