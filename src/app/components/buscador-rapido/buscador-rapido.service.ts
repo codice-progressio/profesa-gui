@@ -218,7 +218,6 @@ export class BuscadorRapidoService<T> {
                   // fuerza debe ser un tipo BuscadorRapido. 
                   // Los cargamos en la lista. 
                   this.elementos =  <BuscadorRapido<T>[]> datos;
-                  console.log(this.elementos )
                   // Ojo con este, no se me te a limpiar.
                   this.promesaPendiente = false;
                   // Una vez ejecutada la funcion quitamos la espera. 

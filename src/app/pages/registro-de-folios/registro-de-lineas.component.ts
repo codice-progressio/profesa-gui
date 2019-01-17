@@ -237,7 +237,6 @@ export class RegistroDeLineasComponent implements OnInit {
     this.cargarProcesosSeleccionablesEnLista();
     // Cargamos los prcesos propios del modelo.
 
-    console.log('hay modeloCompleto en generarOrganizados?' + !! mc);
     this.cargarListaOrdenable(mc, procesos);
 
     // Cargamos los elementos ordenables para modificar.
@@ -275,7 +274,6 @@ export class RegistroDeLineasComponent implements OnInit {
     // Agregamos todos los procesos padre.
     let dndO: DndObject<Proceso>;
     
-    console.log( 'HAY MODELO COMPLETO? ' + !!mc)
     mc.familiaDeProcesos.procesos.forEach(x=>{
 
       dndO = this._organizadorDragAndDropService
@@ -311,7 +309,6 @@ export class RegistroDeLineasComponent implements OnInit {
     });
 
     if( esAlmacen ){
-      console.log('es de almacen')
       // Si es de almacen tenemos que cargar los datos en una nueva area
       // para que no se muestren los procesos de la familia de procesos. 
       this._organizadorDragAndDropService.guardarCambiosDeManeraTemporal();
@@ -481,16 +478,12 @@ export class RegistroDeLineasComponent implements OnInit {
       let procesos: Procesos = new Procesos();
       procesos.orden = Number(x.orden);
       procesos.proceso = x.objeto;
-      console.log('x.objetoPadre')
-      console.log(x.objetoPadre)
       procesos.procesoPadre = x.objetoPadre;
       procesosArr.push(procesos);
 
     });
 
     this.folioLinea.procesos = procesosArr;
-    console.log('cantidad de procesos: ' + this.folioLinea.procesos.length)
-    
 
     // Lo guardamos.
     this._folioService
@@ -541,8 +534,6 @@ export class RegistroDeLineasComponent implements OnInit {
    * @memberof RegistroDeLineasComponent
    */
   comprobarProcesoLaserSeleccionado( ): boolean{
-    console.log(this.defaultModelData)   
-     console.log('entro a comprobarProcesoLaserSeleccionado')
     return this._organizadorDragAndDropService
       .existeObjectoPorCampo(this.defaultModelData.PROCESOS.LASER);
 
@@ -614,9 +605,6 @@ export class RegistroDeLineasComponent implements OnInit {
     
     this.cargarListaOrdenable(this.folioLinea.modeloCompleto, this.folioLinea.procesos, this.folioLinea.almacen);
     // Seteamos el buscador rapido con un resultado pa que se vea gonito.
-
-    
-   
     
     let a:BuscadorRapido<ModeloCompleto> = new BuscadorRapido();
     a.setNombre(this.modeloCompletoPipe.transform(linea.modeloCompleto))
@@ -713,7 +701,6 @@ export class RegistroDeLineasComponent implements OnInit {
    * @memberof RegistroDeLineasComponent
    */
   soloParaProductoTerminado( ){
-    console.log('soloParaProductoTermiando: ' +this.folioLinea.almacen )
     if( !this.folioLinea.almacen ){
 
 
