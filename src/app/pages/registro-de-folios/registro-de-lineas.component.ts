@@ -258,11 +258,9 @@ export class RegistroDeLineasComponent implements OnInit {
     let i = 0;
    
     // Agregamos todos los procesos padre.
-    let dndO: DndObject<Proceso>;
-    
     mc.familiaDeProcesos.procesos.forEach(x=>{
 
-      dndO = this._organizadorDragAndDropService
+    this._organizadorDragAndDropService
         .nuevaArea(x.proceso._id)
           .setPadre()
             .setLeyenda(x.proceso.nombre)
