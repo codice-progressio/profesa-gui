@@ -285,7 +285,6 @@ export class RegistroDeLineasComponent implements OnInit {
           .setLeyenda(x.proceso.nombre)
           .setLeyendaOptativa(x.proceso.departamento.nombre);
     });
-    console.log('es de almacen?' + esAlmacen)
     if( esAlmacen ){
       // Si es de almacen tenemos que cargar los datos en una nueva area
       // para que no se muestren los procesos de la familia de procesos. 
