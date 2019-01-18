@@ -10,8 +10,8 @@ import { ProductoTerminado } from './productoTerminado.model';
 import { Metalizado } from './metalizado.model';
 import { Barnizado } from './barnizado.model';
 import { Burato } from './burato.model';
-import { Laser } from './laser.models';
 import { AlmacenDeBoton } from './almacenDeBoton.model';
+import { Laser } from './laser.model';
 export class Trayecto {
     constructor(
 

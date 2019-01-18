@@ -45,7 +45,20 @@ export class LaserComponent implements OnInit {
 
     this.cargarOrdenesDeDepartamento();
     this._qrScannerService.titulo = DEPARTAMENTOS.LASER._n;
-    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this._qrScannerService.buscarOrden( this, 
+      () => { this.limpiar(), 
+      () => { 
+        if( this.orden.ubicacionActual.laser == null ){
+          if ( this.orden.ubicacionActual.laser == null ) {
+            // Creamos el departamento transformación para que no nos de error. 
+            this.orden.ubicacionActual.laser = new Laser();
+            // False por que a esta altura solo vamos a guardar la máquina. 
+            this.orden.ubicacionActual.laser.guardar = false;
+            this.orden.ubicacionActual.laser.maquinaActual = null;
+            
+        }
+      }
+      });
 
     this._maquinaService.obtenerTodasLasMaquinas().subscribe(( maquinas:Maquina[])=>{
       this.maquinas = maquinas;
