@@ -64,13 +64,24 @@ export class QrScannerService {
   // en el departamento. 
   recivir: boolean = false;
 
-  // La acción que va a ejecutar el servicio cuando 
-  // el escaner se ejecute. 
+  /**
+   * La acción que va a ejecutar el servicio cuando 
+   * el escaner se ejecute. 
+   *
+   * @type {*};
+   * @memberof QrScannerService
+   */
   callback: any;
 
-  // Este es el callback que se ejecuta cuando hay un error
-  // Se pone dentro de la llamada que tiene el error y se pasa 
-  // como parametro. 
+  /**
+   * Este es el callback que se ejecuta cuando hay un error
+   * Se pone dentro de la llamada que tiene el error y se pasa 
+   * como parametro. 
+   *
+   *
+   * @type {*}
+   * @memberof QrScannerService
+   */
   callbackError: any;
 
   lecturaCorrecta = false;
