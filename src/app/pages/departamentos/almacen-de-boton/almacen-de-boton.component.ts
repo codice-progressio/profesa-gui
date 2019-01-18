@@ -29,7 +29,9 @@ export class AlmacenDeBotonComponent implements OnInit {
     public _folioService: FolioService,
     private _validacionesService: ValidacionesService,
 
-  ) {}
+  ) {
+    this.cargarOrdenesDeDepartamento();
+  }
 
   ngOnInit() {
 
