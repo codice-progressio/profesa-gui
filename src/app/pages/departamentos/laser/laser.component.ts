@@ -48,7 +48,6 @@ export class LaserComponent implements OnInit {
     this._qrScannerService.buscarOrden( this, 
       () => { this.limpiar(), 
       () => { 
-        if( this.orden.ubicacionActual.laser == null ){
           if ( this.orden.ubicacionActual.laser == null ) {
             // Creamos el departamento transformación para que no nos de error. 
             this.orden.ubicacionActual.laser = new Laser();
@@ -57,8 +56,9 @@ export class LaserComponent implements OnInit {
             this.orden.ubicacionActual.laser.maquinaActual = null;
             
         }
+        }
       }
-      });
+    );
 
     this._maquinaService.obtenerTodasLasMaquinas().subscribe(( maquinas:Maquina[])=>{
       this.maquinas = maquinas;
@@ -109,6 +109,12 @@ export class LaserComponent implements OnInit {
     
   }
 
+  /**
+   *eSta funcion se llama desde el html y manda 
+   a que esta orden se marque como trabajando. 
+   *
+   * @memberof LaserComponent
+   */
   public iniciarTrabajoDeOrden( ) {
     // enviamos solo la modificación de la órden con el id 
     // para empezarla a trabajar. La modificación que necesitamos
@@ -119,5 +125,24 @@ export class LaserComponent implements OnInit {
     });
 
   }
+
+  /**
+   *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace
+   asi poor que si no existe el departaemtno en el trayecto(Por modificaiones)
+  * lo crea. 
+   *
+   * @memberof LaserComponent
+   */
+  maquinaActualEnNulo(orden: Orden ) {
+    if( orden.ubicacionActual.laser ){
+    orden.ubicacionActual.laser.maquinaActual = null
+   } else{
+     orden.ubicacionActual.laser = new Laser();
+     orden.ubicacionActual.laser.maquinaActual = null;
+   }
+  }
+
+
+
 
 }
