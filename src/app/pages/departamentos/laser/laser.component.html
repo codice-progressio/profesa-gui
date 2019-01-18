@@ -29,4 +29,26 @@
     </div>
 </div>
 
+<div class="row animated fadeInDown card-body bg-inverse text-white" *ngIf="_qrScannerService.lecturaCorrecta 
+&& orden.ubicacionActual.recivida 
+&& !orden.ubicacionActual.laser.trabajando">>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h1 class='text-white'>Laser <small class="text-muted"> Esta órden no se esta trabajando.</small></h1>
+                <hr>
+                <h3 class="text-white">Selecciona la máquina en que se trabajara:</h3>
+                <ng-container *ngFor="let maquina of maquinas; let i = index">
+
+                    <a (click)="orden.ubicacionActual.laser.maquinaActual = maquina" class="btn btn-outline-success btn-lg m-2">
+                        <i *ngIf="orden.ubicacionActual?.laser?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
+                        </i> {{maquina.clave}}</a>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <app-lista-de-ordenes *ngIf="!_qrScannerService.lecturaCorrecta"></app-lista-de-ordenes>

@@ -3,12 +3,13 @@ import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.servic
 import swal from 'sweetalert2';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService } from 'src/app/services/service.index';
+import { FolioService, ValidacionesService, MaquinaService } from 'src/app/services/service.index';
 import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 import { Metalizado } from '../../../models/metalizado.model';
 import { Orden } from 'src/app/models/orden.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Laser } from 'src/app/models/laser.model';
+import { Maquina } from 'src/app/models/maquina.model';
 
 @Component({
   selector: 'app-laser',
@@ -21,6 +22,9 @@ export class LaserComponent implements OnInit {
     orden: Orden;
     laser: Laser;
     linea: FolioLinea = new FolioLinea();
+
+    maquinas: Maquina[]=[];
+    
     
     
     // =========================================
@@ -35,12 +39,18 @@ export class LaserComponent implements OnInit {
     private formBuilder: FormBuilder,
     public _folioService: FolioService,
     private _validacionesService: ValidacionesService,
+    public _maquinaService: MaquinaService
   
   ) {
 
     this.cargarOrdenesDeDepartamento();
     this._qrScannerService.titulo = DEPARTAMENTOS.LASER._n;
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+
+    this._maquinaService.obtenerTodasLasMaquinas().subscribe(( maquinas:Maquina[])=>{
+      this.maquinas = maquinas;
+    });
+
     
    }
 
@@ -84,6 +94,17 @@ export class LaserComponent implements OnInit {
     //   this.limpiar();
     // });
     
+  }
+
+  public iniciarTrabajoDeOrden( ) {
+    // enviamos solo la modificación de la órden con el id 
+    // para empezarla a trabajar. La modificación que necesitamos
+    // es la de al ubicación actual.
+    
+    this._folioService.iniciarTrabajoDeOrden(this.orden, DEPARTAMENTOS.TRANSFORMACION, () => { this.limpiar(); } ).subscribe( orden => {
+     this.limpiar();
+    });
+
   }
 
 }
