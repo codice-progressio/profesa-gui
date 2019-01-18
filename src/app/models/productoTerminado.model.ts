@@ -1,7 +1,7 @@
 
 export class ProductoTerminado {
     constructor(
-        public terminada: boolean,
+        public terminada?: boolean,
     ) {}
 
 }
