@@ -1,6 +1,8 @@
 <app-qr-scanner> </app-qr-scanner>
 
-<div *ngIf="_qrScannerService.lecturaCorrecta" class="row animated fadeInDown">
+<div *ngIf="_qrScannerService.lecturaCorrecta 
+&& orden.ubicacionActual.recivida 
+&& orden.ubicacionActual.laser?.trabajando" class="row animated fadeInDown">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -41,7 +43,7 @@
                 <h3 class="text-white">Selecciona la máquina en que se trabajara:</h3>
                 <ng-container *ngFor="let maquina of maquinas; let i = index">
 
-                    <a (click)="orden.ubicacionActual.laser.maquinaActual = maquina" class="btn btn-outline-success btn-lg m-2">
+                    <a (click)="setMaquinaActual(orden, maquina)" class="btn btn-outline-success btn-lg m-2">
                         <i *ngIf="orden.ubicacionActual?.laser?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
                         </i> {{maquina.clave}}</a>
                 </ng-container>

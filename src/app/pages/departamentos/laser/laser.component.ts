@@ -134,12 +134,13 @@ export class LaserComponent implements OnInit {
    * @memberof LaserComponent
    */
   maquinaActualEnNulo(orden: Orden ) {
-    if( orden.ubicacionActual.laser ){
-    orden.ubicacionActual.laser.maquinaActual = null
-   } else{
-     orden.ubicacionActual.laser = new Laser();
+    if( !orden.ubicacionActual.laser ) orden.ubicacionActual.laser = new Laser();
      orden.ubicacionActual.laser.maquinaActual = null;
-   }
+  }
+
+  setMaquinaActual( orden: Orden, maquina: Maquina ){
+    if( !orden.ubicacionActual.laser ) orden.ubicacionActual.laser = new Laser();
+    orden.ubicacionActual.laser.maquinaActual = maquina
   }
 
 
