@@ -1,6 +1,6 @@
 <app-qr-scanner> </app-qr-scanner>
 
-<div *ngIf="_qrScannerService.lecturaCorrecta" class="row">
+<div *ngIf="_qrScannerService.lecturaCorrecta" class="row animated fadeInUpBig">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -42,4 +42,4 @@
     </div>
 </div>
 
-<app-lista-de-ordenes></app-lista-de-ordenes>
+<app-lista-de-ordenes *ngIf=" !_qrScannerService.lecturaCorrecta "></app-lista-de-ordenes>

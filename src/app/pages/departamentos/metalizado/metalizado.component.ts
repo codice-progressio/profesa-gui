@@ -36,6 +36,7 @@ export class MetalizadoComponent implements OnInit {
   
   ) {
 
+
     this.cargarOrdenesDeDepartamento();
     this._qrScannerService.titulo = DEPARTAMENTOS.METALIZADO._n;
     this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
