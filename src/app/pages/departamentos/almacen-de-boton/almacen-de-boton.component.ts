@@ -19,7 +19,7 @@ export class AlmacenDeBotonComponent implements OnInit {
   orden: Orden;
   almacenDeBoton: AlmacenDeBoton;
   linea: FolioLinea = new FolioLinea();
-  
+  NOMBRE_DEPTO: string = DEPARTAMENTOS.ALMACEN_DE_BOTON._n;
  
 
   constructor(
@@ -31,10 +31,12 @@ export class AlmacenDeBotonComponent implements OnInit {
 
   ) {
     this.cargarOrdenesDeDepartamento();
+    this._qrScannerService.titulo = DEPARTAMENTOS.ALMACEN_DE_BOTON._n;
+    this._qrScannerService.buscarOrden(this, () => {this.limpiar()});
+
   }
 
   ngOnInit() {
-
     this._qrScannerService.iniciar();
 
     this.almacenDeBotonForm = this.formBuilder.group({

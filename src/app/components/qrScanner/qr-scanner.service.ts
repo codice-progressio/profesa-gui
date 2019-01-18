@@ -96,17 +96,25 @@ export class QrScannerService {
     ) {
     
   }
-  // Es necesario que la clase que manda a llamar esta función tenga los 
-  // siguientes parametros accesibles
-  //     orden:Orden ,                    <= Recive la órden escaneada.   
-  //     modeloCompleto: modeloCompleto , <= Recive el modeloCompleto
-  //     linea: FolioLinea                <= Recive la Linea folio.       
-  //     NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
-  //     cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
-  // 
-  // El me es la clase completa que pasamos para trabajarla desde aqui.. 
-  // El cb_Error es la función que se ejecutara cuando haya un error. 
-  // El cb_Optional es por si queremos hacer algo más con los datos. 
+  
+  /**
+   * Es necesario que la clase que manda a llamar esta función tenga los 
+  * siguientes parametros accesibles
+  *     orden:Orden ,                    <= Recive la órden escaneada.   
+  *     modeloCompleto: modeloCompleto , <= Recive el modeloCompleto
+  *     linea: FolioLinea                <= Recive la Linea folio.       
+  *     NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
+  *     cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
+  * 
+  * El me es la clase completa que pasamos para trabajarla desde aqui.. 
+  * El cb_Error es la función que se ejecutara cuando haya un error. 
+  * El cb_Optional es por si queremos hacer algo más con los datos. 
+   *
+   * @param {*} me
+   * @param {*} cb_Error
+   * @param {*} [cb_Optional=null]
+   * @memberof QrScannerService
+   */
   buscarOrden(me, cb_Error, cb_Optional: any = null) {
     // Definimos el callback de error. La acción que se realizará
     // cuando el api mande un error. 
