@@ -22,6 +22,11 @@ export class LaserComponent implements OnInit {
     laser: Laser;
     linea: FolioLinea = new FolioLinea();
     
+    
+    // =========================================
+    private NOMBRE_DEPTO: string = DEPARTAMENTOS.LASER._n;
+    // =========================================
+    
   
 
   constructor(
