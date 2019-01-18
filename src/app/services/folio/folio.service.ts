@@ -281,7 +281,15 @@ export class FolioService {
       );
   }
   
-  // Inicia el trabajo de una órden. 
+  /**
+   * Inicia el trabajo de una órden. 
+   *
+   * @param {Orden} orden La orden que se va a senalar como iniciada.   
+   * @param {*} depto El departamento.
+   * @param {*} [callbackError=null] El callback en caso de error. 
+   * @returns
+   * @memberof FolioService
+   */
   iniciarTrabajoDeOrden(orden: Orden , depto: any , callbackError: any = null) {
     const a: number = this._preLoaderService.loading('Iniciando trabajdo de orden.');
     console.log(orden.ubicacionActual);
