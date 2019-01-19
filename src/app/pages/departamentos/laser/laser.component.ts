@@ -111,10 +111,10 @@ export class LaserComponent implements OnInit {
 
     console.log(` Los datos del submit ${JSON.stringify(modelo)}`);
 
-    // this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.LASER._n)
-    // .subscribe(()=>{
-    //   this.limpiar();
-    // });
+    this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.LASER._n)
+    .subscribe(()=>{
+      this.limpiar();
+    });
     
   }
 
