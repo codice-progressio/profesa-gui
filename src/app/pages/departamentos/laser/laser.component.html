@@ -10,22 +10,28 @@
                 <h1>Laser</h1>
 
                 <form (ngSubmit)="onSubmit(laserForm.value, laserForm.valid, $event)" [formGroup]="laserForm">
+                    <hr>
 
                     <div class="row">
-                        <div class="form-group col-auto">
-                            <input formControlName="cantidadDeBotones" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidadDeBotones_FB), 'is-valid':_validacionesService.valid(cantidadDeBotones_FB)}" type="number" class="form-control form-control-lg" name="cantidadDeBotones"
-                                id="cantidadDeBotones" aria-describedby="cantidadDeBotonesId" placeholder="Peso de 10 botones">
+                        <div class="form-group col-4">
+                            <input formControlName="cantidadDeBotones" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidadDeBotones_FB), 'is-valid':_validacionesService.valid(cantidadDeBotones_FB)}" type="text" mask="separator" class="form-control form-control-lg" name="cantidadDeBotones"
+                                id="cantidadDeBotones" aria-describedby="cantidadDeBotonesId" placeholder="Cantidad de botones">
                             <small id="cantidadDeBotonesId" class="form-text text-muted">Ingresa la cantidad de botones</small>
                             <app-validacion-inputs [campo]='cantidadDeBotones_FB'></app-validacion-inputs>
                         </div>
-
+                        <div class="form-group col-4">
+                            <input formControlName="bl" [ngClass]="{'is-invalid': _validacionesService.invalid(bl_FB), 'is-valid':_validacionesService.valid(bl_FB)}" type="text" mask="separator" class="form-control form-control-lg" name="bl" id="bl" aria-describedby="blId" placeholder="BL">
+                            <small id="blId" class="form-text text-muted">Ingresa el BL</small>
+                            <app-validacion-inputs [campo]='bl_FB'></app-validacion-inputs>
+                        </div>
                     </div>
 
+                    <h1><small class='text-muted'>Maquina en la que se trabajo: </small> {{orden.ubicacionActual.laser.maquinaActual.clave}}</h1>
+                    <hr>
 
                     <button [disabled]='laserForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
                     <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
                 </form>
-
             </div>
         </div>
     </div>

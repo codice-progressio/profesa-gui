@@ -76,13 +76,22 @@ export class LaserComponent implements OnInit {
         Validators.min(1),
         Validators.max(99999),
         this._validacionesService.numberValidator,
-      ]
-    ]
+      ]],
+      bl: ['', [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(500),
+        this._validacionesService.numberValidator,
+      ]],
     });
   }
 
   public get cantidadDeBotones_FB() : AbstractControl {
     return this.laserForm.get('cantidadDeBotones');
+  }
+
+  public get bl_FB(): AbstractControl{
+    return this.laserForm.get('bl');
   }
   
 
