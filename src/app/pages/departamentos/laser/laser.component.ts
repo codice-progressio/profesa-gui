@@ -120,7 +120,7 @@ export class LaserComponent implements OnInit {
     // para empezarla a trabajar. La modificación que necesitamos
     // es la de al ubicación actual.
     
-    this._folioService.iniciarTrabajoDeOrden(this.orden, DEPARTAMENTOS.TRANSFORMACION, () => { this.limpiar(); } ).subscribe( orden => {
+    this._folioService.iniciarTrabajoDeOrden(this.orden, DEPARTAMENTOS.LASER, () => { this.limpiar(); } ).subscribe( orden => {
      this.limpiar();
     });
 
