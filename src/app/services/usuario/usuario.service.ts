@@ -141,6 +141,7 @@ export class UsuarioService {
       localStorage.removeItem('email');
     }
     const url = URL_SERVICIOS + '/login';
+    console.log( 'url que se tomo para el login=' + url);
     return this.http.post(url, usuario).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
