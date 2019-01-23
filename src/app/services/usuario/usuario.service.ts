@@ -11,6 +11,7 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { Roles } from 'src/app/models/roles.models';
 import { _ROLES } from 'src/app/config/roles.const';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -296,23 +297,23 @@ export class UsuarioService {
 
   }
 
-  cargarVendedores ( ) {
+  cargarVendedores ( ):Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando vendedores.');
     
     return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE, a);
   }
 
-  cargarSeleccionadores() {
+  cargarSeleccionadores():Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando seleccionadores.');
     
     return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE , a);
   }
-  cargarEmpacadores() {
+  cargarEmpacadores():Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando empacadores.');
     return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE, a );
   }
 
-  cargarMateriales( ) {
+  cargarMateriales( ):Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando empleados de materiales.');
     return this.buscarUsuarioPorROLE(_ROLES.MATERIALES_CARGA_ROLE, a);
   }
