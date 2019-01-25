@@ -15,7 +15,7 @@ import { Laser } from './laser.model';
 export class Trayecto {
     constructor(
 
-    public orden?: number,
+    public orden?: string,
     public departamento?:  Departamento,
 
     public materiales: Materiales = new Materiales() ,

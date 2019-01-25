@@ -4,7 +4,7 @@ export class Procesos {
     constructor(
         public _id?: any, 
         public proceso?: Proceso, 
-        public orden?: number,
+        public orden?: string,
         // El padre de este proceso. Nos sirve para ordenar. 
         public procesoPadre: Proceso = new Proceso(),
        

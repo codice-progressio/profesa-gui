@@ -479,11 +479,11 @@ export class RegistroDeLineasComponent implements OnInit {
       let procesosArr: Procesos[] = [];
 
       // // Cargamos los procesos especiales en el folio si es que hay.
-      this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach(x => {
+      this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach( ( dndObject:DndObject<Proceso> ) => {
         let procesos: Procesos = new Procesos();
-        procesos.orden = Number(x.orden);
-        procesos.proceso = x.objeto;
-        procesos.procesoPadre = x.objetoPadre;
+        procesos.orden = dndObject.orden;
+        procesos.proceso = dndObject.objeto;
+        procesos.procesoPadre = dndObject.objetoPadre;
         procesosArr.push(procesos);
   
       });
