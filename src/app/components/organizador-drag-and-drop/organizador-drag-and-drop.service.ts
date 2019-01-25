@@ -408,15 +408,30 @@ ordenarPorPropiedadOrden(): any {
 
       // Ordenamos los hijos 
       objeto.hijos.ordenables.sort( (a, b)=>{
-        return Number(a.orden) - Number(b.orden);
+        // ES NECESARIO SEPARAR EL DECIMAL DEL ENTERO PARA
+        // ORDENAR LOS HIJOS. 
+
+        // SI TENEMOS UN NUMERO 1.1 Y 1.2 ENTONCES TODO MARCHA BIEN.
+        // EL PROBLEMA RESIDE EN LOS DECIMALES. TENEMOS QUE SEPARAR Y ORDENAR
+        // PRIMERO POR EL ENTERO Y LUEGO POR EL DECIMAL.
+
+        let entero_A   = a.orden.split('.')[0];
+        let entero_B   = b.orden.split('.')[0];
+
+        let decimal_A  =  a.orden.split('.')[1] ? a.orden.split('.')[1] :'0' ;
+        let decimal_B  =  b.orden.split('.')[1] ? b.orden.split('.')[1] :'0' ;
+
+        let x = Number(entero_A) - Number(entero_B);
+
+        return x == 0 ? Number(decimal_A) - Number(decimal_B) : x;
       } );
-
-
-
     }
   }
-
 }
+
+
+
+
 
 
 
