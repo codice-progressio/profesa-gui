@@ -3,8 +3,11 @@ FEATURES:
   
 FEATURES:
 
-Quimica:
-    ✔ Debe regristrar inicio de trabajo como transformacion y laser. @started(19-01-22 14:45) @done(19-01-23 07:13) @lasted(16h28m46s)
+  Quimica:
+      ✔ Debe regristrar inicio de trabajo como transformacion y laser. @started(19-01-22 14:45) @done(19-01-23 07:13) @lasted(16h28m46s)
+
+  Maquina:
+    ☐ Actualizar cambios para adaptar a api.
 
   Sistema de alertas y notificaciones. :
 
