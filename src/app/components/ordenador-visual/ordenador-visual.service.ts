@@ -173,7 +173,7 @@ export class OrdenadorVisualService {
         
         const proc = new Procesos();
         proc.proceso = proceso;
-        proc.orden = 0;
+        proc.orden = '0';
         proc.dragEnable = true;
         element.arreglo.push( proc );
         this.reordenarProcesos();

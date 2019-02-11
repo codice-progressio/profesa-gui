@@ -330,7 +330,7 @@ export class ProcesoComponent implements OnInit {
     
     const proc = new Procesos();
     proc.proceso = proceso;
-    proc.orden = this.familiaEditandose.procesos.length + 1;
+    proc.orden = (this.familiaEditandose.procesos.length + 1).toString();
     this.familiaEditandose.procesos.push(proc);
     
   }
@@ -344,7 +344,7 @@ export class ProcesoComponent implements OnInit {
     // Reordenamos los procesos.
     for (let i: number = 0; i < familia.procesos.length; i++) {
       const pro = familia.procesos[i];
-      pro.orden = i + 1;
+      pro.orden =( i + 1).toString();
     }
   }
 

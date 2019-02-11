@@ -572,7 +572,7 @@ export class ProcesosEnModeloComponent implements OnInit {
         const proc = new Procesos();
         // TODO: Guardar el id del padre aquí. Viene en X ???
         proc.proceso = proceso;
-        proc.orden = 0;
+        proc.orden = '0';
         element.arreglo.push( proc );
         this.reordenarProcesos();
         
