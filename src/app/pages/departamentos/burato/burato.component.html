@@ -7,7 +7,7 @@
 
                 <h1>Burato</h1>
 
-                <form (ngSubmit)="onSubmit(buratoForm.value, buratoForm.valid, $event)" [formGroup]="buratoForm">
+                <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
 
                     <div class="row">
                         <div class="form-group col-auto">
@@ -33,7 +33,7 @@
                     </div>
 
 
-                    <button [disabled]='buratoForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
                     <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
                 </form>
 

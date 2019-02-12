@@ -2,50 +2,51 @@ import { Component, OnInit } from '@angular/core';
 import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService } from 'src/app/services/service.index';
+import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 import { Metalizado } from '../../../models/metalizado.model';
 import { Orden } from 'src/app/models/orden.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { Burato } from 'src/app/models/burato.model';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
 
 @Component({
   selector: 'app-burato',
   templateUrl: './burato.component.html',
   styles: []
 })
-export class BuratoComponent implements OnInit {
+export class BuratoComponent extends GeneralesComponents< Burato > implements OnInit {
 
-
-    // =========================================
-    private NOMBRE_DEPTO: string = DEPARTAMENTOS.BURATO._n;
-    // =========================================
-  
-    buratoForm: FormGroup;
-    orden: Orden;
-    burato: Metalizado;
-    linea: FolioLinea = new FolioLinea();
-    
-  
 
   constructor(
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<Burato>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    private _validacionesService: ValidacionesService,
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
   
   ) {
 
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.titulo = DEPARTAMENTOS.BURATO._n;
-    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    );
+    this.tareasDeConfiguracion( new DepartamentosConfig().BURATO )
+
     
    }
 
   ngOnInit() {
-    this._qrScannerService.iniciar();
 
-    this.buratoForm = this.formBuilder.group({
+    this.formulario = this.formBuilder.group({
       peso10Botones: ['', [
         Validators.required,
         Validators.min(0.01),
@@ -62,38 +63,13 @@ export class BuratoComponent implements OnInit {
     });
 
   }
-
   
   public get peso10Botones_FB() : AbstractControl {
-    return this.buratoForm.get('peso10Botones');
+    return this.formulario.get('peso10Botones');
   }
-
   
   public get pesoTotalBoton_FB() : AbstractControl {
-    return this.buratoForm.get('pesoTotalBoton');
-  }
-  
-
-  cargarOrdenesDeDepartamento(){
-    this._listaDeOrdenesService.burato();
-
+    return this.formulario.get('pesoTotalBoton');
   }
 
-  limpiar(){
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.iniciar();
-    this.buratoForm.reset();
-
-  }
-
-  onSubmit(modelo: Metalizado, isValid:boolean, e ){
-    e.preventDefault();
-    if( !isValid ) return;
-
-    this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.BURATO._n)
-    .subscribe(()=>{
-      this.limpiar();
-    });
-    
-  }
 }
