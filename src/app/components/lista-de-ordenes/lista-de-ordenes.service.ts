@@ -100,220 +100,220 @@ export class ListaDeOrdenesService {
     }
 
  
-     /**
-     * Extra las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-    almacenDeBoton(): any {
-      const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.ALMACEN_DE_BOTON._n}`);
-      this.cargarDefaults().then(d=>{
-        this.cargarOrdenes(d.DEPARTAMENTOS.ALMACEN_DE_BOTON, this.opciones,a);
-        this.depto_vm = DEPARTAMENTOS.ALMACEN_DE_BOTON._vm;
-      }).catch( err =>{
-        this._msjService.err(err);
-      })
+  //    /**
+  //    * Extra las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  //   almacenDeBoton(): any {
+  //     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.ALMACEN_DE_BOTON._n}`);
+  //     this.cargarDefaults().then(d=>{
+  //       this.cargarOrdenes(d.DEPARTAMENTOS.ALMACEN_DE_BOTON, this.opciones,a);
+  //       this.depto_vm = DEPARTAMENTOS.ALMACEN_DE_BOTON._vm;
+  //     }).catch( err =>{
+  //       this._msjService.err(err);
+  //     })
       
-    }
+  //   }
     
-    /**
-     * Extra las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-    materiales() {
-      // if ( this.depto ) {
-        const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.MATERIALES._n}`);
-        this.cargarDefaults().then(d=>{
-          this.cargarOrdenes(d.DEPARTAMENTOS.MATERIALES, this.opciones,a);
-          this.depto_vm = DEPARTAMENTOS.MATERIALES._vm
+  //   /**
+  //    * Extra las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  //   materiales() {
+  //     // if ( this.depto ) {
+  //       const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.MATERIALES._n}`);
+  //       this.cargarDefaults().then(d=>{
+  //         this.cargarOrdenes(d.DEPARTAMENTOS.MATERIALES, this.opciones,a);
+  //         this.depto_vm = DEPARTAMENTOS.MATERIALES._vm
 
-        }).catch( err =>{
-          this._msjService.err(err);
-        })
+  //       }).catch( err =>{
+  //         this._msjService.err(err);
+  //       })
         
-      // }
-    }
+  //     // }
+  //   }
     
-    /**
-     * Extra las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-    pastilla() {
-      // if ( this.depto ) {
-        const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PASTILLA._n}`);
-        this.cargarDefaults().then(d=>{
-          this.cargarOrdenes(d.DEPARTAMENTOS.PASTILLA, this.opciones,a);
-        this.depto_vm = DEPARTAMENTOS.PASTILLA._vm
+  //   /**
+  //    * Extra las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  //   pastilla() {
+  //     // if ( this.depto ) {
+  //       const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PASTILLA._n}`);
+  //       this.cargarDefaults().then(d=>{
+  //         this.cargarOrdenes(d.DEPARTAMENTOS.PASTILLA, this.opciones,a);
+  //       this.depto_vm = DEPARTAMENTOS.PASTILLA._vm
 
-        }).catch( err =>{
-          this._msjService.err(err);
-        })
+  //       }).catch( err =>{
+  //         this._msjService.err(err);
+  //       })
       
-    // }
-  }
+  //   // }
+  // }
 
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  transformacion() {
-      // if ( this.depto ) {
-        const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.TRANSFORMACION._n}`);
-        this.cargarDefaults().then(d=>{
-          this.cargarOrdenes(d.DEPARTAMENTOS.TRANSFORMACION, this.opciones,a);
-        this.depto_vm = DEPARTAMENTOS.TRANSFORMACION._vm
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // transformacion() {
+  //     // if ( this.depto ) {
+  //       const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.TRANSFORMACION._n}`);
+  //       this.cargarDefaults().then(d=>{
+  //         this.cargarOrdenes(d.DEPARTAMENTOS.TRANSFORMACION, this.opciones,a);
+  //       this.depto_vm = DEPARTAMENTOS.TRANSFORMACION._vm
 
-        }).catch( err =>{
-          this._msjService.err(err);
-        })
+  //       }).catch( err =>{
+  //         this._msjService.err(err);
+  //       })
       
-    // }
-  }
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  laser() {
-      // if ( this.depto ) {
-      const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.LASER._n}`);
-      this.cargarDefaults().then(d=>{
-        this.cargarOrdenes(d.DEPARTAMENTOS.LASER, this.opciones,a);
-        this.depto_vm = DEPARTAMENTOS.LASER._vm
+  //   // }
+  // }
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // laser() {
+  //     // if ( this.depto ) {
+  //     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.LASER._n}`);
+  //     this.cargarDefaults().then(d=>{
+  //       this.cargarOrdenes(d.DEPARTAMENTOS.LASER, this.opciones,a);
+  //       this.depto_vm = DEPARTAMENTOS.LASER._vm
 
-      }).catch( err =>{
-        this._msjService.err(err);
-      })
+  //     }).catch( err =>{
+  //       this._msjService.err(err);
+  //     })
       
-    // }
-  }
+  //   // }
+  // }
   
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  pulido(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PULIDO._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.PULIDO, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.PULIDO._vm
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // pulido(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PULIDO._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.PULIDO, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.PULIDO._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
     
-  }
+  // }
   
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  seleccion(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.SELECCION._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.SELECCION, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.SELECCION._vm
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // seleccion(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.SELECCION._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.SELECCION, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.SELECCION._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
-  }
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
+  // }
   
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  empaque(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.EMPAQUE._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.EMPAQUE, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.EMPAQUE._vm
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // empaque(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.EMPAQUE._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.EMPAQUE, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.EMPAQUE._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
-  }
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
+  // }
   
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  metalizado(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.METALIZADO._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.METALIZADO, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.METALIZADO._vm
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // metalizado(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.METALIZADO._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.METALIZADO, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.METALIZADO._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
-  }
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  burato(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BURATO._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.BURATO, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.BURATO._vm
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
+  // }
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // burato(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BURATO._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.BURATO, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.BURATO._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
-  }
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  barnizado(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BARNIZADO._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.BARNIZADO, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.BARNIZADO._vm
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
+  // }
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // barnizado(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.BARNIZADO._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.BARNIZADO, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.BARNIZADO._vm
 
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
-  }
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
+  // }
   
-  /**
-     * Extrae las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-  productoTerminado(): any {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PRODUCTO_TERMINADO._n}`);
-    this.cargarDefaults().then(d=>{
-      this.cargarOrdenes(d.DEPARTAMENTOS.PRODUCTO_TERMINADO, this.opciones,a);
-      this.depto_vm = DEPARTAMENTOS.PRODUCTO_TERMINADO._vm;
+  // /**
+  //    * Extrae las ordenes correspondientes a este departamento.
+  //    *
+  //    * @returns {*}
+  //    * @memberof ListaDeOrdenesService
+  //    */
+  // productoTerminado(): any {
+  //   const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.PRODUCTO_TERMINADO._n}`);
+  //   this.cargarDefaults().then(d=>{
+  //     this.cargarOrdenes(d.DEPARTAMENTOS.PRODUCTO_TERMINADO, this.opciones,a);
+  //     this.depto_vm = DEPARTAMENTOS.PRODUCTO_TERMINADO._vm;
       
-    }).catch( err =>{
-      this._msjService.err(err);
-    })
+  //   }).catch( err =>{
+  //     this._msjService.err(err);
+  //   })
     
-  }
+  // }
   /**
    * Carga general para clase GeneralesComponents. 
    *
