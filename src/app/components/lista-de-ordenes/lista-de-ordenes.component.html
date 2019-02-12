@@ -1,4 +1,4 @@
-<div class="row animated fadeIn" *ngIf="!_s.hayOrdenes()">
+<div class="row animated fadeInDown" *ngIf="!_s.hayOrdenes()">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -28,7 +28,7 @@
 
 
 <ng-container *ngFor="let lv of _s.niveles">
-    <div class="row row animated fadeIn" *ngIf=" _s.ordenes[lv].length !==0">
+    <div class="row animated fadeInDown" *ngIf=" _s.ordenes[lv].length !==0">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
