@@ -326,7 +326,7 @@ export class ListaDeOrdenesService {
   cargar(nombreDepto: string, idDepto: string, vm_Depto: string   ) {
     const a: number = this._preLoaderService.loading(`Cargando ordenes: ${nombreDepto}`);
       this.cargarOrdenes( idDepto , this.opciones,a );
-      this.depto_vm = DEPARTAMENTOS.PRODUCTO_TERMINADO._vm;
+      this.depto_vm = vm_Depto;
   }
   
   
