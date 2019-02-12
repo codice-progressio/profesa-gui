@@ -62,10 +62,8 @@ export class LaserComponent extends GeneralesComponents< Laser > implements OnIn
       this.maquinas = maquinas;
     });
   }
-
+  
   ngOnInit() {
-    this.tareasNgOnInit();
-
      // Propios del departamento.
     this.formulario = this.formBuilder.group({
       cantidadDeBotones: ['', [
@@ -113,8 +111,5 @@ export class LaserComponent extends GeneralesComponents< Laser > implements OnIn
     if( !orden.ubicacionActual.laser ) orden.ubicacionActual.laser = new Laser();
     orden.ubicacionActual.laser.maquinaActual = maquina
   }
-
-
-
 
 }

@@ -70,7 +70,6 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
 
 
   ngOnInit() {
-    this.tareasNgOnInit( );
 
     // Propios del departamento.
     this.cargarUsuarios();

@@ -83,7 +83,8 @@ export class UsuarioService {
 
     return this.http.post(url, {token}).pipe(
       map((resp: any) => {
-        // console.log(resp.menu);
+       
+
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
         // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         // Retorna la respuesta de true de autenticación correcta para capturarla en

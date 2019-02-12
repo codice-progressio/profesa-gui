@@ -174,9 +174,10 @@ export class GeneralesComponents<T> {
                return this._departamentoService.buscarPorId( this.ID_DEPTO )
                     .toPromise();
            }).then( ( departamento: Departamento ) => {
-                console.log( departamento )
+                console.log( departamento.nombre )
                 this.NOMBRE_DEPTO = departamento.nombre
                 this.cargarOrdenedDeDepartamento(this.NOMBRE_DEPTO, this.ID_DEPTO, depto_vm )
+                this.tareasNgOnInit();
                 resolve( )
            }).catch( err => {
                reject( err );
