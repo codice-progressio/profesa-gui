@@ -22,7 +22,7 @@ export class Orden {
 
         public trayectoNormal?: Trayecto[],
         public trayectoRecorrido?: Trayecto [],
-        public ubicacionActual?: Trayecto,
+        public ubicacionActual: Trayecto = new Trayecto(),
         public siguienteDepartamento?: Trayecto,
         public nivelDeUrgencia: string = 'PRODUCCIÓN',
         public fechaFolio?: Date,

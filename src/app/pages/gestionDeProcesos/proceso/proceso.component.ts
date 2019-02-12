@@ -106,7 +106,7 @@ export class ProcesoComponent implements OnInit {
 
   cargarDepartamentos(){
     this._departamentosService
-    .cargarDepartamentos()
+    .todo()
     .subscribe((departamentos: Departamento[]) => {
       this.departamentos = departamentos;
     });

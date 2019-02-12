@@ -60,7 +60,7 @@ export class CostosDeProcesoComponent implements OnInit {
     });
 
     this._departamentosService
-      .cargarDepartamentos()
+      .todo()
       .subscribe((departamentos: Departamento[]) => {
         this.departamentos = departamentos;
       });

@@ -9,7 +9,7 @@
 
                 <h1>Materiales</h1>
 
-                <form (ngSubmit)="onSubmit(materialesForm.value, materialesForm.valid, $event)" [formGroup]="materialesForm">
+                <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
                     <hr>
 
                     <input type='hidden'>
@@ -29,7 +29,7 @@
                     <h1><small class='text-muted'>Maquina en la que se trabajo: </small> <strong>{{orden.ubicacionActual.materiales.maquinaActual.clave}}</strong></h1>
                     <hr>
 
-                    <button [disabled]='materialesForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
                     <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
                 </form>
             </div>

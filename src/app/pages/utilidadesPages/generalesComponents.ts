@@ -9,13 +9,30 @@ import { Orden } from "src/app/models/orden.models";
 import { Materiales } from "src/app/models/materiales.models";
 import { FolioLinea } from "src/app/models/folioLinea.models";
 import { Usuario } from "src/app/models/usuario.model";
+import { Departamento } from "src/app/models/departamento.models";
+import { VariablesDeptos } from "src/app/config/departamentosConfig";
+import { Trayecto } from "src/app/models/trayecto.models";
+import { type } from "os";
+import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo";
 
 export class GeneralesComponents<T> {
     
-    // =========================================
+    /**
+     *El nombre que se mostrara del departamento. 
+     *
+     * @type {string}
+     * @memberof GeneralesComponents
+     */
     NOMBRE_DEPTO: string = DEPARTAMENTOS.MATERIALES._n;
+
+
+    /**
+     * El id del departamento que esta registrado en la BD. 
+     *
+     * @type {string}
+     * @memberof GeneralesComponents
+     */
     ID_DEPTO: string;
-    // =========================================
 
 
     /**
@@ -60,8 +77,49 @@ export class GeneralesComponents<T> {
      */
     defaults: DefaultModelData;
 
-    promesa: Promise<T>;
 
+
+    /**
+     * El callback personalizado que se ejecuta dentro de tareasNgOnInit()
+     * 
+     *
+     * @type {*}
+     * @memberof GeneralesComponents
+     */
+    callback_ngOnInit: any = null;
+
+    /**
+     *Las variables estaticas de este departamento. 
+     *
+     * @type {VariablesDeptos}
+     * @memberof GeneralesComponents
+     */
+    variablesDepto: VariablesDeptos = null;
+
+    /**
+     * Esta propiedad se encarga de desactivar el boton de onsubmit y cualquier
+     * otro que se necesite para que no se dupliquen los envios. Se pone en true cuando
+     * se manda a guardar y cuando se termina el guardado y el servidor dio una respuesta
+     * vuelve a activarse. 
+     *
+     * @type {boolean}
+     * @memberof GeneralesComponents
+     */
+    enviando: boolean = false;
+
+
+    /**
+     * El callback que se ejecutara de manera opcional en buscarOrden
+     * de el qurScannerService. 
+     *
+     * @type {*}
+     * @memberof GeneralesComponents
+     */
+    callbackOpcional_QRScannerService: any = null;
+    
+
+    modeloCompleto: ModeloCompleto;
+    
 
 
     /**
@@ -69,77 +127,147 @@ export class GeneralesComponents<T> {
      * @param {QrScannerService} _qrScannerService El scaner qr para las ordenes. 
      * @param {ListaDeOrdenesService} _listaDeOrdenesService Donde se genera la lista de ordenes del departamento. 
      * @param {FormBuilder} formBuilder Para construir el formulario. 
-     * @param {FolioService} _folioService
-     * @param {DefaultsService} _defaultService
+     * @param {FolioService} _folioService Las operaciones de grabado y lectura de las ordenes. 
+     * @param {DefaultsService} _defaultService Los id por default. 
      * @memberof GeneralesComponents
      */
     constructor(
-        public _qrScannerService: QrScannerService,
+        public _qrScannerService: QrScannerService<T>,
         public _listaDeOrdenesService: ListaDeOrdenesService,
         public formBuilder: FormBuilder,
         public _folioService: FolioService,
-        // public _maquinaService: MaquinaService,
-        // public _usuarioService: UsuarioService,
         public _defaultService: DefaultsService,
         public _departamentoService: DepartamentoService
 
-    ) {
-           
-      
+    ) { }
+
+     /**
+     *Ejecuta las tareas de configuracion 
+     como lo son:
+
+        - Obtencion del departamento desde la BD.(ID y nombre)
+        - Carga de las ordenes. ( Del departamento en cuestion. )
+
+        
+     * Esta funcion se ejecuta desde el constructor antes que cualquier cosa.
+     * @param {string} variablesDepto El nombre de la variable del departamento que se quiere
+     * obtener su id.
+     * @memberof GeneralesComponents
+     */
+    tareasDeConfiguracion( variablesDepto: VariablesDeptos = null ) {
+        if( !variablesDepto ){
+            throw new Error('No se definieron los nombres de variables para el departamento..');
+        }
+
+        console.log(variablesDepto)
+        
+        this.variablesDepto = variablesDepto;
+        let depto_vm = variablesDepto._vm;
+        
+        // Obtenemos el id del departamento. 
+        new Promise( (resolve, reject ) =>{
+            this._defaultService.cargarDefaults()
+           .toPromise()
+           .then( (def: DefaultModelData ) =>{
+               this.ID_DEPTO = def.DEPARTAMENTOS[ this.variablesDepto._v ];
+               // Obtenemos el nombre. 
+               return this._departamentoService.buscarPorId( this.ID_DEPTO )
+                    .toPromise();
+           }).then( ( departamento: Departamento ) => {
+                console.log( departamento )
+                this.NOMBRE_DEPTO = departamento.nombre
+                this.cargarOrdenedDeDepartamento(this.NOMBRE_DEPTO, this.ID_DEPTO, depto_vm )
+                resolve( )
+           }).catch( err => {
+               reject( err );
+           });
+        });
+    }
+
+    /**
+     * Ejecuta las tareas que deben de ir en el tiempo del ngOnInit.
+     * Las tareas que realiza son las siguientes (En ese orden):
+     * 
+     *  - Define el titulo a mostrar en el scanner.  
+     *  - Define el callback de busqueda. 
+     *  - Ejecutar el callback de datos personalizado. 
+     *
+     * @memberof GeneralesComponents
+     */
+    tareasNgOnInit(){
+        console.log( this.NOMBRE_DEPTO)
+        this._qrScannerService.titulo = this.NOMBRE_DEPTO;
+        this._qrScannerService.buscarOrden( 
+            this,
+            ()=>{ this.limpiar() },
+            ()=>{ if( this.callbackOpcional_QRScannerService ) this.callbackOpcional_QRScannerService();  }           
+        )
+
+        this._qrScannerService.iniciar();
+
+
     }
 
 
     /**
      *Carga la lista de ordenes de este departamento
-     en la lista de ordenes service. 
-     *
+     en la lista de ordenes service.
+     
+     * @param {string} nombreDepto El nombre del departamento para mostrarlo en la precarga. 
+     * @param {string} idDepto El id del departamento
+     * @param {*} vm_depto El nombre de la variable para cargar las ordenes de ese departamento. 
      * @memberof GeneralesComponents
      */
-    cargarOrdenedDeDepartamento( ) {
-        this._listaDeOrdenesService.cargar();
+    cargarOrdenedDeDepartamento(nombreDepto: string, idDepto: string, vm_depto: string ) {
+        console.log( 'Algo importante debe pasar' )
+        console.log( idDepto )
+        this._listaDeOrdenesService.cargar( nombreDepto, idDepto, vm_depto  );
     }
-
 
     /**
-     *Ejecuta las tareas de configuracion 
-     como lo son:
-
-        - Obtencion del departamento desde la BD.
-        - Carga de las ordenes. 
-
-        
+     *Limpia los datos ejecutando las siguientes operaciones. 
+     * - cargarOrdenesDeDepartamento( )  
+     * - qrScannerService.iniciar( )
+     * - formulario.reset( )  
      *
-     * @param {string} depto_vm El nombre de la variable del departamento que se quiere
-     * obtener su id.
      * @memberof GeneralesComponents
      */
-    tareasDeConfiguracion( depto_vm: string ): Promise< any > {
-        // Obtenemos el id del departamento. 
-
-        return new Promise( (resolve, reject ) =>{
-            this._defaultService.cargarDefaults()
-           .toPromise()
-           .then( (def: DefaultModelData ) =>{
-               this.ID_DEPTO = def.DEPARTAMENTOS[ depto_vm ];
-               // Obtenemos el nombre. 
-
-               return this._departamentoService.
-
-           }).catch( err => {
-               reject( err );
-           });
-            
-        });
-
-
-        
-        // return new Promise( ( resolve, reject ) => {
-        //     this._defaultService.cargarDefaults().toPromise().;
-
-        //     console.log('uno')
-        //     this.cargarOrdenedDeDepartamento();
-        // });
+    limpiar( ){
+        this.cargarOrdenedDeDepartamento(this.NOMBRE_DEPTO, this.ID_DEPTO, this.variablesDepto._vm)
+        this._qrScannerService.iniciar( );
+        this.formulario.reset( );
     }
+
+    /**
+     *La funcion que se ejecutara desde el formulario. 
+     *
+     * @param {T} modelo El modelo del cual se guardaran los datos. 
+     * @param {boolean} isValid Esta funcion solo se ejecuta si este parametro es true. 
+     * @param {*} e El evento que previene la ejecucion por defecto del submit del html. 
+     * @memberof GeneralesComponents
+     */
+    onSubmit( modelo: T, isValid: boolean, e ){
+        e.preventDefault()
+        // No se ejecuta si el formulario no es valido. 
+        if( !isValid ) return false;
+
+        this._folioService.modificarOrden(modelo, this.orden._id, this.ID_DEPTO)
+            .subscribe( ()=>{ this.limpiar() } )
+    }
+
+    /**
+     *Marca la orden seleccionada como trabajando y limpia el formulario. 
+     *
+     * @memberof GeneralesComponents
+     */
+    iniciarTrabajoDeOrden ( ){
+        this._folioService.iniciarTrabajoDeOrden(this.orden, this.ID_DEPTO, this.variablesDepto )
+            .subscribe( ()=>{
+                this.limpiar();
+            })
+    }
+
+   
 
 
 }

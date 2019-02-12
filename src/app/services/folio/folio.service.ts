@@ -11,6 +11,7 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { UsuarioService } from '../usuario/usuario.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { VariablesDeptos } from 'src/app/config/departamentosConfig';
 
 @Injectable({
   providedIn: 'root'
@@ -290,15 +291,16 @@ export class FolioService {
    * @returns
    * @memberof FolioService
    */
-  iniciarTrabajoDeOrden(orden: Orden , depto: any , callbackError: any = null) {
+  iniciarTrabajoDeOrden(orden: Orden , idDepto: string, depto: VariablesDeptos , callbackError: any = null) {
     const a: number = this._preLoaderService.loading('Iniciando trabajdo de orden.');
     console.log(orden.ubicacionActual);
     
     const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
+    console.log( url )
     return this.http.put(url, 
       {
         _id: orden._id,
-        departamento: depto._n, 
+        departamento: idDepto, 
         deptoTrabajado: orden.ubicacionActual[depto._v.toLowerCase()],
       
       }).pipe(
@@ -354,10 +356,19 @@ export class FolioService {
   }
 
   // Guardamos los cambios de la órden. 
-  modificarOrden(dato: any, idOrden: string, depto: string): any {
+  /**
+   *Guarda los cambios de la orden que se le pase como paramentro. 
+   *
+   * @param {*} dato El modelo que se va a pasar para guardar.
+   * @param {string} idOrden El id de la orden que se va a modificar. 
+   * @param {string} idDepto El id del departamento que se va a modificar. 
+   * @returns {*} 
+   * @memberof FolioService
+   */
+  modificarOrden(dato: any, idOrden: string, idDepto: string): any {
     const a: number = this._preLoaderService.loading('Guardando cambios de orden.');
-    
-    const url =`${URL_SERVICIOS}/orden/${idOrden}?depto='${depto}'`;
+    const url =`${URL_SERVICIOS}/orden/${idOrden}?depto=${idDepto}`;
+    console.log(url)
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
         this._msjService.ok_(resp,null, a);

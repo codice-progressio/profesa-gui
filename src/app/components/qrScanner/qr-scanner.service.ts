@@ -9,6 +9,7 @@ import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Orden } from 'src/app/models/orden.models';
 import { ListaDeOrdenesService } from '../lista-de-ordenes/lista-de-ordenes.service';
 import { PreLoaderService } from '../pre-loader/pre-loader.service';
+import { GeneralesComponents } from '../../pages/utilidadesPages/generalesComponents';
 
 /**
  * Esta funcion esta declarada en el index e 
@@ -34,11 +35,14 @@ declare let qrData: any;
  *
  * @export
  * @class QrScannerService
+ * @template T El componente que manda a llamar a este servicio. Tiene que
+ * ser igual que generales component. 
+ * 
  */
 @Injectable({
   providedIn: 'root'
 })
-export class QrScannerService {
+export class QrScannerService<T> {
   
   /**
    *El titulo que aparecera en el lector. 
@@ -100,27 +104,25 @@ export class QrScannerService {
   /**
    * Es necesario que la clase que manda a llamar esta función tenga los 
   * siguientes parametros accesibles
-  *     orden:Orden ,                    <= Recive la órden escaneada.   
-  *     modeloCompleto: modeloCompleto , <= Recive el modeloCompleto
-  *     linea: FolioLinea                <= Recive la Linea folio.       
-  *     NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
-  *     cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
+  *  - orden:Orden ,                    <= Recive la órden escaneada.   
+  *  - modeloCompleto: modeloCompleto , <= Recive el modeloCompleto
+  *  - linea: FolioLinea                <= Recive la Linea folio.       
+  *  - NOMBRE_DEPTO                     => Envía el nombre del departamento actual. 
+  *  - ID_DEPTO                         => Envia el id del departamento. Sustituye a NOMBRE_DEPTO por que ahora utilizamos el id del departamento. 
+  *  - cargarOrdenesDeDepartamento()    => Ejecuta la función que carga la lista de órdenes del depto. 
   * 
-  * El me es la clase completa que pasamos para trabajarla desde aqui.. 
-  * El cb_Error es la función que se ejecutara cuando haya un error. 
-  * El cb_Optional es por si queremos hacer algo más con los datos. 
-   *
-   * @param {*} me
-   * @param {*} cb_Error
-   * @param {*} [cb_Optional=null]
-   * @memberof QrScannerService
-   */
-  buscarOrden(me, cb_Error, cb_Optional: any = null) {
+  *
+  * @param {GeneralesComponents<T>} me El me es la clase completa que pasamos para trabajarla desde aqui..
+  * @param {*} cb_Error El cb_Error es la función que se ejecutara cuando haya un error. 
+  * @param {*} [cb_Optional=null] El cb_Optional es por si queremos hacer algo más con los datos.  
+  * @memberof QrScannerService
+  */
+  buscarOrden(me: GeneralesComponents<T>  , cb_Error, cb_Optional: any = null) {
     // Definimos el callback de error. La acción que se realizará
     // cuando el api mande un error. 
     this.callbackError = cb_Error;
     // La acción que se va a ejecutar cuando se escanee
-    // correctamente la órden. 
+    // correctamente la órden. s
     this.callback = ( data ) => {
       const call: any = (resp: any) => {
         me.orden = resp.orden;
@@ -132,19 +134,24 @@ export class QrScannerService {
         }  
       };
       if ( this.recivir ) {
-        this._folioService.recivirUnaOrden( data, me.NOMBRE_DEPTO, this.callbackError)
+        this._folioService.recivirUnaOrden( data, me.ID_DEPTO, this.callbackError)
           .subscribe(() => {
            this.iniciar();
-           me.cargarOrdenesDeDepartamento();
+           me.cargarOrdenedDeDepartamento(me.NOMBRE_DEPTO, me.ID_DEPTO, me.variablesDepto._vm);
           });
       } else {
-        this._folioService.buscarOrden( data, me.NOMBRE_DEPTO, this.callbackError)
+        this._folioService.buscarOrden( data, me.ID_DEPTO, this.callbackError)
         .subscribe(call);
       }
       
     };
   }
 
+  /**
+   * Inicia el scanner. 
+   *
+   * @memberof QrScannerService
+   */
   iniciar() {
     this.urlActual = this.router.url;
     this.lecturaCorrecta = false;
@@ -182,6 +189,11 @@ export class QrScannerService {
     }
   }
 
+  /**
+   *Detiene la ejecucion del QR.
+   *
+   * @memberof QrScannerService
+   */
   detener() {
     qrDetener();
     this.leyendo = false;
@@ -190,11 +202,22 @@ export class QrScannerService {
     // qrData = null;
   }
 
+  /**
+   * Remueve el video y el canvas del html. 
+   *
+   * @memberof QrScannerService
+   */
   removerVideo() {
     $(this.lector + ' video').remove();
     $(this.lector + ' canvas').remove();
   }
 
+  /**
+   *Ejecuta una promesa para obtener la lectura de los datos.
+   *
+   * @returns
+   * @memberof QrScannerService
+   */
   promesa () {
     return new Promise( (resolve, reject )  => {
       
@@ -219,6 +242,11 @@ export class QrScannerService {
     });
   }
 
+  /**
+   *El mensaje que se mostrara cuando se escanee de manera correcta. 
+   *
+   * @memberof QrScannerService
+   */
   msjEscaneado () {
     if ( this.mostrarMensaje ) {
       swal({

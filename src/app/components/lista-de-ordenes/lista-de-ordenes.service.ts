@@ -314,6 +314,20 @@ export class ListaDeOrdenesService {
     })
     
   }
+  /**
+   * Carga general para clase GeneralesComponents. 
+   *
+   *
+   * @param {string} nombreDepto El nombre del departamento que se mostrara en la precarga. 
+   * @param {string} idDepto El id del departamento del cual se quieren cargar las ordenes. 
+   * @param {string} vm_Depto El string de la variable de modelo del depto. ( Esto es para buscar la orden en ese depto.)
+   * @memberof ListaDeOrdenesService
+   */
+  cargar(nombreDepto: string, idDepto: string, vm_Depto: string   ) {
+    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${nombreDepto}`);
+      this.cargarOrdenes( idDepto , this.opciones,a );
+      this.depto_vm = DEPARTAMENTOS.PRODUCTO_TERMINADO._vm;
+  }
   
   
   /**
