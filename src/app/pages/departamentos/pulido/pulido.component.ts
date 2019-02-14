@@ -5,55 +5,51 @@ import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
 import { FolioLinea } from '../../../models/folioLinea.models';
 import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
-import { FolioService, ValidacionesService } from '../../../services/service.index';
+import { FolioService, ValidacionesService, DepartamentoService } from '../../../services/service.index';
 import { Pulido } from '../../../models/pulido.models';
 import { DEPARTAMENTOS } from '../../../config/departamentos';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { Materiales } from 'src/app/models/materiales.models';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
 
 @Component({
   selector: 'app-pulido',
   templateUrl: './pulido.component.html',
   styles: []
 })
-export class PulidoComponent implements OnInit {
-
-  // =========================================
-  private NOMBRE_DEPTO: string = DEPARTAMENTOS.PULIDO._n;
-  // =========================================
-
-  pulidoForm: FormGroup;
-  orden: Orden;
-  modeloCompleto: ModeloCompleto;
-  linea: FolioLinea = new FolioLinea();
-  
+export class PulidoComponent  extends GeneralesComponents< Pulido > implements OnInit {
 
 
 
   constructor(
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<Materiales>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    private _validacionesService: ValidacionesService,
-    // public _usuarioService: UsuarioService
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
+    // Propios del departamento.
+
   ) { 
     
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.titulo = DEPARTAMENTOS.PULIDO._n;
-    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
-    this._qrScannerService.titulo = DEPARTAMENTOS.PULIDO._n;
+   super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    );
+
+    this.tareasDeConfiguracion( new DepartamentosConfig().PULIDO )
 
 
   }
-
-  cargarOrdenesDeDepartamento( ) {
-    this._listaDeOrdenesService.pulido();
-  }
-
   ngOnInit() {
-    this._qrScannerService.iniciar();
-    
     // Iniciamos el formulario.
-    this.pulidoForm = this.formBuilder.group({
+    this.formulario = this.formBuilder.group({
       peso10Botones: ['', 
       [
         Validators.required,
@@ -73,39 +69,12 @@ export class PulidoComponent implements OnInit {
     
   }
 
-  limpiar( ) {
-    this.cargarOrdenesDeDepartamento();
-    // Reiniciamos el escanner. 
-    this._qrScannerService.iniciar();
-
-    // Reiniciamos el formulario.
-    this.pulidoForm.reset();
-  }
-
-  onSubmit(    ) {
-     // Creamos el objeto nuevo para guardar en el departamento.
-    const pulido: Pulido = new Pulido();
-    pulido.peso10Botones = this.pulidoForm.value.peso10Botones;
-    pulido.pesoTotalBoton = this.pulidoForm.value.pesoTotalBoton;
-    pulido.cantidad = this.calcularCantidad();
-
-    this._folioService.modificarOrden( 
-      pulido, 
-      this.orden._id,
-      this.NOMBRE_DEPTO
-    ).subscribe(
-      () => {
-      this.limpiar();
-    });
-
-  }
-
   public get peso10(): AbstractControl {
-     return this.pulidoForm.get('peso10Botones');
+     return this.formulario.get('peso10Botones');
   }
   
   public get pesoTotal(): AbstractControl {
-    return this.pulidoForm.get('pesoTotalBoton');
+    return this.formulario.get('pesoTotalBoton');
   }
   
   // public get cant(): AbstractControl {

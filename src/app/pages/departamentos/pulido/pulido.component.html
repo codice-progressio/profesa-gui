@@ -1,6 +1,6 @@
 <app-qr-scanner></app-qr-scanner>
 
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+<div class="row animated slideInDown" *ngIf="_qrScannerService.lecturaCorrecta">
     <div class="col-12">
         <div class="card border-dark">
             <div class="card-header bg-success">
@@ -31,7 +31,7 @@
                                     <div class="card-body">
 
 
-                                        <form (ngSubmit)="onSubmit()" [formGroup]="pulidoForm">
+                                        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
 
                                             <div class="row">
                                                 <div class="col-6">
@@ -57,7 +57,7 @@
 
                                             <br>
 
-                                            <button type="submit" [ngClass]="{'btn-success': pulidoForm.valid, 'btn-outline-dark': pulidoForm.invalid}" [disabled]="pulidoForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
                                             <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
 
                                             <br>
