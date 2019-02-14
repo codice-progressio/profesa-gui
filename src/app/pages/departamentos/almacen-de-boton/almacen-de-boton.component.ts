@@ -4,42 +4,49 @@ import { Orden } from 'src/app/models/orden.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FolioService, ValidacionesService } from 'src/app/services/service.index';
+import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { AlmacenDeBoton } from 'src/app/models/almacenDeBoton.model';
 import { DEPARTAMENTOS } from '../../../config/departamentos';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { Materiales } from 'src/app/models/materiales.models';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
 
 @Component({
   selector: 'app-almacen-de-boton',
   templateUrl: './almacen-de-boton.component.html',
   styles: []
 })
-export class AlmacenDeBotonComponent implements OnInit {
+export class AlmacenDeBotonComponent extends GeneralesComponents< AlmacenDeBoton >  implements OnInit {
   
-  almacenDeBotonForm: FormGroup;
-  orden: Orden;
-  almacenDeBoton: AlmacenDeBoton;
-  linea: FolioLinea = new FolioLinea();
-  NOMBRE_DEPTO: string = DEPARTAMENTOS.ALMACEN_DE_BOTON._n;
  
 
   constructor(
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<AlmacenDeBoton>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    private _validacionesService: ValidacionesService,
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
+    // Propios del departamento
 
   ) {
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.titulo = DEPARTAMENTOS.ALMACEN_DE_BOTON._n;
-    this._qrScannerService.buscarOrden(this, () => {this.limpiar()});
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    );
 
+    this.tareasDeConfiguracion( new DepartamentosConfig().ALMACEN_DE_BOTON )
   }
 
   ngOnInit() {
-    this._qrScannerService.iniciar();
 
-    this.almacenDeBotonForm = this.formBuilder.group({
+    this.formulario = this.formBuilder.group({
       cantidadDeBoton: ['', [
         Validators.required,
         Validators.min(1),
@@ -51,30 +58,7 @@ export class AlmacenDeBotonComponent implements OnInit {
   }
 
   public get cantidadDeBoton_FB() : AbstractControl {
-    return this.almacenDeBotonForm.get('cantidadDeBoton');
-  }
-
-  cargarOrdenesDeDepartamento(){
-    this._listaDeOrdenesService.almacenDeBoton();
-
-  }
-
-  limpiar(){
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.iniciar();
-    this.almacenDeBotonForm.reset();
-
-  }
-
-  onSubmit(modelo: AlmacenDeBoton, isValid:boolean, e ){
-    e.preventDefault();
-    if( !isValid ) return;
-
-    this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.ALMACEN_DE_BOTON._n)
-    .subscribe(()=>{
-      this.limpiar();
-    });
-    
+    return this.formulario.get('cantidadDeBoton');
   }
 
 

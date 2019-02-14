@@ -17,6 +17,7 @@ import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
 export class EmpaqueComponent extends GeneralesComponents< Empaque > implements OnInit {
 
   usuarios: Usuario [] = [];
+  
 
   constructor(
     public _qrScannerService: QrScannerService<Empaque>,

@@ -10,7 +10,7 @@
 
                 <hr>
 
-                <form (ngSubmit)="onSubmit(almacenDeBotonForm.value, almacenDeBotonForm.valid, $event)" [formGroup]="almacenDeBotonForm">
+                <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
 
                     <div class="row">
                         <div class="form-group col-auto">
@@ -19,15 +19,12 @@
                             <small id="cantidadDeBotonId" class="form-text text-muted">Ingresa la cantidad de boton surtida.</small>
                             <app-validacion-inputs [campo]='cantidadDeBoton_FB'></app-validacion-inputs>
                         </div>
-
-
                     </div>
 
-
-                    <button [disabled]='almacenDeBotonForm.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
                     <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
-                </form>
 
+                </form>
             </div>
         </div>
     </div>
