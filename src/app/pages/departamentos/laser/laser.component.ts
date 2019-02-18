@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
-import swal from 'sweetalert2';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { FolioService, ValidacionesService, MaquinaService, DepartamentoService } from 'src/app/services/service.index';
-import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-import { Metalizado } from '../../../models/metalizado.model';
 import { Orden } from 'src/app/models/orden.models';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Laser } from 'src/app/models/laser.model';
 import { Maquina } from 'src/app/models/maquina.model';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
@@ -89,11 +85,6 @@ export class LaserComponent extends GeneralesComponents< Laser > implements OnIn
     return this.formulario.get('bl');
   }
   
-
-  cargarOrdenesDeDepartamento(){
-    this._listaDeOrdenesService.laser();
-  }
-
 
   /**
    *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace

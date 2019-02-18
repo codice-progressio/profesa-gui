@@ -34,7 +34,7 @@
                                     <div class="card-body">
 
 
-                                        <form #f (ngSubmit)="onSubmit()" [formGroup]="transformacionForm">
+                                        <form #f (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
                                             <div class="row">
                                                 <div class="form-group col-4">
                                                     <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadDeBoton" placeholder="Cantidad de botón">
@@ -59,7 +59,7 @@
 
                                             <br>
 
-                                            <button type="submit" [ngClass]="{'btn-success': transformacionForm.valid, 'btn-outline-dark': transformacionForm.invalid}" [disabled]="transformacionForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
                                             <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
 
                                             <br>
