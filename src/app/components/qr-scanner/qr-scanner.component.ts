@@ -6,10 +6,10 @@ import { QrScannerService } from '../qrScanner/qr-scanner.service';
   templateUrl: './qr-scanner.component.html',
   styles: []
 })
-export class QrScannerComponent implements OnInit {
+export class QrScannerComponent<T> implements OnInit {
 
   constructor(
-    public _s: QrScannerService
+    public _s: QrScannerService<T>
   ) { }
 
   ngOnInit() {
