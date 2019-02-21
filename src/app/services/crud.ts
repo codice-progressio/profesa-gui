@@ -30,6 +30,8 @@ export class CRUD<T>  {
      */
     base: string;
 
+    listarTodo: boolean = false;
+
     
     /**
      * Esta url se utiliza para definirla ruta de busqueda cuando es diferente.
@@ -115,8 +117,11 @@ export class CRUD<T>  {
         let url  =  this.base + (urlAlternativa ? urlAlternativa : '') ;
         
         // Los valores para el paginador. 
-        
-        url += `?desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
+        if( this.listarTodo ) {
+            url += `?desde=0&limite=100000`
+        } else {
+            url += `?desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
+        }
         // Valores para el ordenamiento. 
         url+= `&sort=${ sort ? 1 : -1 }`;
         url+= campo ? `&campo=${ campo }` : '';

@@ -28,6 +28,9 @@ export class DepartamentoService  extends CRUD<Departamento>{
     this.nombreDeDatos.plural = 'departamentos';
     this.nombreDeDatos.singular = 'departamento';
     this.urlBusqueda = '/buscar';
+
+    this.listarTodo = true;
+    
   }
 
   
