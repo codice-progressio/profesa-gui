@@ -37,6 +37,12 @@ import { BarnizadoComponent } from './departamentos/barnizado/barnizado.componen
 import { BuratoComponent } from './departamentos/burato/burato.component';
 import { LaserComponent } from './departamentos/laser/laser.component';
 import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component';
+import { ProcesosComponent } from './gestionDeProcesos/procesos/procesos.component';
+import { ProcesosDetalleComponent } from './gestionDeProcesos/procesos/procesos-detalle.component';
+import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.component';
+import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-detalle.component';
+import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component';
+import { FamiliaDeProcesosDetalleComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos-detalle.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -327,8 +333,85 @@ const pagesRoutes: Routes = [
         //     }
         // },
         // Gestión de procesos
+
+
+
+
+
         {
             path: 'procesos', 
+            component: ProcesosComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Gestión de procesos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'procesos/detalle/:id', 
+            component: ProcesosDetalleComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Detalle de procesos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'maquinas', 
+            component: MaquinasComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Gestión de Maquinas',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'maquinas/detalle/:id', 
+            component: MaquinasDetalleComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Detalle de Maquinas',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'familiaDeProcesos', 
+            component: FamiliaDeProcesosComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Gestión de Familias de Procesos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'familiaDeProcesos/detalle/:id', 
+            component: FamiliaDeProcesosDetalleComponent, 
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Detalle de Familia de Procesos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+
+
+
+
+
+
+        {
+            path: 'procesos_old', 
             component: ProcesoComponent, 
             canActivate: [PermisosGuard], 
             data: {

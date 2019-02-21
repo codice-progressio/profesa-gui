@@ -54,6 +54,12 @@ import { BuratoComponent } from './departamentos/burato/burato.component';
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component';
 import { LaserComponent } from './departamentos/laser/laser.component';
 import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component';
+import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component';
+import { ProcesosComponent } from './gestionDeProcesos/procesos/procesos.component';
+import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.component';
+import { FamiliaDeProcesosDetalleComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos-detalle.component';
+import { ProcesosDetalleComponent } from './gestionDeProcesos/procesos/procesos-detalle.component';
+import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-detalle.component';
 
 
 
@@ -102,6 +108,12 @@ import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almace
        BarnizadoComponent,
        LaserComponent,
        AlmacenDeBotonComponent,
+       FamiliaDeProcesosComponent,
+       ProcesosComponent,
+       ProcesosDetalleComponent,
+       MaquinasComponent,
+       FamiliaDeProcesosDetalleComponent,
+       MaquinasDetalleComponent
 
 
       ],
