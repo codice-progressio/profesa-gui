@@ -50,7 +50,7 @@ export class CostosDeProcesoComponent implements OnInit {
     });
 
     this._maquinaService
-      .obtenerTodasLasMaquinas()
+      .todo()
       .subscribe((maquinas: Maquina[]) => {
         this.maquinas = maquinas;
       });
@@ -78,14 +78,14 @@ export class CostosDeProcesoComponent implements OnInit {
 
   guardarModificacionesAEstaMaquina(maquina: Maquina) {
     // Debe tener por lo menos un gasto.
-    if (maquina.gastos.length === 0) {
-      swal(
-        'No asignaste gastos.',
-        'Debes de asignar por lo menos un gasto a la máquina. ',
-        'error'
-      );
-      return;
-    }
+    // if (maquina.gastos.length === 0) {
+    //   swal(
+    //     'No asignaste gastos.',
+    //     'Debes de asignar por lo menos un gasto a la máquina. ',
+    //     'error'
+    //   );
+    //   return;
+    // }
 
     // Debe tener por lo menos un departamento.
     if (maquina.departamentos.length === 0) {
@@ -99,13 +99,13 @@ export class CostosDeProcesoComponent implements OnInit {
 
     if (!maquina._id) {
       this._maquinaService
-        .guardarNuevaMaquina(maquina)
+        .guardar(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
         });
     } else {
       this._maquinaService
-        .modificarMaquina(maquina)
+        .guardar(maquina)
         .subscribe((resp: Maquina) => {
           this.limpiarMaquina(maquina);
         });
@@ -160,7 +160,7 @@ export class CostosDeProcesoComponent implements OnInit {
   }
 
   agregarGasto(gasto: Gasto) {
-    this.maquinaEditandose.gastos.push(this.crearGastoConsumo(gasto));
+    // this.maquinaEditandose.gastos.push(this.crearGastoConsumo(gasto));
   }
 
   agregarGastoAProceso(gasto: Gasto) {
@@ -176,7 +176,7 @@ export class CostosDeProcesoComponent implements OnInit {
   }
 
   eliminarGastoConsumo(i: number) {
-    this.maquinaEditandose.gastos.splice(i, 1);
+    // this.maquinaEditandose.gastos.splice(i, 1);
   }
 
   eliminarDepartamento(i: number) {
@@ -197,17 +197,17 @@ export class CostosDeProcesoComponent implements OnInit {
   }
 
   maquinaContieneGasto(gasto: Gasto) {
-    if (!this.maquinaEditandose.gastos) {
-      return;
-    }
+    // if (!this.maquinaEditandose.gastos) {
+    //   return;
+    // }
 
-    for (let i = 0; i < this.maquinaEditandose.gastos.length; i++) {
-      const g: Gasto = this.maquinaEditandose.gastos[i].gasto;
-      if (g._id === gasto._id) {
-        return true;
-      }
-    }
-    return false;
+    // for (let i = 0; i < this.maquinaEditandose.gastos.length; i++) {
+    //   const g: Gasto = this.maquinaEditandose.gastos[i].gasto;
+    //   if (g._id === gasto._id) {
+    //     return true;
+    //   }
+    // }
+    // return false;
   }
 
   eliminarMaquina(i: number) {

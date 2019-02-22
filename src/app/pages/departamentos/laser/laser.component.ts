@@ -54,7 +54,7 @@ export class LaserComponent extends GeneralesComponents< Laser > implements OnIn
     
     this.tareasDeConfiguracion( new DepartamentosConfig().LASER )
     
-    this._maquinaService.obtenerTodasLasMaquinas().subscribe(( maquinas:Maquina[])=>{
+    this._maquinaService.todo().subscribe(( maquinas:Maquina[])=>{
       this.maquinas = maquinas;
     });
   }
