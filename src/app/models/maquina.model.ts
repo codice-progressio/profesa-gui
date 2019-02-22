@@ -10,13 +10,15 @@ export class Maquina {
         public clave?: string,
         public anio?: number,
         public nombresAnteriores?: {nombreAnterio?: string, fechaDeCambio?: Date}[],
-        public ordenes?: Orden[],
+        // public ordenes?: Orden[],
         public departamentos: Departamento[] = [],
+        
         public datosDeTrabajo?: {modeloTrabajando?: ModeloCompleto },
         public numeroDeSerie?: string,
-        public gastos: GastoConsumo[] = [],
-        public costo?: number,
-        public depreciacion?: number,
+        // public gastos: GastoConsumo[] = [],
+        // public costo?: number,
+        // public depreciacion?: number,
+        
         public observaciones?: string,
         public tiempos: any =  {
             // Esta estructura debe buscar asi: tiempo[idModeloCompleto] y obitiene los segundos.             

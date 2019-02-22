@@ -73,7 +73,7 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
 
     // Propios del departamento.
     this.cargarUsuarios();
-    this._maquinaService.obtenerTodasLasMaquinas()
+    this._maquinaService.todo()
       .subscribe( ( maquinas:Maquina[] )=>{
         this.maquinas = maquinas;
     });

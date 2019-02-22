@@ -60,6 +60,7 @@ import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.compone
 import { FamiliaDeProcesosDetalleComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos-detalle.component';
 import { ProcesosDetalleComponent } from './gestionDeProcesos/procesos/procesos-detalle.component';
 import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-detalle.component';
+import { MaquinasCrearModificarComponent } from './gestionDeProcesos/maquinas/maquinas-crear-modificar.component';
 
 
 
@@ -113,7 +114,8 @@ import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-
        ProcesosDetalleComponent,
        MaquinasComponent,
        FamiliaDeProcesosDetalleComponent,
-       MaquinasDetalleComponent
+       MaquinasDetalleComponent,
+       MaquinasCrearModificarComponent
 
 
       ],

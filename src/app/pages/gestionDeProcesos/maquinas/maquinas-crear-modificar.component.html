@@ -1,0 +1,19 @@
+<div *ngIf="this.maquinasComponent.mostrarCrearModificar" class="row animated faster" [ngClass]="{'slideOutUp': !this.maquinasComponent.crearModificar , 'slideInDown': this.maquinasComponent.crearModificar  }">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+
+
+
+
+                <a (click)="cancelar()" class="btn btn-danger mr-3 " role="button">Cancelar</a>
+                <a class="btn btn-success" role="button">
+                    <span *ngIf="this.maquinasComponent.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                    <span *ngIf="!this.maquinasComponent.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,52 @@
-<p>
-  maquinas works!
-</p>
+<div *ngIf="mostrarLista" class="row animated faster" [ngClass]="{'slideInDown': !crearModificar , 'slideOutUp': crearModificar  }">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for=""></label>
+                    <input type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar.">
+                    <small id="helpId" class="form-text text-muted">Buscar maquinas</small>
+                </div>
+                <hr>
+
+                <a (click)="crear()" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Crear </a>
+
+                <hr>
+                <app-paginador></app-paginador>
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre</th>
+                            <th>Clave</th>
+                            <th>Año</th>
+                            <th>Departamentos</th>
+                            <th>Numero de serie</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let maquina of maquinas">
+                            <td><a (click)="mostrarDetalle(maquina._id)" class="btn btn-primary btn-sm" href="#" role="button"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                            <td>{{maquina.nombre}}</td>
+                            <td>{{maquina.clave}}</td>
+                            <td>{{maquina.anio}}</td>
+                            <td><span *ngFor="let departamento of maquina.departamentos">{{departamento.nombre}} <hr></span></td>
+                            <td>{{maquina.numeroDeSerie}}</td>
+                            <td>{{maquina.observaciones}}</td>
+                            <td><a (click)="editar( maquina._id )" class="btn btn-success btn-sm" href="#" role="button"><i class="fas fa-edit    "></i></a></td>
+                            <td><a (click)="eliminar( maquina._id)" class="btn btn-danger btn-sm" href="#" role="button"><i class="fas fa-times   "></i></a></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <app-paginador></app-paginador>
+
+            </div>
+        </div>
+    </div>
+</div>
+<app-maquinas-crear-modificar [maquinasComponent]='esteComponente'></app-maquinas-crear-modificar>
+
+<app-maquinas-detalle> </app-maquinas-detalle>
