@@ -30,6 +30,14 @@ export class CRUD<T>  {
      */
     base: string;
 
+    /**
+     *Si esta propiedad se pone en true
+     se ignora el limite y desde del paginador 
+     y se establecen en 0 y 100000 respectivamente.
+     *
+     * @type {boolean}
+     * @memberof CRUD
+     */
     listarTodo: boolean = false;
 
     

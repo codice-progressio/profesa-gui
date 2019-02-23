@@ -38,7 +38,19 @@ export class MaquinasComponent implements OnInit {
    */
   idModificar: string = null;
 
+  /**
+   *Muestra la lista de objetos. Sirve para la animacion.
+   *
+   * @type {boolean}
+   * @memberof MaquinasComponent
+   */
   mostrarLista: boolean = true;
+  /**
+   *Muestra el componente crearModificar. 
+   *
+   * @type {boolean}
+   * @memberof MaquinasComponent
+   */
   mostrarCrearModificar: boolean = false;
   /**
    *El tiempo que dura en ocultar el componente
@@ -49,9 +61,6 @@ export class MaquinasComponent implements OnInit {
    * @memberof MaquinasComponent
    */
   tiempoDeTransicion: number = 500;
-
-
-
 
 
   /**
@@ -107,12 +116,17 @@ export class MaquinasComponent implements OnInit {
 
   }
 
+  /**
+   * Interpola los valores necesarios para que se cree
+   * la animacion al cambiar entre la lista y el registroModificion.
+   *
+   * @memberof MaquinasComponent
+   */
   animar( ){
     this.crearModificar = !this.crearModificar;
     setTimeout( ()=>{
       this.mostrarLista = !this.mostrarLista;
       this.mostrarCrearModificar = !this.mostrarCrearModificar;
-
     }, this.tiempoDeTransicion );
   }
 
