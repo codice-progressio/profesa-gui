@@ -5,11 +5,9 @@
                 <h1>
                     Registrar <span *ngIf="this.maquinasComponent.idModificar">nueva</span> maquina
                 </h1>
+                <hr>
+                <br>
                 <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
-
-
-
-
 
                     <div class="row">
                         <div class="form-group col-12 col-md-6 col-lg-4">
@@ -44,8 +42,8 @@
                         -->
                         <ng-container *ngFor="let departamento of departamentos">
                             <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="custom-control custom-checkbox">
-                                    <input #select (change)="agregarQuitarId(departamento._id, $event)" [checked]='estaAgregado( departamento._id )' type="checkbox" class="custom-control-input" [id]="departamento._id">
+                                <div class="custom-control custom-checkbox mt-3">
+                                    <input (change)="agregarQuitarId(departamento._id, $event)" [checked]='estaAgregado( departamento._id )' type="checkbox" class="custom-control-input" [id]="departamento._id">
                                     <label class="custom-control-label" [for]="departamento._id">{{departamento.nombre}}</label>
                                 </div>
 
@@ -58,13 +56,14 @@
                           <ng-container *ngFor="let cp of formulario.controls['departamentos'].controls; let i = index">
 
                             <div class="row" [formGroupName]="i">
-                              <input formControlName="_id"  type="text"  [id]="i+'depto'" >
+                              <input formControlName="_id"  type="hidden"  [id]="i+'depto'" >
 
                             </div>
                           </ng-container> 
                   
-                          <app-validacion-inputs [campo]="departamentos_FB" [directo]='true'></app-validacion-inputs>
                         </span>
+                        <br>
+                        <app-validacion-inputs [campo]="departamentos_FB" [directo]='true'></app-validacion-inputs>
 
 
                         <!-- 
@@ -85,6 +84,7 @@
 
                         <div class="form-group col-12 col-lg-6">
                             <textarea formControlName="observaciones" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(observaciones_FB), 'is-valid':_validacionesService.valid(observaciones_FB)}" name="observaciones" id="observaciones" rows="3"></textarea>
+                            <small id="observaciones" class="form-text text-muted">Observaciones</small>
                             <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
                         </div>
 

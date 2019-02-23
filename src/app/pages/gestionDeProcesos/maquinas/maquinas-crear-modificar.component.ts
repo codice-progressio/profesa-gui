@@ -54,6 +54,10 @@ export class MaquinasCrearModificarComponent implements OnInit {
 
     this.crearFormulario();
 
+    
+    this.DATOSDEPRUEBA();
+
+
   }
 
   /**
@@ -94,7 +98,7 @@ export class MaquinasCrearModificarComponent implements OnInit {
    * @returns {FormGroup}
    * @memberof MaquinasCrearModificarComponent
    */
-  agregarDepartamento( ): FormGroup {
+  crearNuevoFormGroupDepartamento( ): FormGroup {
     return this.formBuilder.group(
       {
         _id:['',
@@ -189,10 +193,7 @@ onSubmit(model:Maquina, isValid: boolean, e ){
     let checked: boolean = select.srcElement.checked;
     if( checked ) {
         if( !this.estaAgregado( id ) ){
-          let a: FormGroup =  this.agregarDepartamento();
-
-          a.controls['_id'].setValue( id );
-          this.departamentos_FB.push( a )
+         this.agregarDepartamento( id )
         }
     } else{
       this.eliminarDepartamento( id ) 
@@ -228,5 +229,31 @@ onSubmit(model:Maquina, isValid: boolean, e ){
         return;
       }
     }
+  }
+/**
+   *Crea y agrega un nuevo formGroup al control departamentos_FB
+   *
+   * @param {string} id El id del departamento que se va a gregar. 
+   * @memberof MaquinasCrearModificarComponent
+   */
+  agregarDepartamento( id: string ){
+    let a: FormGroup =  this.crearNuevoFormGroupDepartamento();
+    a.controls['_id'].setValue( id );
+    this.departamentos_FB.push( a )
+  }
+
+
+
+  DATOSDEPRUEBA( ){
+    this.nombre_FB.setValue('DOBLE VANGUARD');
+    this.clave_FB.setValue('DV1');
+
+    this.anio_FB.setValue(new Date().getFullYear());
+    this.agregarDepartamento( '5c6f1578e36c3f0e10ae9492' )
+    this.agregarDepartamento( '5c6f1578e36c3f0e10ae9495' )
+
+    this.numeroDeSerie_FB.setValue('AR15235CXSD');
+    this.observaciones_FB.setValue('Esta es una maquina de pruebas. ');
+
   }
 }

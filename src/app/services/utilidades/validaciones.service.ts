@@ -132,7 +132,6 @@ export class ValidacionesService {
   minSelectedCheckboxes(min = 1): ValidatorFn {
    const validator: ValidatorFn = (formArray: FormArray) => {
       const totalSelected = formArray.controls.length
-      console.log(totalSelected >= min ? null : { tamanoMinimo: true, minimo: min })
      return totalSelected >= min ? null : { tamanoMinimo: true, minimo: min };
    };
  
