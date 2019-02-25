@@ -1,27 +1,70 @@
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
+<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#idModal">
     Launch
-  </button>
+  </button> -->
 
 <!-- Modal -->
 
-<div class="modal fade" style="z-index: 9999" id="modelId" tabindex="-1" role="dialog">
+<div class="modal fade" style="z-index: 9999" [id]="idModal" tabindex="-1" role="dialog">
     <!-- <div id="background" style="position:absolute;top:0;left:0;right:0;bottom:0;background-color:red;filter: blur(3px);z-index:-1;"></div> -->
     <div class=" modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div *ngIf="maquinaDetalle" class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Clave: <strong>{{maquinaDetalle?.clave}}</strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    Add rows here
+
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Nombre de la maquina </strong>
+                            <h1> {{maquinaDetalle.nombre}}</h1>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            Anio: <strong>{{maquinaDetalle.anio}} </strong> | Serie: <strong> {{maquinaDetalle.numeroDeSerie}}</strong>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>Departamentos</h3>
+                            <ul class="list-group">
+                                <li *ngFor="let depto of maquinaDetalle.departamentos" class="list-group-item">{{depto.nombre}}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h3>Nombres anteriores</h3>
+                            <ul class="list-group">
+                                <li *ngFor="let nombre of maquinaDetalle.nombresAnteriores" class="list-group-item d-flex justify-content-between align-items-lg-center ">
+                                    <span>
+                                        {{nombre.nombre}} \ {{ nombre.clave }}
+
+                                    </span>
+                                    <strong class="text-muted"><small>{{nombre.fechaDeCambio | fecha }}</small></strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h3>Observaciones</h3>
+                            <p>{{maquinaDetalle.observaciones}}</p>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

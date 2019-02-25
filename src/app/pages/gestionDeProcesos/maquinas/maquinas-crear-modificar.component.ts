@@ -29,8 +29,29 @@ export class MaquinasCrearModificarComponent implements OnInit {
    */
   formulario: FormGroup;
 
+  /**
+   *La lista de departamentos. Esta se carga completa sin paginador.
+   *
+   * @type {Departamento[]}
+   * @memberof MaquinasCrearModificarComponent
+   */
   departamentos: Departamento[] = null;
 
+  /**
+   *Desactiva el boton mientras que se esta guardando. 
+   *
+   * @type {boolean}
+   * @memberof MaquinasCrearModificarComponent
+   */
+  desactivarBotonEnGuardado: boolean = false;
+
+  /**
+   * El id que que se esta editando. 
+   *
+   * @type {string}
+   * @memberof MaquinasCrearModificarComponent
+   */
+  private idEditando: string = null;
 
 
   constructor(
@@ -39,26 +60,61 @@ export class MaquinasCrearModificarComponent implements OnInit {
     public _validacionesService: ValidacionesService,
     public _departamentoService: DepartamentoService,
   ) {
-   
   }
+  
 
   ngOnInit() {
-    this._departamentoService.listarTodo = true;
-    this._departamentoService.todo().subscribe( departamentos =>{
-      this.departamentos = departamentos;
-    })
+    // Callback para activar y desactivar botones. 
+    this._maquinaService.callback_ActivarBoton = ()=>{
+      this.desactivarBotonEnGuardado = false;
+    } 
 
-    if( this.maquinasComponent.idModificar ) {
-      console.log( 'se modifica')
-    }
+    this._maquinaService.callback_DesactivarBoton = ()=>{
+      this.desactivarBotonEnGuardado = true;
+    } 
+
+    this.cargarDepartamentos()
+
+    
 
     this.crearFormulario();
 
     
-    this.DATOSDEPRUEBA();
 
 
   }
+
+  cargarDepartamentos( ) {
+    this._departamentoService.listarTodo = true;
+    this._departamentoService.todo().subscribe( departamentos =>{
+      this.departamentos = departamentos;
+    })
+  }
+
+  editar( id: string ){ 
+    this._maquinaService.buscarPorId( id ).subscribe((maquina)=>{
+      this.idEditando =  id;
+      this.cargarDatosParaEditar( maquina )
+    });
+
+  }
+
+  cargarDatosParaEditar( maquina: Maquina){
+    this.nombre_FB.setValue( maquina.nombre )
+      this.clave_FB.setValue( maquina.clave )
+  
+      this.anio_FB.setValue( maquina.anio )
+
+      maquina.departamentos.forEach(d => {
+        this.agregarDepartamento(d._id)
+      });
+  
+      this.numeroDeSerie_FB.setValue( maquina.numeroDeSerie )
+      this.observaciones_FB.setValue( maquina.observaciones )
+
+
+  }
+
 
   /**
    *Crea el formulario de registro. 
@@ -136,11 +192,23 @@ public get numeroDeSerie_FB(): AbstractControl {
  */
 onSubmit(model:Maquina, isValid: boolean, e ){
   e.preventDefault();
-  console.log('Enviar')
 
   if( !isValid ) return false;
+  let call = (maquina)=>{
+    this.cancelar()
+    this.maquinasComponent.cargarMaquinas();
+  } 
 
-  console.log('se envia')
+  // Si es una edicion agregamos el id.
+  if( this.idEditando ) {
+      model._id = this.idEditando
+      this._maquinaService.modificar( model ).subscribe( call )
+      return;
+  }
+  
+  // Guardamos los datos. 
+  this._maquinaService.guardar( model ).subscribe( call );
+ 
 }
 
 
@@ -152,6 +220,8 @@ onSubmit(model:Maquina, isValid: boolean, e ){
   cancelar(){
     this.maquinasComponent.animar();
     this.limpiar();
+    this.crearFormulario();
+
   }
 
   /**
@@ -160,7 +230,9 @@ onSubmit(model:Maquina, isValid: boolean, e ){
    * @memberof MaquinasCrearModificarComponent
    */
   limpiar(){
-    console.log( 'todavia no modificar')
+    this.formulario.reset()
+    this.cargarDepartamentos();
+    this.crearFormulario();
   };
 
 
@@ -173,9 +245,8 @@ onSubmit(model:Maquina, isValid: boolean, e ){
    * @memberof MaquinasCrearModificarComponent
    */
   estaAgregado( id:string ): boolean {
-
     let a =  this.departamentos_FB.controls.filter( (d)=>{
-      return d.value._id.toString() === id;
+      return d.value._id === id;
     } )
     return a.length >0;
 
@@ -241,19 +312,5 @@ onSubmit(model:Maquina, isValid: boolean, e ){
     a.controls['_id'].setValue( id );
     this.departamentos_FB.push( a )
   }
-
-
-
-  DATOSDEPRUEBA( ){
-    this.nombre_FB.setValue('DOBLE VANGUARD');
-    this.clave_FB.setValue('DV1');
-
-    this.anio_FB.setValue(new Date().getFullYear());
-    this.agregarDepartamento( '5c6f1578e36c3f0e10ae9492' )
-    this.agregarDepartamento( '5c6f1578e36c3f0e10ae9495' )
-
-    this.numeroDeSerie_FB.setValue('AR15235CXSD');
-    this.observaciones_FB.setValue('Esta es una maquina de pruebas. ');
-
-  }
+  
 }

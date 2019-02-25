@@ -63,15 +63,15 @@
                   
                         </span>
                         <br>
-                        <app-validacion-inputs [campo]="departamentos_FB" [directo]='true'></app-validacion-inputs>
 
 
                         <!-- 
-                        =====================================
-                         END El grupo de array para validar los departamentos
-                        =====================================
+                          =====================================
+                          END El grupo de array para validar los departamentos
+                          =====================================
                         -->
                     </div>
+                    <app-validacion-inputs [campo]="departamentos_FB" [directo]='true'></app-validacion-inputs>
 
                     <hr>
                     <div class="row">
@@ -92,7 +92,7 @@
 
                     <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
                     <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
-                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button">
+                    <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
                       <span *ngIf="this.maquinasComponent.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
                       <span *ngIf="!this.maquinasComponent.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
                     </button>

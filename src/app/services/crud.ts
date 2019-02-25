@@ -61,6 +61,24 @@ export class CRUD<T>  {
      */
     total: number;
 
+
+    /**
+     *Desactiva un boton mientras se realiza una accion de guardado o modificacion. 
+     *
+     * @type {*}
+     * @memberof CRUD
+     */
+    callback_DesactivarBoton: any = null;
+    /**
+     *
+     *Activa un boton mientras se realiza una accion de guardado o modificacion. 
+     *
+     * @type {*}
+     * @memberof CRUD
+     */
+    callback_ActivarBoton: any = null;
+
+
     
     /**
      * Cuando los datos vienen de la BD se deben de definir
@@ -185,18 +203,42 @@ export class CRUD<T>  {
      * @memberof CRUD
      */
     guardar(dato:T, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T>{
+        // Desactivamos el boton que pasamos atravez del callback. 
+        this.ejecutarCallbackDesactivar()
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.post(this.base, dato).pipe(
             map( (resp: any )=> {
                 this._msjService.ok_( resp, null, a)
+                this.ejecutarCallbackActivar()
                 return resp[this.nombreDeDatos.singular];
             } ),
             catchError( err =>{
+                this.ejecutarCallbackActivar()
                 this._msjService.err( err )
                 return throwError( err );
             })
             );
         }
+
+    /**
+     *Comprueba el callbackDesactivar que no sea nulo y lo ejecuta. 
+     *
+     * @private
+     * @memberof CRUD
+     */
+    private ejecutarCallbackDesactivar( ){
+        if( this.callback_DesactivarBoton ) this.callback_DesactivarBoton();
+    }
+    
+    /**
+     *Comprueba el callbackActivarque no sea nulo y lo ejecuta. 
+     *
+     * @private
+     * @memberof CRUD
+     */
+    private ejecutarCallbackActivar( ){
+        if( this.callback_ActivarBoton ) this.callback_ActivarBoton();
+    }
     
    
     /**

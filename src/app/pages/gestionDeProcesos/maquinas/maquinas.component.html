@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for=""></label>
-                    <input type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar.">
+                    <input [(ngModel)]="terminoDeBusqueda" (keydown)="buscar()" type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar.">
                     <small id="helpId" class="form-text text-muted">Buscar maquinas</small>
                 </div>
                 <hr>
@@ -27,15 +27,15 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let maquina of maquinas">
-                            <td><a (click)="mostrarDetalle(maquina._id)" class="btn btn-primary btn-sm" href="#" role="button"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                            <td><button (click)="mostrarDetalle(maquina._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
                             <td>{{maquina.nombre}}</td>
                             <td>{{maquina.clave}}</td>
                             <td>{{maquina.anio}}</td>
                             <td><span *ngFor="let departamento of maquina.departamentos">{{departamento.nombre}} <hr></span></td>
                             <td>{{maquina.numeroDeSerie}}</td>
                             <td>{{maquina.observaciones}}</td>
-                            <td><a (click)="editar( maquina._id )" class="btn btn-success btn-sm" href="#" role="button"><i class="fas fa-edit    "></i></a></td>
-                            <td><a (click)="eliminar( maquina._id)" class="btn btn-danger btn-sm" href="#" role="button"><i class="fas fa-times   "></i></a></td>
+                            <td><a (click)="editar( maquina._id, componenteMaquinasCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
+                            <td><a (click)="eliminar( maquina._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
                         </tr>
 
                     </tbody>
@@ -47,6 +47,6 @@
         </div>
     </div>
 </div>
-<app-maquinas-crear-modificar [maquinasComponent]='esteComponente'></app-maquinas-crear-modificar>
+<app-maquinas-crear-modificar #componenteMaquinasCrearModificar [maquinasComponent]='esteComponente'></app-maquinas-crear-modificar>
 
-<app-maquinas-detalle> </app-maquinas-detalle>
+<app-maquinas-detalle [maquinaDetalle]='maquinaDetalle'> </app-maquinas-detalle>

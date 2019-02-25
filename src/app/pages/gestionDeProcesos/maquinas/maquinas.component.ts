@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MaquinaService } from 'src/app/services/service.index';
 import { Maquina } from 'src/app/models/maquina.model';
 import { timeout } from 'rxjs/operators';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { MaquinasCrearModificarComponent } from './maquinas-crear-modificar.component';
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service';
 
 @Component({
   selector: 'app-maquinas',
@@ -18,6 +21,16 @@ export class MaquinasComponent implements OnInit {
    * @memberof MaquinasComponent
    */
   maquinas: Maquina [] = null;
+
+
+  /**
+   *Almacena el detalle de la maquina 
+   *
+   * @type {Maquina}
+   * @memberof MaquinasComponent
+   */
+  maquinaDetalle: Maquina = null;
+
 
   /**
    *Oculta todos los elementos para mostrar 
@@ -72,17 +85,26 @@ export class MaquinasComponent implements OnInit {
   esteComponente: MaquinasComponent = this;
 
   constructor(
-    public _maquinaService: MaquinaService
+    public _maquinaService: MaquinaService,
+    public _paginadorService: PaginadorService,
+    public _msjService: ManejoDeMensajesService,
   ) {
+    this._paginadorService.callback = ()=>{
+      this.cargarMaquinas();
+    }
+    this.cargarMaquinas();
 
-    this._maquinaService.todo().subscribe( maquinas => {
-      this.maquinas = maquinas;
-    });
-
+    
   }
 
 
   ngOnInit() {
+  }
+
+  cargarMaquinas( ){
+    this._maquinaService.todo().subscribe( maquinas => {
+      this.maquinas = maquinas;
+    });
   }
 
   /**
@@ -92,6 +114,10 @@ export class MaquinasComponent implements OnInit {
    * @memberof MaquinasComponent
    */
   mostrarDetalle( id: string ) {
+    this.maquinaDetalle = null
+    this._maquinaService.buscarPorId(id).subscribe((maquina)=>{
+      this.maquinaDetalle = maquina;
+    } );
 
   }
 
@@ -101,7 +127,10 @@ export class MaquinasComponent implements OnInit {
    * @param {string} id
    * @memberof MaquinasComponent
    */
-  editar( id:string ){
+  editar( id:string, com: MaquinasCrearModificarComponent ){
+    this.idModificar = id;
+    this.animar()
+    com.editar( id );
 
   }
 
@@ -112,8 +141,6 @@ export class MaquinasComponent implements OnInit {
    */
   crear ( ){
     this.animar();
-
-
   }
 
   /**
@@ -137,6 +164,39 @@ export class MaquinasComponent implements OnInit {
    * @memberof MaquinasComponent
    */
   eliminar( id: string ){
+    let msj: string ='Si eliminas esta maquina no podras recuperar sus registros y perderas todo su historial. '
+    this._msjService.confirmacionDeEliminacion(msj, ()=>{
+      this._maquinaService.eliminar( id ).subscribe( (maquinaEliminada)=>{
+        this.cargarMaquinas();
+      } )
+    } )
+  }
+
+  busqueda: boolean = false;
+  terminoDeBusqueda: string = '';
+  buscar( ) {
+    console.log( ' buscando ')
+    // Creamos un nuevo callback.
+    if( !this.busqueda ){
+      console.log( ' no se ha realizado busqueda. ')
+      this.busqueda = true;
+      setTimeout(() => {
+        console.log( 'obteniendo termindo actual: ' + this.terminoDeBusqueda)
+        // Si no hay termino no buscamos. 
+        if( this.terminoDeBusqueda !== '' ){
+          this._maquinaService.buscar(this.terminoDeBusqueda ).subscribe( (maquinas)=>{
+            console.log( ' se ejecuta la busqueda.')
+            this.maquinas = maquinas
+            this.busqueda = false;
+          } )
+        }else {
+          console.log( ' no hay termino, ejecutamos la busqueda ')
+          this.busqueda = false;
+          this.cargarMaquinas()
+        }
+      }, 400);
+    }
+
 
   }
 

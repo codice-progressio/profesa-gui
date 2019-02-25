@@ -9,7 +9,7 @@ export class Maquina {
         public nombre?: string,
         public clave?: string,
         public anio?: number,
-        public nombresAnteriores?: {nombreAnterio?: string, fechaDeCambio?: Date}[],
+        public nombresAnteriores?: {nombre?: string, clave?: string, fechaDeCambio?: Date}[],
         // public ordenes?: Orden[],
         public departamentos: Departamento[] = [],
         
