@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, FormArray, FormCon
 import { Maquina } from 'src/app/models/maquina.model';
 import { ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { Departamento } from 'src/app/models/departamento.models';
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/CrearModificar_GUI_CRUD';
+import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
 
 @Component({
   selector: 'app-maquinas-crear-modificar',

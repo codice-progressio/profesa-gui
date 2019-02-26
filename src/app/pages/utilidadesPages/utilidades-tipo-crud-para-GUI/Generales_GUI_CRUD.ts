@@ -1,4 +1,4 @@
-import { CRUD } from "../../services/crud";
+import { CRUD } from "../../../services/crud";
 import { PaginadorService } from "src/app/components/paginador/paginador.service";
 import { ManejoDeMensajesService } from "src/app/services/service.index";
 import { CrearModificar_GUI_CRUD } from "./CrearModificar_GUI_CRUD";

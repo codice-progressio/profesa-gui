@@ -5,7 +5,7 @@ import { timeout } from 'rxjs/operators';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { MaquinasCrearModificarComponent } from './maquinas-crear-modificar.component';
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service';
-import { Generales_GUI_CRUD } from '../../utilidadesPages/Generales_GUI_CRUD';
+import { Generales_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Generales_GUI_CRUD';
 
 
 @Component({

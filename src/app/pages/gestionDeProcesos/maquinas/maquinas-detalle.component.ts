@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Maquina } from 'src/app/models/maquina.model';
-import { Detalles_GUI_CRUD } from '../../utilidadesPages/Detalles_GUI_CRUD';
+import { Detalles_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Detalles_GUI_CRUD';
 
 @Component({
   selector: 'app-maquinas-detalle',
