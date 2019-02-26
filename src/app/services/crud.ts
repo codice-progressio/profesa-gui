@@ -132,15 +132,21 @@ export class CRUD<T>  {
         sort: boolean = true,
         campo: string = null,
         urlAlternativa: string = null,
+        noAfectarServicioDePaginados: boolean = false
         ):Observable<T[]>{
 
-        // Seleccionamos un paginador, si externo o el por defecto. 
-        let paginadorAUsar: PaginadorService = paginador ? paginador : this._paginadorService;
+            // Valores de la url
+            let url  =  this.base + (urlAlternativa ? urlAlternativa : '') ;
+            
+            // Seleccionamos un paginador, si externo o el por defecto. 
+            let paginadorAUsar: PaginadorService = null;
 
-        const a: number = this._preLoaderService.loading(msjLoading);
-        
-        // Valores de la url
-        let url  =  this.base + (urlAlternativa ? urlAlternativa : '') ;
+            if( !this.listarTodo ) {
+                paginadorAUsar =  paginador ? paginador : this._paginadorService;
+            }
+    
+            const a: number = this._preLoaderService.loading(msjLoading);
+            
         
         // Los valores para el paginador. 
         if( this.listarTodo ) {
@@ -156,7 +162,9 @@ export class CRUD<T>  {
         return this.http.get(url).pipe(
             map( (resp: any )=> {
                 this.total = resp.total;
-                paginadorAUsar.activarPaginador( this.total);
+                if( !this.listarTodo ){
+                    paginadorAUsar.activarPaginador( this.total);
+                }
                 this._msjService.ok_( resp, null, a)
                 return resp[this.nombreDeDatos.plural];
             } ),

@@ -1,9 +1,9 @@
-<div *ngIf="this.maquinasComponent.mostrarCrearModificar" class="row animated faster" [ngClass]="{'slideOutUp': !this.maquinasComponent.crearModificar , 'slideInDown': this.maquinasComponent.crearModificar  }">
+<div *ngIf="this.mostrarCrearModificar" class="row animated faster" [ngClass]="{'slideOutUp': !this.crearModificar , 'slideInDown': this.crearModificar  }">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <h1>
-                    Registrar <span *ngIf="this.maquinasComponent.idModificar">nueva</span> maquina
+                    Registrar <span *ngIf="this.idModificar">nueva</span> maquina
                 </h1>
                 <hr>
                 <br>
@@ -93,8 +93,8 @@
                     <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
                     <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
                     <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-                      <span *ngIf="this.maquinasComponent.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-                      <span *ngIf="!this.maquinasComponent.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+                      <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                      <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
                     </button>
 
                 </form>

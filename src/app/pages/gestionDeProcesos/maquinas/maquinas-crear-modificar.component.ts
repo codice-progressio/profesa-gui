@@ -5,30 +5,14 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, FormArray, FormCon
 import { Maquina } from 'src/app/models/maquina.model';
 import { ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { Departamento } from 'src/app/models/departamento.models';
+import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/CrearModificar_GUI_CRUD';
 
 @Component({
   selector: 'app-maquinas-crear-modificar',
   templateUrl: './maquinas-crear-modificar.component.html',
   styles: []
 })
-export class MaquinasCrearModificarComponent implements OnInit {
-
-  /**
-   *El componente padre de donde obtenemos algunos valores generales. 
-   *
-   * @type {MaquinasComponent}
-   * @memberof MaquinasCrearModificarComponent
-   */
-  @Input() maquinasComponent: MaquinasComponent
-
-  /**
-   *El formulario para modificar los datos. 
-   *
-   * @type {FormGroup}
-   * @memberof MaquinasCrearModificarComponent
-   */
-  formulario: FormGroup;
-
+export class MaquinasCrearModificarComponent extends CrearModificar_GUI_CRUD<Maquina, MaquinaService > implements OnInit {
   /**
    *La lista de departamentos. Esta se carga completa sin paginador.
    *
@@ -37,51 +21,31 @@ export class MaquinasCrearModificarComponent implements OnInit {
    */
   departamentos: Departamento[] = null;
 
-  /**
-   *Desactiva el boton mientras que se esta guardando. 
-   *
-   * @type {boolean}
-   * @memberof MaquinasCrearModificarComponent
-   */
-  desactivarBotonEnGuardado: boolean = false;
-
-  /**
-   * El id que que se esta editando. 
-   *
-   * @type {string}
-   * @memberof MaquinasCrearModificarComponent
-   */
-  private idEditando: string = null;
-
-
   constructor(
-    public _maquinaService: MaquinaService,
+    public _elementoService: MaquinaService,
     public formBuilder: FormBuilder,
     public _validacionesService: ValidacionesService,
     public _departamentoService: DepartamentoService,
   ) {
+    super( _elementoService,
+      formBuilder,
+      _validacionesService)
+    
+    this.cbDatosParaEditar = (maquina: Maquina )=>{
+      this.cargarDatosParaEditar( maquina )
+    } 
+
+    this.cbCrearFormulario = ()=>{
+      this.crearFormulario()
+    }
+
+    this.configurar();
+
   }
   
 
   ngOnInit() {
-    // Callback para activar y desactivar botones. 
-    this._maquinaService.callback_ActivarBoton = ()=>{
-      this.desactivarBotonEnGuardado = false;
-    } 
-
-    this._maquinaService.callback_DesactivarBoton = ()=>{
-      this.desactivarBotonEnGuardado = true;
-    } 
-
     this.cargarDepartamentos()
-
-    
-
-    this.crearFormulario();
-
-    
-
-
   }
 
   cargarDepartamentos( ) {
@@ -89,14 +53,6 @@ export class MaquinasCrearModificarComponent implements OnInit {
     this._departamentoService.todo().subscribe( departamentos =>{
       this.departamentos = departamentos;
     })
-  }
-
-  editar( id: string ){ 
-    this._maquinaService.buscarPorId( id ).subscribe((maquina)=>{
-      this.idEditando =  id;
-      this.cargarDatosParaEditar( maquina )
-    });
-
   }
 
   cargarDatosParaEditar( maquina: Maquina){
@@ -111,10 +67,7 @@ export class MaquinasCrearModificarComponent implements OnInit {
   
       this.numeroDeSerie_FB.setValue( maquina.numeroDeSerie )
       this.observaciones_FB.setValue( maquina.observaciones )
-
-
   }
-
 
   /**
    *Crea el formulario de registro. 
@@ -182,60 +135,6 @@ public get numeroDeSerie_FB(): AbstractControl {
   return this.formulario.get('numeroDeSerie')
 }
 
-/**
- *Prepara y envia los datos del formulario. 
- *
- * @param {Maquina} model El modelo que obtendremos desde el formulario
- * @param {boolean} isValid Comprueba si el formulario es valido. 
- * @param {*} e El evento por default para prevenir el default.
- * @memberof MaquinasCrearModificarComponent
- */
-onSubmit(model:Maquina, isValid: boolean, e ){
-  e.preventDefault();
-
-  if( !isValid ) return false;
-  let call = (maquina)=>{
-    this.cancelar()
-    this.maquinasComponent.cargarMaquinas();
-  } 
-
-  // Si es una edicion agregamos el id.
-  if( this.idEditando ) {
-      model._id = this.idEditando
-      this._maquinaService.modificar( model ).subscribe( call )
-      return;
-  }
-  
-  // Guardamos los datos. 
-  this._maquinaService.guardar( model ).subscribe( call );
- 
-}
-
-
-  /**
-   *Cancela la modificacion o el guardado.\
-   *
-   * @memberof MaquinasCrearModificarComponent
-   */
-  cancelar(){
-    this.maquinasComponent.animar();
-    this.limpiar();
-    this.crearFormulario();
-
-  }
-
-  /**
-   *Limpia los datos despues de cancelar, guardar o modifcar. 
-   *
-   * @memberof MaquinasCrearModificarComponent
-   */
-  limpiar(){
-    this.formulario.reset()
-    this.cargarDepartamentos();
-    this.crearFormulario();
-  };
-
-
   /**
    *Comprueba si el id que se le pase como paramentro esta agregado. (Osea que 
     se encuentra dentro del arreglo de id del formulario.)
@@ -249,8 +148,6 @@ onSubmit(model:Maquina, isValid: boolean, e ){
       return d.value._id === id;
     } )
     return a.length >0;
-
-
   }
 
   /**

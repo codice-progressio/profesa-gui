@@ -1,5 +1,6 @@
-<span *ngIf=" s.porHoja[0] >s.totalDeElementos " class="text-muted text-right w-100"><small><strong>Mostrando todos los elementos existentes.</strong></small></span>
-<nav *ngIf="s.totalDeElementos > s.porHoja[0]">
+<span *ngIf=" s.totalDeElementos === 0" class="text-muted text-right w-100"><small><strong>No hay elementos para mostrar.</strong></small></span>
+<span *ngIf=" s.porHoja[0] >s.totalDeElementos && s.totalDeElementos !== 0" class="text-muted text-right w-100"><small><strong>Mostrando todos los elementos existentes.</strong></small></span>
+<nav *ngIf="s.totalDeElementos > s.porHoja[0] && s.totalDeElementos">
     <ul class="pagination pagination-sm justify-content-end align-items-center">
         <small class="mr-3"><strong>{{s.totalDeElementos}}</strong> elementos.</small>
         <li class="page-item pointer" [ngClass]="{'disabled': 0=== s.desde }">

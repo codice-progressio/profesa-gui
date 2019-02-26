@@ -13,7 +13,8 @@
 
                 <hr>
                 <app-paginador></app-paginador>
-                <table class="table table-responsive table-hover">
+
+                <table class="table table-responsive table-hover w-100 ">
                     <thead>
                         <tr>
                             <th></th>
@@ -26,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let maquina of maquinas">
+                        <tr *ngFor="let maquina of elementos">
                             <td><button (click)="mostrarDetalle(maquina._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
                             <td>{{maquina.nombre}}</td>
                             <td>{{maquina.clave}}</td>
@@ -47,6 +48,6 @@
         </div>
     </div>
 </div>
-<app-maquinas-crear-modificar #componenteMaquinasCrearModificar [maquinasComponent]='esteComponente'></app-maquinas-crear-modificar>
+<app-maquinas-crear-modificar #componenteMaquinasCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-maquinas-crear-modificar>
 
-<app-maquinas-detalle [maquinaDetalle]='maquinaDetalle'> </app-maquinas-detalle>
+<app-maquinas-detalle [detalleElemento]='elementoDetalle'> </app-maquinas-detalle>
