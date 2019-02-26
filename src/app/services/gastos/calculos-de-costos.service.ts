@@ -38,11 +38,11 @@ export class CalculosDeCostosService {
   maquinaHora( maq: Maquina ): number {
     let total: number = 0;
     
-    maq.gastos.forEach((gc: GastoConsumo) => {
-      // Multiplicamos costoPorHora * el consumo. 
-      total += this.gastoHora( gc );
-    });
-    total += this.depreciacionHora( maq );
+    // maq.gastos.forEach((gc: GastoConsumo) => {
+    //   // Multiplicamos costoPorHora * el consumo. 
+    //   total += this.gastoHora( gc );
+    // });
+    // total += this.depreciacionHora( maq );
     return total;
   }
 
@@ -69,8 +69,9 @@ export class CalculosDeCostosService {
   // Costo de depreciación por hora. 
   depreciacionHora( maq: Maquina ): number {
       // Calculamos la depreciación
-      const de: number =  (maq.costo / maq.depreciacion) / ( 365 * 24) ;
-      return de;
+      // const de: number =  (maq.costo / maq.depreciacion) / ( 365 * 24) ;
+      // return de;
+      return 1
   }
   
   depreciacionMinuto( maq: Maquina ): number {
