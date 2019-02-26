@@ -1,3 +1,11 @@
+<!-- 
+=====================================
+ ENCABEZADO 
+=====================================
+-->
+
+
+
 <div *ngIf="mostrarLista" class="row animated faster" [ngClass]="{'slideInDown': !crearModificar , 'slideOutUp': crearModificar  }">
     <div class="col-12">
         <div class="card">
@@ -13,6 +21,18 @@
 
                 <hr>
                 <app-paginador></app-paginador>
+
+                <!-- 
+=====================================
+ END ENCABEZADO 
+=====================================
+-->
+
+                <!-- 
+=====================================
+ CUERPO
+=====================================
+-->
 
                 <table class="table table-responsive table-hover w-100 ">
                     <thead>
@@ -42,12 +62,33 @@
                     </tbody>
                 </table>
 
+                <!-- 
+=====================================
+ END CUERPO
+=====================================
+-->
+
+                <!-- 
+=====================================
+ Footer
+=====================================
+-->
+
                 <app-paginador></app-paginador>
 
             </div>
         </div>
     </div>
 </div>
+
+
+
 <app-maquinas-crear-modificar #componenteMaquinasCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-maquinas-crear-modificar>
 
 <app-maquinas-detalle [detalleElemento]='elementoDetalle'> </app-maquinas-detalle>
+
+<!-- 
+=====================================
+ END Footer
+=====================================
+-->
