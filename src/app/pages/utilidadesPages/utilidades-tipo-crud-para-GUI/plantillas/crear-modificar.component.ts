@@ -1,5 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+/**
+ *Este contenedor se ecarga de los generales
+ para la creacion y modificaciones de elementos. 
+ *
+ * @export
+ * @class CrearModificarComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-crear-modificar',
   templateUrl: './crear-modificar.component.html',

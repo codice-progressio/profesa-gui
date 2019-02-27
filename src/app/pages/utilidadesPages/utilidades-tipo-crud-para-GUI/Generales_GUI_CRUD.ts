@@ -191,6 +191,17 @@ export class Generales_GUI_CRUD<
   }
 
   /**
+   *Este callback es para mandar a llamar crear desde
+   el componente general. Si no se hace asi no funciona. 
+   *
+   * @returns
+   * @memberof Generales_GUI_CRUD
+   */
+  cbCrear( ){
+    return ()=>{this.crear()} 
+  }
+
+  /**
    *Elimina un elemento.
    *
    * @param {string} id El id del elemento que se quiere eliminar.

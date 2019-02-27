@@ -1,0 +1,24 @@
+<div *ngIf="mostrarLista" class="row animated faster" [ngClass]="{'slideInDown': !crearModificar , 'slideOutUp': crearModificar  }">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for=""></label>
+                    <!-- <input [(ngModel)]="terminoDeBusqueda" (keydown)="buscar()" type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar."> -->
+                    <small id="helpId" class="form-text text-muted">Buscar maquinas</small>
+                </div>
+                <hr>
+
+                <a (click)="crear()" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Crear </a>
+
+                <hr>
+                <app-paginador></app-paginador>
+
+                <ng-content></ng-content>
+
+                <app-paginador></app-paginador>
+
+            </div>
+        </div>
+    </div>
+</div>
