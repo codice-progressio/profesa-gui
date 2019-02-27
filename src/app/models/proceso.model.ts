@@ -12,7 +12,7 @@ export class Proceso {
       public pasos?: Paso[], //LO TENEMOS QUE ELIMINAR
       public observaciones?: string,
       public especial?: boolean,
-      public gastos: GastoConsumo[] = [],
+      // public gastos: GastoConsumo[] = [],
       public maquinas: Maquina[] = [],
       public requiereProduccion: boolean = true,
       // SOLO PARA MOSTRAR INFO.
