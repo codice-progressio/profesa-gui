@@ -4,8 +4,8 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for=""></label>
-                    <!-- <input [(ngModel)]="terminoDeBusqueda" (keydown)="buscar()" type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar."> -->
-                    <small id="helpId" class="form-text text-muted">Buscar maquinas</small>
+                    <input #i (keyup)="buscar(i.value)" type="text" class="form-control input-lg" name="" id="" aria-describedby="helpId" placeholder="Empieza a escribir para buscar.">
+                    <small id="helpId" class="form-text text-muted">Buscar un elemento dentro de la lista.</small>
                 </div>
                 <hr>
 

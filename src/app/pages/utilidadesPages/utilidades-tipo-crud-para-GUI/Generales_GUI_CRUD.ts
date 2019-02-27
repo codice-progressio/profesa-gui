@@ -222,7 +222,8 @@ export class Generales_GUI_CRUD<
    *
    * @memberof Generales_GUI_CRUD
    */
-  buscar() {
+  buscar(termino: string ) {
+    this.terminoDeBusqueda =  termino;
     // Creamos un nuevo callback.
     if (!this.busqueda) {
       this.busqueda = true;
@@ -241,5 +242,16 @@ export class Generales_GUI_CRUD<
         }
       }, 400);
     }
+  }
+
+  /**
+   *Esta funcion se llama para que retorne un callback 
+   que contiene la busqueda. 
+   *
+   * @returns {*}
+   * @memberof Generales_GUI_CRUD
+   */
+  cbBuscar( ): any{
+    return (termino)=>{ this.buscar(termino)} 
   }
 }

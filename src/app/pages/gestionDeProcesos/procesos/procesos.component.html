@@ -1,3 +1,59 @@
-<p>
-  procesos works!
-</p>
+<app-general [cbCrear]='cbCrear()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar'>
+    <ng-container *ngIf="mostrarLista">
+
+        <!-- 
+      =====================================
+       BODY
+      =====================================
+      -->
+        <table class="table table-responsive table-hover w-100 ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Clave</th>
+                    <th>Año</th>
+                    <th>Departamentos</th>
+                    <th>Numero de serie</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let maquina of elementos">
+                    <td><button (click)="mostrarDetalle(maquina._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                    <td>{{maquina.nombre}}</td>
+                    <!-- <td>{{maquina.clave}}</td>
+                    <td>{{maquina.anio}}</td> -->
+                    <!-- <td><span *ngFor="let departamento of maquina.departamentos">{{departamento.nombre}} <hr></span></td>
+                    <td>{{maquina.numeroDeSerie}}</td>
+                    <td>{{maquina.observaciones}}</td> -->
+
+                    <td><a (click)="editar( maquina._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
+                    <td><a (click)="eliminar( maquina._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- 
+      =====================================
+       END BODY
+      =====================================
+      -->
+
+    </ng-container>
+</app-general>
+
+<!-- 
+=====================================
+Importante fuera de app-general
+=====================================
+-->
+
+<app-maquinas-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-maquinas-crear-modificar>
+<app-maquinas-detalle [detalleElemento]='elementoDetalle'> </app-maquinas-detalle>
+<!-- 
+=====================================
+END Importante fuera de app-general
+=====================================
+-->

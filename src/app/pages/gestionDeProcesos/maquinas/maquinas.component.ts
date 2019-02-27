@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MaquinaService } from 'src/app/services/service.index';
 import { Maquina } from 'src/app/models/maquina.model';
-import { timeout } from 'rxjs/operators';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { MaquinasCrearModificarComponent } from './maquinas-crear-modificar.component';
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service';

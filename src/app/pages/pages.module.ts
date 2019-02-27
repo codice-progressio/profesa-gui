@@ -64,6 +64,7 @@ import { MaquinasCrearModificarComponent } from './gestionDeProcesos/maquinas/ma
 import { ModalComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/modal.component';
 import { CrearModificarComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/crear-modificar.component';
 import { GeneralComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/general.component';
+import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/procesos-crear-modificar.component';
 
 
 @NgModule({
@@ -121,6 +122,7 @@ import { GeneralComponent } from './utilidadesPages/utilidades-tipo-crud-para-GU
        ModalComponent,
        CrearModificarComponent,
        GeneralComponent,
+       ProcesosCrearModificarComponent,
 
 
       ],

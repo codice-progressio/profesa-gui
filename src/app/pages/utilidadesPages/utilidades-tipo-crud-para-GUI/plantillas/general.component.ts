@@ -40,6 +40,15 @@ export class GeneralComponent implements OnInit {
    */
   @Input() crearModificar: boolean;
 
+  /**
+   *El callback que contiene las acciones para la busqueda. 
+   *
+   * @type {*}
+   * @memberof GeneralComponent
+   */
+  @Input( ) cbBuscar: any;
+
+
 
 
   constructor() { }
@@ -47,8 +56,23 @@ export class GeneralComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   *Ejecuta el callback cbcrear
+   *
+   * @memberof GeneralComponent
+   */
   crear(){
     this.cbCrear();
+  }
+
+  /**
+   *Ejecuta el callback cbBuscar
+   *
+   * @param {string} termino El termindo escrito. 
+   * @memberof GeneralComponent
+   */
+  buscar( termino: string ) {
+    this.cbBuscar(termino)
   }
 
   
