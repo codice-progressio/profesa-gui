@@ -61,7 +61,7 @@ import { FamiliaDeProcesosDetalleComponent } from './gestionDeProcesos/familia-d
 import { ProcesosDetalleComponent } from './gestionDeProcesos/procesos/procesos-detalle.component';
 import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-detalle.component';
 import { MaquinasCrearModificarComponent } from './gestionDeProcesos/maquinas/maquinas-crear-modificar.component';
-
+import { ModalComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/modal.component';
 
 
 @NgModule({
@@ -115,7 +115,8 @@ import { MaquinasCrearModificarComponent } from './gestionDeProcesos/maquinas/ma
        MaquinasComponent,
        FamiliaDeProcesosDetalleComponent,
        MaquinasDetalleComponent,
-       MaquinasCrearModificarComponent
+       MaquinasCrearModificarComponent,
+       ModalComponent,
 
 
       ],
@@ -134,7 +135,8 @@ import { MaquinasCrearModificarComponent } from './gestionDeProcesos/maquinas/ma
           ChartsModule,
           PipesModule,
           QRCodeModule,
-      ]
+      ], 
+      // Para permitir la carga dinamica de componentes. 
 })
 
 export class PagesModule { }
