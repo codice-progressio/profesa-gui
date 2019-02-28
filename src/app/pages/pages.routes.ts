@@ -43,6 +43,10 @@ import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.compone
 import { MaquinasDetalleComponent } from './gestionDeProcesos/maquinas/maquinas-detalle.component';
 import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component';
 import { FamiliaDeProcesosDetalleComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos-detalle.component';
+import { TamanosComponent } from './gestionDeProcesos/tamanos/tamanos.component';
+import { ColoresComponent } from './gestionDeProcesos/colores/colores.component';
+import { TerminadosComponent } from './gestionDeProcesos/terminados/terminados.component';
+import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -336,8 +340,11 @@ const pagesRoutes: Routes = [
 
 
 
-
-
+// <!-- 
+// =====================================
+//  NUEVA SECCION DE PROCESOS
+// =====================================
+// -->
         {
             path: 'procesos', 
             component: ProcesosComponent, 
@@ -349,17 +356,7 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        {
-            path: 'procesos/detalle/:id', 
-            component: ProcesosDetalleComponent, 
-            canActivate: [PermisosGuard], 
-            data: {
-                titulo: 'Detalle de procesos',
-                roles : [ 
-                    _ROLES.ADMIN_ROLE
-                ]
-            }
-        },
+
         {
             path: 'maquinas', 
             component: MaquinasComponent, 
@@ -371,17 +368,76 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
+
         {
-            path: 'maquinas/detalle/:id', 
-            component: MaquinasDetalleComponent, 
-            canActivate: [PermisosGuard], 
-            data: {
-                titulo: 'Detalle de Maquinas',
-                roles : [ 
-                    _ROLES.ADMIN_ROLE
-                ]
-            }
+           path: 'modelos', 
+           component: ModelosComponent, 
+           canActivate: [PermisosGuard], 
+           data: {
+               titulo: 'Gestion de Modelos',
+               roles : [ 
+                   _ROLES.ADMIN_ROLE
+               ]
+           }
         },
+
+        {
+           path: 'tamanos', 
+           component: TamanosComponent, 
+           canActivate: [PermisosGuard], 
+           data: {
+               titulo: 'Gestion de Tamanos',
+               roles : [ 
+                   _ROLES.ADMIN_ROLE
+               ]
+           }
+        },
+
+        {
+           path: 'colores', 
+           component: ColoresComponent, 
+           canActivate: [PermisosGuard], 
+           data: {
+               titulo: 'Gestion de colores',
+               roles : [ 
+                   _ROLES.ADMIN_ROLE
+               ]
+           }
+        },
+
+        {
+           path: 'terminados', 
+           component: TerminadosComponent, 
+           canActivate: [PermisosGuard], 
+           data: {
+               titulo: 'Gestion de terminados',
+               roles : [ 
+                   _ROLES.ADMIN_ROLE
+               ]
+           }
+        },
+
+        {
+           path: 'modelosCompletos', 
+           component: ModelosCompletosComponent, 
+           canActivate: [PermisosGuard], 
+           data: {
+               titulo: 'Gestion de Modelos Completos',
+               roles : [ 
+                   _ROLES.ADMIN_ROLE
+               ]
+           }
+        },
+
+
+// <!-- 
+// =====================================
+//  END NUEVA SECCION DE PROCESOS
+// =====================================
+// -->
+
+    
+
         {
             path: 'familiaDeProcesos', 
             component: FamiliaDeProcesosComponent, 

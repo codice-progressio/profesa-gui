@@ -65,6 +65,20 @@ import { ModalComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/
 import { CrearModificarComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/crear-modificar.component';
 import { GeneralComponent } from './utilidadesPages/utilidades-tipo-crud-para-GUI/plantillas/general.component';
 import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/procesos-crear-modificar.component';
+import { ModelosCrearModificarComponent } from './gestionDeProcesos/modelos/modelos-crear-modificar.component';
+import { ModelosDetalleComponent } from './gestionDeProcesos/modelos/modelos-detalle.component';
+import { TamanosCrearModificarComponent } from './gestionDeProcesos/tamanos/tamanos-crear-modificar.component';
+import { TamanosDetalleComponent } from './gestionDeProcesos/tamanos/tamanos-detalle.component';
+import { TamanosComponent } from './gestionDeProcesos/tamanos/tamanos.component';
+import { ColoresCrearModificarComponent } from './gestionDeProcesos/colores/colores-crear-modificar.component';
+import { ColoresDetalleComponent } from './gestionDeProcesos/colores/colores-detalle.component';
+import { ColoresComponent } from './gestionDeProcesos/colores/colores.component';
+import { TerminadosDetalleComponent } from './gestionDeProcesos/terminados/terminados-detalle.component';
+import { TerminadosComponent } from './gestionDeProcesos/terminados/terminados.component';
+import { TerminadosCrearModificarComponent } from './gestionDeProcesos/terminados/terminados-crear-modificar.component';
+import { ModelosCompletosCrearModificarComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-crear-modificar.component';
+import { ModelosCompletosDetalleComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-detalle.component';
+import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
 
 
 @NgModule({
@@ -123,6 +137,20 @@ import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/pr
        CrearModificarComponent,
        GeneralComponent,
        ProcesosCrearModificarComponent,
+       ModelosCrearModificarComponent,
+       ModelosDetalleComponent,
+       TamanosCrearModificarComponent,
+       TamanosDetalleComponent,
+       TamanosComponent,
+       ColoresCrearModificarComponent,
+       ColoresDetalleComponent,
+       ColoresComponent,
+       TerminadosDetalleComponent,
+       TerminadosComponent,
+       TerminadosCrearModificarComponent,
+       ModelosCompletosCrearModificarComponent,
+       ModelosCompletosDetalleComponent,
+       ModelosCompletosComponent,
 
 
       ],
