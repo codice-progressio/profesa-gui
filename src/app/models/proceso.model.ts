@@ -9,7 +9,7 @@ export class Proceso {
       public _id?: string,
       public departamento?: Departamento,
       public nombre?: string,
-      public pasos?: Paso[], //LO TENEMOS QUE ELIMINAR
+      // public pasos?: Paso[], //LO TENEMOS QUE ELIMINAR
       public observaciones?: string,
       public especial?: boolean,
       // public gastos: GastoConsumo[] = [],

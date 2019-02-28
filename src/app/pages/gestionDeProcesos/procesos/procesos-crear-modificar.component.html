@@ -1,3 +1,103 @@
-<p>
-  procesos-crear-modificar works!
-</p>
+<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"proceso"' [esMasculino]='true'>
+    <ng-container *ngIf="mostrarCrearModificar">
+
+        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+
+            <div class="row">
+                <div class="form-group col-12 col-md-6 col-lg-4">
+                    <input formControlName="nombre" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(nombre_FB), 'is-valid':_validacionesService.valid(nombre_FB)}" name="nombre" id="nombre" placeholder="Nombre">
+                    <small class="form-text text-muted">Ingresa el nombre del proceso</small>
+                    <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="form-group col-12 col-md-6 col-lg-4">
+                    <select formControlName="departamento" class="form-control form-control-lg" name="departamento" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(departamento_FB), 'is-valid':_validacionesService.valid(departamento_FB)}">
+                    <option value="-" disabled selected >Selecciona un departamento de la lista</option>
+                    <option *ngFor="let departamento of departamentos" [value]="departamento._id">{{departamento.nombre}}</option>
+                  </select>
+                    <small class="form-text text-muted">Departamento</small>
+                    <app-validacion-inputs [campo]="departamento_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="custom-control custom-checkbox mt-3 col-auto">
+                    <input formControlName="requiereProduccion" type="checkbox" class="custom-control-input" id='requiereProduccion'>
+                    <label class="custom-control-label" for="requiereProduccion">Requiere produccion</label>
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="mb-3">Maquinas que se pueden utilizar en este proceso</h3>
+
+                </div>
+                <!-- 
+                =====================================
+                 El grupo de array para validar las maquinas
+                =====================================
+                -->
+                <ng-container *ngFor="let maquina of maquinas">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="custom-control custom-checkbox mt-3">
+                            <input (change)="agregarQuitarId(maquina._id, $event)" [checked]='estaAgregado( maquina._id )' type="checkbox" class="custom-control-input" [id]="maquina._id">
+                            <label class="custom-control-label" [for]="maquina._id">{{maquina.nombre}}</label>
+                        </div>
+
+                    </div>
+
+                </ng-container>
+
+                <span formArrayName='maquinas'>
+                  <!-- El cp solo es para que entregue un valor. Solo ocupamos itinerar sobre el array.  -->
+                  <ng-container *ngFor="let cp of formulario.controls['maquinas'].controls; let i = index">
+    
+                    <div class="row" [formGroupName]="i">
+                      <input formControlName="_id"  type="hidden"  [id]="i+'depto'" >
+    
+                    </div>
+                  </ng-container> 
+          
+                </span>
+                <br>
+
+
+                <!-- 
+                  =====================================
+                  END El grupo de array para validar los departamentos
+                  =====================================
+                -->
+            </div>
+            <br>
+            <app-validacion-inputs [campo]="maquinas_FB" [directo]='true'></app-validacion-inputs>
+
+            <hr>
+            <div class="row">
+                <!-- <div class="form-group col-12 col-lg-6">
+                    <input formControlName="numeroDeSerie" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(numeroDeSerie_FB), 'is-valid':_validacionesService.valid(numeroDeSerie_FB)}" name="numeroDeSerie" id="numeroDeSerie" aria-describedby="numeroDeSerie"
+                        placeholder="Numero de serie">
+                    <small id="numeroDeSerie" class="form-text text-muted">Numero de serie</small>
+                    <app-validacion-inputs [campo]="numeroDeSerie_FB"></app-validacion-inputs>
+                </div> -->
+
+                <div class="form-group col-12 col-lg-6">
+                    <textarea formControlName="observaciones" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(observaciones_FB), 'is-valid':_validacionesService.valid(observaciones_FB)}" name="observaciones" id="observaciones" rows="3"></textarea>
+                    <small id="observaciones" class="form-text text-muted">Observaciones</small>
+                    <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
+                </div>
+
+            </div>
+
+
+
+            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
+            <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
+            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
+                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+        </button>
+
+        </form>
+
+    </ng-container>
+</app-crear-modificar>

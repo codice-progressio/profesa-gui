@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Proceso } from 'src/app/models/proceso.model';
 import { ProcesoService, ManejoDeMensajesService } from 'src/app/services/service.index';
 import { ProcesosCrearModificarComponent } from './procesos-crear-modificar.component';
@@ -9,18 +9,26 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
   selector: 'app-procesos',
   templateUrl: './procesos.component.html',
   styles: []
+  ,
+  providers: [
+    { provide: 'paginadorServiceProcesos', useClass: PaginadorService },
+]
 })
 export class ProcesosComponent extends Generales_GUI_CRUD< Proceso, ProcesoService, ProcesosCrearModificarComponent> implements OnInit  {
+ 
 
   constructor(
     public _procesoService: ProcesoService,
-    public _paginadorService: PaginadorService,
+    @Inject('paginadorServiceProcesos') public _paginadorService: PaginadorService,
+    // public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService,
   ) {
     super(
       _procesoService, 
       _paginadorService,
        _msjService);
+
+
     
   }
 

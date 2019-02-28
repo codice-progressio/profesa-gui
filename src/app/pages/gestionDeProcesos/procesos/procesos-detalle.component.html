@@ -1,3 +1,71 @@
-<p>
-  procesos-detalle works!
-</p>
+<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='""' [titulo]='"Detalle de proceso"' [idModal]='idModal'>
+    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
+    <ng-container *ngIf="detalleElemento">
+
+        <!-- 
+        =====================================
+         Cotenido
+        =====================================
+        -->
+
+        <div class="row">
+            <div class="col-12">
+                <strong>Nombre del proceso</strong>
+                <h1> {{detalleElemento.nombre}}</h1>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                Departamento: <strong>{{detalleElemento.departamento.nombre}} </strong>
+            </div>
+
+            <div class="col-12 mt-5">
+                <ng-container *ngIf="detalleElemento.requiereProduccion; else elseTemplate">
+                    <i class="fa fa-check fa-2x text-info"></i> Este proceso requiere produccion.
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <i class="fa fa-times fa-2x text-danger"></i> Este proceso no requiere produccion.
+                </ng-template>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-12">
+                <h3>Maquinas</h3>
+                <ul class="list-group">
+                    <li *ngFor="let maquina of detalleElemento.maquinas" class="list-group-item d-flex justify-content-between">
+                        {{maquina.clave}} | <small><strong>{{maquina.nombre}}</strong></small>
+                    </li>
+
+                    <li *ngIf="detalleElemento.maquinas.length ===0" class="list-group-item list-group-item-action active">Este proceso no tiene maquinas asignadas.</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Observaciones</h3>
+                <p>{{detalleElemento.observaciones}}</p>
+            </div>
+        </div>
+        <!-- 
+        =====================================
+         END Cotenido
+        =====================================
+        -->
+
+    </ng-container>
+
+</app-modal>
+<!-- 
+=====================================
+ END Body
+=====================================
+-->

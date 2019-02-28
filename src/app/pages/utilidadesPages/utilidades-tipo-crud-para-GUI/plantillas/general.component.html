@@ -12,11 +12,11 @@
                 <a (click)="crear()" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Crear </a>
 
                 <hr>
-                <app-paginador></app-paginador>
+                <app-paginador [paginador]=paginador></app-paginador>
 
                 <ng-content></ng-content>
 
-                <app-paginador></app-paginador>
+                <app-paginador [paginador]=paginador></app-paginador>
 
             </div>
         </div>

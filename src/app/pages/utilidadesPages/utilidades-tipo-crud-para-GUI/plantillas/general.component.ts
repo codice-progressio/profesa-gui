@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 
 /**
  *Este componente se encarga de los generales para 
@@ -48,8 +49,17 @@ export class GeneralComponent implements OnInit {
    */
   @Input( ) cbBuscar: any;
 
-
-
+  /**
+   *Para fin de paginacion sana es necesario que 
+   para loso componentes que hereden desde Generales_GUI_CRUD
+   se pase una nueva instancia del paginador. De esta manera 
+   se evitan problemas de choque al cambiar entre un componente y otro. 
+   *
+   * @type {PaginadorService}
+   * @memberof GeneralComponent
+   */
+  @Input() paginador: PaginadorService;
+  
 
   constructor() { }
 

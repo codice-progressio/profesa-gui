@@ -293,9 +293,9 @@ export class ProcesoComponent implements OnInit {
     // this.procesoEditandose.especial = esp;
     this.procesoEditandose.nombre = 'Nuevo proceso';
     this.procesoEditandose.observaciones = 'Observaciones del nuevo proceso.';
-    this.procesoEditandose.pasos = [
-      new Paso(1, 'Paso numero uno a realizar', true, true)
-    ];
+    // this.procesoEditandose.pasos = [
+    //   new Paso(1, 'Paso numero uno a realizar', true, true)
+    // ];
     
       this.procesosNormales.push(this.procesoEditandose);
     
@@ -349,7 +349,7 @@ export class ProcesoComponent implements OnInit {
   }
 
   agregarGastoAProceso(gasto: Gasto) {
-    this.procesoEditandose.gastos.push(this.crearGastoConsumo(gasto));
+    // this.procesoEditandose.gastos.push(this.crearGastoConsumo(gasto));
   }
 
   private crearGastoConsumo(gasto: Gasto): GastoConsumo {
@@ -361,16 +361,16 @@ export class ProcesoComponent implements OnInit {
   }
 
   procesoContieneGasto(gasto: Gasto): boolean {
-    if (!this.procesoEditandose.gastos) {
-      return;
-    }
+    // if (!this.procesoEditandose.gastos) {
+    //   return;
+    // }
 
-    for (let i = 0; i < this.procesoEditandose.gastos.length; i++) {
-      const p: Gasto = this.procesoEditandose.gastos[i].gasto;
-      if (p._id === gasto._id) {
-        return true;
-      }
-    }
+    // for (let i = 0; i < this.procesoEditandose.gastos.length; i++) {
+    //   const p: Gasto = this.procesoEditandose.gastos[i].gasto;
+    //   if (p._id === gasto._id) {
+    //     return true;
+    //   }
+    // }
     return false;
   }
 
@@ -392,21 +392,21 @@ export class ProcesoComponent implements OnInit {
     this.reordenarPasos(proceso);
     const p: Paso = new Paso();
     p.descripcion = 'Pon aquí la descripción del paso.';
-    p.orden = proceso.pasos.length + 1;
+    // p.orden = proceso.pasos.length + 1;
     p.editando = true;
-    proceso.pasos.push(p);
+    // proceso.pasos.push(p);
   }
 
   eliminarPaso(i: number) {
-    this.procesoEditandose.pasos.splice(i, 1);
-    this.reordenarPasos(this.procesoEditandose);
+    // this.procesoEditandose.pasos.splice(i, 1);
+    // this.reordenarPasos(this.procesoEditandose);
   }
 
   reordenarPasos(proceso: Proceso): any {
-    for (let i = 0; i < proceso.pasos.length; i++) {
-      const paso = proceso.pasos[i];
-      paso.orden = i + 1;
-    }
+    // for (let i = 0; i < proceso.pasos.length; i++) {
+    //   const paso = proceso.pasos[i];
+    //   paso.orden = i + 1;
+    // }
   }
 
   editando(): boolean {

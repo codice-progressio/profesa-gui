@@ -124,6 +124,8 @@ export class Generales_GUI_CRUD<
     public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
+    // this._paginadorService.desde = 0;
+    // this._paginadorService.calcular()
     this._paginadorService.callback = () => {
       this.cargarElementos();
     };
@@ -136,7 +138,8 @@ export class Generales_GUI_CRUD<
    * @memberof Generales_GUI_CRUD
    */
   cargarElementos() {
-    this._elementoService.todo().subscribe(elementos => {
+    this._elementoService.listarTodo = false;
+    this._elementoService.todo(this._paginadorService).subscribe(elementos => {
       this.elementos = elementos;
     });
   }

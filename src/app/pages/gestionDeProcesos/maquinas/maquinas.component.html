@@ -1,4 +1,4 @@
-<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar'>
+<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
     <ng-container *ngIf="mostrarLista">
 
         <!-- 
@@ -6,7 +6,7 @@
          BODY
         =====================================
         -->
-        <table class="table table-responsive table-hover w-100 ">
+        <table class="table table-responsive table-hover  ">
             <thead>
                 <tr>
                     <th></th>
@@ -16,6 +16,8 @@
                     <th>Departamentos</th>
                     <th>Numero de serie</th>
                     <th>Observaciones</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
