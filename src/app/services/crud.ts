@@ -48,7 +48,7 @@ export class CRUD<T>  {
      * @type {string}
      * @memberof CRUD
      */
-    urlBusqueda: string = '';
+    urlBusqueda: string = '/buscar';
 
    
     /**
