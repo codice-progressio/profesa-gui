@@ -1,3 +1,26 @@
-<p>
-  terminados-crear-modificar works!
-</p>
+<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"terminado"' [esMasculino]='true'>
+    <ng-container *ngIf="mostrarCrearModificar">
+
+        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+
+            <div class="row">
+                <div class="form-group col-12 col-md-6 col-lg-4">
+                    <input formControlName="terminado" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(terminado_FB), 'is-valid':_validacionesService.valid(terminado_FB)}" name="terminado" id="terminado" placeholder="Ingresa el nombre del terminado">
+                    <small class="form-text text-muted">Ingresa el nombre del terminado</small>
+                    <app-validacion-inputs [campo]="terminado_FB"></app-validacion-inputs>
+                </div>
+
+
+            </div>
+
+            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
+
+            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
+                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+            </button>
+
+        </form>
+
+    </ng-container>
+</app-crear-modificar>
