@@ -175,6 +175,8 @@ export class CrearModificar_GUI_CRUD<
     this.cbAnimar();
     this.limpiar();
     this.cbCrearFormulario();
+    this.idEditando = null;
+    
   }
 
   /**
