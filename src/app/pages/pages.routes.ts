@@ -19,13 +19,10 @@ import { MaterialesComponent } from './departamentos/materiales/materiales.compo
 import { TransformacionComponent } from './departamentos/transformacion/transformacion.component';
 import { PulidoComponent } from './departamentos/pulido/pulido.component';
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component';
-import { ModelosComponent } from './modelos/modelos.component';
 import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component';
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component';
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component';
 import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component';
-import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component';
-import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 import { _ROLES } from '../config/roles.const';
 import { ClientesComponent } from './clientes/clientes.component';
@@ -47,6 +44,7 @@ import { TamanosComponent } from './gestionDeProcesos/tamanos/tamanos.component'
 import { ColoresComponent } from './gestionDeProcesos/colores/colores.component';
 import { TerminadosComponent } from './gestionDeProcesos/terminados/terminados.component';
 import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
+import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -325,20 +323,6 @@ const pagesRoutes: Routes = [
         },
         
 
-        // {    
-        //     path: 'modelos', 
-        //     component: ModelosComponent,
-        //     canActivate: [PermisosGuard], 
-        //     data: {
-        //         titulo: 'Registro y administración de modelos',
-        //         roles : [ 
-        //             _ROLES.ADMIN_ROLE
-        //         ]
-        //     }
-        // },
-        // Gestión de procesos
-
-
 
 // <!-- 
 // =====================================
@@ -428,16 +412,6 @@ const pagesRoutes: Routes = [
                ]
            }
         },
-
-
-// <!-- 
-// =====================================
-//  END NUEVA SECCION DE PROCESOS
-// =====================================
-// -->
-
-    
-
         {
             path: 'familiaDeProcesos', 
             component: FamiliaDeProcesosComponent, 
@@ -463,31 +437,19 @@ const pagesRoutes: Routes = [
 
 
 
+// <!-- 
+// =====================================
+//  END NUEVA SECCION DE PROCESOS
+// =====================================
+// -->
+
+    
 
 
 
-        {
-            path: 'procesos_old', 
-            component: ProcesoComponent, 
-            canActivate: [PermisosGuard], 
-            data: {
-                titulo: 'Gestión de procesos',
-                roles : [ 
-                    _ROLES.ADMIN_ROLE
-                ]
-            }
-        },
-        {
-            path: 'procesos/modelos', 
-            component: ProcesosEnModeloComponent, 
-            canActivate: [PermisosGuard], 
-            data: {
-                titulo: 'Gestión de procesos de modelo',
-                roles : [ 
-                    _ROLES.ADMIN_ROLE
-                ]
-            }
-        },
+
+
+
         // reportes
         {
             path: 'reportes/indicadorChecadas', 

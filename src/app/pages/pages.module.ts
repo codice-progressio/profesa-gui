@@ -35,15 +35,11 @@ import { MaterialesComponent } from './departamentos/materiales/materiales.compo
 import { TransformacionComponent } from './departamentos/transformacion/transformacion.component';
 import { PulidoComponent } from './departamentos/pulido/pulido.component';
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component';
-import { ModelosComponent } from './modelos/modelos.component';
 import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component';
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component';
 import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component';
-import { ProcesoComponent } from './gestionDeProcesos/proceso/proceso.component';
-import { CostosDeProcesoComponent } from './gestionDeProcesos/costos-de-proceso/costos-de-proceso.component';
-import { ProcesosEnModeloComponent } from './gestionDeProcesos/procesos-en-modelo/procesos-en-modelo.component';
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component';
@@ -79,6 +75,7 @@ import { TerminadosCrearModificarComponent } from './gestionDeProcesos/terminado
 import { ModelosCompletosCrearModificarComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-crear-modificar.component';
 import { ModelosCompletosDetalleComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-detalle.component';
 import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
+import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component';
 
 
 @NgModule({
@@ -108,14 +105,10 @@ import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos
        TransformacionComponent,
        PulidoComponent,
        SeleccionComponent,
-       ModelosComponent,
        VistaParaImprecionComponent,
        PastillaComponent,
        EmpaqueComponent,
        GestionDepartamentoComponent,
-       ProcesoComponent,
-       CostosDeProcesoComponent,
-       ProcesosEnModeloComponent,
        IndicadorDeChecadasComponent,
        ClientesComponent,
        ControlDeProduccionComponent,
@@ -139,6 +132,7 @@ import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos
        ProcesosCrearModificarComponent,
        ModelosCrearModificarComponent,
        ModelosDetalleComponent,
+       ModelosComponent,
        TamanosCrearModificarComponent,
        TamanosDetalleComponent,
        TamanosComponent,
