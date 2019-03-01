@@ -45,6 +45,9 @@ import { ColoresComponent } from './gestionDeProcesos/colores/colores.component'
 import { TerminadosComponent } from './gestionDeProcesos/terminados/terminados.component';
 import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
 import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component';
+import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser-reporte.component';
+import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
+import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -440,6 +443,57 @@ const pagesRoutes: Routes = [
 // <!-- 
 // =====================================
 //  END NUEVA SECCION DE PROCESOS
+// =====================================
+// -->
+
+
+// <!-- 
+// =====================================
+//  REPORTES
+// =====================================
+// -->
+
+{
+    path: 'reportes/laser', 
+    component: LaserReporteComponent,
+    canActivate: [PermisosGuard],
+    
+    data: {
+        titulo: 'Reporte de laser',
+        roles : [ 
+            _ROLES.ADMIN_ROLE
+        ]
+    }
+},
+{
+    path: 'reportes/transformacion', 
+    component: TransformacionReporteComponent,
+    canActivate: [PermisosGuard],
+    
+    data: {
+        titulo: 'Reporte de transformacion',
+        roles : [ 
+            _ROLES.ADMIN_ROLE
+        ]
+    }
+},
+{
+    path: 'reportes/quimica', 
+    component: QuimicaReporteComponent,
+    canActivate: [PermisosGuard],
+    
+    data: {
+        titulo: 'Reporte de quimica',
+        roles : [ 
+            _ROLES.ADMIN_ROLE
+        ]
+    }
+},
+
+
+// <!-- 
+// =====================================
+//  END REPORTES
 // =====================================
 // -->
 

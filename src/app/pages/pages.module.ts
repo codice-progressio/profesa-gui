@@ -77,6 +77,9 @@ import { ModelosCompletosDetalleComponent } from './gestionDeProcesos/modelos-co
 import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
 import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component';
 import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/familiaDeProcesos/familia-de-procesos-crear-modificar.component';
+import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser-reporte.component';
+import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
+import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 
 
 @NgModule({
@@ -147,6 +150,9 @@ import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/fa
        ModelosCompletosDetalleComponent,
        ModelosCompletosComponent,
        FamiliaDeProcesosCrearModificarComponent,
+       LaserReporteComponent,
+       TransformacionReporteComponent,
+       QuimicaReporteComponent,
 
 
       ],
