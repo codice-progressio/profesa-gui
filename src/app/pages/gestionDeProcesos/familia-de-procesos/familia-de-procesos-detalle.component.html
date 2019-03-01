@@ -1,3 +1,66 @@
-<p>
-  familia-de-procesos-detalle works!
-</p>
+<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Clave:"' [titulo]='detalleElemento?.nombre' [idModal]='idModal'>
+    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
+    <ng-container *ngIf="detalleElemento">
+
+        <!-- 
+        =====================================
+         Cotenido
+        =====================================
+        -->
+
+        <div class="row">
+            <div class="col-12">
+                <strong>Nombre de la familia</strong>
+                <h1> {{detalleElemento.nombre}}</h1>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <div class="row">
+            <div class="col-12">
+                <h3>Procesos</h3>
+                <ul class="list-group">
+                    <li *ngFor="let proceso of detalleElemento.procesos" class="list-group-item">
+
+                        <span>
+
+                        {{proceso.orden}} - {{proceso.proceso.nombre}}
+
+                        </span>
+
+                        <span>
+                        <strong class='text-muted'>
+                            <small>
+                              {{proceso.proceso.departamento.nombre}}
+                          </small>
+                      </strong>
+                      </span>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Observaciones</h3>
+                <p>{{detalleElemento.observaciones}}</p>
+            </div>
+        </div>
+        <!-- 
+        =====================================
+         END Cotenido
+        =====================================
+        -->
+
+    </ng-container>
+
+</app-modal>
+<!-- 
+=====================================
+ END Body
+=====================================
+-->

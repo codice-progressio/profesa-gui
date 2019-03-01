@@ -1,3 +1,26 @@
-<p>
-  tamanos-detalle works!
-</p>
+<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Tamano:"' [titulo]='detalleElemento?.tamano' [idModal]='idModal'>
+    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
+    <ng-container *ngIf="detalleElemento">
+
+        <!-- 
+        =====================================
+         Cotenido
+        =====================================
+        -->
+
+        <H4><small class="text-muted">Estandar: </small> {{detalleElemento.estandar | number }} </H4>
+
+        <!-- 
+        =====================================
+         END Cotenido
+        =====================================
+        -->
+
+    </ng-container>
+
+</app-modal>
+<!-- 
+=====================================
+ END Body
+=====================================
+-->

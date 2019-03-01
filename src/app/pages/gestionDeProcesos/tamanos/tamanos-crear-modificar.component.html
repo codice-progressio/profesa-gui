@@ -1,3 +1,33 @@
-<p>
-  tamanos-crear-modificar works!
-</p>
+<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"tamano"' [esMasculino]='true'>
+    <ng-container *ngIf="mostrarCrearModificar">
+
+        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+
+            <div class="row">
+                <div class="form-group col-12 col-md-6 col-lg-4">
+                    <input formControlName="tamano" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(tamano_FB), 'is-valid':_validacionesService.valid(tamano_FB)}" name="tamano" id="tamano" placeholder="Ingresa el tamano">
+                    <small class="form-text text-muted">Ingresa el tamano </small>
+                    <app-validacion-inputs [campo]="tamano_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="form-group col-12 col-md-6 col-lg-4">
+                    <input formControlName="estandar" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(estandar_FB), 'is-valid':_validacionesService.valid(estandar_FB)}" name="estandar" id="estandar" placeholder="Ingresa la cantidad del estandar"
+                        mask="separator">
+                    <small class="form-text text-muted">Ingresa la cantidad del estandar</small>
+                    <app-validacion-inputs [campo]="estandar_FB"></app-validacion-inputs>
+                </div>
+            </div>
+
+
+
+
+            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
+            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
+                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+        </button>
+
+        </form>
+
+    </ng-container>
+</app-crear-modificar>

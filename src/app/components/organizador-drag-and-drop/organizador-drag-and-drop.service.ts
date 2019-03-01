@@ -316,8 +316,8 @@ obtenerObjetoPadre( idObjeto: string ): OrganizadorDragAndDrop<T>{
  * @memberof OrganizadorDragAndDropService
  */
 eliminarUnHijoEliminable( i: number, key: string ){
-  console.log( ' se ejecuto. ' + i +' - ' + key)
-  this.listaDeObjetos[key].hijos.ordenables.splice(i, 1)  
+  this.listaDeObjetos[key].hijos.ordenables.splice(i, 1)
+  this.actualizarPropiedadOrden();
 }
 
 /**

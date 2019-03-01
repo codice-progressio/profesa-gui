@@ -76,6 +76,7 @@ import { ModelosCompletosCrearModificarComponent } from './gestionDeProcesos/mod
 import { ModelosCompletosDetalleComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-detalle.component';
 import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component';
 import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component';
+import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/familiaDeProcesos/familia-de-procesos-crear-modificar.component';
 
 
 @NgModule({
@@ -145,6 +146,7 @@ import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component'
        ModelosCompletosCrearModificarComponent,
        ModelosCompletosDetalleComponent,
        ModelosCompletosComponent,
+       FamiliaDeProcesosCrearModificarComponent,
 
 
       ],

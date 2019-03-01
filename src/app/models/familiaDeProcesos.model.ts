@@ -9,6 +9,8 @@ export class FamiliaDeProcesos {
         public soloParaProductoTerminado: boolean =  false,
         public createAt?: Date,
         public updateAt?: Date,
+        public observaciones?: string,
+
 
         // SOLO PARA MOSTRAR INFO.
         public ver: boolean = false,
