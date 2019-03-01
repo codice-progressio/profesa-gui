@@ -16,6 +16,9 @@ import { Color } from '../../../models/color.models';
 import { Terminado } from '../../../models/terminado.models';
 import { Modelo } from 'src/app/models/modelo.models';
 import { Tamano } from 'src/app/models/tamano.models';
+import { OrganizadorDragAndDropService } from '../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service';
+import { DndObject } from 'src/app/components/organizador-drag-and-drop/models/dndObject.model';
+import { Procesos } from 'src/app/models/procesos.model';
 
 @Component({
   selector: 'app-modelos-completos-crear-modificar',
@@ -43,6 +46,7 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
     public _tamanoService: TamanoService,
     public _colorService: ColorService,
     public _terminadoService: TerminadoService,
+    public _dndService: OrganizadorDragAndDropService<Proceso>
   ) {
     super( _elementoService,
       formBuilder,
@@ -50,10 +54,13 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
     
     this.cbDatosParaEditar = (elemento: ModeloCompleto )=>{
       this.cargarDatosParaEditar( elemento )
+      this.cargarProcesos()
     } 
 
     this.cbCrearFormulario = ()=>{
+
       this.crearFormulario()
+      this.limpiarModelo()
     }
 
     this.configurar();
@@ -98,25 +105,34 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
 
   }
 
-  cargarDatosParaEditar( proceso: ModeloCompleto){
-    this.nombre_FB.setValue( proceso.nombre )
-    this.departamento_FB.setValue( proceso.departamento._id )
+  cargarDatosParaEditar( modeloCompleto: ModeloCompleto){
+    
+    this.modelo_FB.setValue(modeloCompleto.modelo._id)
+    this.setearModelo( modeloCompleto.modelo)
+    this.tamano_FB.setValue(modeloCompleto.tamano._id)
+    this.color_FB.setValue(modeloCompleto.color._id)
+    this.terminado_FB.setValue(modeloCompleto.terminado._id)
+    this.laserAlmacen_FB.get('laser').setValue(modeloCompleto.laserAlmacen.laser)
+    this.versionModelo_FB.setValue(modeloCompleto.versionModelo)
+    this.medias_FB.setValue(modeloCompleto.medias)
+    this.familiaDeProcesos_FB.setValue(modeloCompleto.familiaDeProcesos._id)
+    this.cargarProcesos()
+    this.crearListasdnd( modeloCompleto.familiaDeProcesos)
 
-    this.requiereProduccion_FB.setValue( proceso.requiereProduccion )
+    this.cargarDatosDeFamilia(modeloCompleto)
+    
 
-    proceso.maquinas.forEach(d => {
-      this.agregarMaquina(d._id)
-    });
+     
 
 
-    this.observaciones_FB.setValue( proceso.observaciones )
   }
 
 
   /**
    *Crea el formulario de registro. 
    *
-   * @memberof MaquinasCrearModificarComponent
+   * @memberof ModelosCompletosCrearModificarComponent
+
    */
   crearFormulario( ){
     this.formulario = this.formBuilder.group({
@@ -132,15 +148,16 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
       terminado: ['', [
         Validators.required
       ]],
-      laserAlmacen: ['', [
-      ]],
+      laserAlmacen: this.formBuilder.group({
+        laser:['', []]
+      }),
       versionModelo: ['', [
       ]],
       familiaDeProcesos: ['', [
         Validators.required
       ]],
 
-      procesosEspeciales: new FormArray([], this._validacionesService.minSelectedCheckboxes()),
+      procesosEspeciales: new FormArray([] ),
       
            
       medias: [false, [
@@ -170,6 +187,9 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
   public get versionModelo_FB(): AbstractControl {
     return this.formulario.get('versionModelo')
   }
+  public get medias_FB(): AbstractControl {
+    return this.formulario.get('medias')
+  }
   public get familiaDeProcesos_FB(): AbstractControl {
     return this.formulario.get('familiaDeProcesos')
   }
@@ -178,6 +198,8 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
   public get procesosEspeciales_FB(): FormArray {
     return <FormArray> this.formulario.get('procesosEspeciales')
   }
+
+  
 
 
   buscar( termino: string ){
@@ -198,6 +220,7 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
    *
    * @type {Modelo}
    * @memberof ModelosCompletosCrearModificarComponent
+
    */
   modelo: Modelo = null;
 
@@ -224,6 +247,7 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
    *
    * @type {string}
    * @memberof ModelosCompletosCrearModificarComponent
+
    */
   esconderBuscador: boolean = false;
 
@@ -238,104 +262,141 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
   }
 
 
+cargarDatosDeFamilia( modeloCompleto: ModeloCompleto = null ) {
+  this._dndService.limpiar();
+  this._dndService.limpiarListaDeElementos();
 
+  console.log( 'cargando datos ')
+    this.procesos.forEach(proceso => {
+      let dnd: DndObject<Proceso> = new DndObject();
+      dnd.setEliminable(true);
+      dnd.setLeyenda(proceso.nombre);
+      dnd.setLeyendaOptativa(proceso.departamento.nombre);
+      dnd.setObjeto(proceso);
+      this._dndService.listaDeElementos.push(dnd);
+  } )
 
-
-  // /**
-  //  *Crea y agrega un nuevo formGroup al control departamentos_FB
-  //  *
-  //  * @param {string} id El id del departamento que se va a gregar. 
-  //  * @memberof MaquinasCrearModificarComponent
-  //  */
-  // agregarMaquina( id: string ){
-  //   let a: FormGroup =  this.crearNuevoFormGroupMaquina();
-  //   a.controls['_id'].setValue( id );
-  //   this.maquinas_FB.push( a )
-  // }
-  
-
-
-
-  // /**
-  //  *Retorna un nuevo grupo para agregar un id. 
-  //  *
-  //  * @returns {FormGroup}
-  //  * @memberof MaquinasCrearModificarComponent
-  //  */
-  // crearNuevoFormGroupMaquina( ): FormGroup {
-  //   return this.formBuilder.group(
-  //     {
-  //       _id:['',
-  //       ]
-  //     }
-  //    )
-  // }
-
-  //  /**
-  //  *Comprueba si el id que se le pase como paramentro esta agregado. (Osea que 
-  //   se encuentra dentro del arreglo de id del formulario.)
-  //  *
-  //  * @param {string} id El id que se va a comprobar. 
-  //  * @returns {boolean} El resultado de la comparacion. 
-  //  * @memberof MaquinasCrearModificarComponent
-  //  */
-  // estaAgregado( id:string ): boolean {
-  //   let a =  this.maquinas_FB.controls.filter( (d)=>{
-  //     return d.value._id === id;
-  //   } )
-  //   return a.length >0;
-  // }
-
-  // /**
-  //  *Agrega un nuevo valor id al arreglo del forumlario de departamentos. 
-  //  *
-  //  * @param {string} id El id del elemento. 
-  //  * @param {*} select El checkbox. 
-  //  * @memberof ProcesosCrearModificarComponent
-  //  */
-  // agregarQuitarId ( id: string, select ) {
-    
-  //   let checked: boolean = select.srcElement.checked;
-  //   if( checked ) {
-  //       if( !this.estaAgregado( id ) ){
-  //        this.agregarMaquina( id )
-  //       }
-  //   } else{
-  //     this.eliminarMaquina( id ) 
-  //   }
-  // }
-
-  // /**
-  //  * Elimina una maquina. Es importante senalar que si borramos la 
-  //  * maquina filtrando con el get (maquinas_FB.controls.filter) 
-  //  * las validaciones no se disparan. 
-  //  * Tenemos que buscar el array desde this.formulario.controns['maquinas']
-  //  * para luego usar removeAt(i). El i lo encontramos recorriendo this.maquinas_FB.
-  //  *
-  //  * @param {string} id
-  //  * @returns
-  //  * @memberof ProcesosCrearModificarComponent
-  //  */
-  // eliminarMaquina( id: string ){
-  //   /**
-  //    * El arreglo de donde vamos a eliminar los datos para que se pueda 
-  //    * disparar la validacion. 
-  //    */
-  //   const arrayControl = <FormArray> this.formulario.controls['maquinas'];
-  //   // Obtenemos el id buscando y comparando a lo rudo por que nos interesa su
-  //   // indice. 
-  //   for (let i = 0; i < this.maquinas_FB.controls.length; i++) {
-  //     const control = this.maquinas_FB.controls[i];
-  //     // Comparamos si es el id que nos interesa. 
-  //     if( control.value._id === id ){
-  //       // Eliminamos
-  //       arrayControl.removeAt(i);
-  //       // No necesitamos hacer nada mas. 
-  //       return;
-  //     }
-  //   }
-  // }
-
+  this._familiaService.buscarPorId( this.familiaDeProcesos_FB.value )
+  .subscribe((familia)=>{
+    this.crearListasdnd(familia)
    
+    this.cargarProcesosEspecialesDeEdicion( modeloCompleto );
 
+  } )
+
+}
+
+/**
+ *Carga los proceos especiales para editarse a sus respectivos
+ padres despues de que la familia se termina de cargar. 
+ *
+ * @param {ModeloCompleto} modeloCompleto
+ * @memberof ModelosCompletosCrearModificarComponent
+ */
+cargarProcesosEspecialesDeEdicion( modeloCompleto: ModeloCompleto ){
+  if( modeloCompleto ){
+     
+    modeloCompleto.procesosEspeciales.forEach((procesos: Procesos) => {
+      this._dndService
+      .obtenerObjetoPadre(procesos.orden.toString().split('.')[0])
+      .hijos
+        .addOrdenable()
+          .setEliminable( true )
+          .setLeyenda( procesos.proceso.nombre )
+          .setLeyendaOptativa( procesos.proceso.departamento.nombre )
+          .setObjeto( procesos.proceso )
+          .setOrden(procesos.orden)
+
+    });
+  }
+}
+
+crearListasdnd(familia: FamiliaDeProcesos = null) {
+
+  this._dndService.leyendaListaSeleccionable =
+  "Arrastra procesos de la lista para agregarlos.";
+  familia.procesos.forEach(procesos => {
+    let keyArea = procesos.orden.toString().split('.')[0]
+    let dndOBjecto: DndObject<Proceso> = this._dndService
+      .nuevaArea(keyArea)
+      .setPadre()
+        .setEliminable(false)
+        .setLeyenda(procesos.proceso.nombre + ' '+ keyArea) 
+        .setLeyendaOptativa(procesos.proceso.departamento.nombre)
+        .setOrden(procesos.orden)
+        .setObjeto(procesos.proceso);
+    });
+    this._dndService.actualizarPropiedadOrden();
+    // this.actualizarIds(true);
+  }
+
+   /**
+   *Crea y agrega un nuevo formGroup al control departamentos_FB
+   *
+   * @param {string} id El id del departamento que se va a gregar.
+   * @memberof ModelosCompletosCrearModificarComponent
+
+   */
+  agregarElemento(orden: string, proceso: Proceso, procesoPadre: Proceso) {
+    let a: FormGroup = this.crearNuevoFormGroupElemento();
+    a.controls["orden"].setValue(orden);
+    a.controls["proceso"].setValue(proceso);
+    a.controls["procesoPadre"].setValue(procesoPadre);
+    this.procesosEspeciales_FB.push(a);
+  }
+
+  /**
+   *Retorna un nuevo grupo para agregar un id.
+   *
+   * @returns {FormGroup}
+   * @memberof ModelosCompletosCrearModificarComponent
+
+   */
+  crearNuevoFormGroupElemento(): FormGroup {
+    return this.formBuilder.group({
+      orden: [""],
+      proceso: [""],
+      procesoPadre: [""],
+    });
+  }
+
+
+
+  ejecutarActualizadonIds: boolean = true;
+   /**
+   *Actualiza la lista de objetos id. Se ejecuta con el emiter.
+   *
+   * @memberof ModelosCompletosCrearModificarComponent
+
+   */
+  actualizarIds() {
+    if (this.ejecutarActualizadonIds) {
+      this.ejecutarActualizadonIds = false;
+      setTimeout(() => {
+        this.clearFormArray(this.procesosEspeciales_FB);
+        console.log('actualizando ids')
+        this._dndService.obtenerHijosOrdenables().forEach(dndProceso => {
+          this.agregarElemento(dndProceso.orden, dndProceso.objeto, dndProceso.objetoPadre);
+        });
+        this.ejecutarActualizadonIds = true ;
+
+      }, 400);
+    }
+  }
+
+   /**
+   *Elimina los elementos dentro del formArray de manera
+   recursiva. No se puede hacer de otra manera sin que pierda
+   la relacion. 
+   *
+   * @memberof FamiliaDeProcesosCrearModificarComponent
+   */
+  clearFormArray = (formArray: FormArray) => {
+    while (formArray.length !== 0) {
+      formArray.removeAt(0);
+    }
+  };
+
+
+  
 }

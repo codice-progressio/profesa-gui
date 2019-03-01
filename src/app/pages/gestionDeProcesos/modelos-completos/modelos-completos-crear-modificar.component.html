@@ -59,16 +59,23 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="laserAlmacen" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(laserAlmacen_FB), 'is-valid':_validacionesService.valid(laserAlmacen_FB)}" name="laserAlmacen" id="laserAlmacen" placeholder="laserAlmacen">
-                    <small class="form-text text-muted">Ingresa la marca laser</small>
-                    <app-validacion-inputs [campo]="laserAlmacen_FB"></app-validacion-inputs>
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <ng-container formGroupName='laserAlmacen'>
+                        <input formControlName="laser" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(laserAlmacen_FB), 'is-valid':_validacionesService.valid(laserAlmacen_FB)}" name="laserAlmacen" id="laserAlmacen" placeholder="Laser">
+                        <small class="form-text text-muted">Ingresa la marca laser</small>
+                        <app-validacion-inputs [campo]="laserAlmacen_FB"></app-validacion-inputs>
+                    </ng-container>
                 </div>
 
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="versionModelo" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(versionModelo_FB), 'is-valid':_validacionesService.valid(versionModelo_FB)}" name="versionModelo" id="versionModelo" placeholder="versionModelo">
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <input formControlName="versionModelo" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(versionModelo_FB), 'is-valid':_validacionesService.valid(versionModelo_FB)}" name="versionModelo" id="versionModelo" placeholder="Version">
                     <small class="form-text text-muted">Ingresa la version del modelo</small>
                     <app-validacion-inputs [campo]="versionModelo_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="custom-control custom-checkbox col-12 col-md-4 col-lg-3">
+                    <input formControlName="medias" type="checkbox" class="custom-control-input" id='medias'>
+                    <label class="custom-control-label" for="medias">Generar como medias ordenes</label>
                 </div>
 
             </div>
@@ -76,18 +83,51 @@
 
             <hr>
             <div class="row">
-                <h2> Familia de procesos </h2>
+                <div class="col-12">
+                    <h2> Familia de procesos </h2>
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <select formControlName="familiaDeProcesos" class="form-control form-control-lg" name="familiaDeProcesos" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(familiaDeProcesos_FB), 'is-valid':_validacionesService.valid(familiaDeProcesos_FB)}">
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-lg-3 ">
+                    <select (change)='cargarDatosDeFamilia()' formControlName="familiaDeProcesos" class="form-control form-control-lg" name="familiaDeProcesos" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(familiaDeProcesos_FB), 'is-valid':_validacionesService.valid(familiaDeProcesos_FB)}">
                     <option value="-" disabled selected >Selecciona un familiaDeProcesos de la lista</option>
-                    <option *ngFor="let familiaDeProcesos of familiaDeProcesos" [value]="familiaDeProcesos._id">{{familiaDeProcesos.familiaDeProcesos}}</option>
+                    <option  *ngFor="let familiaDeProcesos of familias" [value]="familiaDeProcesos._id">{{familiaDeProcesos.nombre}}</option>
                   </select>
                     <small class="form-text text-muted">familiaDeProcesos</small>
                     <app-validacion-inputs [campo]="familiaDeProcesos_FB"></app-validacion-inputs>
                 </div>
 
             </div>
+
+            <br>
+
+            <div *ngIf="familiaDeProcesos_FB.value" class="row animated slideInUp">
+                <div class="col-12 col-md-6">
+                    <app-organizador-drag-and-drop (dropSuccess)='actualizarIds()' [listaOrdenable]='true'></app-organizador-drag-and-drop>
+
+                </div>
+                <div class="col-12 col-md-6">
+                    <app-organizador-drag-and-drop [listaDeElementos]='true'></app-organizador-drag-and-drop>
+
+                </div>
+            </div>
+
+
+
+
+            <ng-container formArrayName="procesosEspeciales">
+                <ng-container *ngFor="let proceso of formulario.controls['procesosEspeciales'].controls; let i = index">
+                    <ng-container [formGroupName]='i'>
+                        <input type="hidden" formControlName="orden">
+                        <input type="hidden" formControlName="proceso">
+                        <input type="hidden" formControlName="procesoPadre">
+
+                    </ng-container>
+
+                </ng-container>
+            </ng-container>
+
+
 
 
 
