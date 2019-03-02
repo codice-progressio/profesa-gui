@@ -1,3 +1,235 @@
-<p>
-  transformacion-reporte works!
-</p>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-8 ">
+                        <strong>
+                          <h1 ><strong>TRANSFORMACION</strong></h1>
+                        </strong>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-between align-items-center">
+                        <span>2 de Marzo de 2019 - 15:30</span>
+                        <a class="btn btn-outline-warning" role="button"><i class="fa fa-print"></i> </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <pre>{{reporte | json }}</pre>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-container>
+
+    <!-- 
+=====================================
+ TABLA DE PASO
+=====================================
+-->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <!-- 
+=====================================
+ PASO
+=====================================
+-->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>
+                                <strong>
+                                  Paso 1
+                            </strong>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>
+                                <strong>Pendientes</strong>
+                            </h5>
+                            <small class='Las ordenes pendientes de recivir'></small>
+                        </div>
+                    </div>
+
+
+
+                    <table class="table  ">
+                        <thead>
+                            <tr>
+                                <th>Modelo </th>
+                                <th>Prioridad </th>
+                                <th>Cantidad de ordenes </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row">4107-18-1-BRILLANTE</td>
+                                <td>Produccion</td>
+                                <td>
+                                    <h3><strong>22</strong></h3>
+                                </td>
+
+                            </tr>
+                            <tr class='animate fadeIn'>
+                                <td colspan='3'>
+
+
+                                    <!-- 
+  =====================================
+   Tabla pedidos
+
+  =====================================
+-->
+                                    <table class="table bg-light ">
+                                        <thead class='bg-dark text-white'>
+                                            <tr>
+                                                <th>Cliente</th>
+                                                <th>PED</th>
+                                                <th>F.PED</th>
+                                                <th>Marca Laser</th>
+                                                <th>Prioridad</th>
+                                                <th>Deptos pendientes</th>
+                                                <th>Depto actual</th>
+                                                <th>Ordenes</th>
+                                                <th>Observaciones</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                                <td>datos </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan='9'>
+                                                    <!-- 
+=====================================
+ Tabla ordenes
+=====================================
+-->
+                                                    <table class="table bg-light">
+                                                        <thead class='bg-info text-white'>
+                                                            <tr>
+
+                                                                <th>#</th>
+                                                                <th>Fecha/Folio</th>
+                                                                <th>Modelo</th>
+                                                                <th>Laser</th>
+                                                                <th>UNI</th>
+                                                                <th>Pz</th>
+                                                                <th>Observaciones</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+
+                                                    <!-- 
+=====================================
+ END Tabla ordenes
+=====================================
+-->
+
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                                    <!-- 
+  =====================================  
+  END Tabla pedidos
+  
+  =====================================
+-->
+
+
+
+
+
+
+
+
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td scope="row">4107-18-1-BRILLANTE</td>
+                                <td>Produccion</td>
+                                <td>
+                                    <h3><strong>22</strong></h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row">4107-18-1-BRILLANTE</td>
+                                <td>Produccion</td>
+                                <td>
+                                    <h3><strong>22</strong></h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 
+  =====================================
+  END PASO
+  =====================================
+-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+=====================================
+ END TABLA DE PASO
+=====================================
+-->
+
+
+</ng-container>
