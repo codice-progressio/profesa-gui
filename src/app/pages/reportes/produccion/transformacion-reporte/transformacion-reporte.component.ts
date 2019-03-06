@@ -11,6 +11,14 @@ export class TransformacionReporteComponent implements OnInit {
 
   reporte: ReporteTransformacion;
 
+  fechaYHora: string = ''
+  
+  pasosKey: string[ ] = []
+
+
+  
+  keys = Object.keys
+
 
   constructor(
     public _reportesService: ReportesProduccionService
@@ -18,11 +26,22 @@ export class TransformacionReporteComponent implements OnInit {
     this._reportesService.transformacion()
     .subscribe( (reporte)=>{
       this.reporte = reporte
+      this.pasosKey =  Object.keys( this.reporte.objetoContenedorDePasos )
     } )
+
+    this.iniciarHoraYFecha();
+
   }
 
   ngOnInit() {
     
   }
+  
+  iniciarHoraYFecha( ){
+    setInterval(()=>{
+      this.fechaYHora = new Date().toISOString();
+    }, 1000 )
+  }
+  
 
 }

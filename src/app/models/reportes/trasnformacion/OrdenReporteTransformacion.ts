@@ -1,6 +1,7 @@
 import { Trayecto } from "../../trayecto.models";
 import { ModeloCompleto } from "../../modeloCompleto.modelo";
 import { Usuario } from "../../usuario.model";
+import { Laser } from "../../laser.models";
 /**
  *La orden que coincide contra los datos que se generaron
  para el reporte de transformacion. 
@@ -9,6 +10,42 @@ import { Usuario } from "../../usuario.model";
  * @class OrdenReporteTransformacion
  */
 export class OrdenReporteTransformacion {
+    /**
+     * El laser que de la orden. 
+     *
+     * @type {Laser}
+     * @memberof OrdenReporteTransformacion
+     */
+    public get laserCliente(): Laser {
+        return this._laserCliente;
+    }
+    public set laserCliente(value: Laser) {
+        this._laserCliente = value;
+    }
+    /**
+     *Las observaciones del pedido. 
+     *
+     * @type {string}
+     * @memberof OrdenReporteTransformacion
+     */
+    public get observacionesPedido(): string {
+        return this._observacionesPedido;
+    }
+    public set observacionesPedido(value: string) {
+        this._observacionesPedido = value;
+    }
+    /**
+     *El nombre del cliente. 
+     *
+     * @type {string}
+     * @memberof OrdenReporteTransformacion
+     */
+    public get cliente(): string {
+        return this._cliente;
+    }
+    public set cliente(value: string) {
+        this._cliente = value;
+    }
     /**
      *La cantidad de departamentos antes de llegar al
      paso.
@@ -294,7 +331,35 @@ export class OrdenReporteTransformacion {
     public set nivelDeUrgencia(value: string) {
         this._nivelDeUrgencia = value;
     }
-    constructor(private _nivelDeUrgencia: string, private _id: string, private _numeroDeOrden: string, private _unidad: number, private _piezasTeoricas: number, private _observaciones: string, private _terminada: boolean, private _porcentajeAvance: number, private _trayectoNormal: Trayecto[], private _trayectoRecorrido: Trayecto[], private _modeloCompleto: ModeloCompleto, private _pedido: string, private _orden: string, private _vendedor: Usuario, private _fechaFolio: Date, private _idFolio: string, private _observacionesFolio: string, private _desdeAlmacen: boolean, private _siguienteDepartamento: Trayecto, private _ubicacionActual: Trayecto, private _pasosRealizados: number, private _pasosPendientes: number, private _departamentosAntesDePaso: {
-        [paso: number]: number;
-    }) { }
+    constructor(
+        private _nivelDeUrgencia: string, 
+        private _id: string, 
+        private _numeroDeOrden: string, 
+        private _unidad: number, 
+        private _piezasTeoricas: number, 
+        private _observaciones: string, 
+        private _terminada: boolean, 
+        private _porcentajeAvance: number, 
+        private _trayectoNormal: Trayecto[], 
+        private _trayectoRecorrido: Trayecto[], 
+        private _modeloCompleto: ModeloCompleto, 
+        private _pedido: string, 
+        private _orden: string, 
+        private _vendedor: Usuario, 
+        private _fechaFolio: Date, 
+        private _idFolio: string, 
+        private _observacionesFolio: string = '', 
+        private _observacionesPedido: string = '', 
+        private _desdeAlmacen: boolean, 
+        private _siguienteDepartamento: Trayecto, 
+        private _ubicacionActual: Trayecto, 
+        private _pasosRealizados: number, 
+        private _pasosPendientes: number, 
+        private _departamentosAntesDePaso: {
+            [paso: number]: number;
+        }, 
+        private _cliente: string,
+        private _laserCliente?: Laser
+     ) { }
+    
 }

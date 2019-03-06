@@ -65,7 +65,7 @@
                                 <tr [ngClass]="{'animated zoomOut': fol.eliminar}">
                                     <td class=" align-middle fit">
                                         <h6><strong>
-                                            <a data-toggle="collapse" (click)="fol.mostrandoInfo= !fol.mostrandoInfo" [href]="'#'+fol.numeroDeFolio" class="btn btn-link text-inverse bt-lg">
+                                            <a data-toggle="collapse" (click)="fol.mostrandoInfo= !fol.mostrandoInfo" [href]="'#'+fol._id" class="btn btn-link text-inverse bt-lg">
                                                 <i class="fa" [ngClass]="{ 'fa-angle-right': !fol.mostrandoInfo,
                                                     'fa-angle-down': fol.mostrandoInfo }"></i>
                                             </a>
@@ -96,7 +96,7 @@
                                         <app-progress-bar [nivel]='fol.nivelDeUrgencia' [porcentaje]='fol.porcentajeAvance'></app-progress-bar>
                                     </td>
                                 </tr>
-                                <tr class="collapse" [id]="fol.numeroDeFolio">
+                                <tr class="collapse" [id]="fol._id">
                                     <td colspan="8">
                                         <div class="card mb-3">
                                             <div class="card-header bg-dark">
@@ -283,23 +283,15 @@
 
                                                                                                         </td>
                                                                                                     </tr>
-
-
-
                                                                                                 </tbody>
-
                                                                                             </table>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
                                                                         </td>
                                                                     </tr>
-
                                                                 </ng-container>
-
-
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -308,8 +300,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-
                             </ng-container>
                         </tbody>
                     </table>

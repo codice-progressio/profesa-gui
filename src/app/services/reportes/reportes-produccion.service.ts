@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { ManejoDeMensajesService, UtilidadesService, PreLoaderService } from '../service.index';
 import { URL_SERVICIOS } from 'src/app/config/config';
-import { get } from 'http';
 import { ReporteTransformacion } from 'src/app/models/reportes/trasnformacion/trasformacion';
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
@@ -28,9 +27,13 @@ export class ReportesProduccionService {
     let url = `${URL_SERVICIOS}/${this.urlReportes}/transformacion`
     return this.http.get(url).pipe(
       map( (datos:any)=>{
-        return datos['objetoContenedorDePasos']
+        let r = new ReporteTransformacion()
+        r.objetoContenedorDePasos = datos['objetoContenedorDePasos'];
+        r.agrupar()
+        return  r
       } ),
       catchError( (err)=>{
+        console.log( err)
         this._msjService.err(err)
         return throwError( err );
       } )
