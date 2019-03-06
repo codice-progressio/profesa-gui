@@ -15,7 +15,7 @@ import { AgrupacionTransformacionOrdenes } from './AgrupacionTransformacionOrden
  * @export
  * @class ReporteTransformacion
  */
-export class ReporteTransformacion {
+export class ReporteTransformacionDetalle {
   /**
      *Este tiene que coincidir con los estados de orden
      que vienen desde la api que son: disponible, trabajando y pendiente. 
@@ -94,8 +94,6 @@ export class ReporteTransformacion {
         }
       }
     }
-
-    console.log( this.objetoContenedorDePasos)
   }
 
   

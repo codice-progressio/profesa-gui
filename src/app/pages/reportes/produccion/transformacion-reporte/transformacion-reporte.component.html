@@ -4,229 +4,224 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-8 ">
+                    <div class="col-12 col-md-4 ">
                         <strong>
                           <h1 ><strong>TRANSFORMACION</strong></h1>
                         </strong>
                     </div>
 
-                    <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-between align-items-center">
-                        <span>{{fechaYHora |fecha :'LLLL'}}</span>
-                        <a class="btn btn-outline-warning" role="button"><i class="fa fa-print"></i> </a>
+                    <div class="col-12 col-md-6 d-flex justify-content-between align-items-center">
+                        <h1>{{fechaYHora |fecha :'LLLL' }}</h1>
+                        <a (click)="reporteADetalle = !reporteADetalle" class="btn btn-outline-warning" role="button">
+                            <ng-container *ngIf="!reporteADetalle">Reporte a detalle</ng-container>
+                            <ng-container *ngIf="reporteADetalle">Reporte simplificado</ng-container>
+                        </a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 
+<app-transformacion-reporte-simplificado *ngIf="!reporteADetalle">
+
+</app-transformacion-reporte-simplificado>
 
 
+<ng-container *ngIf="reporteADetalle">
+    <ng-container *ngFor="let key_paso of pasosKey">
 
-<ng-container *ngFor="let key_paso of pasosKey">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
 
-    <!-- 
-=====================================
- TABLA DE PASO
-=====================================
--->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="row">
-                        <div class="col-12">
-                            <h3>
-                                <strong>
-                                    Paso {{key_paso}}
-                                </strong>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Itineramos sobre el objeto this.reporte.agrupadas para obtener el titulo de la disponibilidad.  -->
-                    <ng-container *ngFor="let key_disponibilidad of keys(this.reporte.agrupadas)">
-                        <ng-container *ngIf="this.reporte.agrupadas[key_disponibilidad].paso; else elseTemplate">
-
-                            <div class="row">
-                                <div class="col-12 text-left">
-                                    <h1>{{key_disponibilidad.toUpperCase()}} </h1>
-
-                                </div>
-                                <div class="col-12 text-left">
-                                    <h4>
-                                        Hay <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].totalDeOrdenes}}</strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].totalDeOrdenes>1 ? 'ordenes':'orden' }} de la cuales
-                                        <strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].cantidadDePrioridadMayor}} </strong>son de prioridad
-                                        <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].prioridadMayor'></app-nivel-urgencia>
-                                    </h4>
-
-                                </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>
+                                    <strong>
+                                        Paso {{key_paso}}
+                                    </strong>
+                                </h3>
                             </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Itineramos sobre el objeto this.reporte.agrupadas para obtener el titulo de la disponibilidad.  -->
+                        <ng-container *ngFor="let key_disponibilidad of keys(this.reporte.agrupadas)">
+                            <ng-container *ngIf="this.reporte.agrupadas[key_disponibilidad].paso; else elseTemplate">
+
+                                <div class="row">
+                                    <div class="col-12 text-left">
+                                        <h1>{{key_disponibilidad.toUpperCase()}} </h1>
+
+                                    </div>
+                                    <div class="col-12 text-left">
+                                        <h4>
+                                            Hay <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].totalDeOrdenes}}</strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].totalDeOrdenes>1 ? 'ordenes':'orden' }} de la cuales
+                                            <strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].cantidadDePrioridadMayor}} </strong>son de prioridad
+                                            <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].prioridadMayor'></app-nivel-urgencia>
+                                        </h4>
+
+                                    </div>
+                                </div>
 
 
-                            <table class="table  ">
-                                <thead>
-                                    <tr>
-                                        <th> </th>
-                                        <th>Modelo </th>
-                                        <th>Prioridad Mayor</th>
-                                        <th>Cantidad de ordenes </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <ng-container *ngIf="this.reporte.agrupadas[key_disponibilidad].paso.hasOwnProperty(key_paso); else elseTemplate">
-                                        <ng-container *ngFor="let key_modeloCompleto of keys(this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto)">
+                                <table class="table  ">
+                                    <thead>
+                                        <tr>
+                                            <th> </th>
+                                            <th>Modelo </th>
+                                            <th>Prioridad Mayor</th>
+                                            <th>Cantidad de ordenes </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="this.reporte.agrupadas[key_disponibilidad].paso.hasOwnProperty(key_paso); else elseTemplate">
+                                            <ng-container *ngFor="let key_modeloCompleto of keys(this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto)">
 
 
-                                            <tr>
-                                                <td>
-                                                    <a class="btn btn-dark text-white btn-sm" data-toggle="collapse" [href]="'#'+this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].idCollapse" role="button">
-                                                        <i class="fa fa-plus"></i> Detalles
-                                                    </a>
-                                                </td>
-                                                <!-- El nombre de la agrupacion por modelo tiene que ser la key -->
-                                                <td scope="row">{{key_modeloCompleto}}</td>
-                                                <td>
-                                                    <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].prioridadMayor'></app-nivel-urgencia>
-                                                </td>
-                                                <td>
-                                                    <h3>
-                                                        <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].totalDeOrdenes}}</strong>
-                                                        <small>
-                                                            ordenes de las cuales <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].cantidadDePrioridadMayor}}</strong> 
-                                                            {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].cantidadDePrioridadMayor>1 ? 'son': 'es'}} de prioridad mayor.
-                                                        </small>
-                                                    </h3>
-                                                </td>
+                                                <tr>
+                                                    <td>
+                                                        <a class="btn btn-dark text-white btn-sm" data-toggle="collapse" [href]="'#'+this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].idCollapse" role="button">
+                                                            <i class="fa fa-plus"></i> Detalles
+                                                        </a>
+                                                    </td>
+                                                    <!-- El nombre de la agrupacion por modelo tiene que ser la key -->
+                                                    <td scope="row">{{key_modeloCompleto}}</td>
+                                                    <td>
+                                                        <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].prioridadMayor'></app-nivel-urgencia>
+                                                    </td>
+                                                    <td>
+                                                        <h3>
+                                                            <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].totalDeOrdenes}}</strong>
+                                                            <small>
+                                                                ordenes de las cuales <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].cantidadDePrioridadMayor}}</strong> 
+                                                                {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].cantidadDePrioridadMayor>1 ? 'son': 'es'}} de prioridad mayor.
+                                                            </small>
+                                                        </h3>
+                                                    </td>
 
-                                            </tr>
-                                            <tr [id]="this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].idCollapse" class="collapse">
-                                                <td colspan='4' class="m-0 p-0 w-100">
-                                                    <table class="table bg-light w-100">
-                                                        <thead class='bg-dark text-white'>
-                                                            <tr>
-                                                                <th></th>
-                                                                <th>PED</th>
-                                                                <th>Cliente</th>
-                                                                <th>F.PED</th>
-                                                                <th>Prioridad Mayor</th>
-                                                                <th>Cant. Ordenes</th>
-                                                                <th>Observaciones</th>
-
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <ng-container *ngFor="let key_pedido of keys(this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido)">
-
+                                                </tr>
+                                                <tr [id]="this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].idCollapse" class="collapse">
+                                                    <td colspan='4' class="m-0 p-0 w-100">
+                                                        <table class="table bg-light w-100">
+                                                            <thead class='bg-dark text-white'>
                                                                 <tr>
-                                                                    <td>
-                                                                        <a class="btn btn-warning text-white btn-sm" data-toggle="collapse" [href]="'#'+this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].pedido[key_pedido].idCollapse" role="button">
-                                                                            <i class="fa fa-plus"></i> Detalles
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>{{key_pedido}} </td>
-                                                                    <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cliente}} </td>
-                                                                    <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].fechaDePedido | fecha: 'LLLL'}} </td>
-                                                                    <td>
-                                                                        <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].prioridadMayor'></app-nivel-urgencia>
-                                                                    </td>
-                                                                    <td>
-                                                                        <strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].ordenes.length}} </strong> ordenes de las cuales
-                                                                        <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cantidadDePrioridadMayor}}</strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cantidadDePrioridadMayor>
-                                                                        1? 'son': 'es'}} de prioridad mayor.
-                                                                    </td>
-                                                                    <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].observaciones}} </td>
-                                                                    <td></td>
+                                                                    <th></th>
+                                                                    <th>PED</th>
+                                                                    <th>Cliente</th>
+                                                                    <th>F.PED</th>
+                                                                    <th>Prioridad Mayor</th>
+                                                                    <th>Cant. Ordenes</th>
+                                                                    <th>Observaciones</th>
+
+
                                                                 </tr>
-                                                                <tr class="m-0 collapse" [id]="this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].pedido[key_pedido].idCollapse">
-                                                                    <td colspan='7' class="m-0 p-0">
-                                                                        <table class="table ">
-                                                                            <thead class='bg-warning text-white '>
-                                                                                <tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <ng-container *ngFor="let key_pedido of keys(this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido)">
 
-                                                                                    <th>#</th>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a class="btn btn-warning text-white btn-sm" data-toggle="collapse" [href]="'#'+this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].pedido[key_pedido].idCollapse" role="button">
+                                                                                <i class="fa fa-plus"></i> Detalles
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>{{key_pedido}} </td>
+                                                                        <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cliente}} </td>
+                                                                        <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].fechaDePedido | fecha: 'LLLL'}} </td>
+                                                                        <td>
+                                                                            <app-nivel-urgencia [nivel]='this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].prioridadMayor'></app-nivel-urgencia>
+                                                                        </td>
+                                                                        <td>
+                                                                            <strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].ordenes.length}} </strong> ordenes de las cuales
+                                                                            <strong>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cantidadDePrioridadMayor}}</strong> {{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].cantidadDePrioridadMayor>
+                                                                            1? 'son': 'es'}} de prioridad mayor.
+                                                                        </td>
+                                                                        <td>{{this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].observaciones}} </td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr class="m-0 collapse" [id]="this.reporte.agrupadas[key_disponibilidad].paso[key_paso]?.modeloCompleto[key_modeloCompleto].pedido[key_pedido].idCollapse">
+                                                                        <td colspan='7' class="m-0 p-0">
+                                                                            <table class="table ">
+                                                                                <thead class='bg-warning text-white '>
+                                                                                    <tr>
 
-                                                                                    <th>Modelo</th>
-                                                                                    <th>Laser</th>
-                                                                                    <th>UNI</th>
-                                                                                    <th>Pz</th>
-                                                                                    <th>Deptos pendientes</th>
-                                                                                    <th>Depto actual</th>
-                                                                                    <th>Observaciones</th>
+                                                                                        <th>#</th>
 
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <tr *ngFor="let orden of this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].ordenes">
-                                                                                    <td>{{orden.numeroDeOrden}} </td>
+                                                                                        <th>Modelo</th>
+                                                                                        <th>Laser</th>
+                                                                                        <th>UNI</th>
+                                                                                        <th>Pz</th>
+                                                                                        <th>Deptos pendientes</th>
+                                                                                        <th>Depto actual</th>
+                                                                                        <th>Observaciones</th>
 
-                                                                                    <td>{{orden.modeloCompleto | modeloCompleto}} </td>
-                                                                                    <td>
-                                                                                        <span *ngIf="orden.laserCliente">{{orden.laserCliente.laser}}</span>
-                                                                                    </td>
-                                                                                    <td>{{orden.unidad}} </td>
-                                                                                    <td>{{orden.piezasTeoricas}} </td>
-                                                                                    <td>{{orden.departamentosAntesDePaso[key_paso]}} </td>
-                                                                                    <td>{{orden.ubicacionActual.departamento.nombre}} </td>
-                                                                                    <td>
-                                                                                        {{orden.observacionesFolio }} {{orden.observacionesPedido }} {{orden.observaciones }}
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr *ngFor="let orden of this.reporte.agrupadas[key_disponibilidad].paso[key_paso].modeloCompleto[key_modeloCompleto].pedido[key_pedido].ordenes">
+                                                                                        <td>{{orden.numeroDeOrden}} </td>
 
-                                                                                    </td>
-                                                                                </tr>
+                                                                                        <td>{{orden.modeloCompleto | modeloCompleto}} </td>
+                                                                                        <td>
+                                                                                            <span *ngIf="orden.laserCliente">{{orden.laserCliente.laser}}</span>
+                                                                                        </td>
+                                                                                        <td>{{orden.unidad}} </td>
+                                                                                        <td>{{orden.piezasTeoricas}} </td>
+                                                                                        <td>{{orden.departamentosAntesDePaso[key_paso]}} </td>
+                                                                                        <td>{{orden.ubicacionActual.departamento.nombre}} </td>
+                                                                                        <td>
+                                                                                            {{orden.observacionesFolio }} {{orden.observacionesPedido }} {{orden.observaciones }}
 
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            </ng-container>
+                                                                                        </td>
+                                                                                    </tr>
 
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                            </ng-container>
+
 
                                         </ng-container>
+                                        <ng-template #elseTemplate>
+                                            naa por aca
 
-
-                                    </ng-container>
-                                    <ng-template #elseTemplate>
-                                        naa por aca
-
-                                    </ng-template>
+                                        </ng-template>
 
 
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </ng-container>
+
+                            <ng-template #elseTemplate>
+                                <!-- <h4 class='text-muted'>No hay ordenes {{(key_disponibilidad.toLowerCase())}}</h4>
+                                <hr> -->
+                            </ng-template>
+
+
                         </ng-container>
 
-                        <ng-template #elseTemplate>
-                            <!-- <h4 class='text-muted'>No hay ordenes {{(key_disponibilidad.toLowerCase())}}</h4>
-                            <hr> -->
-                        </ng-template>
 
 
-                    </ng-container>
-
-
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 
-=====================================
- END TABLA DE PASO
-=====================================
--->
-
+    </ng-container>
 
 </ng-container>

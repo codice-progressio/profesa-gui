@@ -80,6 +80,7 @@ import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/fa
 import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser-reporte.component';
 import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
+import { TransformacionReporteSimplificadoComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte-simplificado.component';
 
 
 @NgModule({
@@ -153,6 +154,7 @@ import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/q
        LaserReporteComponent,
        TransformacionReporteComponent,
        QuimicaReporteComponent,
+       TransformacionReporteSimplificadoComponent,
 
 
       ],
