@@ -115,6 +115,7 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
     this.laserAlmacen_FB.get('laser').setValue(modeloCompleto.laserAlmacen.laser)
     this.versionModelo_FB.setValue(modeloCompleto.versionModelo)
     this.medias_FB.setValue(modeloCompleto.medias)
+    this.esBaston_FB.setValue(modeloCompleto.esBaston)
     this.familiaDeProcesos_FB.setValue(modeloCompleto.familiaDeProcesos._id)
     this.cargarProcesos()
     this.crearListasdnd( modeloCompleto.familiaDeProcesos)
@@ -162,6 +163,8 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
            
       medias: [false, [
       ]],
+      esBaston: [false, [
+      ]],
 
 
 
@@ -189,6 +192,9 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
   }
   public get medias_FB(): AbstractControl {
     return this.formulario.get('medias')
+  }
+  public get esBaston_FB(): AbstractControl {
+    return this.formulario.get('esBaston')
   }
   public get familiaDeProcesos_FB(): AbstractControl {
     return this.formulario.get('familiaDeProcesos')

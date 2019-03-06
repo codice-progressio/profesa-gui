@@ -17,9 +17,9 @@ export class CalculosDeCostosService {
   procesoHora ( proceso: Proceso ): number {
     let total: number  = 0;
     
-    proceso.gastos.forEach((gc: GastoConsumo) => {
-      total += this.gastoHora( gc );
-    });
+    // proceso.gastos.forEach((gc: GastoConsumo) => {
+    //   total += this.gastoHora( gc );
+    // });
 
     proceso.maquinas.forEach((maq: Maquina) => {
       total += this.maquinaHora( maq );
@@ -102,12 +102,12 @@ export class CalculosDeCostosService {
     // Retorna el total de el gasto de máquinas. 
     
     let total: number = 0;
-    // Recorremos todas las máquinas. 
-    proc.proceso.gastos.forEach((gc: GastoConsumo) => {
-      const seg = gc.gasto.tiempos[this.id(mc._id, proc.proceso._id, gc.gasto._id)];
-      const op = this.gastoSegundo( gc ) * seg;
-      total += isNaN(op) ? 0 : op;
-    });
+    // // Recorremos todas las máquinas. 
+    // proc.proceso.gastos.forEach((gc: GastoConsumo) => {
+    //   const seg = gc.gasto.tiempos[this.id(mc._id, proc.proceso._id, gc.gasto._id)];
+    //   const op = this.gastoSegundo( gc ) * seg;
+    //   total += isNaN(op) ? 0 : op;
+    // });
     return total;
   }
 

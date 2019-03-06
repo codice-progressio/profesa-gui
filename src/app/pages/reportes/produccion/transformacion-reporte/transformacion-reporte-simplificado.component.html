@@ -1,3 +1,79 @@
-<p>
-  transformacion-reporte-simplificado works!
-</p>
+<div class="row" *ngFor="let repo of reporte.reportesJuntos">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ng-container *ngIf="reporte; else noHayReporte">
+                    <h1>Ordenes disponibles</h1>
+
+                    <table class="table table-bordered table-condensed table-hover  ">
+                        <thead class='bg-dark text-white text-center h-25'>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Pedido</th>
+                                <th>F. Ped</th>
+                                <th>Modelo</th>
+                                <th>B</th>
+                                <th>Marca Laser</th>
+                                <th>Prioridad Mayor</th>
+                                <th>ORDENES DISPONIBLES</th>
+                                <th>Desglose</th>
+                                <th>Observaciones</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let keyPedido of keys(reporte.contenedorDePedidos.pedido)">
+                                <td> {{reporte.contenedorDePedidos.pedido[keyPedido].cliente}}</td>
+                                <td>{{keyPedido}}</td>
+                                <td>{{reporte.contenedorDePedidos.pedido[keyPedido].fechaDePedido | date}}</td>
+                                <td>{{reporte.contenedorDePedidos.pedido[keyPedido].modeloCompleto | modeloCompleto}}</td>
+                                <td>
+                                    <strong *ngIf="reporte.contenedorDePedidos.pedido[keyPedido].modeloCompleto.esBaston">B</strong>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="reporte.contenedorDePedidos.pedido[keyPedido].laserCliente">
+                                        {{reporte.contenedorDePedidos.pedido[keyPedido].laserCliente.laser}}
+
+                                    </ng-container>
+
+                                </td>
+                                <td>
+                                    <app-nivel-urgencia [nivel]='reporte.contenedorDePedidos.pedido[keyPedido].prioridadMayor'></app-nivel-urgencia>
+                                </td>
+                                <td>{{reporte.contenedorDePedidos.pedido[keyPedido].ordenes.length}} | {{reporte.contenedorDePedidos.pedido[keyPedido].cantidadDePrioridadMayor}} de prioridad mayor
+
+                                </td>
+
+                                <td>
+                                    <span *ngFor="let keyPaso of keys(reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles)">
+                                    Paso {{keyPaso}}: <strong>{{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]}} </strong>
+                                    {{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]>1? 'ordenes disponibles': 'orden disponible'}}
+                                    <ng-container *ngIf="keys(reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles).pop() !== keyPaso ">
+                                      <br>
+                                      <hr>
+  
+                                    </ng-container>
+                                    
+  
+  
+                                </span>
+                                </td>
+                                <td>{{reporte.contenedorDePedidos.pedido[keyPedido].observaciones}}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </ng-container>
+
+                <ng-template #noHayReporte>
+                    <h1 class='display-1'>No hay ordenes <strong>disponibles.</strong> </h1>
+                    Puedes revisar el reporte a detalle para ver las ordenes pendientes.
+                </ng-template>
+
+
+            </div>
+        </div>
+    </div>
+</div>

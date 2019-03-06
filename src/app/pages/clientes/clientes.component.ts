@@ -5,7 +5,6 @@ import { Cliente } from 'src/app/models/cliente.models';
 import { ValidacionesService, ModeloCompletoService } from 'src/app/services/service.index';
 import { ClienteService } from '../../services/cliente/cliente.service';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
-import { ModelosComponent } from '../modelos/modelos.component';
 
 @Component({
   selector: 'app-clientes',

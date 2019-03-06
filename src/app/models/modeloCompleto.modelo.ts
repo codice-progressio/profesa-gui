@@ -24,6 +24,7 @@ export class ModeloCompleto implements BasicosGUI {
         public medias: boolean = false,
         public nombreCompleto?: string,
         public familiaDeProcesos?: FamiliaDeProcesos,
+        public esBaston: boolean = false,
         // Cualquier proceso fuera de los de la familia de 
         // procesos.
         public procesosEspeciales: Procesos[] = [],

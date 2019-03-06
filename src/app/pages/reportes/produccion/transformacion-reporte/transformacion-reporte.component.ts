@@ -15,7 +15,7 @@ export class TransformacionReporteComponent implements OnInit {
    * @type {ReporteTransformacionDetalle}
    * @memberof TransformacionReporteComponent
    */
-  reporte: ReporteTransformacionDetalle;
+  reporteDetalle: ReporteTransformacionDetalle;
 
   /**
    *La fecha y hora que se muestra en el encabezado. 
@@ -61,8 +61,8 @@ export class TransformacionReporteComponent implements OnInit {
   ) { 
     this._reportesService.transformacionDetalle()
     .subscribe( (reporte)=>{
-      this.reporte = reporte
-      this.pasosKey =  Object.keys( this.reporte.objetoContenedorDePasos )
+      this.reporteDetalle = reporte
+      this.pasosKey =  Object.keys( this.reporteDetalle.objetoContenedorDePasos )
     } )
 
     this.iniciarHoraYFecha();

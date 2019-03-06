@@ -5,6 +5,7 @@ import { URL_SERVICIOS } from 'src/app/config/config';
 import { ReporteTransformacionDetalle } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionDetalle';
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
+import { ReporteTransformacionSimplificado } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionSimplificado';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,13 @@ export class ReportesProduccionService {
   urlReportes: string = 'reportes'
 
 
+  /**
+   *Retorna un objeto ReporteTransformacionDetalle dentro del observable
+   con los datos acomodados del reporte para una vision detallada. 
+   *
+   * @returns {Observable<ReporteTransformacionDetalle>}
+   * @memberof ReportesProduccionService
+   */
   transformacionDetalle( ): Observable<ReporteTransformacionDetalle>{
     let url = `${URL_SERVICIOS}/${this.urlReportes}/transformacion`
     return this.http.get(url).pipe(
@@ -41,11 +49,18 @@ export class ReportesProduccionService {
   }
 
 
-  transformacionSimplificado( ): Observable<ReporteTransformacionDetalle>{
+  /**
+   *Retorna un objeto ReporteTransformacionSimplificado dontro del observable 
+   con los datos acomodados del reporte para una vision simplificada. 
+   *
+   * @returns {Observable<ReporteTransformacionSimplificado>}
+   * @memberof ReportesProduccionService
+   */
+  transformacionSimplificado( ): Observable<ReporteTransformacionSimplificado>{
     let url = `${URL_SERVICIOS}/${this.urlReportes}/transformacion`
     return this.http.get(url).pipe(
       map( (datos:any)=>{
-        let r = new ReporteTransformacionDetalle()
+        let r = new ReporteTransformacionSimplificado()
         r.objetoContenedorDePasos = datos['objetoContenedorDePasos'];
         r.agrupar()
         return  r

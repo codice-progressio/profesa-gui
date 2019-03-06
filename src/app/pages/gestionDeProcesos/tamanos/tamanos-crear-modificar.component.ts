@@ -4,7 +4,6 @@ import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-c
 import { Tamano } from 'src/app/models/tamano.models';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ValidacionesService } from 'src/app/services/service.index';
-import { get } from 'http';
 
 @Component({
   selector: 'app-tamanos-crear-modificar',
