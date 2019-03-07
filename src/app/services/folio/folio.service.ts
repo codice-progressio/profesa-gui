@@ -12,6 +12,7 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 import { VariablesDeptos } from 'src/app/config/departamentosConfig';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class FolioService {
     public router: Router,
     private _msjService: ManejoDeMensajesService,
     private _u: UsuarioService,
-    private _preLoaderService: PreLoaderService
+    private _preLoaderService: PreLoaderService,
+    public _paginadorService: PaginadorService
     ) {
   }
     
@@ -91,7 +93,7 @@ export class FolioService {
     const a: number = this._preLoaderService.loading('Cargando folios.');
     
     const url =`${URL_SERVICIOS}/folio?`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url, a);
   }
   
   cargarFoliosConOrdenesSinTerminar( desde: number = 0, limite: number = 5) {
@@ -99,7 +101,7 @@ export class FolioService {
     
     // Carga los folios que ya tienen órdenes generadas. 
     const url =`${URL_SERVICIOS}/folio?conOrdenes=true`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url,  a);
   }
 
   cargarFoliosConOrdenesTerminados( desde: number = 0, limite: number = 5) {
@@ -107,7 +109,7 @@ export class FolioService {
     
     // Carga los folios que ya tienen órdenes generadas. 
     const url =`${URL_SERVICIOS}/folio?conOrdenes=true&terminados=true`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url,  a);
   }
 
   
@@ -118,19 +120,20 @@ export class FolioService {
     // Esto aunque un solo pedido no se haya genera órdenes. 
     // Los pedidos que ya se generón del folio no aparecen aqui. 
     const url =`${URL_SERVICIOS}/folio?sinOrdenes=true`;
-    return this.cargaDeFolios( url, limite, desde, a);
+    return this.cargaDeFolios( url, a);
   }
   
-  cargarFolioPorPrioridad(desde: number = 0, limite: number = 5, prioridad: string) {
+  cargarFolioPorPrioridad( prioridad: string) {
     
     const a: number = this._preLoaderService.loading('Cargando folios por prioridad');
     const url =`${URL_SERVICIOS}/folio?prioridad=${prioridad}&terminados=false&conOrdenes=true`;
-    return this.cargaDeFolios( url, limite, desde, a);
+    return this.cargaDeFolios( url,  a);
   }
   
-  private cargaDeFolios (url: string, limite: number = 5, desde: number = 0, a:number) {
-    url += `&limite=${limite}`; 
-    url += `&desde=${desde}`;
+  private cargaDeFolios (url: string,  a:number) {
+    
+    url += `&limite=${this._paginadorService.limite}`; 
+    url += `&desde=${this._paginadorService.desde}`;
     
     return this.http.get( url ).pipe(
       map( (resp: any) => {
@@ -205,8 +208,10 @@ export class FolioService {
   eliminarFolio( idFolio: string) {
     const a: number = this._preLoaderService.loading('Eliminando folio.');
     const url =`${URL_SERVICIOS}/folio/${idFolio}`;
+    
     return this.http.delete(url).pipe(
       map( (resp: any) => {
+        this.reiniciarPaginador()
         this._msjService.ok_(resp,null, a);
         return;
       }),
@@ -218,12 +223,13 @@ export class FolioService {
   
   guardarOrdenes( folio: Folio ) {
     const a: number = this._preLoaderService.loading('Guardando ordenes.');
-    
+  
     // QUITAMOS TODA LA BASURA.
     const limpio = this.limpiarParaOrdenes( folio );
     const url =`${URL_SERVICIOS}/orden`;
     return this.http.post( url, limpio ).pipe( 
       map( (resp) => {
+        this.reiniciarPaginador()
         this._msjService.ok_(resp,null, a);
         
         return;
@@ -412,6 +418,17 @@ export class FolioService {
       return throwError(err);
     })
   );
+  }
+
+  /**
+   *Este es un parche para reiniciar el paginador
+   *
+   * @memberof FolioService
+   */
+  reiniciarPaginador( ){
+    this._paginadorService.limite = 5
+    this._paginadorService.desde = 0
+    this._paginadorService.activarPaginador(this.totalFolios)
   }
 
 

@@ -56,7 +56,8 @@ export class RegistroDeFoliosComponent implements OnInit {
     //  this.termino = '';
 
     // };
-       
+    console.log( 'reiniciar')
+    this._folioService.reiniciarPaginador()
     this.cargarFolios();
     this._buscadorRapidoService.limpiarTodo();
     this._buscadorRapidoService.nombreDeElemento = 'cliente';

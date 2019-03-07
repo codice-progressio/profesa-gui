@@ -52,7 +52,7 @@ export class SeguimientoDeFoliosComponent implements OnInit {
 
    paginadorConFiltro(  desde: number = 0, limite: number = 5) {
      
-     this._folioService.cargarFolioPorPrioridad(0, 15, this.filtro).subscribe( (folios: any) => {
+     this._folioService.cargarFolioPorPrioridad(this.filtro).subscribe( (folios: any) => {
        this.folios = folios;
        this._paginadorService.activarPaginador(this._folioService.totalFolios);
       });
