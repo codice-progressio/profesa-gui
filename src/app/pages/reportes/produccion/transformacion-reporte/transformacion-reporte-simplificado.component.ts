@@ -21,29 +21,20 @@ export class TransformacionReporteSimplificadoComponent extends Temporizador imp
   
   ) { 
     super()
-  this.funcionATemporizar = ()=>{this.consultarReporte()} 
+  this.funcionATemporizar = ()=>{ 
+    this.consultarReporte()
+    this.mostrarDiferenciaDeHora = true
+    for (const key in this.objetoContenedorDeTiempos) {
+      if (this.objetoContenedorDeTiempos.hasOwnProperty(key)) {
+        const element = this.objetoContenedorDeTiempos[key];
+        let tiempoTranscurrido: number = Math.abs(new Date().getTime() - new Date(element.inicio).getTime()) / 36e5;
+        element.transcurrido = this.convertirAHoras( tiempoTranscurrido.toString())
+      }
+    }
+  } 
   this.intervalo = 1000,
   this.consultarReporte();
-
-
-
-    setTimeout( ()=>{
-      this.mostrarDiferenciaDeHora = true;
-      setInterval( ()=>{
-        for (const key in this.objetoContenedorDeTiempos) {
-          if (this.objetoContenedorDeTiempos.hasOwnProperty(key)) {
-            const element = this.objetoContenedorDeTiempos[key];
-            let tiempoTranscurrido: number = Math.abs(new Date().getTime() - new Date(element.inicio).getTime()) / 36e5;
-            element.transcurrido = this.convertirAHoras( tiempoTranscurrido.toString())
-          }
-        }
-      }, 1000 )
-    }, 5000 );
   }
-
-  // ngOnInit() {
-  // }
-  
   
 
   consultarReporte( ){
