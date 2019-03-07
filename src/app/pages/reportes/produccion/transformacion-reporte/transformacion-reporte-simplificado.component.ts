@@ -1,25 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReporteTransformacionSimplificado } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionSimplificado';
 import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service';
+import { Temporizador } from '../../../../services/utilidades/Temporizador';
 
 @Component({
   selector: 'app-transformacion-reporte-simplificado',
   templateUrl: './transformacion-reporte-simplificado.component.html',
   styles: []
 })
-export class TransformacionReporteSimplificadoComponent implements OnInit {
+export class TransformacionReporteSimplificadoComponent extends Temporizador implements OnInit {
 
 
   reporte: ReporteTransformacionSimplificado
   keys = Object.keys
+  ultimaActualizacion: Date;
+
 
   constructor(
     public _reporteProduccion: ReportesProduccionService,
   
   ) { 
-  this._reporteProduccion.transformacionSimplificado().subscribe( (reporte)=>{
-      this.reporte = reporte
-    } )
+    super()
+  this.funcionATemporizar = ()=>{this.consultarReporte()} 
+  this.intervalo = 1000,
+  this.consultarReporte();
+
+
 
     setTimeout( ()=>{
       this.mostrarDiferenciaDeHora = true;
@@ -35,8 +41,20 @@ export class TransformacionReporteSimplificadoComponent implements OnInit {
     }, 5000 );
   }
 
-  ngOnInit() {
+  // ngOnInit() {
+  // }
+  
+  
+
+  consultarReporte( ){
+  
+    this._reporteProduccion.transformacionSimplificado().subscribe( (reporte)=>{
+      this.reporte = reporte
+      this.ultimaActualizacion = new Date();
+    } )
   }
+
+ 
 
   formatearFecha( date: string ): Date{
     return new Date(date)
@@ -51,7 +69,6 @@ export class TransformacionReporteSimplificadoComponent implements OnInit {
     // Si existe el tiempo entoces guardamos un nuevo objeto que 
     // va a estar guardando el tiempo. 
     if( !this.objetoContenedorDeTiempos.hasOwnProperty( maquina )){
-      console.log( 'creando intervalo. ')
       let tiempoTranscurrido: number = Math.abs(new Date().getTime() - new Date(date).getTime()) / 36e5;
       if( !this.objetoContenedorDeTiempos.hasOwnProperty( maquina )){
         

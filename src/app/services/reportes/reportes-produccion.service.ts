@@ -50,6 +50,14 @@ export class ReportesProduccionService {
 
 
   /**
+   *Almacena el intervalo de refresco para que no se creen nuevos 
+   cada vez que cambiamos de componente. 
+   *
+   * @memberof ReportesProduccionService
+   */
+  intervaloDeRefrescoReporteTransformacionSimplificado = null
+
+  /**
    *Retorna un objeto ReporteTransformacionSimplificado dontro del observable 
    con los datos acomodados del reporte para una vision simplificada. 
    *
