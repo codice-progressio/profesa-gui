@@ -3,6 +3,7 @@ import { OrdenReporteTransformacion } from "./OrdenReporteTransformacion";
 import { NIVEL } from "src/app/config/nivelesDeUrgencia";
 import { Laser } from "../../laser.models";
 import { ModeloCompleto } from '../../modeloCompleto.modelo';
+import { Maquina } from "../../maquina.model";
 
 /**
  *Muestra el reporte de transformacion de manera simplificada. 
@@ -11,6 +12,8 @@ import { ModeloCompleto } from '../../modeloCompleto.modelo';
  * @class ReporteTransformacionSimplificado
  */
 export class ReporteTransformacionSimplificado {
+
+
     /**
      *Los pedidos que estan trabajandose. 
      *
@@ -94,14 +97,25 @@ export class ReporteTransformacionSimplificado {
                     
                     // Si no existe el pedido registrado creamos uno. 
                     if( !this.contenedorDePedidos.pedido.hasOwnProperty(orden.pedido) ){
-
                         this.contenedorDePedidos.pedido[ orden.pedido ] = new PedidoReporteTransformacionSimplificado()
                     }
-
                     this.operacionesDeAgrupacion( orden, this.contenedorDePedidos.pedido[ orden.pedido ], Number(keyPaso))
+                });
+                // Las ordenes que estan trabajando 
+                paso.trabajando.forEach((orden:OrdenReporteTransformacion) => {
+                    
+                    // Si no existe el pedido registrado creamos uno. 
+                    console.log( 'clave de la maquina')
+                    let clave = orden.ubicacionActual.transformacion.maquinaActual.clave;
+                    console.log(clave)
+                    if( !this.contenedorDePedidosTrabajando.maquina.hasOwnProperty(clave) ){
+                        console.log(` la clve ${clave} no existe`)
+                        this.contenedorDePedidosTrabajando.maquina[ clave ] = new PedidoReporteTransformacionSimplificadoPorMaquina()
+                    }
+                    console.log( this.contenedorDePedidosTrabajando.maquina[clave])
 
-
-
+                    this.operacionesDeAgrupacionPorMaquina( orden, this.contenedorDePedidosTrabajando.maquina[clave], Number(keyPaso))
+                    console.log( 'erminado')
                 });
             }
         }
@@ -151,6 +165,55 @@ export class ReporteTransformacionSimplificado {
     }
 
 
+    operacionesDeAgrupacionPorMaquina( 
+                orden: OrdenReporteTransformacion, 
+                maquina: PedidoReporteTransformacionSimplificadoPorMaquina,
+                paso: number) {
+        
+        console.log( maquina)
+            
+        // Calculamos el nivel de prioridad del pedido. 
+        if( maquina.prioridadMayor = '' ){
+            maquina.prioridadMayor = orden.nivelDeUrgencia
+        } 
+        
+        let prioridadActual: number = NIVEL.indexOf(maquina.prioridadMayor );            
+        let prioridadOrden: number = NIVEL.indexOf( orden.nivelDeUrgencia )
+
+        if( prioridadOrden > prioridadActual ) {
+            maquina.prioridadMayor = orden.nivelDeUrgencia;
+            maquina.cantidadDePrioridadMayor = 1;
+
+        }else{
+            if( prioridadOrden === prioridadActual) maquina.cantidadDePrioridadMayor ++;
+        }
+
+        maquina.fechaDePedido = orden.fechaFolio
+        maquina.observaciones = 
+            (orden.observacionesFolio ? orden.observacionesFolio:'') 
+            + ' ' + 
+            (orden.observacionesPedido ? orden.observacionesPedido:'')
+        
+        if( !maquina.ordenesDisponibles ){
+            maquina.ordenesDisponibles = {}
+        }
+        if( !maquina.ordenesDisponibles.hasOwnProperty(paso) ){
+            maquina.ordenesDisponibles[paso] = 0;
+        }
+
+        maquina.ordenesDisponibles[paso]++;
+        
+        maquina.cliente = orden.cliente
+
+        maquina.laserCliente = orden.laserCliente
+
+        maquina.modeloCompleto = orden.modeloCompleto
+
+        // maquina.ordenes.push( orden )
+        maquina.ordenTrabajando = orden
+    }
+
+
 
 }
 
@@ -162,13 +225,13 @@ export class ReporteTransformacionSimplificado {
 class ContenedorDePedidosReporteTransformacionSimplificado {
     constructor(
         
-        public pedido:{ [pedido: string ]: PedidoReporteTransformacionSimplificado; } = {}
+        public pedido:{ [pedido: string ]: PedidoReporteTransformacionSimplificado; } = {},
+        public maquina:{ [maquina: string ]: PedidoReporteTransformacionSimplificado; } = {}
         
     ) {
         
     }
 }
-
 
 
 
@@ -299,7 +362,7 @@ class PedidoReporteTransformacionSimplificado  {
 
     constructor(
 
-        private _prioridadMayor?: string = '', 
+        private _prioridadMayor: string = '', 
         private _fechaDePedido?: Date,
         private _ordenes: OrdenReporteTransformacion[] = [],
         private _cliente?: string,
@@ -314,4 +377,17 @@ class PedidoReporteTransformacionSimplificado  {
     ) {
         
     }
+}
+
+export class PedidoReporteTransformacionSimplificadoPorMaquina extends PedidoReporteTransformacionSimplificado {
+    constructor(
+
+        public ordenTrabajando?: OrdenReporteTransformacion,
+        public maquinaTrabajando?: Maquina
+
+    ) {
+        super()
+    }
+
+
 }
