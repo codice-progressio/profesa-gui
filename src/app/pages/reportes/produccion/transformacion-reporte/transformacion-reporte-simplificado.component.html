@@ -41,23 +41,37 @@
                                 <td>
                                     <app-nivel-urgencia [nivel]='reporte.contenedorDePedidos.pedido[keyPedido].prioridadMayor'></app-nivel-urgencia>
                                 </td>
-                                <td>{{reporte.contenedorDePedidos.pedido[keyPedido].ordenes.length}} | {{reporte.contenedorDePedidos.pedido[keyPedido].cantidadDePrioridadMayor}} de prioridad mayor
+                                <td>
+                                    <span class="d-flex justify-content-between">
+                                            <h4>
+                                                <strong>
+                                                {{reporte.contenedorDePedidos.pedido[keyPedido].ordenes.length}} 
+
+                                                </strong>
+                                            </h4>
+                                            <span>
+                                                ( {{reporte.contenedorDePedidos.pedido[keyPedido].cantidadDePrioridadMayor}} de prioridad mayor )
+
+                                            </span>
+                                    </span>
 
                                 </td>
 
                                 <td>
                                     <span *ngFor="let keyPaso of keys(reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles)">
-                                    Paso {{keyPaso}}: <strong>{{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]}} </strong>
-                                    {{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]>1? 'ordenes disponibles': 'orden disponible'}}
+                                        <span class="d-flex justify-content-between"></span>
+                                    <h6>Paso {{keyPaso}}: <strong>{{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]}} </strong></h6>
+                                    <!-- {{reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles[keyPaso]>1? 'ordenes disponibles': 'orden disponible'}} -->
+
                                     <ng-container *ngIf="keys(reporte.contenedorDePedidos.pedido[keyPedido].ordenesDisponibles).pop() !== keyPaso ">
-                                      <br>
-                                      <hr>
-  
+                                        <!-- Todo esto solo es para el br y hr -->
+                                        <br>
+                                        <hr>
                                     </ng-container>
-                                    
-  
-  
-                                </span>
+
+
+
+                                    </span>
                                 </td>
                                 <td>{{reporte.contenedorDePedidos.pedido[keyPedido].observaciones}}</td>
 

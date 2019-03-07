@@ -105,17 +105,11 @@ export class ReporteTransformacionSimplificado {
                 paso.trabajando.forEach((orden:OrdenReporteTransformacion) => {
                     
                     // Si no existe el pedido registrado creamos uno. 
-                    console.log( 'clave de la maquina')
                     let clave = orden.ubicacionActual.transformacion.maquinaActual.clave;
-                    console.log(clave)
                     if( !this.contenedorDePedidosTrabajando.maquina.hasOwnProperty(clave) ){
-                        console.log(` la clve ${clave} no existe`)
                         this.contenedorDePedidosTrabajando.maquina[ clave ] = new PedidoReporteTransformacionSimplificadoPorMaquina()
                     }
-                    console.log( this.contenedorDePedidosTrabajando.maquina[clave])
-
                     this.operacionesDeAgrupacionPorMaquina( orden, this.contenedorDePedidosTrabajando.maquina[clave], Number(keyPaso))
-                    console.log( 'erminado')
                 });
             }
         }
@@ -128,15 +122,15 @@ export class ReporteTransformacionSimplificado {
                 paso: number) {
 
         // Calculamos el nivel de prioridad del pedido. 
-        if( pedido.prioridadMayor = '' ){
+        if( pedido.prioridadMayor === '' ){
             pedido.prioridadMayor = orden.nivelDeUrgencia
         } 
         
         let prioridadActual: number = NIVEL.indexOf(pedido.prioridadMayor );            
         let prioridadOrden: number = NIVEL.indexOf( orden.nivelDeUrgencia )
-
+        
         if( prioridadOrden > prioridadActual ) {
-            pedido.prioridadMayor = orden.nivelDeUrgencia;
+            pedido.prioridadMayor = NIVEL[prioridadOrden];
             pedido.cantidadDePrioridadMayor = 1;
 
         }else{
@@ -170,8 +164,6 @@ export class ReporteTransformacionSimplificado {
                 maquina: PedidoReporteTransformacionSimplificadoPorMaquina,
                 paso: number) {
         
-        console.log( maquina)
-            
         // Calculamos el nivel de prioridad del pedido. 
         if( maquina.prioridadMayor = '' ){
             maquina.prioridadMayor = orden.nivelDeUrgencia
