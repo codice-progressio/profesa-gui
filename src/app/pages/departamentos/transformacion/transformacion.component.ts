@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, AbstractControl, Validators } from '@angular/forms';
-import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
+import { QrScannerService } from '../../../components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
 import { FolioService, ValidacionesService, MaquinaService, DepartamentoService } from '../../../services/service.index';
 import { Maquina } from '../../../models/maquina.model';

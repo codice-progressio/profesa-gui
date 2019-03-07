@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService, FolioService, DepartamentoService } from '../../../services/service.index';
-import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
+import { QrScannerService } from '../../../components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
 import { Pastilla, CantidadesPastilla } from '../../../models/pastilla.model';
 import { FolioLinea } from '../../../models/folioLinea.models';

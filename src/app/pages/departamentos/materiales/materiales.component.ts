@@ -3,7 +3,7 @@ import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Orden } from 'src/app/models/orden.models';
 import { Materiales } from 'src/app/models/materiales.models';
 import { Maquina } from 'src/app/models/maquina.model';
-import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 import { UsuarioService } from 'src/app/services/usuario/usuario.service';

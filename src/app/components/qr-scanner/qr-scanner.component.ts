@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QrScannerService } from '../qrScanner/qr-scanner.service';
+import { QrScannerService } from './qr-scanner.service';
 
 @Component({
   selector: 'app-qr-scanner',

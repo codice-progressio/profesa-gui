@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import swal from 'sweetalert2';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';

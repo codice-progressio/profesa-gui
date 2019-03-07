@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Orden } from 'src/app/models/orden.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
-import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { AlmacenDeBoton } from 'src/app/models/almacenDeBoton.model';
