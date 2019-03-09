@@ -193,6 +193,8 @@ export class ReporteTransformacionSimplificado {
             maquina.ordenesDisponibles[paso] = 0;
         }
 
+        maquina['pasoActual'] = paso 
+
         maquina.ordenesDisponibles[paso]++;
         
         maquina.cliente = orden.cliente
@@ -203,6 +205,7 @@ export class ReporteTransformacionSimplificado {
 
         // maquina.ordenes.push( orden )
         maquina.ordenTrabajando = orden
+        console.log( maquina['pasoActual'] )
     }
 
 
