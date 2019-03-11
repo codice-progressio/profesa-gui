@@ -337,7 +337,7 @@ export class CRUD<T>  {
      */
     generarQueryDePaginador( paginador: PaginadorService, campoSort: string, sort: number = 1 ): string {
         
-        return `desde=${paginador.desde}&limite=${paginador.limite}&sort=${sort}&campo${campoSort}`
+        return `desde=${paginador.desde}&limite=${paginador.limite}&sort=${sort}&campo=${campoSort ? campoSort :''}`
 
     }
 

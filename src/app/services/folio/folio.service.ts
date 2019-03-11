@@ -125,8 +125,9 @@ export class FolioService extends CRUD<Folio>{
       return this.http.get(url).pipe(
         map( (resp: any) => {
           this.totalFolios = resp.total;
+          this._paginadorService.totalDeElementos = resp.total
           this._msjService.ok_(resp,null, a);
-          return <Folio[]> resp.folio;
+          return <Folio[]> resp.folios;
         }), catchError( err => {
           this._msjService.err(err);
           return throwError(err);
