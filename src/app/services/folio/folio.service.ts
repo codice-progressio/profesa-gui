@@ -13,12 +13,15 @@ import { URL_SERVICIOS } from 'src/app/config/config';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 import { VariablesDeptos } from 'src/app/config/departamentosConfig';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { CRUD } from '../crud';
+import { UtilidadesService } from '../utilidades/utilidades.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FolioService {
- 
+export class FolioService extends CRUD<Folio>{
+  
   
   totalFolios: number = 0;
  
@@ -26,13 +29,28 @@ export class FolioService {
   constructor(  
     public http: HttpClient,
     public router: Router,
-    private _msjService: ManejoDeMensajesService,
-    private _u: UsuarioService,
-    private _preLoaderService: PreLoaderService,
-    public _paginadorService: PaginadorService
+    public _msjService: ManejoDeMensajesService,
+    public _u: UsuarioService,
+    public _preLoaderService: PreLoaderService,
+    public _paginadorService: PaginadorService,
+    public _utilidadesService: UtilidadesService
     ) {
+      super(
+        http,
+        _msjService,
+        _utilidadesService,
+        _preLoaderService,
+        _paginadorService,
+      )
+
+      this.base =  URL_SERVICIOS + `/folio`;
+      this.nombreDeDatos.plural = 'folios';
+      this.nombreDeDatos.singular = 'folio';
+      this.urlBusqueda = '/buscar';
   }
-    
+  
+
+
     
     
   guardarFolio ( folio: Folio) {
@@ -86,7 +104,39 @@ export class FolioService {
       
       );
     }
-          
+
+    /**
+     *Busca los folios que coincidan con el id del cliente. 
+     *
+     * @param {string} id
+     * @returns {*}
+     * @memberof FolioService
+     */
+    buscarPorCliente(id: string, paginador: PaginadorService = null, campoSort: string = null ): Observable<Folio[]>{
+      const a: number = this._preLoaderService.loading('Cargando folios del cliente');
+      
+      if( !paginador ){
+        paginador = this._paginadorService;
+      }
+
+      // Carga todos los datos del folio y sus lineas
+      const url =`${URL_SERVICIOS}/folio/cliente/${id}?${this.generarQueryDePaginador( paginador, campoSort)}`;
+      
+      return this.http.get(url).pipe(
+        map( (resp: any) => {
+          this.totalFolios = resp.total;
+          this._msjService.ok_(resp,null, a);
+          return <Folio[]> resp.folio;
+        }), catchError( err => {
+          this._msjService.err(err);
+          return throwError(err);
+        })
+        );
+      
+    }
+   
+
+            
   cargarFolios (desde: number = 0, limite: number = 5) {
     // Es necesario siempre el signo al final para 
     // que no haya problemas con los otros parametros. 

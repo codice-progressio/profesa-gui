@@ -1,10 +1,13 @@
 import { NIVEL } from '../../config/nivelesDeUrgencia';
 import { Component, OnInit } from '@angular/core';
 import { Folio } from '../../models/folio.models';
-import { FolioService, UsuarioService } from '../../services/service.index';
+import { FolioService, UsuarioService, ClienteService } from '../../services/service.index';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { Usuario } from '../../models/usuario.model';
+import { BuscadorRapidoService } from 'src/app/components/buscador-rapido/buscador-rapido.service';
+import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
+import { Cliente } from 'src/app/models/cliente.models';
 
 
 @Component({
@@ -22,13 +25,49 @@ export class SeguimientoDeFoliosComponent implements OnInit {
   filtros = NIVEL
   
   
+  
 
   constructor(
     public _folioService: FolioService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
+    public _buscadorRapidoService: BuscadorRapidoService<Cliente>,
+    public _clienteService: ClienteService
 
   ) {
+    
+
+    this._buscadorRapidoService.limpiarTodo();
+    this._buscadorRapidoService.callbackElementoSeleccionado = ()=>{
+      // Filtra los folios por cliente. 
+      let idClliente = this._buscadorRapidoService.elementoSeleccionado.objeto._id
+      this._folioService.buscarPorCliente( idClliente ).subscribe( (folios)=>{
+        this.folios = folios 
+      })
+    } 
+    this._buscadorRapidoService.callbackEliminar = ()=>{
+      this.filtrando = false;
+      this.filtrar('')
+    } 
+    this._buscadorRapidoService.nombreDeElemento = 'cliente';
+    this._buscadorRapidoService.promesa =()=>{
+      return new Promise( (resolve, reject )=>{
+        this._clienteService.buscar( this._buscadorRapidoService.termino ).subscribe(
+          (folios)=>{
+            const datosBuscados: BuscadorRapido<Cliente>[] = [];
+            folios.forEach((cliente:Cliente) => {
+              const a: BuscadorRapido<Cliente> =  new BuscadorRapido();
+              a.nombre = ` ${cliente.nombre}`;
+              a.setObjeto(cliente)
+              datosBuscados.push(a);
+
+            });
+            resolve(datosBuscados )
+           
+        });
+      });
+    }
+
    }
 
    
