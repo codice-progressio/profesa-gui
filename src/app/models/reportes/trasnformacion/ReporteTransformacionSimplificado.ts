@@ -205,7 +205,6 @@ export class ReporteTransformacionSimplificado {
 
         // maquina.ordenes.push( orden )
         maquina.ordenTrabajando = orden
-        console.log( maquina['pasoActual'] )
     }
 
 
