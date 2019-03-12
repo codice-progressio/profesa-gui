@@ -8,7 +8,7 @@
                     <h1>Ordenes disponibles</h1>
 
 
-                    <table class="table table-bordered  table-hover table-responsive ">
+                    <table class="table table-bordered  table-hover ">
                         <thead class='bg-dark text-white text-center '>
                             <tr>
                                 <th>Cliente</th>
@@ -103,7 +103,7 @@
                     <h1>Ordenes trabajando en maquina</h1>
 
 
-                    <table class="table table-bordered table-condensed table-hover  table-responsive">
+                    <table class="table table-bordered table-condensed table-hover  ">
                         <thead class='bg-dark text-white text-center h-25'>
                             <tr>
                                 <th>MAQ</th>
@@ -126,14 +126,14 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let keyMaquina of keys(reporte.contenedorDePedidosTrabajando.maquina)">
-                                <td><strong>{{keyMaquina}}</strong></td>
-                                <td> {{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].cliente}}</td>
-                                <td>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].fechaDePedido | date}}</td>
-                                <td>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.orden}}</td>
-                                <td>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.pedido}}</td>
-                                <td>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.modeloCompleto | modeloCompleto}}</td>
-                                <td>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.unidad}}</td>
-                                <td>
+                                <td class='fit'><strong>{{keyMaquina}}</strong></td>
+                                <td class='fit'> {{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].cliente}}</td>
+                                <td class='fit'>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].fechaDePedido | date}}</td>
+                                <td class='fit'>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.pedido}}</td>
+                                <td class='fit'>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.orden}}</td>
+                                <td class='fit'>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.modeloCompleto | modeloCompleto}}</td>
+                                <td class='fit'>{{reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.unidad}}</td>
+                                <td class='fit'>
                                     <strong *ngIf="reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].modeloCompleto.esBaston">B</strong>
                                 </td>
                                 <td>
@@ -156,7 +156,8 @@
                                     {{calcularFecha( reporte.contenedorDePedidosTrabajando.maquina[keyMaquina].ordenTrabajando.ubicacionActual.recepcion, keyMaquina ) }}
                                     <ng-container *ngIf="mostrarDiferenciaDeHora">
 
-                                        {{objetoContenedorDeTiempos[keyMaquina].transcurrido | date:'HH:mm:ss'}}
+                                        <!-- {{objetoContenedorDeTiempos[keyMaquina].transcurrido | date:'HH:mm:ss'}} -->
+                                        {{objetoContenedorDeTiempos[keyMaquina].transcurrido }}
                                     </ng-container>
 
                                 </td>
