@@ -1,5 +1,12 @@
 import { OperacionesEnGUI } from './OperacionesEnGUI';
 
+/**
+ *Guarda una marca laser. 
+ *
+ * @export
+ * @class Laser
+ * @extends {OperacionesEnGUI}
+ */
 export class Laser extends OperacionesEnGUI {
     constructor(
         public _id?: string,

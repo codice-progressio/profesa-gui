@@ -6,6 +6,7 @@ import { ReporteTransformacionDetalle } from 'src/app/models/reportes/trasnforma
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { ReporteTransformacionSimplificado } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionSimplificado';
+import { ReporteQuimica } from 'src/app/models/reportes/quimica/reporteQuimica';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +32,16 @@ export class ReportesProduccionService {
    * @returns {Observable<ReporteTransformacionDetalle>}
    * @memberof ReportesProduccionService
    */
-  transformacionDetalle( ): Observable<ReporteTransformacionDetalle>{
+  transformacionDetalle(msjLoading:string=`Cargando reporte de transformacion detalle.` , ): Observable<ReporteTransformacionDetalle>{
     let url = `${URL_SERVICIOS}/${this.urlReportes}/transformacion`
+    // const a: number = this._preLoaderService.loading(msjLoading);
+
     return this.http.get(url).pipe(
-      map( (datos:any)=>{
+      map( (resp:any)=>{
         let r = new ReporteTransformacionDetalle()
-        r.objetoContenedorDePasos = datos['objetoContenedorDePasos'];
+        r.objetoContenedorDePasos = resp['objetoContenedorDePasos'];
         r.agrupar()
+        // this._msjService.ok_( resp, null, a)
         return  r
       } ),
       catchError( (err)=>{
@@ -64,13 +68,17 @@ export class ReportesProduccionService {
    * @returns {Observable<ReporteTransformacionSimplificado>}
    * @memberof ReportesProduccionService
    */
-  transformacionSimplificado( ): Observable<ReporteTransformacionSimplificado>{
+  transformacionSimplificado(msjLoading:string=`Cargando reporte de transformacion simplificado.` , ): Observable<ReporteTransformacionSimplificado>{
     let url = `${URL_SERVICIOS}/${this.urlReportes}/transformacion`
+
+    // const a: number = this._preLoaderService.loading(msjLoading);
+
     return this.http.get(url).pipe(
-      map( (datos:any)=>{
+      map( (resp:any)=>{
         let r = new ReporteTransformacionSimplificado()
-        r.objetoContenedorDePasos = datos['objetoContenedorDePasos'];
+        r.objetoContenedorDePasos = resp['objetoContenedorDePasos'];
         r.agrupar()
+        // this._msjService.ok_( resp, null, a)
         return  r
       } ),
       catchError( (err)=>{
@@ -80,6 +88,41 @@ export class ReportesProduccionService {
       } )
     )
   }
+
+  /**
+   *Retorna un objeto tipo ReporteQuimica dentro del observable con los datos acomodados 
+   del reporte. 
+   *
+   * @returns {*}
+   * @memberof ReportesProduccionService
+   */
+  quimica(msjLoading:string=`Cargando reporte de quimica.` ,): Observable<ReporteQuimica> {
+    
+    let url = `${URL_SERVICIOS}/${this.urlReportes}/quimica`
+
+    return this. http.get( url ).pipe( 
+      map((resp: any)=>{
+        console.log( resp )
+        let reporte: ReporteQuimica = new ReporteQuimica(  )
+        reporte.disponibles = resp.disponibles
+        reporte.pendientes = resp.pendientes
+        reporte.trabajando = resp.trabajando
+        reporte.agruparPorPedido()
+        return reporte
+      } ),
+      catchError( (err)=>{
+        console.log( err )
+        this._msjService.err(err)
+        return throwError( err )
+      } )
+    )
+
+
+  }
+
+
+
+
 
 
 
