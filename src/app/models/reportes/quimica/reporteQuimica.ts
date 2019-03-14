@@ -1,5 +1,3 @@
-import { Modelo } from "src/app/models/modelo.models";
-import { Orden } from "src/app/models/orden.models";
 import { OrdenReporteQuimica } from "./OrdenReporteQuimica";
 import { PedidoReporteQuimica } from "./PedidoReporteQuimica";
 import { NIVEL } from "src/app/config/nivelesDeUrgencia";
@@ -118,10 +116,6 @@ export class ReporteQuimica {
         
             if( prioridadActual < prioridadOrden ) this.pedidos[numPed].prioridad = NIVEL[prioridadOrden];
         }
-
-
-    
-        
 
         switch (status) {
             case 'pendientes':

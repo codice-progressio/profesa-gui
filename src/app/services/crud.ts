@@ -326,20 +326,7 @@ export class CRUD<T>  {
     }
 
 
-    /**
-     *Genera el query sin el signo de interrogacion para los elementos de paginacion. 
-     * 
-     * @param {PaginadorService} paginador El paginador de donde se van a extraer los elementos. 
-     * @param {string} campoSort El campo por el cuel se a ordenar la consulta. 
-     * @param {number} [sort=1] Por default ordena en descentente. -1 para ascendente
-     * @returns {string} La cadena concatenada. 
-     * @memberof CRUD
-     */
-    generarQueryDePaginador( paginador: PaginadorService, campoSort: string, sort: number = 1 ): string {
-        
-        return `desde=${paginador.desde}&limite=${paginador.limite}&sort=${sort}&campo=${campoSort ? campoSort :''}`
-
-    }
+    
 
 
 

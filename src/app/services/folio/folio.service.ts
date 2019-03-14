@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FolioService extends CRUD<Folio>{
+export class FolioService {
   
   
   totalFolios: number = 0;
@@ -35,18 +35,18 @@ export class FolioService extends CRUD<Folio>{
     public _paginadorService: PaginadorService,
     public _utilidadesService: UtilidadesService
     ) {
-      super(
-        http,
-        _msjService,
-        _utilidadesService,
-        _preLoaderService,
-        _paginadorService,
-      )
+      // super(
+      //   http,
+      //   _msjService,
+      //   _utilidadesService,
+      //   _preLoaderService,
+      //   _paginadorService,
+      // )
 
-      this.base =  URL_SERVICIOS + `/folio`;
-      this.nombreDeDatos.plural = 'folios';
-      this.nombreDeDatos.singular = 'folio';
-      this.urlBusqueda = '/buscar';
+      // this.base =  URL_SERVICIOS + `/folio`;
+      // this.nombreDeDatos.plural = 'folios';
+      // this.nombreDeDatos.singular = 'folio';
+      // this.urlBusqueda = '/buscar';
   }
   
 
@@ -120,7 +120,7 @@ export class FolioService extends CRUD<Folio>{
       }
 
       // Carga todos los datos del folio y sus lineas
-      const url =`${URL_SERVICIOS}/folio/cliente/${id}?${this.generarQueryDePaginador( paginador, campoSort)}`;
+      const url =`${URL_SERVICIOS}/folio/cliente/${id}?${this._paginadorService.generarQueryDePaginador( paginador, campoSort)}`;
       
       return this.http.get(url).pipe(
         map( (resp: any) => {

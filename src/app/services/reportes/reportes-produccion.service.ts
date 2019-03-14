@@ -7,11 +7,13 @@ import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { ReporteTransformacionSimplificado } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionSimplificado';
 import { ReporteQuimica } from 'src/app/models/reportes/quimica/reporteQuimica';
+import { ReporteLaser } from 'src/app/models/reportes/laser/reporteLaser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportesProduccionService {
+
 
   constructor(
     public http: HttpClient,
@@ -116,6 +118,34 @@ export class ReportesProduccionService {
       } )
     )
 
+
+  }
+
+  /**
+   *Retorna un objeto de tipo reporteLaser dentro del observable con los datos acomodados del reporte. 
+   *
+   * @returns {*}
+   * @memberof ReportesProduccionService
+   */
+  laser(): Observable<ReporteLaser> {
+    let url = `${URL_SERVICIOS}/${this.urlReportes}/laser`
+
+    return this. http.get( url ).pipe( 
+      map((resp: any)=>{
+        let reporte: ReporteLaser = new ReporteLaser(  )
+        reporte.disponibles = resp.disponibles 
+        reporte.departamentosPendientes = resp.departamentosPendientes
+        reporte.porSurtir = resp.porSurtir
+        reporte.trabajando = resp.trabajando
+        reporte.agruparPorPedido()
+        return reporte
+      } ),
+      catchError( (err)=>{
+        console.log( err )
+        this._msjService.err(err)
+        return throwError( err )
+      } )
+    )
 
   }
 
