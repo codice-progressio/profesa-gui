@@ -21,22 +21,21 @@ export class QuimicaReporteComponent extends Temporizador implements OnInit {
 
   keys = Object.keys
 
+  ultimaActualizacion: Date =  new Date()
+
   constructor(
     public _reportesService: ReportesProduccionService
   ) {
     super()
 
     this.funcionATemporizar =  ()=>{
-      console.log( 'temporizador.')
+      this.ultimaActualizacion = new Date();
       this.consultarReporte();
     } 
-    this.intervalo = 1000
-  }
-  
-  ngOnInit() {
+    // Se actualiza cada 5 minutos
+    this.intervalo = 1000*60*5
     this.consultarReporte( )
   }
-
 
   consultarReporte( ) {
     this._reportesService.quimica( ).subscribe( ( reporteQuimica )=>{
