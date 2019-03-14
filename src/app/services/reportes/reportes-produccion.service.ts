@@ -102,7 +102,6 @@ export class ReportesProduccionService {
 
     return this. http.get( url ).pipe( 
       map((resp: any)=>{
-        console.log( resp )
         let reporte: ReporteQuimica = new ReporteQuimica(  )
         reporte.disponibles = resp.disponibles
         reporte.pendientes = resp.pendientes
