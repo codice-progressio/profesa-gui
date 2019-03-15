@@ -20,16 +20,11 @@ import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
 export class RegistroDeFoliosComponent implements OnInit {
 
   selectorDeUsuarios: string = '';
-  // clientesBuscados: Cliente[] = [] ;
   folio: Folio = null;
 
-  
-  // clienteSeleccionado: string;
   termino: string = '';
   vendedores: Usuario [] = [];
   folios: Folio[] = [];
-  // desde: number = 0;
-  // clienteParaGuardar: Cliente;
 
   modificando: boolean = false;
   vendedorSeleccionado: string = '-';
@@ -48,15 +43,7 @@ export class RegistroDeFoliosComponent implements OnInit {
     public _preLoaderService: PreLoaderService
   ) {
     this._buscadorRapidoService.nombreDeElemento = 'cliente';
-    // this._buscadorRapidoService.reiniciar();
-    
-  
-    // this._buscadorRapidoService.callback = () => {
-    //  this.folio.cliente = this._buscadorRapidoService.elementoSeleccionado.objeto;
-    //  this.termino = '';
 
-    // };
-    console.log( 'reiniciar')
     this._folioService.reiniciarPaginador()
     this.cargarFolios();
     this._buscadorRapidoService.limpiarTodo();
@@ -100,9 +87,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       this.cargarFolios(desde, limite);
     };
     
- 
-    // this._buscadorRapidoService.reiniciar();  
-
   }
 
   nuevoFolio( ) {
@@ -127,10 +111,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       this._paginadorService.activarPaginador(this._folioService.totalFolios );
     });
   }
-
-
-   
-  
 
   
   guardar() {
@@ -199,15 +179,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       if (result.value) {
         
         this._folioService.eliminarFolio( folio._id ).subscribe( ()  => {
-          // Removemos para no tener que recargar.
-          // folio.eliminar = true;
-          // this._util.delay(700).then(() => {
-          //   this.folios = this.folios.filter( f => {
-          //     if (folio._id !== f._id) {
-          //       return true;
-          //     }
-            // });
-          // });
           this.cargarFolios();
           
 
