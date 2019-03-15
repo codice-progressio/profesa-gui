@@ -46,7 +46,10 @@ class ProcesosDefaults {
     constructor(
         public CONTROL_DE_PRODUCCION?: string,
         public LASER?: string,
-        public ALMACEN_DE_BOTON?: string
+        public ALMACEN_DE_BOTON?: string,
+        public REMISION_DE_PRODUCTO_TERMINADO?: string,
+        public EMPAQUE_DE_PRODUCTO?: string,
+
     ) {
         
     }
