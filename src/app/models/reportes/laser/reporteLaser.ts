@@ -106,23 +106,28 @@ export class ReporteLaser {
         if( !this.pedidos[numPed].observaciones ) this.pedidos[numPed].observaciones = ''
 
         // Comprobamos que las observaciones del folio o pedido ya esten agregadas. 
-        if(!this.pedidos[numPed].observaciones.includes( orden.observacionesFolio )) {
-            let observacionesActuales = this.pedidos[numPed].observaciones;
-            let nuevasObaservaciones = `${orden.observacionesFolio} ${observacionesActuales===''? '':'~'} ${observacionesActuales}`
-            this.pedidos[numPed].observaciones = nuevasObaservaciones
-        }
-
-        if(!this.pedidos[numPed].observaciones.includes( orden.observacionesPedido )) {
-            let observacionesActuales = this.pedidos[numPed].observaciones;
-            let nuevasObaservaciones = `${observacionesActuales} ${observacionesActuales===''? '':'~'}  ${orden.observacionesPedido}`
-            this.pedidos[numPed].observaciones = nuevasObaservaciones
+        
+        /**
+         * Almacena las observaciones para juntarlas de manera junta. 
+         */
+        let arrayObservaciones: string [ ] = [
+            orden.observacionesFolio,
+            orden.observacionesPedido,
+            orden.observaciones,
+        ]
+        
+        
+        for (let i = 0; i < arrayObservaciones.length; i++) {
+            const observacion = arrayObservaciones[i];
+            if( observacion ){
+                if(!this.pedidos[numPed].observaciones.includes( observacion )) {
+                   this.pedidos[numPed].observaciones += `${i ? '~' : '' } ${observacion}`
+                }
+            }
         }
         
-        if(!this.pedidos[numPed].observaciones.includes( orden.observaciones )) {
-            let observacionesActuales = this.pedidos[numPed].observaciones;
-            let nuevasObaservaciones = `${observacionesActuales} ${observacionesActuales===''? '':'~'}  ${orden.observaciones}`
-            this.pedidos[numPed].observaciones = nuevasObaservaciones
-        }
+
+       
 
         this.pedidos[numPed].totalDePiezasDelPedido += orden.piezasTeoricas
 
@@ -166,6 +171,12 @@ export class ReporteLaser {
 }
 
 
+/**
+ *Guarda la informacion de un pedido agrupado atravez del reporte de ordenes que se 
+ genera en la api. 
+ *
+ * @class PedidoReporteLaser
+ */
 class PedidoReporteLaser {
     
     

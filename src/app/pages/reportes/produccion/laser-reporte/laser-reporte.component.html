@@ -31,7 +31,7 @@
                                     <th> <i data-toggle="tooltip" data-placement="top" title="La marca laser que llevara el boton." class="fas fa-question-circle   "></i>M.L.</th>
                                     <th> <i data-toggle="tooltip" data-placement="top" title="El nivel de urgencia del pedido. " class="fas fa-question-circle   "></i>PRIORIDAD</th>
                                     <th> OBSERVACIONES</th>
-                                    <th> <i data-toggle="tooltip" data-placement="top" title="La cantidadd pendiente por trabajar en quimica." class="fas fa-question-circle   "></i>Piezas</th>
+                                    <th> <i data-toggle="tooltip" data-placement="top" title="La cantidad de boton pendiente para terminar el pedido." class="fas fa-question-circle   "></i>Piezas</th>
                                 </tr>
                             </thead>
                             <tbody *ngIf="mostrarReporte">
@@ -52,7 +52,7 @@
                                     </td>
                                     <td class='fit text-center'>{{ reporteLaser.pedidos[keyPedido].observaciones}}</td>
                                     <td class='fit text-center'>
-                                        {{99999999 | number}}
+                                        {{ reporteLaser.pedidos[keyPedido].totalDePiezasDelPedido | number }}
                                     </td>
 
                                 </tr>
