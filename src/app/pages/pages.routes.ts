@@ -48,6 +48,7 @@ import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component'
 import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser-reporte.component';
 import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
+import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -135,6 +136,17 @@ const pagesRoutes: Routes = [
             canActivate: [PermisosGuard], 
             data: {
                 titulo: 'Historial de folios',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
+        {
+            path: 'pedidos/historial', 
+            component: HistorialDePedidosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Historial de pedidos',
                 roles : [ 
                     _ROLES.ADMIN_ROLE
                 ]

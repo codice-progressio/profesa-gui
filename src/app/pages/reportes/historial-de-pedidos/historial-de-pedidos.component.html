@@ -1,0 +1,179 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-12 mb-5">
+                        <h1>Historial de pedidos</h1>
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input [(ngModel)]="folio" type="text" class="form-control">
+                            <small id="helpId" class="form-text text-muted">Folio</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #ic (change)="seleccionarCliente(ic)" type="text" list="Cliente" class='form-control'>
+                            <datalist id='Cliente'>
+                              <option *ngFor="let cliente of clientes" [value]="cliente.nombre"> {{cliente.sae}}</option>
+                            </datalist>
+                            <small id="helpId" class="form-text text-muted">Cliente</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #iv (change)="seleccionarVendedor(iv)" type="text" list="vendedor" class='form-control'>
+                            <datalist id='vendedor'>
+                            <option *ngFor="let vendedor of vendedores" [value]="vendedor.nombre">
+                          </datalist>
+                            <small id="helpId" class="form-text text-muted">Vendedor</small>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #im (change)="seleccionarModelo(im)" type="text" list="Modelo" class='form-control'>
+                            <datalist id='Modelo'>
+                            <option *ngFor="let modelo of modelos" [value]='modelo.modelo'>
+                          </datalist>
+                            <small id="helpId" class="form-text text-muted">Modelo</small>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #it (change)='seleccionarTamano(it)' type="text" list="Tamano" class='form-control'>
+                            <datalist id='Tamano'>
+                            <option *ngFor="let tamano of tamanos" [value]='tamano.tamano'>
+                          </datalist>
+                            <small id="helpId" class="form-text text-muted">Tamano</small>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #icolor (change)='seleccionarColor(icolor)' type="text" list="Color" class='form-control'>
+                            <datalist id='Color'>
+                            <option *ngFor="let color of colores" [value]="color.color">
+                          </datalist>
+                            <small id="helpId" class="form-text text-muted">Color</small>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input #iter (change)='seleccionarTerminado(iter)' type="text" list="Terminado" class='form-control'>
+                            <datalist id='Terminado'>
+                            <option *ngFor="let terminado of terminados" [value]="terminado.terminado">Audi</option>
+                          </datalist>
+                            <small id="helpId" class="form-text text-muted">Terminado</small>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <select [(ngModel)]="campoDeOrdenacion" class="custom-select">
+                          <option disabled selected>Selecciona un campo para ordenar.</option>
+                          <option  *ngFor="let campo of camposDeOrdenacion"[value]="campo">{{campo}}</option>
+                        </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input [(ngModel)]="desde" type="date" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">Desde el</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="form-group">
+                            <input [(ngModel)]="hasta" type="date" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">Hasta</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                          <input (click)="orden = 1" type="radio" name="" id="" autocomplete="off" [checked]='orden'> Descendente
+                        </label>
+                            <label class="btn btn-primary">
+                          <input (click)="orden = 0 " type="radio" name="" id="" autocomplete="off" [checked]='!orden'> Ascendente
+                        </label>
+
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <button (click)="limpiar()" type="button" class="btn btn-outline-primary">Limpiar filtros</button>
+                    </div>
+                    <div class="col-12 col-sm-4 col-lg-3">
+                        <button (click)="filtrar()" type="button" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i> Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Historial de pedidos </h4>
+                <h6 class="card-subtitle">Modifica los filtros para obtener la informamcion que necesites</h6>
+
+
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Folio</th>
+                                <th>Pedido</th>
+                                <th>Modelo</th>
+                                <th>Cliente</th>
+                                <th>Vendedor</th>
+                                <th>Fecha de folio</th>
+                                <th>Fecha de termino de pedido</th>
+                                <th>Tiempo de produccion</th>
+                                <th>Cantidad Producida</th>
+                                <th>Entregado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of [1,1,1,1,1,1,1,1,1]">
+                                <td> <button type="button" class="btn btn-outline-primary"><i class="fas fa-search    "></i></button></td>
+                                <td>
+                                    8987987
+                                </td>
+                                <td>10-1</td>
+                                <td>4107-18-1-B</td>
+                                <td>CLIENTE</td>
+                                <td>VENDEDOR</td>
+
+                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
+                                <td><span class="text-muted"><i class="fa fa-clock-o"></i> Oct 16, 2017</span> </td>
+                                <td><span class="text-muted"> 2 semans, 2 dias, 22 horas</span> </td>
+                                <td>250 000</td>
+                                <td>ALMACEN</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

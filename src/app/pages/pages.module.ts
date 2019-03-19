@@ -81,6 +81,10 @@ import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser
 import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 import { TransformacionReporteSimplificadoComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte-simplificado.component';
+import { OrdenDetalleComponent } from './seguimiento-de-folios/detalles/orden-detalle/orden-detalle.component';
+import { PedidoDetalleComponent } from './seguimiento-de-folios/detalles/pedido-detalle/pedido-detalle.component';
+import { FolioDetalleComponent } from './seguimiento-de-folios/detalles/folio-detalle/folio-detalle.component';
+import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 
 
 @NgModule({
@@ -155,6 +159,10 @@ import { TransformacionReporteSimplificadoComponent } from './reportes/produccio
        TransformacionReporteComponent,
        QuimicaReporteComponent,
        TransformacionReporteSimplificadoComponent,
+       OrdenDetalleComponent,
+       PedidoDetalleComponent,
+       FolioDetalleComponent,
+       HistorialDePedidosComponent,
 
 
       ],
