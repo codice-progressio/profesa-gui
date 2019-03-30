@@ -78,7 +78,7 @@ export class UsuarioService {
     const url = URL_SERVICIOS + '/login/google';
 
     // Aqui hay que mandar el token como un objeto por aquello
-    // de que el servicio necesita recivir un parametro llamado 'token'
+    // de que el servicio necesita recibir un parametro llamado 'token'
     // En EMC6 no es necesario poner en el objeto {token:token}, lo hace automatico.
 
     return this.http.post(url, {token}).pipe(

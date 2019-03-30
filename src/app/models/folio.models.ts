@@ -19,6 +19,8 @@ export class Folio {
         public porcentajeAvance?: number,
         public impreso?: boolean,
         public terminado?: boolean,
+        public fechaTerminado?: Date,
+        public cantidadProducida?: number,
 
         // Este es propio del front para
         // interactuar con botones. 

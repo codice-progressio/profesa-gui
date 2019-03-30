@@ -216,8 +216,6 @@ export class GeneralesComponents<T> {
      * @memberof GeneralesComponents
      */
     cargarOrdenedDeDepartamento(nombreDepto: string, idDepto: string, vm_depto: string ) {
-        console.log( 'Algo importante debe pasar' )
-        console.log( idDepto )
         this._listaDeOrdenesService.cargar( nombreDepto, idDepto, vm_depto  );
     }
 

@@ -7,6 +7,12 @@ import { Modelo } from 'src/app/models/modelo.models';
 import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
+import { DatePipe } from '@angular/common';
+import { SortService } from 'src/app/directives/sortableComponent/sort.service';
+import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service';
+import * as moment from 'moment/moment';
+import 'moment-duration-format';
+
 
 @Component({
   selector: 'app-historial-de-pedidos',
@@ -36,27 +42,32 @@ export class HistorialDePedidosComponent implements OnInit {
 
 
   folio: string
-  campoDeOrdenacion: string
-  desde: Date
-  hasta: Date
-  orden: number
+  pedido: string
 
-
-  camposDeOrdenacion: string [] = [
-    'Folio',
-    'Pedido',
-    'Modelo',
-    'Cliente',
-    'Vendedor',
-    'Fecha de folio',
-    'Fecha de termino de pedido',
-    'Tiempo de produccion',
-    'Cantidad Producida',
-    'Entregado',
-  ]
+  fechaDeCreacionDesdeEl: Date 
+  fechaDeCreacionHasta: Date 
   
+  fechaEntregaEstimadaDesdeEl: Date 
+  fechaEntregaEstimadaHasta: Date 
+  
+  fechaFinalizacionFolioDesdeEl: Date 
+  fechaFinalizacionFolioHasta: Date 
 
 
+
+  sortCampos: string[] = []
+
+
+  folios: Folio [] = []
+
+
+  /**
+   *Almacena los inputs list para limpiarlos. Es necesario esto por que
+   con el ngmodelo no se limpia todo lo que necesitamos.
+   *
+   * @memberof HistorialDePedidosComponent
+   */
+  objetoParaLimpieza = {}
 
   
 
@@ -67,8 +78,11 @@ export class HistorialDePedidosComponent implements OnInit {
     public _modeloService: ModeloService,
     public _tamanoService: TamanoService,
     public _colorService: ColorService,
-    public _terminadoService: TerminadoService
+    public _terminadoService: TerminadoService,
+    public _sortService : SortService,
+    public _reporteProduccionService: ReportesProduccionService
   ) { 
+    this.limpiar()
 
     this._clienteService.listarTodo = true;
     this._clienteService.todo( ).subscribe( (clientes)=>{this.clientes = clientes} )
@@ -87,7 +101,8 @@ export class HistorialDePedidosComponent implements OnInit {
     this._terminadoService.listarTodo = true
     this._terminadoService.todo().subscribe((terminados)=>{this.terminados = terminados} )
 
-  
+    this.cargarFolios( );
+
 
 
   }
@@ -126,7 +141,6 @@ export class HistorialDePedidosComponent implements OnInit {
     this.agregarParaLimpiar(  term )
   }
 
-  objetoParaLimpieza = {}
   agregarParaLimpiar( input: any ){
     if( !this.objetoParaLimpieza.hasOwnProperty( input.list.id )){
       this.objetoParaLimpieza[input.list.id] = input
@@ -149,14 +163,92 @@ export class HistorialDePedidosComponent implements OnInit {
     this.terminadoSeleccionado = null
 
     this.folio = null
-    this.campoDeOrdenacion = null
-    this.desde = null
-    this.hasta = null
-    this.orden = null
+    this.fechaDeCreacionDesdeEl = null 
+    this.fechaDeCreacionHasta = null 
+    this.fechaEntregaEstimadaDesdeEl = null 
+    this.fechaEntregaEstimadaHasta = null 
+    this.fechaFinalizacionFolioDesdeEl = null 
+    this.fechaFinalizacionFolioHasta = null 
   }
 
-  filtrar( ) {
+  campoSort: string = ''
+  onSorted ( e: any ) {
+    let campo: string = Object.keys(e)[0]
+    this.campoSort = `${ campo }>${e[campo]}`
+  }
 
+  obtenerCamposDeFiltracion(): string {
+
+    let objetoDeCampos = {
+      clienteSeleccionado: this.clienteSeleccionado ,
+      vendedorSeleccionado: this.vendedorSeleccionado ,
+      modeloSeleccionado: this.modeloSeleccionado ,
+      tamanoSeleccionado: this.tamanoSeleccionado ,
+      colorSeleccionado: this.colorSeleccionado ,
+      terminadoSeleccionado: this.terminadoSeleccionado ,
+      folio: this.folio ,
+      fechaDeCreacionDesdeEl: this.fechaDeCreacionDesdeEl ? new Date(this.fechaDeCreacionDesdeEl ).toISOString(): null ,
+      fechaDeCreacionHasta: this.fechaDeCreacionHasta ? new Date(this.fechaDeCreacionHasta ).toISOString(): null ,
+      fechaEntregaEstimadaDesdeEl: this.fechaEntregaEstimadaDesdeEl ? new Date(this.fechaEntregaEstimadaDesdeEl ).toISOString(): null ,
+      fechaEntregaEstimadaHasta: this.fechaEntregaEstimadaHasta ? new Date(this.fechaEntregaEstimadaHasta ).toISOString(): null ,
+      fechaFinalizacionFolioDesdeEl: this.fechaFinalizacionFolioDesdeEl ? new Date(this.fechaFinalizacionFolioDesdeEl ).toISOString(): null ,
+      fechaFinalizacionFolioHasta: this.fechaFinalizacionFolioHasta ? new Date(this.fechaFinalizacionFolioHasta ).toISOString(): null ,
+    }
+
+    let cadenaFinal: string = ''
+    for (const key in objetoDeCampos) {
+      if (objetoDeCampos.hasOwnProperty(key)) {
+        const dato = objetoDeCampos[key];
+        if( dato ){
+            cadenaFinal+=`${key}=${dato._id ? dato._id : dato}&`
+        }
+      }
+    }
+
+    return cadenaFinal;
+
+  }
+
+
+
+  filtrar( ) {
+    this.cargarFolios( this.obtenerCamposDeFiltracion() )
+  }
+
+
+  cargarFolios( filtros: string = null ){
+    this._reporteProduccionService.historialPedidos( filtros ).subscribe( (folios)=>{
+      this.folios = folios;
+
+    } )
+  }
+
+
+  /**
+   *Obtiene la diferencia entre las fechas. 
+   *
+   * @param {Date} inicioDeFolio La fecha en la que inicio el folio. 
+   * @param {Date} terminoPedido La fecha de termino del pedido. 
+   * @returns {string} La diferencia entre fechas formateadas para contar dias, semanas, etc. 
+   * @memberof HistorialDePedidosComponent
+   */
+  diferenciaEntreFechas( inicioDeFolio: Date,   terminoPedido: Date ): string {
+
+    let inicio = moment( new Date(inicioDeFolio) )
+    let finPedido =  moment( new Date(terminoPedido) )
+
+
+    // ESTE SE TIENE QUE CALCULAR COMO <1 POR QUE AL PARECER CUENTA LOS DIAS DESDE 0
+    let leyendaDias: string = moment.duration(inicio.diff(finPedido)).days() < 1 ? 'dia' : 'dias'
+    // Estos son normales. 
+    let leyendaMeses: string = moment.duration(inicio.diff(finPedido)).months() === 1 ? 'mes' : 'meses'
+    let leyendaAnio: string = moment.duration(inicio.diff(finPedido)).years() === 1 ? 'año' : 'años'
+
+    let duration:string = moment.duration(finPedido.diff(inicio)).format(`y [${leyendaAnio}], M [${leyendaMeses}], D [${leyendaDias}], HH:mm:ss`);
+
+
+
+    return duration
   }
 
 

@@ -28,13 +28,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
+
                                     <div class="card-body">
 
 
                                         <form (ngSubmit)="onSubmit( formulario.value, formulario.valid, $event )" [formGroup]="formulario">
 
                                             <div class="form-group">
-                                                <input formControlName="cantidadDeBoton" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getCantidadDeBoton), 'is-valid':_validacionesService.valid(getCantidadDeBoton)}" type="number" placeholder="Cantidad de botón">
+                                                <input mask='separator' formControlName="cantidadDeBoton" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getCantidadDeBoton), 'is-valid':_validacionesService.valid(getCantidadDeBoton)}" type="text" placeholder="Cantidad de botón">
                                                 <app-validacion-inputs [campo]="getCantidadDeBoton"></app-validacion-inputs>
                                             </div>
 

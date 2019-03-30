@@ -8,6 +8,8 @@ import { throwError, Observable } from 'rxjs';
 import { ReporteTransformacionSimplificado } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionSimplificado';
 import { ReporteQuimica } from 'src/app/models/reportes/quimica/reporteQuimica';
 import { ReporteLaser } from 'src/app/models/reportes/laser/reporteLaser';
+import { Folio } from 'src/app/models/folio.models';
+import { FolioLinea } from 'src/app/models/folioLinea.models';
 
 @Injectable({
   providedIn: 'root'
@@ -149,6 +151,30 @@ export class ReportesProduccionService {
 
   }
 
+  /**
+   *Retorna la consulta de folios con los parametros de filtro que se le pasen.  
+   *0
+   * @returns {*}
+   * @memberof ReportesProduccionService
+   */
+  historialPedidos( filtros: string ): Observable<Folio[]> {
+    let url = `${URL_SERVICIOS}/${this.urlReportes}/historial/pedidos?foliosTerminados=1&${filtros}`
+    const a: number = this._preLoaderService.loading('Cargando pedidos desde el historial');
+
+    return this. http.get( url ).pipe( 
+      map((resp: any)=>{
+        
+        this._msjService.ok_( resp, null, a )
+        return resp.folios
+      } ),
+      catchError( (err)=>{
+        console.log( err )
+        this._msjService.err(err)
+        return throwError( err )
+      } )
+    )
+
+  }
 
 
 

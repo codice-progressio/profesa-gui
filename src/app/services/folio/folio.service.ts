@@ -425,7 +425,7 @@ export class FolioService {
   modificarOrden(dato: any, idOrden: string, idDepto: string): any {
     const a: number = this._preLoaderService.loading('Guardando cambios de orden.');
     const url =`${URL_SERVICIOS}/orden/${idOrden}?depto=${idDepto}`;
-    console.log(url)
+    console.log('el dato que se esta enviando', dato)
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
         this._msjService.ok_(resp,null, a);
@@ -440,8 +440,7 @@ export class FolioService {
 
   controlDeProduccion_RecivirYEntregar(idOrdenes: String[]): any {
    const a: number = this._preLoaderService.loading('Entregando ordenes.');
-   
-    const url =`${URL_SERVICIOS}/orden/controlDeProduccionRecivirYEntregar`;
+    const url =`${URL_SERVICIOS}/orden/controlDeProduccionRecibirYEntregar`;
    return this.http.put( url, idOrdenes ).pipe(
     map( (resp: any) => {
       this._msjService.ok_(resp,null, a);

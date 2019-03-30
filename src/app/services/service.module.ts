@@ -32,10 +32,12 @@ import {
   TamanoService,
   ColorService,
   TerminadoService,
+
   
   
 } from './service.index';
 import { ValidacionesService } from './utilidades/validaciones.service';
+import { SortService } from '../directives/sortableComponent/sort.service';
 
 @NgModule({
   imports: [
@@ -76,6 +78,7 @@ import { ValidacionesService } from './utilidades/validaciones.service';
     TamanoService,
     ColorService,
     TerminadoService,
+    SortService
 ]
 })
 export class ServiceModule { }

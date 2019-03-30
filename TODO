@@ -51,7 +51,7 @@ FEATURES:
     ☐ RH.
 
     Transformacion:
-      ☐ Paros de la maquina. Una GUI para definir los paros que tuvo la maquina. Dejar que el admin adminsitre los tipos de paro. Dejar abierto para recivir los datos desde un plc. 
+      ☐ Paros de la maquina. Una GUI para definir los paros que tuvo la maquina. Dejar que el admin adminsitre los tipos de paro. Dejar abierto para recibir los datos desde un plc. 
 
 
 FIX:

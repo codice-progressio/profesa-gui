@@ -1,9 +1,9 @@
 {
-    "name": "CarrduciSys",
-    "version": "0.3.4",
+    "name": "carrduci-sys",
+    "version": "0.4.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "ng serve -o --ssl true --ssl-key C:\\CARRDUCIsys\\certificados\\gui.localhost.key --ssl-cert C:\\CARRDUCIsys\\certificados\\gui.localhost.crt",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",

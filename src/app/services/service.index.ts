@@ -1,3 +1,5 @@
+export { SortService } from '../directives/sortableComponent/sort.service';
+
 export { ModeloService } from './modelo/modelo.service';
 export { TamanoService } from './modelo/tamano.service';
 export { ColorService } from './modelo/color.service';

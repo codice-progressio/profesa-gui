@@ -37,8 +37,11 @@ export class FolioLinea {
         public updatedAt?: Date,
         public porcentajeAvance?: number,
         public coloresTenidos: ColoresTenidos[] = [],
-        
+        public pedido?: string,
         public procesos: Procesos[] = [],
+
+        public fechaTerminado?: Date,
+        public cantidadProducida?: number,
 
 
         public observaciones?: string,

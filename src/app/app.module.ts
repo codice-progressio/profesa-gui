@@ -10,8 +10,6 @@ registerLocaleData(localePy, 'es-MX');
 import { APP_ROUTES } from './app.routes';
 
 
-// Modulos
-import { PagesModule } from './pages/pages.module';
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -42,6 +40,7 @@ import {NgxMaskModule} from 'ngx-mask';
     RegisterComponent,
     PagesComponent,
    
+   
   ],
   // CUANDO MIREMOS UNA PALABRA MODULO SIEMPRE TIENEN QUE IR DENTRO DEL
   // IMPORT.
@@ -58,6 +57,7 @@ import {NgxMaskModule} from 'ngx-mask';
     
   ],
   providers: [
+   
     // Configuraciones de idioma. 
     { provide: LOCALE_ID, useValue: 'es-MX' },
     // Interceptor para agregar Bearer token. 

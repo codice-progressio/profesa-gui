@@ -85,6 +85,8 @@ import { OrdenDetalleComponent } from './seguimiento-de-folios/detalles/orden-de
 import { PedidoDetalleComponent } from './seguimiento-de-folios/detalles/pedido-detalle/pedido-detalle.component';
 import { FolioDetalleComponent } from './seguimiento-de-folios/detalles/folio-detalle/folio-detalle.component';
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
+import { SortableColumnComponent } from '../directives/sortableComponent/sortable-column/sortable-column.component';
+import { SortableTableDirective } from '../directives/sortableComponent/sortable-table.directive';
 
 
 @NgModule({
@@ -163,6 +165,8 @@ import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/his
        PedidoDetalleComponent,
        FolioDetalleComponent,
        HistorialDePedidosComponent,
+
+       SortableColumnComponent, SortableTableDirective
 
 
       ],
