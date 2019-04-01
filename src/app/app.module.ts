@@ -29,6 +29,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
 import {NgxMaskModule} from 'ngx-mask';
+import { FolioDetalleComponent } from './components/detalles/folios/folio-detalle/folio-detalle.component';
+import { PedidoDetalleComponent } from './components/detalles/folios/pedido-detalle/pedido-detalle.component';
+import { OrdenDetalleComponent } from './components/detalles/folios/orden-detalle/orden-detalle.component';
+import { CambiadorDeDetallesDeFolioComponent } from './components/detalles/folios/cambiador-de-detalles-de-folio/cambiador-de-detalles-de-folio.component';
 
 
 
@@ -39,6 +43,10 @@ import {NgxMaskModule} from 'ngx-mask';
     LoginComponent,
     RegisterComponent,
     PagesComponent,
+    FolioDetalleComponent,
+    PedidoDetalleComponent,
+    OrdenDetalleComponent,
+    CambiadorDeDetallesDeFolioComponent,
    
    
   ],

@@ -87,6 +87,7 @@ import { FolioDetalleComponent } from './seguimiento-de-folios/detalles/folio-de
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 import { SortableColumnComponent } from '../directives/sortableComponent/sortable-column/sortable-column.component';
 import { SortableTableDirective } from '../directives/sortableComponent/sortable-table.directive';
+import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component';
 
 
 @NgModule({
@@ -166,7 +167,7 @@ import { SortableTableDirective } from '../directives/sortableComponent/sortable
        FolioDetalleComponent,
        HistorialDePedidosComponent,
 
-       SortableColumnComponent, SortableTableDirective
+       SortableColumnComponent, SortableTableDirective, PruebaParaDetallesComponent
 
 
       ],

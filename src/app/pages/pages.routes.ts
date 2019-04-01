@@ -49,6 +49,7 @@ import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser
 import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
+import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -61,6 +62,12 @@ const pagesRoutes: Routes = [
     //     canActivate: [LoginGuardGuard],
     //     children: [
             // Sección de estudio.
+        {
+            path: 'pruebasDetalles',
+            component: PruebaParaDetallesComponent,
+            canActivate: [ VerificaTokenGuard],
+            data: {titulo: 'Pruebas de detalles de folio'}
+        },
         {
             path: 'dashboard',
             component: DashboardComponent,

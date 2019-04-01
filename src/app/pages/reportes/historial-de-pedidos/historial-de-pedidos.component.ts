@@ -22,42 +22,174 @@ import 'moment-duration-format';
 export class HistorialDePedidosComponent implements OnInit {
 
 
+  /**
+   *La lista de clientes
+   *
+   * @type {Cliente []}
+   * @memberof HistorialDePedidosComponent
+   */
   clientes: Cliente [] = []
+  /**
+   *El cliente que se selecciono de la lista. 
+   *
+   * @type {Cliente}
+   * @memberof HistorialDePedidosComponent
+   */
   clienteSeleccionado: Cliente
 
+  /**
+   *La lista de vendedores. 
+   *
+   * @type {Usuario []}
+   * @memberof HistorialDePedidosComponent
+   */
   vendedores: Usuario [] = []
+  /**
+   *El vendedor que se elecciono de la lista. 
+   *
+   * @type {Usuario}
+   * @memberof HistorialDePedidosComponent
+   */
   vendedorSeleccionado: Usuario 
   
+  /**
+   *La lista de modelos. 
+   *
+   * @type {Modelo []}
+   * @memberof HistorialDePedidosComponent
+   */
   modelos: Modelo [] = []
+  /**
+   *El modelo que se selecciono de la lista. 
+   *
+   * @type {Modelo}
+   * @memberof HistorialDePedidosComponent
+   */
   modeloSeleccionado: Modelo 
   
+  /**
+   *La lista de tamanos. 
+   *
+   * @type {Tamano []}
+   * @memberof HistorialDePedidosComponent
+   */
   tamanos: Tamano [] = []
+  /**
+   *El tamano que se selecciono de la lista. 
+   *
+   * @type {Tamano}
+   * @memberof HistorialDePedidosComponent
+   */
   tamanoSeleccionado: Tamano 
   
+  /**
+   *La lista de colores.
+   *
+   * @type {Color []}
+   * @memberof HistorialDePedidosComponent
+   */
   colores: Color [] = []
+  /**
+   *El color que se selecciono de la lista. 
+   *
+   * @type {Color}
+   * @memberof HistorialDePedidosComponent
+   */
   colorSeleccionado: Color
 
+  /**
+   *La lista de terminados. 
+   *
+   * @type {Terminado []}
+   * @memberof HistorialDePedidosComponent
+   */
   terminados: Terminado [] = []
+  /**
+   *El terminado que se selecciono de la lista. 
+   *
+   * @type {Terminado}
+   * @memberof HistorialDePedidosComponent
+   */
   terminadoSeleccionado: Terminado 
 
 
+  /**
+   *El dato introducido para buscar por folio.numeroDeFolio
+   *
+   * @type {string}
+   * @memberof HistorialDePedidosComponent
+   */
   folio: string
+  /**
+   *El dato introducido para buscar por folio.folioLinea.pedido
+   *
+   * @type {string}
+   * @memberof HistorialDePedidosComponent
+   */
   pedido: string
 
+  /**
+   *La fecha de creacion desde la cual se van a empezar a filtrar los folios. 
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaDeCreacionDesdeEl: Date 
+  /**
+   *La fecha de creacion hasta la cual se va a filtrar los folios. 
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaDeCreacionHasta: Date 
   
+  /**
+   *La fecha de entrega estimada desde la cual se van a empezar a filtrar los folios.  
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaEntregaEstimadaDesdeEl: Date 
+  /**
+   *La fecha de entrega estimada hsta la cual se van a filtrar los folios. 
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaEntregaEstimadaHasta: Date 
   
+  /**
+   *La fecha de finializacion del folio desde la cual se van a empezar a filtrar los folios. 
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaFinalizacionFolioDesdeEl: Date 
+  /**
+   *La fecha de finalizacion del folio hasta la cal se van a filtrar los folios. 
+   *
+   * @type {Date}
+   * @memberof HistorialDePedidosComponent
+   */
   fechaFinalizacionFolioHasta: Date 
 
 
 
+  /**
+   *Los campos por los cuales se van a ordenar los folios. 
+   *
+   * @type {string[]}
+   * @memberof HistorialDePedidosComponent
+   */
   sortCampos: string[] = []
 
 
+  /**
+   *La lista de folios que coincidio contra los filtros que se aplicaron. 
+   *
+   * @type {Folio []}
+   * @memberof HistorialDePedidosComponent
+   */
   folios: Folio [] = []
 
 
@@ -111,16 +243,35 @@ export class HistorialDePedidosComponent implements OnInit {
 
   }
 
+
+  /**
+   * Selecciona el cliente y lo agrega para limpiar. 
+   *
+   * @param {*} cli
+   * @memberof HistorialDePedidosComponent
+   */
   seleccionarCliente( cli: any ){
     this.clienteSeleccionado = this.clientes.find( (cliente)=>{return cliente.nombre === cli.value} )
     this.agregarParaLimpiar(  cli )
   }
 
+  /**
+   *Selecciona el vendedor y lo agrega limpiar
+   *
+   * @param {*} vend
+   * @memberof HistorialDePedidosComponent
+   */
   seleccionarVendedor( vend: any ){
     this.vendedorSeleccionado = this.vendedores.find( (vendedor)=>{return vendedor.nombre === vend.value} )
     this.agregarParaLimpiar(  vend )
   }
 
+  /**
+   *Selecciona el modelo y lo agrega para limpiar. 
+   *
+   * @param {*} mod
+   * @memberof HistorialDePedidosComponent
+   */
   seleccionarModelo( mod: any ){
     this.modeloSeleccionado = this.modelos.find((modelo)=>{return modelo.modelo === mod.value} )
     this.agregarParaLimpiar(  mod )
@@ -131,22 +282,47 @@ export class HistorialDePedidosComponent implements OnInit {
     this.agregarParaLimpiar(  tam )
   }
 
+  /**
+   *Selecciona el colo y lo agrega para limpiar. 
+   *
+   * @param {*} col
+   * @memberof HistorialDePedidosComponent
+   */
   seleccionarColor( col: any ){
     this.colorSeleccionado = this.colores.find( (color)=>{return color.color === col.value} )
     this.agregarParaLimpiar(  col )
   }
   
+  /**
+   *Selecciona el terminado y lo agrega para limpiar. 
+   *
+   * @param {*} term
+   * @memberof HistorialDePedidosComponent
+   */
   seleccionarTerminado( term: any ){
     this.terminadoSeleccionado = this.terminados.find( (terminado)=>{return terminado.terminado === term .value} )
     this.agregarParaLimpiar(  term )
   }
 
+  /**
+   *Agrega el input que se le pase como parametro a una lista que se utiliza para limpiar
+   el formulario. Es el input tal cual. 
+   *
+   * @param {*} input
+   * @memberof HistorialDePedidosComponent
+   */
   agregarParaLimpiar( input: any ){
     if( !this.objetoParaLimpieza.hasOwnProperty( input.list.id )){
       this.objetoParaLimpieza[input.list.id] = input
     }
   }
 
+  /**
+   *Limpia el formulario utilizando la lista que se crea con agregarParaLimpiar() y poniendo en null
+   los campos del ngmodel
+   *
+   * @memberof HistorialDePedidosComponent
+   */
   limpiar( ) {
     for (const key in this.objetoParaLimpieza) {
       if (this.objetoParaLimpieza.hasOwnProperty(key)) {
@@ -163,6 +339,7 @@ export class HistorialDePedidosComponent implements OnInit {
     this.terminadoSeleccionado = null
 
     this.folio = null
+    this.pedido = null
     this.fechaDeCreacionDesdeEl = null 
     this.fechaDeCreacionHasta = null 
     this.fechaEntregaEstimadaDesdeEl = null 
@@ -172,21 +349,34 @@ export class HistorialDePedidosComponent implements OnInit {
   }
 
   campoSort: string = ''
+  /**
+   *Captura el campo de sort que se acciona con la directiva sort-table
+   *
+   * @param {*} e
+   * @memberof HistorialDePedidosComponent
+   */
   onSorted ( e: any ) {
     let campo: string = Object.keys(e)[0]
     this.campoSort = `${ campo }>${e[campo]}`
   }
 
+  /**
+   *Organiza y obtiene la lista de paramentros para filtrar los pedidos. 
+   *
+   * @returns {string} La lista de paramentros acomodados como una query para pasar por get. 
+   * @memberof HistorialDePedidosComponent
+   */
   obtenerCamposDeFiltracion(): string {
 
     let objetoDeCampos = {
-      clienteSeleccionado: this.clienteSeleccionado ,
-      vendedorSeleccionado: this.vendedorSeleccionado ,
-      modeloSeleccionado: this.modeloSeleccionado ,
-      tamanoSeleccionado: this.tamanoSeleccionado ,
-      colorSeleccionado: this.colorSeleccionado ,
-      terminadoSeleccionado: this.terminadoSeleccionado ,
+      cliente: this.clienteSeleccionado ,
+      vendedor: this.vendedorSeleccionado ,
+      modelo: this.modeloSeleccionado ,
+      tamano: this.tamanoSeleccionado ,
+      color: this.colorSeleccionado ,
+      terminado: this.terminadoSeleccionado ,
       folio: this.folio ,
+      pedido: this.pedido ,
       fechaDeCreacionDesdeEl: this.fechaDeCreacionDesdeEl ? new Date(this.fechaDeCreacionDesdeEl ).toISOString(): null ,
       fechaDeCreacionHasta: this.fechaDeCreacionHasta ? new Date(this.fechaDeCreacionHasta ).toISOString(): null ,
       fechaEntregaEstimadaDesdeEl: this.fechaEntregaEstimadaDesdeEl ? new Date(this.fechaEntregaEstimadaDesdeEl ).toISOString(): null ,
@@ -211,11 +401,22 @@ export class HistorialDePedidosComponent implements OnInit {
 
 
 
+  /**
+   *Ejecuta la carga de folios con los filtros ( ejecuta obtenerCamposDeFiltracion() )
+   *
+   * @memberof HistorialDePedidosComponent
+   */
   filtrar( ) {
     this.cargarFolios( this.obtenerCamposDeFiltracion() )
   }
 
 
+  /**
+   *Carga todos los folios sin restriccion. 
+   *
+   * @param {string} [filtros=null]
+   * @memberof HistorialDePedidosComponent
+   */
   cargarFolios( filtros: string = null ){
     this._reporteProduccionService.historialPedidos( filtros ).subscribe( (folios)=>{
       this.folios = folios;
@@ -229,7 +430,7 @@ export class HistorialDePedidosComponent implements OnInit {
    *
    * @param {Date} inicioDeFolio La fecha en la que inicio el folio. 
    * @param {Date} terminoPedido La fecha de termino del pedido. 
-   * @returns {string} La diferencia entre fechas formateadas para contar dias, semanas, etc. 
+   * @returns {string} La diferencia entre fechas formateadas para contar dias, meses anios, etc.; 
    * @memberof HistorialDePedidosComponent
    */
   diferenciaEntreFechas( inicioDeFolio: Date,   terminoPedido: Date ): string {
