@@ -16,8 +16,8 @@ import { CrearModificar_GUI_CRUD } from "./CrearModificar_GUI_CRUD";
  */
 export class Generales_GUI_CRUD<
   T_Elemento,
-  S_ServicioElemento extends CRUD<T_Elemento>,
-  U extends CrearModificar_GUI_CRUD<T_Elemento, S_ServicioElemento>
+  S_ServicioElemento extends CRUD<T_Elemento, S_ServicioElemento>,
+  U extends CrearModificar_GUI_CRUD<T_Elemento, S_ServicioElemento>,
 > {
   /**
    * Obtiene la lista de los elementos.
@@ -119,19 +119,35 @@ export class Generales_GUI_CRUD<
     this.cargarElementos();
   };
 
+  /**
+   *Creates an instance of Generales_GUI_CRUD.
+   * @param {S_ServicioElemento} _elementoService El servicio del tipo de elemento que estamos manejando. 
+   * @param {PaginadorService} _paginadorService El servicio de paginacion. 
+   * @param {ManejoDeMensajesService} _msjService El servicio de mensajes. 
+   * @param {boolean} [ejecutarCargaDeElementosAlIniciar=true] La bandera que define si ejecutamos la carga de elementos desde el principio. SI se pone en false
+   * es necesario que en el constructor hijo se defina el callback para el paginador service, de otra manera no mandara a llamar nada.
+   * @memberof Generales_GUI_CRUD
+   */
   constructor(
     public _elementoService: S_ServicioElemento,
     public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
+    public _msjService: ManejoDeMensajesService,
+    public ejecutarCargaDeElementosAlIniciar: boolean = true,
+   
   ) {
     // this._paginadorService.desde = 0;
     // this._paginadorService.calcular()
-    this._paginadorService.callback = () => {
+    
+    //Se puede seleccionar si se omite la carga por defecto de elementos al iniciar. 
+    if( this.ejecutarCargaDeElementosAlIniciar ) {
+      // Si se omite es necesario definir tambien la accion del paginador. 
+      this._paginadorService.callback = () => {
+        this.cargarElementos();
+      };
       this.cargarElementos();
-    };
-    this.cargarElementos();
+    }
   }
-
+  
   /**
    *Carga los elementos de la lista para mostrar.
    *

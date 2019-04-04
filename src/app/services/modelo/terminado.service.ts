@@ -11,7 +11,7 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
 @Injectable({
   providedIn: 'root'
 })
-export class TerminadoService extends CRUD<Terminado>{
+export class TerminadoService extends CRUD<Terminado, undefined, undefined>{
   constructor(
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,

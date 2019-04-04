@@ -13,7 +13,7 @@ import { UsuarioService } from '../usuario/usuario.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DepartamentoService  extends CRUD<Departamento>{
+export class DepartamentoService  extends CRUD<Departamento, undefined, undefined>{
 
   constructor(
     public http: HttpClient,

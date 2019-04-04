@@ -63,7 +63,7 @@ const pagesRoutes: Routes = [
     //     children: [
             // Sección de estudio.
         {
-            path: 'pruebasDetalles',
+            path: 'pruebas',
             component: PruebaParaDetallesComponent,
             canActivate: [ VerificaTokenGuard],
             data: {titulo: 'Pruebas de detalles de folio'}

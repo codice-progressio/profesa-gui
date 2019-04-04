@@ -14,7 +14,7 @@ import { CRUD } from '../crud';
 @Injectable({
   providedIn: 'root'
 })
-export class ColorService extends CRUD<Color>  {
+export class ColorService extends CRUD<Color, undefined, undefined>  {
   
 
   constructor(

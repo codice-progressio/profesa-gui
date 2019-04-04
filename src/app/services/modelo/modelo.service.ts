@@ -13,7 +13,7 @@ import { Tamano } from 'src/app/models/tamano.models';
 @Injectable({
   providedIn: 'root'
 })
-export class ModeloService extends CRUD<Modelo> {
+export class ModeloService extends CRUD<Modelo, undefined, undefined> {
   // total: number;
   // base: string = URL_SERVICIOS + `/modelo`
   constructor(

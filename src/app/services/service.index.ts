@@ -1,3 +1,5 @@
+export { FolioNewService } from './folio/folio-new.service';
+
 export { SortService } from '../directives/sortableComponent/sort.service';
 
 export { ModeloService } from './modelo/modelo.service';

@@ -3,6 +3,7 @@ import { Observable, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { ManejoDeMensajesService, UtilidadesService, PreLoaderService } from "./service.index";
 import { map, catchError } from "rxjs/operators";
+import { FiltrosDeConsultas } from "./utilidades/filtrosParaConsultas/FiltrosDeConsultas";
 
 
 /**
@@ -14,9 +15,26 @@ import { map, catchError } from "rxjs/operators";
  *
  * @export
  * @class CRUD
- * @template T El tipo de modelo que retornaran las operaciones. 
+ * @template T_TipoDeModelo El tipo de modelo que retornaran las operaciones. 
+ * @template S_Servicio El servicio que se esta gestionando. 
+ * @template A El filtro que corresponde para el servicio. (Los filtros)
  */
-export class CRUD<T>  {
+export class CRUD<T_TipoDeModelo, S_Servicio = any, A extends FiltrosDeConsultas<S_Servicio> =any >  {
+
+    filtrosDelFolio: A
+    servicio: S_Servicio
+    
+    /**
+     * Obtiene los filtros segun el tipo que se le pase. 
+     * @template A 
+     * @param {A} type
+     * @returns {A}
+     * @memberof CRUD
+     */
+    filtros ( type :A ) : A {
+        this.filtrosDelFolio = type
+        return type
+    }
 
     
     /**
@@ -123,8 +141,12 @@ export class CRUD<T>  {
      * @param {boolean} [sort=true] Define la forma de4 ordenarse. True (por defecto) ordena ascendentemente y salse descendente.
      * @param {string} [campo=null] El campo de ordenamiento. Si esta null la BD escoge el campo.
      * @param {string} [urlAlternativa=null] Recive una nueva seccion para agregar a la EJEMPLO: Urlbase[/urlAlternativa]?parametros=
-     * @returns {Observable<T[]>}
+     * @param {string} [filtros=null] La cadena de filtros en un objeto. Si se define este paramentro 
+     * es necesario que tambien se definan dentro de ellos el limite, desde, sort y campo para 
+     * la paginacion. Esto tambien debe incluir el paginador que se quiere utilizar. 
+     * @returns {Observable<T_TipoDeModelo[]>}
      * @memberof CRUD
+     * @deprecated Esta funcion hay que dejar de usarla. Ahora hay que usar la funcion getAll()
      */
     todo( 
         paginador: PaginadorService = null, 
@@ -132,11 +154,12 @@ export class CRUD<T>  {
         sort: boolean = true,
         campo: string = null,
         urlAlternativa: string = null,
-        noAfectarServicioDePaginados: boolean = false
-        ):Observable<T[]>{
+        noAfectarServicioDePaginados: boolean = false,
+        filtros: {[key:string]: string} = null
+        ):Observable<T_TipoDeModelo[]>{
 
             // Valores de la url
-            let url  =  this.base + (urlAlternativa ? urlAlternativa : '') ;
+            let url  =  this.base + (urlAlternativa ? urlAlternativa : '')+'?' ;
             
             // Seleccionamos un paginador, si externo o el por defecto. 
             let paginadorAUsar: PaginadorService = null;
@@ -148,15 +171,24 @@ export class CRUD<T>  {
             const a: number = this._preLoaderService.loading(msjLoading);
             
         
-        // Los valores para el paginador. 
-        if( this.listarTodo ) {
-            url += `?desde=0&limite=100000`
-        } else {
-            url += `?desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
+            
+        if( !filtros ) {
+            // Los valores para el paginador. 
+            if( this.listarTodo ) {
+                url += `desde=0&limite=100000`
+            } else {
+                url += `desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
+            }
+                
+            // Valores para el ordenamiento. 
+            url+= `&sort=${ sort ? 1 : -1 }`;
+            url+= campo ? `&campo=${ campo }` : '';
+        } else{
+
+            url+= `${this.concatenerFiltros(filtros)}`
         }
-        // Valores para el ordenamiento. 
-        url+= `&sort=${ sort ? 1 : -1 }`;
-        url+= campo ? `&campo=${ campo }` : '';
+
+        
 
         
         return this.http.get(url).pipe(
@@ -176,18 +208,55 @@ export class CRUD<T>  {
             
         };
 
+    /**
+     *
+     * Obtiene todos los elementos. Todos los limites se definen directamente en la funcion
+     * @param {string} [msjLoading=`Cargando ${this.nombreDeDatos.plural}.`] El mensaje que va a mostrar el servicio de carga. 
+     * @param {string} [urlAlternativa=null] Recive una nueva seccion para agregar a la EJEMPLO: Urlbase[/urlAlternativa]?parametros=
+     * @param {string} [filtros=null] La cadena de filtros en un objeto. Si se define este paramentro 
+     * es necesario que tambien se definan dentro de ellos el limite, desde, sort y campo para 
+     * la paginacion. Esto tambien debe incluir el paginador que se quiere utilizar. 
+     * @returns {Observable<T_TipoDeModelo[]>}
+     * @memberof CRUD
+     */
+    getAll( 
+        msjLoading:string=`Cargando ${this.nombreDeDatos.plural}.` ,
+        urlAlternativa: string = null,
+        filtros: {[key:string]: string},
+        ):Observable<T_TipoDeModelo[]>{
+
+        const a: number = this._preLoaderService.loading(msjLoading);
+        
+        // Valores de la url
+        let url  =  this.base + (urlAlternativa ? urlAlternativa : '')+'?' ;
+        url+= `${this.concatenerFiltros(filtros)}`
+        
+        return this.http.get(url).pipe(
+            map( (resp: any )=> {
+                this.total = resp.total;
+                this._msjService.ok_( resp, null, a)
+                return resp[this.nombreDeDatos.plural];
+            } ),
+            catchError( err =>{
+                this._msjService.err( err )
+                return throwError( err );
+            })
+            );
+        };
+
+
     
     /**
      * Modifica el elemento que se le pase como paramentro. 
      * De este dato se toma su id y solo se modifica lo que se
      * necesite pero en el api. Aqui, para facilidad pasamos todo. 
      *
-     * @param {T} dato El objeto que se va a modificar. 
+     * @param {T_TipoDeModelo} dato El objeto que se va a modificar. 
      * @param {string} [msjLoading=`Guardando cambios a ${this.nombreDeDatos.singular}.`] El mensaje que va a mostrar el servicio de carga. 
-     * @returns {Observable<T[]>}
+     * @returns {Observable<T_TipoDeModelo[]>}
      * @memberof CRUD
      */
-    modificar(dato:T, msjLoading:string=`Guardando cambios a ${this.nombreDeDatos.singular}.` ):Observable<T[]>{
+    modificar(dato:T_TipoDeModelo, msjLoading:string=`Guardando cambios a ${this.nombreDeDatos.singular}.` ):Observable<T_TipoDeModelo[]>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.put(this.base, dato).pipe(
             map( (resp: any )=> {
@@ -205,12 +274,12 @@ export class CRUD<T>  {
     /**
      * Guarda un elemento nuevo en la BD. 
      *
-     * @param {T} dato El objeto que se va a modificar.
+     * @param {T_TipoDeModelo} dato El objeto que se va a modificar.
      * @param {string} [msjLoading=`Guardando ${this.nombreDeDatos.singular}.`] El mensaje que va a mostrar el servicio de carga.
-     * @returns {Observable<T>}
+     * @returns {Observable<T_TipoDeModelo>}
      * @memberof CRUD
      */
-    guardar(dato:T, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T>{
+    guardar(dato:T_TipoDeModelo, msjLoading:string=`Guardando ${this.nombreDeDatos.singular}.` ):Observable<T_TipoDeModelo>{
         // Desactivamos el boton que pasamos atravez del callback. 
         this.ejecutarCallbackDesactivar()
         const a: number = this._preLoaderService.loading(msjLoading);
@@ -254,10 +323,10 @@ export class CRUD<T>  {
      *
      * @param {string} id El id del objeto que se quiere eliminar. 
      * @param {string} [msjLoading=`Guardando ${this.nombreDeDatos.singular}.`] El mensaje que va a mostrar el servicio de carga.
-     * @returns {Observable<T>}
+     * @returns {Observable<T_TipoDeModelo>}
      * @memberof CRUD
      */
-    eliminar(id:string, msjLoading:string=`Eliminando ${this.nombreDeDatos.singular}.` ):Observable<T>{
+    eliminar(id:string, msjLoading:string=`Eliminando ${this.nombreDeDatos.singular}.` ):Observable<T_TipoDeModelo>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.delete(this.base+'/'+id).pipe(
             map( (resp: any )=> {
@@ -278,10 +347,10 @@ export class CRUD<T>  {
      * @param {string} id El id del objeto que se quiere buscar. 
      * @param {string} [urlAlternativa=''] La url alternativa para la busqueda.
      * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.singular}`] El mensaje que va a mostrar el servicio de carga.
-     * @returns {Observable<T>}
+     * @returns {Observable<T_TipoDeModelo>}
      * @memberof CRUD
      */
-    buscarPorId(id: string, urlAlternativa: string ='', msjLoading:string=`Buscando ${this.nombreDeDatos.singular}`):Observable<T>{
+    buscarPorId(id: string, urlAlternativa: string ='', msjLoading:string=`Buscando ${this.nombreDeDatos.singular}`):Observable<T_TipoDeModelo>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.get(this.base+urlAlternativa+`/${id}`).pipe(
             map( (resp: any )=> {
@@ -307,10 +376,10 @@ export class CRUD<T>  {
      * @param {string} [urlAlternativa=''] La url alternativa para la busqueda.
      * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.plural}`]  El mensaje que va a mostrar el servicio de carga.
      * @param {string} [urlAlternativa='']
-     * @returns {Observable<T[]>}
+     * @returns {Observable<T_TipoDeModelo[]>}
      * @memberof CRUD
      */
-    buscar(termino: string, urlAlternativa:string='', msjLoading:string=`Buscando ${this.nombreDeDatos.plural}`):Observable<T[]>{
+    buscar(termino: string, urlAlternativa:string='', msjLoading:string=`Buscando ${this.nombreDeDatos.plural}`):Observable<T_TipoDeModelo[]>{
         const a: number = this._preLoaderService.loading(msjLoading);
         return this.http.get(this.base+urlAlternativa+this.urlBusqueda+'/'+termino).pipe(
             map( (resp: any )=> {
@@ -324,6 +393,23 @@ export class CRUD<T>  {
             })
         );
     }
+
+   /**
+   *Concatena los filtros con el par campo:Valor 
+   es un string tipo &campo=valor....&n=vn
+   *
+   * @private
+   * @param {{[string:string]:string}} filtros
+   * @returns {string}
+   * @memberof FolioNewService
+   */
+  private concatenerFiltros ( filtros: { [ string : string ] : string} ): string {
+    let a:string = ''
+
+    a = Object.keys(filtros).map( (key)=>{ return `${key}=${filtros[key]}`} ).join('&')
+    console.log(a)
+    return a;
+  }
 
 
     

@@ -32,6 +32,7 @@ import {
   TamanoService,
   ColorService,
   TerminadoService,
+  FolioNewService
 
   
   
@@ -78,7 +79,8 @@ import { SortService } from '../directives/sortableComponent/sort.service';
     TamanoService,
     ColorService,
     TerminadoService,
-    SortService
+    SortService,
+    FolioNewService
 ]
 })
 export class ServiceModule { }

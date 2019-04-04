@@ -81,13 +81,18 @@ import { LaserReporteComponent } from './reportes/produccion/laser-reporte/laser
 import { TransformacionReporteComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte.component';
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 import { TransformacionReporteSimplificadoComponent } from './reportes/produccion/transformacion-reporte/transformacion-reporte-simplificado.component';
-import { OrdenDetalleComponent } from './seguimiento-de-folios/detalles/orden-detalle/orden-detalle.component';
-import { PedidoDetalleComponent } from './seguimiento-de-folios/detalles/pedido-detalle/pedido-detalle.component';
-import { FolioDetalleComponent } from './seguimiento-de-folios/detalles/folio-detalle/folio-detalle.component';
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 import { SortableColumnComponent } from '../directives/sortableComponent/sortable-column/sortable-column.component';
 import { SortableTableDirective } from '../directives/sortableComponent/sortable-table.directive';
 import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component';
+import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-crear-modificar.component';
+import { FoliosDetalleComponent } from './gestionDeFolios/folios/folios-detalle.component';
+import { FoliosComponent } from './gestionDeFolios/folios/folios.component';
+import { PedidosCrearModificarComponent } from './gestionDeFolios/pedidos/pedidos-crear-modificar.component';
+import { PedidosDetalleComponent } from './gestionDeFolios/pedidos/pedidos-detalle.component';
+import { OrdenesCrearModificarComponent } from './gestionDeFolios/ordenes/ordenes-crear-modificar.component';
+import { OrdenesDetalleComponent } from './gestionDeFolios/ordenes/ordenes-detalle.component';
+import { OrdenesComponent } from './gestionDeFolios/ordenes/ordenes.component';
 
 
 @NgModule({
@@ -162,12 +167,9 @@ import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-
        TransformacionReporteComponent,
        QuimicaReporteComponent,
        TransformacionReporteSimplificadoComponent,
-       OrdenDetalleComponent,
-       PedidoDetalleComponent,
-       FolioDetalleComponent,
        HistorialDePedidosComponent,
 
-       SortableColumnComponent, SortableTableDirective, PruebaParaDetallesComponent
+       SortableColumnComponent, SortableTableDirective, PruebaParaDetallesComponent, FoliosCrearModificarComponent, FoliosDetalleComponent, FoliosComponent, PedidosCrearModificarComponent, PedidosDetalleComponent, OrdenesCrearModificarComponent, OrdenesDetalleComponent, OrdenesComponent
 
 
       ],

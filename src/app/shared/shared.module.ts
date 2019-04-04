@@ -23,6 +23,7 @@ import { ProgressBarComponent } from '../components/progress-bar/progress-bar.co
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
 import {NgxMaskModule} from 'ngx-mask'
 import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component';
+import { Folio } from '../models/folio.models';
 
 
 
@@ -52,7 +53,8 @@ import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-
         ValidacionInputsComponent,
         OrdenadorVisualComponent,
         OrganizadorDragAndDropComponent,
-        ProgressBarComponent
+        ProgressBarComponent,
+       
     ],
     exports: [
         NopagefoundComponent,
@@ -71,7 +73,7 @@ import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-
         OrdenadorVisualComponent,
         OrganizadorDragAndDropComponent,
         ProgressBarComponent,
-        NgxMaskModule
+        NgxMaskModule,
     ],
     providers:[ModeloCompletoPipe]
 })

@@ -13,7 +13,7 @@ import { CRUD } from '../crud';
 @Injectable({
   providedIn: 'root'
 })
-export class TamanoService  extends CRUD<Tamano> {
+export class TamanoService  extends CRUD<Tamano, undefined, undefined> {
   constructor(
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,

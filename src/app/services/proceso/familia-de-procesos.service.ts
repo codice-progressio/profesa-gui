@@ -15,7 +15,7 @@ import { UtilidadesService } from '../utilidades/utilidades.service';
 })
 
 
-export class FamiliaDeProcesosService extends CRUD<FamiliaDeProcesos>{
+export class FamiliaDeProcesosService extends CRUD<FamiliaDeProcesos, undefined, undefined>{
   
   // total: number;
   // base:string = `${URL_SERVICIOS}/familiaDeProcesos`;

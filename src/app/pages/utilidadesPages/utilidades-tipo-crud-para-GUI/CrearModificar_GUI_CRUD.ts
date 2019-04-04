@@ -2,6 +2,7 @@ import { Input } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { CRUD } from "src/app/services/crud";
 import { ValidacionesService } from "src/app/services/service.index";
+import { FiltrosDeConsultas } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosDeConsultas";
 
 /**
  * Gestiona las operaciones para la creacion y edicion de los
@@ -11,10 +12,15 @@ import { ValidacionesService } from "src/app/services/service.index";
  * @class CrearModificar_GUI_CRUD
  * @template T_Elemento El modelo con el que se trabajara.
  * @template S_Servicio El servicio que corresponde al modelo.
+ * @template F_FiltrosDeConsultam Este parametro opcional es para permitir que
+ * no sea necesario agregar los filtros de consulta obligatoriamente. Por eso lo inicializamos
+ * con un valor any.
  */
 export class CrearModificar_GUI_CRUD<
   T_Elemento,
-  S_Servicio extends CRUD<T_Elemento>
+  S_Servicio extends CRUD<T_Elemento, S_Servicio, F_FiltrosDeConsulta >,
+  F_FiltrosDeConsulta extends FiltrosDeConsultas<S_Servicio> = any
+
 > {
   /**
    *Recive un callback que ejecuta la funcion animar

@@ -13,7 +13,7 @@ import { CRUD } from '../crud';
 @Injectable({
   providedIn: 'root'
 })
-export class ModeloCompletoService extends CRUD<ModeloCompleto>{
+export class ModeloCompletoService extends CRUD<ModeloCompleto, undefined, undefined>{
 
   // base: string = `${URL_SERVICIOS}/modeloCompleto`;
   // total: number;

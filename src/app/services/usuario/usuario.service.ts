@@ -19,6 +19,12 @@ import { Observable } from 'rxjs';
 })
 export class UsuarioService {
 
+  /**
+   *El usuario que esta actualmente logueado.
+   *
+   * @type {Usuario}
+   * @memberof UsuarioService
+   */
   usuario: Usuario;
   // Cuando se recarga la página la tratamos de leer (en el login)
   // y si no la inicializamos (cargando del storage) va a dar error.

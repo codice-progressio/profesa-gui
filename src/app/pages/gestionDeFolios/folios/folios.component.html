@@ -1,0 +1,92 @@
+<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
+
+            <button type="button" (click)="this.mostrarTerminados = mostrarFoliosTerminados( !mostrarTerminados )" class="btn btn-primary btn-sm btn-block ">   
+              <ng-container *ngIf="mostrarTerminados; else elseTemplate">
+                Ocultar
+              </ng-container>
+              <ng-template #elseTemplate>
+                  Mostrar
+              </ng-template>
+               terminados
+              
+            </button>
+        </div>
+
+    </div>
+    <ng-container *ngIf="mostrarLista">
+
+        <!-- 
+    =====================================
+     BODY
+    =====================================
+    -->
+
+
+        <table class="table table-responsive table-hover ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Folio</th>
+                    <th>Cliente</th>
+                    <th>Fecha Folio</th>
+                    <!-- <th>Fecha de Entrega</th> -->
+                    <th>Importancia</th>
+                    <th>Observaciones</th>
+                    <th>%Progreso</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let elemento of elementos ">
+
+                    <td><button (click)="mostrarDetalle(elemento._id) " class="btn btn-primary btn-sm " data-toggle="modal " data-target="#modalDetalle " role="button "><i class="fa fa-eye " aria-hidden="true "></i></button></td>
+                    <td>{{elemento.numeroDeFolio}} |vendedor({{elemento.vendedor.nombre}})</td>
+                    <td>{{elemento.cliente.nombre}}</td>
+                    <td> <i class="fa fa-clock-o " aria-hidden="true "></i> {{ elemento.fechaFolio | fecha:'LLL' }} </td>
+                    <!-- <td> <i class="fa fa-clock-o " aria-hidden="true "></i> {{elemento.fechaEntrega | fecha }}</td> -->
+
+                    <td>
+                        <app-nivel-urgencia [nivel]='elemento.nivelDeUrgencia'></app-nivel-urgencia>
+                    </td>
+                    <td>{{elemento.observaciones}}</td>
+                    <td class='w-25'>
+                        <app-progress-bar [nivel]='elemento.nivelDeUrgencia' [porcentaje]='elemento.porcentajeAvance'> </app-progress-bar>
+                    </td>
+                    <td><a (click)="editar( elemento._id, componenteCrearModificar ) " class="btn btn-success btn-sm "><i class="fas fa-edit text-white "></i></a></td>
+                    <td><a (click)="eliminar( elemento._id) " class="btn btn-danger btn-sm "><i class="fas fa-times text-white "></i></a></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+
+
+
+
+        <!-- 
+    =====================================
+     END BODY
+    =====================================
+    -->
+
+    </ng-container>
+</app-general>
+
+<!-- 
+=====================================
+Importante fuera de app-general
+=====================================
+-->
+
+<app-procesos-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-procesos-crear-modificar>
+<app-procesos-detalle [detalleElemento]='elementoDetalle'> </app-procesos-detalle>
+<!-- 
+=====================================
+END Importante fuera de app-general
+=====================================
+-->

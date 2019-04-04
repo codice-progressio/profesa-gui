@@ -12,7 +12,7 @@ import { UtilidadesService } from '../utilidades/utilidades.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ProcesoService extends CRUD<Proceso>{
+export class ProcesoService extends CRUD<Proceso, undefined, undefined>{
   total:number = 0;
 
 
