@@ -30,7 +30,7 @@ export class FolioNewService extends CRUD<Folio, FolioNewService, FiltrosFolio<F
 
     super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
 
-    this.base =  URL_SERVICIOS + `/folio`;
+    this.base =  URL_SERVICIOS + `/folios`;
     this.nombreDeDatos.plural = 'folios';
     this.nombreDeDatos.singular = 'folio';
     this.urlBusqueda = '/buscar';

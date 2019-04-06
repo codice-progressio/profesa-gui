@@ -1,0 +1,24 @@
+<span *ngIf=" this.totalDeElementos === 0" class="text-muted text-right w-100"><small><strong>No hay elementos para mostrar.</strong></small></span>
+<span *ngIf=" this.porHoja[0] >this.totalDeElementos && this.totalDeElementos !== 0" class="text-muted text-right w-100"><small><strong>Mostrando todos los elementos existentethis.</strong></small></span>
+<nav *ngIf="this.totalDeElementos > this.porHoja[0] && this.totalDeElementos">
+    <ul class="pagination pagination-sm justify-content-end align-items-center">
+        <small class="mr-3"><strong>{{this.totalDeElementos}}</strong> elemetos.</small>
+        <li class="page-item pointer" [ngClass]="{'disabled': 0=== this.desde }">
+            <a (click)="this.cambiarPagina( (-1 *this.limite))" class="page-link " aria-label="Previous ">
+                <i class="fa fa-arrow-circle-left "></i>
+            </a>
+        </li>
+        <li class="page-item disabled text-center" style="width: 100px;">
+            <span class="page-link " aria-label="Next ">
+                {{this.actual}} de {{this.total}}
+            </span>
+        </li>
+        <li class="page-item pointer " [ngClass]="{'disabled': this.actual === this.total }">
+            <a (click)="this.cambiarPagina(this.limite)" class="page-link " aria-label="Next ">
+                <i class="fa fa-arrow-circle-right "></i>
+            </a>
+        </li>
+        <li class="page-item disabled "><a class="page-link "><small>Elem/Pag</small></a></li>
+        <li *ngFor="let lim of this.porHoja" class="page-item pointer" [ngClass]="{'active': lim === this.limite}"><a (click)="this.cambiarCantidad(lim)" class="page-link ">{{lim}}</a></li>
+    </ul>
+</nav>

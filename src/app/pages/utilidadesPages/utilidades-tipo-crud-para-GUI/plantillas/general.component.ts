@@ -24,6 +24,8 @@ export class GeneralComponent implements OnInit {
    */
   @Input() cbCrear;
 
+  @Input() mostrarBuscador: boolean = true
+
   
 
   /**

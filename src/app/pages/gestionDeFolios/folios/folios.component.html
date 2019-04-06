@@ -1,20 +1,52 @@
-<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
+<app-general [mostrarBuscador]='false' [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
-
-            <button type="button" (click)="this.mostrarTerminados = mostrarFoliosTerminados( !mostrarTerminados )" class="btn btn-primary btn-sm btn-block ">   
-              <ng-container *ngIf="mostrarTerminados; else elseTemplate">
-                Ocultar
-              </ng-container>
-              <ng-template #elseTemplate>
-                  Mostrar
+            <button [disabled]='!this.activarBotonFoliosDeProduccion' type="button" (click)="this.mostrarFoliosConOrdenes = foliosSinOrdenes( !this.mostrarFoliosConOrdenes )" class="btn btn-primary btn-sm btn-block ">   
+              <ng-container *ngIf="mostrarFoliosConOrdenes; else elseTemplate">
+                    Capturar
+                </ng-container>
+                <ng-template #elseTemplate>
+                    Dar seguimiento
               </ng-template>
-               terminados
+            </button>
+
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 col-xl-2" *ngIf="this.mostrarFoliosConOrdenes">
+            <button type="button" (click)="this.mostrarFoliosTerminados = foliosTerminados( !this.mostrarFoliosTerminados )" class="btn btn-success btn-sm btn-block ">   
+              <ng-container *ngIf="mostrarFoliosTerminados; else mostrarFoliosTemplate">
+                    Mostrar 
+                </ng-container>
+                <ng-template #mostrarFoliosTemplate>
+                    Ocultar
+              </ng-template>
+              terminados
               
             </button>
+
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 col-xl-2" *ngIf="this.mostrarFoliosConOrdenes">
+            <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#filtros" aria-expanded="false" aria-controls="filtros">
+                Filtros
+            </button>
+
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 col-xl-2" *ngIf="this.mostrarFoliosConOrdenes">
+            <button class="btn btn-warning" type="button" (click)="verComoFolios(this.componenteFiltrador)">
+                <span *ngIf="!this.enlistarComoPedidos">Ver como pedidos</span>
+                <span *ngIf="this.enlistarComoPedidos">Ver como folios</span>
+
+            </button>
+
         </div>
 
     </div>
+
+    <div *ngIf="this.mostrarFoliosConOrdenes" class="collapse mt-5" id="filtros">
+        <app-grupo-de-filtro (obtenerEsteComponente)='this.componenteFiltrador = $event' (obtenerFiltros)='aplicarFiltros($event)' [filtrarParaPedido]='this.enlistarComoPedidos'></app-grupo-de-filtro>
+    </div>
+
+
+
     <ng-container *ngIf="mostrarLista">
 
         <!-- 
@@ -23,45 +55,160 @@
     =====================================
     -->
 
+        <ng-container *ngIf="elementos">
 
-        <table class="table table-responsive table-hover ">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Folio</th>
-                    <th>Cliente</th>
-                    <th>Fecha Folio</th>
-                    <!-- <th>Fecha de Entrega</th> -->
-                    <th>Importancia</th>
-                    <th>Observaciones</th>
-                    <th>%Progreso</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let elemento of elementos ">
+            <table *ngIf="elementos.length > 0" class="table table-responsive table-hover mt-5">
+                <thead>
+                    <tr>
+                        <th class='fit'></th>
+                        <th *ngIf="!this.mostrarFoliosConOrdenes" class='fit'></th>
+                        <th *ngIf="!this.mostrarFoliosConOrdenes" class='fit'></th>
+                        <th>Folio</th>
 
-                    <td><button (click)="mostrarDetalle(elemento._id) " class="btn btn-primary btn-sm " data-toggle="modal " data-target="#modalDetalle " role="button "><i class="fa fa-eye " aria-hidden="true "></i></button></td>
-                    <td>{{elemento.numeroDeFolio}} |vendedor({{elemento.vendedor.nombre}})</td>
-                    <td>{{elemento.cliente.nombre}}</td>
-                    <td> <i class="fa fa-clock-o " aria-hidden="true "></i> {{ elemento.fechaFolio | fecha:'LLL' }} </td>
-                    <!-- <td> <i class="fa fa-clock-o " aria-hidden="true "></i> {{elemento.fechaEntrega | fecha }}</td> -->
+                        <th *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes">Ped</th>
 
-                    <td>
-                        <app-nivel-urgencia [nivel]='elemento.nivelDeUrgencia'></app-nivel-urgencia>
-                    </td>
-                    <td>{{elemento.observaciones}}</td>
-                    <td class='w-25'>
-                        <app-progress-bar [nivel]='elemento.nivelDeUrgencia' [porcentaje]='elemento.porcentajeAvance'> </app-progress-bar>
-                    </td>
-                    <td><a (click)="editar( elemento._id, componenteCrearModificar ) " class="btn btn-success btn-sm "><i class="fas fa-edit text-white "></i></a></td>
-                    <td><a (click)="eliminar( elemento._id) " class="btn btn-danger btn-sm "><i class="fas fa-times text-white "></i></a></td>
-                </tr>
+                        <th>Cliente</th>
+                        <th *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes">MOD</th>
+                        <th>Inicio</th>
+                        <th>Termino</th>
+                        <th *ngIf="this.mostrarFoliosConOrdenes">Tiempo</th>
+                        <th>Pzs. Sol.</th>
+                        <th *ngIf="this.mostrarFoliosConOrdenes">Pzs. Prod.</th>
+                        <!-- <th>Fecha de Entrega</th> -->
+                        <th *ngIf="this.mostrarFoliosConOrdenes">%Progreso</th>
 
-            </tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <ng-container *ngFor="let elemento of elementos">
+
+                        <tr *ngFor="let pedido of ( this.enlistarComoPedidos ? elemento.folioLineas : [0] ) " [ngClass]="{'bg-light-part  text-muted': elemento.terminado}">
+
+
+                            <td class='fit '>
+
+                                <button (click)="mostrarDetalle(elemento._id) " class="btn btn-primary btn-xs " data-toggle="modal " data-target="#modalDetalle " role="button ">
+                                    <i class="fa fa-eye " aria-hidden="true "></i>
+                                </button>
+
+                            </td>
+
+
+
+                            <td *ngIf="!this.mostrarFoliosConOrdenes" class='fit'><a (click)="editar( elemento._id, componenteCrearModificar ) " class="btn btn-success btn-xs "><i class="fas fa-edit text-white "></i></a></td>
+                            <td *ngIf="!this.mostrarFoliosConOrdenes" class='fit'><a (click)="eliminar( elemento._id) " class="btn btn-danger btn-xs "><i class="fas fa-times text-white "></i></a></td>
+
+
+
+
+                            <td class='fit'>{{elemento.numeroDeFolio}}</td>
+                            <td *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes"> {{pedido.pedido}}</td>
+                            <td>{{elemento.cliente.nombre}}</td>
+                            <td *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes ">
+                                <span *ngIf="this.mostrarFoliosConOrdenes">{{pedido.modeloCompleto | modeloCompleto}}</span>
+
+                            </td>
+                            <td>
+
+                                <div class="my_tooltip">
+                                    <i class="fa fa-clock-o" aria-hidden="true "></i> {{ elemento.fechaFolio | date:'dd/MM/y' }}
+                                    <span class="my_tooltiptext"> {{ elemento.fechaFolio | fecha:'LLLL' }}</span>
+                                </div>
+
+
+                            </td>
+                            <td>
+                                <ng-container *ngIf="!this.enlistarComoPedidos; else enlistarComoPedidosTemplate">
+
+                                    <ng-container *ngIf="elemento.fechaTerminado; else folioTerminadoTemplate">
+                                        <div class="my_tooltip">
+                                            <i class="fa fa-clock-o" aria-hidden="true ">
+                                        </i>
+                                            <span class="my_tooltiptext"> {{ elemento.fechaTerminado | fecha:'LLLL' }}</span> {{ elemento.fechaTerminado | date:'dd/MM/yy' }}
+                                        </div>
+                                    </ng-container>
+
+
+                                    <ng-template #folioTerminadoTemplate>
+                                        <ng-container *ngIf="elemento.ordenesGeneradas; else ordenesNoGeneradas">
+                                            <i class="fas fa-users-cog    "></i> En proceso
+                                        </ng-container>
+                                        <ng-template #ordenesNoGeneradas>
+                                            <i class="fa fa-edit"></i> Pendiente def.
+                                        </ng-template>
+                                    </ng-template>
+
+                                </ng-container>
+
+
+
+                                <ng-template #enlistarComoPedidosTemplate>
+                                    <ng-container *ngIf="pedido.fechaTerminado; else pedidoTerminadoTemplate">
+                                        <div class="my_tooltip">
+                                            <i class="fa fa-clock-o" aria-hidden="true ">
+                                        </i>
+                                            <span class="my_tooltiptext"> {{ pedido.fechaTerminado | fecha:'LLLL' }}</span> {{ pedido.fechaTerminado | date:'dd/MM/yy' }}
+                                        </div>
+                                    </ng-container>
+
+
+                                    <ng-template #pedidoTerminadoTemplate>
+
+                                        <i class="fas fa-users-cog    "></i> Pedido en proceso
+
+                                    </ng-template>
+
+                                </ng-template>
+
+                            </td>
+
+
+                            <td>
+                                <ng-container *ngIf="!this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[elemento._id].transcurrido}} </ng-container>
+                                <ng-container *ngIf="this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[pedido._id].transcurrido}}</ng-container>
+
+
+
+                            </td>
+                            <td>
+
+                                <ng-container *ngIf="!this.enlistarComoPedidos">{{sumarPiezasSolicitadas(elemento) | number}} </ng-container>
+                                <ng-container *ngIf="this.enlistarComoPedidos">{{pedido.cantidad | number }}</ng-container>
+
+
+                            </td>
+                            <td *ngIf="this.mostrarFoliosConOrdenes">
+
+                                <ng-container *ngIf="!this.enlistarComoPedidos">{{elemento.cantidadProducida | number }} </ng-container>
+                                <ng-container *ngIf="this.enlistarComoPedidos">{{pedido.cantidadProducida | number }}</ng-container>
+
+                            </td>
+                            <td *ngIf="this.mostrarFoliosConOrdenes">
+
+                                <app-progress-bar *ngIf="!this.enlistarComoPedidos" [nivel]='elemento.nivelDeUrgencia' [porcentaje]='elemento.porcentajeAvance'> </app-progress-bar>
+                                <app-progress-bar *ngIf="this.enlistarComoPedidos" [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
+
+                            </td>
+                        </tr>
+
+                    </ng-container>
+                </tbody>
+            </table>
+        </ng-container>
+
+
+
+
+        <ng-container *ngIf="elementos">
+            <div class="row animated fadeInDown faster" *ngIf="elementos.length === 0 ">
+                <div class="col-12">
+                    <h1 class='display-1'>No hubo coincidencias.</h1>
+                </div>
+            </div>
+
+        </ng-container>
+
 
 
 

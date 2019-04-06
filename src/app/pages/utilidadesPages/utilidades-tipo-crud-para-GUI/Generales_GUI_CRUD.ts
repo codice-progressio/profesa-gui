@@ -100,6 +100,14 @@ export class Generales_GUI_CRUD<
   terminoDeBusqueda: string = "";
 
   /**
+   *El mensaje que se mostrar cuando se elimine un elemento. 
+   *
+   * @memberof Generales_GUI_CRUD
+   */
+  mensajeDeEliminacion:string = "Si eliminas este elemento no podras recuperar sus registros y perderas todo su historial. ";
+
+
+  /**
    *Este callback se utiliza para llamar desde el componente 
    crear la animacion. 
    *
@@ -227,8 +235,7 @@ export class Generales_GUI_CRUD<
    * @memberof Generales_GUI_CRUD
    */
   eliminar(id: string) {
-    let msj: string =
-      "Si eliminas este elemento no podras recuperar sus registros y perderas todo su historial. ";
+    let msj: string = this.mensajeDeEliminacion;
     this._msjService.confirmacionDeEliminacion(msj, () => {
       this._elementoService.eliminar(id).subscribe(elementoEliminado => {
         this.cargarElementos();

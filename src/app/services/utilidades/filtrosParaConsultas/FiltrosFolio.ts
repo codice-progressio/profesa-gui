@@ -10,10 +10,12 @@ import { FiltrosDeConsultas } from "./FiltrosDeConsultas";
  * @export
  * @class FiltrosFolio <T>
  */
-export class FiltrosFolio <T> extends FiltrosDeConsultas<T> {
+export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
+   
    
     
     constructor(
+        // OJO, ESTE PARAMENTRO SE OMITE EN LA BUSQUEDA. TIENES QUE SER CUIDADOSO. 
         public servicio: T,
         private _cliente: string = null,
         private _vendedor: string = null,
@@ -23,23 +25,33 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T> {
         private _terminado: string = null,
         private _folio: string = null,
         private _pedido: string = null,
-        private _fechaDeCreacionDesdeEl: string = null,
-        private _fechaDeCreacionHasta: string = null,
+        private _fechaCreacionDesdeEl: string = null,
+        private _fechaCreacionHasta: string = null,
         private _fechaEntregaEstimadaDesdeEl: string = null,
         private _fechaEntregaEstimadaHasta: string = null,
         private _fechaFinalizacionFolioDesdeEl: string = null,
         private _fechaFinalizacionFolioHasta: string = null ,
-        private _foliosTerminados: string = null 
-    ) {
-        super(servicio)
-        
+        private _foliosTerminados: string = null,
+        private _ordenesGeneradas: string = '0'
+
+        ) {
+            super()
+            
+        }
+    
+    public get ordenesGeneradas(): string {
+        return this._ordenesGeneradas;
+    }
+    public setOrdenesGeneradas(value: boolean): FiltrosFolio <T>  {
+        this._ordenesGeneradas = value? '1':'0';
+        return this
     }
 
     public get foliosTerminados(): string {
         return this._foliosTerminados;
     }
-    public setFoliosTerminados(value: string): FiltrosFolio <T> {
-        this._foliosTerminados = value;
+    public setFoliosTerminados(value: boolean): FiltrosFolio <T> {
+        this._foliosTerminados =  value? '1':'0';
         return this
     }
     
@@ -71,18 +83,18 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T> {
         this._fechaEntregaEstimadaDesdeEl = value;
         return this
     }
-    public get fechaDeCreacionHasta(): string {
-        return this._fechaDeCreacionHasta;
+    public get fechaCreacionHasta(): string {
+        return this._fechaCreacionHasta;
     }
-    public  setFechaDeCreacionHasta(value: string):FiltrosFolio <T> {
-        this._fechaDeCreacionHasta = value;
+    public  setFechaCreacionHasta(value: string):FiltrosFolio <T> {
+        this._fechaCreacionHasta = value;
         return this
     }
-    public get fechaDeCreacionDesdeEl(): string {
-        return this._fechaDeCreacionDesdeEl;
+    public get fechaCreacionDesdeEl(): string {
+        return this._fechaCreacionDesdeEl;
     }
-    public  setFechaDeCreacionDesdeEl(value: string):FiltrosFolio <T> {
-        this._fechaDeCreacionDesdeEl = value;
+    public  setFechaCreacionDesdeEl(value: string):FiltrosFolio <T> {
+        this._fechaCreacionDesdeEl = value;
         return this
     }
     public get pedido(): string {

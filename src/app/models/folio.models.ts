@@ -21,6 +21,7 @@ export class Folio {
         public terminado?: boolean,
         public fechaTerminado?: Date,
         public cantidadProducida?: number,
+        public ordenesGeneradas?: boolean,
 
         // Este es propio del front para
         // interactuar con botones. 

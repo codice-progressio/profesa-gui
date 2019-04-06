@@ -10,10 +10,10 @@
  * @template T
  */
 export class FiltrosDeConsultas<T>  {
-    
+       
     private _desde: number;
     /**
-     *Desde donde se va empezar a limitar la consulta
+     *
      *
      * @type {number}
      * @memberof Filtros
@@ -27,7 +27,7 @@ export class FiltrosDeConsultas<T>  {
     }
     private _limite: number;
     /**
-     *El limite de registros que se van a mostrar. 
+     *
      *
      * @type {number}
      * @memberof Filtros
@@ -50,8 +50,24 @@ export class FiltrosDeConsultas<T>  {
     public get campo(): string {
         return this._campo;
     }
-    public setCampo(value: string): this {
-        this._campo = value;
+    public setCampo(value:string): this {
+        this._campo = value
+        return this
+    }
+
+
+    private _sortCampos: string 
+    public get sortCampos(): string {
+        return this._sortCampos;
+    }
+    public setSortCampos(value:[ string, number][]): this {
+        
+        let a: string []= value.map( (x)=>{
+            return `${x[0]}>${x[1]}`
+        })
+        
+        this._sortCampos = a.join('@');
+
         return this
     }
 
@@ -76,7 +92,7 @@ export class FiltrosDeConsultas<T>  {
      * @memberof FiltrosDeConsultas
      */
     constructor(
-        public servicio: T,
+        
     ) {
             }
 
@@ -92,7 +108,18 @@ export class FiltrosDeConsultas<T>  {
         // Obtenemos las propiedades existentes en la clase. 
         let properties = Object.getOwnPropertyNames(this)
         let noVacios = { }
-        
+
+        properties.push( 'sort' )
+        properties.push( 'campo' )
+        properties.push( 'sortCampos' )
+        properties.push( 'desde' )
+        properties.push( 'limite' )
+
+        properties = properties.filter( (x)=>{ return x !== 'servicio'} )
+
+        properties = properties.map( (x)=>{
+            return  x.replace('_', '')
+        })
         // Separamos las propiedades que esten vacias. 
         for( let x in properties ){
           if( this[properties[x]] ){

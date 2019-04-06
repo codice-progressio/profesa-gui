@@ -157,3 +157,42 @@ video {
         width: 0;
     }
 }
+
+.my_tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted rgb(219, 219, 219);
+}
+
+.my_tooltip .my_tooltiptext {
+    visibility: hidden;
+    width: 150%;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.my_tooltip .my_tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.my_tooltip:hover .my_tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

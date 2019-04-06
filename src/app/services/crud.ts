@@ -210,7 +210,15 @@ export class CRUD<T_TipoDeModelo, S_Servicio = any, A extends FiltrosDeConsultas
 
     /**
      *
-     * Obtiene todos los elementos. Todos los limites se definen directamente en la funcion
+     * Obtiene todos los elementos. Todos los limites se definen directamente en la funcion.
+     * 
+     * Para la nueva aplicacion de este procedimiento es necesario que se le pase como paramentro el
+     * paginador que se va a estar trabajando. Cuando se llame a este metodo con el subscribe se tienen 
+     * que agregar las siguientes lineas:
+     * 
+     * 
+     *      this._paginadorService.activar( this._elServicio.total )
+     * 
      * @param {string} [msjLoading=`Cargando ${this.nombreDeDatos.plural}.`] El mensaje que va a mostrar el servicio de carga. 
      * @param {string} [urlAlternativa=null] Recive una nueva seccion para agregar a la EJEMPLO: Urlbase[/urlAlternativa]?parametros=
      * @param {string} [filtros=null] La cadena de filtros en un objeto. Si se define este paramentro 
@@ -230,7 +238,6 @@ export class CRUD<T_TipoDeModelo, S_Servicio = any, A extends FiltrosDeConsultas
         // Valores de la url
         let url  =  this.base + (urlAlternativa ? urlAlternativa : '')+'?' ;
         url+= `${this.concatenerFiltros(filtros)}`
-        
         return this.http.get(url).pipe(
             map( (resp: any )=> {
                 this.total = resp.total;
@@ -405,9 +412,7 @@ export class CRUD<T_TipoDeModelo, S_Servicio = any, A extends FiltrosDeConsultas
    */
   private concatenerFiltros ( filtros: { [ string : string ] : string} ): string {
     let a:string = ''
-
     a = Object.keys(filtros).map( (key)=>{ return `${key}=${filtros[key]}`} ).join('&')
-    console.log(a)
     return a;
   }
 
