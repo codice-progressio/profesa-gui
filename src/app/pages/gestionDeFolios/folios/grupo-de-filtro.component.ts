@@ -6,7 +6,7 @@ import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
 import { Folio } from 'src/app/models/folio.models';
-import { ClienteService, UsuarioService, ModeloService, TamanoService, ColorService, TerminadoService, SortService } from 'src/app/services/service.index';
+import { ClienteService, UsuarioService, ModeloService, TamanoService, ColorService, TerminadoService, SortService, ManejoDeMensajesService } from 'src/app/services/service.index';
 import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service';
 
 @Component({
@@ -224,7 +224,8 @@ export class GrupoDeFiltroComponent implements OnInit {
     public _colorService: ColorService,
     public _terminadoService: TerminadoService,
     public _sortService : SortService,
-    public _reporteProduccionService: ReportesProduccionService
+    public _reporteProduccionService: ReportesProduccionService,
+    public _mensajeService: ManejoDeMensajesService
   ) { 
 
     this.limpiar()
@@ -356,6 +357,9 @@ export class GrupoDeFiltroComponent implements OnInit {
     this.fechaEntregaEstimadaHasta = null 
     this.fechaFinalizacionFolioDesdeEl = null 
     this.fechaFinalizacionFolioHasta = null 
+
+    this._mensajeService.informar('Se limpiaron los filtros', 'Filtros', 3000)
+
   }
 
 

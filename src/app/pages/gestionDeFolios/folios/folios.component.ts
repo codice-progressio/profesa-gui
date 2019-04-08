@@ -112,6 +112,7 @@ export class FoliosComponent
   foliosTerminados(foliosTerminados: boolean): boolean {
     
     this.reiniciarPaginador()
+    this.componenteFiltrador.limpiar()
 
     this.cargarFoliosMandadosAproducir(
       this.mostrarFoliosConOrdenes,

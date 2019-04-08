@@ -156,7 +156,7 @@ export class ManejoDeMensajesService {
         timer: timer, 
         toast: true,
         animation: false,
-        customClass: 'animated bounceIn  '
+        customClass: 'animated slideInRight  faster'
       };
       swal(d);
   }
