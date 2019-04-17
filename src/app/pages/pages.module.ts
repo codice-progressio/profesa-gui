@@ -96,6 +96,7 @@ import { GrupoDeFiltroComponent } from "./gestionDeFolios/folios/grupo-de-filtro
 import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component';
 import { FoliosDetalleAbstractoComponent } from './gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component';
 import { FoliosCrearModificarAbstractoComponent } from './gestionDeFolios/folios/abstractos/folios-crear-modificar-abstracto.component';
+import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component';
 
 @NgModule({
   declarations: [
@@ -185,7 +186,8 @@ import { FoliosCrearModificarAbstractoComponent } from './gestionDeFolios/folios
     GrupoDeFiltroComponent,
     RevisionDeFoliosComponent,
     FoliosDetalleAbstractoComponent,
-    FoliosCrearModificarAbstractoComponent
+    FoliosCrearModificarAbstractoComponent,
+    RevisionDeOrdenesAbstractoComponent
     
   ],
   exports: [

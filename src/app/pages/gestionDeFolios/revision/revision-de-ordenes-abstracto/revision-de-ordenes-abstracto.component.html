@@ -1,0 +1,47 @@
+<h1 class="display-6 d-flex align-items-center justify-content-between">
+    <span>FOL:<strong>#{{'99999'}}</strong></span> <small class="text-muted">Revision de ordenes</small>
+</h1>
+
+<hr>
+
+
+
+<h3><small>PED</small> #0 </h3>
+PZ: <strong>{{'256213'| number }}</strong>
+<br> Prioridad : <strong> <app-nivel-urgencia [nivel]='"URGENTE"'></app-nivel-urgencia> </strong>
+<br> Laser del cliente : <strong> LA MARCA LASER</strong>
+<br> Surtir de almacen: <strong><i class="fa fa-check fa-2x text-success"></i></strong>
+
+<div class=' d-flex flex-column align-items-center'>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th title='El consecutivo de la orden.'>#</th>
+                <th title='El valor de la orden con respecto al estadar'>Unidad</th>
+                <th title='Las piezas que la orden llevara.'>Pzs</th>
+                <th title='El modelo de la orden'>Modelo</th>
+                <th title='La marca laser que llevara el laserdo.'>Marca Laser</th>
+                <th title='El nivel de urgencia definido'>Prioridad</th>
+                <th title=''>Observaciones </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of [1,2,3,4,5,6]">
+                <td>datos</td>
+                <td>datos</td>
+                <td>datos</td>
+                <td>datos</td>
+                <td>datos</td>
+                <td>datos</td>
+                <td>datos</td>
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<hr>
+
+<a class="btn btn-success btn-sm text-white" role="button"> <i class="fa-fa-check"> </i>Generar ordenes</a>

@@ -140,17 +140,17 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        // {
-        //     path: 'folios', 
-        //     component: RegistroDeFoliosComponent,
-        //     canActivate: [PermisosGuard], 
-        //     data: {
-        //         titulo: 'Registro de Folios',
-        //         roles : [ 
-        //             _ROLES.ADMIN_ROLE
-        //         ]
-        //     }
-        // },
+        {
+            path: 'folios', 
+            component: RegistroDeFoliosComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registro de Folios',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         {
             path: 'folios/historial', 
             component: HistorialDeFoliosComponent,
@@ -173,17 +173,17 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        // {
-        //     path: 'folio/:id', 
-        //     component: RegistroDeLineasComponent,
-        //     canActivate: [PermisosGuard], 
-        //     data: {
-        //         titulo: 'Registrar pedidos',
-        //         roles : [ 
-        //             _ROLES.ADMIN_ROLE
-        //         ]
-        //     }
-        // },
+        {
+            path: 'folio/:id', 
+            component: RegistroDeLineasComponent,
+            canActivate: [PermisosGuard], 
+            data: {
+                titulo: 'Registrar pedidos',
+                roles : [ 
+                    _ROLES.ADMIN_ROLE
+                ]
+            }
+        },
         {
             path: 'ordenes/:idFolio', 
             component: RevisionDeOrdenesComponent,
