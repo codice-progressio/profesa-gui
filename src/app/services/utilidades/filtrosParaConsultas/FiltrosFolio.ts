@@ -11,6 +11,29 @@ import { FiltrosDeConsultas } from "./FiltrosDeConsultas";
  * @class FiltrosFolio <T>
  */
 export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
+    
+    
+    public get fechaDeEntregaAProduccionHasta(): string {
+        return this._fechaDeEntregaAProduccionHasta;
+    }
+    public setFechaDeEntregaAProduccionHasta(value: string):  FiltrosFolio <T> {
+        this._fechaDeEntregaAProduccionHasta = value;
+        return this
+    }
+    public get fechaDeEntregaAProduccionDesdeEl(): string {
+        return this._fechaDeEntregaAProduccionDesdeEl;
+    }
+    public setFechaDeEntregaAProduccionDesdeEl(value: string):  FiltrosFolio <T> {
+        this._fechaDeEntregaAProduccionDesdeEl = value;
+        return this
+    }
+    public get entregarAProduccion(): string {
+        return this._entregarAProduccion;
+    }
+    public setEntregarAProduccion(value: boolean):  FiltrosFolio <T> {
+        this._entregarAProduccion =value? '1': value === null ? null: '0';
+        return this
+    }
    
    
     
@@ -32,7 +55,10 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
         private _fechaFinalizacionFolioDesdeEl: string = null,
         private _fechaFinalizacionFolioHasta: string = null ,
         private _foliosTerminados: string = null,
-        private _ordenesGeneradas: string = '0'
+        private _ordenesGeneradas: string = null,
+        private _entregarAProduccion: string = null,
+        private _fechaDeEntregaAProduccionDesdeEl: string = null ,
+        private _fechaDeEntregaAProduccionHasta: string = null ,
 
         ) {
             super()
@@ -43,7 +69,7 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
         return this._ordenesGeneradas;
     }
     public setOrdenesGeneradas(value: boolean): FiltrosFolio <T>  {
-        this._ordenesGeneradas = value? '1':'0';
+        this._ordenesGeneradas = value? '1': value === null ? null: '0';
         return this
     }
 
@@ -51,7 +77,7 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
         return this._foliosTerminados;
     }
     public setFoliosTerminados(value: boolean): FiltrosFolio <T> {
-        this._foliosTerminados =  value? '1':'0';
+        this._foliosTerminados = value? '1': value === null ? null: '0';
         return this
     }
     

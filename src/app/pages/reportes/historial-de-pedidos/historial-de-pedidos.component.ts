@@ -7,7 +7,6 @@ import { Modelo } from 'src/app/models/modelo.models';
 import { Tamano } from 'src/app/models/tamano.models';
 import { Color } from 'src/app/models/color.models';
 import { Terminado } from 'src/app/models/terminado.models';
-import { DatePipe } from '@angular/common';
 import { SortService } from 'src/app/directives/sortableComponent/sort.service';
 import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service';
 import * as moment from 'moment/moment';

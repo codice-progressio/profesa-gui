@@ -8,6 +8,7 @@ import { Terminado } from 'src/app/models/terminado.models';
 import { Folio } from 'src/app/models/folio.models';
 import { ClienteService, UsuarioService, ModeloService, TamanoService, ColorService, TerminadoService, SortService, ManejoDeMensajesService } from 'src/app/services/service.index';
 import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service';
+import { CamposParaMostrarEnFiltrosFolio } from './CamposParaMostrarEnFiltroFolio';
 
 @Component({
   selector: 'app-grupo-de-filtro',
@@ -25,16 +26,26 @@ export class GrupoDeFiltroComponent implements OnInit {
   
   @Output() obtenerEsteComponente = new EventEmitter<GrupoDeFiltroComponent>()
 
-
-
   /**
-   * Cuanto esta en true muestra los filtros que se pueden utilizar para
-   * filtrar pedidos. Cuando esta en false los oculta. Usa un ngif. 
+   * Define los campos que se quieren mostrar.
    *
-   * @type {boolean}
+   * @type {CamposParaMostrarEnFiltrosFolio}
    * @memberof GrupoDeFiltroComponent
    */
-  @Input() filtrarParaPedido: boolean = false
+  seleccionarCamposVisibles: CamposParaMostrarEnFiltrosFolio = new CamposParaMostrarEnFiltrosFolio()
+
+
+
+
+
+  // /**
+  //  * Cuanto esta en true muestra los filtros que se pueden utilizar para
+  //  * filtrar pedidos. Cuando esta en false los oculta. Usa un ngif. 
+  //  *
+  //  * @type {boolean}
+  //  * @memberof GrupoDeFiltroComponent
+  //  */
+  // @Input() filtrarParaPedido: boolean = false
 
 
   /**
@@ -230,25 +241,66 @@ export class GrupoDeFiltroComponent implements OnInit {
 
     this.limpiar()
 
-    this._clienteService.listarTodo = true;
-    this._clienteService.todo( ).subscribe( (clientes)=>{this.clientes = clientes} )
-    
+
     this._usuarioService.cargarVendedores().subscribe( (vendedores)=>{this.vendedores = vendedores} )
     
-    this._modeloService.listarTodo = true
-    this._modeloService.todo().subscribe( (modelos)=>{this.modelos = modelos} )
-
-    this._tamanoService.listarTodo = true
-    this._tamanoService.todo().subscribe( (tamanos)=>{this.tamanos = tamanos})
-
-    this._colorService.listarTodo = true
-    this._colorService.todo().subscribe((colores)=>{this.colores = colores} )
+   
   
     this._terminadoService.listarTodo = true
     this._terminadoService.todo().subscribe((terminados)=>{this.terminados = terminados} )
 
 
   }
+
+
+  /**
+   *Busca clientes
+   *
+   * @param {string} termino
+   * @memberof GrupoDeFiltroComponent
+   */
+  buscarCliente( termino: string ){
+    if(termino.trim() ){
+      this._clienteService.buscar( termino ).subscribe( (clientes)=>{this.clientes = clientes} )
+    }
+  }
+  
+  /**
+   *Busca modelos
+   *
+   * @param {string} termino
+   * @memberof GrupoDeFiltroComponent
+   */
+  buscarModelo( termino: string ){
+    if(termino.trim() ){
+      this._modeloService.buscar( termino ).subscribe( (modelos)=>{this.modelos = modelos} )
+    }
+  }
+  
+  /**
+   *Busca tamanos
+   *
+   * @param {string} termino
+   * @memberof GrupoDeFiltroComponent
+   */
+  buscarTamano( termino: string ){
+    if(termino.trim() ){
+      this._tamanoService.buscar( termino ).subscribe( (tamanos)=>{this.tamanos = tamanos} )
+    }
+  }
+  /**
+   *Busca colores
+   *
+   * @param {string} termino
+   * @memberof GrupoDeFiltroComponent
+   */
+  buscarColor( termino: string ){
+    if(termino.trim() ){
+      this._colorService.buscar( termino ).subscribe( (colores)=>{this.colores = colores} )
+    }
+  }
+
+ 
 
   ngOnInit() {
 

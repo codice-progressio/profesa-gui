@@ -90,7 +90,7 @@ export class ManejoDeMensajesService {
         position: 'top-end',
         toast: true,
         animation: false,
-        customClass: 'animated shake  '
+        customClass: 'animated slideInRight  faster '
        
       }).then( () => {
         this.cb( callback );

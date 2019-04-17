@@ -39,12 +39,14 @@ export class FolioLinea {
         public coloresTenidos: ColoresTenidos[] = [],
         public pedido?: string,
         public procesos: Procesos[] = [],
+        public trayectoGenerado?: boolean,
 
         public fechaTerminado?: Date,
         public cantidadProducida?: number,
 
 
         public observaciones?: string,
+        public observacionesVendedor?: string,
         public terminado?: boolean,
 
         // Esta es solo para eliminar con animación.

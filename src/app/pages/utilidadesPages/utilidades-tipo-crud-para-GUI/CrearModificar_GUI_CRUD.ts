@@ -1,4 +1,4 @@
-import { Input } from "@angular/core";
+import { Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { CRUD } from "src/app/services/crud";
 import { ValidacionesService } from "src/app/services/service.index";
@@ -171,6 +171,8 @@ export class CrearModificar_GUI_CRUD<
     // Guardamos los datos.
     this._elementoService.guardar(model).subscribe(call);
   }
+
+
 
   /**
    *Cancela la modificacion o el guardado.\

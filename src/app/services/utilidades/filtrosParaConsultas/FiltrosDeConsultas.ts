@@ -127,7 +127,7 @@ export class FiltrosDeConsultas<T>  {
             noVacios[properties[x]] = this[properties[x]]
           }
         }
-  
+
         return noVacios
     }
 }

@@ -50,6 +50,7 @@ import { TransformacionReporteComponent } from './reportes/produccion/transforma
 import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/quimica-reporte.component';
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component';
+import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -125,18 +126,31 @@ const pagesRoutes: Routes = [
 
         {path: 'perfil', component: ProfileComponent, data: {titulo: 'Perfil de usuario.'}},
 
+
+
         // Esta sección es para el trabajo
         {
-            path: 'folios', 
-            component: RegistroDeFoliosComponent,
+            path: 'folios/revision', 
+            component: RevisionDeFoliosComponent,
             canActivate: [PermisosGuard], 
             data: {
-                titulo: 'Registro de Folios',
+                titulo: 'Revision de folios a produccion',
                 roles : [ 
                     _ROLES.ADMIN_ROLE
                 ]
             }
         },
+        // {
+        //     path: 'folios', 
+        //     component: RegistroDeFoliosComponent,
+        //     canActivate: [PermisosGuard], 
+        //     data: {
+        //         titulo: 'Registro de Folios',
+        //         roles : [ 
+        //             _ROLES.ADMIN_ROLE
+        //         ]
+        //     }
+        // },
         {
             path: 'folios/historial', 
             component: HistorialDeFoliosComponent,
@@ -159,17 +173,17 @@ const pagesRoutes: Routes = [
                 ]
             }
         },
-        {
-            path: 'folio/:id', 
-            component: RegistroDeLineasComponent,
-            canActivate: [PermisosGuard], 
-            data: {
-                titulo: 'Registrar pedidos',
-                roles : [ 
-                    _ROLES.ADMIN_ROLE
-                ]
-            }
-        },
+        // {
+        //     path: 'folio/:id', 
+        //     component: RegistroDeLineasComponent,
+        //     canActivate: [PermisosGuard], 
+        //     data: {
+        //         titulo: 'Registrar pedidos',
+        //         roles : [ 
+        //             _ROLES.ADMIN_ROLE
+        //         ]
+        //     }
+        // },
         {
             path: 'ordenes/:idFolio', 
             component: RevisionDeOrdenesComponent,

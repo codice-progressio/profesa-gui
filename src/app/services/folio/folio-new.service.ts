@@ -10,12 +10,14 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { UsuarioService } from '../usuario/usuario.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { FiltrosFolio } from '../utilidades/filtrosParaConsultas/FiltrosFolio';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FolioNewService extends CRUD<Folio, FolioNewService, FiltrosFolio<FolioNewService> >{
+ 
   
   
 
@@ -46,10 +48,39 @@ export class FolioNewService extends CRUD<Folio, FolioNewService, FiltrosFolio<F
    * @returns {*}
    * @memberof FolioNewService
    */
-  todoPorVendedor(  ): Observable<Folio[]> {
+  todo(  ): Observable<Folio[]> {
       
     return this.getAll(undefined, undefined, this.filtrosDelFolio.obtenerFiltros() )
 
+  }
+
+
+ 
+  /**
+   *Entrega a produccion el folio que coincida con el id
+   que se le pase como paramentro. Esto dispara el proceso de produccion o 
+   hace lo inverso. Esto sirve para cuando control de produccion se da cuenta
+   de algun error en el folio y es necesario devolverselo al vendedor.
+   *
+   * @param {string} _id El id del folio
+   * @param {boolean} [entregarAProduccion=true] La bandera que se
+   * @returns {Observable<Folio>}
+   * @memberof FolioNewService
+   */
+  iniciarProduccion(_id: string, entregarAProduccion = true): Observable<Folio> {
+    let a = this._preLoaderService.loading('Estableciendo paramentros de produccion de folio.')
+    
+    return this.http.post(`${this.base}/enviarAProduccion`, {_id, entregarAProduccion}).pipe(
+      map( (resp: any)=>{
+        this._msjService.ok_(resp, null, a)
+        return resp.folio;
+      } ),
+      catchError( (err )=>{
+        this._msjService.err( err )
+        return throwError( err );
+      } )
+    )
+    
   }
 
 

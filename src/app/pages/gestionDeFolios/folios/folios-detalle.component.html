@@ -51,7 +51,18 @@
                         </address>
                     </div>
                 </div>
+
+                <div class="col-12">
+                    <h3>Observaciones: </h3>
+                    <p>{{detalleElemento.observacionesVendedor}}</p>
+                </div>
+                <div *ngIf="detalleElemento.observaciones" class="col-12">
+                    <hr>
+                    <h3>Observaciones de produccion: </h3>
+                    <p>{{detalleElemento.observaciones}}</p>
+                </div>
                 <div class="col-md-12">
+                    <hr>
                     <div class="table-responsive m-t-40" style="clear: both;">
                         <table class="table table-hover">
                             <thead class='100'>
@@ -82,19 +93,68 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let pedido of detalleElemento.folioLineas">
-                                    <td class="text-center">{{pedido.pedido}}</td>
-                                    <td>{{pedido.modeloCompleto | modeloCompleto}}</td>
-                                    <td class="text-right">{{pedido.cantidad | number}}</td>
-                                    <td class="text-right"> {{pedido.cantidadProducida | number}}</td>
-                                    <td>
+                                <ng-container *ngFor="let pedido of detalleElemento.folioLineas">
+                                    <tr>
+                                        <td class="text-center">{{pedido.pedido}}</td>
+                                        <td>{{pedido.modeloCompleto | modeloCompleto}}</td>
+                                        <td class="text-right">{{pedido.cantidad | number}}</td>
+                                        <td class="text-right"> {{pedido.cantidadProducida | number}}</td>
+                                        <td>
 
-                                    </td>
-                                    <td class="text-right">
-                                        <app-progress-bar [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
+                                        </td>
+                                        <td class="text-right">
+                                            <app-progress-bar [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+
+                                    <tr *ngIf="pedido.coloresTenidos.length>0" class="bg-light">
+                                        <td colspan='7'>
+                                            <h3 class='text-info'>Cantidades a tenir </h3>
+                                            <table class="table table-bordered text-center">
+                                                <thead>
+                                                    <tr class="bg-info text-white text-center">
+                                                        <th class=" text-center fit" title="El color al que se va a tenir el boton"> <i class="fas fa-question-circle"></i> COL</th>
+                                                        <th class=" text-center fit" title="La cantidad de boton que se quiere tenir"> <i class="fas fa-question-circle"></i> CANT</th>
+                                                        <th class=" text-center fit" title="Observaciones especiales que se van a mostrar en el departamento de tenido. "> <i class="fas fa-question-circle"></i> OBS</th>
+                                                        <th class=" text-center fit" title="El estatus actual del tenido. Este valor no tiene nada que ver con las piezas producidas."> <i class="fas fa-question-circle"></i> TERM</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let colorTenido of pedido.coloresTenidos">
+                                                        <td class='fit'> {{colorTenido.color}} </td>
+                                                        <td class='fit'> {{colorTenido.cantidad | number}} </td>
+                                                        <td class='fit'> {{colorTenido.observaciones}} </td>
+                                                        <td class='fit'>
+                                                            <ng-container *ngIf="colorTenido.terminado; else elseTemplate">
+                                                                <i class="fa fa-check text-succes"></i>
+                                                                <span [title]='colorTenido.fechaTerminado | fecha: "LLLL" '>
+                                                                    <i class="fab fa-clock"></i> {{colorTenido.fechaTerminado | date:'dd/MM/yy'}}
+                                                                </span>
+                                                            </ng-container>
+                                                            <ng-template #elseTemplate>
+                                                                <i class="fa fa-cog" aria-hidden="true"></i> Pendiente
+                                                            </ng-template>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan=4 class='fit'>
+                                                            <span class="text-muted"> Total a tenir: </span> <strong>{{sumarTenidos(pedido.coloresTenidos) | number }}  pz</strong>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+
 
                             </tbody>
                         </table>

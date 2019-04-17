@@ -1,3 +1,16 @@
-<p>
-  folios-crear-modificar works!
-</p>
+<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='' [esMasculino]='false'>
+    <ng-container *ngIf="mostrarCrearModificar">
+
+        <app-folios-crear-modificar-abstracto (cancelado)='cancelarElFolio()' (seModifico)='recargarElementos()' (esteComponente)='cargarComponente($event)' (destruido)='this.componente = null' #formularioFolios>
+
+
+
+
+
+
+        </app-folios-crear-modificar-abstracto>
+
+
+
+    </ng-container>
+</app-crear-modificar>

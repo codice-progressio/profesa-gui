@@ -11,6 +11,7 @@ export class Folio {
         public fechaEntrega: Date = new Date(),
         public vendedor?: Usuario,
         public observaciones?: string,
+        public observacionesVendedor?: string,
         public folioLineas?: FolioLinea [],
         public createdAt?: Date,
         public updatedAt?: Date,
@@ -22,6 +23,13 @@ export class Folio {
         public fechaTerminado?: Date,
         public cantidadProducida?: number,
         public ordenesGeneradas?: boolean,
+        /**
+         * Esta bandera se pone en true cuando las modificaciones al folio se terminador
+         * y se pasa el control a control de produccion. 
+         */
+        public entregarAProduccion: boolean =false,
+
+        public fechaDeEntregaAProduccion?: Date, 
 
         // Este es propio del front para
         // interactuar con botones. 
@@ -32,6 +40,7 @@ export class Folio {
         
 
     ) {}
+
 
     
 }

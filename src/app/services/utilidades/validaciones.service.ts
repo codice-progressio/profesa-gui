@@ -65,6 +65,14 @@ export class ValidacionesService {
      };
   }
 
+  /**
+   *Valida que solo sean numeros. No lo debes de llamar
+   como funcion, si no como un tipo callback. 
+   *
+   * @param {*} number
+   * @returns {*}
+   * @memberof ValidacionesService
+   */
   onlyIntegers( number ): any {
     if ( number.pristine ) {
       return null;

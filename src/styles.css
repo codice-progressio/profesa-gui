@@ -89,10 +89,11 @@
     }
     .print {
         display: inline !important;
+        position: absolute !important;
     }
     @page {
         margin: 1em;
-        size: 107.95mm 279.4mm;
+        /* size: 107.95mm 279.4mm; */
     }
 }
 

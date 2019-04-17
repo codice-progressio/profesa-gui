@@ -1,3 +1,110 @@
-<p>
-  pedidos-detalle works!
-</p>
+<div id="print" *ngIf="pedido">
+    <h3><b>DETALLE DE PEDIDO</b> <span class="pull-right">#{{pedido.pedido}}</span></h3>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class='pull-right'>
+                <strong class="text-muted">Modelo</strong>
+                <h1 class="display-5">{{ pedido.modeloCompleto | modeloCompleto }}</h1>
+                <h3>Piezas solicitadas <strong>{{pedido.cantidad | number }}</strong></h3>
+                <h3>Piezas producidas <strong>{{pedido.cantidadProducida | number}}</strong></h3>
+
+
+
+            </div>
+
+            <strong title='Fecha estimada de entrega'>FET: </strong> <span title='Fecha sin definir'>  <i class="fa fa-clock-o" aria-hidden="true"></i> Sin definir </span>
+
+        </div>
+
+        <div class="col-12">
+            <h3>Observaciones: </h3>
+            <p>{{pedido.observacionesVendedor}}</p>
+        </div>
+        <div *ngIf="pedido.observaciones" class="col-12">
+            <hr>
+            <h3>Observaciones de produccion: </h3>
+            <p>{{pedido.observaciones}}</p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <div class="table-responsive m-t-40" style="clear: both;">
+                <table class="table table-hover" *ngIf="pedido.ordenesGeneradas">
+                    <thead class='100'>
+                        <tr>
+                            <th></th>
+                            <th title='Numero de orden' class="text-center">
+
+                                <i class="fa fa-question-circle"></i> ORD
+
+                            </th>
+
+                            <th title='Estatus de orden' class="text-right">
+                                <i class="fa fa-question-circle"></i> EO
+                            </th>
+                            <th title='Tiempo que lleva en produccion el pedido' class="text-right">
+                                PRO
+                            </th>
+                            <th title='El porcentaje de avance de produccion' class="text-right">
+
+                                % PRO
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let pedido of pedido.ordenens">
+                            <tr>
+                                <td class='fit'>
+                                    <a title='Ver detalle rapido del pedido.' data-toggle="modal" data-target="#detalleDePedido" name="" id="" class="btn btn-primary text-white btn-sm mr-2" role="button"> <i class="fas fa-eye    "></i></a>
+                                </td>
+                                <td class="text-center">{{pedido.pedido}}</td>
+                                <td>{{pedido.modeloCompleto | modeloCompleto}}</td>
+                                <td class="text-right">{{pedido.cantidad | number}}</td>
+                                <td class="text-right"> {{pedido.cantidadProducida | number}}</td>
+                                <td>
+
+                                </td>
+                                <td class="text-right">
+                                    <app-progress-bar [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
+
+                                </td>
+                            </tr>
+
+
+
+                        </ng-container>
+
+
+                    </tbody>
+
+
+                </table>
+                <h3 *ngIf="!pedido.ordenesGeneradas">Este pedido no tiene ordenes.</h3>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <!-- <div class="pull-right m-t-30 text-right">
+                <p>Sub - Total amount: $13,848</p>
+                <p>vat (10%) : $138 </p>
+                <hr>
+                <h3><b>Total :</b> $13,986</h3>
+            </div> -->
+            <div class="clearfix"></div>
+            <!-- <hr>
+            <div class="text-right">
+                <a id="print" class="btn btn-default btn-outline"> <span><i class="fa fa-print"></i> Imprimir</span> </a>
+            </div> -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div *ngIf="!pedido">
+    <h1>No has definido un pedido para ver su detalle</h1>
+</div>

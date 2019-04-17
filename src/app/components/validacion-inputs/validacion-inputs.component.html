@@ -8,6 +8,45 @@
         <i class="fa fa-times animated delay-0-3s rollIn "></i> 
         Debes seleccionar por lo menos {{ campo.getError('tamanoMinimo').minimo > 1 ? '' :'un ' }}{{campo.getError('tamanoMinimo').minimo}} {{ campo.getError('tamanoMinimo').minimo > 1 ? 'campos' :'campo' }}
     </span>
+
+    <!-- 
+    =====================================
+     Error general. 
+    =====================================
+    -->
+
+    <!-- 
+        Este error sirve para el envio de mensajes de manera general y cuando se personaliza la validacion.
+        Para utilizarlo solo es necesario definir en el validar el mensasje de error con estas caracteristicas:
+
+        {
+            'general': {
+                'mensaje': 'Un mensaje peronsonalizado. ',
+                'textoSecundario': 'Un texto secundario. '
+            }
+        }
+
+
+        Esto se mostrara como:
+
+                X Un mensaje personalizado: Un texto secundario. 
+
+        Si no se define el texto secundario los dos puntos no aparecenran. 
+    -->
+
+    <!-- 
+    =====================================
+     END Error general. 
+    =====================================
+    -->
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('general')"> 
+        <i class="fa fa-times animated delay-0-3s rollIn "></i> 
+        {{campo.getError('general').mensaje}} {{campo.getError('general').textoSecundario ? ': ' : '' }} 
+        <span class='text-muted'>
+            {{campo.getError('general').textoSecundario}}
+
+        </span>
+    </span>
     <div class="text-success mt-2 animated fadeIn fast " *ngIf="touched() && campo?.valid ">
         <small>
                 <i class="fa fa-check animated swing fa-2x"></i> ¡Se ve bien!

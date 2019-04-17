@@ -1,7 +1,7 @@
 <app-general [mostrarBuscador]='false' [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
-            <button [disabled]='!this.activarBotonFoliosDeProduccion' type="button" (click)="this.mostrarFoliosConOrdenes = foliosSinOrdenes( !this.mostrarFoliosConOrdenes )" class="btn btn-primary btn-sm btn-block ">   
+            <button [disabled]='!this.activarBotonFoliosDeProduccion' type="button" (click)="this.cargarFoliosEntregadosAProduccion = !this.cargarFoliosEntregadosAProduccion; this.mostrarFoliosConOrdenes = foliosSinOrdenes( !this.mostrarFoliosConOrdenes )" class="btn btn-primary btn-sm btn-block ">   
               <ng-container *ngIf="mostrarFoliosConOrdenes; else elseTemplate">
                     Capturar
                 </ng-container>
@@ -42,7 +42,7 @@
     </div>
 
     <div *ngIf="this.mostrarFoliosConOrdenes" class="collapse mt-5" id="filtros">
-        <app-grupo-de-filtro (obtenerEsteComponente)='this.componenteFiltrador = $event' (obtenerFiltros)='aplicarFiltros($event)' [filtrarParaPedido]='this.enlistarComoPedidos'></app-grupo-de-filtro>
+        <app-grupo-de-filtro (obtenerEsteComponente)='this.componenteFiltrador = $event' (obtenerFiltros)='aplicarFiltros($event)'></app-grupo-de-filtro>
     </div>
 
 
@@ -70,12 +70,13 @@
                         <th>Cliente</th>
                         <th *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes">MOD</th>
                         <th>Inicio</th>
-                        <th>Termino</th>
+                        <th *ngIf="this.mostrarFoliosConOrdenes">Termino</th>
                         <th *ngIf="this.mostrarFoliosConOrdenes">Tiempo</th>
                         <th>Pzs. Sol.</th>
                         <th *ngIf="this.mostrarFoliosConOrdenes">Pzs. Prod.</th>
                         <!-- <th>Fecha de Entrega</th> -->
                         <th *ngIf="this.mostrarFoliosConOrdenes">%Progreso</th>
+                        <th *ngIf="!this.mostrarFoliosConOrdenes"></th>
 
                     </tr>
                 </thead>
@@ -103,21 +104,17 @@
                             </td>
                             <td>
 
-                                <div class="my_tooltip">
+                                <span title="{{ elemento.fechaFolio | fecha:'LLLL' }}">
                                     <i class="fa fa-clock-o" aria-hidden="true "></i> {{ elemento.fechaFolio | date:'dd/MM/y' }}
-                                    <span class="my_tooltiptext"> {{ elemento.fechaFolio | fecha:'LLLL' }}</span>
-                                </div>
+                                </span>
 
                             </td>
-                            <td>
+                            <td *ngIf="this.mostrarFoliosConOrdenes">
                                 <ng-container *ngIf="!this.enlistarComoPedidos; else enlistarComoPedidosTemplate">
-
                                     <ng-container *ngIf="elemento.fechaTerminado; else folioTerminadoTemplate">
-                                        <div class="my_tooltip">
-                                            <i class="fa fa-clock-o" aria-hidden="true ">
-                                        </i>
-                                            <span class="my_tooltiptext"> {{ elemento.fechaTerminado | fecha:'LLLL' }}</span> {{ elemento.fechaTerminado | date:'dd/MM/yy' }}
-                                        </div>
+                                        <span title="{{ elemento.fechaTerminado | fecha:'LLLL' }}">
+                                            <i class="fa fa-clock-o" aria-hidden="true "> </i> {{ elemento.fechaTerminado | date:'dd/MM/yy' }}
+                                        </span>
                                     </ng-container>
 
                                     <ng-template #folioTerminadoTemplate>
@@ -133,16 +130,13 @@
 
                                 <ng-template #enlistarComoPedidosTemplate>
                                     <ng-container *ngIf="pedido.fechaTerminado; else pedidoTerminadoTemplate">
-                                        <div class="my_tooltip">
+                                        <span title="{{ pedido.fechaTerminado | fecha:'LLLL' }}">
                                             <i class="fa fa-clock-o" aria-hidden="true "></i>
-                                            <span class="my_tooltiptext"> {{ pedido.fechaTerminado | fecha:'LLLL' }}</span> {{ pedido.fechaTerminado | date:'dd/MM/yy' }}
-                                        </div>
+                                             {{ pedido.fechaTerminado | date:'dd/MM/yy' }
+                                        </span>
                                     </ng-container>
-
                                     <ng-template #pedidoTerminadoTemplate>
-
                                         <i class="fas fa-users-cog    "></i> Pedido en proceso
-
                                     </ng-template>
 
                                 </ng-template>
@@ -150,9 +144,9 @@
                             </td>
 
 
-                            <td>
-                                <ng-container *ngIf="!this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[elemento._id].transcurrido}} </ng-container>
-                                <ng-container *ngIf="this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[pedido._id].transcurrido}}</ng-container>
+                            <td *ngIf="this.mostrarFoliosConOrdenes">
+                                <ng-container *ngIf="!this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[elemento._id]?.transcurrido}} </ng-container>
+                                <ng-container *ngIf="this.enlistarComoPedidos">{{this.contenedorDeTemporizadores[pedido._id]?.transcurrido}}</ng-container>
 
                             </td>
                             <td>
@@ -172,6 +166,14 @@
 
                                 <app-progress-bar *ngIf="!this.enlistarComoPedidos" [nivel]='elemento.nivelDeUrgencia' [porcentaje]='elemento.porcentajeAvance'> </app-progress-bar>
                                 <app-progress-bar *ngIf="this.enlistarComoPedidos" [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
+
+                            </td>
+
+                            <td *ngIf="!this.mostrarFoliosConOrdenes" title='Enviar a produccion este folio'>
+
+                                <button (click)="enviarAProduccion(elemento._id)" type="button" class="btn btn-outline-warning"> 
+                                    <i class="fas fa-industry"></i>
+                                </button>
 
                             </td>
                         </tr>

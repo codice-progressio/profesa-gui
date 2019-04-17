@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.folio" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [(ngModel)]="folio" type="text" class="form-control">
             <small id="helpId" class="form-text text-muted">Folio</small>
@@ -8,7 +8,7 @@
 
     </div>
 
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.pedido" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [(ngModel)]="pedido" type="text" class="form-control">
             <small id="helpId" class="form-text text-muted">Pedido</small>
@@ -17,9 +17,9 @@
     </div>
 
 
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.cliente" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
-            <input #ic (change)="seleccionarCliente(ic)" type="text" list="Cliente" class='form-control'>
+            <input #ic (keyup)='buscarCliente(ic.value)' (change)="seleccionarCliente(ic)" type="text" list="Cliente" class='form-control'>
             <datalist id='Cliente'>
               <option *ngFor="let cliente of clientes" [value]="cliente.nombre"> {{cliente.sae}}</option>
             </datalist>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <!-- <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.vendedor" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input #iv (change)="seleccionarVendedor(iv)" type="text" list="vendedor" class='form-control'>
             <datalist id='vendedor'>
@@ -36,11 +36,11 @@
             <small id="helpId" class="form-text text-muted">Vendedor</small>
         </div>
 
-    </div> -->
+    </div>
 
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.modelo" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
-            <input #im (change)="seleccionarModelo(im)" type="text" list="Modelo" class='form-control'>
+            <input #im (keyup)='buscarModelo(im.value)' (change)="seleccionarModelo(im)" type="text" list="Modelo" class='form-control'>
             <datalist id='Modelo'>
             <option *ngFor="let modelo of modelos" [value]='modelo.modelo'>
           </datalist>
@@ -48,9 +48,9 @@
         </div>
 
     </div>
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.tamano" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
-            <input #it (change)='seleccionarTamano(it)' type="text" list="Tamano" class='form-control'>
+            <input #it (keyup)='buscarTamano(it.value)' (change)='seleccionarTamano(it)' type="text" list="Tamano" class='form-control'>
             <datalist id='Tamano'>
             <option *ngFor="let tamano of tamanos" [value]='tamano.tamano'>
           </datalist>
@@ -58,9 +58,9 @@
         </div>
 
     </div>
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.color" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
-            <input #icolor (change)='seleccionarColor(icolor)' type="text" list="Color" class='form-control'>
+            <input #icolor (keyup)='buscarColor(icolor.value)' (change)='seleccionarColor(icolor)' type="text" list="Color" class='form-control'>
             <datalist id='Color'>
             <option *ngFor="let color of colores" [value]="color.color">
           </datalist>
@@ -68,7 +68,7 @@
         </div>
 
     </div>
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.terminado" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input #iter (change)='seleccionarTerminado(iter)' type="text" list="Terminado" class='form-control'>
             <datalist id='Terminado'>
@@ -80,38 +80,38 @@
     </div>
 
 
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaDeCreacionDesdeEl" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaDeCreacionDesdeEl| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaDeCreacionDesdeEl = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de creacion desde el </small>
         </div>
     </div>
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaDeCreacionHasta" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaDeCreacionHasta| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaDeCreacionHasta = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de creacion hasta </small>
         </div>
     </div>
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaDeEntregaEstimadaDesdeEl" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaEntregaEstimadaDesdeEl| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaEntregaEstimadaDesdeEl = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de entrega estimada desde el</small>
         </div>
     </div>
-    <div *ngIf="this.filtrarParaPedido" class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaDeEntregaEstimadaHasta" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaEntregaEstimadaHasta| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaEntregaEstimadaHasta = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de entrega estimada hasta</small>
         </div>
     </div>
 
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaFinalizacionDelFolioDesdeEl" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaFinalizacionFolioDesdeEl| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaFinalizacionFolioDesdeEl = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de finalizacion del folio desde el</small>
         </div>
     </div>
-    <div class="col-12 col-sm-4 col-lg-3">
+    <div *ngIf="seleccionarCamposVisibles.fechaFinalizacionDelFolioHasta" class="col-12 col-sm-4 col-lg-3">
         <div class="form-group">
             <input [ngModel]="fechaFinalizacionFolioHasta| fecha:'YYYY-MM-DD'" (ngModelChange)="fechaFinalizacionFolioHasta = $event" type="date" class="form-control" name="" aria-describedby="helpId" placeholder="">
             <small id="helpId" class="form-text text-muted">Fecha de finalizacion del folio hasta</small>
