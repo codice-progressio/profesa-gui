@@ -43,31 +43,29 @@
                             <th title='Estatus de orden' class="text-right">
                                 <i class="fa fa-question-circle"></i> EO
                             </th>
-                            <th title='Tiempo que lleva en produccion el pedido' class="text-right">
-                                PRO
+
+                            <th title='Ubicacion actual'>
+                                <i class="fas fa-question-circle    "></i> UA
                             </th>
+
                             <th title='El porcentaje de avance de produccion' class="text-right">
-
                                 % PRO
-
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let pedido of pedido.ordenens">
+                        <ng-container *ngFor="let orden of pedido.ordenes">
                             <tr>
                                 <td class='fit'>
-                                    <a title='Ver detalle rapido del pedido.' data-toggle="modal" data-target="#detalleDePedido" name="" id="" class="btn btn-primary text-white btn-sm mr-2" role="button"> <i class="fas fa-eye    "></i></a>
+                                    <a title='Ver detalle rapido de la orden.' data-toggle="modal" data-target="#detalleDeLaOrden" name="" id="" class="btn btn-primary text-white btn-sm mr-2" role="button"> <i class="fas fa-eye    "></i></a>
                                 </td>
-                                <td class="text-center">{{pedido.pedido}}</td>
+                                <td class="text-center">{{orden.orden}}</td>
                                 <td>{{pedido.modeloCompleto | modeloCompleto}}</td>
-                                <td class="text-right">{{pedido.cantidad | number}}</td>
+                                <td class="text-right">{{orden.piezasTeoricas | number}}</td>
                                 <td class="text-right"> {{pedido.cantidadProducida | number}}</td>
-                                <td>
-
-                                </td>
+                                td
                                 <td class="text-right">
-                                    <app-progress-bar [nivel]='pedido.nivelDeUrgencia' [porcentaje]='pedido.porcentajeAvance'> </app-progress-bar>
+                                    <app-progress-bar [nivel]='pedido.nivelDeUrgencia' [porcentaje]='orden.porcentajeAvance'> </app-progress-bar>
 
                                 </td>
                             </tr>

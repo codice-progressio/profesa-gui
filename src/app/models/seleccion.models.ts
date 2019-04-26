@@ -19,8 +19,12 @@ export class Seleccion implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
+    if (!input) {
+      console.log("No se definio el input");
+      return this;
+    }
     Object.assign(this, input);
-    this.seleccionadoPor = new Usuario().deserialize(input.seleccionadoPor)
+    this.seleccionadoPor = new Usuario().deserialize(input.seleccionadoPor);
     return this;
   }
 }

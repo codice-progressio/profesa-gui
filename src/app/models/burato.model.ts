@@ -1,4 +1,4 @@
-import { Deserializable } from "./deserealizable.model";
+import { Deserializable } from "./deserealizable.model"
 export class Burato implements Deserializable {
   constructor(
     public peso10Botones?: number,
@@ -8,9 +8,10 @@ export class Burato implements Deserializable {
     public guardar?: boolean,
     public trabajando?: boolean
   ) {}
-  deserialize(input: this): this {
-    Object.assign(this, input);
 
-    return this;
+  deserialize(input: this): this {
+    Object.assign(this, input)
+
+    return this
   }
 }

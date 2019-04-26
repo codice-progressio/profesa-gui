@@ -1,4 +1,4 @@
-import { Deserializable } from "./deserealizable.model";
+import { Deserializable } from "./deserealizable.model"
 export class AlmacenDeBoton implements Deserializable {
   constructor(
     public cantidadDeBoton?: number,
@@ -8,8 +8,8 @@ export class AlmacenDeBoton implements Deserializable {
     public trabajando?: boolean
   ) {}
   deserialize(input: this): this {
-    Object.assign(this, input);
+    Object.assign(this, input)
 
-    return this;
+    return this
   }
 }

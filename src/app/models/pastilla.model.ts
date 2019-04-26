@@ -10,6 +10,11 @@ export class Pastilla implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
+    if (!input) {
+      console.log("No se definio el input");
+      return this;
+    }
+
     Object.assign(this, input);
     this.cantidades = input.cantidades.map(cantidad =>
       new CantidadesPastilla().deserialize(cantidad)
@@ -22,9 +27,8 @@ export class CantidadesPastilla implements Deserializable {
   constructor(
     public peso10Botones?: number,
     public pesoTotalBoton?: number,
-    public espesorPastilla?: number
-  ) // cantidadPastilla?: number,
-  {}
+    public espesorPastilla?: number // cantidadPastilla?: number,
+  ) {}
 
   deserialize(input: this): this {
     Object.assign(this, input);

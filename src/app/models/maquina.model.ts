@@ -32,6 +32,10 @@ export class Maquina implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
+    if (!input) {
+      console.log("No existe el input en maquina");
+      return this;
+    }
     Object.assign(this, input);
     this.datosDeTrabajo.modeloTrabajando = new ModeloCompleto().deserialize(
       input.datosDeTrabajo.modeloTrabajando

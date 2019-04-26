@@ -1,14 +1,15 @@
-import { Deserializable } from './deserealizable.model';
+import { Deserializable } from "./deserealizable.model";
 
-export class ProductoTerminado implements Deserializable{
-    constructor(
-        public terminada?: boolean,
-    ) {}
+export class ProductoTerminado implements Deserializable {
+  constructor(public terminada?: boolean) {}
 
-    deserialize(input: this): this {
-        Object.assign(this, input);
-    
-        return this;
-      }
+  deserialize(input: this): this {
+    if (!input) {
+      console.log("No se definio el input");
+      return this;
+    }
+    Object.assign(this, input);
 
+    return this;
+  }
 }
