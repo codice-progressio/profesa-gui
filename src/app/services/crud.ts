@@ -1,14 +1,14 @@
-import { PaginadorService } from "../components/paginador/paginador.service";
-import { Observable, throwError } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { PaginadorService } from "../components/paginador/paginador.service"
+import { Observable, throwError } from "rxjs"
+import { HttpClient } from "@angular/common/http"
 import {
   ManejoDeMensajesService,
   UtilidadesService,
   PreLoaderService
-} from "./service.index";
-import { map, catchError } from "rxjs/operators";
-import { FiltrosDeConsultas } from "./utilidades/filtrosParaConsultas/FiltrosDeConsultas";
-import { Type } from "@angular/compiler";
+} from "./service.index"
+import { map, catchError } from "rxjs/operators"
+import { FiltrosDeConsultas } from "./utilidades/filtrosParaConsultas/FiltrosDeConsultas"
+import { Type } from "@angular/compiler"
 
 /**
  * Esta clase provee a los servicios de las operaciones basicas
@@ -28,8 +28,8 @@ export class CRUD<
   S_Servicio = any,
   A extends FiltrosDeConsultas<S_Servicio> = any
 > {
-  filtrosDelFolio: A;
-  servicio: S_Servicio;
+  filtrosDelFolio: A
+  servicio: S_Servicio
 
   /**
    * Obtiene los filtros segun el tipo que se le pase.
@@ -39,8 +39,8 @@ export class CRUD<
    * @memberof CRUD
    */
   filtros(type: A): A {
-    this.filtrosDelFolio = type;
-    return type;
+    this.filtrosDelFolio = type
+    return type
   }
 
   /**
@@ -52,7 +52,7 @@ export class CRUD<
    * @type {string}
    * @memberof CRUD
    */
-  base: string;
+  base: string
 
   /**
      *Si esta propiedad se pone en true
@@ -62,7 +62,7 @@ export class CRUD<
      * @type {boolean}
      * @memberof CRUD
      */
-  listarTodo: boolean = false;
+  listarTodo: boolean = false
 
   /**
    * Esta url se utiliza para definirla ruta de busqueda cuando es diferente.
@@ -71,7 +71,7 @@ export class CRUD<
    * @type {string}
    * @memberof CRUD
    */
-  urlBusqueda: string = "/buscar";
+  urlBusqueda: string = "/buscar"
 
   /**
    * El total de elementos en la base de datos. Este se
@@ -81,7 +81,7 @@ export class CRUD<
    * @type {number}
    * @memberof CRUD
    */
-  total: number;
+  total: number
 
   /**
    *Desactiva un boton mientras se realiza una accion de guardado o modificacion.
@@ -89,7 +89,7 @@ export class CRUD<
    * @type {*}
    * @memberof CRUD
    */
-  callback_DesactivarBoton: any = null;
+  callback_DesactivarBoton: any = null
   /**
    *
    *Activa un boton mientras se realiza una accion de guardado o modificacion.
@@ -97,7 +97,7 @@ export class CRUD<
    * @type {*}
    * @memberof CRUD
    */
-  callback_ActivarBoton: any = null;
+  callback_ActivarBoton: any = null
 
   /**
    * Cuando los datos vienen de la BD se deben de definir
@@ -111,7 +111,7 @@ export class CRUD<
   nombreDeDatos = {
     singular: "",
     plural: ""
-  };
+  }
 
   /**
    *Creates an instance of CRUD.
@@ -156,46 +156,46 @@ export class CRUD<
     filtros: { [key: string]: string } = null
   ): Observable<T_TipoDeModelo[]> {
     // Valores de la url
-    let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?";
+    let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?"
 
     // Seleccionamos un paginador, si externo o el por defecto.
-    let paginadorAUsar: PaginadorService = null;
+    let paginadorAUsar: PaginadorService = null
 
     if (!this.listarTodo) {
-      paginadorAUsar = paginador ? paginador : this._paginadorService;
+      paginadorAUsar = paginador ? paginador : this._paginadorService
     }
 
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
 
     if (!filtros) {
       // Los valores para el paginador.
       if (this.listarTodo) {
-        url += `desde=0&limite=100000`;
+        url += `desde=0&limite=100000`
       } else {
-        url += `desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`;
+        url += `desde=${paginadorAUsar.desde}&limite=${paginadorAUsar.limite}`
       }
 
       // Valores para el ordenamiento.
-      url += `&sort=${sort ? 1 : -1}`;
-      url += campo ? `&campo=${campo}` : "";
+      url += `&sort=${sort ? 1 : -1}`
+      url += campo ? `&campo=${campo}` : ""
     } else {
-      url += `${this.concatenerFiltros(filtros)}`;
+      url += `${this.concatenerFiltros(filtros)}`
     }
 
     return this.http.get(url).pipe(
       map((resp: any) => {
-        this.total = resp.total;
+        this.total = resp.total
         if (!this.listarTodo) {
-          paginadorAUsar.activarPaginador(this.total);
+          paginadorAUsar.activarPaginador(this.total)
         }
-        this._msjService.ok_(resp, null, a);
-        return resp[this.nombreDeDatos.plural];
+        this._msjService.ok_(resp, null, a)
+        return resp[this.nombreDeDatos.plural]
       }),
       catchError(err => {
-        this._msjService.err(err);
-        return throwError(err);
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -223,26 +223,25 @@ export class CRUD<
     filtros: { [key: string]: string },
     type: { new (): T_TipoDeModelo }
   ): Observable<T_TipoDeModelo[]> {
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
 
     // Valores de la url
-    let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?";
-    url += `${this.concatenerFiltros(filtros)}`;
+    let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?"
+    url += `${this.concatenerFiltros(filtros)}`
     return this.http.get(url).pipe(
       map((resp: any) => {
-        this.total = resp.total;
-        this._msjService.ok_(resp, null, a);
+        this.total = resp.total
+        this._msjService.ok_(resp, null, a)
         return resp[this.nombreDeDatos.plural].map(dato => {
-          let a: T_TipoDeModelo = new type();
-          console.log( 'aqui va 1')
-          return a["deserialize"](dato);
-        });
+          let a: T_TipoDeModelo = new type()
+          return a["deserialize"](dato)
+        })
       }),
       catchError(err => {
-        this._msjService.err(err);
-        return throwError(err);
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -259,17 +258,17 @@ export class CRUD<
     dato: T_TipoDeModelo,
     msjLoading: string = `Guardando cambios a ${this.nombreDeDatos.singular}.`
   ): Observable<T_TipoDeModelo[]> {
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
     return this.http.put(this.base, dato).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a);
-        return resp[this.nombreDeDatos.singular];
+        this._msjService.ok_(resp, null, a)
+        return resp[this.nombreDeDatos.singular]
       }),
       catchError(err => {
-        this._msjService.err(err);
-        return throwError(err);
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -285,20 +284,20 @@ export class CRUD<
     msjLoading: string = `Guardando ${this.nombreDeDatos.singular}.`
   ): Observable<T_TipoDeModelo> {
     // Desactivamos el boton que pasamos atravez del callback.
-    this.ejecutarCallbackDesactivar();
-    const a: number = this._preLoaderService.loading(msjLoading);
+    this.ejecutarCallbackDesactivar()
+    const a: number = this._preLoaderService.loading(msjLoading)
     return this.http.post(this.base, dato).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a);
-        this.ejecutarCallbackActivar();
-        return resp[this.nombreDeDatos.singular];
+        this._msjService.ok_(resp, null, a)
+        this.ejecutarCallbackActivar()
+        return resp[this.nombreDeDatos.singular]
       }),
       catchError(err => {
-        this.ejecutarCallbackActivar();
-        this._msjService.err(err);
-        return throwError(err);
+        this.ejecutarCallbackActivar()
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -308,7 +307,7 @@ export class CRUD<
    * @memberof CRUD
    */
   private ejecutarCallbackDesactivar() {
-    if (this.callback_DesactivarBoton) this.callback_DesactivarBoton();
+    if (this.callback_DesactivarBoton) this.callback_DesactivarBoton()
   }
 
   /**
@@ -318,7 +317,7 @@ export class CRUD<
    * @memberof CRUD
    */
   private ejecutarCallbackActivar() {
-    if (this.callback_ActivarBoton) this.callback_ActivarBoton();
+    if (this.callback_ActivarBoton) this.callback_ActivarBoton()
   }
 
   /**
@@ -333,17 +332,17 @@ export class CRUD<
     id: string,
     msjLoading: string = `Eliminando ${this.nombreDeDatos.singular}.`
   ): Observable<T_TipoDeModelo> {
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
     return this.http.delete(this.base + "/" + id).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a);
-        return resp[this.nombreDeDatos.singular];
+        this._msjService.ok_(resp, null, a)
+        return resp[this.nombreDeDatos.singular]
       }),
       catchError(err => {
-        this._msjService.err(err);
-        return throwError(err);
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -360,17 +359,17 @@ export class CRUD<
     urlAlternativa: string = "",
     msjLoading: string = `Buscando ${this.nombreDeDatos.singular}`
   ): Observable<T_TipoDeModelo> {
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
     return this.http.get(this.base + urlAlternativa + `/${id}`).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a);
-        return resp[this.nombreDeDatos.singular];
+        this._msjService.ok_(resp, null, a)
+        return resp[this.nombreDeDatos.singular]
       }),
       catchError(err => {
-        this._msjService.err(err);
-        return throwError(err);
+        this._msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   /**
@@ -392,20 +391,20 @@ export class CRUD<
     urlAlternativa: string = "",
     msjLoading: string = `Buscando ${this.nombreDeDatos.plural}`
   ): Observable<T_TipoDeModelo[]> {
-    const a: number = this._preLoaderService.loading(msjLoading);
+    const a: number = this._preLoaderService.loading(msjLoading)
     return this.http
       .get(this.base + urlAlternativa + this.urlBusqueda + "/" + termino)
       .pipe(
         map((resp: any) => {
-          this._msjService.ok_(resp, null, a);
-          this.total = resp.total;
-          return resp[this.nombreDeDatos.plural];
+          this._msjService.ok_(resp, null, a)
+          this.total = resp.total
+          return resp[this.nombreDeDatos.plural]
         }),
         catchError(err => {
-          this._msjService.err(err);
-          return throwError(err);
+          this._msjService.err(err)
+          return throwError(err)
         })
-      );
+      )
   }
 
   /**
@@ -418,12 +417,12 @@ export class CRUD<
    * @memberof FolioNewService
    */
   private concatenerFiltros(filtros: { [string: string]: string }): string {
-    let a: string = "";
+    let a: string = ""
     a = Object.keys(filtros)
       .map(key => {
-        return `${key}=${filtros[key]}`;
+        return `${key}=${filtros[key]}`
       })
-      .join("&");
-    return a;
+      .join("&")
+    return a
   }
 }

@@ -1,7 +1,7 @@
-import { Cliente } from "./cliente.models";
-import { Usuario } from "./usuario.model";
-import { FolioLinea } from "./folioLinea.models";
-import { Deserializable } from "./deserealizable.model";
+import { Cliente } from "./cliente.models"
+import { Usuario } from "./usuario.model"
+import { FolioLinea } from "./folioLinea.models"
+import { Deserializable } from "./deserealizable.model"
 
 export class Folio implements Deserializable {
   constructor(
@@ -36,16 +36,14 @@ export class Folio implements Deserializable {
   ) {}
 
   deserialize(input: Folio): this {
-    console.log("aqui va 2");
-    Object.assign(this, input);
-    this.cliente = new Cliente().deserialize(input.cliente);
-    this.vendedor = new Usuario().deserialize(input.vendedor);
-    console.log("aqui va 3");
+    Object.assign(this, input)
+    this.cliente = new Cliente().deserialize(input.cliente)
+    this.vendedor = new Usuario().deserialize(input.vendedor)
     this.folioLineas = input.folioLineas.map(pedido =>
       new FolioLinea().deserialize(pedido)
-    );
+    )
 
-    return this;
+    return this
   }
 
   /**
@@ -57,22 +55,21 @@ export class Folio implements Deserializable {
    */
   popularOrdenesDeTodosLosPedidos() {
     this.folioLineas.forEach(ped => {
-      ped.popularOrdenes();
+      ped.popularOrdenes()
       // Defininomos en true las ordenes generadas para el
       // al backend genera las ordenes al lanzar el pre save.
-      ped.ordenesGeneradas = true;
-    });
+      ped.ordenesGeneradas = true
+    })
   }
 
   limpiarParaOrdenesGeneradas() {
-    console.log("validar");
     this.folioLineas.forEach(pedido => {
       pedido.ordenes.forEach(orden => {
-        delete orden.trayectoNormal;
-        delete orden.trayectoRecorrido;
-        delete orden.ubicacionActual;
-        delete orden.siguienteDepartamento;
-      });
-    });
+        delete orden.trayectoNormal
+        delete orden.trayectoRecorrido
+        delete orden.ubicacionActual
+        delete orden.siguienteDepartamento
+      })
+    })
   }
 }
