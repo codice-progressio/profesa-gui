@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Folio } from '../../../../models/folio.models';
+import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { Orden } from 'src/app/models/orden.models';
 
 @Component({
   selector: 'app-revision-de-ordenes-abstracto',
@@ -7,9 +10,45 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RevisionDeOrdenesAbstractoComponent implements OnInit {
 
+  
+  /**
+   *El folio del cual se van a generar las ordenes. 
+   *
+   * @type {Folio}
+   * @memberof RevisionDeOrdenesAbstractoComponent
+   */
+  @Input() folio: Folio = null
+  /**
+   *Emitimos este componente para cuando este listo
+   las ordenes se generen. 
+   *
+   * @memberof RevisionDeOrdenesAbstractoComponent
+   */
+  @Output() esteComponente = new  EventEmitter<RevisionDeOrdenesAbstractoComponent> ()
+
+  @Output() guardar = new EventEmitter<Folio>()
+  
   constructor() { }
 
+
   ngOnInit() {
+    this.esteComponente.emit( this )
   }
+
+
+
+  /**
+   *Emite un evento que contiene el folio 
+   modificado para que se generen las ordenes 
+   desde el componenete externo. 
+   *
+   * @memberof RevisionDeOrdenesAbstractoComponent
+   */
+  guardarCambios(  ){
+    this.guardar.emit( this.folio )
+  }
+
+
+
 
 }

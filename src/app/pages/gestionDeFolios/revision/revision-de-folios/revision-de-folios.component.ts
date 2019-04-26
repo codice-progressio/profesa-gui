@@ -8,6 +8,9 @@ import { FolioLinea } from '../../../../models/folioLinea.models';
 import { Orden } from 'src/app/models/orden.models';
 import { FoliosCrearModificarAbstractoComponent } from '../../folios/abstractos/folios-crear-modificar-abstracto.component';
 import { ManejoDeMensajesService } from 'src/app/services/service.index';
+import { RevisionDeOrdenesAbstractoComponent } from '../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component';
+import { cpus } from 'os';
+import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-revision-de-folios',
@@ -26,6 +29,8 @@ export class RevisionDeFoliosComponent implements OnInit {
   pedidoParaDetalle: FolioLinea
   ordenParaDetalle: Orden
   
+
+  componenteRevisionDeOrdenes: RevisionDeOrdenesAbstractoComponent
 
 
   constructor(
@@ -127,6 +132,7 @@ export class RevisionDeFoliosComponent implements OnInit {
       .filtros(new FiltrosFolio(this._folioService))
 
       .setEntregarAProduccion(  true )
+      .setOrdenesGeneradas( false )
       
       // Paginador
       .setDesde(this._paginadorService.desde)
@@ -176,10 +182,37 @@ export class RevisionDeFoliosComponent implements OnInit {
   }
   
   
+  /**
+   *El folio del cual se generaran ordenes. 
+   *
+   * @type {Folio}
+   * @memberof RevisionDeFoliosComponent
+   */
+  folioParaGenerarOrdenes: Folio = null
   generarOrdenesDelFolio( folio: Folio ) {
-    throw "No esta definido";
+    this.folioParaGenerarOrdenes = folio
+    folio.popularOrdenesDeTodosLosPedidos()
+    
     
   }
+
+
+  generarOrdenes( folio: Folio ){
+    folio.ordenesGeneradas = true
+    folio.limpiarParaOrdenesGeneradas()
+    this._folioService.modificar( folio ).subscribe( (folio)=>{
+      this.cargarFolios()
+    } )
+
+  }
+
+  revisionDeOrdenesCargarComponente( com: RevisionDeOrdenesAbstractoComponent ){
+    this.componenteRevisionDeOrdenes = com
+  }
+
+
+  
+  
 
 
 

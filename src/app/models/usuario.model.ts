@@ -1,4 +1,5 @@
-export class Usuario {
+import { Deserializable } from './deserealizable.model';
+export class Usuario implements Deserializable {
 
     // Esta clase esta de ayuda para TypeScript
 
@@ -13,5 +14,12 @@ export class Usuario {
         public google?: boolean,
         public _id?: string,
     ) {}
+
+    deserialize(input: this): this {
+        
+        Object.assign( this, input)
+        
+        return this
+    }
 
 }

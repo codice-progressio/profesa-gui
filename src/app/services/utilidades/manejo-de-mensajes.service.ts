@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import swal from 'sweetalert2';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { asQueryList } from '@angular/core/src/view';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,13 @@ export class ManejoDeMensajesService {
       type: 'error',
       title: '¡Algo salio mal!',
     };
+
+  if( !err.error ){
+    // Si el error viene del GUI no tiene la propiedad
+    // error y no muestra el mensaje. Si pasa esto 
+    // lo capturamos aqui
+    throw new Error( err );
+  }
 
 
     if ( err.error.data ) {

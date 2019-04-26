@@ -50,7 +50,7 @@ export class FolioNewService extends CRUD<Folio, FolioNewService, FiltrosFolio<F
    */
   todo(  ): Observable<Folio[]> {
       
-    return this.getAll(undefined, undefined, this.filtrosDelFolio.obtenerFiltros() )
+    return this.getAll(undefined, undefined, this.filtrosDelFolio.obtenerFiltros(), Folio)
 
   }
 

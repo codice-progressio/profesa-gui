@@ -308,7 +308,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
       // trayectoGenerado: '',
       porcentajeAvance: '',
       // procesos: '',
-      observacionesVendedor: '',
+      observacionesVendedor: ["", []],
       // terminado: '',
       fechaTerminado: '',
       cantidadProducida: '',
@@ -496,7 +496,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public observacionesPed_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("observaciones");
+    return this.pedido_FB(iPed).get("observacionesVendedor");
   }
 
   /**

@@ -1,4 +1,5 @@
-export class Barnizado {
+import { Deserializable } from './deserealizable.model';
+export class Barnizado implements Deserializable {
     constructor(
         
         public peso10Botones?: number,
@@ -12,4 +13,10 @@ export class Barnizado {
     ) {
         
     }
+
+    deserialize(input: this): this {
+        Object.assign(this, input);
+    
+        return this;
+      }
 }
