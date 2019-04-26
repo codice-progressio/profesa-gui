@@ -1,5 +1,5 @@
-import { Maquina } from "./maquina.model";
-import { Deserializable } from "./deserealizable.model";
+import { Maquina } from "./maquina.model"
+import { Deserializable } from "./deserealizable.model"
 
 /**
  *Guarda los datos del departamento de laser.
@@ -20,11 +20,11 @@ export class Laser implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) {
-      console.log("No se definio el input");
-      return this;
+      //console.log\("No se definio el input");
+      return this
     }
-    Object.assign(this, input);
-    this.maquinaActual = new Maquina().deserialize(input.maquinaActual);
-    return this;
+    Object.assign(this, input)
+    this.maquinaActual = new Maquina().deserialize(input.maquinaActual)
+    return this
   }
 }

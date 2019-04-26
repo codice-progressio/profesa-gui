@@ -1,6 +1,6 @@
-import { Usuario } from "./usuario.model";
-import { Maquina } from "./maquina.model";
-import { Deserializable } from "./deserealizable.model";
+import { Usuario } from "./usuario.model"
+import { Maquina } from "./maquina.model"
+import { Deserializable } from "./deserealizable.model"
 
 /**
  * El modelo de el departamento materiales.
@@ -19,15 +19,15 @@ export class Materiales implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    console.log("3.4.4.3.0");
+    //console.log("?.4.4.3.0");
     if (!input) {
-      console.log("No se definio input en materiales");
-      return this;
+      // console.log("No se definio input")
+      return this
     }
-    Object.assign(this, input);
-    console.log("3.4.4.3.1");
-    this.maquinaActual = new Maquina().deserialize(input.maquinaActual);
-    console.log("3.4.4.3.2");
-    return this;
+    Object.assign(this, input)
+    //console.log("?.4.4.3.1");
+    this.maquinaActual = new Maquina().deserialize(input.maquinaActual)
+    //console.log("?.4.4.3.2");
+    return this
   }
 }

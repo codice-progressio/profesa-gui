@@ -1,9 +1,9 @@
-import { Materiales } from "./materiales.models";
-import { Transformacion } from "./transformacion.models";
-import { Pulido } from "./pulido.models";
-import { Seleccion } from "./seleccion.models";
-import { Trayecto } from "./trayecto.models";
-import { Deserializable } from "./deserealizable.model";
+import { Materiales } from "./materiales.models"
+import { Transformacion } from "./transformacion.models"
+import { Pulido } from "./pulido.models"
+import { Seleccion } from "./seleccion.models"
+import { Trayecto } from "./trayecto.models"
+import { Deserializable } from "./deserealizable.model"
 
 export class Orden implements Deserializable {
   constructor(
@@ -29,35 +29,35 @@ export class Orden implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    console.log("3.4.1");
+    //console.log("?.4.1");
 
-    Object.assign(this, input);
+    Object.assign(this, input)
 
-    console.log("3.4.2");
+    //console.log("?.4.2");
 
     this.trayectoNormal = input.trayectoNormal.map(trayecto =>
       new Trayecto().deserialize(trayecto)
-    );
-    console.log("3.4.3");
+    )
+    //console.log("?.4.3");
     this.trayectoRecorrido = input.trayectoRecorrido.map(trayecto =>
       new Trayecto().deserialize(trayecto)
-    );
-    console.log("3.4.4", input.ubicacionActual);
-    this.ubicacionActual = new Trayecto().deserialize(input.ubicacionActual);
-    console.log("3.4.5");
+    )
+    //console.log("?.4.4", input.ubicacionActual);
+    this.ubicacionActual = new Trayecto().deserialize(input.ubicacionActual)
+    //console.log("?.4.5");
     this.siguienteDepartamento = new Trayecto().deserialize(
       input.siguienteDepartamento
-    );
-    console.log("3.4.6");
+    )
+    //console.log("?.4.6");
 
-    return this;
+    return this
   }
 
   static fromJSON(data: any) {
-    return Object.assign(new this(), data);
+    return Object.assign(new this(), data)
   }
 
   static fromJSON_Array(data: any[]) {
-    return data.map(x => (x = Orden.fromJSON(x)));
+    return data.map(x => (x = Orden.fromJSON(x)))
   }
 }

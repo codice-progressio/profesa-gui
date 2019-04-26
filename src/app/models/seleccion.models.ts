@@ -1,5 +1,5 @@
-import { Usuario } from "./usuario.model";
-import { Deserializable } from "./deserealizable.model";
+import { Usuario } from "./usuario.model"
+import { Deserializable } from "./deserealizable.model"
 
 export class Seleccion implements Deserializable {
   constructor(
@@ -20,11 +20,11 @@ export class Seleccion implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) {
-      console.log("No se definio el input");
-      return this;
+      //console.log\("No se definio el input");
+      return this
     }
-    Object.assign(this, input);
-    this.seleccionadoPor = new Usuario().deserialize(input.seleccionadoPor);
-    return this;
+    Object.assign(this, input)
+    this.seleccionadoPor = new Usuario().deserialize(input.seleccionadoPor)
+    return this
   }
 }

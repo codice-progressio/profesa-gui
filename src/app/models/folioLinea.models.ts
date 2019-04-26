@@ -1,8 +1,8 @@
-import { ModeloCompleto } from "./modeloCompleto.modelo";
-import { Laser } from "./laser.models";
-import { Orden } from "./orden.models";
-import { Procesos } from "./procesos.model";
-import { ColoresTenidos } from "./ColoresTenidos";
+import { ModeloCompleto } from "./modeloCompleto.modelo"
+import { Laser } from "./laser.models"
+import { Orden } from "./orden.models"
+import { Procesos } from "./procesos.model"
+import { ColoresTenidos } from "./ColoresTenidos"
 
 export class FolioLinea {
   /**
@@ -55,81 +55,77 @@ export class FolioLinea {
   ) {}
 
   deserialize(input: this): this {
-    console.log("3.1");
-    Object.assign(this, input);
-    this.modeloCompleto = new ModeloCompleto().deserialize(
-      input.modeloCompleto
-    );
-    console.log("3.2");
-    this.laserCliente = new Laser().deserialize(input.laserCliente);
+    //console.log("?.1");
+    Object.assign(this, input)
+    this.modeloCompleto = new ModeloCompleto().deserialize(input.modeloCompleto)
+    //console.log("?.2");
+    this.laserCliente = new Laser().deserialize(input.laserCliente)
     this.coloresTenidos = input.coloresTenidos.map(color =>
       new ColoresTenidos().deserialize(color)
-    );
-    console.log("3.3");
+    )
+    //console.log("?.3");
 
     this.procesos = input.procesos.map(proceso =>
       new Procesos().deserialize(proceso)
-    );
+    )
 
-    console.log("3.4");
-    console.log( 'ordenes', this.ordenes )
-    console.log( 'ordenes', input.ordenes )
-    this.ordenes = input.ordenes.map(orden => new Orden().deserialize(orden));
-    console.log("4");
-    return this;
+    //console.log("?.4");
+    this.ordenes = input.ordenes.map(orden => new Orden().deserialize(orden))
+    //console.log("?");
+    return this
   }
 
   popularOrdenes(forzarMedias: boolean = false) {
     // Si las ordenes ya fueron generadas no
     // ejecutamos de nuevo.
-    this.ordenes = [];
+    this.ordenes = []
     // Calculamos la cantidad de ordenes
 
     let ordenesConDecimales: number =
-      this.cantidad / this.modeloCompleto.tamano.estandar;
+      this.cantidad / this.modeloCompleto.tamano.estandar
 
-    let cantidadDeOrdenes = Math.trunc(ordenesConDecimales);
+    let cantidadDeOrdenes = Math.trunc(ordenesConDecimales)
 
     // Si son medias ordenes multiplicamos la cantidad de ordenes por dos.
     cantidadDeOrdenes =
       this.modeloCompleto.medias || forzarMedias
         ? cantidadDeOrdenes * 2
-        : cantidadDeOrdenes;
+        : cantidadDeOrdenes
 
     // Obtenemos el sobrante
 
-    let decimalUltimaOrden = Number((ordenesConDecimales % 1).toFixed(4));
+    let decimalUltimaOrden = Number((ordenesConDecimales % 1).toFixed(4))
 
-    let unidad = this.modeloCompleto.medias || forzarMedias ? 0.5 : 1;
+    let unidad = this.modeloCompleto.medias || forzarMedias ? 0.5 : 1
 
     for (let i = 0; i < cantidadDeOrdenes; i++) {
-      let orden = new Orden();
+      let orden = new Orden()
 
-      orden.unidad = unidad;
+      orden.unidad = unidad
       orden.piezasTeoricas = Math.round(
         this.modeloCompleto.tamano.estandar * unidad
-      );
-      orden.nivelDeUrgencia = this.nivelDeUrgencia;
+      )
+      orden.nivelDeUrgencia = this.nivelDeUrgencia
 
-      this.ordenes.push(orden);
+      this.ordenes.push(orden)
     }
 
     if (ordenesConDecimales % 1 > 0) {
-      console.log(decimalUltimaOrden);
-      console.log("estandar: ", this.modeloCompleto.tamano.estandar);
-      let orden = new Orden();
-      orden.unidad = decimalUltimaOrden;
+      console.log(decimalUltimaOrden)
+      console.log("estandar: ", this.modeloCompleto.tamano.estandar)
+      let orden = new Orden()
+      orden.unidad = decimalUltimaOrden
       orden.piezasTeoricas = Math.round(
         this.modeloCompleto.tamano.estandar * decimalUltimaOrden
-      );
-      orden.nivelDeUrgencia = this.nivelDeUrgencia;
+      )
+      orden.nivelDeUrgencia = this.nivelDeUrgencia
 
-      this.ordenes.push(orden);
+      this.ordenes.push(orden)
     }
 
     for (let i = 0; i < this.ordenes.length; i++) {
-      const orden = this.ordenes[i];
-      orden.numeroDeOrden = i;
+      const orden = this.ordenes[i]
+      orden.numeroDeOrden = i
     }
   }
 }

@@ -1,16 +1,16 @@
-import { Modelo } from "./modelo.models";
-import { Tamano } from "./tamano.models";
-import { Color } from "./color.models";
-import { Terminado } from "./terminado.models";
-import { Laser } from "./laser.models";
-import { FamiliaDeProcesos } from "./familiaDeProcesos.model";
-import { Procesos } from "./procesos.model";
-import { BasicosGUI } from "./basicosGUI.model";
-import { log } from "util";
+import { Modelo } from "./modelo.models"
+import { Tamano } from "./tamano.models"
+import { Color } from "./color.models"
+import { Terminado } from "./terminado.models"
+import { Laser } from "./laser.models"
+import { FamiliaDeProcesos } from "./familiaDeProcesos.model"
+import { Procesos } from "./procesos.model"
+import { BasicosGUI } from "./basicosGUI.model"
+import { log } from "util"
 
 export class ModeloCompleto implements BasicosGUI {
-  convertido: boolean;
-  editado: boolean;
+  convertido: boolean
+  editado: boolean
 
   constructor(
     public _id?: string,
@@ -35,59 +35,59 @@ export class ModeloCompleto implements BasicosGUI {
   ) {}
 
   deserialize(input: this): this {
-    console.log("3.1.0");
-    Object.assign(this, input);
+    //console.log("?.1.0");
+    Object.assign(this, input)
 
-    this.modelo = new Modelo().deserialize(input.modelo);
-    console.log("3.1.1");
-    this.tamano = new Tamano().deserialize(input.tamano);
-    console.log("3.1.2");
-    this.color = new Color().deserialize(input.color);
-    console.log("3.1.3");
-    this.terminado = new Terminado().deserialize(input.terminado);
-    console.log("3.1.4");
-    this.laserAlmacen = new Laser().deserialize(input.laserAlmacen);
-    console.log("3.1.5");
+    this.modelo = new Modelo().deserialize(input.modelo)
+    //console.log("?.1.1");
+    this.tamano = new Tamano().deserialize(input.tamano)
+    //console.log("?.1.2");
+    this.color = new Color().deserialize(input.color)
+    //console.log("?.1.3");
+    this.terminado = new Terminado().deserialize(input.terminado)
+    //console.log("?.1.4");
+    this.laserAlmacen = new Laser().deserialize(input.laserAlmacen)
+    //console.log("?.1.5");
     this.familiaDeProcesos = new FamiliaDeProcesos().deserialize(
       input.familiaDeProcesos
-    );
-    console.log("3.1.6");
+    )
+    //console.log("?.1.6");
 
     this.procesosEspeciales = input.procesosEspeciales.map(proceso =>
       new Procesos().deserialize(proceso)
-    );
-    console.log("3.1.7");
+    )
+    //console.log("?.1.7");
 
-    return this;
+    return this
   }
 
   // Convierte un json a una clase de este tipo
   //  desde un arreglo.
   static fromJSON_Array(data: any[]) {
-    return data.map(x => (x = ModeloCompleto.fromJSON(x)));
+    return data.map(x => (x = ModeloCompleto.fromJSON(x)))
   }
 
   // Convierte un JSON a esta claser.
   static fromJSON(data: any) {
     // Convertimos todos los objetos en clases.
-    data.modelo = Modelo.fromJSON(data.modelo);
-    data.tamano = Tamano.fromJSON(data.tamano);
-    data.color = Color.fromJSON(data.color);
-    data.terminado = Terminado.fromJSON(data.terminado);
-    data.laserAlmacen = Laser.fromJSON(data.laserAlmacen);
-    data.familiaDeProcesos = FamiliaDeProcesos.fromJSON(data.familiaDeProcesos);
-    data.procesosEspeciales = Procesos.fromJSON_Array(data.procesosEspeciales);
-    return Object.assign(new this(), data);
+    data.modelo = Modelo.fromJSON(data.modelo)
+    data.tamano = Tamano.fromJSON(data.tamano)
+    data.color = Color.fromJSON(data.color)
+    data.terminado = Terminado.fromJSON(data.terminado)
+    data.laserAlmacen = Laser.fromJSON(data.laserAlmacen)
+    data.familiaDeProcesos = FamiliaDeProcesos.fromJSON(data.familiaDeProcesos)
+    data.procesosEspeciales = Procesos.fromJSON_Array(data.procesosEspeciales)
+    return Object.assign(new this(), data)
   }
 
   static nombreCom(x) {
-    let nombreCompleto = "";
-    nombreCompleto += x.modelo ? x.modelo.modelo : "";
-    nombreCompleto += x.tamano ? "-" + x.tamano.tamano : "";
-    nombreCompleto += x.color ? "-" + x.color.color : "";
-    nombreCompleto += x.terminado ? "-" + x.terminado.terminado : "";
-    nombreCompleto += x.laserAlmacen.laser ? "-" + x.laserAlmacen.laser : "";
-    nombreCompleto += x.versionModelo ? "-" + x.versionModelo : "";
-    return nombreCompleto;
+    let nombreCompleto = ""
+    nombreCompleto += x.modelo ? x.modelo.modelo : ""
+    nombreCompleto += x.tamano ? "-" + x.tamano.tamano : ""
+    nombreCompleto += x.color ? "-" + x.color.color : ""
+    nombreCompleto += x.terminado ? "-" + x.terminado.terminado : ""
+    nombreCompleto += x.laserAlmacen.laser ? "-" + x.laserAlmacen.laser : ""
+    nombreCompleto += x.versionModelo ? "-" + x.versionModelo : ""
+    return nombreCompleto
   }
 }

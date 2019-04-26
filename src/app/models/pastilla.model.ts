@@ -1,5 +1,5 @@
-import { Usuario } from "./usuario.model";
-import { Deserializable } from "./deserealizable.model";
+import { Usuario } from "./usuario.model"
+import { Deserializable } from "./deserealizable.model"
 
 export class Pastilla implements Deserializable {
   constructor(
@@ -11,15 +11,15 @@ export class Pastilla implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) {
-      console.log("No se definio el input");
-      return this;
+      //console.log\("No se definio el input");
+      return this
     }
 
-    Object.assign(this, input);
+    Object.assign(this, input)
     this.cantidades = input.cantidades.map(cantidad =>
       new CantidadesPastilla().deserialize(cantidad)
-    );
-    return this;
+    )
+    return this
   }
 }
 
@@ -31,8 +31,8 @@ export class CantidadesPastilla implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    Object.assign(this, input);
+    Object.assign(this, input)
 
-    return this;
+    return this
   }
 }
