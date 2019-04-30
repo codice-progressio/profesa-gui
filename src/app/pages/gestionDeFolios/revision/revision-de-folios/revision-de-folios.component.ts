@@ -9,8 +9,6 @@ import { Orden } from 'src/app/models/orden.models';
 import { FoliosCrearModificarAbstractoComponent } from '../../folios/abstractos/folios-crear-modificar-abstracto.component';
 import { ManejoDeMensajesService } from 'src/app/services/service.index';
 import { RevisionDeOrdenesAbstractoComponent } from '../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component';
-import { cpus } from 'os';
-import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-revision-de-folios',

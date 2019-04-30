@@ -29,26 +29,26 @@ export class Orden implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("?.4.1");
+    //console.log("x  ?.4.1");
 
     Object.assign(this, input)
 
-    //console.log("?.4.2");
+    //console.log("x  ?.4.2");
 
     this.trayectoNormal = input.trayectoNormal.map(trayecto =>
       new Trayecto().deserialize(trayecto)
     )
-    //console.log("?.4.3");
+    //console.log("x  ?.4.3");
     this.trayectoRecorrido = input.trayectoRecorrido.map(trayecto =>
       new Trayecto().deserialize(trayecto)
     )
-    //console.log("?.4.4", input.ubicacionActual);
+    //console.log("x  ?.4.4", input.ubicacionActual);
     this.ubicacionActual = new Trayecto().deserialize(input.ubicacionActual)
-    //console.log("?.4.5");
+    //console.log("x  ?.4.5");
     this.siguienteDepartamento = new Trayecto().deserialize(
       input.siguienteDepartamento
     )
-    //console.log("?.4.6");
+    //console.log("x  ?.4.6");
 
     return this
   }

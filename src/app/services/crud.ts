@@ -229,12 +229,15 @@ export class CRUD<
     let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?"
     url += `${this.concatenerFiltros(filtros)}`
     return this.http.get(url).pipe(
-      map((resp: any) => {
+      map((resp: any) =>
+      {
         this.total = resp.total
         this._msjService.ok_(resp, null, a)
-        return resp[this.nombreDeDatos.plural].map(dato => {
+        return resp[this.nombreDeDatos.plural].map(dato =>
+        {
           let a: T_TipoDeModelo = new type()
-          return a["deserialize"](dato)
+          a = a["deserialize"](dato);
+          return a
         })
       }),
       catchError(err => {

@@ -19,15 +19,15 @@ export class Materiales implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("?.4.4.3.0");
+    //console.log("x  ?.4.4.3.0");
     if (!input) {
       // console.log("No se definio input")
       return this
     }
     Object.assign(this, input)
-    //console.log("?.4.4.3.1");
+    //console.log("x  ?.4.4.3.1");
     this.maquinaActual = new Maquina().deserialize(input.maquinaActual)
-    //console.log("?.4.4.3.2");
+    //console.log("x  ?.4.4.3.2");
     return this
   }
 }

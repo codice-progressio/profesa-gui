@@ -55,23 +55,23 @@ export class FolioLinea {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("?.1");
+    //console.log("x  ?.1");
     Object.assign(this, input)
     this.modeloCompleto = new ModeloCompleto().deserialize(input.modeloCompleto)
-    //console.log("?.2");
+    //console.log("x  ?.2");
     this.laserCliente = new Laser().deserialize(input.laserCliente)
     this.coloresTenidos = input.coloresTenidos.map(color =>
       new ColoresTenidos().deserialize(color)
     )
-    //console.log("?.3");
+    //console.log("x  ?.3");
 
     this.procesos = input.procesos.map(proceso =>
       new Procesos().deserialize(proceso)
     )
 
-    //console.log("?.4");
+    //console.log("x  ?.4");
     this.ordenes = input.ordenes.map(orden => new Orden().deserialize(orden))
-    //console.log("?");
+    //console.log("x  ?");
     return this
   }
 
