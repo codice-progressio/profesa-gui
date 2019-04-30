@@ -111,8 +111,6 @@ export class FolioLinea {
     }
 
     if (ordenesConDecimales % 1 > 0) {
-      console.log(decimalUltimaOrden)
-      console.log("estandar: ", this.modeloCompleto.tamano.estandar)
       let orden = new Orden()
       orden.unidad = decimalUltimaOrden
       orden.piezasTeoricas = Math.round(
