@@ -31,7 +31,6 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import {NgxMaskModule} from 'ngx-mask';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

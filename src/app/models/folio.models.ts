@@ -72,4 +72,18 @@ export class Folio implements Deserializable {
       })
     })
   }
+
+  /**
+   *Suma de las piezas de todos los pedidos de este folio. 
+   *
+   * @readonly
+   * @type {Number}
+   * @memberof Folio
+   */
+  get totalDePiezas(): Number
+  {
+    let total = 0
+    this.folioLineas.map((ped) => { total = + ped.cantidad })
+    return total
+  }
 }

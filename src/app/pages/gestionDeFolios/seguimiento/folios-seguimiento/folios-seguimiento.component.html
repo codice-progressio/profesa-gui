@@ -64,7 +64,7 @@
   </div>
 </div>
 
-<div *ngIf="folios.length > 0" class="row animated fadeIn faster" >
+<div *ngIf="folios.length > 0" class="row animated fadeIn faster">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -77,32 +77,23 @@
               <th></th>
               <!-- <th title='Ver detalle rapido del folio.'><i class="fas fa-question-circle    "></i></th>
                             <th title='Revisar a fondo el folio y si es necesario alterar funciones basicas.'> <i class="fas fa-question-circle    "></i></th> -->
-              <th title="Numero consecutivo del folio.">
-                <i class="fas fa-question-circle    "></i>FOL
-              </th>
-              <th *ngIf="verComoPedidos" title="Numero de pedido.">
-                <i class="fas fa-question-circle    "></i>PED
-              </th>
-              <th title="El cliente.">
-                <i class="fas fa-question-circle    "></i>CLI
-              </th>
-              <th title="El vendedor al cual pertenece el folio.">
-                <i class="fas fa-question-circle    "></i>VEN
-              </th>
-              <th *ngIf="verComoPedidos" title="El modelo completo">
-                <i class="fas fa-question-circle    "></i>MOD
-              </th>
+              <th title="Numero consecutivo del folio.">FOL</th>
+              <th *ngIf="verComoPedidos" title="Numero de pedido.">PED</th>
+              <th title="El cliente.">CLI</th>
+              <th title="El vendedor al cual pertenece el folio.">VEN</th>
+              <th *ngIf="verComoPedidos" title="El modelo completo">MOD</th>
               <th
                 title="Fecha de entrega a produccion. Es la fecha en que el vendedor finaliza las modificaciones a su folio y lo entrega a produccion."
               >
-                <i class="fas fa-question-circle    "></i>FEP
+                FEP
               </th>
               <th
-                title="La sumatoria de todas las piezas de todos los pedidos del folio"
+                title="La sumatoria de todas las piezas de todos los pedidos del folio"s
               >
-                <i class="fas fa-question-circle    "></i>TPZ
+                TPZ
               </th>
-              <th></th>
+              <th title='Observaciones'>OBS</th>
+              <th title="Porcentaje de progreso del folio.">%PRO</th>
             </tr>
           </thead>
           <tbody>
@@ -143,18 +134,6 @@
                     >
                       <i class="fas fa-eye    "></i
                     ></a>
-
-                    <a
-                      *ngIf="!verComoPedidos"
-                      (click)="retornarControlDeFolioAVendedor(folio)"
-                      title="Retornar control a vendedor. Esto elimina la fecha de entrega a produccion y hace que el vendedor pueda modificar de nuevo el folio."
-                      name=""
-                      id=""
-                      class="btn btn-warning text-dark btn-sm "
-                      role="button"
-                    >
-                      <i class="fas fa-arrow-left "></i
-                    ></a>
                   </td>
                   <td class="fit">{{ folio.numeroDeFolio }}</td>
                   <td *ngIf="verComoPedidos" class="fit">
@@ -181,17 +160,34 @@
                       {{ folio.totalDePiezas | number }}
                     </ng-template>
                   </td>
-                  <td class="fit">
-                    <button
-                      (click)="generarOrdenesDelFolio(folio)"
-                      title="Generar las ordenes de este folio"
-                      data-toggle="modal"
-                      data-target="#modalFolioOrdenesRevision"
-                      type="button"
-                      class="btn btn-outline-warning btn-sm"
+
+                  <td>
+                    <ng-container *ngIf="verComoPedidos">
+                      <h6><strong>{{folio.observaciones}}</strong></h6>
+                      {{pedido.observaciones}} 
+                    </ng-container>
+
+                    <ng-container>
+                      {{folio.observaciones}}
+                    </ng-container>
+                    
+                    
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngIf="verComoPedidos; else verComoPedTemplate"
                     >
-                      <i class="fas fa-list-alt"></i>
-                    </button>
+                      <app-progress-bar
+                        [porcentaje]="pedido.porcentajeAvance"
+                        [nivel]="pedido.nivelDeUrgencia"
+                      ></app-progress-bar>
+                    </ng-container>
+                    <ng-template #verComoPedTemplate>
+                      <app-progress-bar
+                        [porcentaje]="folio.porcentajeAvance"
+                        [nivel]="folio.nivelDeUrgencia"
+                      ></app-progress-bar>
+                    </ng-template>
                   </td>
                 </tr>
               </ng-container>
@@ -331,38 +327,5 @@
 <!-- 
 =====================================
  END MODAL FOLIO EDICION
-=====================================
--->
-
-<!-- 
-=====================================
- MODAL FOLIO REVISION DE ORDENES
-=====================================
--->
-
-<div
-  class="modal fade"
-  id="modalFolioOrdenesRevision"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-revision-de-ordenes-abstracto
-          [folio]="folioParaGenerarOrdenes"
-          (guardar)="generarOrdenes($event)"
-          (esteComponente)="revisionDeOrdenesCargarComponente($event)"
-        ></app-revision-de-ordenes-abstracto>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================
- END MODAL FOLIO REVISION DE ORDENES
 =====================================
 -->

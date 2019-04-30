@@ -51,6 +51,7 @@ import { QuimicaReporteComponent } from './reportes/produccion/quimica-reporte/q
 import { HistorialDePedidosComponent } from './reportes/historial-de-pedidos/historial-de-pedidos.component';
 import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component';
 import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component';
+import { FoliosSeguimientoComponent } from './gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component';
 
 const pagesRoutes: Routes = [
 // Redirecciona a PagesComponent para separar el login
@@ -63,6 +64,12 @@ const pagesRoutes: Routes = [
     //     canActivate: [LoginGuardGuard],
     //     children: [
             // Sección de estudio.
+        {
+            path: 'folios/seguimiento',
+            component: FoliosSeguimientoComponent,
+            canActivate: [ VerificaTokenGuard],
+            data: {titulo: 'Seguimeinto de folios.'}
+        },
         {
             path: 'ventas/misFolios',
             component: PruebaParaDetallesComponent,
