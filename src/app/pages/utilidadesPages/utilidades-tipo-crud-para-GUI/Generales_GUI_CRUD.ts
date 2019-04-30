@@ -187,6 +187,7 @@ export class Generales_GUI_CRUD<
    *
    * @param {string} id El id del que se cargaran los detalles.
    * @memberof Generales_GUI_CRUD
+   * @deprecated Pasa el folio directamente para el detalle. 
    */
   mostrarDetalle(id: string) {
     this.elementoDetalle = null;

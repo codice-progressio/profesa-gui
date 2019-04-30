@@ -12,6 +12,8 @@ import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/F
 import * as moment from "moment/moment";
 import "moment-duration-format";
 import { GrupoDeFiltroComponent } from "./grupo-de-filtro.component";
+import { FolioLinea } from "src/app/models/folioLinea.models";
+import { Orden } from "src/app/models/orden.models";
 
 @Component({
   selector: "app-folios",
@@ -24,7 +26,15 @@ export class FoliosComponent
     FolioNewService,
     FoliosCrearModificarComponent
   >
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
+  
+
+  pedidoParaDetalle: FolioLinea
+  folioParaDetalle: Folio
+  ordenParaDetalle: Orden
+
+  
   /**
    *Almacena la opcion para mostrar o no los folios termiandos. Por defecto no los muestra.
    *

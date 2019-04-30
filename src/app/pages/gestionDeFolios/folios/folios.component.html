@@ -88,7 +88,7 @@
 
 
                             <td class='fit '>
-                                <button (click)="mostrarDetalle(elemento._id)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalDetalle " role="button "> <i class="fa fa-eye " aria-hidden="true "></i> </button>
+                                <button (click)="this.folioParaDetalle = elemento" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#detalleFolio " role="button "> <i class="fa fa-eye " aria-hidden="true "></i> </button>
 
                             </td>
 
@@ -195,12 +195,6 @@
 
         </ng-container>
 
-
-
-
-
-
-
         <!-- 
     =====================================
      END BODY
@@ -222,5 +216,101 @@ Importante fuera de app-general
 <!-- 
 =====================================
 END Importante fuera de app-general
+=====================================
+-->
+
+
+
+
+
+<!-- 
+=====================================
+ MODAL FOLIO DETALLE
+=====================================
+-->
+
+<div
+  id="no_print"
+  class="modal fade"
+  id="detalleFolio"
+  tabindex="-1"
+  role="dialog"
+  
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-folios-detalle-abstracto
+          (pedido)="pedidoParaDetalle = $event"
+          [folio]="folioParaDetalle"
+        ></app-folios-detalle-abstracto>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+=====================================
+ END MODAL FOLIO DETALLE
+=====================================
+-->
+
+
+<!-- 
+=====================================
+ MODAL PEDIDO DETALLE
+=====================================
+-->
+<div
+  id="no_print"
+  class="modal   fade "
+  id="detalleDePedido"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-pedidos-detalle
+          (orden)="ordenParaDetalle = $event"
+          [pedido]="pedidoParaDetalle"
+        ></app-pedidos-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+=====================================
+ END MODAL PEDIDO DETALLE
+=====================================
+-->
+
+<!-- 
+=====================================
+ MODAL ORDEN DETALLE
+=====================================
+-->
+<div
+  id="no_print"
+  class="modal   fade "
+  id="detalleDeLaOrden"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-ordenes-detalle></app-ordenes-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ END MODAL ORDEN DETALLE
 =====================================
 -->

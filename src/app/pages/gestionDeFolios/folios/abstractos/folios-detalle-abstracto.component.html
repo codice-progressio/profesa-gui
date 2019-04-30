@@ -174,7 +174,7 @@
 
 <hr>
 
-<a class="btn btn-outline-warning " onclick="
+<a *ngIf="folio" class="btn btn-outline-warning " onclick="
         function printDiv() {
           $('#print').clone().appendTo('body').addClass('print').attr('id', 'zona_imp');
           $('#no_print').addClass('no-print');
