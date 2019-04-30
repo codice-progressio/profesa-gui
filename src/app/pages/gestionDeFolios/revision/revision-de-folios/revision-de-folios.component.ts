@@ -14,147 +14,193 @@ import { RevisionDeOrdenesAbstractoComponent } from '../revision-de-ordenes-abst
   selector: 'app-revision-de-folios',
   templateUrl: './revision-de-folios.component.html',
   styles: [],
-  providers: [{ provide: "paginadorFolios", useClass: PaginadorService }]
+  providers: [{ provide: 'paginadorFolios', useClass: PaginadorService }]
 })
 export class RevisionDeFoliosComponent implements OnInit {
 
-  
-
-  folios: Folio [ ]
-  componenteFiltrador: GrupoDeFiltroComponent
-  verComoPedidos: boolean = false
-  folioParaDetalle: Folio
-  pedidoParaDetalle: FolioLinea
-  ordenParaDetalle: Orden
-  
-
-  componenteRevisionDeOrdenes: RevisionDeOrdenesAbstractoComponent
-
-
   constructor(
     public _folioService: FolioNewService,
-    @Inject("paginadorFolios") public _paginadorService: PaginadorService,
+    @Inject('paginadorFolios') public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
     this._paginadorService.callback = () => {
-      if( this.esNecesarioReinciarPaginador ) {
+      if (this.esNecesarioReinciarPaginador) {
         this.cargarFolios();
-
-      }else{
-        this.aplicarFiltros(this.componenteFiltrador)
+      } else {
+        this.aplicarFiltros(this.componenteFiltrador);
       }
     };
-    
-    
 
-    this.cargarFolios( );
+    this.cargarFolios();
+  }
+  folios: Folio[] = [];
+  componenteFiltrador: GrupoDeFiltroComponent;
+  verComoPedidos: boolean = false;
+  folioParaDetalle: Folio;
+  pedidoParaDetalle: FolioLinea;
+  ordenParaDetalle: Orden;
 
-   }
+  componenteRevisionDeOrdenes: RevisionDeOrdenesAbstractoComponent;
+
+  esNecesarioReinciarPaginador: boolean;
+
+  actualizarVista: boolean = false;
+
+  /**
+   *El folio del cual se generaran ordenes.
+   *
+   * @type {Folio}
+   * @memberof RevisionDeFoliosComponent
+   */
+  folioParaGenerarOrdenes: Folio = null;
 
   ngOnInit() {
-
-
+    new Promise((resolve, reject) => {
+      // Esperamos a que el componenete este disponible.
+      const intervalo = setInterval(() => {
+        if (this.componenteFiltrador) {
+          clearInterval(intervalo);
+          resolve();
+        }
+      }, 10);
+    })
+      .then(() => {
+        // Definimos los componentes que deban existir.
+        this.mostrarFiltros();
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
-
-
-  esNecesarioReinciarPaginador: boolean
-
-    reiniciarPaginador( ) {
-      this._paginadorService.limite = 5
-      this._paginadorService.desde = 0
-      this._paginadorService.actual = 1
+  mostrarFiltros(paraPedidos: boolean = false) {
+    this.componenteFiltrador.limpiar();
+    this.componenteFiltrador.seleccionarCamposVisibles.mostrarTodo();
+    if (!paraPedidos) {
+      this.componenteFiltrador.seleccionarCamposVisibles
+        .setPedido(false)
+        .setModelo(false)
+        .setTamano(false)
+        .setColor(false)
+        .setTerminado(false);
     }
 
-  aplicarFiltros( componente: GrupoDeFiltroComponent ){
+    this.componenteFiltrador.seleccionarCamposVisibles
+      .setFechaDeEntregaEstimadaDesdeEl(false)
+      .setFechaDeEntregaEstimadaHasta(false)
+      .setFechaFinalizacionDelFolioHasta(false)
+      .setFechaFinalizacionDelFolioDesdeEl( false)
+  }
 
-    if( this.esNecesarioReinciarPaginador ){
-      this.reiniciarPaginador()
+  cambiarVerComoPedidos(val: boolean) {
+    this.verComoPedidos = val;
+    this.mostrarFiltros(val);
+  }
+
+  reiniciarPaginador() {
+    this._paginadorService.limite = 5;
+    this._paginadorService.desde = 0;
+    this._paginadorService.actual = 1;
+  }
+
+  aplicarFiltros(componente: GrupoDeFiltroComponent) {
+    if (this.esNecesarioReinciarPaginador) {
+      this.reiniciarPaginador();
       this.esNecesarioReinciarPaginador = false;
-    } 
-
+    }
 
     this._folioService
       .filtros(new FiltrosFolio(this._folioService))
-      .setVendedor(componente.vendedorSeleccionado._id)
+      .setVendedor(
+        componente.vendedorSeleccionado
+          ? componente.vendedorSeleccionado._id
+          : null
+      )
+      .setFolio(componente.folio ? componente.folio : null)
+      .setPedido(componente.pedido ? componente.pedido : null)
+      .setCliente(
+        componente.clienteSeleccionado
+          ? componente.clienteSeleccionado._id
+          : null
+      )
 
-      .setFolio(componente.folio ?componente.folio: null) 
-      .setCliente(componente.clienteSeleccionado ?componente.clienteSeleccionado._id : null)
-      
-      // Estos solo se aplican cuando la opcion de este 
-      .setModelo(componente.modeloSeleccionado ?componente.modeloSeleccionado._id : null)
-      .setTamano(componente.tamanoSeleccionado ?componente.tamanoSeleccionado._id : null)
-      .setColor(componente.colorSeleccionado ?componente.colorSeleccionado._id : null)
-      .setTerminado(componente.terminadoSeleccionado ?componente.terminadoSeleccionado._id : null)
+      // Estos solo se aplican cuando la opcion de este
+      .setModelo(
+        componente.modeloSeleccionado ? componente.modeloSeleccionado._id : null
+      )
+      .setTamano(
+        componente.tamanoSeleccionado ? componente.tamanoSeleccionado._id : null
+      )
+      .setColor(
+        componente.colorSeleccionado ? componente.colorSeleccionado._id : null
+      )
+      .setTerminado(
+        componente.terminadoSeleccionado
+          ? componente.terminadoSeleccionado._id
+          : null
+      )
 
       // Aqui este siempre debe ser true
-      .setEntregarAProduccion( true )
+      .setEntregarAProduccion(true)
 
+      .setFechaDeCreacionDesdeEl(
+        componente.fechaDeCreacionDesdeEl
+          ? new Date(componente.fechaDeCreacionDesdeEl).toISOString()
+          : null
+      )
+      .setFechaDeCreacionHasta(
+        componente.fechaDeCreacionHasta
+          ? new Date(componente.fechaDeCreacionHasta).toISOString()
+          : null
+      )
 
-      .setFechaCreacionDesdeEl(componente.fechaDeCreacionDesdeEl ? new Date(componente.fechaDeCreacionDesdeEl).toISOString() : null)
-      .setFechaCreacionHasta(componente.fechaDeCreacionHasta ? new Date(componente.fechaDeCreacionHasta).toISOString(): null)
-      
       // Paginador
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["fechaEntregaAProduccion", -1]])
+      .setSortCampos([['fechaDeEntregaAProduccion', -1]])
       .servicio.todo()
-      .subscribe(
-        folios => {
-          this.folios = folios;
-          this._paginadorService.activarPaginador(this._folioService.total);
-        },
-       
-      );
-    
-    
+      .subscribe((folios) => {
+        this.folios = folios;
+        this._paginadorService.activarPaginador(this._folioService.total);
+      });
   }
-
-
-
-  actualizarVista: boolean = false
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
    que todavia estan registrandose. 
    *
    * @memberof FoliosComponent
    */
-  cargarFolios(
-  ) {
+  cargarFolios() {
+    this.actualizarVista = true;
 
-    this.actualizarVista = true
-    
-    this.esNecesarioReinciarPaginador = true
+    this.esNecesarioReinciarPaginador = true;
 
     this._folioService
       .filtros(new FiltrosFolio(this._folioService))
 
-      .setEntregarAProduccion(  true )
-      .setOrdenesGeneradas( false )
-      
+      .setEntregarAProduccion(true)
+      .setOrdenesGeneradas(false)
+
       // Paginador
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["fechaFolio", 1]])
-      .servicio
-      .todo()
-      .subscribe(
-        folios => {
-          this.folios = folios;
-          this._paginadorService.activarPaginador(this._folioService.total);
-          this.actualizarVista = false
-        }
-      );
+      .setSortCampos([['fechaDeEntregaAProduccion', 1]])
+      .servicio.todo()
+      .subscribe((folios) => {
+        this.folios = folios;
+        this._paginadorService.activarPaginador(this._folioService.total);
+        this.actualizarVista = false;
+      });
   }
 
-  
-  calcularTotalDePiezas( folio: Folio ): number{
+  calcularTotalDePiezas(folio: Folio): number {
     let total = 0;
-    folio.folioLineas.map( (ped)=>{total+= ped.cantidad} )
-    return total
+    folio.folioLineas.map((ped) => {
+      total += ped.cantidad;
+    });
+    return total;
   }
-  
-  
+
   /**
    *Retorna el control del folio al vendedor eliminando
    la fecha de producccion y la bandera de entregar a produccion. 
@@ -162,58 +208,33 @@ export class RevisionDeFoliosComponent implements OnInit {
    * @param {Folio} folio
    * @memberof RevisionDeFoliosComponent
    */
-  retornarControlDeFolioAVendedor( folio: Folio ) {
-    let msj = `Vas a retornar el folio a ${folio.vendedor.nombre}. 
+  retornarControlDeFolioAVendedor(folio: Folio) {
+    const msj = `Vas a retornar el folio a ${folio.vendedor.nombre}. 
     Esto significa que la fecha para produccion se eliminara y 
-    el vendedor tendra disponible el folio para editarlo. Quieres continuar?`
-    
-    this._msjService.confirmarAccion(msj, 
-      ()=>{
-        this._folioService.iniciarProduccion( folio._id, false)
-        .subscribe( (folio)=>{
-          this.cargarFolios()
-        } )
-      }
-    )
+    el vendedor tendra disponible el folio para editarlo. Quieres continuar?`;
 
-    
+    this._msjService.confirmarAccion(msj, () => {
+      this._folioService
+        .iniciarProduccion(folio._id, false)
+        .subscribe((folio) => {
+          this.cargarFolios();
+        });
+    });
   }
-  
-  
-  /**
-   *El folio del cual se generaran ordenes. 
-   *
-   * @type {Folio}
-   * @memberof RevisionDeFoliosComponent
-   */
-  folioParaGenerarOrdenes: Folio = null
-  generarOrdenesDelFolio( folio: Folio ) {
-    this.folioParaGenerarOrdenes = folio
-    folio.popularOrdenesDeTodosLosPedidos()
-    
-    
+  generarOrdenesDelFolio(folio: Folio) {
+    this.folioParaGenerarOrdenes = folio;
+    folio.popularOrdenesDeTodosLosPedidos();
   }
 
-
-  generarOrdenes( folio: Folio ){
-    folio.ordenesGeneradas = true
-    folio.limpiarParaOrdenesGeneradas()
-    this._folioService.modificar( folio ).subscribe( (folio)=>{
-      this.cargarFolios()
-    } )
-
+  generarOrdenes(folio: Folio) {
+    folio.ordenesGeneradas = true;
+    folio.limpiarParaOrdenesGeneradas();
+    this._folioService.modificar(folio).subscribe((folio) => {
+      this.cargarFolios();
+    });
   }
 
-  revisionDeOrdenesCargarComponente( com: RevisionDeOrdenesAbstractoComponent ){
-    this.componenteRevisionDeOrdenes = com
+  revisionDeOrdenesCargarComponente(com: RevisionDeOrdenesAbstractoComponent) {
+    this.componenteRevisionDeOrdenes = com;
   }
-
-
-  
-  
-
-
-
-
-
 }

@@ -48,8 +48,8 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
         private _terminado: string = null,
         private _folio: string = null,
         private _pedido: string = null,
-        private _fechaCreacionDesdeEl: string = null,
-        private _fechaCreacionHasta: string = null,
+        private _fechaDeCreacionDesdeEl: string = null,
+        private _fechaDeCreacionHasta: string = null,
         private _fechaEntregaEstimadaDesdeEl: string = null,
         private _fechaEntregaEstimadaHasta: string = null,
         private _fechaFinalizacionFolioDesdeEl: string = null,
@@ -109,18 +109,18 @@ export class FiltrosFolio <T> extends FiltrosDeConsultas<T>  {
         this._fechaEntregaEstimadaDesdeEl = value;
         return this
     }
-    public get fechaCreacionHasta(): string {
-        return this._fechaCreacionHasta;
+    public get fechaDeCreacionHasta(): string {
+        return this._fechaDeCreacionHasta;
     }
-    public  setFechaCreacionHasta(value: string):FiltrosFolio <T> {
-        this._fechaCreacionHasta = value;
+    public  setFechaDeCreacionHasta(value: string):FiltrosFolio <T> {
+        this._fechaDeCreacionHasta = value;
         return this
     }
-    public get fechaCreacionDesdeEl(): string {
-        return this._fechaCreacionDesdeEl;
+    public get fechaDeCreacionDesdeEl(): string {
+        return this._fechaDeCreacionDesdeEl;
     }
-    public  setFechaCreacionDesdeEl(value: string):FiltrosFolio <T> {
-        this._fechaCreacionDesdeEl = value;
+    public  setFechaDeCreacionDesdeEl(value: string):FiltrosFolio <T> {
+        this._fechaDeCreacionDesdeEl = value;
         return this
     }
     public get pedido(): string {

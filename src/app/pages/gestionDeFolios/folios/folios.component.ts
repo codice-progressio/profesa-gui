@@ -335,8 +335,8 @@ export class FoliosComponent
       .setEntregarAProduccion( this.cargarFoliosEntregadosAProduccion )
 
 
-      .setFechaCreacionDesdeEl(componente.fechaDeCreacionDesdeEl ? new Date(componente.fechaDeCreacionDesdeEl).toISOString() : null)
-      .setFechaCreacionHasta(componente.fechaDeCreacionHasta ? new Date(componente.fechaDeCreacionHasta).toISOString(): null)
+      .setFechaDeCreacionDesdeEl(componente.fechaDeCreacionDesdeEl ? new Date(componente.fechaDeCreacionDesdeEl).toISOString() : null)
+      .setFechaDeCreacionHasta(componente.fechaDeCreacionHasta ? new Date(componente.fechaDeCreacionHasta).toISOString(): null)
       .setFechaFinalizacionFolioDesdeEl(componente.fechaFinalizacionFolioDesdeEl ? new Date(componente.fechaFinalizacionFolioDesdeEl).toISOString(): null)
       .setFechaFinalizacionFolioHasta(componente.fechaFinalizacionFolioHasta ? new Date(componente.fechaFinalizacionFolioHasta).toISOString(): null)
       
