@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Folio } from 'src/app/models/folio.models';
-import { ColoresTenidos } from 'src/app/models/ColoresTenidos';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Folio } from 'src/app/models/folio.models'
+import { ColoresTenidos } from 'src/app/models/ColoresTenidos'
+import { FolioLinea } from 'src/app/models/folioLinea.models'
 
 @Component({
   selector: 'app-folios-detalle-abstracto',
@@ -9,21 +9,24 @@ import { FolioLinea } from 'src/app/models/folioLinea.models';
   styles: []
 })
 export class FoliosDetalleAbstractoComponent implements OnInit {
-
   /**
-   *El folio que se usara para mostrar el detalle. 
+   *El folio que se usara para mostrar el detalle.
    *
    * @type {Folio}
    * @memberof FoliosDetalleAbstractoComponent
    */
   @Input() folio: Folio = null
 
+  Date = Date
 
-  @Output() pedido = new  EventEmitter<FolioLinea> ()
+  @Output() pedido = new EventEmitter<FolioLinea>()
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  horaDeConsulta(): Date {
+    return new Date()
   }
 
   /**
@@ -33,13 +36,13 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    * @returns {number}
    * @memberof FoliosDetalleAbstractoComponent
    */
-  sumarTenidos( coloresTenidos: ColoresTenidos []):  number {
-
+  sumarTenidos(coloresTenidos: ColoresTenidos[]): number {
     let total = 0
-    coloresTenidos.map( (color)=>{ total += color.cantidad } )
+    coloresTenidos.map((color) => {
+      total += color.cantidad
+    })
     return total
   }
-
 
   /**
    *Emite el pedido seleccionado para mostrar el detalle.
@@ -47,11 +50,7 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    * @param {FolioLinea} pedido
    * @memberof FoliosDetalleAbstractoComponent
    */
-  mostrarDetalleDePedido( pedido: FolioLinea ){
-    this.pedido.emit( pedido )
+  mostrarDetalleDePedido(pedido: FolioLinea) {
+    this.pedido.emit(pedido)
   }
-
-
-  
-
 }

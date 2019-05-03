@@ -1,3 +1,106 @@
-<p>
-  ordenes-detalle works!
-</p>
+<div [id]="orden._id" *ngIf="orden" class="w-100">
+  <div class="orden">
+    <hr class="thin no-margin-bottom " />
+
+    <!-- 
+           =====================================
+            Encabezado de orden
+           =====================================
+           -->
+    <div class="d-flex justify-content-between align-items-center">
+      <span class=" mr-3 ">
+        <app-nivel-urgencia
+          [nivel]="orden.nivelDeUrgencia"
+        ></app-nivel-urgencia>
+      </span>
+      <span class=" mr-3">
+        {{ folio.fechaFolio | fecha: "D/MM/Y" }}
+      </span>
+      <span class=" mr-3"
+        ># {{ orden.numeroDeOrden + 1 }}/{{ linea.ordenes.length }}</span
+      >
+      <span class=" mr-3"
+        >PZ TEO: {{ orden.piezasTeoricas | number: "1.0-2" }}</span
+      >
+      <span class=" mr-3">Unidad: {{ orden.unidad }}</span>
+      <span class="badge badge-dark text-white badge-pill pull-right ">
+        <b class="mr-3"> Orden </b> {{ orden.orden }}</span
+      >
+    </div>
+    <hr class="thin " />
+
+    <!-- 
+           =====================================
+            END Encabezado de orden
+           =====================================
+           -->
+
+    <!-- 
+           =====================================
+            Cuerpo de la orden
+           =====================================
+           -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="pull-left">
+          <h3 class="mt-0">
+            <strong>{{ linea.modeloCompleto | modeloCompleto }}</strong>
+          </h3>
+          <ng-container *ngIf="linea.laserCliente?.laser">
+            <b class="font-weight-bold">MARCA LASER: </b>
+            <span class="label label-inverse">{{
+              linea.laserCliente.laser
+            }}</span>
+            <br />
+          </ng-container>
+
+          <span *ngIf="folio.observaciones">{{ folio.observaciones }}</span>
+          <span *ngIf="linea.observaciones">{{ linea.observaciones }}</span>
+          <span *ngIf="orden.observaciones">{{ orden.observaciones }}</span>
+        </div>
+        <div class=" pull-right">
+          <qrcode [qrdata]="orden._id" size="100"></qrcode>
+          <div class="mt-2">
+            <app-boton-para-imprecion
+              [id]="orden._id"
+              [mostrarTexto]="false"
+            ></app-boton-para-imprecion>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 
+             =====================================
+              END Cuerpo de la orden
+             =====================================
+             -->
+
+    <!-- 
+             =====================================
+              Trayecto de la orden.
+             =====================================
+             -->
+
+    <div class="orden-footer">
+      <hr class="thin" />
+      <div class=" font-weight-bold" style=" font-size: 6pt;">
+        <ng-container
+          *ngFor="let trayecto of orden.trayectoNormal; let i = index"
+        >
+          {{ trayecto.departamento.nombre }}
+          <span *ngIf="i + 1 != orden.trayectoNormal.length">
+            >
+          </span>
+        </ng-container>
+      </div>
+      <hr class="thin no-margin-bottom" />
+    </div>
+
+    <!-- 
+             =====================================
+              END Trayecto de la orden.
+             =====================================
+             -->
+  </div>
+</div>

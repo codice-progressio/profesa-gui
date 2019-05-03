@@ -198,6 +198,8 @@ export class FoliosSeguimientoComponent implements OnInit {
 
       // Aqui este siempre debe ser true
       .setEntregarAProduccion(true)
+      .setOrdenesGeneradas( true )
+
 
       .setFechaDeCreacionDesdeEl(
         componente.fechaDeCreacionDesdeEl
@@ -218,6 +220,9 @@ export class FoliosSeguimientoComponent implements OnInit {
       .subscribe((folios) => {
         this.folios = folios;
         this._paginadorService.activarPaginador(this._folioService.total);
+        this.actualizarVista = false;
+
+        this.esNecesarioReinciarPaginador = false;
       });
   }
   /**
@@ -230,23 +235,14 @@ export class FoliosSeguimientoComponent implements OnInit {
     this.actualizarVista = true;
 
     this.esNecesarioReinciarPaginador = true;
+    let intervalo = setInterval( ()=>{
+      if( this.componenteFiltrador ){
+        clearInterval(intervalo)
+        this.aplicarFiltros(this.componenteFiltrador)
+      }
 
-    this._folioService
-      .filtros(new FiltrosFolio(this._folioService))
-
-      .setEntregarAProduccion(true)
-      .setOrdenesGeneradas(false)
-
-      // Paginador
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .setSortCampos([['fechaDeEntregaAProduccion', 1]])
-      .servicio.todo()
-      .subscribe((folios) => {
-        this.folios = folios;
-        this._paginadorService.activarPaginador(this._folioService.total);
-        this.actualizarVista = false;
-      });
+    } ,10 )
+      
   }
 
 

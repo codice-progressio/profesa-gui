@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Folio } from 'src/app/models/folio.models';
+import { FolioLinea } from '../../../models/folioLinea.models'
+import { Orden } from 'src/app/models/orden.models';
 
 @Component({
   selector: 'app-ordenes-detalle',
@@ -8,6 +11,10 @@ import { Component, OnInit } from '@angular/core';
 export class OrdenesDetalleComponent implements OnInit {
 
   constructor() { }
+
+  @Input() folio: Folio
+  @Input() linea: FolioLinea
+  @Input() orden: Orden
 
   ngOnInit() {
   }

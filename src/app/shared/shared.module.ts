@@ -24,6 +24,8 @@ import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe';
 import {NgxMaskModule} from 'ngx-mask'
 import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component';
 import { Paginador2Component } from '../components/paginador2/paginador2.component';
+import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component';
+
 
 
 
@@ -53,7 +55,8 @@ import { Paginador2Component } from '../components/paginador2/paginador2.compone
         OrdenadorVisualComponent,
         OrganizadorDragAndDropComponent,
         ProgressBarComponent,
-        Paginador2Component
+        Paginador2Component,
+        BotonParaImprecionComponent
        
     ],
     exports: [
@@ -74,7 +77,8 @@ import { Paginador2Component } from '../components/paginador2/paginador2.compone
         OrganizadorDragAndDropComponent,
         ProgressBarComponent,
         NgxMaskModule,
-        Paginador2Component
+        Paginador2Component,
+        BotonParaImprecionComponent
     ],
     providers:[ModeloCompletoPipe]
 })

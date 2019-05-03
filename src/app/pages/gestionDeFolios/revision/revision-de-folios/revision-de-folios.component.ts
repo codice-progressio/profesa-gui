@@ -1,50 +1,50 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Folio } from 'src/app/models/folio.models';
-import { GrupoDeFiltroComponent } from '../../folios/grupo-de-filtro.component';
-import { FolioNewService } from '../../../../services/folio/folio-new.service';
-import { PaginadorService } from 'src/app/components/paginador/paginador.service';
-import { FiltrosFolio } from 'src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio';
-import { FolioLinea } from '../../../../models/folioLinea.models';
-import { Orden } from 'src/app/models/orden.models';
-import { FoliosCrearModificarAbstractoComponent } from '../../folios/abstractos/folios-crear-modificar-abstracto.component';
-import { ManejoDeMensajesService } from 'src/app/services/service.index';
-import { RevisionDeOrdenesAbstractoComponent } from '../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component';
+import { Component, OnInit, Inject, ɵConsole } from "@angular/core"
+import { Folio } from "src/app/models/folio.models"
+import { GrupoDeFiltroComponent } from "../../folios/grupo-de-filtro.component"
+import { FolioNewService } from "../../../../services/folio/folio-new.service"
+import { PaginadorService } from "src/app/components/paginador/paginador.service"
+import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio"
+import { FolioLinea } from "../../../../models/folioLinea.models"
+import { Orden } from "src/app/models/orden.models"
+import { FoliosCrearModificarAbstractoComponent } from "../../folios/abstractos/folios-crear-modificar-abstracto.component"
+import { ManejoDeMensajesService } from "src/app/services/service.index"
+import { RevisionDeOrdenesAbstractoComponent } from "../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
+import { FolioService } from "../../../../services/folio/folio.service"
 
 @Component({
-  selector: 'app-revision-de-folios',
-  templateUrl: './revision-de-folios.component.html',
+  selector: "app-revision-de-folios",
+  templateUrl: "./revision-de-folios.component.html",
   styles: [],
-  providers: [{ provide: 'paginadorFolios', useClass: PaginadorService }]
+  providers: [{ provide: "paginadorFolios", useClass: PaginadorService }]
 })
 export class RevisionDeFoliosComponent implements OnInit {
-
   constructor(
     public _folioService: FolioNewService,
-    @Inject('paginadorFolios') public _paginadorService: PaginadorService,
+    @Inject("paginadorFolios") public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
     this._paginadorService.callback = () => {
       if (this.esNecesarioReinciarPaginador) {
-        this.cargarFolios();
+        this.cargarFolios()
       } else {
-        this.aplicarFiltros(this.componenteFiltrador);
+        this.aplicarFiltros(this.componenteFiltrador)
       }
-    };
+    }
 
-    this.cargarFolios();
+    this.cargarFolios()
   }
-  folios: Folio[] = [];
-  componenteFiltrador: GrupoDeFiltroComponent;
-  verComoPedidos: boolean = false;
-  folioParaDetalle: Folio;
-  pedidoParaDetalle: FolioLinea;
-  ordenParaDetalle: Orden;
+  folios: Folio[] = []
+  componenteFiltrador: GrupoDeFiltroComponent
+  verComoPedidos: boolean = false
+  folioParaDetalle: Folio
+  pedidoParaDetalle: FolioLinea
+  ordenParaDetalle: Orden
 
-  componenteRevisionDeOrdenes: RevisionDeOrdenesAbstractoComponent;
+  componenteRevisionDeOrdenes: RevisionDeOrdenesAbstractoComponent
 
-  esNecesarioReinciarPaginador: boolean;
+  esNecesarioReinciarPaginador: boolean
 
-  actualizarVista: boolean = false;
+  actualizarVista: boolean = false
 
   /**
    *El folio del cual se generaran ordenes.
@@ -52,61 +52,62 @@ export class RevisionDeFoliosComponent implements OnInit {
    * @type {Folio}
    * @memberof RevisionDeFoliosComponent
    */
-  folioParaGenerarOrdenes: Folio = null;
+  folioParaGenerarOrdenes: Folio = null
 
   ngOnInit() {
     new Promise((resolve, reject) => {
       // Esperamos a que el componenete este disponible.
       const intervalo = setInterval(() => {
         if (this.componenteFiltrador) {
-          clearInterval(intervalo);
-          resolve();
+          clearInterval(intervalo)
+          resolve()
         }
-      }, 10);
+      }, 10)
     })
       .then(() => {
         // Definimos los componentes que deban existir.
-        this.mostrarFiltros();
+        this.mostrarFiltros()
       })
       .catch((err) => {
-        throw err;
-      });
+        throw err
+      })
   }
 
   mostrarFiltros(paraPedidos: boolean = false) {
-    this.componenteFiltrador.limpiar();
-    this.componenteFiltrador.seleccionarCamposVisibles.mostrarTodo();
+    this.componenteFiltrador.limpiar()
+    this.componenteFiltrador.seleccionarCamposVisibles.mostrarTodo()
     if (!paraPedidos) {
       this.componenteFiltrador.seleccionarCamposVisibles
         .setPedido(false)
         .setModelo(false)
         .setTamano(false)
         .setColor(false)
-        .setTerminado(false);
+        .setTerminado(false)
     }
 
     this.componenteFiltrador.seleccionarCamposVisibles
       .setFechaDeEntregaEstimadaDesdeEl(false)
       .setFechaDeEntregaEstimadaHasta(false)
       .setFechaFinalizacionDelFolioHasta(false)
-      .setFechaFinalizacionDelFolioDesdeEl( false)
+      .setFechaFinalizacionDelFolioDesdeEl(false)
   }
 
   cambiarVerComoPedidos(val: boolean) {
-    this.verComoPedidos = val;
-    this.mostrarFiltros(val);
+    this.verComoPedidos = val
+    this.mostrarFiltros(val)
   }
 
   reiniciarPaginador() {
-    this._paginadorService.limite = 5;
-    this._paginadorService.desde = 0;
-    this._paginadorService.actual = 1;
+    this._paginadorService.limite = 5
+    this._paginadorService.desde = 0
+    this._paginadorService.actual = 1
   }
 
   aplicarFiltros(componente: GrupoDeFiltroComponent) {
+    this.actualizarVista = true
     if (this.esNecesarioReinciarPaginador) {
-      this.reiniciarPaginador();
-      this.esNecesarioReinciarPaginador = false;
+      this.reiniciarPaginador()
+      this.esNecesarioReinciarPaginador = false
     }
 
     this._folioService
@@ -116,6 +117,7 @@ export class RevisionDeFoliosComponent implements OnInit {
           ? componente.vendedorSeleccionado._id
           : null
       )
+
       .setFolio(componente.folio ? componente.folio : null)
       .setPedido(componente.pedido ? componente.pedido : null)
       .setCliente(
@@ -140,9 +142,6 @@ export class RevisionDeFoliosComponent implements OnInit {
           : null
       )
 
-      // Aqui este siempre debe ser true
-      .setEntregarAProduccion(true)
-
       .setFechaDeCreacionDesdeEl(
         componente.fechaDeCreacionDesdeEl
           ? new Date(componente.fechaDeCreacionDesdeEl).toISOString()
@@ -153,16 +152,24 @@ export class RevisionDeFoliosComponent implements OnInit {
           ? new Date(componente.fechaDeCreacionHasta).toISOString()
           : null
       )
+      // Defaults de revisioon de folios.
+      // Debe tener la bandera de entrega a produccion.
+      .setEntregarAProduccion(true)
+      //  No debe de tener ordenes generedas.
+      .setOrdenesGeneradas(false)
 
       // Paginador
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([['fechaDeEntregaAProduccion', -1]])
+      .setSortCampos([["fechaDeEntregaAProduccion", -1]])
       .servicio.todo()
       .subscribe((folios) => {
-        this.folios = folios;
-        this._paginadorService.activarPaginador(this._folioService.total);
-      });
+        this.folios = []
+        this.folios = folios
+        this._paginadorService.activarPaginador(this._folioService.total)
+        this.actualizarVista = false
+      })
+
   }
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
@@ -171,34 +178,21 @@ export class RevisionDeFoliosComponent implements OnInit {
    * @memberof FoliosComponent
    */
   cargarFolios() {
-    this.actualizarVista = true;
-
-    this.esNecesarioReinciarPaginador = true;
-
-    this._folioService
-      .filtros(new FiltrosFolio(this._folioService))
-
-      .setEntregarAProduccion(true)
-      .setOrdenesGeneradas(false)
-
-      // Paginador
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .setSortCampos([['fechaDeEntregaAProduccion', 1]])
-      .servicio.todo()
-      .subscribe((folios) => {
-        this.folios = folios;
-        this._paginadorService.activarPaginador(this._folioService.total);
-        this.actualizarVista = false;
-      });
+    this.esNecesarioReinciarPaginador = true
+    let interval = setInterval(() => {
+      if (this.componenteFiltrador) {
+        clearInterval(interval)
+        this.aplicarFiltros(this.componenteFiltrador)
+      }
+    }, 10)
   }
 
   calcularTotalDePiezas(folio: Folio): number {
-    let total = 0;
+    let total = 0
     folio.folioLineas.map((ped) => {
-      total += ped.cantidad;
-    });
-    return total;
+      total += ped.cantidad
+    })
+    return total
   }
 
   /**
@@ -211,30 +205,42 @@ export class RevisionDeFoliosComponent implements OnInit {
   retornarControlDeFolioAVendedor(folio: Folio) {
     const msj = `Vas a retornar el folio a ${folio.vendedor.nombre}. 
     Esto significa que la fecha para produccion se eliminara y 
-    el vendedor tendra disponible el folio para editarlo. Quieres continuar?`;
+    el vendedor tendra disponible el folio para editarlo. Quieres continuar?`
 
     this._msjService.confirmarAccion(msj, () => {
       this._folioService
         .iniciarProduccion(folio._id, false)
         .subscribe((folio) => {
-          this.cargarFolios();
-        });
-    });
+          this.cargarFolios()
+        })
+    })
   }
   generarOrdenesDelFolio(folio: Folio) {
-    this.folioParaGenerarOrdenes = folio;
-    folio.popularOrdenesDeTodosLosPedidos();
+    this.folioParaGenerarOrdenes = folio
+    folio.popularOrdenesDeTodosLosPedidos()
   }
 
   generarOrdenes(folio: Folio) {
-    folio.ordenesGeneradas = true;
-    folio.limpiarParaOrdenesGeneradas();
-    this._folioService.modificar(folio).subscribe((folio) => {
-      this.cargarFolios();
-    });
+    this.folios = []
+    folio.ordenesGeneradas = true
+    folio.limpiarParaOrdenesGeneradas()
+
+    this._folioService
+      .modificar(folio)
+      .toPromise()
+      .then((folio) => {
+        setTimeout( ()=>{
+          this.cargarFolios()
+
+        }, 1000 )
+      })
   }
 
   revisionDeOrdenesCargarComponente(com: RevisionDeOrdenesAbstractoComponent) {
-    this.componenteRevisionDeOrdenes = com;
+    this.componenteRevisionDeOrdenes = com
+  }
+
+  customTB(index, folio) {
+    return `${index}-${folio._id}`
   }
 }

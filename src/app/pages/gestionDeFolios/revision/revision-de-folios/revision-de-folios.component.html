@@ -107,7 +107,7 @@
           </thead>
           <tbody>
             <ng-container *ngIf="folios">
-              <ng-container *ngFor="let folio of folios">
+              <ng-container *ngFor="let folio of folios, trackBy: customTB">
                 <tr
                   *ngFor="
                     let pedido of verComoPedidos
@@ -182,6 +182,7 @@
                     </ng-template>
                   </td>
                   <td class="fit">
+                  
                     <button
                       (click)="generarOrdenesDelFolio(folio)"
                       title="Generar las ordenes de este folio"

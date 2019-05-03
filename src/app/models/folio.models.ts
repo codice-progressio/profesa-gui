@@ -64,6 +64,7 @@ export class Folio implements Deserializable {
 
   limpiarParaOrdenesGeneradas() {
     this.folioLineas.forEach(pedido => {
+      delete pedido.procesos
       pedido.ordenes.forEach(orden => {
         delete orden.trayectoNormal
         delete orden.trayectoRecorrido

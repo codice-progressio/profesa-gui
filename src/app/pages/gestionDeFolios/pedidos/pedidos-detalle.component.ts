@@ -30,4 +30,8 @@ export class PedidosDetalleComponent implements OnInit {
   ngOnInit() {
   }
 
+  mostrarDetalleDeLaOrden( orden: Orden ){
+    this.orden.emit( orden )
+  }
+
 }

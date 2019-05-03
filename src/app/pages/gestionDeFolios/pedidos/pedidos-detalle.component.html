@@ -1,24 +1,28 @@
 <div id="print" *ngIf="pedido">
   <h3>
     <b>DETALLE DE PEDIDO</b>
+    <small class="ml-3">
+      <app-nivel-urgencia [nivel]="pedido.nivelDeUrgencia"></app-nivel-urgencia>
+    </small>
     <span class="pull-right">#{{ pedido.pedido }}</span>
   </h3>
   <hr />
   <div class="row">
     <div class="col-md-12">
-      <div class="pull-right">
-        <strong class="text-muted">Modelo</strong>
-        <h1 class="display-5">{{ pedido.modeloCompleto | modeloCompleto }}</h1>
-        <h3>
+      <div class="pull-right w-50 b-l text-right">
+        <h1>
+          <strong>{{ pedido.modeloCompleto | modeloCompleto }}</strong>
+        </h1>
+        <h6>
           Piezas solicitadas <strong>{{ pedido.cantidad | number }}</strong>
-        </h3>
-        <h3>
-          Piezas producidas
+        </h6>
+        <h6>
+          Piezas producidas al dia de hoy
           <strong>{{ pedido.cantidadProducida | number }}</strong>
-        </h3>
+        </h6>
       </div>
 
-      <strong title="Fecha estimada de entrega">FET: </strong>
+      <h6 title="Fecha estimada de entrega">Fecha estimada de entrega:</h6>
       <span title="Fecha sin definir">
         <i class="fa fa-clock-o" aria-hidden="true"></i> Sin definir
       </span>
@@ -41,15 +45,17 @@
             <tr>
               <th></th>
               <th title="Numero de orden" class="text-center">
-                <i class="fa fa-question-circle"></i> ORD
-              </th>
-
-              <th title="Estatus de orden" class="text-right">
-                <i class="fa fa-question-circle"></i> EO
+                ORD
               </th>
 
               <th title="Ubicacion actual">
-                <i class="fas fa-question-circle    "></i> UA
+                UA
+              </th>
+              <th title="Piezas teoricas">
+                PT
+              </th>
+              <th title="Piezas producidas">
+                PP
               </th>
 
               <th
@@ -65,6 +71,7 @@
               <tr>
                 <td class="fit">
                   <a
+                  (click)="mostrarDetalleDeLaOrden(orden)"
                     title="Ver detalle rapido de la orden."
                     data-toggle="modal"
                     data-target="#detalleDeLaOrden"
@@ -77,7 +84,10 @@
                   ></a>
                 </td>
                 <td class="text-center">{{ orden.orden }}</td>
-                <td>{{ pedido.modeloCompleto | modeloCompleto }}</td>
+                <td class="text-center">
+                  {{ orden.ubicacionActual.departamento?.nombre }}
+                </td>
+
                 <td class="text-right">{{ orden.piezasTeoricas | number }}</td>
                 <td class="text-right">
                   {{ pedido.cantidadProducida | number }}
