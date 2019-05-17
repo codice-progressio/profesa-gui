@@ -248,12 +248,11 @@ export class GrupoDeFiltroComponent implements OnInit {
    *Bandera que senala si el folio esta terminado. Para 
    filtrar por fechas es necesario usuario los campos de 
    fecha de terminado de folio. 
-   TODO: Defininr terminado
    *
    * @type {boolean}
    * @memberof GrupoDeFiltroComponent
    */
-  terminado: boolean = null
+  folioTerminado: boolean = null
 
   /**
    * Bandera que senala si el pedido esta termiando. Para

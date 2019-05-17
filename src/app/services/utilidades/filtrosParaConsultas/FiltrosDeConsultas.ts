@@ -114,9 +114,8 @@ export class FiltrosDeConsultas<T>  {
         properties.push( 'sortCampos' )
         properties.push( 'desde' )
         properties.push( 'limite' )
-
+        // Quitamos la propiedad servicio para que no nos perjudique.
         properties = properties.filter( (x)=>{ return x !== 'servicio'} )
-
         properties = properties.map( (x)=>{
             return  x.replace('_', '')
         })

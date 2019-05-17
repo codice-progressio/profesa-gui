@@ -22,7 +22,8 @@ export class CamposParaMostrarEnFiltrosFolio {
     private _fechaFinalizacionDelFolioDesdeEl?: boolean,
     private _fechaFinalizacionDelFolioHasta?: boolean,
     private _entregarAProduccion?: boolean,
-    private _ordenesGeneradas?: boolean
+    private _ordenesGeneradas?: boolean,
+    private _foliosTerminados?: boolean
   ) {}
 
   /**
@@ -165,6 +166,20 @@ export class CamposParaMostrarEnFiltrosFolio {
   }
   public setFolio(value: boolean): this {
     this._folio = value
+    return this
+  }
+  public get foliosTerminados(): boolean {
+    return this._foliosTerminados
+  }
+  /**
+   *Bandera que define si se va a mostrar el campo folioTerminado.
+   *
+   * @param {boolean} value
+   * @returns {this}
+   * @memberof CamposParaMostrarEnFiltrosFolio
+   */
+  public setFoliosTerminados(value: boolean): this {
+    this._foliosTerminados = value
     return this
   }
 }

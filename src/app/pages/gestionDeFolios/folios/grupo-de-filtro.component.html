@@ -9,6 +9,29 @@
     <hr />
   </div>
 
+
+  <div 
+
+  *ngIf="seleccionarCamposVisibles.foliosTerminados"
+  title='Define si se filtran o no los folios terminados. Esta opcion va de la mano con la fecha pero puede usarse de manera independiente. Si no se definen fechas de terminado se mostran todos los folios terminados o no terminados. Si la opcion se deja en ignorar filtro se retornaran todos los folios. '
+  class="col-12 col-sm-4 col-lg-3">
+  <div class="form-group">
+      <select
+        [(ngModel)]="folioTerminado"
+        class="custom-select"
+        name="entregadoAProduccion"
+        id="entregadoAProduccion"
+      >
+        <option [ngValue]="true">Solo terminado</option>
+        <option [ngValue]="false">Solo sin terminar</option>
+        <option [ngValue]="null">Ignorar este filtro</option>
+      </select>
+      <small id="helpId" class="form-text text-muted"
+        >Folios terminados</small
+      >
+    </div>
+  </div>
+
   <div
     title="El numero de folio. La coincidencia es exacta de manera que solo se puede obtener un resultado en la vista de folios. En la vista de pedidos se mostrar todos los pedidos que coincidan con el folio"
     *ngIf="seleccionarCamposVisibles.folio"

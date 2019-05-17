@@ -220,6 +220,9 @@ export class FoliosSeguimientoComponent implements OnInit {
           ? new Date(componente.fechaDeCreacionHasta).toISOString()
           : null
       )
+      .setFoliosTerminados( 
+        componente.folioTerminado
+      )
 
       // Paginador
       .setDesde(this._paginadorService.desde)
