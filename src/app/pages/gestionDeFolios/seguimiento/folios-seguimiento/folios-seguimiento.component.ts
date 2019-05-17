@@ -89,15 +89,7 @@ export class FoliosSeguimientoComponent implements OnInit {
     @Inject("paginadorFolios") public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
-    this._paginadorService.callback = () => {
-      if (this.esNecesarioReinciarPaginador) {
-        this.cargarFolios()
-      } else {
-        this.aplicarFiltros(this.componenteFiltrador)
-      }
-    }
-
-    this.cargarFolios()
+    
   }
 
   /**
@@ -113,6 +105,23 @@ export class FoliosSeguimientoComponent implements OnInit {
       // Esperamos a que el componenete este disponible.
       const intervalo = setInterval(() => {
         if (this.componenteFiltrador) {
+          // Seteamos en false el componenete para que a la
+          // hora de cargar los folios no nos traiga los terminados
+          // hasta que el usuario asi lo defina
+          // Esta linea tiene que ir aqui por que esperamos a sincronizar el componente para poder modificar sus propiedades.
+          this.componenteFiltrador.folioTerminado = false
+          // ---------------------------------------------
+
+          this._paginadorService.callback = () => {
+            if (this.esNecesarioReinciarPaginador) {
+              this.cargarFolios()
+            } else {
+              this.aplicarFiltros(this.componenteFiltrador)
+            }
+          }
+      
+          this.cargarFolios()
+          
           clearInterval(intervalo)
           resolve()
         }
@@ -220,9 +229,7 @@ export class FoliosSeguimientoComponent implements OnInit {
           ? new Date(componente.fechaDeCreacionHasta).toISOString()
           : null
       )
-      .setFoliosTerminados( 
-        componente.folioTerminado
-      )
+      .setFoliosTerminados(componente.folioTerminado)
 
       // Paginador
       .setDesde(this._paginadorService.desde)
