@@ -16,7 +16,19 @@ export class OrdenesDetalleComponent implements OnInit {
   @Input() linea: FolioLinea
   @Input() orden: Orden
 
+  ordenTexto: string
+
   ngOnInit() {
+
+    
+      this.ordenTexto = JSON.stringify( this.orden )
+
+  
+  }
+
+
+  obtenerJson(): string {
+    return JSON.stringify(this.orden)
   }
 
 }

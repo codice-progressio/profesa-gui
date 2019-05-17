@@ -1,4 +1,4 @@
-<div [id]="orden._id" *ngIf="orden" class="w-100">
+<div [id]="orden._id" *ngIf="orden" class="w-100 salto-de-pagina">
   <div class="orden">
     <hr class="thin no-margin-bottom " />
 
@@ -42,8 +42,7 @@
            -->
 
     <div class="row">
-      <div class="col-12">
-        <div class="pull-left">
+        <div class="col-10">
           <h3 class="mt-0">
             <strong>{{ linea.modeloCompleto | modeloCompleto }}</strong>
           </h3>
@@ -59,15 +58,15 @@
           <span *ngIf="linea.observaciones">{{ linea.observaciones }}</span>
           <span *ngIf="orden.observaciones">{{ orden.observaciones }}</span>
         </div>
-        <div class=" pull-right">
+        <div class="col" style='min-width: 100px;'>
           <qrcode [qrdata]="orden._id" size="100"></qrcode>
+
           <div class="mt-2">
             <app-boton-para-imprecion
               [id]="orden._id"
               [mostrarTexto]="false"
             ></app-boton-para-imprecion>
           </div>
-        </div>
       </div>
     </div>
     <!-- 

@@ -350,10 +350,7 @@ export class FolioService {
    */
   iniciarTrabajoDeOrden(orden: Orden , idDepto: string, depto: VariablesDeptos , callbackError: any = null) {
     const a: number = this._preLoaderService.loading('Iniciando trabajdo de orden.');
-    console.log(orden.ubicacionActual);
-    
     const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
-    console.log( url )
     return this.http.put(url, 
       {
         _id: orden._id,
@@ -425,7 +422,6 @@ export class FolioService {
   modificarOrden(dato: any, idOrden: string, idDepto: string): any {
     const a: number = this._preLoaderService.loading('Guardando cambios de orden.');
     const url =`${URL_SERVICIOS}/orden/${idOrden}?depto=${idDepto}`;
-    console.log('el dato que se esta enviando', dato)
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
         this._msjService.ok_(resp,null, a);

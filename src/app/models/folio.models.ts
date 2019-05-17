@@ -2,6 +2,10 @@ import { Cliente } from "./cliente.models"
 import { Usuario } from "./usuario.model"
 import { FolioLinea } from "./folioLinea.models"
 import { Deserializable } from "./deserealizable.model"
+import { Injectable, Component, Inject } from "@angular/core";
+import { FolioService } from '../services/folio/folio.service'
+import { FolioNewService } from "../services/service.index";
+
 
 export class Folio implements Deserializable {
   constructor(
@@ -32,7 +36,7 @@ export class Folio implements Deserializable {
     public fechaDeEntregaAProduccion?: Date,
     // Este es propio del front para
     // interactuar con botones.
-    public mostrandoInfo: boolean = false
+    public mostrandoInfo: boolean = false,
   ) {}
 
   deserialize(input: Folio): this {

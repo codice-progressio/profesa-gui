@@ -1,11 +1,317 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body text-center">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <a
+          class="btn btn-primary btn-sm  mr-3"
+          data-toggle="collapse"
+          href="#grupoDeFiltroId"
+          aria-expanded="false"
+          aria-controls="grupoDeFiltroId"
+        >
+          Mostrar filtros
+        </a>
 
-                <h1 class="display-1"> <i class="fa fa-download "></i> EN CONSTRUCCION <i class="fa fa-download "></i></h1>
+        <a
+          (click)="cambiarVerComoPedidos(!verComoPedidos)"
+          class="btn btn-warning btn-sm mr-3 "
+          aria-expanded="false"
+          aria-controls="grupoDeFiltroId"
+        >
+          <ng-container *ngIf="verComoPedidos; else verComoPedidosTemplate">
+            Ver como folios
+          </ng-container>
+          <ng-template #verComoPedidosTemplate>
+            Ver como pedidos
+          </ng-template>
+        </a>
 
-            </div>
-        </div>
+        <a (click)="this.cargarFolios()" class="btn btn-secondary btn-sm ">
+          <i
+            class="fas fa-refresh fa-spin"
+            [ngClass]="{ 'fa-spin': actualizarVista }"
+          ></i>
+          Actualizar</a
+        >
+      </div>
     </div>
+  </div>
 </div>
+
+<div class="collapse" id="grupoDeFiltroId">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <app-grupo-de-filtro
+            (obtenerEsteComponente)="this.componenteFiltrador = $event"
+            (obtenerFiltros)="aplicarFiltros($event)"
+          >
+          </app-grupo-de-filtro>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="folios.length === 0" class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="display-1 ">No hay <strong>folios</strong> para mostrar</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="folios.length > 0" class="row animated fadeIn faster">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <app-paginador *ngIf="folios" [paginador]="_paginadorService">
+        </app-paginador>
+
+        <table class="table table-hover">
+          <thead>
+            <tr *ngIf="folios">
+              <th></th>
+              <!-- <th title='Ver detalle rapido del folio.'><i class="fas fa-question-circle    "></i></th>
+                                  <th title='Revisar a fondo el folio y si es necesario alterar funciones basicas.'> <i class="fas fa-question-circle    "></i></th> -->
+              <th title="Numero consecutivo del folio.">
+                <i class="fas fa-question-circle    "></i>FOL
+              </th>
+              <th *ngIf="verComoPedidos" title="Numero de pedido.">
+                <i class="fas fa-question-circle    "></i>PED
+              </th>
+              <th title="El cliente.">
+                <i class="fas fa-question-circle    "></i>CLI
+              </th>
+              <th title="El vendedor al cual pertenece el folio.">
+                <i class="fas fa-question-circle    "></i>VEN
+              </th>
+              <th *ngIf="verComoPedidos" title="El modelo completo">
+                <i class="fas fa-question-circle    "></i>MOD
+              </th>
+              <th
+                title="Fecha de entrega a produccion. Es la fecha en que el vendedor finaliza las modificaciones a su folio y lo entrega a produccion."
+              >
+                <i class="fas fa-question-circle    "></i>FEP
+              </th>
+              <th
+                title="La sumatoria de todas las piezas de todos los pedidos del folio"
+              >
+                <i class="fas fa-question-circle    "></i>TPZ
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="folios">
+              <ng-container *ngFor="let folio of folios; trackBy: customTB">
+                <tr
+                  *ngFor="
+                    let pedido of verComoPedidos
+                      ? folio.folioLineas
+                      : [folio.folioLineas]
+                  "
+                >
+                  <td class="fit">
+                    <a
+                      *ngIf="!verComoPedidos"
+                      (click)="folioParaDetalle = folio"
+                      title="Ver detalle rapido del folio."
+                      data-toggle="modal"
+                      data-target="#detalleFolio"
+                      name=""
+                      id=""
+                      class="btn btn-primary text-white btn-sm mr-2"
+                      role="button"
+                    >
+                      <i class="fas fa-eye    "></i
+                    ></a>
+
+                    <a
+                      *ngIf="verComoPedidos"
+                      (click)="pedidoParaDetalle = pedido"
+                      title="Ver detalle rapido del pedido."
+                      data-toggle="modal"
+                      data-target="#detalleDePedido"
+                      name=""
+                      id=""
+                      class="btn btn-primary text-white btn-sm mr-2"
+                      role="button"
+                    >
+                      <i class="fas fa-eye    "></i
+                    ></a>
+
+                   
+                  </td>
+                  <td class="fit">{{ folio.numeroDeFolio }}</td>
+                  <td *ngIf="verComoPedidos" class="fit">
+                    {{ pedido.pedido }}
+                  </td>
+                  <td>{{ folio.cliente.nombre }}</td>
+                  <td>{{ folio.vendedor.nombre }}</td>
+                  <td *ngIf="verComoPedidos" class="fit">
+                    {{ pedido.modeloCompleto | modeloCompleto }}
+                  </td>
+                  <td
+                    title="{{
+                      folio.fechaDeEntregaAProduccion | fecha: 'LLLL'
+                    }}"
+                  >
+                    <i class="fa fa-clock-o"></i>
+                    {{ folio.fechaDeEntregaAProduccion | date: "dd/MM/y" }}
+                  </td>
+                  <td>
+                    <ng-container *ngIf="verComoPedidos; else elseTemplate">
+                      {{ pedido.cantidad | number }}
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                      {{ folio.totalDePiezas | number }}
+                    </ng-template>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+
+            <tr *ngIf="!folios">
+              <td colspan="20">
+                <h1 class="display-1">
+                  No hay folios <strong>pendientes</strong> de revision
+                </h1>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-paginador *ngIf="folios" [paginador]="_paginadorService">
+        </app-paginador>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+      =====================================
+       MODAL FOLIO DETALLE
+      =====================================
+      -->
+
+<div
+  id="no_print"
+  class="modal fade"
+  id="detalleFolio"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-folios-detalle-abstracto
+          (pedido)="pedidoParaDetalle = $event"
+          [folio]="folioParaDetalle"
+        ></app-folios-detalle-abstracto>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+      =====================================
+       END MODAL FOLIO DETALLE
+      =====================================
+      -->
+
+<!-- 
+      =====================================
+       MODAL PEDIDO DETALLE
+      =====================================
+      -->
+<div
+  id="no_print"
+  class="modal   fade "
+  id="detalleDePedido"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-pedidos-detalle
+          (orden)="ordenParaDetalle = $event"
+          [pedido]="pedidoParaDetalle"
+        ></app-pedidos-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+      =====================================
+       END MODAL PEDIDO DETALLE
+      =====================================
+      -->
+
+<!-- 
+      =====================================
+       MODAL ORDEN DETALLE
+      =====================================
+      -->
+<div
+  id="no_print"
+  class="modal   fade "
+  id="detalleDeLaOrden"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-ordenes-detalle
+          [orden]='ordenParaDetalle'
+          [folio]='folioParaDetalle'
+          [linea]='pedidoParaDetalle'
+        ></app-ordenes-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+      =====================================
+       END MODAL ORDEN DETALLE
+      =====================================
+      -->
+
+<!-- 
+      =====================================
+       MODAL FOLIO EDICION
+      =====================================
+      -->
+<div
+  class="modal fade"
+  id="modalFolioEdicion"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-folios-crear-modificar-abstracto
+          #componenteModificar
+        ></app-folios-crear-modificar-abstracto>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+      =====================================
+       END MODAL FOLIO EDICION
+      =====================================
+      -->
+

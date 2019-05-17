@@ -88,11 +88,11 @@
                 FEP
               </th>
               <th
-                title="La sumatoria de todas las piezas de todos los pedidos del folio"s
+                title="La sumatoria de todas las piezas de todos los pedidos del folio"
               >
                 TPZ
               </th>
-              <th title='Observaciones'>OBS</th>
+              <th title="Observaciones">OBS</th>
               <th title="Porcentaje de progreso del folio.">%PRO</th>
             </tr>
           </thead>
@@ -108,6 +108,19 @@
                 >
                   <td class="fit">
                     <a
+                      (click)="folioParaDetalle = folio"
+                      [ngClass]="{
+                        'btn-warning': folio.impreso,
+                        'btn-outline-warning': !folio.impreso
+                      }"
+                      class="btn   btn-xs mr-1"
+                      data-toggle="modal"
+                      data-target="#imprimirOrdenesDePedido"
+                    >
+                      <i class="fa fa-print"></i>
+                    </a>
+
+                    <a
                       *ngIf="!verComoPedidos"
                       (click)="folioParaDetalle = folio"
                       title="Ver detalle rapido del folio."
@@ -115,7 +128,7 @@
                       data-target="#detalleFolio"
                       name=""
                       id=""
-                      class="btn btn-primary text-white btn-sm mr-2"
+                      class="btn btn-primary text-white btn-xs "
                       role="button"
                     >
                       <i class="fas fa-eye    "></i
@@ -129,7 +142,7 @@
                       data-target="#detalleDePedido"
                       name=""
                       id=""
-                      class="btn btn-primary text-white btn-sm mr-2"
+                      class="btn btn-primary text-white btn-xs"
                       role="button"
                     >
                       <i class="fas fa-eye    "></i
@@ -145,12 +158,13 @@
                     {{ pedido.modeloCompleto | modeloCompleto }}
                   </td>
                   <td
+                    class="no-wrap"
                     title="{{
                       folio.fechaDeEntregaAProduccion | fecha: 'LLLL'
                     }}"
                   >
                     <i class="fa fa-clock-o"></i>
-                    {{ folio.fechaDeEntregaAProduccion | date: "dd/MM/y" }}
+                    {{ folio.fechaDeEntregaAProduccion | date: "dd/MM/yy" }}
                   </td>
                   <td>
                     <ng-container *ngIf="verComoPedidos; else elseTemplate">
@@ -163,17 +177,19 @@
 
                   <td>
                     <ng-container *ngIf="verComoPedidos">
-                      <h6><strong>{{folio.observaciones}}</strong></h6>
-                      {{pedido.observaciones}} 
+                      <h6>
+                        <strong>{{ folio.observaciones }}</strong>
+                      </h6>
+                      {{ pedido.observaciones }}
                     </ng-container>
 
                     <ng-container>
-                      {{folio.observaciones}}
+                      {{ folio.observaciones }}
                     </ng-container>
-                    
-                    
                   </td>
                   <td>
+
+
                     <ng-container
                       *ngIf="verComoPedidos; else verComoPedTemplate"
                     >
@@ -290,7 +306,11 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <app-ordenes-detalle [folio]='folioParaDetalle' [linea]='pedidoParaDetalle' [orden]='ordenParaDetalle'></app-ordenes-detalle>
+        <app-ordenes-detalle
+          [folio]="folioParaDetalle"
+          [linea]="pedidoParaDetalle"
+          [orden]="ordenParaDetalle"
+        ></app-ordenes-detalle>
       </div>
     </div>
   </div>
@@ -329,3 +349,62 @@
  END MODAL FOLIO EDICION
 =====================================
 -->
+
+<!-- 
+=====================================
+ Imprimir ordenes del folio.
+=====================================
+-->
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="imprimirOrdenesDePedido"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Imprimir ordenes</h5>
+      </div>
+      <div class="modal-body" *ngIf="folioParaDetalle">
+        <div class="row">
+          <div class="col-12">
+            <div class="w-100" id="print-ordenes-de-folio">
+              <ng-container *ngFor="let pedido of folioParaDetalle.folioLineas">
+                <h2 class="no-print">
+                  <small>PED: </small> {{ pedido.pedido }}
+                </h2>
+
+                <app-ordenes-detalle
+                  *ngFor="let orden of pedido.ordenes"
+                  [orden]="orden"
+                  [folio]="folioParaDetalle"
+                  [linea]="pedido"
+                >
+                </app-ordenes-detalle>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-boton-para-imprecion
+          (click)="marcarImpreso()"
+          [id]="'print-ordenes-de-folio'"
+        ></app-boton-para-imprecion>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+  =====================================
+   END Imprimir ordenes del folio.
+  =====================================
+  -->

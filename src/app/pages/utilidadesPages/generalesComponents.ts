@@ -155,8 +155,6 @@ export class GeneralesComponents<T> {
             throw new Error('No se definieron los nombres de variables para el departamento..');
         }
 
-        console.log(variablesDepto)
-        
         this.variablesDepto = variablesDepto;
         let depto_vm = variablesDepto._vm;
         
@@ -170,7 +168,6 @@ export class GeneralesComponents<T> {
                return this._departamentoService.buscarPorId( this.ID_DEPTO )
                     .toPromise();
            }).then( ( departamento: Departamento ) => {
-                console.log( departamento.nombre )
                 this.NOMBRE_DEPTO = departamento.nombre
                 this.cargarOrdenedDeDepartamento(this.NOMBRE_DEPTO, this.ID_DEPTO, depto_vm )
                 this.tareasNgOnInit();
@@ -192,7 +189,6 @@ export class GeneralesComponents<T> {
      * @memberof GeneralesComponents
      */
     tareasNgOnInit(){
-        console.log( this.NOMBRE_DEPTO)
         this._qrScannerService.titulo = this.NOMBRE_DEPTO;
         this._qrScannerService.buscarOrden( 
             this,

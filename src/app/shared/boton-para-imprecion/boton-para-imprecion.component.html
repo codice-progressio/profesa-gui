@@ -1,8 +1,10 @@
 <!-- El attr.data-id nos permite pasar el id
 dinamico al onclick. De otra manera angular lo 
 senala como inseguro y no compila.  -->
+
 <a
   attr.data-id="{{ id }}"
+  attr.data-id-unico="{{ idUnico }}"
   class="btn btn-outline-warning no-print "
   onclick="
       // El id que vamos a pasar al jquery. 
@@ -12,7 +14,6 @@ senala como inseguro y no compila.  -->
           // Obtenemos el elemento para sacar del data-id
           // El id que queremos clonar. 
           idDeImprecion = $(idEspecial).attr('data-id')
-
           $('#'+idDeImprecion)
           // Despues clonamos todo ese elemento
           .clone()

@@ -112,6 +112,10 @@
     bottom: 0;
     width: 100%;
   }
+  .salto-de-pagina {
+    page-break-after: always;
+    page-break-before: always;
+  }
 }
 
 hr {
@@ -138,7 +142,10 @@ hr.thin.no-margin-bottom {
     /* border-top: 1px solid rgba(0, 0, 0, 0.1); */
 }
 
-
+/* Evita que se rompan las lineas de texto  */
+.no-wrap {
+  white-space: nowrap;
+}
 
 video {
   width: auto;
