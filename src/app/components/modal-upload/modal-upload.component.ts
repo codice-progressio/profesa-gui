@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
-import { SubirArchivoService } from '../../services/service.index';
 import { ModalUploadService } from './modal-upload.service';
+import { SubirArchivoService } from 'src/app/services/subir-archivo/subir-archivo.service';
 
 @Component({
   selector: 'app-modal-upload',

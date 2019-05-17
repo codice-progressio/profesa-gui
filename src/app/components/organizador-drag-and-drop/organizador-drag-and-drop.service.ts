@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OrganizadorDragAndDrop } from './models/organizador-drag-and-drop.model';
 import { DndObject } from './models/dndObject.model';
 import { Hijos } from './models/hijos.model';
-import { ManejoDeMensajesService } from 'src/app/services/service.index';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Injectable({
   providedIn: 'root'

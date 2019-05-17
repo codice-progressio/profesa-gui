@@ -10,14 +10,11 @@ import {
   FormGroup,
   AbstractControl
 } from "@angular/forms";
-import {
-  ValidacionesService,
-  DepartamentoService
-} from "src/app/services/service.index";
 import { ProcesoService } from "../../../services/proceso/proceso.service";
 import { OrganizadorDragAndDropService } from "../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service";
 import { DndObject } from "../../../components/organizador-drag-and-drop/models/dndObject.model";
 import { PaginadorService } from "../../../components/paginador/paginador.service";
+import { ValidacionesService } from "src/app/services/utilidades/validaciones.service";
 
 @Component({
   selector: "app-familia-de-procesos-crear-modificar",

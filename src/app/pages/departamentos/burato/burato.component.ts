@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
-import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-import { Metalizado } from '../../../models/metalizado.model';
-import { Orden } from 'src/app/models/orden.models';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { Burato } from 'src/app/models/burato.model';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-burato',

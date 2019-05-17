@@ -4,8 +4,10 @@ import { Maquina } from 'src/app/models/maquina.model';
 import { Proceso } from 'src/app/models/proceso.model';
 import { ProcesoService } from '../../../services/proceso/proceso.service';
 import { FormBuilder, Validators, FormArray, FormGroup, AbstractControl } from '@angular/forms';
-import { ValidacionesService, DepartamentoService, MaquinaService } from 'src/app/services/service.index';
 import { Departamento } from '../../../models/departamento.models';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 
 @Component({
   selector: 'app-procesos-crear-modificar',

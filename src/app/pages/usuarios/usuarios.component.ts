@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
-import { URL_SERVICIOS } from '../../config/config';
-import { UsuarioService, ManejoDeMensajesService } from '../../services/service.index';
-import { log } from 'util';
 import swal from 'sweetalert2';
 import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
-import { Roles } from 'src/app/models/roles.models';
 import { _ROLES } from '../../config/roles.const';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -48,7 +46,7 @@ export class UsuariosComponent implements OnInit {
     this.cargarUsuarios();
     // Es necesario suscribirse para la carga de imágenes. 
     this._modalUploadService.notificacion.subscribe(
-      resp => {
+      () => {
         // Recarga la misma pantalla donde nos encontramos
         // por que tenemos definida la variable "desde" dentro
         // de la función.
@@ -124,7 +122,7 @@ export class UsuariosComponent implements OnInit {
       if (borrar.value) {
 
         this._usuarioServivce.borrarUsuario( usuario._id )
-              .subscribe( borrado => {
+              .subscribe( () => {
                 // console.log(borrado);
                 this.cargarUsuarios();
               });
@@ -161,7 +159,7 @@ export class UsuariosComponent implements OnInit {
   
 
   guardarNuevoUsuario( usuario: Usuario) {
-    this._usuarioServivce.crearUsuario(usuario).subscribe( resp => {
+    this._usuarioServivce.crearUsuario(usuario).subscribe( () => {
       this.cargarUsuarios();
       this.usuarioEditando = null;
     });

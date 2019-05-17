@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core"
 import { Orden } from "src/app/models/orden.models"
 import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo"
 import { FolioLinea } from "src/app/models/folioLinea.models"
-import { UsuarioService, FolioService } from "src/app/services/service.index"
 import { ListaDeOrdenesService } from "src/app/components/lista-de-ordenes/lista-de-ordenes.service"
+import { FolioService } from "src/app/services/folio/folio.service";
+import { UsuarioService } from "src/app/services/usuario/usuario.service";
 
 @Component({
   selector: "app-control-de-produccion",

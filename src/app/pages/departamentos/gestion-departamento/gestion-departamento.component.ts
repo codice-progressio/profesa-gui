@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartamentoService } from 'src/app/services/service.index';
 import { Departamento } from 'src/app/models/departamento.models';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
 
 @Component({
   selector: 'app-gestion-departamento',

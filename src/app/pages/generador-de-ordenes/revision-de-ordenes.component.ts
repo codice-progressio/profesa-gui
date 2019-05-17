@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FolioService } from '../../services/folio/folio.service';
 import { Folio } from '../../models/folio.models';
-import {  ActivatedRoute, Routes, Router } from '@angular/router';
+import {  ActivatedRoute, Router } from '@angular/router';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
 import { Orden } from '../../models/orden.models';
 import { FolioLinea } from '../../models/folioLinea.models';
 import swal from 'sweetalert2';
-import { Tamano } from '../../models/tamano.models';
-import { ManejoDeMensajesService } from 'src/app/services/service.index';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Component({
   selector: 'app-revision-de-ordenes',
@@ -276,7 +275,7 @@ export class RevisionDeOrdenesComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this._folioService.guardarOrdenes( this.folio )
-        .subscribe(resp => {
+        .subscribe(() => {
           this.router.navigate(['/folios']);
         } );
         

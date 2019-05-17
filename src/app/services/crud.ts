@@ -1,14 +1,13 @@
 import { PaginadorService } from "../components/paginador/paginador.service"
 import { Observable, throwError } from "rxjs"
 import { HttpClient } from "@angular/common/http"
-import {
-  ManejoDeMensajesService,
-  UtilidadesService,
-  PreLoaderService
-} from "./service.index"
+
 import { map, catchError } from "rxjs/operators"
 import { FiltrosDeConsultas } from "./utilidades/filtrosParaConsultas/FiltrosDeConsultas"
 import { Type } from "@angular/compiler"
+import { ManejoDeMensajesService } from "./utilidades/manejo-de-mensajes.service";
+import { UtilidadesService } from "./utilidades/utilidades.service";
+import { PreLoaderService } from "../components/pre-loader/pre-loader.service";
 
 /**
  * Esta clase provee a los servicios de las operaciones basicas

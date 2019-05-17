@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService, MaquinaService, DepartamentoService } from 'src/app/services/service.index';
 import { Orden } from 'src/app/models/orden.models';
 import { Laser } from 'src/app/models/laser.model';
 import { Maquina } from 'src/app/models/maquina.model';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 
 @Component({
   selector: 'app-laser',

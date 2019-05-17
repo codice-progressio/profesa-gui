@@ -3,7 +3,7 @@ import { ModeloService } from '../../../services/modelo/modelo.service';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
 import { Modelo } from 'src/app/models/modelo.models';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ValidacionesService } from 'src/app/services/service.index';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-modelos-crear-modificar',

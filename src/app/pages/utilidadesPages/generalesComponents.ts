@@ -1,7 +1,6 @@
 import { QrScannerService } from "src/app/components/qr-scanner/qr-scanner.service";
 import { ListaDeOrdenesService } from "src/app/components/lista-de-ordenes/lista-de-ordenes.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { FolioService, DepartamentoService } from "src/app/services/service.index";
 import { DEPARTAMENTOS } from "src/app/config/departamentos";
 import { DefaultsService } from "src/app/services/configDefualts/defaults.service";
 import { DefaultModelData } from "src/app/config/defaultModelData";
@@ -10,6 +9,8 @@ import { FolioLinea } from "src/app/models/folioLinea.models";
 import { Departamento } from "src/app/models/departamento.models";
 import { VariablesDeptos } from "src/app/config/departamentosConfig";
 import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo";
+import { FolioService } from "src/app/services/folio/folio.service";
+import { DepartamentoService } from "src/app/services/departamento/departamento.service";
 
 export class GeneralesComponents<T> {
     

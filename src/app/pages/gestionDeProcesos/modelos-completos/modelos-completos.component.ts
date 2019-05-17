@@ -4,7 +4,7 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
 import { Generales_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Generales_GUI_CRUD';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { ModelosCompletosCrearModificarComponent } from './modelos-completos-crear-modificar.component';
-import { ManejoDeMensajesService } from 'src/app/services/service.index';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Component({
   selector: 'app-modelos-completos',

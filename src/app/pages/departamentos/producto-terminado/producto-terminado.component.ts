@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-import { Orden } from 'src/app/models/orden.models';
-import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ProductoTerminado } from 'src/app/models/productoTerminado.model';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-producto-terminado',

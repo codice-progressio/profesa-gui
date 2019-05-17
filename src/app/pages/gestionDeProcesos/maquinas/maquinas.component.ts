@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MaquinaService } from 'src/app/services/service.index';
 import { Maquina } from 'src/app/models/maquina.model';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { MaquinasCrearModificarComponent } from './maquinas-crear-modificar.component';
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service';
 import { Generales_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Generales_GUI_CRUD';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 
 
 @Component({

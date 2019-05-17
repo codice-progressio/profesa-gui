@@ -4,13 +4,15 @@ import { Orden } from 'src/app/models/orden.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { AlmacenDeBoton } from 'src/app/models/almacenDeBoton.model';
 import { DEPARTAMENTOS } from '../../../config/departamentos';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { Materiales } from 'src/app/models/materiales.models';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-almacen-de-boton',

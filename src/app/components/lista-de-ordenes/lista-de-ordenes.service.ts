@@ -1,10 +1,12 @@
 import { Injectable, Input } from '@angular/core';
 import { Orden } from '../../models/orden.models';
-import { FolioService, UtilidadesService, ManejoDeMensajesService } from '../../services/service.index';
 import { PreLoaderService } from '../pre-loader/pre-loader.service';
 import { DEPARTAMENTOS } from '../../config/departamentos';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DefaultModelData } from 'src/app/config/defaultModelData';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 /**
  * Provee los elementos necesarios para mostrar las ordenes

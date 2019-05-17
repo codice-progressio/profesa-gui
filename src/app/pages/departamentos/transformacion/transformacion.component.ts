@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, AbstractControl, Validators } from '@angular/forms';
 import { QrScannerService } from '../../../components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
-import { FolioService, ValidacionesService, MaquinaService, DepartamentoService } from '../../../services/service.index';
 import { Maquina } from '../../../models/maquina.model';
 import { Transformacion } from '../../../models/transformacion.models';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 @Component({
   selector: 'app-transformacion',
   templateUrl: './transformacion.component.html',

@@ -4,7 +4,7 @@ import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-p
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
 import { Generales_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Generales_GUI_CRUD';
 import { FamiliaDeProcesosCrearModificarComponent } from '../familiaDeProcesos/familia-de-procesos-crear-modificar.component';
-import { MaquinaService, ManejoDeMensajesService } from 'src/app/services/service.index';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Component({
   selector: 'app-familia-de-procesos',

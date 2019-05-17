@@ -1,15 +1,7 @@
 import { Component, OnInit } from "@angular/core"
-import {
-  UsuarioService,
-  FolioService,
-  DepartamentoService
-} from "../../../services/service.index"
 import { QrScannerService } from "../../../components/qr-scanner/qr-scanner.service"
 import { ListaDeOrdenesService } from "../../../components/lista-de-ordenes/lista-de-ordenes.service"
 import { Pastilla, CantidadesPastilla } from "../../../models/pastilla.model"
-import { FolioLinea } from "../../../models/folioLinea.models"
-import { Orden } from "../../../models/orden.models"
-import { ModeloCompleto } from "../../../models/modeloCompleto.modelo"
 import { Usuario } from "../../../models/usuario.model"
 
 import {
@@ -20,12 +12,12 @@ import {
   FormArray
 } from "@angular/forms"
 import { ValidacionesService } from "../../../services/utilidades/validaciones.service"
-import swal from "sweetalert2"
-import { DEPARTAMENTOS } from "src/app/config/departamentos"
 import { GeneralesComponents } from "../../utilidadesPages/generalesComponents"
-import { Materiales } from "src/app/models/materiales.models"
 import { DefaultsService } from "src/app/services/configDefualts/defaults.service"
 import { DepartamentosConfig } from "src/app/config/departamentosConfig"
+import { FolioService } from "src/app/services/folio/folio.service";
+import { DepartamentoService } from "src/app/services/departamento/departamento.service";
+import { UsuarioService } from "src/app/services/usuario/usuario.service";
 
 @Component({
   selector: "app-pastilla",
@@ -149,7 +141,7 @@ export class PastillaComponent extends GeneralesComponents<Pastilla>
     return <FormArray>this.formulario.get("cantidades")
   }
 
-  trackByFn(index: any, item: any) {
+  trackByFn(index: any) {
     return index
   }
 

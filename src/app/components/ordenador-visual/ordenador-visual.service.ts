@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { Procesos } from "src/app/models/procesos.model";
-// import { ProcesoService, ModeloService, ManejoDeMensajesService } from 'src/app/services/service.index';
 import { Proceso } from 'src/app/models/proceso.model';
-import swal from 'sweetalert2';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { ProcesoService } from 'src/app/services/proceso/proceso.service';
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 import { ModeloCompletoService } from '../../services/modelo/modelo-completo.service';
 import { FamiliaDeProcesosService } from 'src/app/services/proceso/familia-de-procesos.service';
 import { PaginadorService } from '../paginador/paginador.service';
-import { ProductoTerminado } from '../../models/productoTerminado.model';
 
 
 /**

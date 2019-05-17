@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { FolioNewService, ValidacionesService, ClienteService, ModeloCompletoService, UsuarioService } from 'src/app/services/service.index';
 import { FormBuilder, Validators, FormGroup, ValidatorFn, FormArray, AbstractControl } from '@angular/forms';
 import { Cliente } from 'src/app/models/cliente.models';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { Laser } from 'src/app/models/laser.models';
 import { Folio } from 'src/app/models/folio.models';
 import { Usuario } from 'src/app/models/usuario.model';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { FolioNewService } from 'src/app/services/folio/folio-new.service';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { ModeloCompletoService } from 'src/app/services/modelo/modelo-completo.service';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-folios-crear-modificar-abstracto',

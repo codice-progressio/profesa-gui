@@ -1,8 +1,8 @@
 import { Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { CRUD } from "src/app/services/crud";
-import { ValidacionesService } from "src/app/services/service.index";
 import { FiltrosDeConsultas } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosDeConsultas";
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 /**
  * Gestiona las operaciones para la creacion y edicion de los

@@ -3,9 +3,10 @@ import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 import { MaquinasComponent } from './maquinas.component';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { Maquina } from 'src/app/models/maquina.model';
-import { ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { Departamento } from 'src/app/models/departamento.models';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
 
 @Component({
   selector: 'app-maquinas-crear-modificar',

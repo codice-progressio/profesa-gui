@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Terminado } from '../../../models/terminado.models';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
-import { TerminadoService, ValidacionesService } from 'src/app/services/service.index';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { TerminadoService } from 'src/app/services/modelo/terminado.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-terminados-crear-modificar',

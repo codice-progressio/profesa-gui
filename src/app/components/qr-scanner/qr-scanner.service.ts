@@ -3,13 +3,13 @@ import * as $ from 'jquery';
 import swal from 'sweetalert2';
 import { Router, RouterEvent } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { FolioService } from 'src/app/services/service.index';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Orden } from 'src/app/models/orden.models';
 import { ListaDeOrdenesService } from '../lista-de-ordenes/lista-de-ordenes.service';
 import { PreLoaderService } from '../pre-loader/pre-loader.service';
 import { GeneralesComponents } from '../../pages/utilidadesPages/generalesComponents';
+import { FolioService } from 'src/app/services/folio/folio.service';
 
 /**
  * Esta funcion esta declarada en el index e 

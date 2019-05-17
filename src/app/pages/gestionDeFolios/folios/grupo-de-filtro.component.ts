@@ -6,18 +6,16 @@ import { Tamano } from "src/app/models/tamano.models"
 import { Color } from "src/app/models/color.models"
 import { Terminado } from "src/app/models/terminado.models"
 import { Folio } from "src/app/models/folio.models"
-import {
-  ClienteService,
-  UsuarioService,
-  ModeloService,
-  TamanoService,
-  ColorService,
-  TerminadoService,
-  SortService,
-  ManejoDeMensajesService
-} from "src/app/services/service.index"
 import { ReportesProduccionService } from "src/app/services/reportes/reportes-produccion.service"
 import { CamposParaMostrarEnFiltrosFolio } from "./CamposParaMostrarEnFiltroFolio"
+import { ClienteService } from "src/app/services/cliente/cliente.service";
+import { UsuarioService } from "src/app/services/usuario/usuario.service";
+import { ModeloService } from "src/app/services/modelo/modelo.service";
+import { TamanoService } from "src/app/services/modelo/tamano.service";
+import { ColorService } from "src/app/services/modelo/color.service";
+import { TerminadoService } from "src/app/services/modelo/terminado.service";
+import { SortService } from "src/app/directives/sortableComponent/sort.service";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
 
 @Component({
   selector: "app-grupo-de-filtro",

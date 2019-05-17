@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Cliente } from 'src/app/models/cliente.models';
-import { ValidacionesService, ModeloCompletoService } from 'src/app/services/service.index';
 import { ClienteService } from '../../services/cliente/cliente.service';
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { ModeloCompletoService } from 'src/app/services/modelo/modelo-completo.service';
 
 @Component({
   selector: 'app-clientes',

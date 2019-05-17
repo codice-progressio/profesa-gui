@@ -1,7 +1,7 @@
 import { CRUD } from "../../../services/crud";
 import { PaginadorService } from "src/app/components/paginador/paginador.service";
-import { ManejoDeMensajesService } from "src/app/services/service.index";
 import { CrearModificar_GUI_CRUD } from "./CrearModificar_GUI_CRUD";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
 
 /**
  *Esta clase contiene las operaciones generales de gestion para 

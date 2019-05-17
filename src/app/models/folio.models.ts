@@ -2,9 +2,6 @@ import { Cliente } from "./cliente.models"
 import { Usuario } from "./usuario.model"
 import { FolioLinea } from "./folioLinea.models"
 import { Deserializable } from "./deserealizable.model"
-import { Injectable, Component, Inject } from "@angular/core";
-import { FolioService } from '../services/folio/folio.service'
-import { FolioNewService } from "../services/service.index";
 
 
 export class Folio implements Deserializable {

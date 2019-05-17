@@ -3,7 +3,6 @@ import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.servi
 import swal from 'sweetalert2';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService, DepartamentoService } from 'src/app/services/service.index';
 import { DEPARTAMENTOS } from 'src/app/config/departamentos';
 import { Metalizado } from '../../../models/metalizado.model';
 import { Orden } from 'src/app/models/orden.models';
@@ -12,6 +11,9 @@ import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { Materiales } from 'src/app/models/materiales.models';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-metalizado',

@@ -12,8 +12,9 @@ import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 import { Usuario } from 'src/app/models/usuario.model';
 import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
 import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
-import { DepartamentoService, ValidacionesService } from 'src/app/services/service.index';
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 
 

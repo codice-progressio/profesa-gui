@@ -1,13 +1,14 @@
 import { NIVEL } from '../../config/nivelesDeUrgencia';
 import { Component, OnInit } from '@angular/core';
 import { Folio } from '../../models/folio.models';
-import { FolioService, UsuarioService, ClienteService } from '../../services/service.index';
 import { PreLoaderService } from '../../components/pre-loader/pre-loader.service';
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { Usuario } from '../../models/usuario.model';
 import { BuscadorRapidoService } from 'src/app/components/buscador-rapido/buscador-rapido.service';
 import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
 import { Cliente } from 'src/app/models/cliente.models';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
 
 
 @Component({

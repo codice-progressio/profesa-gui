@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
 import { Color } from 'src/app/models/color.models';
-import { ColorService, ValidacionesService } from 'src/app/services/service.index';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { ColorService } from 'src/app/services/modelo/color.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-colores-crear-modificar',

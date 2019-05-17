@@ -1,8 +1,4 @@
 import { Component, OnInit, Inject } from "@angular/core"
-import {
-  FolioNewService,
-  ManejoDeMensajesService
-} from "src/app/services/service.index"
 import { PaginadorService } from "src/app/components/paginador/paginador.service"
 import { Folio } from "src/app/models/folio.models"
 import { GrupoDeFiltroComponent } from "../../gestionDeFolios/folios/grupo-de-filtro.component"
@@ -10,6 +6,8 @@ import { FolioLinea } from "src/app/models/folioLinea.models"
 import { Orden } from "src/app/models/orden.models"
 import { RevisionDeOrdenesAbstractoComponent } from "../../gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
 import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio"
+import { FolioNewService } from "src/app/services/folio/folio-new.service";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
 
 @Component({
   selector: "app-historial-de-folios",

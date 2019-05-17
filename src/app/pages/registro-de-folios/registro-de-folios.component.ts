@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../../models/cliente.models';
 import { Folio } from '../../models/folio.models';
-import { ClienteService, UsuarioService, FolioService, UtilidadesService, ManejoDeMensajesService } from '../../services/service.index';
 import { Usuario } from '../../models/usuario.model';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -10,6 +9,11 @@ import { PreLoaderService } from '../../components/pre-loader/pre-loader.service
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
 import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 
 @Component({

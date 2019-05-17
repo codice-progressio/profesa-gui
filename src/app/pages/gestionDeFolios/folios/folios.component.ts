@@ -1,10 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { Folio } from "src/app/models/folio.models";
-import {
-  FolioNewService,
-  ManejoDeMensajesService,
-  UsuarioService
-} from "src/app/services/service.index";
 import { FoliosCrearModificarComponent } from "./folios-crear-modificar.component";
 import { Generales_GUI_CRUD } from "../../utilidadesPages/utilidades-tipo-crud-para-GUI/Generales_GUI_CRUD";
 import { PaginadorService } from "src/app/components/paginador/paginador.service";
@@ -14,6 +9,9 @@ import "moment-duration-format";
 import { GrupoDeFiltroComponent } from "./grupo-de-filtro.component";
 import { FolioLinea } from "src/app/models/folioLinea.models";
 import { Orden } from "src/app/models/orden.models";
+import { FolioNewService } from "src/app/services/folio/folio-new.service";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
+import { UsuarioService } from "src/app/services/usuario/usuario.service";
 
 @Component({
   selector: "app-folios",

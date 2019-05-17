@@ -5,7 +5,6 @@ import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model';
 import { Proceso } from 'src/app/models/proceso.model';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
 import { FormBuilder, Validators, FormArray, AbstractControl, FormGroup } from '@angular/forms';
-import { ValidacionesService, DepartamentoService, MaquinaService } from 'src/app/services/service.index';
 import { ProcesoService } from '../../../services/proceso/proceso.service';
 import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-procesos.service';
 import { ModeloService } from '../../../services/modelo/modelo.service';
@@ -19,6 +18,7 @@ import { Tamano } from 'src/app/models/tamano.models';
 import { OrganizadorDragAndDropService } from '../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service';
 import { DndObject } from 'src/app/components/organizador-drag-and-drop/models/dndObject.model';
 import { Procesos } from 'src/app/models/procesos.model';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-modelos-completos-crear-modificar',

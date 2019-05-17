@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { ManejoDeMensajesService, UtilidadesService, PreLoaderService } from '../service.index';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { ReporteTransformacionDetalle } from 'src/app/models/reportes/trasnformacion/ReporteTransformacionDetalle';
 import { catchError, map } from 'rxjs/operators';
@@ -10,6 +9,9 @@ import { ReporteQuimica } from 'src/app/models/reportes/quimica/reporteQuimica';
 import { ReporteLaser } from 'src/app/models/reportes/laser/reporteLaser';
 import { Folio } from 'src/app/models/folio.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
+import { UtilidadesService } from '../utilidades/utilidades.service';
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
 
 @Injectable({
   providedIn: 'root'
