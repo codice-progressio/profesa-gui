@@ -154,9 +154,7 @@ export class HistorialDeFoliosComponent implements OnInit {
       //  No debe de tener ordenes generedas.
       .setOrdenesGeneradas(componente.ordenesGeneradas || null)
 
-      // 
       .setFoliosTerminados(componente.folioTerminado)
-
 
       // Paginador
       .setDesde(this._paginadorService.desde)
