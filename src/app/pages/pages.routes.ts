@@ -72,7 +72,7 @@ const pagesRoutes: Routes = [
     path: "folios/seguimiento",
     component: FoliosSeguimientoComponent,
     canActivate: [VerificaTokenGuard],
-    data: { titulo: "Seguimeinto de folios." }
+    data: { titulo: "Seguimiento de folios." }
   },
   {
     path: "ventas/misFolios",

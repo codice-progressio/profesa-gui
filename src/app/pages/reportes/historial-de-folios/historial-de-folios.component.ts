@@ -21,15 +21,7 @@ export class HistorialDeFoliosComponent implements OnInit {
     @Inject("paginadorFolios") public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
-    this._paginadorService.callback = () => {
-      if (this.esNecesarioReinciarPaginador) {
-        this.cargarFolios()
-      } else {
-        this.aplicarFiltros(this.componenteFiltrador)
-      }
-    }
-
-    this.cargarFolios()
+    
   }
   folios: Folio[] = []
   componenteFiltrador: GrupoDeFiltroComponent
@@ -63,6 +55,21 @@ export class HistorialDeFoliosComponent implements OnInit {
       }, 10)
     })
       .then(() => {
+        //Solo mostrar en el historial de folios los que 
+        // ya se entregaron a produccion. 
+        this.componenteFiltrador.entregarAProduccion = true
+        // Dejamos por defecto que aparezcan solo los terminados. 
+        this.componenteFiltrador.folioTerminado = true
+
+        this._paginadorService.callback = () => {
+          if (this.esNecesarioReinciarPaginador) {
+            this.cargarFolios()
+          } else {
+            this.aplicarFiltros(this.componenteFiltrador)
+          }
+        }
+    
+        this.cargarFolios()
         // Definimos los componentes que deban existir.
         this.mostrarFiltros()
       })
@@ -84,6 +91,11 @@ export class HistorialDeFoliosComponent implements OnInit {
         .setFechaDeEntregaEstimadaDesdeEl(false)
         .setFechaDeEntregaEstimadaHasta(false)
     }
+
+    // Quitamos la opcion de filtrar los entregados 
+    // a produccion por que confunden un poco. 
+    this.componenteFiltrador.seleccionarCamposVisibles
+      .setEntregarAProduccion(false)
   }
 
   cambiarVerComoPedidos(val: boolean) {

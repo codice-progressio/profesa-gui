@@ -32,7 +32,7 @@ export class ManejoDeMensajesService {
     // Si el error viene del GUI no tiene la propiedad
     // error y no muestra el mensaje. Si pasa esto 
     // lo capturamos aqui
-    throw new Error( err );
+    throw new Error('Hubo un error en el GUI:' +  err );
   }
 
 

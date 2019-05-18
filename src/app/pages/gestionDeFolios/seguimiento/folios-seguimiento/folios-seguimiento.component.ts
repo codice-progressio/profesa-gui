@@ -6,8 +6,8 @@ import { FolioLinea } from "src/app/models/folioLinea.models"
 import { Orden } from "src/app/models/orden.models"
 import { RevisionDeOrdenesAbstractoComponent } from "../../revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
 import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio"
-import { FolioNewService } from "src/app/services/folio/folio-new.service";
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
+import { FolioNewService } from "src/app/services/folio/folio-new.service"
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
 
 @Component({
   selector: "app-folios-seguimiento",
@@ -86,9 +86,7 @@ export class FoliosSeguimientoComponent implements OnInit {
     public _folioService: FolioNewService,
     @Inject("paginadorFolios") public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
-  ) {
-    
-  }
+  ) {}
 
   /**
    *El folio del cual se generaran ordenes.
@@ -117,9 +115,9 @@ export class FoliosSeguimientoComponent implements OnInit {
               this.aplicarFiltros(this.componenteFiltrador)
             }
           }
-      
+
           this.cargarFolios()
-          
+
           clearInterval(intervalo)
           resolve()
         }
@@ -151,6 +149,7 @@ export class FoliosSeguimientoComponent implements OnInit {
       .setFechaDeEntregaEstimadaHasta(false)
       .setFechaFinalizacionDelFolioHasta(false)
       .setFechaFinalizacionDelFolioDesdeEl(false)
+      .setEntregarAProduccion(false)
   }
 
   cambiarVerComoPedidos(val: boolean) {
@@ -206,11 +205,7 @@ export class FoliosSeguimientoComponent implements OnInit {
 
       // Aqui este siempre debe ser true
 
-      .setEntregarAProduccion(
-        componente.entregarAProduccion !== null
-          ? componente.entregarAProduccion
-          : null
-      )
+      .setEntregarAProduccion(true)
       .setOrdenesGeneradas(
         componente.ordenesGeneradas !== null
           ? componente.ordenesGeneradas
