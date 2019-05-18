@@ -40,7 +40,7 @@
 
 
     <span formArrayName='folioLineas'>
-            <ng-container *ngFor="let cp of formulario.controls['folioLineas'].controls; let iPed = index">
+            <ng-container *ngFor="let cp of this.folioLineas_FB.controls; let iPed = index">
               
               <hr>
               <div class="row" [formGroupName]="iPed">
