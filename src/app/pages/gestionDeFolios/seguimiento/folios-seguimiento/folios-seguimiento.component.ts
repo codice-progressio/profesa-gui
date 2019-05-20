@@ -150,6 +150,7 @@ export class FoliosSeguimientoComponent implements OnInit {
       .setFechaFinalizacionDelFolioHasta(false)
       .setFechaFinalizacionDelFolioDesdeEl(false)
       .setEntregarAProduccion(false)
+      .setOrdenesGeneradas( false )
   }
 
   cambiarVerComoPedidos(val: boolean) {
@@ -169,9 +170,7 @@ export class FoliosSeguimientoComponent implements OnInit {
       this.esNecesarioReinciarPaginador = false
     }
 
-    // console.log("entregarAProduccion", componente.entregarAProduccion)
-    // console.log("ordenesGeneradas", componente.ordenesGeneradas)
-    // console.log(false)
+   
     this._folioService
       .filtros(new FiltrosFolio(this._folioService))
       .setVendedor(
@@ -207,9 +206,7 @@ export class FoliosSeguimientoComponent implements OnInit {
 
       .setEntregarAProduccion(true)
       .setOrdenesGeneradas(
-        componente.ordenesGeneradas !== null
-          ? componente.ordenesGeneradas
-          : null
+        true
       )
 
       .setFechaDeCreacionDesdeEl(

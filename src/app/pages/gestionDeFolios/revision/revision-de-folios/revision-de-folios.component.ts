@@ -88,6 +88,8 @@ export class RevisionDeFoliosComponent implements OnInit {
       .setFechaDeEntregaEstimadaHasta(false)
       .setFechaFinalizacionDelFolioHasta(false)
       .setFechaFinalizacionDelFolioDesdeEl(false)
+      .setOrdenesGeneradas( false )
+      .setEntregarAProduccion( false )
   }
 
   cambiarVerComoPedidos(val: boolean) {
