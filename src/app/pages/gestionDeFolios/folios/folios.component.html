@@ -28,30 +28,7 @@
         </ng-template>
       </button>
     </div>
-    <div
-      class="col-12 col-sm-6 col-lg-3 col-xl-2"
-      *ngIf="this.mostrarFoliosConOrdenes"
-    >
-      <button
-        type="button"
-        (click)="
-          this.mostrarFoliosTerminados = foliosTerminados(
-            !this.mostrarFoliosTerminados
-          )
-        "
-        class="btn btn-success btn-sm btn-block "
-      >
-        <ng-container
-          *ngIf="mostrarFoliosTerminados; else mostrarFoliosTemplate"
-        >
-          Mostrar
-        </ng-container>
-        <ng-template #mostrarFoliosTemplate>
-          Ocultar
-        </ng-template>
-        terminados
-      </button>
-    </div>
+    
     <div
       class="col-12 col-sm-6 col-lg-3 col-xl-2"
       *ngIf="this.mostrarFoliosConOrdenes"

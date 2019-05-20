@@ -178,18 +178,6 @@ export class FoliosComponent
     return entregadosAProduccion;
   }
   
-  foliosTerminados(foliosTerminados: boolean): boolean {
-    
-    this.reiniciarPaginador()
-    this.componenteFiltrador.limpiar()
-    this.mostrarFoliosTerminados = foliosTerminados
-    this.cargarFoliosMandadosAproducir(
-      this.cargarFoliosEntregadosAProduccion
-    );
-    return foliosTerminados;
-  }
-
-
   reiniciarPaginador( ) {
     this._paginadorService.limite = 5
     this._paginadorService.desde = 0
