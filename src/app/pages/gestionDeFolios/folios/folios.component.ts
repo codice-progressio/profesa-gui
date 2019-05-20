@@ -63,7 +63,7 @@ export class FoliosComponent
    * @type {boolean}
    * @memberof FoliosComponent
    */
-  mostrarFoliosTerminados: boolean = true 
+  mostrarFoliosTerminados: boolean = false 
 
   activarBotonFoliosDeProduccion: boolean = true
 
@@ -98,20 +98,7 @@ export class FoliosComponent
     this.mensajeDeEliminacion = 'Si eliminas este elemento tendras que volver a registrar los datos.'
 
 
-    this._paginadorService.callback = () => {
-      if( this.esNecesarioReinciarPaginador ) {
-        this.cargarFoliosMandadosAproducir(this.mostrarFoliosTerminados);
-
-      }else{
-        this.aplicarFiltros(this.componenteFiltrador)
-      }
-    };
-    
-    
-    this.cbCargarElementos = ()=>{
-      this.cargarFoliosMandadosAproducir(this.mostrarFoliosTerminados);
-    } 
-    this.cargarFoliosMandadosAproducir( this.mostrarFoliosTerminados);
+   
   }
 
   ngOnInit() {
@@ -129,7 +116,35 @@ export class FoliosComponent
 
       
     } ).then( ()=>{
-      this.filtrosMostrarParaFolios( )
+
+      // Una vez que el componente filtrador se carga creamos 
+      // los callbacks necesarios para el paginador. 
+      this._paginadorService.callback = () => {
+        // Si el paginador see necesita reiniciar quiere decir
+        // que cambiamos entre la lista de folios que estan
+        // sin entregar a produccion y los que ya estan
+        // produccion.
+        if( this.esNecesarioReinciarPaginador ) {
+          
+          this.cargarFoliosMandadosAproducir(this.cargarFoliosEntregadosAProduccion);
+          
+        }else{
+          this.aplicarFiltros(this.componenteFiltrador)
+        }
+      };
+      
+
+      //Cargamos los datos desde el componente que se encarga se sincronizar las animaciones.
+      this.cbCargarElementos = ()=>{
+        this.cargarFoliosMandadosAproducir(this.cargarFoliosEntregadosAProduccion);
+      } 
+
+
+      console.log(`ngOnInit`)      
+      this.cargarFoliosMandadosAproducir( this.cargarFoliosEntregadosAProduccion);
+
+
+      this.filtrosMostrarParaFolios( this.enlistarComoPedidos )
       
     } )
 
@@ -140,11 +155,25 @@ export class FoliosComponent
     clearInterval(this.manejadorDeIntervalo);
   }
 
+  /**
+   * Cambioa entre enlistar los folios 
+   * con ordenes y sin ordenes en base a 
+   * multiples parametros. 
+   *
+   * @param {boolean} entregadosAProduccion
+   * @returns {boolean} El valor segun la logica.
+   * @memberof FoliosComponent
+   */
   foliosSinOrdenes(entregadosAProduccion: boolean): boolean {
-    
+    // Si se van a filtrar folios entregados a produccion 
+    // entonces no se pueden enlistar como pedidos. 
     if( entregadosAProduccion ) this.enlistarComoPedidos = false
     
+    // Se reinicia el paginador para que no siga con el contador
+    // de los folios entregados a produccion o los que se estan
+    // trabajando. 
     this.reiniciarPaginador()
+    // Cargamos los folios. 
     this.cargarFoliosMandadosAproducir(entregadosAProduccion);
     return entregadosAProduccion;
   }
@@ -153,9 +182,9 @@ export class FoliosComponent
     
     this.reiniciarPaginador()
     this.componenteFiltrador.limpiar()
-
+    this.mostrarFoliosTerminados = foliosTerminados
     this.cargarFoliosMandadosAproducir(
-      foliosTerminados
+      this.cargarFoliosEntregadosAProduccion
     );
     return foliosTerminados;
   }
@@ -172,12 +201,21 @@ export class FoliosComponent
    que todavia estan registrandose. 
    *
    * @param {boolean} [sinOrdenes=false] Define se muestran o no los folios con ordenes. 
-   * @param {boolean} [terminados=true] Define si se muestran o no los folios que estan terminados. 
+   * @param {boolean} [entregadosAProduccion=true] Define si se muestran o no los folios que estan terminados. 
    * @memberof FoliosComponent
    */
   cargarFoliosMandadosAproducir(
-    terminados: boolean = true,
+    entregadosAProduccion: boolean,
   ) {
+    console.log(`funcion cargarFoliosMandadosAProducir`)
+    console.log(`entregadosAProduccion`,entregadosAProduccion)
+    console.log(`this.mostrarFoliosConOrdenes`,this.mostrarFoliosConOrdenes)
+    console.log(`this.mostrarFoliosTerminados`,this.mostrarFoliosTerminados)
+
+    this.elementos = []
+    // Ponemos una bandera de que es necesario reiniciar el paginador 
+    // por que cuando cargamos esta cambiamos entre los folios ya 
+    // entregados a produccion y los que estan trabajandose aun. 
     this.esNecesarioReinciarPaginador = true
     this.activarBotonFoliosDeProduccion = false;
 
@@ -185,11 +223,10 @@ export class FoliosComponent
       .filtros(new FiltrosFolio(this._folioNewService))
       .setVendedor(this._usuarioService.usuario._id)
 
-      // .setOrdenesGeneradas(sinOrdenes)
+      // .setOrdenesGeneradas(this.mostrarFoliosConOrdenes)
+      .setEntregarAProduccion( entregadosAProduccion )
+      .setFoliosTerminados( this.mostrarFoliosTerminados )
 
-      .setFoliosTerminados(terminados)
-      .setEntregarAProduccion(  this.cargarFoliosEntregadosAProduccion )
-      
       // Paginador
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
@@ -312,7 +349,7 @@ export class FoliosComponent
 
 
   aplicarFiltros( componente: GrupoDeFiltroComponent ){
-
+    console.log(`aplicarFiltros`,'Estamos en aplicar filtross')
     if( this.esNecesarioReinciarPaginador ){
       this.reiniciarPaginador()
       this.esNecesarioReinciarPaginador = false;
@@ -389,25 +426,8 @@ export class FoliosComponent
   verComoFolios( grupoDeFiltro: GrupoDeFiltroComponent ){
     grupoDeFiltro.limpiar()
     this.enlistarComoPedidos = !this.enlistarComoPedidos
-
-
-    if( this.enlistarComoPedidos ) {
-      this.filtrosMostrarParaPedidos ()
-    } else {
-      this.filtrosMostrarParaFolios ()
-    }
-
+      this.filtrosMostrarParaFolios (this.enlistarComoPedidos)
   }
-
-  filtrosMostrarParaPedidos(){
-    this.componenteFiltrador
-    .seleccionarCamposVisibles
-      .mostrarTodo()
-      .setVendedor( false )
-      .setFechaDeEntregaEstimadaDesdeEl( false )
-      .setFechaDeEntregaEstimadaHasta( false )
-      
-    }
     
     /**
      *Muestra los filtros necesarios del componente grupo de filtro
@@ -415,18 +435,32 @@ export class FoliosComponent
    *
    * @memberof FoliosComponent
    */
-  filtrosMostrarParaFolios() {
-    this.componenteFiltrador
-      .seleccionarCamposVisibles
+  filtrosMostrarParaFolios( enlistarComoPedidos) {
+    this.componenteFiltrador.seleccionarCamposVisibles
+      .mostrarTodo()
+      .setVendedor(false)
+      .setFechaDeEntregaEstimadaDesdeEl(false)
+      .setFechaDeEntregaEstimadaHasta(false)
+      .setPedido(false)
+      .setModelo(false)
+      .setTamano(false)
+      .setColor(false)
+      .setTerminado(false)
+
+    if (enlistarComoPedidos) {
+      this.componenteFiltrador.seleccionarCamposVisibles
         .mostrarTodo()
-        .setVendedor( false )
-        .setFechaDeEntregaEstimadaDesdeEl( false )
-        .setFechaDeEntregaEstimadaHasta( false )
-        .setPedido( false )
-        .setModelo( false )
-        .setTamano( false )
-        .setColor( false )
-        .setTerminado( false )
+        .setVendedor(false)
+        .setFechaDeEntregaEstimadaDesdeEl(false)
+        .setFechaDeEntregaEstimadaHasta(false)
+    }
+
+
+    this.componenteFiltrador.seleccionarCamposVisibles
+      .setEntregarAProduccion( false )
+
+
+    
      
   }
 
@@ -449,7 +483,7 @@ export class FoliosComponent
         this._folioNewService
         .iniciarProduccion( id )
         .subscribe(()=>{
-          this.cargarFoliosMandadosAproducir()
+          this.cargarFoliosMandadosAproducir(this.cargarFoliosEntregadosAProduccion)
         }),
       mensajeDeCancelacion
       }
