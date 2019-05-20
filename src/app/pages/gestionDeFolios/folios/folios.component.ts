@@ -144,7 +144,7 @@ export class FoliosComponent
       this.cargarFoliosMandadosAproducir( this.cargarFoliosEntregadosAProduccion);
 
 
-      this.filtrosMostrarParaFolios( this.enlistarComoPedidos )
+      // this.filtrosMostrarParaFolios( this.enlistarComoPedidos )
       
     } )
 
@@ -168,6 +168,7 @@ export class FoliosComponent
     // Si se van a filtrar folios entregados a produccion 
     // entonces no se pueden enlistar como pedidos. 
     if( entregadosAProduccion ) this.enlistarComoPedidos = false
+
     
     // Se reinicia el paginador para que no siga con el contador
     // de los folios entregados a produccion o los que se estan
@@ -195,6 +196,9 @@ export class FoliosComponent
   cargarFoliosMandadosAproducir(
     entregadosAProduccion: boolean,
   ) {
+
+    // this.filtrosMostrarParaFolios (this.enlistarComoPedidos)
+
     console.log(`funcion cargarFoliosMandadosAProducir`)
     console.log(`entregadosAProduccion`,entregadosAProduccion)
     console.log(`this.mostrarFoliosConOrdenes`,this.mostrarFoliosConOrdenes)
@@ -348,11 +352,9 @@ export class FoliosComponent
     this._folioNewService
       .filtros(new FiltrosFolio(this._folioNewService))
       .setVendedor(this._usuarioService.usuario._id)
+      .setPedido(this.componenteFiltrador.pedido ? this.componenteFiltrador.pedido: null)
 
-
-      // .setOrdenesGeneradas(this.mostrarFoliosConOrdenes)
-      // 
-      .setFoliosTerminados(this.mostrarFoliosTerminados)
+      .setFoliosTerminados(this.componenteFiltrador.folioTerminado)
 
 
       .setFolio(componente.folio ?componente.folio: null) 
@@ -414,7 +416,7 @@ export class FoliosComponent
   verComoFolios( grupoDeFiltro: GrupoDeFiltroComponent ){
     grupoDeFiltro.limpiar()
     this.enlistarComoPedidos = !this.enlistarComoPedidos
-      this.filtrosMostrarParaFolios (this.enlistarComoPedidos)
+    this.filtrosMostrarParaFolios (this.enlistarComoPedidos)
   }
     
     /**
@@ -424,6 +426,7 @@ export class FoliosComponent
    * @memberof FoliosComponent
    */
   filtrosMostrarParaFolios( enlistarComoPedidos) {
+    console.log(`filtros`,enlistarComoPedidos)
     this.componenteFiltrador.seleccionarCamposVisibles
       .mostrarTodo()
       .setVendedor(false)
@@ -446,10 +449,7 @@ export class FoliosComponent
 
     this.componenteFiltrador.seleccionarCamposVisibles
       .setEntregarAProduccion( false )
-
-
     
-     
   }
 
 
