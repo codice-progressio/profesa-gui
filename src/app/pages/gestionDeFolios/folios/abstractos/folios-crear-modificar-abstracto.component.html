@@ -1,229 +1,471 @@
 <h1 class="display-5">
-    <ng-container *ngIf="idEditando; else elseTemplate">
-        <span>  Editar folio  </span>
-        <small class="text-muted"> # {{folio.numeroDeFolio}} </small>
-    </ng-container>
-    <ng-template #elseTemplate>
-        Crear folio
-    </ng-template>
-
+  <ng-container *ngIf="idEditando; else elseTemplate">
+    <span> Editar folio </span>
+    <small class="text-muted"> # {{ folio.numeroDeFolio }} </small>
+  </ng-container>
+  <ng-template #elseTemplate>
+    Crear folio
+  </ng-template>
 </h1>
 
-<hr>
+<hr />
 
-<form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
-
-    <div class="row">
-        <div class="form-group col-12 col-md-6 col-lg-4">
-            <input formControlName="cliente" type="hidden">
-            <input [(ngModel)]="inputClienteNg" [ngModelOptions]="{standalone: true}" #inputCliente [ngClass]="{'is-invalid': vs.invalid(cliente_FB), 'is-valid':vs.valid(cliente_FB)}" (keydown.enter)='observacionesVendedor.focus()' (keyup)='cargarClientes(inputCliente.value)'
-                (keydown.backspace)='limpiarCliente(inputCliente)' (change)='cliente_FB.setValue(clienteObtenerId(inputCliente.value)) ' type="text" list="Cliente" class='form-control'>
-            <datalist id='Cliente'>
-                    <option *ngFor="let cliente of clientes" [value]="cliente.nombre"> {{cliente.sae}}</option>
-                    <option disabled *ngIf="clientes.length === 0" value="Empieza a escribir para buscar"> </option>
-                    
-                </datalist>
-            <small id="cliente" class="form-text text-muted">Selecciona un cliente</small>
-            <app-validacion-inputs [campo]="cliente_FB" [directo]='true'></app-validacion-inputs>
-        </div>
-
-
-
-        <div class="form-group col-12 col-md-6 col-lg-6">
-            <textarea #observacionesVendedor [ngClass]="{'is-invalid': vs.invalid(observacionesVendedor_FB), 'is-valid':vs.valid(observacionesVendedor_FB)}" formControlName="observacionesVendedor" class="form-control" name="" id="" rows="5"></textarea>
-            <small id="observaciones" class="form-text text-muted">Observaciones</small>
-            <app-validacion-inputs [campo]="observacionesVendedor_FB"></app-validacion-inputs>
-        </div>
-
+<form
+  (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)"
+  [formGroup]="formulario"
+>
+  <div class="row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+      <input formControlName="cliente" type="hidden" />
+      <input
+        [(ngModel)]="inputClienteNg"
+        [ngModelOptions]="{ standalone: true }"
+        #inputCliente
+        [ngClass]="{
+          'is-invalid': vs.invalid(cliente_FB),
+          'is-valid': vs.valid(cliente_FB)
+        }"
+        (keydown.enter)="observacionesVendedor.focus()"
+        (keyup)="cargarClientes(inputCliente.value)"
+        (keydown.backspace)="limpiarCliente(inputCliente)"
+        (change)="cliente_FB.setValue(clienteObtenerId(inputCliente.value))"
+        type="text"
+        list="Cliente"
+        class="form-control"
+      />
+      <datalist id="Cliente">
+        <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
+          {{ cliente.sae }}</option
+        >
+        <option
+          disabled
+          *ngIf="clientes.length === 0"
+          value="Empieza a escribir para buscar"
+        >
+        </option>
+      </datalist>
+      <small id="cliente" class="form-text text-muted"
+        >Selecciona un cliente</small
+      >
+      <app-validacion-inputs
+        [campo]="cliente_FB"
+        [directo]="true"
+      ></app-validacion-inputs>
     </div>
 
+    <div class="form-group col-12 col-md-6 col-lg-6">
+      <textarea
+        #observacionesVendedor
+        [ngClass]="{
+          'is-invalid': vs.invalid(observacionesVendedor_FB),
+          'is-valid': vs.valid(observacionesVendedor_FB)
+        }"
+        formControlName="observacionesVendedor"
+        class="form-control"
+        name=""
+        id=""
+        rows="5"
+      ></textarea>
+      <small id="observaciones" class="form-text text-muted"
+        >Observaciones</small
+      >
+      <app-validacion-inputs
+        [campo]="observacionesVendedor_FB"
+      ></app-validacion-inputs>
+    </div>
+  </div>
 
+  <span formArrayName="folioLineas">
+    <ng-container
+      *ngFor="let cp of this.folioLineas_FB.controls; let iPed = index"
+    >
+      <hr />
+      <div class="row" [formGroupName]="iPed">
+        <div class="col-12">
+          <h1>
+            <a
+              (click)="eliminarPedido(iPed)"
+              class="btn btn-danger text-white"
+              role="button"
+              ><i class="fa fa-times"></i
+            ></a>
+            PED # {{ iPed }}
+          </h1>
+        </div>
+        <div class="form-group col-12 col-md-5 col-lg-3">
+          <input formControlName="modeloCompleto" type="hidden" />
+          <input
+            [(ngModel)]="inputModeloCompletoNg[iPed]"
+            [ngModelOptions]="{ standalone: true }"
+            #inputModeloCompleto
+            [ngClass]="{
+              'is-invalid': vs.invalid(modeloCompleto_FB(iPed)),
+              'is-valid': vs.valid(modeloCompleto_FB(iPed))
+            }"
+            (keyup)="cargarModelosCompletos(inputModeloCompleto.value, iPed)"
+            (keydown.backspace)="
+              limpiarModeloCompleto(inputModeloCompleto, iPed)
+            "
+            (change)="
+              modeloCompleto_FB(iPed).setValue(
+                modeloCompletoObtenerId(inputModeloCompleto.value)
+              )
+            "
+            type="text"
+            list="modeloCompleto"
+            class="form-control"
+          />
+          <datalist id="modeloCompleto">
+            <option
+              *ngFor="let mc of modelosCompletos"
+              [value]="mc.nombreCompleto"
+            >
+              existencia?</option
+            >
+            <option
+              disabled
+              *ngIf="modelosCompletos.length === 0"
+              value="Empieza a escribir para buscar"
+            >
+            </option>
+          </datalist>
+          <small id="cliente" class="form-text text-muted"
+            >Selecciona un modelo Existencia:
+            <strong>Existencia???</strong></small
+          >
+          <app-validacion-inputs
+            [campo]="modeloCompleto_FB(iPed)"
+            [directo]="true"
+          ></app-validacion-inputs>
+        </div>
 
-    <span formArrayName='folioLineas'>
-            <ng-container *ngFor="let cp of this.folioLineas_FB.controls; let iPed = index">
-              
-              <hr>
-              <div class="row" [formGroupName]="iPed">
+        <div class="form-group col-12 col-md-4 col-lg-2">
+          <input
+            formControlName="cantidad"
+            (keypress)="validarCambioDePedido(iPed)"
+            (blur)="validarCambioDePedido(iPed)"
+            (mouseleave)="validarCambioDePedido(iPed)"
+            (keyup)="calcularTenidos(iPed)"
+            type="number"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': vs.invalid(cantidad_FB(iPed)),
+              'is-valid': vs.valid(cantidad_FB(iPed))
+            }"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+          <small class="form-text text-muted">Cantidad</small>
+          <app-validacion-inputs
+            [campo]="cantidad_FB(iPed)"
+          ></app-validacion-inputs>
+        </div>
 
-                <div class="col-12">
-                  <h1> <a (click)="eliminarPedido(iPed)" class="btn btn-danger text-white"  role="button"><i class="fa fa-times"></i></a>   PED # {{iPed}}</h1>
-                </div>
-                <div class="form-group col-12 col-md-5 col-lg-3">
-                    <input formControlName="modeloCompleto" type="hidden">
-                    <input  [(ngModel)]="inputModeloCompletoNg[iPed]" [ngModelOptions]="{standalone: true}" #inputModeloCompleto [ngClass]="{'is-invalid': vs.invalid(modeloCompleto_FB(iPed)), 'is-valid':vs.valid(modeloCompleto_FB(iPed))}" (keyup)='cargarModelosCompletos(inputModeloCompleto.value, iPed)' (keydown.backspace)='limpiarModeloCompleto(inputModeloCompleto, iPed)' (change)='modeloCompleto_FB(iPed).setValue(modeloCompletoObtenerId(inputModeloCompleto.value)) '
-                        type="text" list="modeloCompleto" class='form-control'>
-                    <datalist id='modeloCompleto'>
-                        <option *ngFor="let mc of modelosCompletos" [value]="mc.nombreCompleto"> existencia?</option>
-                        <option disabled *ngIf="modelosCompletos.length === 0" value="Empieza a escribir para buscar"> </option>
-                        
-                    </datalist>
-                    <small id="cliente" class="form-text text-muted">Selecciona un modelo Existencia: <strong>Existencia???</strong></small>
-                    <app-validacion-inputs [campo]="modeloCompleto_FB(iPed)" [directo]='true'></app-validacion-inputs>
-                </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+          <select
+            [compareWith]="compararLaserados"
+            [ngClass]="{
+              'is-invalid': vs.invalid(laserCliente_FB(iPed)),
+              'is-valid': vs.valid(laserCliente_FB(iPed))
+            }"
+            formControlName="laserCliente"
+            class="form-control"
+            name="marcaLaser"
+            id="marcaLaser"
+          >
+            <ng-container *ngIf="clienteSeleccionado">
+              <option
+                *ngFor="let laser of clienteSeleccionado.laserados"
+                [ngValue]="laser"
+                >{{ laser.laser }}</option
+              >
+            </ng-container>
+          </select>
+          <small class="form-text text-muted">Marca laser</small>
+          <app-validacion-inputs
+            [campo]="laserCliente_FB(iPed)"
+          ></app-validacion-inputs>
+        </div>
 
+        <div class="form-check col-12 col-md-4 col-lg-3">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(almacen_FB(iPed)),
+              'is-valid': vs.valid(almacen_FB(iPed))
+            }"
+            formControlName="almacen"
+            name="almacen"
+            class="form-check-input"
+            type="checkbox"
+            [id]="'almacen' + iPed"
+          />
 
-                <div class="form-group col-12 col-md-4 col-lg-2">
-                  <input formControlName="cantidad"  (keypress)='validarCambioDePedido( iPed )' (blur)='validarCambioDePedido( iPed )' (mouseleave)='validarCambioDePedido( iPed )'   (keyup)="calcularTenidos(iPed)" type="number" class="form-control" [ngClass]="{'is-invalid': vs.invalid(cantidad_FB(iPed)), 'is-valid':vs.valid(cantidad_FB(iPed))}"  aria-describedby="helpId" placeholder="">
-                  <small  class="form-text text-muted">Cantidad</small>
-                  <app-validacion-inputs [campo]="cantidad_FB(iPed)"></app-validacion-inputs>
-                </div>
-                
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                  <select [compareWith]="compararLaserados" [ngClass]="{'is-invalid': vs.invalid(laserCliente_FB(iPed)), 'is-valid':vs.valid(laserCliente_FB(iPed))}" formControlName="laserCliente" class="form-control" name="marcaLaser" id="marcaLaser">
-                    <ng-container *ngIf="clienteSeleccionado">
+          <label
+            class="form-check-label"
+            [for]="'almacen' + iPed"
+            title="Cuando se selecciona esta opcion el producto se obtiene desde almacen "
+          >
+            <i class="fa fa-question-circle"></i> Surtir desde almacen
+          </label>
+          <app-validacion-inputs
+            [campo]="almacen_FB(iPed)"
+          ></app-validacion-inputs>
+        </div>
 
-                      <option  *ngFor="let laser of clienteSeleccionado.laserados" [ngValue]='laser'>{{laser.laser}}</option>
+        <div class="form-group  col-lg-12">
+          <textarea
+            [ngClass]="{
+              'is-invalid': vs.invalid(observacionesPed_FB(iPed)),
+              'is-valid': vs.valid(observacionesPed_FB(iPed))
+            }"
+            formControlName="observacionesVendedor"
+            class="form-control"
+            name=""
+            id=""
+            rows="3"
+          ></textarea>
+          <small class="form-text text-muted">Observaciones del pedido</small>
+          <app-validacion-inputs
+            [campo]="observacionesPed_FB(iPed)"
+          ></app-validacion-inputs>
+        </div>
+
+        <ng-container formArrayName="coloresTenidos">
+          <div class="col-12 justify-content-md-center row ">
+            <table
+              class="table table-hover table-sm col-12 col-lg-10"
+              *ngIf="
+                this.folioLineas_FB.controls[iPed]['controls']['coloresTenidos']
+                  ?.controls?.length > 0
+              "
+            >
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Color</th>
+                  <th>Cantidad</th>
+                  <th>Observaciones</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="
+                    let cp of this.folioLineas_FB.controls[iPed]['controls'][
+                      'coloresTenidos'
+                    ].controls;
+                    let iTenido = index
+                  "
+                >
+                  <tr>
+                    <ng-container [formGroupName]="iTenido">
+                      <td class="pt-3">
+                        <h1>{{ iTenido }}.-</h1>
+                      </td>
+                      <td class="pt-3">
+                        <div class="form-group  ">
+                          <input
+                            (blur)="calcularTenidos(iPed)"
+                            (keyup)="calcularTenidos(iPed)"
+                            formControlName="color"
+                            #inpColor
+                            [id]="'tenido_' + iTenido"
+                            (keydown.delete)="
+                              eliminarColorTenido(iPed, iTenido)
+                            "
+                            (keydown.enter)="inpCantidad.focus()"
+                            (keydown.control.shift.enter)="
+                              agregarColorTenido(iPed, iTenido)
+                            "
+                            title="Puedes presionar enter para capturar la cantidad,  la tecla supr para eliminar la linea o ctrl+shift+enter para una nueva linea."
+                            type="text"
+                            class="form-control form-control-sm  "
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                colorTenido_FB(iPed, iTenido)
+                              ),
+                              'is-valid': vs.valid(
+                                colorTenido_FB(iPed, iTenido)
+                              )
+                            }"
+                          />
+                          <!-- Esto es importante -->
+                          {{ agregar(inpColor) }}
+                          <!-- ///////////////////// -->
+                          <app-validacion-inputs
+                            [campo]="colorTenido_FB(iPed, iTenido)"
+                          ></app-validacion-inputs>
+                        </div>
+                      </td>
+                      <td class="pt-3">
+                        <div class="form-group   ">
+                          <input
+                            (blur)="calcularTenidos(iPed)"
+                            (keyup)="calcularTenidos(iPed)"
+                            formControlName="cantidad"
+                            #inpCantidad
+                            type="number"
+                            class="form-control form-control-sm"
+                            title="Puedes presionar enter para ir a las observaciones "
+                            (keydown.control.shift.enter)="
+                              agregarColorTenido(iPed, iTenido)
+                            "
+                            (keydown.delete)="
+                              eliminarColorTenido(iPed, iTenido)
+                            "
+                            (keydown.enter)="inpObservaciones.focus()"
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                cantidadTenido_FB(iPed, iTenido)
+                              ),
+                              'is-valid': vs.valid(
+                                cantidadTenido_FB(iPed, iTenido)
+                              )
+                            }"
+                          />
+                          <app-validacion-inputs
+                            [campo]="cantidadTenido_FB(iPed, iTenido)"
+                          ></app-validacion-inputs>
+                        </div>
+                      </td>
+                      <td class="pt-3">
+                        <div class="form-group   ">
+                          <input
+                            (blur)="calcularTenidos(iPed)"
+                            (keyup)="calcularTenidos(iPed)"
+                            formControlName="observaciones"
+                            #inpObservaciones
+                            type="text"
+                            class="form-control form-control-sm"
+                            (keydown.delete)="
+                              eliminarColorTenido(iPed, iTenido)
+                            "
+                            (keydown.control.shift.enter)="
+                              agregarColorTenido(iPed, iTenido)
+                            "
+                            (keydown.enter)="agregarColorTenido(iPed, iTenido)"
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                observacionesTenido_FB(iPed, iTenido)
+                              ),
+                              'is-valid': vs.valid(
+                                observacionesTenido_FB(iPed, iTenido)
+                              )
+                            }"
+                          />
+                          <app-validacion-inputs
+                            [campo]="observacionesTenido_FB(iPed, iTenido)"
+                          ></app-validacion-inputs>
+                        </div>
+                      </td>
+                      <td class="pt-3">
+                        <a
+                          (click)="eliminarColorTenido(iPed, iTenido)"
+                          class="btn btn-danger btn-sm text-white"
+                          ><i class="fa fa-times"></i
+                        ></a>
+                      </td>
                     </ng-container>
-                    
-                  </select>
-                  <small  class="form-text text-muted">Marca laser</small>
-                  <app-validacion-inputs [campo]="laserCliente_FB(iPed)"></app-validacion-inputs>
-                </div>
-                
-                
-                
-                <div class="form-check col-12 col-md-4 col-lg-3">
-                  <input [ngClass]="{'is-invalid': vs.invalid(almacen_FB(iPed)), 'is-valid':vs.valid(almacen_FB(iPed))}" formControlName="almacen" name="almacen" class="form-check-input" type="checkbox" [id]="'almacen'+iPed" />
-                    
-                    <label class="form-check-label" [for]="'almacen'+iPed" title='Cuando se selecciona esta opcion el producto se obtiene desde almacen ' >
-                       <i class="fa fa-question-circle"></i> Surtir desde almacen 
-                    </label>
-                    <app-validacion-inputs [campo]="almacen_FB(iPed)"></app-validacion-inputs>
-                  </div>
-                  
-                  <div class="form-group  col-lg-12">
-                    <textarea [ngClass]="{'is-invalid': vs.invalid(observacionesPed_FB(iPed)), 'is-valid':vs.valid(observacionesPed_FB(iPed))}" formControlName="observacionesVendedor" class="form-control" name="" id="" rows="3"></textarea>
-                    <small  class="form-text text-muted">Observaciones del pedido</small>
-                    <app-validacion-inputs [campo]="observacionesPed_FB(iPed)"></app-validacion-inputs>
-
-                </div>
-
-
-
-
-
-
-                <ng-container formArrayName='coloresTenidos'>
-                  
-                  <div class="col-12 justify-content-md-center row ">
-                    <table class="table table-hover table-sm col-12 col-lg-10" *ngIf="this.folioLineas_FB.controls[iPed]['controls']['coloresTenidos']?.controls?.length>0">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>Color</th>
-                          <th>Cantidad</th>
-                          <th>Observaciones</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container *ngFor="let cp of this.folioLineas_FB.controls[iPed]['controls']['coloresTenidos'].controls; let iTenido = index">
-                          <tr>
-                            <ng-container [formGroupName]="iTenido">
-                              
-                              
-                              <td class='pt-3' ><h1>{{iTenido}}.-</h1></td>
-                              <td class='pt-3'><div class="form-group  ">
-                                  <input (blur)="calcularTenidos(iPed)" (keyup)='calcularTenidos(iPed)'  formControlName="color" #inpColor [id]='"tenido_"+iTenido'  (keydown.delete)='eliminarColorTenido(iPed, iTenido)' (keydown.enter)='inpCantidad.focus()'  (keydown.control.shift.enter)='agregarColorTenido(iPed, iTenido)'   title='Puedes presionar enter para capturar la cantidad,  la tecla supr para eliminar la linea o ctrl+shift+enter para una nueva linea.' type="text" class="form-control form-control-sm  " [ngClass]="{'is-invalid': vs.invalid(colorTenido_FB(iPed, iTenido)), 'is-valid':vs.valid(colorTenido_FB(iPed, iTenido))}"/>
-                                  <!-- Esto es importante -->
-                                  {{agregar(inpColor)}}
-                                  <!-- ///////////////////// -->
-                                  <app-validacion-inputs [campo]="colorTenido_FB(iPed, iTenido)"></app-validacion-inputs>
-                              </div></td>
-                              <td class='pt-3'>
-                                  <div class="form-group   " >
-                                      <input (blur)="calcularTenidos(iPed)" (keyup)='calcularTenidos(iPed)'  formControlName="cantidad" #inpCantidad type="number" class="form-control form-control-sm" title='Puedes presionar enter para ir a las observaciones ' (keydown.control.shift.enter)='agregarColorTenido(iPed, iTenido)' (keydown.delete)='eliminarColorTenido(iPed, iTenido)' (keydown.enter)='inpObservaciones.focus()' [ngClass]="{'is-invalid': vs.invalid(cantidadTenido_FB(iPed, iTenido)), 'is-valid':vs.valid(cantidadTenido_FB(iPed, iTenido))}"/>
-                                      <app-validacion-inputs [campo]="cantidadTenido_FB(iPed, iTenido)"></app-validacion-inputs>
-                                    </div>
-                              </td>
-                              <td class='pt-3'>
-                                  <div class="form-group   " >
-                                      <input (blur)="calcularTenidos(iPed)" (keyup)='calcularTenidos(iPed)'  formControlName="observaciones" #inpObservaciones type="text" class="form-control form-control-sm" (keydown.delete)='eliminarColorTenido(iPed, iTenido)' (keydown.control.shift.enter)='agregarColorTenido(iPed, iTenido)' (keydown.enter)='agregarColorTenido(iPed, iTenido)'  [ngClass]="{'is-invalid': vs.invalid(observacionesTenido_FB(iPed, iTenido)), 'is-valid':vs.valid(observacionesTenido_FB(iPed, iTenido))}"/>
-                                      <app-validacion-inputs [campo]="observacionesTenido_FB(iPed, iTenido)"></app-validacion-inputs>
-                                    </div>
-                              </td>
-                              <td class='pt-3'> <a   (click)="eliminarColorTenido(iPed, iTenido)" class="btn btn-danger btn-sm text-white"><i class="fa fa-times"></i></a></td>
-                              </ng-container>
-
-
-
                   </tr>
-                  <tr *ngIf=" this.folioLineas_FB.controls[iPed]['controls']['coloresTenidos'].controls.length === iTenido+1">
-                    
-                      <td colspan='6' class='border-light rounded bg-light'>
-                        
-                        <div class='d-flex justify-content-between align-items-center'>
-                          <div >
-              
-                              <span title='La resta de la cantidad solicitada en el pedido( {{ folioLineas_FB.at(iPed).get("cantidad").value | number  }} ) menos el total a tenir.'><i class="fa fa-question-circle"></i> Disponibles:</span>
-    <br>
+                  <tr
+                    *ngIf="
+                      this.folioLineas_FB.controls[iPed]['controls'][
+                        'coloresTenidos'
+                      ].controls.length ===
+                      iTenido + 1
+                    "
+                  >
+                    <td colspan="6" class="border-light rounded bg-light">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <span
+                            title="La resta de la cantidad solicitada en el pedido( {{
+                              folioLineas_FB.at(iPed).get('cantidad').value
+                                | number
+                            }} ) menos el total a tenir."
+                            ><i class="fa fa-question-circle"></i>
+                            Disponibles:</span
+                          >
+                          <br />
 
+                          <strong>
+                            <span
+                              [ngClass]="{
+                                'text-danger animated shake infinite':
+                                  0 > sumaDeTenidos[iPed]?.diferencia
+                              }"
+                            >
+                              {{ sumaDeTenidos[iPed]?.diferencia | number }}
+                              pzs</span
+                            >
+                          </strong>
+                        </div>
+                        <span title="La suma total de tenidos de este pedido"
+                          ><i class="fa fa-question-circle"></i> Total a tenir:
+                          <strong
+                            ><h3>
+                              {{ sumaDeTenidos[iPed]?.total | number }} pz
+                            </h3></strong
+                          >
+                        </span>
+                      </div>
 
-    <strong> <span  [ngClass]="{'text-danger animated shake infinite': 0 > sumaDeTenidos[iPed]?.diferencia }"> {{ sumaDeTenidos[iPed]?.diferencia| number}} pzs</span> </strong>
+                      <app-validacion-inputs
+                        [campo]="
+                          this.folioLineas_FB.at(iPed).get('coloresTenidos')
+                        "
+                      ></app-validacion-inputs>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+      </div>
 
-
-
-    </div>
-    <span title="La suma total de tenidos de este pedido"><i class="fa fa-question-circle"></i>
-                                                      Total a tenir: <strong><h3 >{{ sumaDeTenidos[iPed]?.total  | number}} pz</h3></strong>
-                  
-                  
-                  
-                            </span>
-
-    </div>
-
-    <app-validacion-inputs [campo]="this.folioLineas_FB.at(iPed).get('coloresTenidos')"></app-validacion-inputs>
-
-    </tr>
-
-
+      <div class="col-12 text-right">
+        <a
+          (click)="agregarColorTenido(iPed)"
+          class="btn btn-warning text-dark"
+          role="button"
+        >
+          <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Color para
+          tenido
+        </a>
+      </div>
     </ng-container>
+  </span>
 
-    </tbody>
-    </table>
+  <hr />
 
-    </div>
+  <div class="col-12 ">
+    <a
+      (click)="agregarPedido()"
+      class="btn btn-primary text-white"
+      role="button"
+    >
+      <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido
+    </a>
+  </div>
 
+  <hr />
 
-
-
-    </ng-container>
-
-    </div>
-
-
-    <div class="col-12 text-right">
-        <a (click)="agregarColorTenido(iPed)" class="btn btn-warning text-dark" role="button"> <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Color para tenido </a>
-
-    </div>
-
-
-
-    </ng-container>
-    </span>
-
-    <hr>
-
-
-
-
-    <div class="col-12 ">
-        <a (click)="agregarPedido()" class="btn btn-primary text-white" role="button"> <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido </a>
-
-    </div>
-
-
-    <hr>
-
-
-
-    <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
-    <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
-    <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-            <span *ngIf="this.idEditando"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-            <span *ngIf="!this.idEditando"> <i class="fas fa-save "></i>  Guardar</span>
-        </button>
-
+  <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button"
+    >Cancelar</a
+  >
+  <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
+  <button
+    [disabled]="formulario.invalid || desactivarBotonEnGuardado"
+    class="btn btn-success mr-3 text-white"
+    role="button"
+  >
+    <span *ngIf="this.idEditando">
+      <i class="fas fa-edit "></i> Guardar cambios</span
+    >
+    <span *ngIf="!this.idEditando"> <i class="fas fa-save "></i> Guardar</span>
+  </button>
 </form>
