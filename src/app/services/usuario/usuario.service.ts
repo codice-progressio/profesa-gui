@@ -47,6 +47,17 @@ export class UsuarioService {
     this.cargarStorage();
   }
 
+
+  cargarRoles():Observable<string[]> {
+
+    const url = `${URL_SERVICIOS}/login/roles`
+    return this.http.get( url ).pipe( map((resp:any)=>{
+      return <string[]> Object.values(resp.roles)
+    } ), catchError( (err)=>{
+      return throwError( err )
+    } ))
+  }
+
   renuevaToken() {
     const url = URL_SERVICIOS + `/login/renuevatoken?token=${this.token}`;
     return this.http.get( url ).pipe(
@@ -149,7 +160,6 @@ export class UsuarioService {
       localStorage.removeItem('email');
     }
     const url = URL_SERVICIOS + '/login';
-    console.log( 'url que se tomo para el login=' + url);
     return this.http.post(url, usuario).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.

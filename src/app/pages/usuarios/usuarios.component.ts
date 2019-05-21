@@ -9,7 +9,15 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styles: []
+  styles: [`
+  ul {
+    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  `]
 })
 export class UsuariosComponent implements OnInit {
   
@@ -17,8 +25,8 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   usuarioEditando: Usuario;
   
-  roles = _ROLES;
-  rolesArray = Object.values(_ROLES);
+  // roles = _ROLES;
+  rolesArray : string []= []
   
 
   // La variable que manejara la paginación.
@@ -38,12 +46,24 @@ export class UsuariosComponent implements OnInit {
     public _msjService: ManejoDeMensajesService
   ) {
     // this.roles = new Roles(_ROLES);
+    //Cargamos los roles.
+    this._usuarioServivce.cargarRoles().subscribe( (roles)=>{
+      this.rolesArray = roles
+      this.rolesArray = this.rolesArray.filter( (x)=>{
+        x = x.toString()
+        return x!=='SUPER_ADMIN' && !x.includes(',')
+      } )
+
+      this.rolesArray.sort( (a, b)=> a > b ? 1 : -1 )
+    } )
+    
    }
 
 
 
   ngOnInit() {
     this.cargarUsuarios();
+
     // Es necesario suscribirse para la carga de imágenes. 
     this._modalUploadService.notificacion.subscribe(
       () => {
@@ -66,7 +86,8 @@ export class UsuariosComponent implements OnInit {
     this._usuarioServivce.cargarUsuarios(this.desde)
           .subscribe( (resp: any) => {
             // console.log(resp);
-            this.usuarios = resp.usuarios;
+            
+            this.usuarios = <Usuario[]>resp.usuarios.filter( (x: Usuario)=> x.nombre !=='SUPER-ADMIN' );
             this.totalRegistros = resp.total;
             this.cargando = false;
           });
@@ -176,7 +197,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   cambiarVisibilidad( e ) {
-    console.log(e.target.id);
     const role = e.target.id;
     if ( this.usuarioEditando.role.includes(role)) {
       this.usuarioEditando.role = this.usuarioEditando.role.filter( x =>  x !== role );
