@@ -1,6 +1,7 @@
 {
-    "name": "carrduci-sys",
-    "version": "0.4.0",
+    "name": "carrduci-sys-gui",
+    "version": "1.0.0",
+    "description": "GUI Descktop CARRDUCIsys",
     "scripts": {
         "ng": "ng",
         "start": "ng serve -o --ssl true --ssl-key C:\\CARRDUCIsys\\certificados\\gui.localhost.key --ssl-cert C:\\CARRDUCIsys\\certificados\\gui.localhost.crt",
