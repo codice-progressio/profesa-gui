@@ -1,68 +1,82 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, ValidatorFn, FormArray, AbstractControl } from '@angular/forms';
-import { Cliente } from 'src/app/models/cliente.models';
-import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
-import { Laser } from 'src/app/models/laser.models';
-import { Folio } from 'src/app/models/folio.models';
-import { Usuario } from 'src/app/models/usuario.model';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
-import { FolioNewService } from 'src/app/services/folio/folio-new.service';
-import { ClienteService } from 'src/app/services/cliente/cliente.service';
-import { ModeloCompletoService } from 'src/app/services/modelo/modelo-completo.service';
-import { UsuarioService } from 'src/app/services/usuario/usuario.service';
-import { DEPARTAMENTOS } from '../../../../config/departamentos'
-import { Subscription } from 'rxjs'
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  EventEmitter,
+  Output,
+  OnDestroy
+} from "@angular/core"
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  ValidatorFn,
+  FormArray,
+  AbstractControl
+} from "@angular/forms"
+import { Cliente } from "src/app/models/cliente.models"
+import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo"
+import { Laser } from "src/app/models/laser.models"
+import { Folio } from "src/app/models/folio.models"
+import { Usuario } from "src/app/models/usuario.model"
+import { ValidacionesService } from "src/app/services/utilidades/validaciones.service"
+import { FolioNewService } from "src/app/services/folio/folio-new.service"
+import { ClienteService } from "src/app/services/cliente/cliente.service"
+import { ModeloCompletoService } from "src/app/services/modelo/modelo-completo.service"
+import { UsuarioService } from "src/app/services/usuario/usuario.service"
+import { DEPARTAMENTOS } from "../../../../config/departamentos"
+import { Subscription } from "rxjs"
 
 @Component({
-  selector: 'app-folios-crear-modificar-abstracto',
-  templateUrl: './folios-crear-modificar-abstracto.component.html',
+  selector: "app-folios-crear-modificar-abstracto",
+  templateUrl: "./folios-crear-modificar-abstracto.component.html",
   styles: []
 })
-export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy {
-
-   /**
+export class FoliosCrearModificarAbstractoComponent
+  implements OnInit, OnDestroy {
+  /**
    * Escucha si input que se muestra cliente ha cambiado para asi asignar
    * el valor ( _id ) correspondiente al input que si pertenece al reactive form.
    *
    * @memberof FoliosCrearModificarComponent
    */
-  @ViewChild("inputCliente") inputCliente;
-  
+  @ViewChild("inputCliente") inputCliente
+
   /**
    *Los clientes que se van a listar en la busqueda.
    *
    * @type {Cliente[]}
    * @memberof FoliosCrearModificarComponent
    */
-  clientes: Cliente[] = [];
+  clientes: Cliente[] = []
   /**
    *El cliente que esta actualmente seleccionado.
    *
    * @type {Cliente}
    * @memberof FoliosCrearModificarComponent
    */
-  clienteSeleccionado: Cliente;
+  clienteSeleccionado: Cliente
   /**
    *Los vendedores que se van a enlistar en la busqueda.
    *
    * @type {Usuario[]}
    * @memberof FoliosCrearModificarComponent
    */
-  vendedores: Usuario[] = [];
+  vendedores: Usuario[] = []
   /**
    *Los modelos completos que se van a enlistar en la busqueda.
    *
    * @type {ModeloCompleto []}
    * @memberof FoliosCrearModificarComponent
    */
-  modelosCompletos: ModeloCompleto[] = [];
+  modelosCompletos: ModeloCompleto[] = []
   /**
    *Version resumida para facilitar el ordenamiento en html
    *
    * @type {ValidacionesService}
    * @memberof FoliosCrearModificarAbstractoComponent
    */
-  vs: ValidacionesService;
+  vs: ValidacionesService
 
   /**
    * El folio que se va a trabajar?
@@ -74,16 +88,15 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
   folio: Folio
 
   /**
-   *El formulario que emitimos para guardar los datos. 
+   *El formulario que emitimos para guardar los datos.
    *
    * @type {FormGroup}
    * @memberof FoliosCrearModificarAbstractoComponent
    */
   formulario: FormGroup
 
-
   /**
-   *Desactiva el boton cuando se esta guardando. 
+   *Desactiva el boton cuando se esta guardando.
    *
    * @type {false}
    * @memberof FoliosCrearModificarAbstractoComponent
@@ -91,7 +104,6 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
   desactivarBotonEnGuardado: boolean = false
   // lleva: any;
 
-  
   constructor(
     public _folioNewService: FolioNewService,
     public formBuilder: FormBuilder,
@@ -103,13 +115,10 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
     this.vs = this._validacionesService
 
     this.formularioCreacionYReinicio()
-
-    
-    
   }
-  
+
   ngOnInit() {
-    this.esteComponente.emit( this )
+    this.esteComponente.emit(this)
   }
 
   /**
@@ -125,43 +134,40 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
     this._modelosCompletosServiceSubscription.unsubscribe()
   }
 
-
-formularioCreacionYReinicio() {
-    // Cada vez que se crea el formulario limpiamos todo. 
+  formularioCreacionYReinicio() {
+    // Cada vez que se crea el formulario limpiamos todo.
     this.marcasLaserNg = []
-    this.inputClienteNg = ''
-    this.inputModeloCompletoNg = [ ]
+    this.inputClienteNg = ""
+    this.inputModeloCompletoNg = []
     this.clientes = []
     this.modelosCompletos = []
 
-    this.crearFormulario();
+    this.crearFormulario()
     this.agregarPedido()
-    this.inputClienteNg = ''
+    this.inputClienteNg = ""
     this.inputModeloCompletoNg = []
+  }
 
-}
-
- /*Carga la lista de clientes en base al termino que se le pase.
+  /*Carga la lista de clientes en base al termino que se le pase.
    *
    * @param {string} termino
    * @memberof FoliosCrearModificarComponent
    */
   cargarClientes(termino: string) {
     if (termino.trim() === "") {
-      this.clientes = [];
+      this.clientes = []
     } else {
-      this._clienteService.buscar(termino).subscribe(clientes => {
-        this.clientes = clientes;
-        this.inputCliente.nativeElement.focus();
-      });
+      this._clienteService.buscar(termino).subscribe((clientes) => {
+        this.clientes = clientes
+        this.inputCliente.nativeElement.focus()
+      })
     }
-    this.cliente_FB.markAsTouched();
+    this.cliente_FB.markAsTouched()
   }
 
+  _modelosCompletosServiceSubscription: Subscription
 
-  _modelosCompletosServiceSubscription:Subscription
-
-/**
+  /**
    *Carga la lista de modelos en base al termindo que se le pase.
    *
    * @param {string} termino
@@ -170,17 +176,18 @@ formularioCreacionYReinicio() {
    */
   cargarModelosCompletos(termino: string, iPed: number) {
     if (termino.trim() === "") {
-      this.clientes = [];
+      this.clientes = []
     } else {
-     this._modelosCompletosServiceSubscription = this._modelosCompletosService.buscar(termino).subscribe(mc => {
-        this.modelosCompletos = mc;
-      });
+      this._modelosCompletosServiceSubscription = this._modelosCompletosService
+        .buscar(termino)
+        .subscribe((mc) => {
+          this.modelosCompletos = mc
+        })
     }
-    this.modeloCompleto_FB(iPed).markAsTouched();
+    this.modeloCompleto_FB(iPed).markAsTouched()
   }
 
-
-   /**
+  /**
    *Obtiene el id del cliente comparando el value( el nombre del cliente)
    con los elementos cargados en la lista de clientes y retorna el id para
    asignarlo al input escondido que esta enlazado al formBuilder. 
@@ -191,15 +198,15 @@ formularioCreacionYReinicio() {
    * @memberof FoliosCrearModificarComponent
    */
   clienteObtenerId(nombre: string): string {
-    if (nombre.trim() === "") return null;
+    if (nombre.trim() === "") return null
 
-    let clienteSeleccionado: Cliente = this.clientes.filter(x => {
-      return x.nombre === nombre.trim();
-    })[0];
+    let clienteSeleccionado: Cliente = this.clientes.filter((x) => {
+      return x.nombre === nombre.trim()
+    })[0]
 
-    if (!clienteSeleccionado) return null;
-    this.clienteSeleccionado = clienteSeleccionado;
-    return clienteSeleccionado._id;
+    if (!clienteSeleccionado) return null
+    this.clienteSeleccionado = clienteSeleccionado
+    return clienteSeleccionado._id
   }
 
   /**
@@ -213,20 +220,19 @@ formularioCreacionYReinicio() {
    * @memberof FoliosCrearModificarComponent
    */
   modeloCompletoObtenerId(nombre: string): string {
-    if (nombre.trim() === "") return null;
+    if (nombre.trim() === "") return null
 
     let modeloCompletoSeleccionado: ModeloCompleto = this.modelosCompletos.filter(
-      x => {
-        return x.nombreCompleto === nombre.trim();
+      (x) => {
+        return x.nombreCompleto === nombre.trim()
       }
-    )[0];
+    )[0]
 
-    if (!modeloCompletoSeleccionado) return null;
-    return modeloCompletoSeleccionado._id;
+    if (!modeloCompletoSeleccionado) return null
+    return modeloCompletoSeleccionado._id
   }
 
-
-   /**
+  /**
  *Limpia todos los datos del cliente seleccionado en el input, el data list, la lista
  de clientes buscada, el input para la escucha del campo y el cliente seleccionado. 
 
@@ -235,13 +241,13 @@ formularioCreacionYReinicio() {
  * @param {*} inputCliente El input con el #
  * @memberof FoliosCrearModificarComponent
  */
-limpiarCliente(inputCliente) {
-  this.cliente_FB.setValue(null);
-  this.clientes = [];
-  inputCliente.value = "";
-  this.clienteSeleccionado = null;
-}
-/**
+  limpiarCliente(inputCliente) {
+    this.cliente_FB.setValue(null)
+    this.clientes = []
+    inputCliente.value = ""
+    this.clienteSeleccionado = null
+  }
+  /**
 *Limpia los datos del modelo completo seleccionado en el input, el data list, la lista
 de modelosCompletos buscada, el input para la escucha del campo. 
 *
@@ -249,15 +255,13 @@ de modelosCompletos buscada, el input para la escucha del campo.
 * @param {*} iPed El numero de pedido del cual se va a buscar el cliene. 
 * @memberof FoliosCrearModificarComponent
 */
-limpiarModeloCompleto(inputModeloCompleto, iPed) {
-  this.modeloCompleto_FB(iPed).setValue(null);
-  this.modelosCompletos = [];
-  inputModeloCompleto.value = "";
-}
+  limpiarModeloCompleto(inputModeloCompleto, iPed) {
+    this.modeloCompleto_FB(iPed).setValue(null)
+    this.modelosCompletos = []
+    inputModeloCompleto.value = ""
+  }
 
-
-
-/**
+  /**
    *Crea el formulario de registro.
    *
    * @memberof MaquinasCrearModificarComponent
@@ -269,19 +273,16 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
       terminado: [false],
       observacionesVendedor: ["", []],
 
-      observaciones:[],
-      
+      observaciones: [],
+
       folioLineas: this.formBuilder.array(
         [],
         [this._validacionesService.minSelectedCheckboxes()]
-        ),
-        
-        // fechaFolio:[],
-      
+      )
 
-    });
+      // fechaFolio:[],
+    })
   }
-
 
   /**
    *Crea un grupo de pedidos con sus respectivas validaciones.
@@ -310,18 +311,18 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
       ),
       observaciones: ["", []],
 
-      pedido: '',
+      pedido: "",
       // nivelDeUrgencia: '',
       // ordenes: '',
       // ordenesGeneradas: '',
       // trayectoGenerado: '',
-      porcentajeAvance: '',
+      porcentajeAvance: "",
       // procesos: '',
       observacionesVendedor: ["", []],
       // terminado: '',
-      fechaTerminado: '',
-      cantidadProducida: '',
-    });
+      fechaTerminado: "",
+      cantidadProducida: ""
+    })
   }
 
   /**
@@ -335,7 +336,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
     * @returns {ValidatorFn}
     * @memberof FoliosCrearModificarComponent
     */
-   validarTotalDeTenidoNoSupereTotalDePedido(): ValidatorFn {
+  validarTotalDeTenidoNoSupereTotalDePedido(): ValidatorFn {
     // Hacemos un lambda por que asi llamamos sin un callbak.
 
     let validator: ValidatorFn = (formArray: FormArray) => {
@@ -346,7 +347,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
           textoSecundario:
             "Al parecer has definido un numero de piezas menor en el pedido que la suma total de piezas. Por favor corrige esto. "
         }
-      };
+      }
 
       // Cuando creamos el formulario no existe el parent. Esta validacion
       // depente de que exista el parent, por que de otra menra da error.
@@ -357,38 +358,35 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
         /**
          * La suma de las cantidades que se quieren tenir.
          */
-        let totalTenido = 0;
+        let totalTenido = 0
         /**
          * Desde el parent se extrae la cantidad que corresponde al pedido.
          */
-        let cantidadDelPedido = formArray.parent.get("cantidad").value;
+        let cantidadDelPedido = formArray.parent.get("cantidad").value
 
         // Recorremos el arreglo sumadno la cantidad a tenir.
-        formArray.controls.forEach(control => {
-          totalTenido += control.get("cantidad").value;
-        });
+        formArray.controls.forEach((control) => {
+          totalTenido += control.get("cantidad").value
+        })
         /**
          * La cantidad del pedido debe ser mayor que la suma a tenir.
          */
-        let esValido = cantidadDelPedido >= totalTenido;
+        let esValido = cantidadDelPedido >= totalTenido
         // Si no es valido retornamos el objeto que informacion.
-        return esValido ? null : objetoDeValidacion;
+        return esValido ? null : objetoDeValidacion
       }
 
       // Si no hay padres y tampoco hay controles en el arreglo
       // no es necesario que validemos.
-      if (formArray.controls.length === 0) return null;
+      if (formArray.controls.length === 0) return null
       // Si hay controles entonces se debe marcar un error.
-      return objetoDeValidacion;
-    };
+      return objetoDeValidacion
+    }
 
-    return validator;
+    return validator
   }
 
-
-
-
-   /**
+  /**
    *Crea un nuevo grupo de tenido para el formulario con 
    sus respectivas validaciones. 
    *
@@ -408,7 +406,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
         ]
       ],
       observaciones: [[], []]
-    });
+    })
   }
 
   /**
@@ -419,7 +417,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public get cliente_FB(): AbstractControl {
-    return this.formulario.get("cliente");
+    return this.formulario.get("cliente")
   }
   /**
    *Obtiene el campoObservacioines vendedor.
@@ -429,7 +427,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public get observacionesVendedor_FB(): AbstractControl {
-    return this.formulario.get("observacionesVendedor");
+    return this.formulario.get("observacionesVendedor")
   }
   /**
    *Obtiene el arreglo folioLlineas.
@@ -439,7 +437,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public get folioLineas_FB(): FormArray {
-    return <FormArray>this.formulario.get("folioLineas");
+    return <FormArray>this.formulario.get("folioLineas")
   }
 
   /**
@@ -450,7 +448,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public pedido_FB(iPed: number): AbstractControl {
-    return this.folioLineas_FB.at(iPed);
+    return this.folioLineas_FB.at(iPed)
   }
 
   /**
@@ -461,7 +459,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public modeloCompleto_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("modeloCompleto");
+    return this.pedido_FB(iPed).get("modeloCompleto")
   }
   /**
    *
@@ -472,7 +470,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public cantidad_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("cantidad");
+    return this.pedido_FB(iPed).get("cantidad")
   }
   /**
    *   *Obtiene el laser del pedido que corresponda al indice que se le pase como parametro. 
@@ -483,7 +481,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public laserCliente_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("laserCliente");
+    return this.pedido_FB(iPed).get("laserCliente")
   }
   /**
    *   *Obtiene si se surte de almacen o no del pedido que corresponda al indice que se le pase como parametro. 
@@ -494,7 +492,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public almacen_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("almacen");
+    return this.pedido_FB(iPed).get("almacen")
   }
   /**
    *   *Obtiene las observaciones del pedido que corresponda al indice que se le pase como parametro. 
@@ -505,7 +503,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public observacionesPed_FB(iPed): AbstractControl {
-    return this.pedido_FB(iPed).get("observacionesVendedor");
+    return this.pedido_FB(iPed).get("observacionesVendedor")
   }
 
   /**
@@ -518,8 +516,8 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public colorTenido_FB(iPed: number, iTenido: number): AbstractControl {
-    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos");
-    return campo.at(iTenido).get("color");
+    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos")
+    return campo.at(iTenido).get("color")
   }
   /**
    * Obtiene la cantidad que corresponda al pedido y coloresTenido que se le pase como 
@@ -531,8 +529,8 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   public cantidadTenido_FB(iPed: number, iTenido: number): AbstractControl {
-    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos");
-    return campo.at(iTenido).get("cantidad");
+    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos")
+    return campo.at(iTenido).get("cantidad")
   }
   /**
    *Obtiene las observaciones que corresponda al pedido y coloresTenido que se le pase como 
@@ -547,8 +545,8 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
     iPed: number,
     iTenido: number
   ): AbstractControl {
-    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos");
-    return campo.at(iTenido).get("observaciones");
+    let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos")
+    return campo.at(iTenido).get("observaciones")
   }
 
   /**
@@ -557,15 +555,14 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   agregarPedido() {
-    let grupoDePedidos:FormGroup = this.crearNuevoGrupoDePedidos()
+    let grupoDePedidos: FormGroup = this.crearNuevoGrupoDePedidos()
     // Deshabilitamos el laser del cliente y la opcion de surtir
-    // de almacen por defecto para que primero sea necesario hacer 
+    // de almacen por defecto para que primero sea necesario hacer
     // la comprobacion.
-    grupoDePedidos.get('laserCliente').disable()
-    grupoDePedidos.get('almacen').disable()
-    this.folioLineas_FB.push(grupoDePedidos);
-    this.comprobarModeloLaseradoFun[this.folioLineas_FB.length-1] = false
-  
+    grupoDePedidos.get("laserCliente").disable()
+    grupoDePedidos.get("almacen").disable()
+    this.folioLineas_FB.push(grupoDePedidos)
+    this.comprobarModeloLaseradoFun[this.folioLineas_FB.length - 1] = false
   }
 
   /**
@@ -575,7 +572,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   eliminarPedido(iPed: number) {
-    this.folioLineas_FB.removeAt(iPed);
+    this.folioLineas_FB.removeAt(iPed)
     this.inputModeloCompletoNg.splice(iPed, 1)
   }
 
@@ -587,7 +584,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @type {any []}
    * @memberof FoliosCrearModificarComponent
    */
-  focus: any[] = [];
+  focus: any[] = []
 
   /**
    *Agrega un color tenido y pone el foco en el nuevo elemento creado.
@@ -598,27 +595,27 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    */
   agregarColorTenido(iPed: number) {
     new Promise((resolve) => {
-      let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos");
-      campo.push(this.crearNuevoGrupoDeTenido());
+      let campo = <FormArray>this.folioLineas_FB.at(iPed).get("coloresTenidos")
+      campo.push(this.crearNuevoGrupoDeTenido())
 
       let interval = setInterval(() => {
         // Esperamos hasta que se cree el componente.
         // Si no hacemos esto el focus no da undefined.
         if (this.focus.length > 0) {
-          clearInterval(interval);
-          resolve();
+          clearInterval(interval)
+          resolve()
         }
-      }, 10);
+      }, 10)
     })
       .then(() => {
         // Cuando detectamos que el componente se creo
         // aplicamos el focus para el elemento.
-        this.focus.pop().focus();
-        this.calcularTenidos(iPed);
+        this.focus.pop().focus()
+        this.calcularTenidos(iPed)
       })
-      .catch(err => {
-        throw err;
-      });
+      .catch((err) => {
+        throw err
+      })
   }
 
   /**
@@ -632,11 +629,11 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   agregar(inp) {
-    let a: any[] = this.focus.filter(x => {
-      return inp.id === x.id;
-    });
+    let a: any[] = this.focus.filter((x) => {
+      return inp.id === x.id
+    })
 
-    if (a.length === 0) this.focus.push(inp);
+    if (a.length === 0) this.focus.push(inp)
   }
 
   /**
@@ -650,27 +647,25 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
     /**
      * Obtenemos el formArray para despues quitar el campo.
      */
-    let campo = <FormArray>(
-      this.folioLineas_FB.at(iPedido).get("coloresTenidos")
-    );
-    campo.removeAt(iTenido);
+    let campo = <FormArray>this.folioLineas_FB.at(iPedido).get("coloresTenidos")
+    campo.removeAt(iTenido)
     // Tambien eliminamos el itempo de los focus.
-    this.focus.splice(iTenido, 1);
+    this.focus.splice(iTenido, 1)
 
     // Volvemoms a hacer focus
-    let iTenidoNew = iTenido - 1;
+    let iTenidoNew = iTenido - 1
 
     // No debe ser negativo. Si es negativo nos vamos a 0 para que el arreglo no de error.
-    if (iTenidoNew < 0) iTenidoNew = 0;
+    if (iTenidoNew < 0) iTenidoNew = 0
 
     // Si hay por lo menos un item para focus lo ejecutamos, si no
     // no se hace nada.
     if (this.focus.length > 0) {
-      this.focus[iTenidoNew].focus();
+      this.focus[iTenidoNew].focus()
     }
 
     // Calculamos los tenidos.
-    this.calcularTenidos(iPedido);
+    this.calcularTenidos(iPedido)
   }
 
   /**
@@ -679,7 +674,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @type {{ [iPed:number]: { total: number, diferencia: number }}}
    * @memberof FoliosCrearModificarComponent
    */
-  sumaDeTenidos: { [iPed: number]: { total: number; diferencia: number } } = {};
+  sumaDeTenidos: { [iPed: number]: { total: number; diferencia: number } } = {}
 
   /**
    *Esta funcion junto con el paramentro sumaDeTenidos calculan el 
@@ -691,16 +686,16 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
   calcularTenidos(iPed) {
     let arrayColores: FormArray = <FormArray>(
       this.folioLineas_FB.at(iPed).get("coloresTenidos")
-    );
-    this.sumaDeTenidos[iPed] = { total: 0, diferencia: 0 };
-    arrayColores.controls.map(x => {
-      this.sumaDeTenidos[iPed].total += Number(x.get("cantidad").value);
-    });
+    )
+    this.sumaDeTenidos[iPed] = { total: 0, diferencia: 0 }
+    arrayColores.controls.map((x) => {
+      this.sumaDeTenidos[iPed].total += Number(x.get("cantidad").value)
+    })
 
     // Calcumalos la diferencia con el pedido.
     this.sumaDeTenidos[iPed].diferencia =
       this.folioLineas_FB.at(iPed).get("cantidad").value -
-      (this.sumaDeTenidos[iPed].total | 0);
+      (this.sumaDeTenidos[iPed].total | 0)
   }
 
   /**
@@ -714,9 +709,8 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
     this.folioLineas_FB
       .at(i)
       .get("coloresTenidos")
-      .updateValueAndValidity();
+      .updateValueAndValidity()
   }
-
 
   /**
    *El ngModel para cargar el cliente. Solo se usa para cargar
@@ -725,7 +719,7 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @type {string}
    * @memberof FoliosCrearModificarComponent
    */
-  inputClienteNg: string = ''
+  inputClienteNg: string = ""
 
   /**
    *El ngModel para cargar el modeloCompleto. solo se usa para 
@@ -734,76 +728,88 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @type {string}
    * @memberof FoliosCrearModificarComponent
    */
-  inputModeloCompletoNg: string [] = []
+  inputModeloCompletoNg: string[] = []
 
-
-  marcasLaserNg: Laser [ ] = []
-  cargarDatosParaEditar(  f: Folio ) {
+  marcasLaserNg: Laser[] = []
+  cargarDatosParaEditar(f: Folio) {
     // Cargamos todos los diferentes datos a
-    // modificar del cliente. 
+    // modificar del cliente.
 
     this.idEditando = f._id
     this.folio = f
-    this.cliente_FB.setValue( f.cliente._id )
-    this.clienteSeleccionado =  f.cliente
+    this.cliente_FB.setValue(f.cliente._id)
+    this.clienteSeleccionado = f.cliente
     this.clientes.push(f.cliente)
     this.inputClienteNg = f.cliente.nombre
     // --------------------------------------------
 
-    this.observacionesVendedor_FB.setValue( f.observacionesVendedor )
+    this.observacionesVendedor_FB.setValue(f.observacionesVendedor)
     // Recoreemos los pedidos
-    this.folioLineas_FB.removeAt( this.folioLineas_FB.length === 0 ? 1 : this.folioLineas_FB.length -1)
+    this.folioLineas_FB.removeAt(
+      this.folioLineas_FB.length === 0 ? 1 : this.folioLineas_FB.length - 1
+    )
 
     for (let i = 0; i < f.folioLineas.length; i++) {
-      const pedido = f.folioLineas[i];
-      
-      this.agregarPedido( );
+      const pedido = f.folioLineas[i]
+
+      this.agregarPedido()
       // Agregamos el modelo completo
-      this.modeloCompleto_FB(i).setValue( pedido.modeloCompleto._id )
-      this.modelosCompletos.push( pedido.modeloCompleto )
-      this.inputModeloCompletoNg.push( pedido.modeloCompleto.nombreCompleto)
-      // ------------------------------------------
-      
-      // Agreegamos la marca laser
-      this.laserCliente_FB(i).setValue( pedido.laserCliente )
-      
+      this.modeloCompleto_FB(i).setValue(pedido.modeloCompleto._id)
+      this.modelosCompletos.push(pedido.modeloCompleto)
+      this.inputModeloCompletoNg.push(pedido.modeloCompleto.nombreCompleto)
       // ------------------------------------------
 
-      this.cantidad_FB(i).setValue( pedido.cantidad )
+      // Agreegamos la marca laser
+      this.laserCliente_FB(i).setValue(pedido.laserCliente)
+
+      // ------------------------------------------
+
+      this.cantidad_FB(i).setValue(pedido.cantidad)
 
       this.almacen_FB(i).setValue(pedido.almacen)
-      this.observacionesPed_FB(i).setValue( pedido.observaciones )
+      this.observacionesPed_FB(i).setValue(pedido.observaciones)
 
       // Todo lo demas para que no se pierda
-      
-      this.folioLineas_FB.at(i).get('pedido').setValue(pedido.pedido)
-      this.folioLineas_FB.at(i).get('porcentajeAvance').setValue(pedido.porcentajeAvance)
-      this.folioLineas_FB.at(i).get('observacionesVendedor').setValue(pedido.observacionesVendedor)
-      this.folioLineas_FB.at(i).get('fechaTerminado').setValue(pedido.fechaTerminado)
-      this.folioLineas_FB.at(i).get('cantidadProducida').setValue(pedido.cantidadProducida)
 
-
+      this.folioLineas_FB
+        .at(i)
+        .get("pedido")
+        .setValue(pedido.pedido)
+      this.folioLineas_FB
+        .at(i)
+        .get("porcentajeAvance")
+        .setValue(pedido.porcentajeAvance)
+      this.folioLineas_FB
+        .at(i)
+        .get("observacionesVendedor")
+        .setValue(pedido.observacionesVendedor)
+      this.folioLineas_FB
+        .at(i)
+        .get("fechaTerminado")
+        .setValue(pedido.fechaTerminado)
+      this.folioLineas_FB
+        .at(i)
+        .get("cantidadProducida")
+        .setValue(pedido.cantidadProducida)
 
       // Recorremos los colores para tenir
 
       for (let t = 0; t < pedido.coloresTenidos.length; t++) {
-        const colorTenido = pedido.coloresTenidos[t];
-        
+        const colorTenido = pedido.coloresTenidos[t]
+
         this.agregarColorTenido(i)
 
-        this.colorTenido_FB(i, t).setValue( colorTenido.color)
-        this.cantidadTenido_FB(i, t).setValue( colorTenido.cantidad)
-        this.observacionesTenido_FB(i, t).setValue( colorTenido.observaciones)
-
+        this.colorTenido_FB(i, t).setValue(colorTenido.color)
+        this.cantidadTenido_FB(i, t).setValue(colorTenido.cantidad)
+        this.observacionesTenido_FB(i, t).setValue(colorTenido.observaciones)
       }
 
-      // Comprobamos si el boton tiene marca laser propia, de manera que no se puede laser aun cuando le demos modifcar. 
-      this.llevaMarcaLaserDesdeElModelo( i )
-          
+      // Comprobamos si el boton tiene marca laser propia, de manera que no se puede laser aun cuando le demos modifcar.
+      this.llevaMarcaLaserDesdeElModelo(i)
     }
   }
 
-/**
+  /**
    *Esta funcion se encarga de comparar los laserados para asi obtener 
    la marca guardada desde el folio. 
    
@@ -813,157 +819,135 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @returns {boolean}
    * @memberof FoliosCrearModificarComponent
    */
-  compararLaserados(val1: Laser, val2:Laser ): boolean{
-    
-    if( !val1 || !val2 ) return false
+  compararLaserados(val1: Laser, val2: Laser): boolean {
+    if (!val1 || !val2) return false
     return val1.laser === val2.laser
   }
 
-/**
- *El id que se almacena cuando un objeto se va a editar. 
- *
- * @type {string}
- * @memberof FoliosCrearModificarAbstractoComponent
- */
-idEditando: string = null
+  /**
+   *El id que se almacena cuando un objeto se va a editar.
+   *
+   * @type {string}
+   * @memberof FoliosCrearModificarAbstractoComponent
+   */
+  idEditando: string = null
 
-/**
- *Guarda o modifica los datos. 
- *
- * @param {Folio} model
- * @param {boolean} isValid
- * @param {*} e
- * @returns
- * @memberof FoliosCrearModificarAbstractoComponent
- */
-onSubmit(model: Folio, isValid: boolean, e) {
-  e.preventDefault();
+  /**
+   *Guarda o modifica los datos.
+   *
+   * @param {Folio} model
+   * @param {boolean} isValid
+   * @param {*} e
+   * @returns
+   * @memberof FoliosCrearModificarAbstractoComponent
+   */
+  onSubmit(model: Folio, isValid: boolean, e) {
+    e.preventDefault()
 
-  
-  if (!isValid) return false;
+    if (!isValid) return false
 
-  this.desactivarBotonEnGuardado = true
-  let call = ()=>{
-    this.desactivarBotonEnGuardado = false
-    this.seModifico.emit()
-    this.cancelar()
+    this.desactivarBotonEnGuardado = true
+    let call = () => {
+      this.desactivarBotonEnGuardado = false
+      this.seModifico.emit()
+      this.cancelar()
+    }
 
-  } 
-
-
-  // Si es una edicion agregamos el id.
-  if (this.idEditando) {
-    model["_id"] = this.idEditando;
-    this._folioNewService.modificar(model).subscribe(call);
-    return;
+    // Si es una edicion agregamos el id.
+    if (this.idEditando) {
+      model["_id"] = this.idEditando
+      this._folioNewService.modificar(model).subscribe(call)
+      return
+    }
+    // Guardamos los datos.
+    this._folioNewService.guardar(model).subscribe(call)
   }
-  // Guardamos los datos.
-  this._folioNewService.guardar(model).subscribe(call);
 
-}
+  @Output() cancelado = new EventEmitter<any>()
 
+  @Output() seModifico = new EventEmitter<any>()
+  @Output() esteComponente = new EventEmitter<
+    FoliosCrearModificarAbstractoComponent
+  >()
 
-@Output() cancelado = new  EventEmitter<any>();
-
-@Output() seModifico = new  EventEmitter<any>();
-@Output() esteComponente = new  EventEmitter<FoliosCrearModificarAbstractoComponent>();
-
-
-
-cancelar(){
+  cancelar() {
     this.cancelado.emit()
-    this.limpiar();
-    this.idEditando = null;
-
+    this.limpiar()
+    this.idEditando = null
   }
 
-
-  
   /**
    *Limpia los datos despues de cancelar, guardar o modifcar.
    *
-   * @memberof 
+   * @memberof
    */
   limpiar() {
-    this.formulario.reset();
+    this.formulario.reset()
   }
-
 
   comprobandoModeloLaserado = {}
 
-  llevaMarcaLaserDesdeElModelo( iPed: number ) {
-
-
+  llevaMarcaLaserDesdeElModelo(iPed: number) {
     let deptoLaser = DEPARTAMENTOS.LASER._n
     //Obtenemos el modelo completo seleccionado
-  
+
     this.laserCliente_FB(iPed).disable()
     this.almacen_FB(iPed).disable()
 
-    this.comprobandoModeloLaserado[iPed] = true 
-    
+    this.comprobandoModeloLaserado[iPed] = true
+
     let id: string = this.modeloCompleto_FB(iPed).value
-    if( !id ) {
+    if (!id) {
       this.comprobandoModeloLaserado[iPed] = false
-      return}
-
-    if( !id && id.trim().length !== 24 ) {
-      this.comprobandoModeloLaserado[iPed] = false
-      return 
-      
+      return
     }
-    
-    let sub = this._modelosCompletosService.buscarPorId( id ).subscribe( (mc)=>{
-      
-      
-         
-          
-          if( !mc ){
-            this.comprobandoModeloLaserado[iPed] = false 
-            return }
-          
-          
-          // El modelo completo tiene definida una marca laser
-          if( mc.laserAlmacen.laser.trim().length > 0 ) {
-            this.comprobandoModeloLaserado[iPed] = false 
-            return}
-          
-          
-          // Existe por lo menos un departamento que senale a laser dentro de la familia de procesos. 
-          for (let i = 0; i < mc.familiaDeProcesos.procesos.length; i++) {
-            const proceso = mc.familiaDeProcesos.procesos[i].proceso;
-            if (proceso.departamento.nombre === deptoLaser) {
-              this.comprobandoModeloLaserado[iPed] = false 
-              return}
-            
-          }
-      
-      // Existe por lo menoss un departamento que senale a laser dentro de los procesos especiales. 
-          for (let i = 0; i < mc.procesosEspeciales.length; i++) {
-            const proceso = mc.procesosEspeciales[i].proceso;
-            if( proceso.departamento.nombre === deptoLaser){this.comprobandoModeloLaserado[iPed] = false 
-               return}
-            }
-      
-          // No hay una marca laser definida para el modelo de manera puntual 
-          //en los procesos o en la familiaDeprocesos, incluso en el modelo mismo 
-          //por lo tanto podemos habilitar los controles
-            
-          this.laserCliente_FB(iPed).enable()
-          this.almacen_FB(iPed).enable()
-          this.comprobandoModeloLaserado[iPed] = false 
-      
-    } )
 
-    
+    if (!id && id.trim().length !== 24) {
+      this.comprobandoModeloLaserado[iPed] = false
+      return
+    }
+
+    let sub = this._modelosCompletosService.buscarPorId(id).subscribe((mc) => {
+      if (!mc) {
+        this.comprobandoModeloLaserado[iPed] = false
+        return
       }
 
-    comprobarModeloLaseradoFun(i: number): boolean{
-      return this.comprobarModeloLaseradoFun[i]
-    }
+      // El modelo completo tiene definida una marca laser
+      if (mc.laserAlmacen.laser.trim().length > 0) {
+        this.comprobandoModeloLaserado[iPed] = false
+        return
+      }
 
+      // Existe por lo menos un departamento que senale a laser dentro de la familia de procesos.
+      for (let i = 0; i < mc.familiaDeProcesos.procesos.length; i++) {
+        const proceso = mc.familiaDeProcesos.procesos[i].proceso
+        if (proceso.departamento.nombre === deptoLaser) {
+          this.comprobandoModeloLaserado[iPed] = false
+          return
+        }
+      }
 
+      // Existe por lo menoss un departamento que senale a laser dentro de los procesos especiales.
+      for (let i = 0; i < mc.procesosEspeciales.length; i++) {
+        const proceso = mc.procesosEspeciales[i].proceso
+        if (proceso.departamento.nombre === deptoLaser) {
+          this.comprobandoModeloLaserado[iPed] = false
+          return
+        }
+      }
 
+      // No hay una marca laser definida para el modelo de manera puntual
+      //en los procesos o en la familiaDeprocesos, incluso en el modelo mismo
+      //por lo tanto podemos habilitar los controles
 
+      this.laserCliente_FB(iPed).enable()
+      this.almacen_FB(iPed).enable()
+      this.comprobandoModeloLaserado[iPed] = false
+    })
+  }
+
+  comprobarModeloLaseradoFun(i: number): boolean {
+    return this.comprobarModeloLaseradoFun[i]
+  }
 }
-
