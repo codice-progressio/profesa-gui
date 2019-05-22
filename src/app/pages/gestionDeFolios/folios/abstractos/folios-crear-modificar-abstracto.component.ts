@@ -10,6 +10,8 @@ import { FolioNewService } from 'src/app/services/folio/folio-new.service';
 import { ClienteService } from 'src/app/services/cliente/cliente.service';
 import { ModeloCompletoService } from 'src/app/services/modelo/modelo-completo.service';
 import { UsuarioService } from 'src/app/services/usuario/usuario.service';
+import { DEPARTAMENTOS } from '../../../../config/departamentos'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-folios-crear-modificar-abstracto',
@@ -87,6 +89,7 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
    * @memberof FoliosCrearModificarAbstractoComponent
    */
   desactivarBotonEnGuardado: boolean = false
+  // lleva: any;
 
   
   constructor(
@@ -119,6 +122,7 @@ export class FoliosCrearModificarAbstractoComponent implements OnInit, OnDestroy
   @Output() destruido = new EventEmitter<any>()
   ngOnDestroy(): void {
     this.destruido.emit()
+    this._modelosCompletosServiceSubscription.unsubscribe()
   }
 
 
@@ -155,6 +159,7 @@ formularioCreacionYReinicio() {
   }
 
 
+  _modelosCompletosServiceSubscription:Subscription
 
 /**
    *Carga la lista de modelos en base al termindo que se le pase.
@@ -167,7 +172,7 @@ formularioCreacionYReinicio() {
     if (termino.trim() === "") {
       this.clientes = [];
     } else {
-      this._modelosCompletosService.buscar(termino).subscribe(mc => {
+     this._modelosCompletosServiceSubscription = this._modelosCompletosService.buscar(termino).subscribe(mc => {
         this.modelosCompletos = mc;
       });
     }
@@ -552,7 +557,15 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
    * @memberof FoliosCrearModificarComponent
    */
   agregarPedido() {
-    this.folioLineas_FB.push(this.crearNuevoGrupoDePedidos());
+    let grupoDePedidos:FormGroup = this.crearNuevoGrupoDePedidos()
+    // Deshabilitamos el laser del cliente y la opcion de surtir
+    // de almacen por defecto para que primero sea necesario hacer 
+    // la comprobacion.
+    grupoDePedidos.get('laserCliente').disable()
+    grupoDePedidos.get('almacen').disable()
+    this.folioLineas_FB.push(grupoDePedidos);
+    this.comprobarModeloLaseradoFun[this.folioLineas_FB.length-1] = false
+  
   }
 
   /**
@@ -783,8 +796,11 @@ limpiarModeloCompleto(inputModeloCompleto, iPed) {
         this.observacionesTenido_FB(i, t).setValue( colorTenido.observaciones)
 
       }
+
+      // Comprobamos si el boton tiene marca laser propia, de manera que no se puede laser aun cuando le demos modifcar. 
+      this.llevaMarcaLaserDesdeElModelo( i )
+          
     }
-        
   }
 
 /**
@@ -871,5 +887,83 @@ cancelar(){
   limpiar() {
     this.formulario.reset();
   }
+
+
+  comprobandoModeloLaserado = {}
+
+  llevaMarcaLaserDesdeElModelo( iPed: number ) {
+
+
+    let deptoLaser = DEPARTAMENTOS.LASER._n
+    //Obtenemos el modelo completo seleccionado
+  
+    this.laserCliente_FB(iPed).disable()
+    this.almacen_FB(iPed).disable()
+
+    this.comprobandoModeloLaserado[iPed] = true 
+    
+    let id: string = this.modeloCompleto_FB(iPed).value
+    if( !id ) {
+      this.comprobandoModeloLaserado[iPed] = false
+      return}
+
+    if( !id && id.trim().length !== 24 ) {
+      this.comprobandoModeloLaserado[iPed] = false
+      return 
+      
+    }
+    
+    let sub = this._modelosCompletosService.buscarPorId( id ).subscribe( (mc)=>{
+      
+      
+         
+          
+          if( !mc ){
+            this.comprobandoModeloLaserado[iPed] = false 
+            return }
+          
+          
+          // El modelo completo tiene definida una marca laser
+          if( mc.laserAlmacen.laser.trim().length > 0 ) {
+            this.comprobandoModeloLaserado[iPed] = false 
+            return}
+          
+          
+          // Existe por lo menos un departamento que senale a laser dentro de la familia de procesos. 
+          for (let i = 0; i < mc.familiaDeProcesos.procesos.length; i++) {
+            const proceso = mc.familiaDeProcesos.procesos[i].proceso;
+            if (proceso.departamento.nombre === deptoLaser) {
+              this.comprobandoModeloLaserado[iPed] = false 
+              return}
+            
+          }
+      
+      // Existe por lo menoss un departamento que senale a laser dentro de los procesos especiales. 
+          for (let i = 0; i < mc.procesosEspeciales.length; i++) {
+            const proceso = mc.procesosEspeciales[i].proceso;
+            if( proceso.departamento.nombre === deptoLaser){this.comprobandoModeloLaserado[iPed] = false 
+               return}
+            }
+      
+          // No hay una marca laser definida para el modelo de manera puntual 
+          //en los procesos o en la familiaDeprocesos, incluso en el modelo mismo 
+          //por lo tanto podemos habilitar los controles
+            
+          this.laserCliente_FB(iPed).enable()
+          this.almacen_FB(iPed).enable()
+          this.comprobandoModeloLaserado[iPed] = false 
+      
+    } )
+
+    
+      }
+
+    comprobarModeloLaseradoFun(i: number): boolean{
+      return this.comprobarModeloLaseradoFun[i]
+    }
+
+
+
+
 }
 
