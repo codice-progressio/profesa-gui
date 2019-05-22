@@ -394,6 +394,12 @@ export class CRUD<
     msjLoading: string = `Buscando ${this.nombreDeDatos.plural}`
   ): Observable<T_TipoDeModelo[]> {
     const a: number = this._preLoaderService.loading(msjLoading)
+
+    // Cualquier caracter que nos perjudique para el regex lo escapamos
+    termino = termino.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    // Cualquier caracter que nos perjudique en la url lo codificamos
+    termino = encodeURIComponent( termino )
+
     return this.http
       .get(this.base + urlAlternativa + this.urlBusqueda + "/" + termino)
       .pipe(
