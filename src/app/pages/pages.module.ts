@@ -96,7 +96,9 @@ import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-d
 import { FoliosDetalleAbstractoComponent } from "./gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component"
 import { FoliosCrearModificarAbstractoComponent } from "./gestionDeFolios/folios/abstractos/folios-crear-modificar-abstracto.component"
 import { RevisionDeOrdenesAbstractoComponent } from "./gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
-import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
+import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component";
+import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component';
+import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
 
 @NgModule({
   declarations: [
@@ -186,7 +188,9 @@ import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios
     FoliosDetalleAbstractoComponent,
     FoliosCrearModificarAbstractoComponent,
     RevisionDeOrdenesAbstractoComponent,
-    FoliosSeguimientoComponent
+    FoliosSeguimientoComponent,
+    ClientesCrearModificarComponent,
+    ClientesDetalleComponent
   ],
   exports: [
     DashboardComponent,

@@ -305,7 +305,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: "Mantenimientos de usuarios",
-      roles: [ROLES.ADMIN_ROLE]
+      roles: [ROLES.ADMINISTRADOR_USUARIOS]
     }
   },
   {
@@ -314,7 +314,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: "Mantenimientos de clientes",
-      roles: [ROLES.ADMIN_ROLE]
+      roles: [ROLES.ADMINISTRADOR_CLIENTES]
     }
   },
 
