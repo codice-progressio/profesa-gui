@@ -26,6 +26,7 @@ import { ModeloCompletoService } from "src/app/services/modelo/modelo-completo.s
 import { UsuarioService } from "src/app/services/usuario/usuario.service"
 import { DEPARTAMENTOS } from "../../../../config/departamentos"
 import { Subscription } from "rxjs"
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
 
 @Component({
   selector: "app-folios-crear-modificar-abstracto",
@@ -110,7 +111,8 @@ export class FoliosCrearModificarAbstractoComponent
     public _validacionesService: ValidacionesService,
     public _clienteService: ClienteService,
     public _modelosCompletosService: ModeloCompletoService,
-    public _usuarioService: UsuarioService
+    public _usuarioService: UsuarioService,
+    public _msjService: ManejoDeMensajesService
   ) {
     this.vs = this._validacionesService
 
@@ -131,7 +133,6 @@ export class FoliosCrearModificarAbstractoComponent
   @Output() destruido = new EventEmitter<any>()
   ngOnDestroy(): void {
     this.destruido.emit()
-    this._modelosCompletosServiceSubscription.unsubscribe()
   }
 
   formularioCreacionYReinicio() {
@@ -143,9 +144,24 @@ export class FoliosCrearModificarAbstractoComponent
     this.modelosCompletos = []
 
     this.crearFormulario()
-    this.agregarPedido()
+    // this.agregarPedido()
     this.inputClienteNg = ""
     this.inputModeloCompletoNg = []
+  }
+
+  comprobarClienteSeleccionado() {
+    // Hay un cliente seleccionado y no hay pedidos agregados.
+    if (this.cliente_FB.valid && this.folioLineas_FB.length === 0) {
+      this.agregarPedido()
+    } else {
+      // Si el cliente no es valido entonces eliminamos todos los pedidos.
+      if (this.cliente_FB.invalid) {
+        for (let i = 0; i < this.folioLineas_FB.length; i++) {
+          this.folioLineas_FB.removeAt(i)
+          this.inputModeloCompletoNg = []
+        }
+      }
+    }
   }
 
   /*Carga la lista de clientes en base al termino que se le pase.
@@ -835,13 +851,19 @@ de modelosCompletos buscada, el input para la escucha del campo.
   /**
    *Guarda o modifica los datos.
    *
-   * @param {Folio} model
    * @param {boolean} isValid
    * @param {*} e
    * @returns
    * @memberof FoliosCrearModificarAbstractoComponent
    */
-  onSubmit(model: Folio, isValid: boolean, e) {
+  onSubmit(formulario: FormGroup, isValid: boolean, e) {
+    
+    
+
+    let model: Folio = <Folio> this.formulario.getRawValue();
+
+
+
     e.preventDefault()
 
     if (!isValid) return false
@@ -888,7 +910,6 @@ de modelosCompletos buscada, el input para la escucha del campo.
   comprobandoModeloLaserado = {}
 
   llevaMarcaLaserDesdeElModelo(iPed: number) {
-    let deptoLaser = DEPARTAMENTOS.LASER._n
     //Obtenemos el modelo completo seleccionado
 
     this.laserCliente_FB(iPed).disable()
@@ -907,44 +928,57 @@ de modelosCompletos buscada, el input para la escucha del campo.
       return
     }
 
-    let sub = this._modelosCompletosService.buscarPorId(id).subscribe((mc) => {
-      if (!mc) {
-        this.comprobandoModeloLaserado[iPed] = false
-        return
-      }
-
-      // El modelo completo tiene definida una marca laser
-      if (mc.laserAlmacen.laser.trim().length > 0) {
-        this.comprobandoModeloLaserado[iPed] = false
-        return
-      }
-
-      // Existe por lo menos un departamento que senale a laser dentro de la familia de procesos.
-      for (let i = 0; i < mc.familiaDeProcesos.procesos.length; i++) {
-        const proceso = mc.familiaDeProcesos.procesos[i].proceso
-        if (proceso.departamento.nombre === deptoLaser) {
-          this.comprobandoModeloLaserado[iPed] = false
-          return
-        }
-      }
-
-      // Existe por lo menoss un departamento que senale a laser dentro de los procesos especiales.
-      for (let i = 0; i < mc.procesosEspeciales.length; i++) {
-        const proceso = mc.procesosEspeciales[i].proceso
-        if (proceso.departamento.nombre === deptoLaser) {
-          this.comprobandoModeloLaserado[iPed] = false
-          return
-        }
-      }
-
-      // No hay una marca laser definida para el modelo de manera puntual
-      //en los procesos o en la familiaDeprocesos, incluso en el modelo mismo
-      //por lo tanto podemos habilitar los controles
-
-      this.laserCliente_FB(iPed).enable()
-      this.almacen_FB(iPed).enable()
+    this._modelosCompletosService.buscarPorId(id).subscribe((mc) => {
       this.comprobandoModeloLaserado[iPed] = false
+
+      if (!this.compruebaQueTieneUnaMarcaLaser(mc)) {
+        this.laserCliente_FB(iPed).enable()
+        this.almacen_FB(iPed).enable()
+      } else {
+        //Comprobamos que el cliente no tenga la marca laser actualmente.
+
+        let existeMarcaLaser = this.clienteSeleccionado.laserados.find(
+          (laserado) => laserado.laser === mc.laserAlmacen.laser
+        )
+
+        if (!existeMarcaLaser) {
+          let titulo = "Marca laser invalida para el cliente"
+          let msj =
+            "El modelo que seleccionaste requiere laserar pero el cliente no tiene registrada la marca. Es necesario que control de produccion de de alta la marca para el cliente."
+
+          this._msjService.invalido(msj, titulo, 10000)
+          this.modeloCompleto_FB(iPed).setValue("")
+          this.inputModeloCompletoNg[iPed] = ""
+        } else {
+          this.laserCliente_FB(iPed).setValue(mc.laserAlmacen)
+        }
+      }
     })
+  }
+
+  compruebaQueTieneUnaMarcaLaser(mc: ModeloCompleto) {
+    let deptoLaser = DEPARTAMENTOS.LASER._n
+    if (!mc) return false
+
+    // El modelo completo tiene definida una marca laser
+    if (mc.laserAlmacen.laser.trim().length > 0) return true
+
+    // Existe por lo menos un departamento que senale a laser dentro de la familia de procesos.
+    for (let i = 0; i < mc.familiaDeProcesos.procesos.length; i++) {
+      const proceso = mc.familiaDeProcesos.procesos[i].proceso
+      if (proceso.departamento.nombre === deptoLaser) return true
+    }
+
+    // Existe por lo menoss un departamento que senale a laser dentro de los procesos especiales.
+    for (let i = 0; i < mc.procesosEspeciales.length; i++) {
+      const proceso = mc.procesosEspeciales[i].proceso
+      if (proceso.departamento.nombre === deptoLaser) return true
+    }
+
+    // No hay una marca laser definida para el modelo de manera puntual
+    //en los procesos o en la familiaDeprocesos, incluso en el modelo mismo
+    //por lo tanto podemos habilitar los controles
+    return false
   }
 
   comprobarModeloLaseradoFun(i: number): boolean {

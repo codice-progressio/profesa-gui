@@ -25,10 +25,19 @@
           'is-invalid': vs.invalid(cliente_FB),
           'is-valid': vs.valid(cliente_FB)
         }"
-        (keydown.enter)="observacionesVendedor.focus()"
-        (keyup)="cargarClientes(inputCliente.value)"
-        (keydown.backspace)="limpiarCliente(inputCliente)"
-        (change)="cliente_FB.setValue(clienteObtenerId(inputCliente.value))"
+        (keydown.enter)="
+          observacionesVendedor.focus(); comprobarClienteSeleccionado()
+        "
+        (keyup)="
+          cargarClientes(inputCliente.value); comprobarClienteSeleccionado()
+        "
+        (keydown.backspace)="
+          limpiarCliente(inputCliente); comprobarClienteSeleccionado()
+        "
+        (change)="
+          cliente_FB.setValue(clienteObtenerId(inputCliente.value));
+          comprobarClienteSeleccionado()
+        "
         type="text"
         list="Cliente"
         class="form-control"
@@ -84,6 +93,7 @@
         <div class="col-12">
           <h1>
             <a
+              *ngIf="this.folioLineas_FB.length > 1"
               (click)="eliminarPedido(iPed)"
               class="btn btn-danger text-white"
               role="button"
@@ -102,8 +112,7 @@
               'is-invalid': vs.invalid(modeloCompleto_FB(iPed)),
               'is-valid': vs.valid(modeloCompleto_FB(iPed))
             }"
-            (keyup)="
-              cargarModelosCompletos(inputModeloCompleto.value, iPed)            "
+            (keyup)="cargarModelosCompletos(inputModeloCompleto.value, iPed)"
             (keydown.backspace)="
               limpiarModeloCompleto(inputModeloCompleto, iPed);
               llevaMarcaLaserDesdeElModelo(iPed)
@@ -459,6 +468,7 @@
 
   <div class="col-12 ">
     <a
+      *ngIf="this.folioLineas_FB.length>0"
       (click)="agregarPedido()"
       class="btn btn-primary text-white"
       role="button"
