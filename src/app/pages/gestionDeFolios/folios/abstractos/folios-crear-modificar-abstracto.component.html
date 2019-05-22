@@ -193,6 +193,8 @@
                 >{{ laser.laser }}</option
               >
             </ng-container>
+
+            <option [ngValue]="{laser:'', img: []}"></option>
           </select>
           <small
             *ngIf="!comprobarModeloLaseradoFun(iPed)"
@@ -213,6 +215,7 @@
 
         <div class="form-check col-12 col-md-4 col-lg-3">
           <input
+            *ngIf="false"
             [ngClass]="{
               'is-invalid': vs.invalid(almacen_FB(iPed)),
               'is-valid': vs.valid(almacen_FB(iPed))
