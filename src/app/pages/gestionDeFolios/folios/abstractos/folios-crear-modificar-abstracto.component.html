@@ -102,15 +102,19 @@
               'is-invalid': vs.invalid(modeloCompleto_FB(iPed)),
               'is-valid': vs.valid(modeloCompleto_FB(iPed))
             }"
-            (keyup)="cargarModelosCompletos(inputModeloCompleto.value, iPed)"
+            (keyup)="
+              cargarModelosCompletos(inputModeloCompleto.value, iPed)            "
             (keydown.backspace)="
-              limpiarModeloCompleto(inputModeloCompleto, iPed)
+              limpiarModeloCompleto(inputModeloCompleto, iPed);
+              llevaMarcaLaserDesdeElModelo(iPed)
             "
             (change)="
               modeloCompleto_FB(iPed).setValue(
                 modeloCompletoObtenerId(inputModeloCompleto.value)
-              )
+              );
+              llevaMarcaLaserDesdeElModelo(iPed)
             "
+            (blur)="llevaMarcaLaserDesdeElModelo(iPed)"
             type="text"
             list="modeloCompleto"
             class="form-control"
@@ -181,7 +185,18 @@
               >
             </ng-container>
           </select>
-          <small class="form-text text-muted">Marca laser</small>
+          <small
+            *ngIf="!comprobarModeloLaseradoFun(iPed)"
+            class="form-text text-muted"
+          >
+            Marca laser
+          </small>
+          <small
+            *ngIf="comprobarModeloLaseradoFun(iPed)"
+            class="form-text text-muted"
+          >
+            <i class="fas fa-spinner fa-spin"></i> Comprobando marca laser
+          </small>
           <app-validacion-inputs
             [campo]="laserCliente_FB(iPed)"
           ></app-validacion-inputs>
