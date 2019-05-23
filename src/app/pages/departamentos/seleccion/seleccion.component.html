@@ -31,23 +31,72 @@
                                     <div class="card-body">
 
 
-                                        <form (ngSubmit)="onSubmit()" [formGroup]="seleccionForm">
+                                        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-3">
                                                     <div class="form-group">
                                                         <input formControlName="quebrados" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getQuebrados), 'is-valid':_validacionesService.valid(getQuebrados)}" type="number" placeholder="Quebrados">
                                                         <app-validacion-inputs [campo]="getQuebrados"></app-validacion-inputs>
                                                     </div>
 
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col-3">
                                                     <div class="form-group">
-                                                        <input formControlName="paraNegro" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getParaNegro), 'is-valid':_validacionesService.valid(getParaNegro)}" type="number" placeholder="Para negro">
-                                                        <app-validacion-inputs [campo]="getParaNegro"></app-validacion-inputs>
+                                                        <input formControlName="reves" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getReves), 'is-valid':_validacionesService.valid(getReves)}" type="number" placeholder="Reves">
+                                                        <app-validacion-inputs [campo]="getReves"></app-validacion-inputs>
                                                     </div>
 
                                                 </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="despostillado" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getDespostillado), 'is-valid':_validacionesService.valid(getDespostillado)}" type="number" placeholder="Despostillado">
+                                                        <app-validacion-inputs [campo]="getDespostillado"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="sinLaser" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getSinLaser), 'is-valid':_validacionesService.valid(getSinLaser)}" type="number" placeholder="Sin laser">
+                                                        <app-validacion-inputs [campo]="getSinLaser"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="sinHoyos" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getSinHoyos), 'is-valid':_validacionesService.valid(getSinHoyos)}" type="number" placeholder="Sin hoyos">
+                                                        <app-validacion-inputs [campo]="getSinHoyos"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="efectoMalo" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getEfectoMalo), 'is-valid':_validacionesService.valid(getEfectoMalo)}" type="number" placeholder="Efecto malo">
+                                                        <app-validacion-inputs [campo]="getEfectoMalo"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="otros" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getOtros), 'is-valid':_validacionesService.valid(getOtros)}" type="text" placeholder="Otros defectos">
+                                                        <app-validacion-inputs [campo]="getOtros"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input formControlName="descripcionDeOtro" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getDescripcionDeOtro), 'is-valid':_validacionesService.valid(getDescripcionDeOtro)}" type="number" placeholder="Descripcion de defecto diferente">
+                                                        <app-validacion-inputs [campo]="getDescripcionDeOtro"></app-validacion-inputs>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
+
+
+
+
+
 
                                             <h3>Seleccionado por:</h3>
                                             <ng-container *ngFor="let usuario of usuarios; let i = index">
@@ -62,7 +111,7 @@
 
                                             <br>
 
-                                            <button type="submit" [ngClass]="{'btn-success': seleccionForm.valid, 'btn-outline-dark': seleccionForm.invalid}" [disabled]="seleccionForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
                                             <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
 
                                             <br>

@@ -1,0 +1,108 @@
+<ng-container *ngIf="folio; else folioLineasElseTemplate">
+
+    <h1 class="display-6 d-flex align-items-center justify-content-between">
+        <span>FOL:<strong># {{folio.numeroDeFolio}}</strong></span> <small class="text-muted">Revision de ordenes</small>
+    </h1>
+
+    <hr>
+
+
+    <H3>
+        <STRONG>Observaciones vendedor</STRONG>
+    </H3>
+
+    <div class="form-group">
+        <input disabled type="text" class="form-control" [(ngModel)]="folio.observacionesVendedor">
+    </div>
+
+
+    <div class="form-group">
+        <label for="obserProduccionFol">Observaciones de produccion</label>
+        <textarea [(ngModel)]="folio.observaciones" class="form-control" name="obserProduccionFol" id="obserProduccionFol" rows="1"></textarea>
+    </div>
+
+    <hr>
+
+
+    <ng-container *ngFor="let pedido of folio.folioLineas">
+        <h3><small>PED</small> # {{pedido.pedido}} </h3>
+        PZ: <strong>{{pedido.cantidad | number }}</strong>
+        <br> Prioridad : <strong> <app-nivel-urgencia [nivel]='pedido.nivelDeUrgencia'></app-nivel-urgencia> </strong>
+
+        <span class='d-flex justify-content-between'>
+            <p>Laser del cliente :</p>
+            
+    
+            <h6 class="display-6"><strong> {{pedido.laserCliente.laser }}</strong></h6>
+
+        </span>
+        <strong>Surtir de almacen: </strong> <i *ngIf="pedido.almacen" class="fa fa-check fa-2x text-success"></i>
+
+
+        <div class="form-group">
+            <label for="observacionesVendedor">Observaciones del vendedor</label>
+            <textarea disabled class="form-control" name="observacionesVendedor" id="observacionesVendedor" rows="1" [(ngModel)]="pedido.observacionesVendedor"></textarea>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <label for="">Observaciones de produccion</label>
+            <textarea class="form-control" name="" id="" rows="3" [(ngModel)]="pedido.observaciones"></textarea>
+        </div>
+
+
+        <div class='container text-center'>
+
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th title='El consecutivo de la orden.'>#</th>
+                        <th title='El valor de la orden con respecto al estadar'>Unidad</th>
+                        <th title='Las piezas que la orden llevara.'>Pzs</th>
+                        <th title='La marca para laserarse'>Marca Laser</th>
+                        <th title='El nivel de urgencia definido'>Prioridad</th>
+                        <th title=''>Observaciones </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let orden of pedido.ordenes; let i = index">
+                        <td>{{i}}</td>
+                        <td>{{orden.unidad}}</td>
+                        <td>{{orden.piezasTeoricas | number }}</td>
+                        <td>{{pedido.laserCliente.laser}}</td>
+                        <td>{{orden.nivelDeUrgencia}}</td>
+
+                        <td>
+                            <div class="form-group">
+                                <input [(ngModel)]="orden.observaciones" type=" text" class="form-control form-control-sm">
+                            </div>
+
+                        </td>
+
+                </tbody>
+            </table>
+        </div>
+
+        <a (click)="pedido.popularOrdenes(pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias)" class="btn btn-warning btn-sm text-dark mr-3" title='Convierte todas las ordenes en medias ordnenes.' role="button">
+                Convertir a <span *ngIf="pedido.gui_generarComoMedias"> ordenes</span>
+                <span *ngIf="!pedido.gui_generarComoMedias"> medias</span>
+             </a>
+        <hr>
+    </ng-container>
+
+</ng-container>
+
+
+<a (click)="guardarCambios()" class="btn btn-success btn-sm text-white mr-3 pull-right" title='Genera las ordenes para produccion.' data-dismiss="modal" role="button">  Generar ordenes</a>
+<!-- <a class="btn btn-info btn-sm text-white" title='Muestra la opcion para editar el trayecto de la orden.' role="button">  Editar trayecto </a> -->
+
+
+<ng-template #folioLineasElseTemplate>
+
+    <h1 class="display-5">No has seleccionado un folio <strong>para ver su informacion</strong>.</h1>
+
+</ng-template>
+
+
+

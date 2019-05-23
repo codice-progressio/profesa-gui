@@ -1,0 +1,241 @@
+<div id="print-folio" *ngIf="folio">
+  <h3>
+    <b>DETALLE DE FOLIO</b>
+    <small class="text-muted ml-5 mr-5">{{
+      horaDeConsulta() | date: "dd/MM/yyyy HH:mm"
+    }}</small>
+
+    <app-nivel-urgencia [nivel]="folio.nivelDeUrgencia"></app-nivel-urgencia>
+    <span class="pull-right"># {{ folio.numeroDeFolio }}</span>
+  </h3>
+  <hr />
+  <div class="row">
+    <div class="col-md-12">
+      <div class="pull-left w-50 ">
+        <address>
+          <h3>Cliente,</h3>
+          <h4>
+            &nbsp;<b class="text-danger">{{ folio.cliente.nombre }}</b>
+          </h4>
+          <p class="text-muted m-l-5">- SAE: {{ folio.cliente.sae }}</p>
+        </address>
+      </div>
+      <div class="pull-right text-right w-50 b-l">
+        <address>
+          <h3>Vendedor,</h3>
+          <h4 class="font-bold">{{ folio.vendedor.nombre }}</h4>
+          <p class="text-muted m-l-30">-</p>
+
+          <p>
+            <b>Fecha de creacion de folio</b> <br />
+            <i class="fa fa-calendar"></i>
+            {{ folio.fechaFolio | fecha: "LLLL" }}
+          </p>
+          <p>
+            <b>Fecha de entrega a produccion</b> <br />
+            <i class="fa fa-calendar"></i>
+            {{ folio.fechaDeEntregaAProduccion | fecha: "LLLL" }}
+          </p>
+          <p>
+            <ng-container *ngIf="folio.fechaTerminado">
+              <b>Folio terminado el: </b>
+              {{ folio.fechaTerminado | fecha: "LLL" }}
+            </ng-container>
+
+            <ng-container *ngIf="!folio.fechaTerminado">
+              <p class="w-75 text-right pull-right">
+                <app-progress-bar
+                  [nivel]="folio.nivelDeUrgencia"
+                  [porcentaje]="folio.porcentajeAvance"
+                >
+                </app-progress-bar>
+              </p>
+            </ng-container>
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <h6><b>Observaciones:</b></h6>
+      <p>{{ folio.observacionesVendedor }}</p>
+    </div>
+    <div class="col-12" *ngIf="folio.observaciones">
+      <hr />
+      <h6><b>Observaciones de produccion:</b></h6>
+      <p>{{ folio.observaciones }}</p>
+    </div>
+
+    <div class="col-md-12">
+      <hr />
+      <div class="table-responsive m-t-40" style="clear: both;">
+        <table class="table table-hover">
+          <thead class="100">
+            <tr>
+              <th></th>
+              <th title="Numero de pedido" class="text-center">
+                PED
+              </th>
+              <th title="El modelo del pedido. ">
+                MOD
+              </th>
+              <th title="Piezas solicitadas en el folio" class="text-right">
+                PZ SOL
+              </th>
+              <th title="Piezas producidas" class="text-right">
+                PZ PRO
+              </th>
+              <th class=" text-center fit" title="Prioridad del pedido. Si hay ordenes con niveles de prioridad diferente se toma el de mayor importancia siempre cuando supere la prioridad del pedido.">
+                PRI
+              </th>
+              <th
+                title="Tiempo que lleva en produccion el folio"
+                class="text-right"
+              >
+                PRO
+              </th>
+              <th
+                title="El porcentaje de avance de produccion"
+                class="text-right"
+              >
+                % PRO
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let pedido of folio.folioLineas">
+              <tr>
+                <td class="fit">
+                  <a
+                    (click)="mostrarDetalleDePedido(pedido)"
+                    title="Ver detalle rapido del pedido."
+                    data-toggle="modal"
+                    data-target="#detalleDePedido"
+                    name=""
+                    id=""
+                    class="btn btn-primary text-white btn-sm mr-2 no-print"
+                    role="button"
+                  >
+                    <i class="fas fa-eye    "></i
+                  ></a>
+                </td>
+                <td class="text-center">{{ pedido.pedido }}</td>
+                <td>{{ pedido.modeloCompleto | modeloCompleto }}</td>
+                <td class="text-right">{{ pedido.cantidad | number }}</td>
+                <td class="text-right">
+                  {{ pedido.cantidadProducida | number }}
+                </td>
+                <td><app-nivel-urgencia [nivel]='pedido.nivelDeUrgencia' ></app-nivel-urgencia> </td>
+                <td></td>
+                <td class="text-right">
+                  <app-progress-bar
+                    [nivel]="pedido.nivelDeUrgencia"
+                    [porcentaje]="pedido.porcentajeAvance"
+                  >
+                  </app-progress-bar>
+                </td>
+              </tr>
+
+              <tr *ngIf="pedido.coloresTenidos.length > 0" class="bg-light">
+                <td colspan="7">
+                  <h3 class="text-info">Cantidades a tenir</h3>
+                  <table class="table table-bordered text-center">
+                    <thead>
+                      <tr class="bg-info text-white text-center">
+                        <th
+                          class=" text-center fit"
+                          title="El color al que se va a tenir el boton"
+                        >
+                          <i class="fas fa-question-circle"></i> COL
+                        </th>
+                        <th
+                          class=" text-center fit"
+                          title="La cantidad de boton que se quiere tenir"
+                        >
+                          <i class="fas fa-question-circle"></i> CANT
+                        </th>
+                        <th
+                          class=" text-center fit"
+                          title="Observaciones especiales que se van a mostrar en el departamento de tenido. "
+                        >
+                          <i class="fas fa-question-circle"></i> OBS
+                        </th>
+                        <th
+                          class=" text-center fit"
+                          title="El estatus actual del tenido. Este valor no tiene nada que ver con las piezas producidas."
+                        >
+                          <i class="fas fa-question-circle"></i> TERM
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let colorTenido of pedido.coloresTenidos">
+                        <td class="fit">{{ colorTenido.color }}</td>
+                        <td class="fit">{{ colorTenido.cantidad | number }}</td>
+                        <td class="fit">{{ colorTenido.observaciones }}</td>
+                        <td class="fit">
+                          <ng-container
+                            *ngIf="colorTenido.terminado; else elseTemplate"
+                          >
+                            <i class="fa fa-check text-succes"></i>
+                            <span
+                              [title]="
+                                colorTenido.fechaTerminado | fecha: 'LLLL'
+                              "
+                            >
+                              <i class="fab fa-clock"></i>
+                              {{
+                                colorTenido.fechaTerminado | date: "dd/MM/yy"
+                              }}
+                            </span>
+                          </ng-container>
+                          <ng-template #elseTemplate>
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            Pendiente
+                          </ng-template>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="4" class="fit">
+                          <span class="text-muted"> Total a tenir: </span>
+                          <strong
+                            >{{
+                              sumarTenidos(pedido.coloresTenidos) | number
+                            }}
+                            pz</strong
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <!-- <div class="pull-right m-t-30 text-right">
+                <p>Sub - Total amount: $13,848</p>
+                <p>vat (10%) : $138 </p>
+                <hr>
+                <h3><b>Total :</b> $13,986</h3>
+            </div> -->
+      <div class="clearfix"></div>
+      <!-- <hr>
+            <div class="text-right">
+                <a id="print" class="btn btn-default btn-outline"> <span><i class="fa fa-print"></i> Imprimir</span> </a>
+            </div> -->
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<app-boton-para-imprecion [id]='"print-folio"'></app-boton-para-imprecion>
+
+<div *ngIf="!folio">
+  <h1>No has definido un folio para ver su detalle</h1>
+</div>

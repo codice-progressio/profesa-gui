@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import swal from 'sweetalert2';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { asQueryList } from '@angular/core/src/view';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,13 @@ export class ManejoDeMensajesService {
       type: 'error',
       title: '¡Algo salio mal!',
     };
+
+  if( !err.error ){
+    // Si el error viene del GUI no tiene la propiedad
+    // error y no muestra el mensaje. Si pasa esto 
+    // lo capturamos aqui
+    throw new Error('Hubo un error en el GUI:' +  err );
+  }
 
 
     if ( err.error.data ) {
@@ -90,7 +98,7 @@ export class ManejoDeMensajesService {
         position: 'top-end',
         toast: true,
         animation: false,
-        customClass: 'animated shake  '
+        customClass: 'animated slideInRight  faster '
        
       }).then( () => {
         this.cb( callback );
@@ -156,7 +164,7 @@ export class ManejoDeMensajesService {
         timer: timer, 
         toast: true,
         animation: false,
-        customClass: 'animated bounceIn  '
+        customClass: 'animated slideInRight  faster'
       };
       swal(d);
   }

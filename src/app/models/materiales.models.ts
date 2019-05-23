@@ -1,10 +1,33 @@
-import { Usuario } from './usuario.model';
+import { Usuario } from "./usuario.model"
+import { Maquina } from "./maquina.model"
+import { Deserializable } from "./deserealizable.model"
 
-export class Materiales {
-    constructor(
-        public cargo?: Usuario,
-        public createdAt?: Date,
-        public updatedAt?: Date,
-    ) {}
+/**
+ * El modelo de el departamento materiales.
+ *
+ * @export
+ * @class Materiales
+ */
+export class Materiales implements Deserializable {
+  constructor(
+    public createdAt?: Date,
+    public updatedAt?: Date,
+    public cargo?: Usuario,
+    public guardar?: boolean,
+    public trabajando: boolean = false,
+    public maquinaActual?: Maquina
+  ) {}
 
+  deserialize(input: this): this {
+    //console.log("x  ?.4.4.3.0");
+    if (!input) {
+      // console.log("No se definio input")
+      return this
+    }
+    Object.assign(this, input)
+    //console.log("x  ?.4.4.3.1");
+    this.maquinaActual = new Maquina().deserialize(input.maquinaActual)
+    //console.log("x  ?.4.4.3.2");
+    return this
+  }
 }

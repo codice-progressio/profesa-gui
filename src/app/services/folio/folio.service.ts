@@ -11,12 +11,17 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { UsuarioService } from '../usuario/usuario.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { VariablesDeptos } from 'src/app/config/departamentosConfig';
+import { PaginadorService } from 'src/app/components/paginador/paginador.service';
+import { CRUD } from '../crud';
+import { UtilidadesService } from '../utilidades/utilidades.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FolioService {
- 
+  
   
   totalFolios: number = 0;
  
@@ -24,12 +29,28 @@ export class FolioService {
   constructor(  
     public http: HttpClient,
     public router: Router,
-    private _msjService: ManejoDeMensajesService,
-    private _u: UsuarioService,
-    private _preLoaderService: PreLoaderService
+    public _msjService: ManejoDeMensajesService,
+    public _u: UsuarioService,
+    public _preLoaderService: PreLoaderService,
+    public _paginadorService: PaginadorService,
+    public _utilidadesService: UtilidadesService
     ) {
+      // super(
+      //   http,
+      //   _msjService,
+      //   _utilidadesService,
+      //   _preLoaderService,
+      //   _paginadorService,
+      // )
+
+      // this.base =  URL_SERVICIOS + `/folio`;
+      // this.nombreDeDatos.plural = 'folios';
+      // this.nombreDeDatos.singular = 'folio';
+      // this.urlBusqueda = '/buscar';
   }
-    
+  
+
+
     
     
   guardarFolio ( folio: Folio) {
@@ -83,14 +104,47 @@ export class FolioService {
       
       );
     }
-          
+
+    /**
+     *Busca los folios que coincidan con el id del cliente. 
+     *
+     * @param {string} id
+     * @returns {*}
+     * @memberof FolioService
+     */
+    buscarPorCliente(id: string, paginador: PaginadorService = null, campoSort: string = null ): Observable<Folio[]>{
+      const a: number = this._preLoaderService.loading('Cargando folios del cliente');
+      
+      if( !paginador ){
+        paginador = this._paginadorService;
+      }
+
+      // Carga todos los datos del folio y sus lineas
+      const url =`${URL_SERVICIOS}/folio/cliente/${id}?${this._paginadorService.generarQueryDePaginador( paginador, campoSort)}`;
+      
+      return this.http.get(url).pipe(
+        map( (resp: any) => {
+          this.totalFolios = resp.total;
+          this._paginadorService.totalDeElementos = resp.total
+          this._msjService.ok_(resp,null, a);
+          return <Folio[]> resp.folios;
+        }), catchError( err => {
+          this._msjService.err(err);
+          return throwError(err);
+        })
+        );
+      
+    }
+   
+
+            
   cargarFolios (desde: number = 0, limite: number = 5) {
     // Es necesario siempre el signo al final para 
     // que no haya problemas con los otros parametros. 
     const a: number = this._preLoaderService.loading('Cargando folios.');
     
     const url =`${URL_SERVICIOS}/folio?`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url, a);
   }
   
   cargarFoliosConOrdenesSinTerminar( desde: number = 0, limite: number = 5) {
@@ -98,7 +152,7 @@ export class FolioService {
     
     // Carga los folios que ya tienen órdenes generadas. 
     const url =`${URL_SERVICIOS}/folio?conOrdenes=true`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url,  a);
   }
 
   cargarFoliosConOrdenesTerminados( desde: number = 0, limite: number = 5) {
@@ -106,7 +160,7 @@ export class FolioService {
     
     // Carga los folios que ya tienen órdenes generadas. 
     const url =`${URL_SERVICIOS}/folio?conOrdenes=true&terminados=true`;
-    return this.cargaDeFolios(url, limite, desde, a);
+    return this.cargaDeFolios(url,  a);
   }
 
   
@@ -117,19 +171,20 @@ export class FolioService {
     // Esto aunque un solo pedido no se haya genera órdenes. 
     // Los pedidos que ya se generón del folio no aparecen aqui. 
     const url =`${URL_SERVICIOS}/folio?sinOrdenes=true`;
-    return this.cargaDeFolios( url, limite, desde, a);
+    return this.cargaDeFolios( url, a);
   }
   
-  cargarFolioPorPrioridad(desde: number = 0, limite: number = 5, prioridad: string) {
+  cargarFolioPorPrioridad( prioridad: string) {
     
     const a: number = this._preLoaderService.loading('Cargando folios por prioridad');
     const url =`${URL_SERVICIOS}/folio?prioridad=${prioridad}&terminados=false&conOrdenes=true`;
-    return this.cargaDeFolios( url, limite, desde, a);
+    return this.cargaDeFolios( url,  a);
   }
   
-  private cargaDeFolios (url: string, limite: number = 5, desde: number = 0, a:number) {
-    url += `&limite=${limite}`; 
-    url += `&desde=${desde}`;
+  private cargaDeFolios (url: string,  a:number) {
+    
+    url += `&limite=${this._paginadorService.limite}`; 
+    url += `&desde=${this._paginadorService.desde}`;
     
     return this.http.get( url ).pipe(
       map( (resp: any) => {
@@ -204,8 +259,10 @@ export class FolioService {
   eliminarFolio( idFolio: string) {
     const a: number = this._preLoaderService.loading('Eliminando folio.');
     const url =`${URL_SERVICIOS}/folio/${idFolio}`;
+    
     return this.http.delete(url).pipe(
       map( (resp: any) => {
+        this.reiniciarPaginador()
         this._msjService.ok_(resp,null, a);
         return;
       }),
@@ -217,12 +274,13 @@ export class FolioService {
   
   guardarOrdenes( folio: Folio ) {
     const a: number = this._preLoaderService.loading('Guardando ordenes.');
-    
+  
     // QUITAMOS TODA LA BASURA.
     const limpio = this.limpiarParaOrdenes( folio );
     const url =`${URL_SERVICIOS}/orden`;
     return this.http.post( url, limpio ).pipe( 
       map( (resp) => {
+        this.reiniciarPaginador()
         this._msjService.ok_(resp,null, a);
         
         return;
@@ -290,15 +348,13 @@ export class FolioService {
    * @returns
    * @memberof FolioService
    */
-  iniciarTrabajoDeOrden(orden: Orden , depto: any , callbackError: any = null) {
+  iniciarTrabajoDeOrden(orden: Orden , idDepto: string, depto: VariablesDeptos , callbackError: any = null) {
     const a: number = this._preLoaderService.loading('Iniciando trabajdo de orden.');
-    console.log(orden.ubicacionActual);
-    
     const url = URL_SERVICIOS + `/orden?empezarATrabajar=true`;
     return this.http.put(url, 
       {
         _id: orden._id,
-        departamento: depto._n, 
+        departamento: idDepto, 
         deptoTrabajado: orden.ubicacionActual[depto._v.toLowerCase()],
       
       }).pipe(
@@ -354,10 +410,18 @@ export class FolioService {
   }
 
   // Guardamos los cambios de la órden. 
-  modificarOrden(dato: any, idOrden: string, depto: string): any {
+  /**
+   *Guarda los cambios de la orden que se le pase como paramentro. 
+   *
+   * @param {*} dato El modelo que se va a pasar para guardar.
+   * @param {string} idOrden El id de la orden que se va a modificar. 
+   * @param {string} idDepto El id del departamento que se va a modificar. 
+   * @returns {*} 
+   * @memberof FolioService
+   */
+  modificarOrden(dato: any, idOrden: string, idDepto: string): any {
     const a: number = this._preLoaderService.loading('Guardando cambios de orden.');
-    
-    const url =`${URL_SERVICIOS}/orden/${idOrden}?depto='${depto}'`;
+    const url =`${URL_SERVICIOS}/orden/${idOrden}?depto=${idDepto}`;
     return this.http.put( url, dato ).pipe(
       map( (resp: any) => {
         this._msjService.ok_(resp,null, a);
@@ -372,8 +436,7 @@ export class FolioService {
 
   controlDeProduccion_RecivirYEntregar(idOrdenes: String[]): any {
    const a: number = this._preLoaderService.loading('Entregando ordenes.');
-   
-    const url =`${URL_SERVICIOS}/orden/controlDeProduccionRecivirYEntregar`;
+    const url =`${URL_SERVICIOS}/orden/controlDeProduccionRecibirYEntregar`;
    return this.http.put( url, idOrdenes ).pipe(
     map( (resp: any) => {
       this._msjService.ok_(resp,null, a);
@@ -401,6 +464,17 @@ export class FolioService {
       return throwError(err);
     })
   );
+  }
+
+  /**
+   *Este es un parche para reiniciar el paginador
+   *
+   * @memberof FolioService
+   */
+  reiniciarPaginador( ){
+    this._paginadorService.limite = 5
+    this._paginadorService.desde = 0
+    this._paginadorService.activarPaginador(this.totalFolios)
   }
 
 

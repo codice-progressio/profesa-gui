@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SidebarService, UsuarioService } from '../../services/service.index';
 import { Usuario } from '../../models/usuario.model';
+import { SidebarService } from 'src/app/services/shared/sidebar.service';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-sidebar',

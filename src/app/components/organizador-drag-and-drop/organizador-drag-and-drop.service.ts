@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OrganizadorDragAndDrop } from './models/organizador-drag-and-drop.model';
 import { DndObject } from './models/dndObject.model';
 import { Hijos } from './models/hijos.model';
-import { ManejoDeMensajesService } from 'src/app/services/service.index';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -316,8 +316,8 @@ obtenerObjetoPadre( idObjeto: string ): OrganizadorDragAndDrop<T>{
  * @memberof OrganizadorDragAndDropService
  */
 eliminarUnHijoEliminable( i: number, key: string ){
-  console.log( ' se ejecuto. ' + i +' - ' + key)
-  this.listaDeObjetos[key].hijos.ordenables.splice(i, 1)  
+  this.listaDeObjetos[key].hijos.ordenables.splice(i, 1)
+  this.actualizarPropiedadOrden();
 }
 
 /**
@@ -408,23 +408,26 @@ ordenarPorPropiedadOrden(): any {
 
       // Ordenamos los hijos 
       objeto.hijos.ordenables.sort( (a, b)=>{
-        return Number(a.orden) - Number(b.orden);
+        // ES NECESARIO SEPARAR EL DECIMAL DEL ENTERO PARA
+        // ORDENAR LOS HIJOS. 
+
+        // SI TENEMOS UN NUMERO 1.1 Y 1.2 ENTONCES TODO MARCHA BIEN.
+        // EL PROBLEMA RESIDE EN LOS DECIMALES. TENEMOS QUE SEPARAR Y ORDENAR
+        // PRIMERO POR EL ENTERO Y LUEGO POR EL DECIMAL.
+
+        let entero_A   = a.orden.split('.')[0];
+        let entero_B   = b.orden.split('.')[0];
+
+        let decimal_A  =  a.orden.split('.')[1] ? a.orden.split('.')[1] :'0' ;
+        let decimal_B  =  b.orden.split('.')[1] ? b.orden.split('.')[1] :'0' ;
+
+        let x = Number(entero_A) - Number(entero_B);
+
+        return x == 0 ? Number(decimal_A) - Number(decimal_B) : x;
       } );
-
-
-
     }
   }
-
 }
-
-
-
-
-
-
-
-
 
 
 }

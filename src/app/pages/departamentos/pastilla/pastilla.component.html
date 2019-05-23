@@ -1,6 +1,6 @@
 <app-qr-scanner></app-qr-scanner>
 
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+<div class="row animated fadeIn" *ngIf="_qrScannerService.lecturaCorrecta">
     <!-- <div class="row animated tada"> -->
     <div class="col-12">
         <div class="card border-dark">
@@ -25,10 +25,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12 ">
-                        <form #f (ngSubmit)="onSubmit(pastillaForm.value, pastillaForm.valid,$event)" [formGroup]="pastillaForm" novalidate>
+                        <form #f (ngSubmit)="onSubmit(formulario.value, formulario.valid,$event)" [formGroup]="formulario" novalidate>
                             <span formArrayName='cantidades'>
 
-                                <ng-container *ngFor="let cp of pastillaForm?.controls['cantidades'].controls; let i = index;">
+                                <ng-container *ngFor="let cp of formulario?.controls['cantidades'].controls; let i = index;">
     
                                     <!-- PESO DE 10 BOTONES -->
                                     <div class="row" [formGroupName]="i">
@@ -55,8 +55,8 @@
                                         </div>
     
                                         <div class="form-group col-1 d-flex align-items-center ">
-                                            <a (click)="agregarCantidades()" *ngIf="i === (pastillaForm?.controls['cantidades'].controls.length-1)" class="btn btn-outline-success "><i class="fa fa-plus"> </i></a>
-                                            <a (click)="eliminarCantidades(i)" *ngIf="i !== (pastillaForm?.controls['cantidades'].controls.length-1)" class="btn btn-outline-danger "><i class="fa fa-times"></i></a>
+                                            <a (click)="agregarCantidades()" *ngIf="i === (formulario?.controls['cantidades'].controls.length-1)" class="btn btn-outline-success "><i class="fa fa-plus"> </i></a>
+                                            <a (click)="eliminarCantidades(i)" *ngIf="i !== (formulario?.controls['cantidades'].controls.length-1)" class="btn btn-outline-danger "><i class="fa fa-times"></i></a>
                                         </div>
     
                                     </div>
@@ -87,7 +87,7 @@
                             <br>
                             <br>
 
-                            <button type="submit" [ngClass]="{'btn-success': pastillaForm.valid, 'btn-outline-dark': pastillaForm.invalid}" [disabled]="pastillaForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
+                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
                             <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
 
                             <br>

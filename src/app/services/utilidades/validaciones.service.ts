@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, Validators } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, FormArray } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +65,14 @@ export class ValidacionesService {
      };
   }
 
+  /**
+   *Valida que solo sean numeros. No lo debes de llamar
+   como funcion, si no como un tipo callback. 
+   *
+   * @param {*} number
+   * @returns {*}
+   * @memberof ValidacionesService
+   */
   onlyIntegers( number ): any {
     if ( number.pristine ) {
       return null;
@@ -121,4 +129,20 @@ export class ValidacionesService {
         invalidZip: true
      };
   }
+  /**
+   *Valida el tamano minimo de un arreglo. Sirve para un 
+   arreglo.
+   *
+   * @param {number} [min=1] El valor minimo a comprobar. 
+   * @returns {ValidatorFn}
+   * @memberof ValidacionesService
+   */
+  minSelectedCheckboxes(min = 1): ValidatorFn {
+   const validator: ValidatorFn = (formArray: FormArray) => {
+      const totalSelected = formArray.controls.length
+     return totalSelected >= min ? null : { tamanoMinimo: true, minimo: min };
+   };
+ 
+   return validator;
+ }
 }

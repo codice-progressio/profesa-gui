@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DefaultModelData } from '../../config/defaultModelData';
 import { HttpClient } from '@angular/common/http';
-import { ManejoDeMensajesService } from '../service.index';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { map, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 
 /**
  *Gestiona la carga de los id por defaults. s

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Medico } from '../../models/medico.model';
-import { MedicoService, HospitalService } from '../../services/service.index';
 import { NgForm } from '@angular/forms';
 import { Hospital } from '../../models/hospital.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
+import { MedicoService } from 'src/app/services/medico/medico.service';
+import { HospitalService } from 'src/app/services/hospital/hospital.service';
 
 @Component({
   selector: 'app-medico',

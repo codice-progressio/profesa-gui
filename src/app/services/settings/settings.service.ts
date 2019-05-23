@@ -7,8 +7,8 @@ import { DOCUMENT } from '@angular/platform-browser';
 export class SettingsService {
 
   ajustes: Ajustes = {
-    temaUrl: 'assets/css/colors/megna-dark.css',
-    tema: 'megna-dark'
+    temaUrl: 'assets/css/colors/red.css',
+    tema: 'red'
   };
 
 

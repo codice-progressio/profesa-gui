@@ -1,32 +1,55 @@
+// {
+//     // Use IntelliSense para saber los atributos posibles.
+//     // Mantenga el puntero para ver las descripciones de los existentes atributos 
+//     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+//     "version": "0.2.0",
+//     "configurations": [
+
+//         {
+//             "type": "chrome",
+//             "request": "attach",
+//             "name": "Attach to Chrome",
+//             "port": 9222,
+//             "webRoot": "${workspaceFolder}"
+//         },
+//         {
+//             "type": "chrome",
+//             "request": "launch",
+//             "name": "Launch Chrome",
+//             "url": "http://localhost:4200",
+//             "webRoot": "${workspaceFolder}"
+//         },
+//         {
+//             "type": "node",
+//             "request": "launch",
+//             "name": "Launch Program",
+//             "program": "${workspaceFolder}\\serve",
+//             "preLaunchTask": "tsc: build - tsconfig.json",
+//             "outFiles": [
+//                 "${workspaceFolder}/dist/out-tsc/**/*.js"
+//             ]
+//         }
+//     ]
+// }
+
+
 {
-    // Use IntelliSense para saber los atributos posibles.
-    // Mantenga el puntero para ver las descripciones de los existentes atributos 
-    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+    "version": "0.4",
     "configurations": [
+        
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "https://localhost:4200",
+            "webRoot": "${workspaceFolder}"
+        },
         {
             "type": "chrome",
             "request": "attach",
             "name": "Attach to Chrome",
             "port": 9222,
             "webRoot": "${workspaceFolder}"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\serve",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/dist/out-tsc/**/*.js"
-            ]
         }
     ]
 }

@@ -1,52 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
-import swal from 'sweetalert2';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService } from 'src/app/services/service.index';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-import { Orden } from 'src/app/models/orden.models';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Barnizado } from 'src/app/models/barnizado.model';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 @Component({
   selector: 'app-barnizado',
   templateUrl: './barnizado.component.html',
   styles: []
 })
-export class BarnizadoComponent implements OnInit {
-
-  
-    // =========================================
-    private NOMBRE_DEPTO: string = DEPARTAMENTOS.BARNIZADO._n;
-    // =========================================
-  
-    barnizadoForm: FormGroup;
-    orden: Orden;
-    barnizado: Barnizado;
-    linea: FolioLinea = new FolioLinea();
-    
-  
+export class BarnizadoComponent extends GeneralesComponents< Barnizado > implements OnInit {
 
   constructor(
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<Barnizado>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    private _validacionesService: ValidacionesService,
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
   
   ) {
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    );
 
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.titulo = DEPARTAMENTOS.BARNIZADO._n;
-    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
+    this.tareasDeConfiguracion( new DepartamentosConfig().BARNIZADO )
     
    }
 
   ngOnInit() {
-    this._qrScannerService.iniciar();
 
-    this.barnizadoForm = this.formBuilder.group({
+    this.formulario = this.formBuilder.group({
       peso10Botones: ['', [
         Validators.required,
         Validators.min(0.01),
@@ -66,35 +63,13 @@ export class BarnizadoComponent implements OnInit {
 
   
   public get peso10Botones_FB() : AbstractControl {
-    return this.barnizadoForm.get('peso10Botones');
+    return this.formulario.get('peso10Botones');
   }
 
   
   public get pesoTotalBoton_FB() : AbstractControl {
-    return this.barnizadoForm.get('pesoTotalBoton');
-  }
-  
-
-  cargarOrdenesDeDepartamento(){
-    this._listaDeOrdenesService.barnizado();
-
+    return this.formulario.get('pesoTotalBoton');
   }
 
-  limpiar(){
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.iniciar();
-    this.barnizadoForm.reset();
-
-  }
-
-  onSubmit(modelo: Barnizado, isValid:boolean, e ){
-    e.preventDefault();
-    if( !isValid ) return;
-
-    this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.BARNIZADO._n)
-    .subscribe(()=>{
-      this.limpiar();
-    });
-  }
 
 }

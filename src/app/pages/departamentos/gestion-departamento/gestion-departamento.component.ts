@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartamentoService } from 'src/app/services/service.index';
 import { Departamento } from 'src/app/models/departamento.models';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
 
 @Component({
   selector: 'app-gestion-departamento',
@@ -15,7 +15,7 @@ export class GestionDepartamentoComponent implements OnInit {
   constructor(
     private _departamentoService: DepartamentoService
   ) { 
-    this._departamentoService.cargarDepartamentos().subscribe( 
+    this._departamentoService.todo().subscribe( 
       (departamentos: Departamento[]) => {
         this.departamentos = departamentos;
       }
@@ -28,7 +28,7 @@ export class GestionDepartamentoComponent implements OnInit {
   }
 
   onSubmit() {
-    this._departamentoService.guardarUnDepartamento( this.depto )
+    this._departamentoService.guardar( this.depto )
     .subscribe( (departamento: Departamento) => {
       this.departamentos.push( departamento);
       this.limpiar();

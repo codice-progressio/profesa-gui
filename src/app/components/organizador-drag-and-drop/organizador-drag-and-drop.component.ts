@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { OrganizadorDragAndDropService } from './organizador-drag-and-drop.service';
 
 /**
@@ -59,12 +59,31 @@ export class OrganizadorDragAndDropComponent<T> implements OnInit {
   @Input() listaDeElementos: boolean = false;
 
 
+  /**
+   *Emite un evento cuando se actualiza la lista ordenable con la 
+   interaccion del usuario. 
+   *
+   * @type {EventEmitter<void>}
+   * @memberof OrganizadorDragAndDropComponent
+   */
+  @Output() dropSuccess: EventEmitter<void> = new EventEmitter();
+
+
 
   constructor(
     public s: OrganizadorDragAndDropService<T>
   ) { }
 
   ngOnInit() {
+  }
+
+  /**
+   *Ejecuta la emicion al aactualizar la lista
+   *
+   * @memberof OrganizadorDragAndDropComponent
+   */
+  cambiosEnLaListaOrdenable(){
+    this.dropSuccess.emit()
   }
 
 }

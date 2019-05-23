@@ -1,0 +1,86 @@
+<!-- El attr.data-id nos permite pasar el id
+dinamico al onclick. De otra manera angular lo 
+senala como inseguro y no compila.  -->
+
+<a
+  attr.data-id="{{ id }}"
+  attr.data-id-unico="{{ idUnico }}"
+  class="btn btn-outline-warning no-print "
+  onclick="
+      // El id que vamos a pasar al jquery. 
+      let idEspecial
+
+      function ejecutarAccionesDeImprecion(){
+          // Obtenemos el elemento para sacar del data-id
+          // El id que queremos clonar. 
+          idDeImprecion = $(idEspecial).attr('data-id')
+          $('#'+idDeImprecion)
+          // Despues clonamos todo ese elemento
+          .clone()
+          // Lo agregamos directamente al body. 
+          .appendTo('body')
+          // Le agregamoss la clase print que tiene
+          // propiedaes definidas para que solo se imprima
+          // esa porcion de html.
+          .addClass('print')
+          // Agregamos el atributo id#zona_imp que nos servira
+          // para eliminar el elemento html del body de manera directa.
+          .attr('id', 'zona_imp');
+          
+          // Si el elemento que movimos tiene algo dentro que no
+          // queremos que se imprima, debe de tener un id de tipo 
+          // no print o la clase. Creo que esto lo voy a cambiar
+          $('#no_print').addClass('no-print');
+          
+          // Llamamos la venta de imprecion del navegador. 
+          window.print();
+          
+          // Una vez que la ventana de imprecion se cierra
+          // eliminamos la #zona_imp que habiamos creado. 
+          $('#zona_imp').remove();
+          // A los elementos marcados como #no-print les 
+          // removemos la clase no print.
+          $('#no-print').removeClass('no-print');
+          // Y por ultimo pero no menos importante 
+          // removeos la zona que en un principio habiamos creado.
+          $('#zona_imp').remove();
+        }
+
+      function printDiv( elemento ) {
+          // Este elemento. Se utiliza para
+          // obtener el id del attr.data-id
+          idEspecial = $(elemento)
+          // Obtenemos todos los modales que se esten mostrando.
+          elements = $('.modal.show')
+          // Los contamos para que cada vez que se dispare el 
+          // evento hidden.bs.modal se descuente un modal cerrado
+          // Cuando ya ho haya modales por cerrar entonces ejecutamos 
+          // la funcion ejecutarAccionesDeImprecion.
+          modalesAbiertos = elements.length;
+          // Recorremos cada modal.
+          elements.each(function()
+          {   
+              // Escondemos el modal abierto. 
+              $(this).modal('hide')
+              // Asignamos la escucha de cierre del modal.
+              $(this).on('hidden.bs.modal', function (e) {
+                  // Descontamos un modal cerrado por que
+                  // te recuerdo que esta funcion se ejecuta
+                  // solo cuando se dispara ese evento. 
+                  modalesAbiertos--
+                  // El evento siempre se dispara cuando se cierra 
+                  // un modal, asi que solo ejecutamos la funcion cuando
+                  // modalesAbiertos es === 0
+                   if( modalesAbiertos === 0){
+                       ejecutarAccionesDeImprecion()
+                   }
+              })
+             
+          });
+      }
+      printDiv(this);
+      return;"
+>
+  <i class="fa fa-print"></i>
+  <span *ngIf="mostrarTexto">Imprimir copia</span>
+</a>

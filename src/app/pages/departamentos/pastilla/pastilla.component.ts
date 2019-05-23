@@ -1,231 +1,169 @@
-import { Component, OnInit } from '@angular/core';
-import { UsuarioService, FolioService } from '../../../services/service.index';
-import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
-import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
-import { Pastilla, CantidadesPastilla } from '../../../models/pastilla.model';
-import { FolioLinea } from '../../../models/folioLinea.models';
-import { Orden } from '../../../models/orden.models';
-import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
-import { Usuario } from '../../../models/usuario.model';
+import { Component, OnInit } from "@angular/core"
+import { QrScannerService } from "../../../components/qr-scanner/qr-scanner.service"
+import { ListaDeOrdenesService } from "../../../components/lista-de-ordenes/lista-de-ordenes.service"
+import { Pastilla, CantidadesPastilla } from "../../../models/pastilla.model"
+import { Usuario } from "../../../models/usuario.model"
 
-import { FormBuilder, Validators, FormGroup, AbstractControl, FormArray } from '@angular/forms';
-import { ValidacionesService } from '../../../services/utilidades/validaciones.service';
-import swal from 'sweetalert2';
-import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  AbstractControl,
+  FormArray
+} from "@angular/forms"
+import { ValidacionesService } from "../../../services/utilidades/validaciones.service"
+import { GeneralesComponents } from "../../utilidadesPages/generalesComponents"
+import { DefaultsService } from "src/app/services/configDefualts/defaults.service"
+import { DepartamentosConfig } from "src/app/config/departamentosConfig"
+import { FolioService } from "src/app/services/folio/folio.service";
+import { DepartamentoService } from "src/app/services/departamento/departamento.service";
+import { UsuarioService } from "src/app/services/usuario/usuario.service";
 
 @Component({
-  selector: 'app-pastilla',
-  templateUrl: './pastilla.component.html',
+  selector: "app-pastilla",
+  templateUrl: "./pastilla.component.html",
   styles: []
 })
-export class PastillaComponent implements OnInit {
-
-  // =========================================
-  private NOMBRE_DEPTO: string = 'PASTILLA';
-  // =========================================
-
-  // Necesario
-  linea: FolioLinea = new FolioLinea();
-  orden: Orden = null;
-  modeloCompleto: ModeloCompleto = new ModeloCompleto();
-  // empleadoSeleccionado: Usuario;
-  empleados: Usuario[];
-  cantidadesPastilla: CantidadesPastilla[] = [new CantidadesPastilla()];
+export class PastillaComponent extends GeneralesComponents<Pastilla>
+  implements OnInit {
+  empleados: Usuario[]
+  cantidadesPastilla: CantidadesPastilla[] = [new CantidadesPastilla()]
 
   // Instanciamos un grupo de formulario de reactiveForms
   //  y que tiene que coincidir con [formGroup]. Este elemento
   //  se pasa como instancia a [formGruop] = "pastillaForm"
-  pastillaForm: FormGroup;
-  
+  formulario: FormGroup
+
   constructor(
-
-    public _usuarioService: UsuarioService,
-    public _qrScannerService: QrScannerService,
-    public _folioService: FolioService,
+    public _qrScannerService: QrScannerService<Pastilla>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    // Cremos el control abstracto para revisar las validaciones. 
-    private _fb: FormBuilder,
-    // El servicio de validaciones personalizados nuestro. 
-    public _validacionesService: ValidacionesService
-
-  ) { 
-    this.cargarOrdenesDeDepartamento();
-    this._usuarioService.cargarMateriales(  )
-        .subscribe( (usuarios: Usuario[]) => {
-          this.empleados = usuarios;
-        });
-    this._qrScannerService.buscarOrden(this, () => { this.limpiar(); });
-    this._qrScannerService.titulo = DEPARTAMENTOS.PASTILLA._n;
-  }
-
-  cargarOrdenesDeDepartamento( ) {
-    // this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.pastilla();
+    public formBuilder: FormBuilder,
+    public _folioService: FolioService,
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
+    // Propios del departamento.
+    public _usuarioService: UsuarioService
+  ) {
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    )
+    this.tareasDeConfiguracion(new DepartamentosConfig().PASTILLA)
+    this._usuarioService.cargarMateriales().subscribe((usuarios: Usuario[]) => {
+      this.empleados = usuarios
+    })
   }
 
   ngOnInit() {
-    this._qrScannerService.iniciar();
-    this.inicialFormulario();
+    this.inicialFormulario()
   }
 
-  inicialFormulario ( ) {
-    
-  
+  inicialFormulario() {
     const grupo = {
-      // El nombre del objeto tiene que coincidir con 
-      // el [formControlName] del input en el html. 
+      // El nombre del objeto tiene que coincidir con
+      // el [formControlName] del input en el html.
       // cantidadPastilla: ['', valCantidadDePastilla],
       // espesorPastilla: ['', valEspesor],
-      conto: ['', [
-        Validators.required,
-      ]],
-      cantidades: this._fb.array([
+      conto: ["", [Validators.required]],
+      cantidades: this.formBuilder.array([
         // Inicializamos por lo menos con un valor.
         this.getCantidades()
       ])
-    };
+    }
 
-  //  for (let i = 0; i < this.cantidadesPastilla.length; i++) {
-  //    const cantidad = this.cantidadesPastilla[i];
-  //       grupo['peso10Botones' + i] = ['', valPeso10Botones];  
-  //       grupo['pesoTotalBoton' + i] = ['', valPesoTotalBoton];  
-  //       grupo['espesorPastilla' + i] = ['', valEspesor];  
-  //  }
-
-    this.pastillaForm = this._fb.group(grupo);
+    this.formulario = this.formBuilder.group(grupo)
   }
 
-  getCantidades( ){
+  getCantidades() {
     // Este es la plantilla para crear
     // de manera dinamica los validadores para
     // el arreglo.
     const valPeso10Botones = [
-      '',
-     [ Validators.required,
-      Validators.min(1),
-      Validators.max(1000),
-      this._validacionesService.numberValidator],
-    ];
-    
+      "",
+      [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(1000),
+        this._validacionesService.numberValidator
+      ]
+    ]
+
     const valPesoTotalBoton = [
-      '',
-      [Validators.required,
-      Validators.min(1),
-      Validators.max(99),
-      this._validacionesService.numberValidator],
-    ];
+      "",
+      [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(99),
+        this._validacionesService.numberValidator
+      ]
+    ]
 
     const valEspesor = [
-      '',
-     [ Validators.required,
-      Validators.min(0.1),
-      Validators.max(99.99),
-      this._validacionesService.numberValidator],
-    ];
-    return this._fb.group({
-      espesorPastilla : valPesoTotalBoton,
-      peso10Botones :  valPeso10Botones,
-      pesoTotalBoton : valEspesor,
-    });
+      "",
+      [
+        Validators.required,
+        Validators.min(0.1),
+        Validators.max(99.99),
+        this._validacionesService.numberValidator
+      ]
+    ]
+    return this.formBuilder.group({
+      espesorPastilla: valPesoTotalBoton,
+      peso10Botones: valPeso10Botones,
+      pesoTotalBoton: valEspesor
+    })
   }
 
-  agregarCantidades( ) {
-    // Obtenemos el control al cual le vamos a agregar 
+  agregarCantidades() {
+    // Obtenemos el control al cual le vamos a agregar
     // la nueva hilera.
-    const control = <FormArray> this.pastillaForm.controls['cantidades'];
-    control.push(this.getCantidades());
-
-
-    // this.cantidadesPastilla.push(a);
-    // // Limpiamos las cantidades hasta que no resolvamos el 
-    // // problema del binding. 
-    // this.cantidadesPastilla.forEach((b: CantidadesPastilla) => {
-    //   b.espesorPastilla = null;
-    //   b.peso10Botones = null;
-    //   b.pesoTotalBoton = null;
-    // });
-    // this.construirForm();
+    const control = <FormArray>this.formulario.controls["cantidades"]
+    control.push(this.getCantidades())
   }
-
 
   eliminarCantidades(i: number) {
     // this.cantidadesPastilla.splice(i, 1);
     // this.construirForm() ;
-    const control = <FormArray> this.pastillaForm.controls['cantidades'];
-    control.removeAt(i);
+    const control = <FormArray>this.formulario.controls["cantidades"]
+    control.removeAt(i)
   }
 
-  onSubmit(model: any, isValid: boolean, e) {
-    e.preventDefault()
-    // Evitamos que medio mandee el formulario con el enter.
-    if( !isValid ) return; 
-    // Creamos el objeto nuevo para guardar en el departamento.
-    const pastilla: Pastilla = <Pastilla>model;
-      
-    this._folioService.modificarOrden( 
-      pastilla, 
-      this.orden._id,
-      this.NOMBRE_DEPTO
-      ).subscribe(
-      resp => {
-      this.limpiar();
-    });
+  public get conto(): AbstractControl {
+    return this.formulario.get("conto")
   }
 
-
-
-  limpiar( ) {
-    
-    // Reiniciamos el escanner. 
-    this._qrScannerService.iniciar();
-    
-    // Limpiamos el formulario. 
-    this.pastillaForm.reset();
-    this.inicialFormulario();
-
-    this.cargarOrdenesDeDepartamento();
-    
+  public get cantidades(): FormArray {
+    return <FormArray>this.formulario.get("cantidades")
   }
 
-// public get cantidad(): AbstractControl {
-//   return this.pastillaForm.get('cantidadPastilla');
-// }
+  trackByFn(index: any) {
+    return index
+  }
 
-// public get espesor(): AbstractControl {
-//   return this.pastillaForm.get('espesorPastilla');
-// }
+  public _paso(a: any) {
+    return a
+  }
 
-public get conto(): AbstractControl {
-  return this.pastillaForm.get('conto');
-}
+  totalBoton(): number {
+    let t = 0
 
-trackByFn(index: any, item: any) {
-  return index;
-}
+    this.cantidades.controls.forEach((controles) => {
+      let pesoTotalBoton: AbstractControl = controles.get("pesoTotalBoton")
+      let peso10Botones: AbstractControl = controles.get("peso10Botones")
 
-public _paso(a: any ){  
-  return a;
-    }
+      let ptb: number = pesoTotalBoton.value > 0 ? pesoTotalBoton.value : 0
+      let p10b: number = peso10Botones.value > 0 ? peso10Botones.value : 0
 
-totalBoton(): number {
-  // Recorremos todos los controles para obtener su valor.
-  let t : number = 0;
-  for (const x in this.pastillaForm.controls) {
-    if (this.pastillaForm.controls.hasOwnProperty(x)) {
-      const control = this.pastillaForm.controls[x];
-      for (let i = 0; i < control.value.length; i++) {
-        const datos = control.value[i];
-        if ( datos ) {
-          const ptb = datos.pesoTotalBoton ? datos.pesoTotalBoton : 0;
-          const p10b = datos.peso10Botones ? datos.peso10Botones : 0;
-          if( ptb && p10b){
-            t += (ptb*1000)/(p10b/10);
-          }
-        }
+      if (ptb && p10b) {
+        t += (ptb * 1000) / (p10b / 10)
       }
-    }
+    })
+
+    return t
   }
-  return t;
-}
 }

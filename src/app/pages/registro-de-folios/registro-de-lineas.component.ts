@@ -1,12 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import swal from "sweetalert2";
 import { ModeloCompleto } from "../../models/modeloCompleto.modelo";
-import {
-  ModeloCompletoService,
-  ClienteService,
-  UtilidadesService,
-  ManejoDeMensajesService
-} from "../../services/service.index";
 import { FolioLinea } from "../../models/folioLinea.models";
 import { ColoresTenidos } from "../../models/ColoresTenidos";
 import { FolioService } from "../../services/folio/folio.service";
@@ -31,6 +25,10 @@ import { DefaultModelData } from "src/app/config/defaultModelData";
 import { AlmacenDeBoton } from '../../models/almacenDeBoton.model';
 import { DEPARTAMENTOS } from '../../config/departamentos';
 import { DndObject } from '../../components/organizador-drag-and-drop/models/dndObject.model';
+import { ModeloCompletoService } from "src/app/services/modelo/modelo-completo.service";
+import { ClienteService } from "src/app/services/cliente/cliente.service";
+import { UtilidadesService } from "src/app/services/utilidades/utilidades.service";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
 
 @Component({
   selector: "app-registro-de-lineas",
@@ -479,11 +477,11 @@ export class RegistroDeLineasComponent implements OnInit {
       let procesosArr: Procesos[] = [];
 
       // // Cargamos los procesos especiales en el folio si es que hay.
-      this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach(x => {
+      this._organizadorDragAndDropService.obtenerHijosOrdenables().forEach( ( dndObject:DndObject<Proceso> ) => {
         let procesos: Procesos = new Procesos();
-        procesos.orden = Number(x.orden);
-        procesos.proceso = x.objeto;
-        procesos.procesoPadre = x.objetoPadre;
+        procesos.orden = dndObject.orden;
+        procesos.proceso = dndObject.objeto;
+        procesos.procesoPadre = dndObject.objetoPadre;
         procesosArr.push(procesos);
   
       });

@@ -1,50 +1,69 @@
-<app-qr-scanner></app-qr-scanner>
+<app-qr-scanner> </app-qr-scanner>
 
-
-
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta">
+<div *ngIf="_qrScannerService.lecturaCorrecta 
+&& orden.ubicacionActual.recivida 
+&& orden.ubicacionActual.materiales?.trabajando" class="row animated fadeInDown">
     <div class="col-12">
-        <div class="card border-dark">
-            <div class="card-header bg-success">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="box-title m-b-0"><strong>Materiales</strong></h3>
-                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
-
-                    </div>
-                    <div class="col-6">
-                        <h2>
-                            <strong class="mr-3" *ngIf="linea">
-                                {{linea.modeloCompleto | modeloCompleto}}
-                            </strong>
-                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
+        <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Cargado por:</label>
-                            <br>
-                            <a (click)="empleadoSeleccionado = empleado" class="btn" [ngClass]="{
-                                                'btn-success text-white': empleadoSeleccionado === empleado,
-                                                'btn-outline-inverse': empleadoSeleccionado !== empleado
-                                            }" *ngFor="let empleado of empleados" class="btn btn-lg mr-2">
-                                <i class="fa" [ngClass]="{'fa-check-circle-o fa-2x': empleadoSeleccionado === empleado}"></i> {{empleado.nombre}}
-                            </a>
-                        </div>
 
-                        <button (click)="guardar()" class="btn btn-success btn-lg mr-3"><i class="fa fa-save"></i> Guardar</button>
-                        <button (click)="limpiar()" class="btn btn-danger btn-lg mr-3"><i class="fa fa-times"></i> Escannear de nuevo</button>
+                <h1>Materiales</h1>
 
-                    </div>
-                </div>
+                <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+                    <hr>
+
+                    <input type='hidden'>
+                    <h3>Selecciona quien cargo la orden.</h3>
+                    <ng-container *ngFor="let empleado of empleados; let i = index">
+
+                        <a (click)="setEmpleado(empleado)" class="btn btn-outline-success btn-lg m-2">
+                            <i *ngIf="cargo_FB.value === empleado._id" class="fa fa-check animated tada text-warning">
+                                </i> {{empleado.nombre}}</a>
+                    </ng-container>
+
+
+                    <app-validacion-inputs [campo]='cargo_FB'></app-validacion-inputs>
+
+
+                    <br>
+                    <h1><small class='text-muted'>Maquina en la que se trabajo: </small> <strong>{{orden.ubicacionActual.materiales.maquinaActual.clave}}</strong></h1>
+                    <hr>
+
+                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
+                    <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo"> </app-lista-de-ordenes>
+<div class="row animated fadeInDown" *ngIf="_qrScannerService.lecturaCorrecta 
+&& orden.ubicacionActual.recivida 
+&& !orden.ubicacionActual.materiales?.trabajando">
+    <div class="col-12">
+        <div class="card  card-body bg-inverse text-white">
+            <div class="card-body">
+
+                <h1 class='text-white'>Materiales <small class="text-muted"> Esta órden no se esta trabajando.</small></h1>
+                <hr>
+                <h3 class="text-white">Selecciona la máquina en que se trabajara:</h3>
+                <ng-container *ngFor="let maquina of maquinas; let i = index">
+
+                    <a (click)="setMaquinaActual(orden, maquina)" class="btn btn-outline-success btn-lg m-2">
+                        <i *ngIf="orden.ubicacionActual?.materiales?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
+                        </i> {{maquina.clave}}</a>
+                </ng-container>
+
+
+                <hr>
+
+                <a *ngIf="orden.ubicacionActual.materiales?.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fa fa-save"></i> Guardar</a>
+                <button (click)="limpiar(); maquinaActualEnNulo(orden)" class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lista-de-ordenes *ngIf="!_qrScannerService.lecturaCorrecta"></app-lista-de-ordenes>

@@ -11,6 +11,7 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { Roles } from 'src/app/models/roles.models';
 import { _ROLES } from 'src/app/config/roles.const';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -18,6 +19,12 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 })
 export class UsuarioService {
 
+  /**
+   *El usuario que esta actualmente logueado.
+   *
+   * @type {Usuario}
+   * @memberof UsuarioService
+   */
   usuario: Usuario;
   // Cuando se recarga la página la tratamos de leer (en el login)
   // y si no la inicializamos (cargando del storage) va a dar error.
@@ -38,6 +45,17 @@ export class UsuarioService {
   ) {
     // console.log('Servicio de usuario listo');
     this.cargarStorage();
+  }
+
+
+  cargarRoles():Observable<string[]> {
+
+    const url = `${URL_SERVICIOS}/login/roles`
+    return this.http.get( url ).pipe( map((resp:any)=>{
+      return <string[]> Object.values(resp.roles)
+    } ), catchError( (err)=>{
+      return throwError( err )
+    } ))
   }
 
   renuevaToken() {
@@ -77,12 +95,13 @@ export class UsuarioService {
     const url = URL_SERVICIOS + '/login/google';
 
     // Aqui hay que mandar el token como un objeto por aquello
-    // de que el servicio necesita recivir un parametro llamado 'token'
+    // de que el servicio necesita recibir un parametro llamado 'token'
     // En EMC6 no es necesario poner en el objeto {token:token}, lo hace automatico.
 
     return this.http.post(url, {token}).pipe(
       map((resp: any) => {
-        // console.log(resp.menu);
+       
+
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
         // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         // Retorna la respuesta de true de autenticación correcta para capturarla en
@@ -141,7 +160,6 @@ export class UsuarioService {
       localStorage.removeItem('email');
     }
     const url = URL_SERVICIOS + '/login';
-    console.log( 'url que se tomo para el login=' + url);
     return this.http.post(url, usuario).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
@@ -296,23 +314,23 @@ export class UsuarioService {
 
   }
 
-  cargarVendedores ( ) {
+  cargarVendedores ( ):Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando vendedores.');
     
     return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE, a);
   }
 
-  cargarSeleccionadores() {
+  cargarSeleccionadores():Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando seleccionadores.');
     
     return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE , a);
   }
-  cargarEmpacadores() {
+  cargarEmpacadores():Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando empacadores.');
     return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE, a );
   }
 
-  cargarMateriales( ) {
+  cargarMateriales( ):Observable<Usuario[]> {
     const a: number = this._preLoaderService.loading('Cargando empleados de materiales.');
     return this.buscarUsuarioPorROLE(_ROLES.MATERIALES_CARGA_ROLE, a);
   }

@@ -1,0 +1,119 @@
+<div
+  *ngIf="cliente"
+  class="row animated  faster "
+  [ngClass]="{ slideInDown: !animando, slideOutUp: animando }"
+>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1>
+          <Span *ngIf="!cliente?._id">Crear </Span>
+          <Span *ngIf="cliente?._id">Modificar </Span>
+          <strong>cliente</strong>
+        </h1>
+
+        <hr />
+        <form [formGroup]="formulario">
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(sae_FB),
+                    'is-valid': vs.valid(sae_FB)
+                  }"
+                  formControlName="sae"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                />
+                <small id="helpId" class="form-text text-muted">sae</small>
+                <app-validacion-inputs [campo]="sae_FB"></app-validacion-inputs>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <input
+                  formControlName="nombre"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(nombre_FB),
+                    'is-valid': vs.valid(nombre_FB)
+                  }"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                />
+                <small id="helpId" class="form-text text-muted">Nombre</small>
+                <app-validacion-inputs
+                  [campo]="nombre_FB"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <h3>Marcas laser asignadas</h3>
+              <ul class="list-group">
+                <li
+                  class="list-group-item"
+                  *ngFor="let laser of laserados_FB.controls; let i = index"
+                >
+                  <ng-container formArrayName="laserados">
+                    <ng-container [formGroupName]="i">
+                      <span class="pull-left">{{ laser_FB(i).value }}</span>
+                      <span class="pull-right"
+                        ><a
+                          (click)="eliminarMarcaLaser(i)"
+                          class="btn btn-xs btn-danger text-white"
+                          ><i class="fa fa-times"></i></a
+                      ></span>
+                    </ng-container>
+                  </ng-container>
+                </li>
+                <li
+                  *ngIf="laserados_FB.controls.length === 0"
+                  class="list-group-item list-group-item-dark text-white"
+                >
+                  <span class="pull-left"
+                    ><i class="fas fa-exclamation-circle"></i> No hay marcas
+                    registradas</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <input #inputLaser type="text" class="form-control" />
+                <small class="form-text text-muted"
+                  >Agregar nueva marca laser</small
+                >
+
+                <a
+                  (click)="
+                    crearNuevaMarcaLaser(inputLaser.value);
+                    inputLaser.value = ''
+                  "
+                  class="btn btn-success text-white"
+                  ><i class="fa fa-check"> </i> Agregar</a
+                >
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <hr />
+
+        <a (click)="guardar()" class="btn btn-success text-white mr-3"
+          ><i class="fa fa-save"></i>
+
+          <span *ngIf="cliente?._id"> Guardar</span>
+          <span *ngIf="!cliente?._id"> Crear nuevo</span>
+        </a>
+        <a (click)="cancelar()" class="btn btn-danger text-white mr-3"
+          ><i class="fa fa-times"></i> Cancelar</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

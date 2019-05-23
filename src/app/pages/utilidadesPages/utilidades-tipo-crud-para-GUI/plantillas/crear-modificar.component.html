@@ -1,0 +1,16 @@
+<div *ngIf="this.mostrarCrearModificar" class="row animated faster" [ngClass]="{'slideOutUp': !this.crearModificar , 'slideInDown': this.crearModificar  }">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h1>
+                    Registrar <span *ngIf="this.esModificacion">nuev{{esMasculino ? 'o' : 'a'}}</span> {{nombreElemento}}
+                </h1>
+                <hr>
+                <br>
+
+                <ng-content></ng-content>
+
+            </div>
+        </div>
+    </div>
+</div>

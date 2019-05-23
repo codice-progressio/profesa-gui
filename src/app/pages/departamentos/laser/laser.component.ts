@@ -1,76 +1,70 @@
 import { Component, OnInit } from '@angular/core';
-import { QrScannerService } from 'src/app/components/qrScanner/qr-scanner.service';
-import swal from 'sweetalert2';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
 import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FolioService, ValidacionesService, MaquinaService } from 'src/app/services/service.index';
-import { DEPARTAMENTOS } from 'src/app/config/departamentos';
-import { Metalizado } from '../../../models/metalizado.model';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Orden } from 'src/app/models/orden.models';
-import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Laser } from 'src/app/models/laser.model';
 import { Maquina } from 'src/app/models/maquina.model';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
 
 @Component({
   selector: 'app-laser',
   templateUrl: './laser.component.html',
   styles: []
 })
-export class LaserComponent implements OnInit {
+export class LaserComponent extends GeneralesComponents< Laser > implements OnInit {
 
-    laserForm: FormGroup;
-    orden: Orden;
-    laser: Laser;
-    linea: FolioLinea = new FolioLinea();
 
-    maquinas: Maquina[]=[];
+  maquinas: Maquina[]=[];
     
-    
-    
-    // =========================================
-    private NOMBRE_DEPTO: string = DEPARTAMENTOS.LASER._n;
-    // =========================================
-    
-  
 
   constructor(
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<Laser>,
     public _listaDeOrdenesService: ListaDeOrdenesService,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    private _validacionesService: ValidacionesService,
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
+    // Propios del departamento.
     public _maquinaService: MaquinaService
   
   ) {
-
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.titulo = DEPARTAMENTOS.LASER._n;
-    this._qrScannerService.buscarOrden( this, 
-      () => { this.limpiar(), 
-      () => { 
-          if ( this.orden.ubicacionActual.laser == null ) {
-            // Creamos el departamento transformación para que no nos de error. 
-            this.orden.ubicacionActual.laser = new Laser();
-            // False por que a esta altura solo vamos a guardar la máquina. 
-            this.orden.ubicacionActual.laser.guardar = false;
-            this.orden.ubicacionActual.laser.maquinaActual = null;
-            
-        }
-        }
-      }
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
     );
 
-    this._maquinaService.obtenerTodasLasMaquinas().subscribe(( maquinas:Maquina[])=>{
+    this.callbackOpcional_QRScannerService = ( ) => { 
+        if ( this.orden.ubicacionActual.laser == null ) {
+          // Creamos el departamento transformación para que no nos de error. 
+          this.orden.ubicacionActual.laser = new Laser();
+          // False por que a esta altura solo vamos a guardar la máquina. 
+          this.orden.ubicacionActual.laser.guardar = false;
+          this.orden.ubicacionActual.laser.maquinaActual = null; 
+      }; 
+    }
+    
+    this.tareasDeConfiguracion( new DepartamentosConfig().LASER )
+    
+    this._maquinaService.todo().subscribe(( maquinas:Maquina[])=>{
       this.maquinas = maquinas;
     });
-
-    
-   }
-
+  }
+  
   ngOnInit() {
-    this._qrScannerService.iniciar();
-
-    this.laserForm = this.formBuilder.group({
+     // Propios del departamento.
+    this.formulario = this.formBuilder.group({
       cantidadDeBotones: ['', [
         Validators.required,
         Validators.min(1),
@@ -87,53 +81,13 @@ export class LaserComponent implements OnInit {
   }
 
   public get cantidadDeBotones_FB() : AbstractControl {
-    return this.laserForm.get('cantidadDeBotones');
+    return this.formulario.get('cantidadDeBotones');
   }
 
   public get bl_FB(): AbstractControl{
-    return this.laserForm.get('bl');
+    return this.formulario.get('bl');
   }
   
-
-  cargarOrdenesDeDepartamento(){
-    this._listaDeOrdenesService.laser();
-  }
-
-  limpiar(){
-    this.cargarOrdenesDeDepartamento();
-    this._qrScannerService.iniciar();
-    this.laserForm.reset();
-  }
-
-  onSubmit(modelo: Laser, isValid:boolean, e ){
-    e.preventDefault();
-    if( !isValid ) return;
-
-    console.log(` Los datos del submit ${JSON.stringify(modelo)}`);
-
-    this._folioService.modificarOrden(modelo, this.orden._id, DEPARTAMENTOS.LASER._n)
-    .subscribe(()=>{
-      this.limpiar();
-    });
-    
-  }
-
-  /**
-   *eSta funcion se llama desde el html y manda 
-   a que esta orden se marque como trabajando. 
-   *
-   * @memberof LaserComponent
-   */
-  public iniciarTrabajoDeOrden( ) {
-    // enviamos solo la modificación de la órden con el id 
-    // para empezarla a trabajar. La modificación que necesitamos
-    // es la de al ubicación actual.
-    
-    this._folioService.iniciarTrabajoDeOrden(this.orden, DEPARTAMENTOS.LASER, () => { this.limpiar(); } ).subscribe( orden => {
-     this.limpiar();
-    });
-
-  }
 
   /**
    *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace
@@ -151,8 +105,5 @@ export class LaserComponent implements OnInit {
     if( !orden.ubicacionActual.laser ) orden.ubicacionActual.laser = new Laser();
     orden.ubicacionActual.laser.maquinaActual = maquina
   }
-
-
-
 
 }

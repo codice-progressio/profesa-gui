@@ -9,6 +9,13 @@ export class Terminado extends OperacionesEnGUI {
         super();
     }
 
+    
+    deserialize(input: this): this {
+        Object.assign(this, input)
+
+        return this
+    }
+
     static fromJSON(data: any) {
         return Object.assign(new this, data);
     }

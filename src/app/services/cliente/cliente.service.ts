@@ -18,7 +18,7 @@ import { UsuarioService } from '../usuario/usuario.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService extends CRUD<Cliente>{
+export class ClienteService extends CRUD<Cliente, undefined, undefined>{
   
   constructor(
     public http: HttpClient,

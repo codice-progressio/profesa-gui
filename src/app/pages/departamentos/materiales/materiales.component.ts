@@ -1,15 +1,20 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UsuarioService, FolioService } from '../../../services/service.index';
-import { Usuario } from '../../../models/usuario.model';
-
-import { QrScannerService } from '../../../components/qrScanner/qr-scanner.service';
-import { Orden } from '../../../models/orden.models';
-import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
-import { FolioLinea } from '../../../models/folioLinea.models';
-import { ListaDeOrdenesService } from '../../../components/lista-de-ordenes/lista-de-ordenes.service';
-import { Materiales } from '../../../models/materiales.models';
-import swal from 'sweetalert2';
-import { DEPARTAMENTOS } from '../../../config/departamentos';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Orden } from 'src/app/models/orden.models';
+import { Materiales } from 'src/app/models/materiales.models';
+import { Maquina } from 'src/app/models/maquina.model';
+import { QrScannerService } from 'src/app/components/qr-scanner/qr-scanner.service';
+import { ListaDeOrdenesService } from 'src/app/components/lista-de-ordenes/lista-de-ordenes.service';
+import { DEPARTAMENTOS } from 'src/app/config/departamentos';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { MaquinaService } from 'src/app/services/maquina/maquina.service';
+import { Usuario } from 'src/app/models/usuario.model';
+import { GeneralesComponents } from '../../utilidadesPages/generalesComponents';
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
+import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 
 
 
@@ -18,82 +23,115 @@ import { DEPARTAMENTOS } from '../../../config/departamentos';
   templateUrl: './materiales.component.html',
   styles: []
 })
-export class MaterialesComponent implements OnInit {
 
-  // =========================================
-  private NOMBRE_DEPTO: string = 'MATERIALES';
-  // =========================================
+export class MaterialesComponent extends GeneralesComponents< Materiales > implements OnInit {
 
-  fecha: Date = new Date();
-  // hora: number;
-  // min: number;
-  empleados: Usuario [] = [];
-  empleadoSeleccionado: Usuario;
+  empleados: Usuario[];
+  empleado: Usuario;
+  maquinas: Maquina[]=[];
   
-  
-  orden: Orden = null;
-  modeloCompleto: ModeloCompleto = new ModeloCompleto();
-  linea: FolioLinea = new FolioLinea();
-
   constructor(
-    public _usuarioService: UsuarioService,
-    public _qrScannerService: QrScannerService,
+    public _qrScannerService: QrScannerService<Materiales>,
+    public _listaDeOrdenesService: ListaDeOrdenesService,
+    public formBuilder: FormBuilder,
     public _folioService: FolioService,
-    public _listaDeOrdenesService: ListaDeOrdenesService
+    public _defaultService: DefaultsService,
+    public _departamentoService: DepartamentoService,
+    public _validacionesService: ValidacionesService,
+    // Propios del departamento.
+    public _maquinaService: MaquinaService,
+    public _usuarioService: UsuarioService,
+
   ) {
-
-    this.cargarOrdenesDeDepartamento();
+    super(
+      _qrScannerService,
+      _listaDeOrdenesService,
+      formBuilder,
+      _folioService,
+      _defaultService,
+      _departamentoService
+    );
+    this.callbackOpcional_QRScannerService = ( ) => { 
+      if ( this.orden.ubicacionActual.materiales == null ) {
+        // Creamos el departamento transformación para que no nos de error. 
+        this.orden.ubicacionActual.materiales = new Materiales();
+        // False por que a esta altura solo vamos a guardar la máquina. 
+        this.orden.ubicacionActual.materiales.guardar = false;
+        this.orden.ubicacionActual.materiales.maquinaActual = null;
+        
+      } 
+    }; 
     
-    this._usuarioService.cargarMateriales()
-        .subscribe( (usuarios: Usuario[]) => {
-          this.empleados = usuarios;
-        });
-      
-    this._qrScannerService.buscarOrden( this, () => { this.limpiar(); });
-    this._qrScannerService.titulo = DEPARTAMENTOS.MATERIALES._n;
+    
+    this.tareasDeConfiguracion( new DepartamentosConfig().MATERIALES )
 
-   }
+
+  }
+
+
 
   ngOnInit() {
-    this._qrScannerService.iniciar();
-  }
 
-  cargarOrdenesDeDepartamento( ) {
-    // this._listaDeOrdenesService.depto = this.NOMBRE_DEPTO;
-    this._listaDeOrdenesService.materiales();
-  }
+    // Propios del departamento.
+    this.cargarUsuarios();
+    this._maquinaService.todo()
+      .subscribe( ( maquinas:Maquina[] )=>{
+        this.maquinas = maquinas;
+    });
 
-  guardar() {
-
-    // Creamos el objeto nuevo para guardar en el departamento.
-    if ( !this.empleadoSeleccionado) {
-      swal('Faltan datos', 'No has seleccionado al empleado', 'error');
-      return;
-    }
-
-    this._folioService.modificarOrden( 
-      new Materiales(this.empleadoSeleccionado), 
-      this.orden._id,
-      this.NOMBRE_DEPTO
-      ).subscribe(
-      resp => {
-      this.limpiar();
+  
+  // Creamos el formulario. 
+  this.formulario = this.formBuilder.group({
+    // SE VALIDA UN INPUT ESCONDIDO. 
+    cargo: ['', [
+        Validators.required,
+      ]],
     });
   }
 
-  limpiar ( ) {
- 
-    this.cargarOrdenesDeDepartamento();
-
-     // Reiniciamos el escanner. 
-     this._qrScannerService.iniciar();
-
-     // Reiniciamos los valores de captura. 
-     this.empleadoSeleccionado = null;
-     this._qrScannerService.lecturaCorrecta = false;
+  // Get de los campos del formulario. 
+  public get cargo_FB() : AbstractControl {
+    return this.formulario.get('cargo');
   }
 
+ /**
+  *Cargamos los usuarios que pertenecen a materiales.
+  *
+  * @memberof MaterialesComponent
+  */
+ cargarUsuarios( ){
+  this._usuarioService.cargarMateriales().subscribe(usuarios=>{
+    this.empleados = usuarios;
+  })
 
-  
+ }
+
+ /**
+  *Definimos el empleado que cargo el material 
+  para poder registrar la orden. 
+  *
+  * @param {Usuario} empleado
+  * @memberof MaterialesComponent
+  */
+ setEmpleado( empleado: Usuario ){ 
+    this.formulario.get('cargo').setValue( empleado._id );
+ }
+
+  /**
+   *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace
+  asi poor que si no existe el departaemtno en el trayecto(Por modificaiones)
+  * lo crea. 
+  *
+  * @memberof MaterialesComponent
+  */
+  maquinaActualEnNulo(orden: Orden ) {
+    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
+    orden.ubicacionActual.materiales.maquinaActual = null;
+  }
+
+  setMaquinaActual( orden: Orden, maquina: Maquina ){
+    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
+    orden.ubicacionActual.materiales.maquinaActual = maquina
+  }
 
 }

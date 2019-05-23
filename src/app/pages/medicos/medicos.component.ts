@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MedicoService } from '../../services/service.index';
 import { Medico } from '../../models/medico.model';
+import { MedicoService } from 'src/app/services/medico/medico.service';
 
 @Component({
   selector: 'app-medicos',

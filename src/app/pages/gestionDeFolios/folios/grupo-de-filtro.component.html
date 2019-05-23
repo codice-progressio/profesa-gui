@@ -1,0 +1,395 @@
+<div class="row">
+  <!-- 
+  =====================================
+   Filtros que se aplican directamente al folio.
+  =====================================
+  -->
+  <div title="Filtros que solo aplican para la vista de folios" class="col-12">
+    <h3>Filtros del folio</h3>
+    <hr />
+  </div>
+
+
+  <div 
+
+  *ngIf="seleccionarCamposVisibles.foliosTerminados"
+  title='Define si se filtran o no los folios terminados. Esta opcion va de la mano con la fecha pero puede usarse de manera independiente. Si no se definen fechas de terminado se mostran todos los folios terminados o no terminados. Si la opcion se deja en ignorar filtro se retornaran todos los folios. '
+  class="col-12 col-sm-4 col-lg-3">
+  <div class="form-group">
+      <select
+        [(ngModel)]="folioTerminado"
+        class="custom-select"
+        name="entregadoAProduccion"
+        id="entregadoAProduccion"
+      >
+        <option [ngValue]="true">Solo terminado</option>
+        <option [ngValue]="false">Solo sin terminar</option>
+        <option [ngValue]="null">Ignorar este filtro</option>
+      </select>
+      <small id="helpId" class="form-text text-muted"
+        >Folios terminados</small
+      >
+    </div>
+  </div>
+
+  <div
+    title="El numero de folio. La coincidencia es exacta de manera que solo se puede obtener un resultado en la vista de folios. En la vista de pedidos se mostrar todos los pedidos que coincidan con el folio"
+    *ngIf="seleccionarCamposVisibles.folio"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input [(ngModel)]="folio" type="number" class="form-control" />
+      <small id="helpId" class="form-text text-muted">Folio</small>
+    </div>
+  </div>
+
+  <div
+    title="El nombre del cliente que esta registrado como propietario del folio."
+    *ngIf="seleccionarCamposVisibles.cliente"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        #ic
+        (keyup)="buscarCliente(ic.value)"
+        (change)="seleccionarCliente(ic)"
+        type="text"
+        list="Cliente"
+        class="form-control"
+      />
+      <datalist id="Cliente">
+        <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
+          {{ cliente.sae }}</option
+        >
+      </datalist>
+      <small id="helpId" class="form-text text-muted">Cliente</small>
+    </div>
+  </div>
+
+  <div
+    title="El vendedor que genero el folio"
+    *ngIf="seleccionarCamposVisibles.vendedor"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        #iv
+        (change)="seleccionarVendedor(iv)"
+        type="text"
+        list="vendedor"
+        class="form-control"
+      />
+      <datalist id="vendedor">
+        <option
+          *ngFor="let vendedor of vendedores"
+          [value]="vendedor.nombre"
+        ></option>
+      </datalist>
+      <small id="helpId" class="form-text text-muted">Vendedor</small>
+    </div>
+  </div>
+
+  <div
+    title="La fecha de creacion del folio desde la cual se va a empezar a filtrar los folios. Esto significa que si se define un folio el dia 19/12/19 a partir de ese dia en adelante se filtraran los folios. Si no se define ningun otro filtro mostrara todos los folios existentes hasta el dia de hoy."
+    *ngIf="seleccionarCamposVisibles.fechaDeCreacionDesdeEl"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaDeCreacionDesdeEl | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaDeCreacionDesdeEl = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de creacion desde el
+      </small>
+    </div>
+  </div>
+  <div
+    title="La fecha de creacion del folio hasta la cual se dejaran de filtrar los folios. Al contrario que Fecha de creacion desde este limita el resultado hasta una fecha determinada. Si no se definen otros filtros se mostrar los folios desde el primero que existe hasta fecha definida en este campo"
+    *ngIf="seleccionarCamposVisibles.fechaDeCreacionHasta"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaDeCreacionHasta | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaDeCreacionHasta = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de creacion hasta
+      </small>
+    </div>
+  </div>
+  <div
+    title="La fecha de entrega estimada aplica unicamente cuando el valor existe. Las reglas de filtracion son iguales que 'Fecha de creacion hasta' y 'Fecha de creacion desde el'. "
+    *ngIf="seleccionarCamposVisibles.fechaDeEntregaEstimadaDesdeEl"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaEntregaEstimadaDesdeEl | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaEntregaEstimadaDesdeEl = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de entrega estimada desde el</small
+      >
+    </div>
+  </div>
+  <div
+    title="La fecha de entrega estimada aplica unicamente cuando el valor existe. Las reglas de filtracion son iguales que 'Fecha de creacion hasta' y 'Fecha de creacion desde el'. "
+    *ngIf="seleccionarCamposVisibles.fechaDeEntregaEstimadaHasta"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaEntregaEstimadaHasta | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaEntregaEstimadaHasta = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de entrega estimada hasta</small
+      >
+    </div>
+  </div>
+
+  <div
+    title="La fecha de finalizacion del folio estimada aplica unicamente cuando el valor existe. Las reglas de filtracion son iguales que 'Fecha de creacion hasta' y 'Fecha de creacion desde el'. "
+    *ngIf="seleccionarCamposVisibles.fechaFinalizacionDelFolioDesdeEl"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaFinalizacionFolioDesdeEl | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaFinalizacionFolioDesdeEl = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de finalizacion del folio desde el</small
+      >
+    </div>
+  </div>
+  <div
+    title="La fecha de finalizacion del folio estimada aplica unicamente cuando el valor existe. Las reglas de filtracion son iguales que 'Fecha de creacion hasta' y 'Fecha de creacion desde el'. "
+    *ngIf="seleccionarCamposVisibles.fechaFinalizacionDelFolioHasta"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        [ngModel]="fechaFinalizacionFolioHasta | fecha: 'YYYY-MM-DD'"
+        (ngModelChange)="fechaFinalizacionFolioHasta = $event"
+        type="date"
+        class="form-control"
+        name=""
+        aria-describedby="helpId"
+        placeholder=""
+      />
+      <small id="helpId" class="form-text text-muted"
+        >Fecha de finalizacion del folio hasta</small
+      >
+    </div>
+  </div>
+
+  <div
+    title="Los folios que ya no estan en las manos del vendedor y que 
+  pueden estar en espera de generar las ordenes o ya en produccion. Incluso finalizadas."
+    *ngIf="seleccionarCamposVisibles.entregarAProduccion"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <select
+        [(ngModel)]="entregarAProduccion"
+        class="custom-select"
+        name="entregadoAProduccion"
+        id="entregadoAProduccion"
+      >
+        <option [ngValue]="true">Entregado a produccion</option>
+        <option [ngValue]="false">No entregado a produccion</option>
+        <option [ngValue]="null">Ignorar este filtro</option>
+      </select>
+      <small id="helpId" class="form-text text-muted"
+        >Entregado a produccion</small
+      >
+    </div>
+  </div>
+  <div
+    title="Folios con las ordenes generadas. Lo que es equivalente a que estan en produccion o terminadas."
+    *ngIf="seleccionarCamposVisibles.ordenesGeneradas"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <select
+        [(ngModel)]="ordenesGeneradas"
+        class="custom-select"
+        name="ordenesGeneradas"
+        id="ordenesGeneradas"
+      >
+        <option [ngValue]="true">Con ordenes generadas</option>
+        <option [ngValue]="false">Sin ordenes generadas</option>
+        <option [ngValue]="null">Ignorar este filtro</option>
+      </select>
+      <small id="helpId" class="form-text text-muted">Ordenes generadas</small>
+    </div>
+  </div>
+
+  <!-- 
+  =====================================
+   END Filtros que se aplican directamente al folio.
+  =====================================
+  -->
+
+  <!-- 
+  =====================================
+   Filtros que se aplican directamente a los pedidos. 
+  =====================================
+  -->
+  <div
+    title="Filtros que solo aplican para la vista en pedidos."
+    class="col-12"
+    *ngIf="seleccionarCamposVisibles.pedido"
+  >
+    <!-- Este ngif es para que no se muestre esta leyenda. Por eso esta repetido. -->
+    <h3>Filtros para pedidos</h3>
+    <hr />
+  </div>
+  <div
+    title="Filtra con coincidencia exacta el pedido que se ingrese. Si no 
+  ingresas nada no muestra nada."
+    *ngIf="seleccionarCamposVisibles.pedido"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input [(ngModel)]="pedido" type="text" class="form-control" />
+      <small id="helpId" class="form-text text-muted">Pedido</small>
+    </div>
+  </div>
+
+  <div
+    *ngIf="seleccionarCamposVisibles.modelo"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        #im
+        (keyup)="buscarModelo(im.value)"
+        (change)="seleccionarModelo(im)"
+        type="text"
+        list="Modelo"
+        class="form-control"
+      />
+      <datalist id="Modelo">
+        <option *ngFor="let modelo of modelos" [value]="modelo.modelo">
+        </option>
+      </datalist>
+
+      <small id="helpId" class="form-text text-muted">Modelo</small>
+    </div>
+  </div>
+  <div
+    *ngIf="seleccionarCamposVisibles.tamano"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        #it
+        (keyup)="buscarTamano(it.value)"
+        (change)="seleccionarTamano(it)"
+        type="text"
+        list="Tamano"
+        class="form-control"
+      />
+      <datalist id="Tamano">
+        <option *ngFor="let tamano of tamanos" [value]="tamano.tamano">
+        </option>
+      </datalist>
+
+      <small id="helpId" class="form-text text-muted">Tamano</small>
+    </div>
+  </div>
+  <div *ngIf="seleccionarCamposVisibles.color" class="col-12 col-sm-4 col-lg-3">
+    <div class="form-group">
+      <input
+        #icolor
+        (keyup)="buscarColor(icolor.value)"
+        (change)="seleccionarColor(icolor)"
+        type="text"
+        list="Color"
+        class="form-control"
+      />
+      <datalist id="Color">
+        <option *ngFor="let color of colores" [value]="color.color"> </option>
+      </datalist>
+
+      <small id="helpId" class="form-text text-muted">Color</small>
+    </div>
+  </div>
+  <div
+    *ngIf="seleccionarCamposVisibles.terminado"
+    class="col-12 col-sm-4 col-lg-3"
+  >
+    <div class="form-group">
+      <input
+        #iter
+        (change)="seleccionarTerminado(iter)"
+        type="text"
+        list="Terminado"
+        class="form-control"
+      />
+      <datalist id="Terminado">
+        <option
+          *ngFor="let terminado of terminados"
+          [value]="terminado.terminado"
+          >Audi</option
+        >
+      </datalist>
+      <small id="helpId" class="form-text text-muted">Terminado</small>
+    </div>
+  </div>
+
+  <!-- 
+  =====================================
+   END Filtros que se aplican directamente a los pedidos. 
+  =====================================
+  -->
+
+  <hr />
+  <hr />
+  <div class="col-12">
+    <br />
+  </div>
+  <div class="col-12 col-sm-4 col-lg-3">
+    <button
+      (click)="limpiar()"
+      type="button"
+      class="btn btn-outline-primary btn-small"
+    >
+      <i class="fas fa-trash "></i> Limpiar filtros
+    </button>
+  </div>
+  <div class="col-12 col-sm-4 col-lg-3">
+    <button (click)="filtrar()" type="button" class="btn btn-success btn-small">
+      <i class="fa fa-search" aria-hidden="true"></i> Filtrar
+    </button>
+  </div>
+</div>

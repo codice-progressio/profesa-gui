@@ -1,117 +1,110 @@
 <div class="row animated fadeIn" *ngIf="!_s.hayOrdenes()">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <h1>
-                    No hay órdenes pendientes.
-                </h1>
-                <span class="text-muted">Este departamento no tiene ningúna órden pendiente.</span>
-
-            </div>
-        </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1>
+          No hay órdenes pendientes.
+        </h1>
+        <span class="text-muted"
+          >Este departamento no tiene ningúna órden pendiente.</span
+        >
+      </div>
     </div>
+  </div>
 </div>
-
-
-<div class="row" *ngIf="_s._preLoaderService.cargando">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <app-pre-loader></app-pre-loader>
-
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <ng-container *ngFor="let lv of _s.niveles">
-    <div class="row row animated fadeIn" *ngIf=" _s.ordenes[lv].length !==0">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="row">
-                        <div class="col">
-                            <h1 class="card-title">
-                                <app-nivel-urgencia [nivel]="lv"></app-nivel-urgencia>
-                            </h1>
-                        </div>
-                        <div class="col-auto ">
-                            <h3>
-                                <small> Órdenes pendientes: <strong> {{_s.ordenes[lv].length}} </strong></small>
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table full-color-table hover-table color-bordered-table " [ngClass]="
-                           {
-                               'danger-bordered-table full-red-table': 'URGENTE'=== lv,
-                               'info-bordered-table full-info-table': 'ALMACEN'=== lv,
-                               'inverse-bordered-table full-inverse-table': 'PRODUCCIÓN'=== lv,
-                               'warning-bordered-table full-warning-table': 'MUESTRA'=== lv
-    
-                           }   
-                           ">
-                            <thead>
-                                <tr>
-                                    <!-- <th class="text-center"></th> -->
-                                    <th class="text-center"></th>
-                                    <th class="text-center">con</th>
-                                    <th class="text-center">#</th>
-                                    <th class="text-center">Fecha/Folio</th>
-                                    <th class="text-center">Modelo </th>
-                                    <th class="text-center">Laser</th>
-                                    <th class="text-center">UNI</th>
-                                    <th class="text-center">Pz</th>
-                                    <th class="text-center">Observaciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ng-container *ngFor="let orden of _s.ordenes[lv]">
-                                    <tr [ngClass]="
-                                        {    
-                                            
-                                            'text-white bg-danger ': 'URGENTE'=== lv && !orden.ubicacionActual.recivida,
-                                            'text-white bg-info ': 'ALMACEN'=== lv && !orden.ubicacionActual.recivida,
-                                            'text-white bg-inverse ': 'PRODUCCIÓN'=== lv && !orden.ubicacionActual.recivida,
-                                            'text-white bg-warning ': 'MUESTRA'=== lv && !orden.ubicacionActual.recivida
-                    
-                                        } ">
-
-                                        <!-- <td class='fit'>
-                                            <i *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando" class="fa fa-spin fa-cog text-warning"></i>
-                                        </td> -->
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-center">
-                                            <i *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando" class="fa fa-spin fa-2x fa-cog text-warning"></i>
-                                            <i *ngIf="!orden.ubicacionActual.recivida" [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fa fa-exclamation  animated tada infinite"></i>
-                                        </td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.numeroDeOrden}} / {{orden.totalOrdenes}}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.ordenViajera}}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.fechaFolio | fecha:'DD/MM/YYYY'}}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">
-                                            {{orden.modeloCompleto | modeloCompleto}}
-                                        </td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit">{{orden.laserCliente?.laser}}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-center">{{orden.unidad}}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}" class="fit text-right">{{orden.piezasTeoricas | number }}</td>
-                                        <td [ngClass]="{'text-white': !orden.ubicacionActual.recivida}">
-                                            {{orden.observacionesFolio}}
-                                            <br> {{orden.observaciones}}
-                                        </td>
-
-                                    </tr>
-                                </ng-container>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+  <div class="row animated fadeIn" *ngIf="_s.ordenes[lv].length !== 0">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h1 class="card-title">
+                <app-nivel-urgencia [nivel]="lv"></app-nivel-urgencia>
+              </h1>
             </div>
-
+            <div class="col-auto ">
+              <h3>
+                <small>
+                  Órdenes pendientes:
+                  <strong> {{ _s.ordenes[lv].length }} </strong></small
+                >
+              </h3>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table
+              class="table table-hover table-bordered table-sm "
+              [ngClass]="{
+                'danger-bordered-table ': 'URGENTE' === lv,
+                'info-bordered-table ': 'ALMACEN' === lv,
+                'inverse-bordered-table ': 'PRODUCCIÓN' === lv,
+                'warning-bordered-table ': 'MUESTRA' === lv
+              }"
+            >
+              <thead>
+                <tr>
+                  <th title="El estatus de  la orden.">E</th>
+                  <th title="Numero consecutivo de la orden.">CON</th>
+                  <th title="El numero de orden con respecto al pedido.">#</th>
+                  <th title="Fecha de entrega de folio a produccion">FEP</th>
+                  <th title="El modelo completo">MOD</th>
+                  <th title="La marca laser que lleva la orden">LASER</th>
+                  <th
+                    title="La unidad de la orden. Los valores se toman de la cantidad que puede salir de una lamina"
+                  >
+                    U
+                  </th>
+                  <th title="La cantidad de piezas teoricas de la orden">Pz</th>
+                  <th title="Las observaciones de la orden.">OBS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let orden of _s.ordenes[lv]">
+                  <tr>
+                    <td class="fit text-center">
+                      <i
+                        title="Esta orden esta trabajandose"
+                        *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando"
+                        class="fa fa-spin fa-2x fa-cog text-warning"
+                      ></i>
+                      <i title='Esta orden esta pendiente por recivir'
+                        *ngIf="!orden.ubicacionActual.recivida"
+                        class="fa fa-exclamation  animated tada infinite"
+                      ></i>
+                    </td>
+                    <td class="fit">
+                      {{ orden.numeroDeOrden + 1 }} / {{ orden.totalOrdenes }}
+                    </td>
+                    <td class="fit">
+                      {{ orden.ordenViajera }}
+                    </td>
+                    <td class="fit">
+                      {{ orden.fechaFolio | fecha: "DD/MM/YYYY" }}
+                    </td>
+                    <td class="fit">
+                      {{ orden.modeloCompleto | modeloCompleto }}
+                    </td>
+                    <td class="fit">
+                      {{ orden.laserCliente?.laser }}
+                    </td>
+                    <td class="fit text-center">
+                      {{ orden.unidad }}
+                    </td>
+                    <td class="fit text-right">
+                      {{ orden.piezasTeoricas | number }}
+                    </td>
+                    <td>
+                      {{ orden.observacionesFolio }} {{ orden.observaciones }}
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
-
+  </div>
 </ng-container>

@@ -1,0 +1,26 @@
+<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Terminado:"' [titulo]='detalleElemento?.terminado' [idModal]='idModal'>
+    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
+    <ng-container *ngIf="detalleElemento">
+
+        <!-- 
+        =====================================
+         Cotenido
+        =====================================
+        -->
+
+        <H4>No hay informacion para desplegar. </H4>
+
+        <!-- 
+        =====================================
+         END Cotenido
+        =====================================
+        -->
+
+    </ng-container>
+
+</app-modal>
+<!-- 
+=====================================
+ END Body
+=====================================
+-->

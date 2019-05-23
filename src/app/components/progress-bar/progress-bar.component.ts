@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NIVEL } from 'src/app/config/nivelesDeUrgencia';
-import { UtilidadesService } from 'src/app/services/service.index';
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 
 @Component({
   selector: 'app-progress-bar',

@@ -1,0 +1,58 @@
+<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
+    <ng-container *ngIf="mostrarLista">
+
+        <!-- 
+        =====================================
+         BODY
+        =====================================
+        -->
+        <table class="table table-responsive table-hover  ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Modelo</th>
+                    <th>Medias ordenes</th>
+                    <th>Familia de procesos</th>
+
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let modeloCompleto of elementos">
+                    <td><button (click)="mostrarDetalle(modeloCompleto._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+
+                    <td>{{modeloCompleto | modeloCompleto }}</td>
+                    <td><i *ngIf="modeloCompleto.medias" class="fa fa-check text-info"></i></td>
+                    <td>{{modeloCompleto.familiaDeProcesos.nombre}}</td>
+
+
+                    <td><a (click)="editar( modeloCompleto._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
+                    <td><a (click)="eliminar( modeloCompleto._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- 
+        =====================================
+         END BODY
+        =====================================
+        -->
+
+    </ng-container>
+</app-general>
+
+<!-- 
+=====================================
+ Importante fuera de app-general
+=====================================
+-->
+
+<app-modelos-completos-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-modelos-completos-crear-modificar>
+<app-modelos-completos-detalle [detalleElemento]='elementoDetalle'> </app-modelos-completos-detalle>
+<!-- 
+=====================================
+ END Importante fuera de app-general
+=====================================
+-->

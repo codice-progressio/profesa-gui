@@ -1,0 +1,150 @@
+<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"modelo completo"' [esMasculino]='true'>
+    <ng-container *ngIf="mostrarCrearModificar">
+
+        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+
+
+            <div class="row">
+
+                <div class="form-group col-12 col-md-4 col-lg-3">
+
+
+                    <div class="form-group " [ngClass]="{'oculto': esconderBuscador}">
+                        <input #inputBusqueda (keyup)='buscar(inputBusqueda.value)' class="form-control" name="" id="" aria-describedby="helpId">
+                        <small id="helpId" class="form-text text-muted">Empieza a escribir para buscar un modelo</small>
+                    </div>
+
+                    <div class="list-group ">
+                        <a (click)="setearModelo(modelo)" *ngFor="let modelo of modelos" class="list-group-item list-group-item-action">{{modelo.modelo}}</a>
+                    </div>
+
+                    <div class="list-group ">
+                        <a (click)="reiniciarBusqueda( inputBusqueda )" *ngIf="modelo" class="list-group-item border-success ">
+                           {{modelo.modelo}}
+                        </a>
+                    </div>
+
+                    <input formControlName="modelo" type="hidden">
+                    <app-validacion-inputs [campo]='modelo_FB' [directo]='true'></app-validacion-inputs>
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <select formControlName="tamano" class="form-control form-control-lg" name="tamano" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(tamano_FB), 'is-valid':_validacionesService.valid(tamano_FB)}">
+                  <option value="-" disabled selected >Selecciona un tamano de la lista</option>
+                  <option *ngFor="let tamano of tamanos" [value]="tamano._id">{{tamano.tamano}}</option>
+                </select>
+                    <small class="form-text text-muted">Tamano</small>
+                    <app-validacion-inputs [campo]="tamano_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <select formControlName="color" class="form-control form-control-lg" name="color" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(color_FB), 'is-valid':_validacionesService.valid(color_FB)}">
+                  <option value="-" disabled selected >Selecciona un color de la lista</option>
+                  <option *ngFor="let color of colores" [value]="color._id">{{color.color}}</option>
+                </select>
+                    <small class="form-text text-muted">Color</small>
+                    <app-validacion-inputs [campo]="color_FB"></app-validacion-inputs>
+                </div>
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <select formControlName="terminado" class="form-control form-control-lg" name="terminado" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(terminado_FB), 'is-valid':_validacionesService.valid(terminado_FB)}">
+                  <option value="-" disabled selected >Selecciona un terminado de la lista</option>
+                  <option *ngFor="let terminado of terminados" [value]="terminado._id">{{terminado.terminado}}</option>
+                </select>
+                    <small class="form-text text-muted">Terminado</small>
+                    <app-validacion-inputs [campo]="terminado_FB"></app-validacion-inputs>
+                </div>
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <ng-container formGroupName='laserAlmacen'>
+                        <input formControlName="laser" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(laserAlmacen_FB), 'is-valid':_validacionesService.valid(laserAlmacen_FB)}" name="laserAlmacen" id="laserAlmacen" placeholder="Laser">
+                        <small class="form-text text-muted">Ingresa la marca laser</small>
+                        <app-validacion-inputs [campo]="laserAlmacen_FB"></app-validacion-inputs>
+                    </ng-container>
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-lg-3">
+                    <input formControlName="versionModelo" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(versionModelo_FB), 'is-valid':_validacionesService.valid(versionModelo_FB)}" name="versionModelo" id="versionModelo" placeholder="Version">
+                    <small class="form-text text-muted">Ingresa la version del modelo</small>
+                    <app-validacion-inputs [campo]="versionModelo_FB"></app-validacion-inputs>
+                </div>
+
+                <div class="custom-control custom-checkbox col-12 col-md-4 col-lg-3">
+                    <input formControlName="medias" type="checkbox" class="custom-control-input" id='medias'>
+                    <label class="custom-control-label" for="medias">Generar como medias ordenes</label>
+                </div>
+                <div class="custom-control custom-checkbox col-12 col-md-4 col-lg-3">
+                    <input formControlName="esBaston" type="checkbox" class="custom-control-input" id='esBaston'>
+                    <label class="custom-control-label" for="esBaston">Es modelo de baston.</label>
+                </div>
+
+            </div>
+
+
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <h2> Familia de procesos </h2>
+
+                </div>
+
+                <div class="form-group col-12 col-md-4 col-lg-3 ">
+                    <select (change)='cargarDatosDeFamilia()' formControlName="familiaDeProcesos" class="form-control form-control-lg" name="familiaDeProcesos" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(familiaDeProcesos_FB), 'is-valid':_validacionesService.valid(familiaDeProcesos_FB)}">
+                    <option value="-" disabled selected >Selecciona un familiaDeProcesos de la lista</option>
+                    <option  *ngFor="let familiaDeProcesos of familias" [value]="familiaDeProcesos._id">{{familiaDeProcesos.nombre}}</option>
+                  </select>
+                    <small class="form-text text-muted">familiaDeProcesos</small>
+                    <app-validacion-inputs [campo]="familiaDeProcesos_FB"></app-validacion-inputs>
+                </div>
+
+            </div>
+
+            <br>
+
+            <div *ngIf="familiaDeProcesos_FB.value" class="row animated slideInUp">
+                <div class="col-12 col-md-6">
+                    <app-organizador-drag-and-drop (dropSuccess)='actualizarIds()' [listaOrdenable]='true'></app-organizador-drag-and-drop>
+
+                </div>
+                <div class="col-12 col-md-6">
+                    <app-organizador-drag-and-drop [listaDeElementos]='true'></app-organizador-drag-and-drop>
+
+                </div>
+            </div>
+
+
+
+
+            <ng-container formArrayName="procesosEspeciales">
+                <ng-container *ngFor="let proceso of formulario.controls['procesosEspeciales'].controls; let i = index">
+                    <ng-container [formGroupName]='i'>
+                        <input type="hidden" formControlName="orden">
+                        <input type="hidden" formControlName="proceso">
+                        <input type="hidden" formControlName="procesoPadre">
+
+                    </ng-container>
+
+                </ng-container>
+            </ng-container>
+
+
+
+
+
+
+
+            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
+            <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
+            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
+                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
+                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
+        </button>
+
+        </form>
+
+    </ng-container>
+</app-crear-modificar>

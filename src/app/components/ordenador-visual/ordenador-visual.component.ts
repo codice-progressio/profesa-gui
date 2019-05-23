@@ -1,9 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FamiliaDeProcesos } from 'src/app/models/familiaDeProcesos.model';
-import { Procesos } from "src/app/models/procesos.model";
-import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { Component, OnInit } from '@angular/core';
 import { OrdenadorVisualService } from './ordenador-visual.service';
-import { ProcesoService } from 'src/app/services/service.index';
 
 @Component({
   selector: 'app-ordenador-visual',

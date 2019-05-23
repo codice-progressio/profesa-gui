@@ -1,109 +1,124 @@
-<div class="row">
-    <div class="col-12" *ngIf="!clienteEditando">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1>Clientes actuales.</h1>
-                    <button (click)="nuevoCliente()" class="btn btn-success"><i class="fa fa-plus"></i> Nuevo cliente</button>
-                </div>
+<ng-container *ngIf="!editando">
+  <div
+    class="row animated  faster"
+    [ngClass]="{ fadeOutUp: animando, fadeInDown: !animando }"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class=""><strong>Clientes</strong> existentes</h1>
 
-                <table class="table table-hover table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>SAE</th>
-                            <th>Nombre</th>
-                            <th>Marcas Laser</th>
-                            <th>MOD Aut.</th>
-                            <th></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let cliente of clientes">
-                            <td class='fit align-middle'>{{cliente.sae}}</td>
-                            <td class='fit align-middle'>{{cliente.nombre}}</td>
-                            <td class='fit '>
-
-                                <ng-container *ngFor="let marca of cliente.laserados; let i = index">
-                                    {{marca.laser}}
-                                    <hr *ngIf="!(cliente.laserados.length-1 === i)">
-                                </ng-container>
-
-                            </td>
-                            <td class='fit w-100'>
-                                <ng-container *ngFor="let mca of cliente.modelosCompletosAutorizados, let i = index;">
-                                    <span class="d-flex justify-content-between align-items-center">
-                                            {{mca.modeloCompleto | modeloCompleto}}
-                                            <span *ngIf="!mca.autorizado">
-                                                <small  class="text-muted ">
-                                                    <i class="fa fa-exclamation-circle text-danger animated fadeIn infinite"></i> 
-                                                    Autorizar?
-                                                    <button (click)="autorizarModeloCompleto(true, mca._id, cliente)" class="btn btn-success btn-sm mr-1"><i class="fa fa-check" aria-hidden="true"></i> </button>
-                                                    <button (click)="autorizarModeloCompleto(false, mca._id, cliente)" class="btn btn-danger btn-sm"><i class="fa fa-times " aria-hidden="true"></i> </button>
-                                                </small>
-
-                                            </span>
-                                    </span>
-                                    <hr *ngIf="!(cliente.modelosCompletosAutorizados.length-1 === i)">
-                                </ng-container>
-                            </td>
-                            <td class='text-right'> <button (click)="editarCliente(cliente)" class="btn btn-success"><i class="fa fa-edit"></i></button> </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="d-flex  align-items-center ">
+              <input
+                #inputBusqueda
+                (keyup)="buscarCliente(inputBusqueda.value)"
+                type="text"
+                class="form-control mr-3"
+                name="busquedaDecliente"
+                id="busquedaDecliente"
+                aria-describedby="busquedadeclientehelp"
+                placeholder="Buscar un cliente"
+              />
             </div>
+            <button
+              (click)="crearCliente()"
+              type="button"
+              class="btn btn-outline-primary"
+            >
+              <i class="fa fa-plus"></i> Crear nuevo
+            </button>
+          </div>
+          <hr />
+
+          <app-paginador></app-paginador>
+
+          <table class="table table-hover table-borderless">
+            <thead class="">
+              <tr>
+                <th class="fit"></th>
+
+                <th
+                  class="fit"
+                  title="El codigo que referencia el id con el sistema ASPEL SAE"
+                >
+                  sae
+                </th>
+                <th title="El nombre del cliente">Nombre</th>
+                <th title="Los laserados autorizados para este cliente">
+                  Laserados
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cliente of clientes">
+                <td class="fit">
+                  <a
+                    (click)="clienteDetalle = cliente"
+                    class="btn  text-white btn-primary btn-xs mr-1"
+                    role="button"
+                    data-toggle="modal"
+                    data-target="#clienteDetalle"
+                  >
+                    <i class="fas fa-eye    "></i>
+                  </a>
+                  <a
+                    (click)="modificarCliente(cliente)"
+                    class="btn  text-white btn-success btn-xs mr-1"
+                    role="button"
+                  >
+                    <i class="fas fa-edit    "></i>
+                  </a>
+                  <a
+                    (click)="eliminarCliente(cliente)"
+                    class="btn  text-white btn-danger btn-xs mr-1"
+                    role="button"
+                  >
+                    <i class="fas fa-times    "></i>
+                  </a>
+                </td>
+                <td>{{ cliente.sae }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>
+                  <ng-container
+                    *ngFor="let laser of cliente.laserados; let i = index"
+                  >
+                    {{ laser.laser }}
+                    <span *ngIf="cliente.laserados.length - 1! !== i">,</span>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-paginador></app-paginador>
         </div>
+      </div>
     </div>
+  </div>
+</ng-container>
 
-    <div class="col-6" *ngIf="clienteEditando">
-        <div class="card">
-            <div class="card-body ">
-                <h1>Editar: NOMBRE DEL CLIENTE</h1>
-                <form (ngSubmit)="onSubmit(clientesForm.value, clientesForm.valid,$event)" [formGroup]="clientesForm" novalidate>
-
-
-
-                    <div class="form-group">
-                        <input name='sae' formControlName="sae" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(_sae), 'is-valid':_validacionesService.valid(_sae)}" type="text" placeholder="SAE">
-                        <app-validacion-inputs [campo]="_sae"></app-validacion-inputs>
-                    </div>
-                    <div class="form-group">
-                        <input name='nombre' formControlName="nombre" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(_nombre), 'is-valid':_validacionesService.valid(_nombre)}" type="text" placeholder="Nombre o razon social.">
-                        <app-validacion-inputs [campo]="_nombre"></app-validacion-inputs>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <span formArrayName='laserados'>
-                                <ng-container *ngFor="let las of clientesForm?.controls['laserados'].controls; let i = index;">
-                                    
-                                    <div [formGroupName]="i">
-                                        <div class="form-group d-flex justify-content-between align-items-baseline">
-                                            <div>
-                                                <input name='laser' formControlName="laser" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(las), 'is-valid':_validacionesService.valid(las)}" type="text" placeholder="Nueva marca laser.">
-                                                <app-validacion-inputs [campo]="las"></app-validacion-inputs>
-        
-                                            </div>
-                                            <div>
-                                                <button (click)="removerLaserado(i)" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                </ng-container>
-                                
-                            </span>
-                        <a (click)="agregarLaserado($event)" class="btn btn-success text-white mr-2 mb-3"><i class="fa fa-plus"> </i>Agregar marca laser</a>
-
-                    </div>
+<app-clientes-crear-modificar
+  (esteComponente)="cargarComponente($event)"
+  (guardado)="animar = true"
+  (cancelado)="animar = true"
+>
+</app-clientes-crear-modificar>
 
 
-                    <br>
-                    <button type="submit" [ngClass]="{'btn-success': clientesForm.valid, 'btn-outline-dark': clientesForm.invalid}" [disabled]="clientesForm.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
-                    <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Cancelar</button>
-
-                    <br>
-                </form>
-
-            </div>
-        </div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="clienteDetalle"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-clientes-detalle [cliente]="clienteDetalle"></app-clientes-detalle>
+      </div>
     </div>
+  </div>
 </div>

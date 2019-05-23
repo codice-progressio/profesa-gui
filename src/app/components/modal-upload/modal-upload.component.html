@@ -19,7 +19,7 @@ esta variable para que se agregue la clase que queremos.  -->
 
                     <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">
 
-                    <!-- El files[...] guarda un arreglo de imagenes. Si quieres recivir varias imágenes entonces
+                    <!-- El files[...] guarda un arreglo de imagenes. Si quieres recibir varias imágenes entonces
                     hay que modificar aqui. -->
                     <input (change)="seleccionImagen($event.target.files[0])" type="file">
 

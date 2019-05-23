@@ -10,8 +10,19 @@
                 <div class='d-flex justify-content-between align-items-center '>
 
 
-                    <h3 class="d-flex align-items-center">Pulsa alguna de las etiquetas para filtrar.</h3>
                     <div class="d-flex justify-content-between align-items-center">
+                        <span class="mr-3">
+
+                            <app-buscador-rapido [input]='true'> </app-buscador-rapido>
+                        </span>
+                        <span>
+
+                            <app-buscador-rapido [lista]='true'> </app-buscador-rapido>
+                        </span>
+
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="d-flex align-items-center">Pulsa alguna de las etiquetas para filtrar.</h6>
 
                         <button (click)="filtrar('')" *ngIf="filtrando" class="btn btn-outline-inverse btn-sm mr-2"><i class="fa fa-times"></i> Borrar filtro </button>
                         <ng-container *ngFor="let f of filtros">
@@ -32,7 +43,7 @@
                     </h1>
 
                 </ng-container>
-                <div class="table-responsive table-hover" *ngIf="folios.length !==0">
+                <div class="fadeIn animated slow" *ngIf="folios.length !==0">
                     <table class="table fit">
                         <thead>
                             <tr>
@@ -65,7 +76,7 @@
                                 <tr [ngClass]="{'animated zoomOut': fol.eliminar}">
                                     <td class=" align-middle fit">
                                         <h6><strong>
-                                            <a data-toggle="collapse" (click)="fol.mostrandoInfo= !fol.mostrandoInfo" [href]="'#'+fol.numeroDeFolio" class="btn btn-link text-inverse bt-lg">
+                                            <a data-toggle="collapse" (click)="fol.mostrandoInfo= !fol.mostrandoInfo" [href]="'#'+fol._id" class="btn btn-link text-inverse bt-lg">
                                                 <i class="fa" [ngClass]="{ 'fa-angle-right': !fol.mostrandoInfo,
                                                     'fa-angle-down': fol.mostrandoInfo }"></i>
                                             </a>
@@ -96,7 +107,7 @@
                                         <app-progress-bar [nivel]='fol.nivelDeUrgencia' [porcentaje]='fol.porcentajeAvance'></app-progress-bar>
                                     </td>
                                 </tr>
-                                <tr class="collapse" [id]="fol.numeroDeFolio">
+                                <tr class="collapse" [id]="fol._id">
                                     <td colspan="8">
                                         <div class="card mb-3">
                                             <div class="card-header bg-dark">
@@ -203,6 +214,7 @@
                                                                     <th>Cantidad</th>
                                                                     <th>Prioridad</th>
                                                                     <th>Laser del cliente</th>
+                                                                    <th>Almacen</th>
                                                                     <th>%</th>
                                                                 </tr>
                                                             </thead>
@@ -228,6 +240,9 @@
                                                                             </td>
 
                                                                             <td class="align-middle fit ">{{linea.laserCliente?.laser}}</td>
+                                                                            <td class="align-middle fit text-center text-success ">
+                                                                                <i *ngIf="linea.almacen" class="fa fa-check fa-2x"></i>
+                                                                            </td>
                                                                             <td class="align-middle ">
                                                                                 <app-progress-bar [nivel]='linea.nivelDeUrgencia' [porcentaje]='linea.porcentajeAvance'></app-progress-bar>
                                                                             </td>
@@ -283,23 +298,15 @@
 
                                                                                                         </td>
                                                                                                     </tr>
-
-
-
                                                                                                 </tbody>
-
                                                                                             </table>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
                                                                         </td>
                                                                     </tr>
-
                                                                 </ng-container>
-
-
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -308,8 +315,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-
                             </ng-container>
                         </tbody>
                     </table>

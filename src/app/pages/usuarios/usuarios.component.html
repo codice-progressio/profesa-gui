@@ -1,120 +1,185 @@
 <div class="row animated fadeIn" *ngIf="!usuarioEditando">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <input (keyup)="buscarUsuario( input.value )" #input id="" class="form-control" placeholder="Buscar usuario...">
-
-            </div>
-        </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input
+          (keyup)="buscarUsuario(input.value)"
+          #input
+          id=""
+          class="form-control"
+          placeholder="Buscar usuario..."
+        />
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="row" *ngIf="cargando">
-    <div class="col-sm-12">
-
-        <div class="alert alert-warning text-center">
-            <strong>Cargando</strong>
-            <br>
-            <i class="fa fa-refresh fa-spin fa-2x"></i>
-            <br>
-            <span>Espere por favor</span>
-        </div>
+  <div class="col-sm-12">
+    <div class="alert alert-warning text-center">
+      <strong>Cargando</strong>
+      <br />
+      <i class="fa fa-refresh fa-spin fa-2x"></i>
+      <br />
+      <span>Espere por favor</span>
     </div>
+  </div>
 </div>
 
 <div class="row" *ngIf="!usuarioEditando">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title  d-flex justify-content-between w-100">
-                    <span>
-                            Usuarios registrados ( <small>{{totalRegistros}}</small> )
-                    </span>
-                    <button (click)="nuevoUsuario()" class="btn btn-outline-success"><i class="fa fa-plus"> </i>Nuevo usuario</button>
-                </h3>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Correo</th>
-                            <th>Nombre</th>
-                            <th>Role</th>
-                            <th>Auth</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let usuario of usuarios">
-                            <td class="w70">
-
-                                <img (click)="mostrarModal( usuario._id )" [src]="usuario.img | imagen" class="img-50 img-circle pointer">
-                            </td>
-                            <td>{{usuario.email}}</td>
-                            <td>{{usuario.nombre}}</td>
-                            <td>
-                                <ng-container *ngFor="let role of usuario.role; let i = index">
-                                    <span><i class="fa fa-check text-success"></i> {{role}}</span>
-                                    <hr *ngIf="(usuario.role.length+1) % 2 && usuario.role.length-1 !== i">
-                                </ng-container>
-
-                            </td>
-                            <td>
-                                <label *ngIf="usuario.google" for="" class="label label-danger">Google</label>
-                                <label *ngIf="!usuario.google" for="" class="label label-info">Normal</label>
-                            </td>
-                            <td>
-                                <button (click)="borrarUsuario( usuario )" class="btn btn-danger ml-2"><i class="fa fa-trash-o"></i></button>
-                                <button (click)="editar( usuario )" class="btn btn-success ml-2"><i class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button (click)="cambiarDesde(-5)" class="btn btn-secondary ">
-                  Anteriores
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title  d-flex justify-content-between w-100">
+          <span>
+            Usuarios registrados ( <small>{{ totalRegistros }}</small> )
+          </span>
+          <button (click)="nuevoUsuario()" class="btn btn-outline-success">
+            <i class="fa fa-plus"> </i>Nuevo usuario
+          </button>
+        </h3>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Correo</th>
+              <th>Nombre</th>
+              <th>Role</th>
+              <th>Auth</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuarios">
+              <td class="w70">
+                <img
+                  (click)="mostrarModal(usuario._id)"
+                  [src]="usuario.img | imagen"
+                  class="img-50 img-circle pointer"
+                />
+              </td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.nombre }}</td>
+              <td>
+                <ng-container *ngFor="let role of usuario.role; let i = index">
+                  <span
+                    ><i class="fa fa-check text-success"></i> {{ role }}</span
+                  >
+                  <hr
+                    *ngIf="
+                      (usuario.role.length + 1) % 2 &&
+                      usuario.role.length - 1 !== i
+                    "
+                  />
+                </ng-container>
+              </td>
+              <td>
+                <label *ngIf="usuario.google" for="" class="label label-danger"
+                  >Google</label
+                >
+                <label *ngIf="!usuario.google" for="" class="label label-info"
+                  >Normal</label
+                >
+              </td>
+              <td>
+                <button
+                  (click)="borrarUsuario(usuario)"
+                  class="btn btn-danger ml-2"
+                >
+                  <i class="fa fa-trash-o"></i>
                 </button>
-
-                <button (click)="cambiarDesde(5)" class="btn btn-secondary ml-2">
-                  Siguiente
+                <button (click)="editar(usuario)" class="btn btn-success ml-2">
+                  <i class="fa fa-edit"></i>
                 </button>
-            </div>
-        </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button (click)="cambiarDesde(-5)" class="btn btn-secondary ">
+          Anteriores
+        </button>
+
+        <button (click)="cambiarDesde(5)" class="btn btn-secondary ml-2">
+          Siguiente
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-
-
 <div class="row" *ngIf="usuarioEditando">
-    <div class="col-5">
-        <div class="card">
-            <div class="card-body">
-                <img (click)="mostrarModal( usuarioEditando._id )" [src]="usuarioEditando.img | imagen" class="w-100 pointer">
-            </div>
-        </div>
+  <div class="col-3">
+    <div class="card">
+      <div class="card-body">
+          <img (click)="mostrarModal( usuarioEditando._id)" [src]='usuarioEditando.img | imagen ' class='pointer w-100'>
+      </div>
     </div>
-    <div class="col-7">
-        <div class="card">
-            <div class="card-body">
-
-
-                <input [(ngModel)]="usuarioEditando.nombre" style="width:100%; height:45px; font-size:45px" class="border-0 form-control" type='text' name='nombre' placeholder="Nombre del usuario..." />
-                <input [(ngModel)]="usuarioEditando.email" style="width:100%; height:45px; " class="border-0 form-control" type='text' name='email' placeholder="usuario@email.co..." />
-                <input [(ngModel)]="usuarioEditando.password" style="width:100%; height:45px; " class="border-0 form-control" type='text' name='password' placeholder="constraseña..." />
-                <!-- Listamlos roles -->
-                <h2>Permisos del usuario.</h2>
-                <ng-container *ngFor="let role of rolesArray ">
-                    <input [disabled]="roles.SUPER_ADMIN === role" [checked]="usuarioEditando.role.includes(role)" type="checkbox" id="{{role}}" class="chk-col-blue" (change)="cambiarVisibilidad($event)">
-                    <label for="{{role}}">{{role}}</label>
-                    <hr>
-
-
-                </ng-container>
-
-
-                <button class="btn btn-success mr-3" (click)="guardarUsuario(usuarioEditando)"><i class="fa fa-save"></i> Guardar</button>
-                <button class="btn btn-danger" (click)="cancelarEdicion()"><i class="fa fa-times"></i> Cancelar</button>
-
-            </div>
-        </div>
+  </div>
+  <div class="col-7">
+    <div class="card">
+      <div class="card-body">
+        <input
+          [(ngModel)]="usuarioEditando.nombre"
+          style="width:100%; height:45px; font-size:45px"
+          class="border-0 form-control"
+          type="text"
+          name="nombre"
+          placeholder="Nombre del usuario..."
+        />
+        <input
+          [(ngModel)]="usuarioEditando.email"
+          style="width:100%; height:45px; "
+          class="border-0 form-control"
+          type="text"
+          name="email"
+          placeholder="usuario@email.co..."
+        />
+        <input
+          [(ngModel)]="usuarioEditando.password"
+          style="width:100%; height:45px; "
+          class="border-0 form-control"
+          type="text"
+          name="password"
+          placeholder="constraseña..."
+        />
+      </div>
     </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <!-- Listamlos roles -->
+        <h2>Permisos del usuario.</h2>
+        <ul>
+          <ng-container *ngFor="let role of rolesArray">
+            <li>
+              <input
+                [checked]="usuarioEditando.role.includes(role)"
+                type="checkbox"
+                id="{{ role }}"
+                class="chk-col-blue"
+                (change)="cambiarVisibilidad($event)"
+              />
+              <label for="{{ role }}">{{ role }}</label>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <button
+          class="btn btn-success mr-3"
+          (click)="guardarUsuario(usuarioEditando)"
+        >
+          <i class="fa fa-save"></i> Guardar
+        </button>
+        <button class="btn btn-danger" (click)="cancelarEdicion()">
+          <i class="fa fa-times"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

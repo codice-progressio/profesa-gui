@@ -36,7 +36,7 @@
                     <ng-container *ngFor="let linea of folio.folioLineas; let i_numPed = index">
 
                         <div class="card text-white bg-dark mb-3 no-print">
-                            <div class="card-header">PEDIDO #{{i_numPed+1}}</div>
+                            <div class="card-header">PEDIDO #{{i_numPed}}</div>
                             <div class="card-body">
                                 <h5 class="card-title text-white">
                                     <span>
@@ -54,7 +54,7 @@
                                         <td>
                                             <h3>
                                                 <small>ORDEN VIAJERA: </small>
-                                                <div class="badge badge-dark size-2 mr-3"> {{folio.numeroDeFolio}}-{{i_numPed+1}}-{{orden.numeroDeOrden}} </div>
+                                                <div class="badge badge-dark size-2 mr-3"> {{folio.numeroDeFolio}}-{{i_numPed}}-{{orden.numeroDeOrden}} </div>
                                                 <app-nivel-urgencia [nivel]="orden.nivelDeUrgencia" [animar]="false"></app-nivel-urgencia>
                                             </h3>
 
@@ -69,7 +69,7 @@
                                             <ng-container *ngIf="linea.laserCliente">
                                                 <hr>
                                                 <small><strong>MARCA LASER:</strong></small>
-                                                <br>
+
 
                                                 <span class="bg-dark text-white ml-2 pt-1 pb-1 pr-3 pl-3 ">
                                                     <strong>
@@ -83,10 +83,10 @@
                                             <ng-container *ngIf="!!folio.observaciones || !!orden.observaciones || !!linea.observaciones">
                                                 <hr>
                                                 <small>
-                                                    <strong >OBSERVACIONES:</strong> <br>
-                                                    <span *ngIf="folio.observaciones">>>{{folio.observaciones}}  <br></span>
-                                                    <span *ngIf="folio.observaciones">>>{{linea.observaciones}}  <br></span>
-                                                    <span *ngIf="orden.observaciones">>>{{orden.observaciones}}</span>
+                                                    <strong >OBSERVACIONES: </strong> 
+                                                    <span *ngIf="folio.observaciones">{{folio.observaciones}}  </span>
+                                                    <span *ngIf="linea.observaciones"> | {{linea.observaciones}}  </span>
+                                                    <span *ngIf="orden.observaciones"> |{{orden.observaciones}}</span>
                                                 </small>
 
                                             </ng-container>
@@ -94,14 +94,17 @@
 
                                             <td>
                                                 <span>
-                                                {{folio.fechaFolio | fecha:'D/MM/Y'}}
+                                                    {{folio.fechaFolio | fecha:'D/MM/Y'}}
                                                 
-                                            </span>
-                                                <qrcode [qrdata]="orden._id" size="100"></qrcode>
+                                                </span>
+                                                <span class='text-center'>
+                                                    <qrcode [qrdata]="orden._id" size="100"></qrcode>
+
+                                                </span>
                                                 <span>
                                                 # {{orden.numeroDeOrden}}/{{linea.ordenes.length}}
-                                              
-                                            </span>
+                                                
+                                                </span>
                                                 <br>
                                                 <span>PZ: {{orden.piezasTeoricas | number:'1.0-2'}}</span>
                                                 <br>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../../models/cliente.models';
 import { Folio } from '../../models/folio.models';
-import { ClienteService, UsuarioService, FolioService, UtilidadesService, ManejoDeMensajesService } from '../../services/service.index';
 import { Usuario } from '../../models/usuario.model';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -10,6 +9,11 @@ import { PreLoaderService } from '../../components/pre-loader/pre-loader.service
 import { PaginadorService } from '../../components/paginador/paginador.service';
 import { BuscadorRapido } from 'src/app/components/buscador-rapido/buscador-rapido';
 import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
+import { FolioService } from 'src/app/services/folio/folio.service';
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
 
 
 @Component({
@@ -20,16 +24,11 @@ import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
 export class RegistroDeFoliosComponent implements OnInit {
 
   selectorDeUsuarios: string = '';
-  // clientesBuscados: Cliente[] = [] ;
   folio: Folio = null;
 
-  
-  // clienteSeleccionado: string;
   termino: string = '';
   vendedores: Usuario [] = [];
   folios: Folio[] = [];
-  // desde: number = 0;
-  // clienteParaGuardar: Cliente;
 
   modificando: boolean = false;
   vendedorSeleccionado: string = '-';
@@ -48,15 +47,8 @@ export class RegistroDeFoliosComponent implements OnInit {
     public _preLoaderService: PreLoaderService
   ) {
     this._buscadorRapidoService.nombreDeElemento = 'cliente';
-    // this._buscadorRapidoService.reiniciar();
-    
-  
-    // this._buscadorRapidoService.callback = () => {
-    //  this.folio.cliente = this._buscadorRapidoService.elementoSeleccionado.objeto;
-    //  this.termino = '';
 
-    // };
-       
+    this._folioService.reiniciarPaginador()
     this.cargarFolios();
     this._buscadorRapidoService.limpiarTodo();
     this._buscadorRapidoService.nombreDeElemento = 'cliente';
@@ -99,9 +91,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       this.cargarFolios(desde, limite);
     };
     
- 
-    // this._buscadorRapidoService.reiniciar();  
-
   }
 
   nuevoFolio( ) {
@@ -126,10 +115,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       this._paginadorService.activarPaginador(this._folioService.totalFolios );
     });
   }
-
-
-   
-  
 
   
   guardar() {
@@ -198,15 +183,6 @@ export class RegistroDeFoliosComponent implements OnInit {
       if (result.value) {
         
         this._folioService.eliminarFolio( folio._id ).subscribe( ()  => {
-          // Removemos para no tener que recargar.
-          // folio.eliminar = true;
-          // this._util.delay(700).then(() => {
-          //   this.folios = this.folios.filter( f => {
-          //     if (folio._id !== f._id) {
-          //       return true;
-          //     }
-            // });
-          // });
           this.cargarFolios();
           
 
