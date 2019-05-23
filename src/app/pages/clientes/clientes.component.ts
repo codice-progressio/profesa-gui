@@ -3,8 +3,6 @@ import { Cliente } from "src/app/models/cliente.models"
 import { ClienteService } from "../../services/cliente/cliente.service"
 import { PaginadorService } from "src/app/components/paginador/paginador.service"
 import { ClientesCrearModificarComponent } from "./clientes-crear-modificar.component"
-import { resolve } from "path"
-import { FormBuilder, FormGroup, Validators } from "@angular/forms"
 import { ManejoDeMensajesService } from "../../services/utilidades/manejo-de-mensajes.service"
 
 @Component({
@@ -113,7 +111,7 @@ export class ClientesComponent implements OnInit {
 
     this._msjService.confirmacionDeEliminacion(msj, () => {
       this._msjService.confirmacionDeEliminacion(msj2, () => {
-        this._clienteService.eliminar(cliente._id).subscribe((eliminado) => {
+        this._clienteService.eliminar(cliente._id).subscribe(() => {
           this.cargarClientes()
         })
       })
@@ -124,7 +122,7 @@ export class ClientesComponent implements OnInit {
     this.crearModificarComponent = e
   }
 
-  animar(cb: any, tiempo: number = 500) {
+  animar(cb: any) {
     setTimeout(() => {
       cb()
     })
