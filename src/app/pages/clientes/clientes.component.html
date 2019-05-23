@@ -39,7 +39,7 @@
                 <th class="fit"></th>
 
                 <th
-                class='fit'
+                  class="fit"
                   title="El codigo que referencia el id con el sistema ASPEL SAE"
                 >
                   sae
@@ -54,6 +54,7 @@
               <tr *ngFor="let cliente of clientes">
                 <td class="fit">
                   <a
+                    (click)="clienteDetalle = cliente"
                     class="btn  text-white btn-primary btn-xs mr-1"
                     role="button"
                     data-toggle="modal"
@@ -122,10 +123,10 @@
   aria-labelledby="modelTitleId"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        MODAL DE TALLE
+        <app-clientes-detalle [cliente]="clienteDetalle"></app-clientes-detalle>
       </div>
     </div>
   </div>
