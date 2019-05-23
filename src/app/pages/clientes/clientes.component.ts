@@ -1,166 +1,132 @@
-import { Component, OnInit } from '@angular/core';
-import swal from 'sweetalert2';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { Cliente } from 'src/app/models/cliente.models';
-import { ClienteService } from '../../services/cliente/cliente.service';
-import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
-import { ModeloCompletoService } from 'src/app/services/modelo/modelo-completo.service';
+import { Component, OnInit } from "@angular/core"
+import { Cliente } from "src/app/models/cliente.models"
+import { ClienteService } from "../../services/cliente/cliente.service"
+import { PaginadorService } from "src/app/components/paginador/paginador.service"
+import { ClientesCrearModificarComponent } from "./clientes-crear-modificar.component"
+import { resolve } from "path"
+import { FormBuilder, FormGroup, Validators } from "@angular/forms"
+import { ManejoDeMensajesService } from "../../services/utilidades/manejo-de-mensajes.service"
 
 @Component({
-  selector: 'app-clientes',
-  templateUrl: './clientes.component.html',
+  selector: "app-clientes",
+  templateUrl: "./clientes.component.html",
   styles: []
 })
 export class ClientesComponent implements OnInit {
+  clientes: Cliente[] = null
+  clienteDetalle: Cliente = null
+  clienteEditandose: Cliente = null
 
-  clientesForm: FormGroup;
-  clienteEditando: Cliente;
-  clientes: Cliente[] 
-  
+  editando: boolean = false
+  animando: boolean = false
 
-
+  crearModificarComponent: ClientesCrearModificarComponent
 
   constructor(
-    private _validacionesService: ValidacionesService,
-    private _fb: FormBuilder,
-    private _clienteService:ClienteService,
-    private _modeloService: ModeloCompletoService
+    public _clienteService: ClienteService,
+    public _paginadorService: PaginadorService,
+    public _msjService: ManejoDeMensajesService
   ) {
-
-   this.cargarClientes();
-
-
-   }
+    this._paginadorService.callback = () => {
+      this.cargarClientes()
+    }
+  }
 
   ngOnInit() {
-     this.iniciarFormulario();
+    this.cargarClientes()
+
+    new Promise((resolve) => {
+      let i = setInterval(() => {
+        if (this.crearModificarComponent) {
+          clearInterval(i)
+          resolve()
+        }
+      }, 100)
+    }).then(() => {
+      this.crearModificarComponent.cancelado.subscribe(() => {
+        // this.clienteEditandose = null
+
+        this.cargarClientes()
+        this.editando = false
+        this.animando = false
+        setTimeout(() => {
+          
+        }, 500);
+        
+      })
+      
+      this.crearModificarComponent.guardado.subscribe(() => {
+        this.animando = false
+        this.cargarClientes()
+        this.clienteEditandose = null
+        this.editando = false
+      })
+    })
   }
 
-  iniciarFormulario(){
-    // Iniciamos el formulario.
-    this.clientesForm = this._fb.group({
-      sae: ['', 
-      [
-        Validators.required,
-      ]
-    ],
-    nombre: ['', [
-      Validators.required,
-    ]],
-    laserados: this._fb.array([
-      // Este lo quitamos por que no
-      // queremos que por defecto aparezca 
-      // un espacio para laser. 
-      // this.getLaserado()
-   ])
-    });
+  cargarClientes() {
+    this._clienteService
+      .todo()
+      .subscribe((clientes) => (this.clientes = clientes))
   }
 
-  cargarClientes( ){
-    this._clienteService.todo().subscribe(
-      resp => {
-        this.clientes = resp;
-    });
-  }
-
-  public get _sae ( ){
-    return this.clientesForm.get('sae');
-  }
-
-  public get _nombre( ) {
-    return this.clientesForm.get('nombre');
-  }
-
-  public _paso(a: any ){
-     return a;
-       }
-
-  getLaserado( ) {
-    return this._fb.group({
-      laser:['', Validators.required],
-    });
-  }
-
-  
-
-  agregarLaserado(){
-    const control = <FormArray>this.clientesForm.controls['laserados'];
-    control.push(this.getLaserado());
-  };
-
-  public removerLaserado( i: number) {
-    const control = <FormArray> this.clientesForm.controls['laserados'];
-    control.removeAt(i);
-  }
-
-  onSubmit(model: any, isValid: boolean, e: any) {
-    e.preventDefault();
-  
-    const cliente:Cliente = <Cliente>model;
-    cliente._id = this.clienteEditando._id;
-    if ( this.clienteEditando._id ) {
-      this._clienteService.modificar(cliente).subscribe(resp=> {
-        this.limpiar();
-      });
-
-    }else {
-      this._clienteService.guardar(cliente).subscribe(resp=> {
-        this.limpiar();
-      });
-
+  buscarCliente(termino: string) {
+    termino = termino.trim()
+    if (!termino) {
+      this.cargarClientes()
+      return
     }
 
+    this._clienteService.buscar(termino).subscribe((clientes) => {
+      this.clientes = clientes
+    })
   }
 
-  limpiar() {
-    this.iniciarFormulario();
-    this.clientesForm.reset();
-    this.clienteEditando = null;
-    this.cargarClientes();
-  }
+  crearCliente() {
+    this.animando = true
+    setTimeout( ()=>{
+      this.editando = true
+      this.crearModificarComponent.crearOModificar()
+    }, 500 )
 
-  editarCliente( cliente: Cliente) {
-    this.clienteEditando = cliente;
-    this.clientesForm.reset();
-
-
-    // Cargamos los datos en el formulario.
-    this._sae.setValue(cliente.sae);
-    this._nombre.setValue(cliente.nombre);
-
-    const laserados = <FormArray> this.clientesForm.controls['laserados'];
-    cliente.laserados.forEach(marca => {
-      const nm = this.getLaserado();
-      nm.setValue({laser:marca.laser});
-      laserados.push(nm);
-
-    });
 
   }
 
-  nuevoCliente( ){
-    this.clienteEditando = new Cliente();
+  modificarCliente(cliente: Cliente) {
+    this.animando = true
+    setTimeout( ()=>{
+      this.editando = true
+      
+      this.clienteEditandose = cliente
+      this.crearModificarComponent.crearOModificar(cliente)
+
+    }, 500)
   }
 
-  autorizarModeloCompleto( autorizar: boolean, idAut: string, c: Cliente ) {
-    
-    if(autorizar ){
-      const a = c.modelosCompletosAutorizados.find(x=>{ return x._id === idAut});
-      a.autorizado = true;
-    }else{
-      c.modelosCompletosAutorizados = c.modelosCompletosAutorizados.filter(x => x._id!== idAut);
-    }
+  eliminarCliente(cliente: Cliente) {
+    let msj = `Estas a punto de eliminar al cliente '${cliente.nombre}'.
+    Esta accion no se puede deshacer. Todos los datos relacionados al cliente
+    seran eliminados (folios) y esto alterara las estadisticas de produccion, 
+    reportes de ventas, ordenes en proceso y el historial de folios. Aun asi quieres continuar?`
 
-    this._clienteService.modificar(c).subscribe(resp=>{
-      this.cargarClientes();
-    });
-   
+    let msj2 = `Esto es muy importante. Es preferente no borrar el usuario bajo ninguna circunstancia, a menos que estes completamente seguro de que no te afectara en nada. `
+
+    this._msjService.confirmacionDeEliminacion(msj, () => {
+      this._msjService.confirmacionDeEliminacion(msj2, () => {
+        this._clienteService.eliminar(cliente._id).subscribe((eliminado) => {
+          this.cargarClientes()
+        })
+      })
+    })
   }
 
-  
+  cargarComponente(e) {
+    this.crearModificarComponent = e
+  }
 
-
-
-
+  animar(cb: any, tiempo: number = 500) {
+    setTimeout(() => {
+      cb()
+    })
+  }
 }

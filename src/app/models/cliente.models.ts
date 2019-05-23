@@ -7,7 +7,7 @@ export class Cliente implements Deserializable{
         public nombre?: string,
         public sae?: string,
         public _id?: string,
-        public laserados?: Laser [],
+        public laserados: Laser [] = [],
         public modelosCompletosAutorizados: ModeloCompletoAutorizacion [] =[]
         
         ) {}
