@@ -47,12 +47,9 @@ export class ClientesComponent implements OnInit {
         this.cargarClientes()
         this.editando = false
         this.animando = false
-        setTimeout(() => {
-          
-        }, 500);
-        
+        setTimeout(() => {}, 500)
       })
-      
+
       this.crearModificarComponent.guardado.subscribe(() => {
         this.animando = false
         this.cargarClientes()
@@ -82,22 +79,19 @@ export class ClientesComponent implements OnInit {
 
   crearCliente() {
     this.animando = true
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.editando = true
       this.crearModificarComponent.crearOModificar()
-    }, 500 )
-
-
+    }, 500)
   }
 
   modificarCliente(cliente: Cliente) {
     this.animando = true
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.editando = true
-      
+
       this.clienteEditandose = cliente
       this.crearModificarComponent.crearOModificar(cliente)
-
     }, 500)
   }
 
@@ -120,11 +114,5 @@ export class ClientesComponent implements OnInit {
 
   cargarComponente(e) {
     this.crearModificarComponent = e
-  }
-
-  animar(cb: any) {
-    setTimeout(() => {
-      cb()
-    })
   }
 }
