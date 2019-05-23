@@ -3,8 +3,6 @@ import { Cliente } from "src/app/models/cliente.models"
 import { ClienteService } from "../../services/cliente/cliente.service"
 import { PaginadorService } from "src/app/components/paginador/paginador.service"
 import { ClientesCrearModificarComponent } from "./clientes-crear-modificar.component"
-import { resolve } from "path"
-import { FormBuilder, FormGroup, Validators } from "@angular/forms"
 import { ManejoDeMensajesService } from "../../services/utilidades/manejo-de-mensajes.service"
 
 @Component({
@@ -49,12 +47,9 @@ export class ClientesComponent implements OnInit {
         this.cargarClientes()
         this.editando = false
         this.animando = false
-        setTimeout(() => {
-          
-        }, 500);
-        
+        setTimeout(() => {}, 500)
       })
-      
+
       this.crearModificarComponent.guardado.subscribe(() => {
         this.animando = false
         this.cargarClientes()
@@ -84,22 +79,19 @@ export class ClientesComponent implements OnInit {
 
   crearCliente() {
     this.animando = true
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.editando = true
       this.crearModificarComponent.crearOModificar()
-    }, 500 )
-
-
+    }, 500)
   }
 
   modificarCliente(cliente: Cliente) {
     this.animando = true
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.editando = true
-      
+
       this.clienteEditandose = cliente
       this.crearModificarComponent.crearOModificar(cliente)
-
     }, 500)
   }
 
@@ -113,7 +105,7 @@ export class ClientesComponent implements OnInit {
 
     this._msjService.confirmacionDeEliminacion(msj, () => {
       this._msjService.confirmacionDeEliminacion(msj2, () => {
-        this._clienteService.eliminar(cliente._id).subscribe((eliminado) => {
+        this._clienteService.eliminar(cliente._id).subscribe(() => {
           this.cargarClientes()
         })
       })
@@ -122,11 +114,5 @@ export class ClientesComponent implements OnInit {
 
   cargarComponente(e) {
     this.crearModificarComponent = e
-  }
-
-  animar(cb: any, tiempo: number = 500) {
-    setTimeout(() => {
-      cb()
-    })
   }
 }
