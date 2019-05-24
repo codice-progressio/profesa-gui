@@ -36,7 +36,7 @@
                   <div class="row" [formGroupName]="iPed">
 
                     <div class="col-12">
-                      <h1> <a (click)="eliminarPedido(iPed)" class="btn btn-danger text-white"  role="button"><i class="fa fa-times"></i></a>   PED # {{iPed}}</h1>
+                      <h1> <a (click)="eliminarPedido(iPed)" class="btn btn-danger text-white"  role="button"><i class="fas fa-times"></i></a>   PED # {{iPed}}</h1>
                     </div>
                     <div class="form-group col-12 col-md-5 col-lg-3">
                         <input formControlName="modeloCompleto" type="hidden">
@@ -76,7 +76,7 @@
                       <input [ngClass]="{'is-invalid': vs.invalid(almacen_FB(iPed)), 'is-valid':vs.valid(almacen_FB(iPed))}" formControlName="almacen" name="almacen" class="form-check-input" type="checkbox" [id]="'almacen'+iPed" />
                         
                         <label class="form-check-label" [for]="'almacen'+iPed" title='Cuando se selecciona esta opcion el producto se obtiene desde almacen ' >
-                           <i class="fa fa-question-circle"></i> Surtir desde almacen 
+                           <i class="fas fa-question-circle"></i> Surtir desde almacen 
                         </label>
                         <app-validacion-inputs [campo]="almacen_FB(iPed)"></app-validacion-inputs>
                       </div>
@@ -133,7 +133,7 @@
                                           <app-validacion-inputs [campo]="observacionesTenido_FB(iPed, iTenido)"></app-validacion-inputs>
                                         </div>
                                   </td>
-                                  <td class='pt-3'> <a   (click)="eliminarColorTenido(iPed, iTenido)" class="btn btn-danger btn-sm text-white"><i class="fa fa-times"></i></a></td>
+                                  <td class='pt-3'> <a   (click)="eliminarColorTenido(iPed, iTenido)" class="btn btn-danger btn-sm text-white"><i class="fas fa-times"></i></a></td>
                                   </ng-container>
 
 
@@ -146,7 +146,7 @@
                             <div class='d-flex justify-content-between align-items-center'>
                               <div >
                   
-                                  <span title='La resta de la cantidad solicitada en el pedido( {{ folioLineas_FB.at(iPed).get("cantidad").value | number  }} ) menos el total a tenir.'><i class="fa fa-question-circle"></i> Disponibles:</span>
+                                  <span title='La resta de la cantidad solicitada en el pedido( {{ folioLineas_FB.at(iPed).get("cantidad").value | number  }} ) menos el total a tenir.'><i class="fas fa-question-circle"></i> Disponibles:</span>
             <br>
 
 
@@ -155,7 +155,7 @@
 
 
             </div>
-            <span title="La suma total de tenidos de este pedido"><i class="fa fa-question-circle"></i>
+            <span title="La suma total de tenidos de este pedido"><i class="fas fa-question-circle"></i>
                                                           Total a tenir: <strong><h3 >{{ sumaDeTenidos[iPed]?.total  | number}} pz</h3></strong>
                       
                       
@@ -185,7 +185,7 @@
 
 
     <div class="col-12 text-right">
-        <a (click)="agregarColorTenido(iPed)" class="btn btn-warning text-dark" role="button"> <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Color para tenido </a>
+        <a (click)="agregarColorTenido(iPed)" class="btn btn-warning text-dark" role="button"> <i class="fas fa-plus-circle fa-x2" aria-hidden="true"></i> Color para tenido </a>
 
     </div>
 
@@ -200,7 +200,7 @@
 
 
     <div class="col-12 ">
-        <a (click)="agregarPedido()" class="btn btn-primary text-white" role="button"> <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido </a>
+        <a (click)="agregarPedido()" class="btn btn-primary text-white" role="button"> <i class="fas fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido </a>
 
     </div>
 

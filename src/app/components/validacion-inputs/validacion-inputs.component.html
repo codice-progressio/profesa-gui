@@ -1,11 +1,11 @@
 <ng-container *ngIf="campo">
-    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('required')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> Este campo es obligatorio</span>
-    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('min')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> El valor mínimo permitido es {{campo.getError('min').min | number: '1.0-2'}}</span>
-    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('max')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> El valor máximo permitido es {{campo.getError('max').max | number: '1.0-2'}} </span>
-    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('notInteger')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> Se necesita un número entero positivo </span>
-    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('invalidNumber')"> <i class="fa fa-times animated delay-0-3s rollIn "></i> No es un número válido</span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('required')"> <i class="fas fa-times animated delay-0-3s rollIn "></i> Este campo es obligatorio</span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('min')"> <i class="fas fa-times animated delay-0-3s rollIn "></i> El valor mínimo permitido es {{campo.getError('min').min | number: '1.0-2'}}</span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('max')"> <i class="fas fa-times animated delay-0-3s rollIn "></i> El valor máximo permitido es {{campo.getError('max').max | number: '1.0-2'}} </span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('notInteger')"> <i class="fas fa-times animated delay-0-3s rollIn "></i> Se necesita un número entero positivo </span>
+    <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('invalidNumber')"> <i class="fas fa-times animated delay-0-3s rollIn "></i> No es un número válido</span>
     <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('tamanoMinimo')"> 
-        <i class="fa fa-times animated delay-0-3s rollIn "></i> 
+        <i class="fas fa-times animated delay-0-3s rollIn "></i> 
         Debes seleccionar por lo menos {{ campo.getError('tamanoMinimo').minimo > 1 ? '' :'un ' }}{{campo.getError('tamanoMinimo').minimo}} {{ campo.getError('tamanoMinimo').minimo > 1 ? 'campos' :'campo' }}
     </span>
 
@@ -40,7 +40,7 @@
     =====================================
     -->
     <span class=" animated fadeIn fast  form-text text-danger" *ngIf="touched() && campo?.hasError('general')"> 
-        <i class="fa fa-times animated delay-0-3s rollIn "></i> 
+        <i class="fas fa-times animated delay-0-3s rollIn "></i> 
         {{campo.getError('general').mensaje}} {{campo.getError('general').textoSecundario ? ': ' : '' }} 
         <span class='text-muted'>
             {{campo.getError('general').textoSecundario}}
@@ -49,7 +49,7 @@
     </span>
     <div class="text-success mt-2 animated fadeIn fast " *ngIf="touched() && campo?.valid ">
         <small>
-                <i class="fa fa-check animated swing fa-2x"></i> ¡Se ve bien!
+                <i class="fas fa-check animated swing fa-2x"></i> ¡Se ve bien!
         </small>
     </div>
     <!-- {{j.stringify(campo?.errors)}} -->
@@ -58,5 +58,5 @@
 
 
 <ng-container *ngIf="especial">
-    <span class="form-text text-danger"> <i class="fa fa-times animated tada"></i> {{especial}}.</span>
+    <span class="form-text text-danger"> <i class="fas fa-times animated tada"></i> {{especial}}.</span>
 </ng-container>

@@ -34,7 +34,7 @@
                 (dragleave)='s.actualizarPropiedadOrden(key); cambiosEnLaListaOrdenable()' (onDropSuccess)='s.actualizarPropiedadOrden(key); cambiosEnLaListaOrdenable()' dnd-sortable [sortableIndex]="iho" class=" grabbable list-group-item animated pulse ">
                 <div class="d-flex justify-content-between align-items-center">
                     <span>
-                <i class="mr-3 fa fa-bars"></i> <small class="text-muted">{{hijoOrdenable.orden}}.-</small> {{hijoOrdenable.leyenda}} 
+                <i class="mr-3 fas fa-bars"></i> <small class="text-muted">{{hijoOrdenable.orden}}.-</small> {{hijoOrdenable.leyenda}} 
               </span>
 
                     <span>
@@ -46,7 +46,7 @@
             <!-- Genera un hijo transitivo cuando esta vacio. -->
             <li *ngIf="s.listaDeObjetos[key].hijos.ordenables.length === 0 && !s.mostrarAreaDeArrastre" class="py-1 grabbable list-group-item bg-light-extra text-muted  ">
                 <div class="d-flex align-items-center">
-                    <div class="animated pulse delay-1s"><i class="fa fa-arrow-down mr-3 animated bounceInDown" aria-hidden="true"></i> Arrastra un objeto para agregar a la lista.</div>
+                    <div class="animated pulse delay-1s"><i class="fas fa-arrow-down mr-3 animated bounceInDown" aria-hidden="true"></i> Arrastra un objeto para agregar a la lista.</div>
 
                 </div>
             </li>
@@ -57,7 +57,7 @@
 
                 }" dnd-droppable (onDropSuccess)="s.drop([$event, key]); cambiosEnLaListaOrdenable();" dropzone="['']" class=" animated  list-group-item bg-light-extra text-muted  ">
                 <div class="d-flex align-items-center">
-                    <div><i class="fa fa-arrow-down mr-3 animated bounceIn infinite" aria-hidden="true"></i> Arrastra aqui para agregar a esta lista.</div>
+                    <div><i class="fas fa-arrow-down mr-3 animated bounceIn infinite" aria-hidden="true"></i> Arrastra aqui para agregar a esta lista.</div>
 
                 </div>
             </li>
@@ -75,7 +75,7 @@
         <li class="list-group-item bg-warning text-dark"><strong>{{s.leyendaListaSeleccionable}}</strong></li>
 
         <li *ngFor="let elemento of s.listaDeElementos" dnd-draggable [dragEnabled]="true" [dragData]="elemento" dropzone="['']" (dragstart)='s.dragStart()' (dragend)='s.dragStop()' class="list-group-item d-flex justify-content-between align-items-center">
-            <span> <i class="mr-3 fa fa-bars"></i> {{elemento.leyenda}}</span>
+            <span> <i class="mr-3 fas fa-bars"></i> {{elemento.leyenda}}</span>
             <small class="text-muted mr-3"><strong>{{elemento.leyendaOptativa}}</strong></small>
         </li>
     </ul>

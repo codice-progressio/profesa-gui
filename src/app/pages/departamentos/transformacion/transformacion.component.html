@@ -59,8 +59,8 @@
 
                                             <br>
 
-                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
-                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fas fa-save "></i> Guardar</button>
+                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
 
                                             <br>
                                         </form>
@@ -110,7 +110,7 @@
                         <ng-container *ngFor="let maquina of maquinas; let i = index">
 
                             <a (click)="orden.ubicacionActual.transformacion.maquinaActual = maquina" class="btn btn-outline-success btn-lg m-2">
-                                <i *ngIf="orden.ubicacionActual?.transformacion?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
+                                <i *ngIf="orden.ubicacionActual?.transformacion?.maquinaActual?._id === maquina._id" class="fas fa-check animated tada text-warning">
                                 </i> {{maquina.clave}}</a>
                         </ng-container>
 
@@ -118,8 +118,8 @@
                         <br>
                         <br>
                         <br>
-                        <a *ngIf="orden.ubicacionActual.transformacion.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fa fa-save"></i> Guardar</a>
-                        <button (click)="limpiar(); orden.ubicacionActual.transformacion.maquinaActual = null " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+                        <a *ngIf="orden.ubicacionActual.transformacion.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fas fa-save"></i> Guardar</a>
+                        <button (click)="limpiar(); orden.ubicacionActual.transformacion.maquinaActual = null " class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
 
                     </div>
                 </div>

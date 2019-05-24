@@ -20,10 +20,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let modeloCompleto of elementos">
-                    <td><button (click)="mostrarDetalle(modeloCompleto._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                    <td><button (click)="mostrarDetalle(modeloCompleto._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
 
                     <td>{{modeloCompleto | modeloCompleto }}</td>
-                    <td><i *ngIf="modeloCompleto.medias" class="fa fa-check text-info"></i></td>
+                    <td><i *ngIf="modeloCompleto.medias" class="fas fa-check text-info"></i></td>
                     <td>{{modeloCompleto.familiaDeProcesos.nombre}}</td>
 
 

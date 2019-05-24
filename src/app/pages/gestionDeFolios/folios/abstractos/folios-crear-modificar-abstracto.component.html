@@ -97,7 +97,7 @@
               (click)="eliminarPedido(iPed)"
               class="btn btn-danger text-white"
               role="button"
-              ><i class="fa fa-times"></i
+              ><i class="fas fa-times"></i
             ></a>
             PED # {{ iPed }}
           </h1>
@@ -232,7 +232,7 @@
             [for]="'almacen' + iPed"
             title="Cuando se selecciona esta opcion el producto se obtiene desde almacen "
           >
-            <i class="fa fa-question-circle"></i> Surtir desde almacen
+            <i class="fas fa-question-circle"></i> Surtir desde almacen
           </label>
           <app-validacion-inputs
             [campo]="almacen_FB(iPed)"
@@ -390,7 +390,7 @@
                         <a
                           (click)="eliminarColorTenido(iPed, iTenido)"
                           class="btn btn-danger btn-sm text-white"
-                          ><i class="fa fa-times"></i
+                          ><i class="fas fa-times"></i
                         ></a>
                       </td>
                     </ng-container>
@@ -413,7 +413,7 @@
                               folioLineas_FB.at(iPed).get('cantidad').value
                                 | number
                             }} ) menos el total a tenir."
-                            ><i class="fa fa-question-circle"></i>
+                            ><i class="fas fa-question-circle"></i>
                             Disponibles:</span
                           >
                           <br />
@@ -431,7 +431,7 @@
                           </strong>
                         </div>
                         <span title="La suma total de tenidos de este pedido"
-                          ><i class="fa fa-question-circle"></i> Total a tenir:
+                          ><i class="fas fa-question-circle"></i> Total a tenir:
                           <strong
                             ><h3>
                               {{ sumaDeTenidos[iPed]?.total | number }} pz
@@ -460,7 +460,7 @@
           class="btn btn-warning text-dark"
           role="button"
         >
-          <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Color para
+          <i class="fas fa-plus-circle fa-x2" aria-hidden="true"></i> Color para
           tenido
         </a>
       </div>
@@ -476,7 +476,7 @@
       class="btn btn-primary text-white"
       role="button"
     >
-      <i class="fa fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido
+      <i class="fas fa-plus-circle fa-x2" aria-hidden="true"></i> Pedido
     </a>
   </div>
 
