@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     init_plugins();
-    this.googleInit();
+    // this.googleInit();
     this.email =  localStorage.getItem('email') || '';
     if ( this.email.length > 1) {
       this.recuerdame = true;
@@ -39,16 +39,16 @@ export class LoginComponent implements OnInit {
 
   
 
-  googleInit() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '106809634178-3pc6e4gpfgtbfea8kkm7r7a0n2r8j75v.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
-      });
-      this.attachSignin (document.getElementById('btnGoogle'));
-    });
-  }
+  // googleInit() {
+  //   gapi.load('auth2', () => {
+  //     this.auth2 = gapi.auth2.init({
+  //       client_id: '106809634178-3pc6e4gpfgtbfea8kkm7r7a0n2r8j75v.apps.googleusercontent.com',
+  //       cookiepolicy: 'single_host_origin',
+  //       scope: 'profile email'
+  //     });
+  //     this.attachSignin (document.getElementById('btnGoogle'));
+  //   });
+  // }
 
   // tslint:disable-next-line:no-shadowed-variable
   attachSignin ( element ) {
