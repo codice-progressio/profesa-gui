@@ -50,6 +50,7 @@ import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-d
 import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
 import { VerificaTokenGuard } from "../services/guards/verifica-token.guard"
 import { PermisosGuard } from "../services/guards/permisos.guard"
+import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -133,6 +134,33 @@ const pagesRoutes: Routes = [
   // <!--
   // =====================================
   //  END Reportes
+  // =====================================
+  // -->
+
+
+  // <!-- 
+  // =====================================
+  //  Almacen
+  // =====================================
+  // -->
+
+  {
+    path: "almacen/productoTerminado",
+    component: AlmacenDeProductoTerminadoComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Almacen de producto terminado",
+      roles: [ROLES.ALMACEN_PRODUCTO_TERMINADO]
+    }
+  },
+
+
+
+  
+  // <!-- 
+  // =====================================
+  //  END Almacen
   // =====================================
   // -->
 

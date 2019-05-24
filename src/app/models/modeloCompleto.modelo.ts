@@ -7,6 +7,7 @@ import { FamiliaDeProcesos } from "./familiaDeProcesos.model"
 import { Procesos } from "./procesos.model"
 import { BasicosGUI } from "./basicosGUI.model"
 import { log } from "util"
+import { Lotes } from "./almacenProductoTerminado/lotes.model";
 
 export class ModeloCompleto implements BasicosGUI {
   convertido: boolean
@@ -24,6 +25,11 @@ export class ModeloCompleto implements BasicosGUI {
     public nombreCompleto?: string,
     public familiaDeProcesos?: FamiliaDeProcesos,
     public esBaston: boolean = false,
+
+    public existencias: number=0,
+    public lotes: Lotes[]= [],
+    public stockMinimo: number = 0,
+    public stockMaximo: number = 0,
     // Cualquier proceso fuera de los de la familia de
     // procesos.
     public procesosEspeciales: Procesos[] = [],

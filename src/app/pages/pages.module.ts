@@ -98,7 +98,10 @@ import { FoliosCrearModificarAbstractoComponent } from "./gestionDeFolios/folios
 import { RevisionDeOrdenesAbstractoComponent } from "./gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
 import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component";
 import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component';
-import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
+import { ClientesDetalleComponent } from './clientes/clientes-detalle.component';
+import { AlmacenDeProductoTerminadoCrearModificarComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component';
+import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component';
+import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
 
 @NgModule({
   declarations: [
@@ -190,7 +193,10 @@ import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
     RevisionDeOrdenesAbstractoComponent,
     FoliosSeguimientoComponent,
     ClientesCrearModificarComponent,
-    ClientesDetalleComponent
+    ClientesDetalleComponent,
+    AlmacenDeProductoTerminadoCrearModificarComponent,
+    AlmacenDeProductoTerminadoDetalleComponent,
+    AlmacenDeProductoTerminadoComponent
   ],
   exports: [
     DashboardComponent,
