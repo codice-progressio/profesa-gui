@@ -5,7 +5,7 @@
         <small class="mr-3"><strong>{{s.totalDeElementos}}</strong> elementos.</small>
         <li class="page-item pointer" [ngClass]="{'disabled': 0=== s.desde }">
             <a (click)="s.cambiarPagina( (-1 *s.limite))" class="page-link " aria-label="Previous ">
-                <i class="fa fa-arrow-circle-left "></i>
+                <i class="fas fa-arrow-circle-left "></i>
             </a>
         </li>
         <li class="page-item disabled text-center" style="width: 100px;">
@@ -15,7 +15,7 @@
         </li>
         <li class="page-item pointer " [ngClass]="{'disabled': s.actual === s.total }">
             <a (click)="s.cambiarPagina(s.limite)" class="page-link " aria-label="Next ">
-                <i class="fa fa-arrow-circle-right "></i>
+                <i class="fas fa-arrow-circle-right "></i>
             </a>
         </li>
         <li class="page-item disabled "><a class="page-link "><small>Elem/Pag</small></a></li>

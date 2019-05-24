@@ -11,7 +11,7 @@
                 </ng-container>
                 <ng-template #elseTemplate>
                     <h6 class="card-subtitle">Antes de generar las órdenes modifica la información que requieras.</h6>
-                    <button (click)="guardarOrdenes( )" class="btn btn-success "><i class="fa fa-check"></i> Generar las órdenes de este folio.</button>
+                    <button (click)="guardarOrdenes( )" class="btn btn-success "><i class="fas fa-check"></i> Generar las órdenes de este folio.</button>
                     <app-pre-loader></app-pre-loader>
                 </ng-template>
 
@@ -49,7 +49,7 @@
                                     </th>
                                     <th class="align-middle text-center ">{{linea.laserCliente?.laser}}</th>
                                     <th class="text-center align-middle ">
-                                        <i *ngIf="linea.almacen " class="fa fa-check fa-2x text-success "></i>
+                                        <i *ngIf="linea.almacen " class="fas fa-check fa-2x text-success "></i>
                                     </th>
                                 </tr>
                             </tbody>
@@ -57,7 +57,7 @@
 
                         <div class="d-flex justify-content-between mb-3 ">
                             <button class="btn btn-outline-warning " (click)="transformarEnMedias( linea ) ">
-                                <i class="fa fa-exchange "></i> Convertir a  
+                                <i class="fas fa-exchange "></i> Convertir a  
                                 <span *ngIf="!linea.modeloCompleto?.mediasGeneradas "> medias ordenes</span> 
                                 <span *ngIf="linea.modeloCompleto?.mediasGeneradas "> ordenes completas</span>
                             </button>
@@ -125,8 +125,8 @@
                                     </td>
                                     <td class="align-middle text-center ">
                                         <button class="btn btn-outline-warning " (click)="editarOrden( orden ) ">
-                                            <i *ngIf="!orden.editando " class="fa fa-edit "></i>
-                                            <i *ngIf="orden.editando " class="fa fa-check "></i>
+                                            <i *ngIf="!orden.editando " class="fas fa-edit "></i>
+                                            <i *ngIf="orden.editando " class="fas fa-check "></i>
                                         </button></td>
                                 </tr>
                             </tbody>

@@ -30,7 +30,7 @@
                             <h4 class="font-bold">{{detalleElemento.vendedor.nombre}}</h4>
                             <p class="text-muted m-l-30">-
                               
-                            <p class="m-t-30"><b>Creacion</b> <br> <i class="fa fa-calendar"></i> {{detalleElemento.fechaFolio | fecha:'LLLL'}}</p>
+                            <p class="m-t-30"><b>Creacion</b> <br> <i class="fas fa-calendar"></i> {{detalleElemento.fechaFolio | fecha:'LLLL'}}</p>
                             <p>
 
                               
@@ -128,13 +128,13 @@
                                                         <td class='fit'> {{colorTenido.observaciones}} </td>
                                                         <td class='fit'>
                                                             <ng-container *ngIf="colorTenido.terminado; else elseTemplate">
-                                                                <i class="fa fa-check text-succes"></i>
+                                                                <i class="fas fa-check text-succes"></i>
                                                                 <span [title]='colorTenido.fechaTerminado | fecha: "LLLL" '>
                                                                     <i class="fab fa-clock"></i> {{colorTenido.fechaTerminado | date:'dd/MM/yy'}}
                                                                 </span>
                                                             </ng-container>
                                                             <ng-template #elseTemplate>
-                                                                <i class="fa fa-cog" aria-hidden="true"></i> Pendiente
+                                                                <i class="fas fa-cog" aria-hidden="true"></i> Pendiente
                                                             </ng-template>
                                                         </td>
 
@@ -171,7 +171,7 @@
                     <div class="clearfix"></div>
                     <!-- <hr>
                     <div class="text-right">
-                        <a id="print" class="btn btn-default btn-outline"> <span><i class="fa fa-print"></i> Imprimir</span> </a>
+                        <a id="print" class="btn btn-default btn-outline"> <span><i class="fas fa-print"></i> Imprimir</span> </a>
                     </div> -->
                 </div>
             </div>

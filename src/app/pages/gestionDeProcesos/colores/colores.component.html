@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let color of elementos">
-                    <td><button (click)="mostrarDetalle(color._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                    <td><button (click)="mostrarDetalle(color._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
                     <td>{{color.color}}</td>
                     <td><a (click)="editar( color._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
                     <td><a (click)="eliminar( color._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>

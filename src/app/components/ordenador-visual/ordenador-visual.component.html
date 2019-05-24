@@ -44,11 +44,11 @@
                                     <a *ngIf="proc2.dragEnable" dnd-sortable (onDropSuccess)="_s.reordenarProcesos(  )" [sortableIndex]="i_a" dnd-draggable [dragEnabled]="true" [dropZones]="['']" class=" text-inverse list-group-item list-group-item-action flex-column align-items-center animated fadeIn">
                                         <div class="d-flex w-100 justify-content-between">
                                             <span>
-                                            <i class="fa fa-bars"></i> {{proc2.orden}}<strong> {{proc2.proceso.nombre}}</strong>
+                                            <i class="fas fa-bars"></i> {{proc2.orden}}<strong> {{proc2.proceso.nombre}}</strong>
                                         </span>
                                             <span class="text-right">
                                             <small> <strong>{{proc2.proceso.departamento.nombre}}</strong></small> 
-                                            <a (click)="_s.eliminarProceso(_s.arreglosDrop[proc._id].arreglo, i_a)" class="text-white btn btn-danger btn-sm ml-3"><i class="fa fa-times"></i></a>
+                                            <a (click)="_s.eliminarProceso(_s.arreglosDrop[proc._id].arreglo, i_a)" class="text-white btn btn-danger btn-sm ml-3"><i class="fas fa-times"></i></a>
                 
                                         </span>
                                         </div>
@@ -77,8 +77,8 @@
                                     <span>
                                         <strong class="text-inverse"> {{proceso.nombre}} </strong>
                                     </span>
-                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="!_s.soloParaProductoTerminado" class="btn text-white btn-success btn-sm"><i class="fa fa-plus"></i></a>
-                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="_s.soloParaProductoTerminado && !proceso.requiereProduccion" class="btn text-white btn-success btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="!_s.soloParaProductoTerminado" class="btn text-white btn-success btn-sm"><i class="fas fa-plus"></i></a>
+                                    <a (click)="_s.agregarProceso( proceso )" *ngIf="_s.soloParaProductoTerminado && !proceso.requiereProduccion" class="btn text-white btn-success btn-sm"><i class="fas fa-plus"></i></a>
                                 </div>
                             </a>
                         </ng-container>

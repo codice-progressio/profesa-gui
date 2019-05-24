@@ -66,7 +66,7 @@
                         ><a
                           (click)="eliminarMarcaLaser(i)"
                           class="btn btn-xs btn-danger text-white"
-                          ><i class="fa fa-times"></i></a
+                          ><i class="fas fa-times"></i></a
                       ></span>
                     </ng-container>
                   </ng-container>
@@ -95,7 +95,7 @@
                     inputLaser.value = ''
                   "
                   class="btn btn-success text-white"
-                  ><i class="fa fa-check"> </i> Agregar</a
+                  ><i class="fas fa-check"> </i> Agregar</a
                 >
               </div>
             </div>
@@ -105,13 +105,13 @@
         <hr />
 
         <a (click)="guardar()" class="btn btn-success text-white mr-3"
-          ><i class="fa fa-save"></i>
+          ><i class="fas fa-save"></i>
 
           <span *ngIf="cliente?._id"> Guardar</span>
           <span *ngIf="!cliente?._id"> Crear nuevo</span>
         </a>
         <a (click)="cancelar()" class="btn btn-danger text-white mr-3"
-          ><i class="fa fa-times"></i> Cancelar</a
+          ><i class="fas fa-times"></i> Cancelar</a
         >
       </div>
     </div>
