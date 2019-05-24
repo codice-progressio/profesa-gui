@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
       public router: Router,
       public _usuarioService: UsuarioService,
     ) {
-      this.fondoRandom = Math.floor(Math.random()*15)+1;
+      this.fondoRandom = Math.floor(Math.random()*14)+1;
      }
 
   ngOnInit() {
