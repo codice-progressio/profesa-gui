@@ -1,3 +1,85 @@
-<p>
-  almacen-de-producto-terminado-crear-modificar works!
-</p>
+<ng-container *ngIf="modeloCompleto">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1
+      class="display-6  "
+      [ngClass]="{ 'text-warning': esEntrada, 'text-success': !esEntrada }"
+    >
+      <span *ngIf="esEntrada">
+        <i class="fas fa-sign-in-alt    "></i> Registrar
+        <strong>entrada</strong> de almacen
+      </span>
+      <span *ngIf="!esEntrada">
+        <i class="fas fa-sign-out-alt    "></i>Registrar
+        <strong>salida</strong> de almacen
+      </span>
+    </h1>
+
+    <h3 class="">{{ modeloCompleto.nombreCompleto }}</h3>
+  </div>
+
+  <hr />
+
+  <h1>
+    <small>EXISTENCIA DISPONIBLE: </small
+    ><strong>{{ modeloCompleto.existencia | number }} </strong> pz
+    <small>
+      en <strong>{{ modeloCompleto.obtenerLotesConExistencia() }}</strong>
+      <ng-container
+        *ngIf="
+          modeloCompleto.obtenerLotesConExistencia() > 1;
+          else loteTemplate
+        "
+      >
+        lotes diferentes
+      </ng-container>
+      <ng-template #loteTemplate>
+        lote
+      </ng-template>
+    </small>
+  </h1>
+  <h4>
+    <small>EN PROCESO: </small>
+    <strong>{{ modeloCompleto.produccionEnTransito | number }} </strong> pz
+  </h4>
+
+  <hr />
+
+  <!-- 
+  =====================================
+   Registro de lotes
+  =====================================
+  -->
+  <app-almacen-de-producto-terminado-crear-modificar-entrada
+    *ngIf="esEntrada"
+    (loteGuardado)="guardarLote($event)"
+    (cancelar)="cancelar.emit(null)"
+  ></app-almacen-de-producto-terminado-crear-modificar-entrada>
+
+  <!-- 
+  =====================================
+   END Registro de lotes
+  =====================================
+  -->
+  <!-- 
+  =====================================
+   Registro de salidas
+  =====================================
+  -->
+  
+  <app-almacen-de-producto-terminado-crear-modificar-salida
+    *ngIf="!esEntrada"
+    (loteGuardado)="guardarSalida($event)"
+    (cancelar)="cancelar.emit(null)"
+    [modeloCompleto]='modeloCompleto'
+  ></app-almacen-de-producto-terminado-crear-modificar-salida>
+
+  <!-- 
+  =====================================
+   END Registro de salidas
+  =====================================
+  -->
+</ng-container>
+
+<ng-container *ngIf="!modeloCompleto">
+  <h1 class="display-1">No has <strong>seleccionado </strong> ningun modelo</h1>
+</ng-container>

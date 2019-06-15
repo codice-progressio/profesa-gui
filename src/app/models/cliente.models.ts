@@ -12,7 +12,7 @@ export class Cliente implements Deserializable{
         
         ) {}
         
-        deserialize(input: Cliente): this {
+        deserialize(input: this): this {
             Object.assign( this, input)
 
             this.laserados = input.laserados.map( (laser)=>{

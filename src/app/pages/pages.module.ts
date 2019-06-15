@@ -101,7 +101,11 @@ import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modif
 import { ClientesDetalleComponent } from './clientes/clientes-detalle.component';
 import { AlmacenDeProductoTerminadoCrearModificarComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component';
 import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component';
-import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
+import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component';
+import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component';
+import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component';
+import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component';
+import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component'
 
 @NgModule({
   declarations: [
@@ -196,7 +200,11 @@ import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProduc
     ClientesDetalleComponent,
     AlmacenDeProductoTerminadoCrearModificarComponent,
     AlmacenDeProductoTerminadoDetalleComponent,
-    AlmacenDeProductoTerminadoComponent
+    AlmacenDeProductoTerminadoComponent,
+    AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
+    AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
+    AlmacenDeProductoTerminadoCrearModificarDevolucionComponent,
+    LoteDetalleComponent
   ],
   exports: [
     DashboardComponent,

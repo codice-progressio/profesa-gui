@@ -1,0 +1,61 @@
+
+<ng-container *ngIf="lote">
+  <div class="d-flex justify-content-between aling-items-center">
+    <h6>Detalle del lote:</h6>
+    <h3>{{ lote.createAt | date: "dd/MM/yyyy" }}</h3>
+  </div>
+  
+  <hr />
+  
+
+  <h3>Entradas del lote.</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>FECHA</th>
+        <th>CANTIDAD</th>
+        <th>OBSERVACIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entrada of lote.entradas">
+        <td title="{{ entrada.createAt | fecha: 'LLL' }}">
+          {{ entrada.createAt | date: "dd/MM/yyyy" }}
+        </td>
+        <td>{{entrada.cantidad}}</td>
+        <td>{{entrada.observaciones}}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <hr>
+  <h3>Salidas del lote</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>FECHA</th>
+            <th>CLIENTE</th>
+            <th>CANTIDAD</th>
+            <th>OBSERVACIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let salida of lote.salidas">
+            <td title="{{ salida.createdAt | fecha: 'LLL' }}">
+              {{ salida.createdAt | date: "dd/MM/yyyy" }}
+            </td>
+            <td>{{salida.cliente.nombre}}</td>
+            <td>{{salida.cantidad  | number: "0.0-0"}}</td>
+            <td>{{salida.observaciones}}</td>
+          </tr>
+
+
+        </tbody>
+      </table>
+
+</ng-container>
+
+<ng-container *ngIf="!lote">
+  <h1>No has seleccionado un <strong>lote</strong></h1>
+</ng-container>
+

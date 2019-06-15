@@ -250,3 +250,8 @@ video {
   visibility: visible;
   opacity: 1;
 }
+
+
+.modal-xl {
+  max-width: 90%
+}

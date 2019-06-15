@@ -7,14 +7,16 @@ import { UtilidadesService } from "../utilidades/utilidades.service"
 import { PreLoaderService } from "src/app/components/pre-loader/pre-loader.service"
 import { PaginadorService } from "src/app/components/paginador/paginador.service"
 import { URL_SERVICIOS } from "src/app/config/config"
+import { Observable } from "rxjs";
+import { FiltrosModelosCompletos } from '../utilidades/filtrosParaConsultas/FiltrosModelosCompletos'
 
 @Injectable({
   providedIn: "root"
 })
 export class AlmacenProductoTerminadoService extends CRUD<
   ModeloCompleto,
-  undefined,
-  undefined
+  AlmacenProductoTerminadoService,
+  FiltrosModelosCompletos<AlmacenProductoTerminadoService>
 > {
   // base: string = `${URL_SERVICIOS}/modeloCompleto`;
   // total: number;
@@ -37,4 +39,16 @@ export class AlmacenProductoTerminadoService extends CRUD<
     this.nombreDeDatos.singular = "modeloCompleto"
     this.urlBusqueda = "/buscar"
   }
+
+  todo(): Observable<ModeloCompleto[]> {
+    return this.getAll(
+      undefined,
+      undefined,
+      this.filtrosDelFolio.obtenerFiltros(),
+      ModeloCompleto
+    )}
+
+
+  
+
 }

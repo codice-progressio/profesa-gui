@@ -37,9 +37,9 @@ export class Maquina implements Deserializable {
       return this;
     }
     Object.assign(this, input);
-    this.datosDeTrabajo.modeloTrabajando = new ModeloCompleto().deserialize(
-      input.datosDeTrabajo.modeloTrabajando
-    );
+    // this.datosDeTrabajo.modeloTrabajando = new ModeloCompleto().deserialize(
+    //   input.datosDeTrabajo.modeloTrabajando
+    // );
 
     this.departamentos = input.departamentos.map(departamento =>
       new Departamento().deserialize(departamento)

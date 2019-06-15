@@ -39,22 +39,20 @@
               <th class="fit" title="Existencia maxima">
                 MAX
               </th>
-
-              
             </tr>
           </thead>
           <tbody>
             <tr
-            class="fit"
+              class="fit"
               *ngFor="let mc of modelosCompletos"
               [ngClass]="{
-                'bg-danger text-white ':
-                  !mc.existencias || mc.existencias === 0
+                'bg-danger text-white ': !mc.existencias || mc.existencias === 0
               }"
             >
               <td class="fit">
                 <a
-                  (click)="modeloCompletoDetalle = mc"
+                  id="button0"
+                  (click)="asignarDetalle(mc)"
                   class="btn  text-white btn-primary btn-xs mr-1"
                   role="button"
                   data-toggle="modal"
@@ -63,47 +61,55 @@
                   <i class="fas fa-eye    "></i>
                 </a>
                 <a
-                 
+                  id="button1"
                   class="btn  text-white btn-warning btn-xs mr-1"
                   role="button"
-                  title='Entrada de boton'
-                
+                  title="Entrada de boton"
+                  data-toggle="modal"
+                  data-target="#modalEntradasYSalidas"
+                  (click)="
+                    asignarEntradaOSalida(mc, true)
+                  "
                 >
                   <i class="fas fa-plus    "></i>
                 </a>
                 <a
-                  
+                  id="button2"
                   class="btn  text-white btn-success btn-xs mr-1"
                   role="button"
-                  title='Salida de boton'
-                 
+                  title="Salida de boton"
+                  data-toggle="modal"
+                  data-target="#modalEntradasYSalidas"
+                  (click)="
+                  asignarEntradaOSalida(mc, false)
+                  "
                 >
                   <i class="fas fa-minus    "></i>
                 </a>
               </td>
               <td class="no-wrap fit">{{ mc.nombreCompleto }}</td>
               <td>
-                <ng-container *ngIf="mc.existencias">
-                  {{ mc.existencias | number: "0.0-0" }}
+                <ng-container *ngIf="mc.existencia">
+                  {{ mc.existencia | number: "0.0-0" }}
                 </ng-container>
-                <ng-container *ngIf="!mc.existencias || mc.existencias === 0">
+                <ng-container *ngIf="!mc.existencia || mc.existencia === 0">
                   0
                 </ng-container>
               </td>
 
               <td
                 [ngClass]="{
-                  'bg-dark text-white': mc.stocMinimo >= mc.existencias 
+                  'bg-dark text-white': mc.stocMinimo >= mc.existencia
                 }"
               >
-                {{ mc.stockMinimo }}
+                {{ mc.stockMinimo  | number: "0.0-0" }}
               </td>
               <td
-              [ngClass]="{
-                'bg-warning': mc.existencias >= mc.stockMaximo
-              }"
+                [ngClass]="{
+                  'bg-warning': mc.existencia >= mc.stockMaximo
+                }"
               >
-                {{ mc.stockMaximo }}
+                {{ mc.stockMaximo  | number: "0.0-0" }}
               </td>
             </tr>
           </tbody>
@@ -114,7 +120,11 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- 
+=====================================
+ Detalles de existencia
+=====================================
+-->
 <div
   class="modal fade"
   id="modeloCompletoDetalle"
@@ -123,11 +133,83 @@
   aria-labelledby="modelTitleId"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <h1>detalles de la existencia.</h1>
+        <app-almacen-de-producto-terminado-detalle
+         [modeloCompleto]='modeloCompletoDetalle'
+         (detalleLote)='detalleLote = $event'
+        ></app-almacen-de-producto-terminado-detalle>
       </div>
     </div>
   </div>
 </div>
+
+<!-- 
+=====================================
+ END Detalles de existencia
+=====================================
+-->
+
+<!-- 
+=====================================
+ Entradas y salidas
+=====================================
+-->
+
+<div
+  class="modal fade"
+  id="modalEntradasYSalidas"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-almacen-de-producto-terminado-crear-modificar
+          [modeloCompleto]="modeloCompletoES"
+          [esEntrada]="esEntrada"
+          (guardado)='cargarModelos()'
+        ></app-almacen-de-producto-terminado-crear-modificar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ END Entradas y salidas
+=====================================
+-->
+
+<!-- 
+=====================================
+ Detalles de lote
+=====================================
+-->
+<div
+  class="modal fade"
+  id="modalDetalleLote"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    
+      <div class="modal-body">
+        <app-lote-detalle
+        [lote]='detalleLote'
+        ></app-lote-detalle>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- 
+=====================================
+ END Detalles de lote
+=====================================
+-->

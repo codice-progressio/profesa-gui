@@ -7611,9 +7611,9 @@ File: scss
     color: #06d79c;
 }
 
-.has-success .form-control-success {
+/* .has-success .form-control-success {
     background-image: url(../../assets/images/icon/success.svg);
-}
+} */
 
 .has-success .form-control {
     border-color: #06d79c;
@@ -7627,9 +7627,9 @@ File: scss
     color: #ffb22b;
 }
 
-.has-warning .form-control-warning {
+/* .has-warning .form-control-warning {
     background-image: url(../../assets/images/icon/warning.svg);
-}
+} */
 
 .has-warning .form-control {
     border-color: #ffb22b;
@@ -7643,9 +7643,9 @@ File: scss
     color: #ef5350;
 }
 
-.has-danger .form-control-danger {
+/* .has-danger .form-control-danger {
     background-image: url(../../assets/images/icon/danger.svg);
-}
+} */
 
 .has-danger .form-control {
     border-color: #ef5350;

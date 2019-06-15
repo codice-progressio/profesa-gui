@@ -1,3 +1,75 @@
-<p>
-  almacen-de-producto-terminado-detalle works!
-</p>
+<ng-container *ngIf="modeloCompleto">
+  <div class="d-flex alignitemscen justify-content-between">
+    <h3 class="text-muted">Detalle de modelo:</h3>
+    <h1>{{ modeloCompleto.nombreCompleto }}</h1>
+  </div>
+
+  <hr />
+  <h1>
+    <small>EXISTENCIA DISPONIBLE: </small
+    ><strong>{{ modeloCompleto.existencia | number }} </strong> pz
+    <small>
+      en <strong>{{ modeloCompleto.obtenerLotesConExistencia() }}</strong>
+      <ng-container
+        *ngIf="
+          modeloCompleto.obtenerLotesConExistencia() > 1;
+          else loteTemplate
+        "
+      >
+        lotes diferentes
+      </ng-container>
+      <ng-template #loteTemplate>
+        lote
+      </ng-template>
+    </small>
+  </h1>
+  <h4>
+    <small>EN PROCESO: </small>
+    <strong>{{ modeloCompleto.produccionEnTransito | number }} </strong> pz
+  </h4>
+
+  <hr />
+
+  <h3>Lotes con existencia</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th title="La fecha en que se registro el lote">FE</th>
+        <th title="Cantidad entrada">CE</th>
+        <th title="Existencia actual de este lote">EXISTENCIA</th>
+        <th title="Observaciones">OBS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lote of modeloCompleto.lotes">
+        <td>
+          <a
+            (click)="mostrarDetalleLote(lote)"
+            data-toggle="modal"
+            data-target="#modalDetalleLote"
+            class="btn btn-primary text-white"
+            role="button"
+          >
+            <i class="fa fa-eye"></i
+          ></a>
+        </td>
+        <td title="{{ lote.createAt | fecha }}">
+          {{ lote.createAt | date: "dd/MM/yyyy" }}
+        </td>
+        <td>{{ lote.cantidadEntrada  | number: "0.0-0" }}</td>
+        <td>{{ lote.existencia  | number: "0.0-0" }}</td>
+        <td>{{ lote.observaciones }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<ng-container *ngIf="!modeloCompleto"
+  ><h1 class="display-1">
+    No has selecconado un <strong>modelo</strong>.
+  </h1></ng-container
+>
+
+

@@ -6,11 +6,14 @@ import { Laser } from "./laser.models"
 import { FamiliaDeProcesos } from "./familiaDeProcesos.model"
 import { Procesos } from "./procesos.model"
 import { BasicosGUI } from "./basicosGUI.model"
-import { log } from "util"
-import { Lotes } from "./almacenProductoTerminado/lotes.model";
+import { Lotes } from "./almacenProductoTerminado/lotes.model"
+import { ModeloCompletoService } from "../services/modelo/modelo-completo.service"
+import { IBasicosModel } from "./interfaces/iBasicosModel"
 
-export class ModeloCompleto implements BasicosGUI {
-  convertido: boolean
+export class ModeloCompleto
+  implements BasicosGUI, IBasicosModel<ModeloCompletoService> {
+  
+  _servicio: ModeloCompletoService
   editado: boolean
 
   constructor(
@@ -26,8 +29,8 @@ export class ModeloCompleto implements BasicosGUI {
     public familiaDeProcesos?: FamiliaDeProcesos,
     public esBaston: boolean = false,
 
-    public existencias: number=0,
-    public lotes: Lotes[]= [],
+    public existencia: number = 0,
+    public lotes: Lotes[] = [],
     public stockMinimo: number = 0,
     public stockMaximo: number = 0,
     // Cualquier proceso fuera de los de la familia de
@@ -59,7 +62,7 @@ export class ModeloCompleto implements BasicosGUI {
     )
     //console.log("x  ?.1.6");
 
-    this.procesosEspeciales = input.procesosEspeciales.map(proceso =>
+    this.procesosEspeciales = input.procesosEspeciales.map((proceso) =>
       new Procesos().deserialize(proceso)
     )
     //console.log("x  ?.1.7");
@@ -70,7 +73,7 @@ export class ModeloCompleto implements BasicosGUI {
   // Convierte un json a una clase de este tipo
   //  desde un arreglo.
   static fromJSON_Array(data: any[]) {
-    return data.map(x => (x = ModeloCompleto.fromJSON(x)))
+    return data.map((x) => (x = ModeloCompleto.fromJSON(x)))
   }
 
   // Convierte un JSON a esta claser.
@@ -96,4 +99,57 @@ export class ModeloCompleto implements BasicosGUI {
     nombreCompleto += x.versionModelo ? "-" + x.versionModelo : ""
     return nombreCompleto
   }
+
+  /**
+   *Obtiene la cantidad de lotes que tienen existencia > 0
+   *
+   * @returns {number} El numero de lotes con existencia > 0
+   * @memberof ModeloCompleto
+   */
+  obtenerLotesConExistencia(): number {
+    let contador = 0
+    this.lotes.forEach((lote) => {
+      if (lote.existencia > 0) contador++
+    })
+
+    return contador
+  }
+
+  /**
+   *Almacena la cantidad de produccion en transito de este modelo. 
+   Se tiene que ejecutar `obtenerProduccionEnTransito()` para obtener elste valor. 
+   *
+   * @type {number}
+   * @memberof ModeloCompleto
+   */
+  produccionEnTransito: number = 0
+  /**
+   *Bandera que senala si se esta cargando la produccion en transito.
+   *
+   * @type {boolean}
+   * @memberof ModeloCompleto
+   */
+  cargandoProduccionEnTransito: boolean = false
+
+  /**
+   *Obtiene la produccion en transito para este modelo en sus respectivos folios.
+   *
+   **/
+  obtenerProduccionEnTransito() {
+    this.cargandoProduccionEnTransito = true
+    
+    this.comprobarServicio(this._servicio)
+    this._servicio.obtenerProduccionEnTransito(this._id).subscribe((total) => {
+      this.cargandoProduccionEnTransito = false
+      this.produccionEnTransito = total
+    })
+  }
+
+  comprobarServicio(servicio: ModeloCompletoService)
+  {
+    if( !servicio) throw 'No has instanciado el servcio.'
+  }
+ 
+
+ 
 }

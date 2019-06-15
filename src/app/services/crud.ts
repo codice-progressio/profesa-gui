@@ -426,6 +426,7 @@ export class CRUD<
    */
   private concatenerFiltros(filtros: { [string: string]: string }): string {
     let a: string = ""
+    if( !filtros ) return ''
     a = Object.keys(filtros)
       .map(key => {
         return `${key}=${filtros[key]}`
