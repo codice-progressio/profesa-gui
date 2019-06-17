@@ -119,7 +119,7 @@
             "
             (change)="
               modeloCompleto_FB(iPed).setValue(
-                modeloCompletoObtenerId(inputModeloCompleto.value)
+                modeloCompletoObtenerId(inputModeloCompleto.value, iPed)
               );
               llevaMarcaLaserDesdeElModelo(iPed)
             "
@@ -133,19 +133,37 @@
               *ngFor="let mc of modelosCompletos"
               [value]="mc.nombreCompleto"
             >
-              existencia?</option
+              <b>{{ mc.existencia | number }}</b> pz en almacen.</option
             >
-            <option
-              disabled
-              *ngIf="modelosCompletos.length === 0"
-              value="Empieza a escribir para buscar"
-            >
-            </option>
           </datalist>
           <small id="cliente" class="form-text text-muted"
-            >Selecciona un modelo Existencia:
-            <strong>Existencia???</strong></small
-          >
+            >Selecciona un modelo
+            <br />
+            <span
+              class="animated slideInDown slower"
+              *ngIf="modeloCompleto_FB(iPed).valid"
+            >
+              Existencia:<b>
+                {{ modeloCompletoPorPedido[iPed]?.existencia | number }}
+              </b>
+              <br />
+              En transito:
+              <b
+                *ngIf="
+                  !modeloCompletoPorPedido[iPed]?.cargandoProduccionEnTransito
+                "
+                >{{
+                  modeloCompletoPorPedido[iPed]?.produccionEnTransito | number
+                }}</b
+              >
+              <i
+                *ngIf="
+                  modeloCompletoPorPedido[iPed]?.cargandoProduccionEnTransito
+                "
+                class="fas fa-spinner fa-spin"
+              ></i>
+            </span>
+          </small>
           <app-validacion-inputs
             [campo]="modeloCompleto_FB(iPed)"
             [directo]="true"
@@ -194,7 +212,7 @@
               >
             </ng-container>
 
-            <option [ngValue]="{laser:'', img: []}"></option>
+            <option [ngValue]="{ laser: '', img: [] }"></option>
           </select>
           <small
             *ngIf="!comprobarModeloLaseradoFun(iPed)"
@@ -471,7 +489,7 @@
 
   <div class="col-12 ">
     <a
-      *ngIf="this.folioLineas_FB.length>0"
+      *ngIf="this.folioLineas_FB.length > 0"
       (click)="agregarPedido()"
       class="btn btn-primary text-white"
       role="button"

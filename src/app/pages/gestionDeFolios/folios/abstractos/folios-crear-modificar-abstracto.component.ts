@@ -105,6 +105,8 @@ export class FoliosCrearModificarAbstractoComponent
   desactivarBotonEnGuardado: boolean = false
   // lleva: any;
 
+  modeloCompletoPorPedido: ModeloCompleto[] = []
+
   constructor(
     public _folioNewService: FolioNewService,
     public formBuilder: FormBuilder,
@@ -857,12 +859,7 @@ de modelosCompletos buscada, el input para la escucha del campo.
    * @memberof FoliosCrearModificarAbstractoComponent
    */
   onSubmit(formulario: FormGroup, isValid: boolean, e) {
-    
-    
-
-    let model: Folio = <Folio> this.formulario.getRawValue();
-
-
+    let model: Folio = <Folio>this.formulario.getRawValue()
 
     e.preventDefault()
 
@@ -928,32 +925,37 @@ de modelosCompletos buscada, el input para la escucha del campo.
       return
     }
 
-    this._modelosCompletosService.buscarPorId(id).subscribe((mc) => {
-      this.comprobandoModeloLaserado[iPed] = false
+    this._modelosCompletosService
+      .findById(id, undefined, undefined, ModeloCompleto)
+      .subscribe((mc) => {
+        this.comprobandoModeloLaserado[iPed] = false
 
-      if (!this.compruebaQueTieneUnaMarcaLaser(mc)) {
-        this.laserCliente_FB(iPed).enable()
-        this.almacen_FB(iPed).enable()
-      } else {
-        //Comprobamos que el cliente no tenga la marca laser actualmente.
-
-        let existeMarcaLaser = this.clienteSeleccionado.laserados.find(
-          (laserado) => laserado.laser === mc.laserAlmacen.laser
-        )
-
-        if (!existeMarcaLaser) {
-          let titulo = "Marca laser invalida para el cliente"
-          let msj =
-            "El modelo que seleccionaste requiere laserar pero el cliente no tiene registrada la marca. Es necesario que control de produccion de de alta la marca para el cliente."
-
-          this._msjService.invalido(msj, titulo, 10000)
-          this.modeloCompleto_FB(iPed).setValue("")
-          this.inputModeloCompletoNg[iPed] = ""
+        if (!this.compruebaQueTieneUnaMarcaLaser(mc)) {
+          this.laserCliente_FB(iPed).enable()
+          this.almacen_FB(iPed).enable()
         } else {
-          this.laserCliente_FB(iPed).setValue(mc.laserAlmacen)
+          //Comprobamos que el cliente no tenga la marca laser actualmente.
+
+          let existeMarcaLaser = this.clienteSeleccionado.laserados.find(
+            (laserado) => laserado.laser === mc.laserAlmacen.laser
+          )
+
+          if (!existeMarcaLaser) {
+            let titulo = "Marca laser invalida para el cliente"
+            let msj =
+              "El modelo que seleccionaste requiere laserar pero el cliente no tiene registrada la marca. Es necesario que control de produccion de de alta la marca para el cliente."
+
+            this._msjService.invalido(msj, titulo, 10000)
+            this.modeloCompleto_FB(iPed).setValue("")
+            this.inputModeloCompletoNg[iPed] = ""
+          } else {
+            this.laserCliente_FB(iPed).setValue(mc.laserAlmacen)
+          }
         }
-      }
-    })
+        mc._servicio = this._modelosCompletosService
+        mc.obtenerProduccionEnTransito()
+        this.modeloCompletoPorPedido[iPed] = mc
+      })
   }
 
   compruebaQueTieneUnaMarcaLaser(mc: ModeloCompleto) {
