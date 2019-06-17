@@ -387,6 +387,7 @@ export class CRUD<
    * @param {string} [urlAlternativa='']
    * @returns {Observable<T_TipoDeModelo[]>}
    * @memberof CRUD
+   * @deprecated Esta funcion debe ser remplazada por ```search()```
    */
   buscar(
     termino: string,
@@ -408,7 +409,39 @@ export class CRUD<
           this.total = resp.total
           return resp[this.nombreDeDatos.plural]
         }),
-        catchError(err => {
+        catchError((err) => {
+          this._msjService.err(err)
+          return throwError(err)
+        })
+      )
+  }
+
+  search(
+    termino: string,
+    urlAlternativa: string = "",
+    msjLoading: string = `Buscando ${this.nombreDeDatos.plural}`,
+    type: { new (): T_TipoDeModelo }
+  ): Observable<T_TipoDeModelo[]> {
+    const a: number = this._preLoaderService.loading(msjLoading)
+
+    // Cualquier caracter que nos perjudique para el regex lo escapamos
+    termino = termino.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // Cualquier caracter que nos perjudique en la url lo codificamos
+    termino = encodeURIComponent(termino)
+
+    return this.http
+      .get(this.base + urlAlternativa + this.urlBusqueda + "/" + termino)
+      .pipe(
+        map((resp: any) => {
+          this._msjService.ok_(resp, null, a)
+          this.total = resp.total
+          return resp[this.nombreDeDatos.plural].map((dato) => {
+            let a: T_TipoDeModelo = new type()
+            a = a["deserialize"](dato)
+            return a
+          })
+        }),
+        catchError((err) => {
           this._msjService.err(err)
           return throwError(err)
         })

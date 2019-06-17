@@ -64,16 +64,31 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   modelosCompletos: ModeloCompleto[] = []
   modeloCompletoDetalle: ModeloCompleto = null
+  /**
+   *Bandera que senala si se esta utilizando la busqueda. Sirve 
+   para ocultar y mostrar el paginador component.
+   *
+   * @type {boolean}
+   * @memberof AlmacenDeProductoTerminadoComponent
+   */
+  buscando: boolean = false
 
   buscar(termino: string) {
     if (termino.trim().length === 0) {
       this.cargarModelos()
+      this.buscando = false
       return
     }
 
+    this.buscando = true
     this._almacenDeProductoTerminadoService
-      .buscar(termino)
-      .subscribe((mc) => (this.modelosCompletos = mc))
+      .search(termino, undefined, undefined, ModeloCompleto)
+      .subscribe((mcs) => {
+        mcs.map((mc) => {
+          mc._servicio = this._modeloCompletoService
+        })
+        this.modelosCompletos = mcs
+      })
   }
 
   /**
