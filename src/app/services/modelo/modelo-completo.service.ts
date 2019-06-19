@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { URL_SERVICIOS } from '../../config/config';
-import { map, catchError } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
-import { ModeloCompleto } from '../../models/modeloCompleto.modelo';
-import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
-import { UtilidadesService } from '../utilidades/utilidades.service';
-import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { PaginadorService } from 'src/app/components/paginador/paginador.service';
-import { CRUD } from '../crud';
-import { Folio } from 'src/app/models/folio.models';
+import { Injectable } from "@angular/core"
+import { HttpClient } from "@angular/common/http"
+import { URL_SERVICIOS } from "../../config/config"
+import { map, catchError } from "rxjs/operators"
+import { throwError, Observable } from "rxjs"
+import { ModeloCompleto } from "../../models/modeloCompleto.modelo"
+import { ManejoDeMensajesService } from "../utilidades/manejo-de-mensajes.service"
+import { UtilidadesService } from "../utilidades/utilidades.service"
+import { PreLoaderService } from "src/app/components/pre-loader/pre-loader.service"
+import { PaginadorService } from "src/app/components/paginador/paginador.service"
+import { CRUD } from "../crud"
+import { Folio } from "src/app/models/folio.models"
 
 @Injectable({
   providedIn: "root"
@@ -41,6 +41,11 @@ export class ModeloCompletoService extends CRUD<
     this.urlBusqueda = "/buscar"
   }
 
+  err = (err) => {
+    this._msjService.err(err)
+    return throwError(err)
+  }
+
   todo(): Observable<ModeloCompleto[]> {
     console.log("aqui")
     return this.getAll(undefined, undefined, undefined, ModeloCompleto)
@@ -62,10 +67,31 @@ export class ModeloCompletoService extends CRUD<
         this._msjService.ok_(resp, null, a)
         return <number>resp.total
       }),
-      catchError((err) => {
-        this._msjService.err(err)
-        return throwError(err)
-      })
+      catchError(this.err)
+    )
+  }
+
+  modificarStock(mc: ModeloCompleto): Observable<ModeloCompleto> {
+    // solo mandamos el stock.
+
+    let a = this._preLoaderService.loading("Modificando stock")
+
+    let m = {
+      _id: mc._id,
+      stockMinimo: mc.stockMinimo,
+      stockMaximo: mc.stockMaximo
+    }
+
+    return this.http.post(`${this.base}/stock`, m).pipe(
+      map((resp: any) => {
+        this._msjService.ok_(resp, null, a)
+
+        let mod = new ModeloCompleto()
+        mod._servicio = this
+
+        return mod.deserialize(resp.modeloCompleto)
+      }),
+      catchError(this.err)
     )
   }
 }

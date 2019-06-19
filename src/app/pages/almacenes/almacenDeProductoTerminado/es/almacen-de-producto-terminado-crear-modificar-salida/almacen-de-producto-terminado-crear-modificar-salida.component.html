@@ -6,7 +6,7 @@
       <div class="list-group">
         <a
           (click)="seleccionarLote(lote._id)"
-          [ngClass]="{ active: lote._id === idLote_FB?.value }"
+          [ngClass]="{ 'active text-white': lote._id === idLote_FB?.value }"
           *ngFor="let lote of modeloCompleto.lotes"
           class="list-group-item list-group-item-action"
         >

@@ -20,11 +20,14 @@
         </div>
         <hr />
 
-        <app-paginador *ngIf="!buscando" ></app-paginador>
+        <app-paginador *ngIf="!buscando"></app-paginador>
 
-        <table *ngIf="modelosCompletos.length >0 " class="table table-hover table-borderless animated fadeIn">
+        <table
+          *ngIf="modelosCompletos.length > 0"
+          class="table table-hover table-borderless animated fadeIn"
+        >
           <thead class="">
-            <tr>
+            <tr >
               <th class="fit"></th>
 
               <th class="" title="Modelo">
@@ -46,8 +49,12 @@
               class="fit"
               *ngFor="let mc of modelosCompletos"
               [ngClass]="{
-                'bg-danger text-white ': !mc.existencia || mc.existencia === 0
+                'bg-warning': -1 === comprobarExistencias(mc),
+                'bg-danger': 0 === comprobarExistencias(mc),
+                'bg-info': 1 === comprobarExistencias(mc)
               }"
+
+              [class.text-white]='comprobarExistencias(mc) !==2'
             >
               <td class="fit">
                 <a
@@ -67,9 +74,7 @@
                   title="Entrada de boton"
                   data-toggle="modal"
                   data-target="#modalEntradasYSalidas"
-                  (click)="
-                    asignarEntradaOSalida(mc, true)
-                  "
+                  (click)="asignarEntradaOSalida(mc, true)"
                 >
                   <i class="fas fa-plus    "></i>
                 </a>
@@ -80,9 +85,7 @@
                   title="Salida de boton"
                   data-toggle="modal"
                   data-target="#modalEntradasYSalidas"
-                  (click)="
-                  asignarEntradaOSalida(mc, false)
-                  "
+                  (click)="asignarEntradaOSalida(mc, false)"
                 >
                   <i class="fas fa-minus    "></i>
                 </a>
@@ -98,28 +101,27 @@
               </td>
 
               <td
-                [ngClass]="{
-                  'bg-dark text-white': mc.stocMinimo >= mc.existencia
-                }"
+            
               >
-                {{ mc.stockMinimo  | number: "0.0-0" }}
+                {{ mc.stockMinimo | number: "0.0-0" }}
               </td>
               <td
-                [ngClass]="{
-                  'bg-warning': mc.existencia >= mc.stockMaximo
-                }"
+               
               >
-                {{ mc.stockMaximo  | number: "0.0-0" }}
+                {{ mc.stockMaximo | number: "0.0-0" }}
               </td>
             </tr>
           </tbody>
         </table>
 
-        <h1 *ngIf="modelosCompletos.length === 0" class=" display-1 animated fadeIn">
+        <h1
+          *ngIf="modelosCompletos.length === 0"
+          class=" display-1 animated fadeIn"
+        >
           No se encontro ningun <b>modelo</b>.
         </h1>
 
-        <app-paginador *ngIf="!buscando" ></app-paginador>
+        <app-paginador *ngIf="!buscando"></app-paginador>
       </div>
     </div>
   </div>
@@ -142,8 +144,8 @@
     <div class="modal-content">
       <div class="modal-body">
         <app-almacen-de-producto-terminado-detalle
-         [modeloCompleto]='modeloCompletoDetalle'
-         (detalleLote)='detalleLote = $event'
+          [modeloCompleto]="modeloCompletoDetalle"
+          (detalleLote)="detalleLote = $event"
         ></app-almacen-de-producto-terminado-detalle>
       </div>
     </div>
@@ -175,7 +177,7 @@
         <app-almacen-de-producto-terminado-crear-modificar
           [modeloCompleto]="modeloCompletoES"
           [esEntrada]="esEntrada"
-          (guardado)='cargarModelos()'
+          (guardado)="cargarModelos()"
         ></app-almacen-de-producto-terminado-crear-modificar>
       </div>
     </div>
@@ -203,13 +205,9 @@
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-    
       <div class="modal-body">
-        <app-lote-detalle
-        [lote]='detalleLote'
-        ></app-lote-detalle>
+        <app-lote-detalle [lote]="detalleLote"></app-lote-detalle>
       </div>
-
     </div>
   </div>
 </div>

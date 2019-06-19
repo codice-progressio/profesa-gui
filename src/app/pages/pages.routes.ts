@@ -50,7 +50,8 @@ import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-d
 import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
 import { VerificaTokenGuard } from "../services/guards/verifica-token.guard"
 import { PermisosGuard } from "../services/guards/permisos.guard"
-import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
+import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
+import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -137,8 +138,7 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
-
-  // <!-- 
+  // <!--
   // =====================================
   //  Almacen
   // =====================================
@@ -155,10 +155,7 @@ const pagesRoutes: Routes = [
     }
   },
 
-
-
-  
-  // <!-- 
+  // <!--
   // =====================================
   //  END Almacen
   // =====================================
@@ -312,6 +309,16 @@ const pagesRoutes: Routes = [
     component: PruebaParaDetallesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: { titulo: "Mis folios.", roles: [ROLES.VENTAS_MIS_FOLIOS] }
+  },
+  {
+    path: "ventas/stock",
+    component: StockAlmacenProductoTerminadoComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Minimos y maximos de productos en almacen",
+      roles: [ROLES.VENTAS_STOCK]
+    }
   },
 
   // <!--
@@ -482,9 +489,6 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
-
-
-
   // =================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // -->
 
@@ -563,7 +567,6 @@ const pagesRoutes: Routes = [
       roles: [ROLES.ADMIN_ROLE]
     }
   },
-
 
   // reportes
   {

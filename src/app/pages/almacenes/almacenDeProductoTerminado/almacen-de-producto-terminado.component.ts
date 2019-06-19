@@ -108,4 +108,26 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
     this.modeloCompletoES = mc
     this.modeloCompletoES.obtenerProduccionEnTransito()
   }
+
+  /**
+   *Comprueba las existencias y devuelve el valor que corresponda.
+   *
+   * `-1` => La existencia esta debajo del minimo.
+   * ` 0` => No hay existencia.
+   * ` 1` => La existencia supera el maximo.
+   * ` 2` => Todo esta dentro de los parametros.
+   *
+   *
+   * @returns {(-1 | 0 | 1 | 2)} El valor segun la evaluacion.
+   * @memberof AlmacenDeProductoTerminadoComponent
+   */
+  comprobarExistencias(mc: ModeloCompleto) {
+    let valor: number = 2
+
+    if (mc.existencia > mc.stockMaximo) valor = 1
+    if (mc.existencia < mc.stockMinimo) valor = -1
+    if (mc.existencia == 0) valor = 0
+
+    return valor
+  }
 }

@@ -105,7 +105,8 @@ import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProduc
 import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component';
 import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component';
 import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component';
-import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component'
+import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component';
+import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component'
 
 @NgModule({
   declarations: [
@@ -204,7 +205,8 @@ import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lote
     AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
     AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
     AlmacenDeProductoTerminadoCrearModificarDevolucionComponent,
-    LoteDetalleComponent
+    LoteDetalleComponent,
+    StockAlmacenProductoTerminadoComponent
   ],
   exports: [
     DashboardComponent,
