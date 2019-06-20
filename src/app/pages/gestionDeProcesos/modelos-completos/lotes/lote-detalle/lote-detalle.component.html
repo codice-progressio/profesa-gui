@@ -22,7 +22,7 @@
         <td title="{{ entrada.createAt | fecha: 'LLL' }}">
           {{ entrada.createAt | date: "dd/MM/yyyy" }}
         </td>
-        <td>{{entrada.cantidad}}</td>
+        <td>{{entrada.cantidad | number: "0.0-0"}}</td>
         <td>{{entrada.observaciones}}</td>
       </tr>
     </tbody>

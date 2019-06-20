@@ -178,9 +178,6 @@ export class StockAlmacenProductoTerminadoComponent implements OnInit {
     if (!valid) return
 
 
-    console.log(`modelo`,modelo)
-
-
     this._modeloCompletoService.modificarStock(modelo).subscribe((mc) => {
       this.cargarModelos()
     })
