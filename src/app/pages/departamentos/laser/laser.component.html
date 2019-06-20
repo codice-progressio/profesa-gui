@@ -30,8 +30,8 @@
                     <h1><small class='text-muted'>Maquina en la que se trabajo: </small> <strong>{{orden.ubicacionActual.laser.maquinaActual.clave}}</strong></h1>
                     <hr>
 
-                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fa fa-save"> </i> Guardar</button>
-                    <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fa fa-times"></i> Cancelar</a>
+                    <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fas fa-save"> </i> Guardar</button>
+                    <a (click)="limpiar()" class="btn btn-danger text-white"><i class="fas fa-times"></i> Cancelar</a>
                 </form>
             </div>
         </div>
@@ -51,15 +51,15 @@
                 <ng-container *ngFor="let maquina of maquinas; let i = index">
 
                     <a (click)="setMaquinaActual(orden, maquina)" class="btn btn-outline-success btn-lg m-2">
-                        <i *ngIf="orden.ubicacionActual?.laser?.maquinaActual?._id === maquina._id" class="fa fa-check animated tada text-warning">
+                        <i *ngIf="orden.ubicacionActual?.laser?.maquinaActual?._id === maquina._id" class="fas fa-check animated tada text-warning">
                         </i> {{maquina.clave}}</a>
                 </ng-container>
 
 
                 <hr>
 
-                <a *ngIf="orden.ubicacionActual.laser?.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fa fa-save"></i> Guardar</a>
-                <button (click)="limpiar(); maquinaActualEnNulo(orden)" class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+                <a *ngIf="orden.ubicacionActual.laser?.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fas fa-save"></i> Guardar</a>
+                <button (click)="limpiar(); maquinaActualEnNulo(orden)" class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
 
 
             </div>

@@ -14,7 +14,7 @@
 
                     </span>
                     <span>
-                        <button (click)="agregarPedido()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Agregar pedido a este folio.</button>
+                        <button (click)="agregarPedido()" class="btn btn-outline-success"><i class="fas fa-plus"></i> Agregar pedido a este folio.</button>
                     </span>
                 </div>
 
@@ -48,10 +48,10 @@
                                 </td>
 
                                 <td class="align-middle">{{linea?.laserCliente?.laser}}</td>
-                                <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fa fa-check fa-2x"></i></td>
+                                <td class="text-center align-middle text-success"> <i *ngIf="linea?.almacen" class="fas fa-check fa-2x"></i></td>
                                 <td> {{linea.observaciones}}</td>
-                                <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
-                                <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+                                <td><button (click)="modificar(linea)" class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
+                                <td><button (click)="eliminarLinea( linea )" class="btn btn-danger"><i class="fas fa-times"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -84,8 +84,8 @@ Registro de lineas
                     <div class="card-header bg-info">
                         <h4 class="m-b-0 ">
                             <a (click)="mostrandoInfoFolio = !mostrandoInfoFolio" class="text-white" data-toggle="collapse" href="#collapse-info">
-                                <i *ngIf="!mostrandoInfoFolio" class="fa fa-plus"></i>
-                                <i *ngIf="mostrandoInfoFolio" class="fa fa-minus"></i> Detalle de folio
+                                <i *ngIf="!mostrandoInfoFolio" class="fas fa-plus"></i>
+                                <i *ngIf="mostrandoInfoFolio" class="fas fa-minus"></i> Detalle de folio
                             </a>
                         </h4>
 
@@ -254,7 +254,7 @@ Registro de lineas
 
                                 <div class="form-group">
                                     <a (click)="nuevaMarcaLaser()" class="btn btn-outline-dark">
-                                        <i class="fa fa-plus"> </i> Añadir nuevo marca laser al cliente
+                                        <i class="fas fa-plus"> </i> Añadir nuevo marca laser al cliente
                                     </a>
                                 </div>
 
@@ -297,7 +297,7 @@ Registro de lineas
                         </div>
 
                         <ng-container *ngIf="folioLinea.cantidad > 0">
-                            <h3>Colores para teñido <a (click)="agregarColorTenido()" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fa fa-plus"></i></a></h3>
+                            <h3>Colores para teñido <a (click)="agregarColorTenido()" *ngIf="1>folioLinea.coloresTenidos.length" class="btn btn-outline-success btn-sm"><i class="fas fa-plus"></i></a></h3>
                             <ng-container *ngIf="folioLinea.coloresTenidos.length > 0">
 
                                 <div *ngFor="let item of folioLinea.coloresTenidos; let i =index; trackBy:trackByFn" class="col-lg-12 mb-1">
@@ -305,14 +305,14 @@ Registro de lineas
                                         <input [name]="'color'+i" [(ngModel)]="folioLinea.coloresTenidos[i].color" type="text" class="form-control" placeholder="Color de teñido">
                                         <input (input)="calcularSumaTenido()" [name]="'cantidad'+i" [(ngModel)]="folioLinea.coloresTenidos[i].cantidad" type="text" mask="separator" class="form-control" placeholder="Cantidad">
                                         <span class="input-group-btn">
-                                            <button (click)="eliminarColorTenido(i)" class="btn btn-outline-danger" type="button"><i class="fa fa-times"></i></button>
-                                            <button *ngIf="(i+1) === folioLinea.coloresTenidos.length " (click)="agregarColorTenido()" class="btn btn-outline-success" type="button"><i class="fa fa-plus"></i></button>
+                                            <button (click)="eliminarColorTenido(i)" class="btn btn-outline-danger" type="button"><i class="fas fa-times"></i></button>
+                                            <button *ngIf="(i+1) === folioLinea.coloresTenidos.length " (click)="agregarColorTenido()" class="btn btn-outline-success" type="button"><i class="fas fa-plus"></i></button>
                                         </span>
                                     </div>
                                 </div>
                             </ng-container>
                             <div *ngIf="sumaTenidoSuperaCantidad" class="alert alert-danger mt-2" role="alert">
-                                <i class="fa fa-exclamation-circle infinite animated fadeIn"></i> La cantidad a teñir supera la cantidad del pedido.
+                                <i class="fas fa-exclamation-circle infinite animated fadeIn"></i> La cantidad a teñir supera la cantidad del pedido.
                             </div>
 
                         </ng-container>
@@ -321,13 +321,13 @@ Registro de lineas
 
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-success">
-                                <i class="fa fa-save"> </i> 
+                                <i class="fas fa-save"> </i> 
                                 <span *ngIf="modificandoLinea"> Guardar modificaciones</span>
                                 <span *ngIf="!modificandoLinea"> Guardar</span>
                             </button>
-                            <a *ngIf="!modificandoLinea" class="btn btn-danger ml-2 text-white" (click)="cancelarModificacion()"><i class="fa fa-times"></i> Cancelar</a>
+                            <a *ngIf="!modificandoLinea" class="btn btn-danger ml-2 text-white" (click)="cancelarModificacion()"><i class="fas fa-times"></i> Cancelar</a>
                             <button *ngIf="modificandoLinea" (click)="cancelarModificacion()" class="btn btn-danger ml-2">
-                                <i class="fa fa-times"> </i> 
+                                <i class="fas fa-times"> </i> 
                                 <span > Cancelar</span>
                             </button>
                         </div>

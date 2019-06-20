@@ -355,6 +355,7 @@ export class CRUD<
    * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.singular}`] El mensaje que va a mostrar el servicio de carga.
    * @returns {Observable<T_TipoDeModelo>}
    * @memberof CRUD
+   * @deprecated Usar findById
    */
   buscarPorId(
     id: string,
@@ -373,6 +374,42 @@ export class CRUD<
       })
     )
   }
+  /**
+   * Busca un dato por su id.
+   *
+   * @param {string} id El id del objeto que se quiere buscar.
+   * @param {string} [urlAlternativa=''] La url alternativa para la busqueda.
+   * @param {string} [msjLoading=`Buscando ${this.nombreDeDatos.singular}`] El mensaje que va a mostrar el servicio de carga.
+   * @returns {Observable<T_TipoDeModelo>}
+   * @memberof CRUD
+   */
+  findById(
+    id: string,
+    urlAlternativa: string = "",
+    msjLoading: string = `Buscando ${this.nombreDeDatos.singular}`,
+    type: { new (): T_TipoDeModelo }
+    
+  ): Observable<T_TipoDeModelo> {
+    const a: number = this._preLoaderService.loading(msjLoading)
+    return this.http.get(this.base + urlAlternativa + `/${id}`).pipe(
+      map((resp: any) => {
+        this._msjService.ok_(resp, null, a)
+
+        // Deserealizamos solo un objeto. 
+        let a2: T_TipoDeModelo = new type()
+          a2 = a2["deserialize"](resp[this.nombreDeDatos.singular])
+        return a2
+      }),
+      catchError(err => {
+        this._msjService.err(err)
+        return throwError(err)
+      })
+    )
+  }
+
+
+
+
 
   /**
    * Busca una serie de datos en base al termino que se le pase como parametro.
@@ -387,6 +424,7 @@ export class CRUD<
    * @param {string} [urlAlternativa='']
    * @returns {Observable<T_TipoDeModelo[]>}
    * @memberof CRUD
+   * @deprecated Esta funcion debe ser remplazada por ```search()```
    */
   buscar(
     termino: string,
@@ -408,7 +446,39 @@ export class CRUD<
           this.total = resp.total
           return resp[this.nombreDeDatos.plural]
         }),
-        catchError(err => {
+        catchError((err) => {
+          this._msjService.err(err)
+          return throwError(err)
+        })
+      )
+  }
+
+  search(
+    termino: string,
+    urlAlternativa: string = "",
+    msjLoading: string = `Buscando ${this.nombreDeDatos.plural}`,
+    type: { new (): T_TipoDeModelo }
+  ): Observable<T_TipoDeModelo[]> {
+    const a: number = this._preLoaderService.loading(msjLoading)
+
+    // Cualquier caracter que nos perjudique para el regex lo escapamos
+    termino = termino.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // Cualquier caracter que nos perjudique en la url lo codificamos
+    termino = encodeURIComponent(termino)
+
+    return this.http
+      .get(this.base + urlAlternativa + this.urlBusqueda + "/" + termino)
+      .pipe(
+        map((resp: any) => {
+          this._msjService.ok_(resp, null, a)
+          this.total = resp.total
+          return resp[this.nombreDeDatos.plural].map((dato) => {
+            let a: T_TipoDeModelo = new type()
+            a = a["deserialize"](dato)
+            return a
+          })
+        }),
+        catchError((err) => {
           this._msjService.err(err)
           return throwError(err)
         })
@@ -426,6 +496,7 @@ export class CRUD<
    */
   private concatenerFiltros(filtros: { [string: string]: string }): string {
     let a: string = ""
+    if( !filtros ) return ''
     a = Object.keys(filtros)
       .map(key => {
         return `${key}=${filtros[key]}`

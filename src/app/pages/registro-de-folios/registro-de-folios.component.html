@@ -74,12 +74,12 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn " [ngClass]="{'btn-success': true}" [disabled]='_preLoaderService.cargando'>
-                                <i class="fa fa-save"> </i> 
+                                <i class="fas fa-save"> </i> 
                                 <span *ngIf="modificando"> Guardar modificaciones</span>
                                 <span *ngIf="!modificando"> Guardar</span>
                             </button>
                             <a (click)="cancelarModificacion()" class="btn btn-danger ml-2 text-white">
-                                <i class="fa fa-times"> </i> Cancelar
+                                <i class="fas fa-times"> </i> Cancelar
                             </a>
 
                         </div>
@@ -112,7 +112,7 @@
     
                         </span>
                         <span>
-                            <button (click)="nuevoFolio()" class="btn btn-outline-success"><i class="fa fa-plus"></i> Registrar nuevo folio.</button>
+                            <button (click)="nuevoFolio()" class="btn btn-outline-success"><i class="fas fa-plus"></i> Registrar nuevo folio.</button>
 
                         </span>
 
@@ -141,20 +141,20 @@
                                         <a data-toggle="tooltip" title="Agregar pedidos" class="btn btn-outline-info text-center w-100" [routerLink]="['/folio', fol._id]">{{fol.numeroDeFolio}}</a>
                                     </td>
                                     <td class="align-middle align-content-center w-auto">{{fol.cliente.nombre}}</td>
-                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaFolio | fecha}}</span> </td>
-                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fa fa-clock-o"></i> {{fol.fechaEntrega | fecha}}</span> </td>
+                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fas fa-clock-o"></i> {{fol.fechaFolio | fecha}}</span> </td>
+                                    <td class="align-middle align-content-center w-auto"><span class="text-muted"><i class="fas fa-clock-o"></i> {{fol.fechaEntrega | fecha}}</span> </td>
                                     <td class="align-middle text-center  align-content-center w-auto">
                                         <app-nivel-urgencia [nivel]="fol.nivelDeUrgencia"></app-nivel-urgencia>
                                     </td>
                                     <td class="align-middle  align-content-center w-auto">{{fol.vendedor.nombre}}</td>
                                     <td class="align-middle   align-content-center w-auto">{{fol.observaciones}}</td>
 
-                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="modificar(fol)" class="btn btn-dark"><i class="fa fa-edit"></i></button></td>
-                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="eliminarFolio( fol )" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
-                                    <td class="align-middle text-center  align-content-center w-auto" *ngIf="fol.folioLineas.length>0"><a [routerLink]="['/ordenes/', fol._id]" class="btn btn-outline-warning"><i class="fa fa-plus"></i> Generar Ordenes</a></td>
+                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="modificar(fol)" class="btn btn-dark"><i class="fas fa-edit"></i></button></td>
+                                    <td class="align-middle text-center  align-content-center w-auto"><button (click)="eliminarFolio( fol )" class="btn btn-danger"><i class="fas fa-times"></i></button></td>
+                                    <td class="align-middle text-center  align-content-center w-auto" *ngIf="fol.folioLineas.length>0"><a [routerLink]="['/ordenes/', fol._id]" class="btn btn-outline-warning"><i class="fas fa-plus"></i> Generar Ordenes</a></td>
                                     <td class="align-middle text-center  align-content-center w-auto" *ngIf="fol.folioLineas.length===0">
                                         <div class="label label-warning align-middle d-flex align-items-center ">
-                                            <i class="fa fa-exclamation-circle fa-2x mr-3 w-25"></i> SIN PEDIDOS
+                                            <i class="fas fa-exclamation-circle fa-2x mr-3 w-25"></i> SIN PEDIDOS
                                         </div>
                                     </td>
                                 </tr>

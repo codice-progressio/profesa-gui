@@ -34,6 +34,7 @@ import { TamanoService } from "./modelo/tamano.service"
 import { ColorService } from "./modelo/color.service"
 import { TerminadoService } from "./modelo/terminado.service"
 import { FolioNewService } from "./folio/folio-new.service"
+import { AlmacenProductoTerminadoService } from "./almacenDeProductoTerminado/almacen-producto-terminado.service";
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { FolioNewService } from "./folio/folio-new.service"
     ColorService,
     TerminadoService,
     SortService,
-    FolioNewService
+    FolioNewService,
+    AlmacenProductoTerminadoService
   ]
 })
 export class ServiceModule {}

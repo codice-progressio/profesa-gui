@@ -98,7 +98,15 @@ import { FoliosCrearModificarAbstractoComponent } from "./gestionDeFolios/folios
 import { RevisionDeOrdenesAbstractoComponent } from "./gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
 import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component";
 import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component';
-import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
+import { ClientesDetalleComponent } from './clientes/clientes-detalle.component';
+import { AlmacenDeProductoTerminadoCrearModificarComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component';
+import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component';
+import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component';
+import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component';
+import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component';
+import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component';
+import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component';
+import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component'
 
 @NgModule({
   declarations: [
@@ -190,7 +198,15 @@ import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
     RevisionDeOrdenesAbstractoComponent,
     FoliosSeguimientoComponent,
     ClientesCrearModificarComponent,
-    ClientesDetalleComponent
+    ClientesDetalleComponent,
+    AlmacenDeProductoTerminadoCrearModificarComponent,
+    AlmacenDeProductoTerminadoDetalleComponent,
+    AlmacenDeProductoTerminadoComponent,
+    AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
+    AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
+    AlmacenDeProductoTerminadoCrearModificarDevolucionComponent,
+    LoteDetalleComponent,
+    StockAlmacenProductoTerminadoComponent
   ],
   exports: [
     DashboardComponent,

@@ -1,0 +1,51 @@
+<form [formGroup]="formulario">
+  <div class="form-group col-4">
+    <input
+      type="number"
+      class="form-control"
+      formControlName="cantidadEntrada"
+      [ngClass]="{
+        'is-invalid': vs.invalid(cantidadEntrada_FB),
+        'is-valid': vs.valid(cantidadEntrada_FB)
+      }"
+    />
+    <small id="helpId" class="form-text text-muted">Cantidad de entrada</small>
+    <app-validacion-inputs [campo]="cantidadEntrada_FB"></app-validacion-inputs>
+  </div>
+  <div class="form-group col-8">
+    <textarea
+      class="form-control"
+      rows="3"
+      formControlName="observaciones"
+      [ngClass]="{
+        'is-invalid': vs.invalid(observaciones_FB),
+        'is-valid': vs.valid(observaciones_FB)
+      }"
+    ></textarea>
+    <small id="helpId" class="form-text text-muted">Observaciones</small>
+    <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
+  </div>
+
+  <hr />
+
+  <button
+    type="button"
+    [disabled]="this.formulario.invalid "
+    class="btn btn-success mr-3"
+    role="button"
+    (click)="guardar(formulario.value, formulario.invalid, $event)"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-danger text-white"
+    role="button"
+    (click)="cancelarGuardado()"
+    data-toggle="modal"
+    data-target="#modalEntradasYSalidas"
+  >
+    <i class="fas fa-times"></i> Cancelar
+  </button>
+</form>

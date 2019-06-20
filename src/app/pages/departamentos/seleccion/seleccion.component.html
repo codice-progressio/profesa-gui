@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="col-3">
                                                     <div class="form-group">
-                                                        <input formControlName="descripcionDeOtro" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getDescripcionDeOtro), 'is-valid':_validacionesService.valid(getDescripcionDeOtro)}" type="number" placeholder="Descripcion de defecto diferente">
+                                                        <input formControlName="descripcionDeOtro" class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(getDescripcionDeOtro), 'is-valid':_validacionesService.valid(getDescripcionDeOtro)}" type="text" placeholder="Descripcion de defecto diferente">
                                                         <app-validacion-inputs [campo]="getDescripcionDeOtro"></app-validacion-inputs>
                                                     </div>
 
@@ -111,8 +111,8 @@
 
                                             <br>
 
-                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fa fa-save "></i> Guardar</button>
-                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fa fa-times "></i> Escannear de nuevo</button>
+                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fas fa-save "></i> Guardar</button>
+                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
 
                                             <br>
                                         </form>

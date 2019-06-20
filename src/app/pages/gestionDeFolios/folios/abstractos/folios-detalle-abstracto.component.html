@@ -28,12 +28,12 @@
 
           <p>
             <b>Fecha de creacion de folio</b> <br />
-            <i class="fa fa-calendar"></i>
+            <i class="fas fa-calendar"></i>
             {{ folio.fechaFolio | fecha: "LLLL" }}
           </p>
           <p>
             <b>Fecha de entrega a produccion</b> <br />
-            <i class="fa fa-calendar"></i>
+            <i class="fas fa-calendar"></i>
             {{ folio.fechaDeEntregaAProduccion | fecha: "LLLL" }}
           </p>
           <p>
@@ -177,7 +177,7 @@
                           <ng-container
                             *ngIf="colorTenido.terminado; else elseTemplate"
                           >
-                            <i class="fa fa-check text-succes"></i>
+                            <i class="fas fa-check text-succes"></i>
                             <span
                               [title]="
                                 colorTenido.fechaTerminado | fecha: 'LLLL'
@@ -190,7 +190,7 @@
                             </span>
                           </ng-container>
                           <ng-template #elseTemplate>
-                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <i class="fas fa-cog" aria-hidden="true"></i>
                             Pendiente
                           </ng-template>
                         </td>
@@ -226,7 +226,7 @@
       <div class="clearfix"></div>
       <!-- <hr>
             <div class="text-right">
-                <a id="print" class="btn btn-default btn-outline"> <span><i class="fa fa-print"></i> Imprimir</span> </a>
+                <a id="print" class="btn btn-default btn-outline"> <span><i class="fas fa-print"></i> Imprimir</span> </a>
             </div> -->
     </div>
   </div>

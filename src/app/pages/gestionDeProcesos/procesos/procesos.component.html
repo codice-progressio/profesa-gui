@@ -21,13 +21,13 @@
             </thead>
             <tbody>
                 <tr *ngFor="let elemento of elementos">
-                    <td><button (click)="mostrarDetalle(elemento._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                    <td><button (click)="mostrarDetalle(elemento._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
                     <td>{{elemento.nombre}}</td>
                     <td>{{elemento.departamento.nombre}}</td>
                     <td class="text-center">
 
-                        <i *ngIf="elemento.requiereProduccion" class="fa fa-check text-info fa-2x"></i>
-                        <i *ngIf="!elemento.requiereProduccion" class="fa fa-times text-danger  fa-2x"></i>
+                        <i *ngIf="elemento.requiereProduccion" class="fas fa-check text-info fa-2x"></i>
+                        <i *ngIf="!elemento.requiereProduccion" class="fas fa-times text-danger  fa-2x"></i>
 
                     </td>
                     <td>{{elemento.observaciones}}</td>

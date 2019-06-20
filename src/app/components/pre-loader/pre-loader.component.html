@@ -10,7 +10,7 @@
     <div class="jumbotron vertical-center bg-info h-100">
 
         <div class="container">
-            <h1 class='text-white w-100 display-1 text-center'>Falta un poco... <i class="fa fa-cloud-download animated bounce infinite"></i></h1>
+            <h1 class='text-white w-100 display-1 text-center'>Falta un poco... <i class="fas fa-cloud-download animated bounce infinite"></i></h1>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
             <!-- <div *ngFor="let ley of _s.leyenda; let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' "> -->
             <div *ngFor="let ley of _s.Object.keys(_s.registro); let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' ">
                 <hr class='w-25'>
-                <h5 class="text-inverse">{{_s.registro[ley]}} <i [class]="'fa fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
+                <h5 class="text-inverse">{{_s.registro[ley]}} <i [class]="'fas fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
             <br>
             <div *ngFor="let ley of _s.leyenda; let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' ">
                 <hr class='w-25'>
-                <h5 class="text-inverse">{{ley}} <i [class]="'fa fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
+                <h5 class="text-inverse">{{ley}} <i [class]="'fas fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
             </div>
         </div>
     </div>

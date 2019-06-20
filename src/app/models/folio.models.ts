@@ -36,7 +36,7 @@ export class Folio implements Deserializable {
     public mostrandoInfo: boolean = false,
   ) {}
 
-  deserialize(input: Folio): this {
+  deserialize(input: this): this {
     Object.assign(this, input)
     this.cliente = new Cliente().deserialize(input.cliente)
     this.vendedor = new Usuario().deserialize(input.vendedor)

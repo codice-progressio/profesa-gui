@@ -18,6 +18,16 @@
   width: 50px;
 }
 
+
+
+.pull-right{
+  float: right;
+}
+.pull-left{
+  float: left;
+}
+
+
 .fondo-negro {
   background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
@@ -239,4 +249,9 @@ video {
 .my_tooltip:hover .my_tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+
+.modal-xl {
+  max-width: 90%
 }

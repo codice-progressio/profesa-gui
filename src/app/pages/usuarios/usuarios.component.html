@@ -19,7 +19,7 @@
     <div class="alert alert-warning text-center">
       <strong>Cargando</strong>
       <br />
-      <i class="fa fa-refresh fa-spin fa-2x"></i>
+      <i class="fas fa-refresh fa-spin fa-2x"></i>
       <br />
       <span>Espere por favor</span>
     </div>
@@ -35,7 +35,7 @@
             Usuarios registrados ( <small>{{ totalRegistros }}</small> )
           </span>
           <button (click)="nuevoUsuario()" class="btn btn-outline-success">
-            <i class="fa fa-plus"> </i>Nuevo usuario
+            <i class="fas fa-plus"> </i>Nuevo usuario
           </button>
         </h3>
         <table class="table table-hover">
@@ -63,7 +63,7 @@
               <td>
                 <ng-container *ngFor="let role of usuario.role; let i = index">
                   <span
-                    ><i class="fa fa-check text-success"></i> {{ role }}</span
+                    ><i class="fas fa-check text-success"></i> {{ role }}</span
                   >
                   <hr
                     *ngIf="
@@ -86,10 +86,10 @@
                   (click)="borrarUsuario(usuario)"
                   class="btn btn-danger ml-2"
                 >
-                  <i class="fa fa-trash-o"></i>
+                  <i class="fas fa-times"></i>
                 </button>
                 <button (click)="editar(usuario)" class="btn btn-success ml-2">
-                  <i class="fa fa-edit"></i>
+                  <i class="fas fa-edit"></i>
                 </button>
               </td>
             </tr>
@@ -174,10 +174,10 @@
           class="btn btn-success mr-3"
           (click)="guardarUsuario(usuarioEditando)"
         >
-          <i class="fa fa-save"></i> Guardar
+          <i class="fas fa-save"></i> Guardar
         </button>
         <button class="btn btn-danger" (click)="cancelarEdicion()">
-          <i class="fa fa-times"></i> Cancelar
+          <i class="fas fa-times"></i> Cancelar
         </button>
       </div>
     </div>

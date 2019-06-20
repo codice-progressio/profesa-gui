@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let familiaDeProcesos of elementos">
-                    <td><button (click)="mostrarDetalle(familiaDeProcesos._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                    <td><button (click)="mostrarDetalle(familiaDeProcesos._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
                     <td>{{familiaDeProcesos.nombre}}</td>
                     <td>{{familiaDeProcesos.procesos.length }}</td>
                     <td>{{familiaDeProcesos.observaciones}}</td>

@@ -23,10 +23,10 @@
 
             <div class="col-12 mt-5">
                 <ng-container *ngIf="detalleElemento.requiereProduccion; else elseTemplate">
-                    <i class="fa fa-check fa-2x text-info"></i> Este proceso requiere produccion.
+                    <i class="fas fa-check fa-2x text-info"></i> Este proceso requiere produccion.
                 </ng-container>
                 <ng-template #elseTemplate>
-                    <i class="fa fa-times fa-2x text-danger"></i> Este proceso no requiere produccion.
+                    <i class="fas fa-times fa-2x text-danger"></i> Este proceso no requiere produccion.
                 </ng-template>
 
             </div>
