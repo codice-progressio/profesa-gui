@@ -1,0 +1,128 @@
+<!-- <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class=""><strong>Articulos</strong> existentes</h1>
+
+          <div class="d-flex  align-items-center ">
+            <input
+              #inputBusqueda
+              (keyup)="buscar(inputBusqueda.value)"
+              type="text"
+              class="form-control mr-3"
+              name="busqueda"
+              id="busqueda"l
+              aria-describedby="busquedahelp"
+              placeholder="Buscar un modelo"
+            />
+          </div>
+        </div>
+        <hr />
+
+        <app-paginador *ngIf="!buscando"></app-paginador>
+
+        <table
+          *ngIf="modelosCompletos.length > 0"
+          class="table table-hover table-borderless animated fadeIn"
+        >
+          <thead class="">
+            <tr >
+              <th class="fit"></th>
+
+              <th class="" title="Modelo">
+                Modelo
+              </th>
+              <th class="fit" title="Existencia actual en el almacen">
+                Existencia
+              </th>
+              <th class="fit" title="Existencia minima">
+                MIN
+              </th>
+              <th class="fit" title="Existencia maxima">
+                MAX
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="fit"
+              *ngFor="let mc of modelosCompletos"
+              [ngClass]="{
+                'bg-warning': -1 === comprobarExistencias(mc),
+                'bg-danger': 0 === comprobarExistencias(mc),
+                'bg-info': 1 === comprobarExistencias(mc)
+              }"
+
+              [class.text-white]='comprobarExistencias(mc) !==2'
+            >
+              <td class="fit">
+                <a
+                  id="button0"
+                  (click)="asignarDetalle(mc)"
+                  class="btn  text-white btn-primary btn-xs mr-1"
+                  role="button"
+                  data-toggle="modal"
+                  data-target="#modeloCompletoDetalle"
+                >
+                  <i class="fas fa-eye    "></i>
+                </a>
+                <a
+                  id="button1"
+                  class="btn  text-white btn-warning btn-xs mr-1"
+                  role="button"
+                  title="Entrada de boton"
+                  data-toggle="modal"
+                  data-target="#modalEntradasYSalidas"
+                  (click)="asignarEntradaOSalida(mc, true)"
+                >
+                  <i class="fas fa-plus    "></i>
+                </a>
+                <a
+                  id="button2"
+                  class="btn  text-white btn-success btn-xs mr-1"
+                  role="button"
+                  title="Salida de boton"
+                  data-toggle="modal"
+                  data-target="#modalEntradasYSalidas"
+                  (click)="asignarEntradaOSalida(mc, false)"
+                >
+                  <i class="fas fa-minus    "></i>
+                </a>
+              </td>
+              <td class="no-wrap fit">{{ mc.nombreCompleto }}</td>
+              <td>
+                <ng-container *ngIf="mc.existencia">
+                  {{ mc.existencia | number: "0.0-0" }}
+                </ng-container>
+                <ng-container *ngIf="!mc.existencia || mc.existencia === 0">
+                  0
+                </ng-container>
+              </td>
+
+              <td
+            
+              >
+                {{ mc.stockMinimo | number: "0.0-0" }}
+              </td>
+              <td
+               
+              >
+                {{ mc.stockMaximo | number: "0.0-0" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1
+          *ngIf="modelosCompletos.length === 0"
+          class=" display-1 animated fadeIn"
+        >
+          No se encontro ningun <b>modelo</b>.
+        </h1>
+
+        <app-paginador *ngIf="!buscando"></app-paginador>
+      </div>
+    </div>
+  </div>
+</div> -->

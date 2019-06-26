@@ -1,0 +1,91 @@
+<div *ngIf="almacenDescripcion" class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="">
+            <strong>
+              <span *ngIf="!almacenDescripcion._id">Crear</span>
+              <span *ngIf="almacenDescripcion._id">Modificar</span>
+            </strong>
+            almacen
+          </h1>
+        </div>
+
+        <hr />
+
+        <form [formGroup]="formulario">
+          <div class="col-6">
+            <div class="form-group ">
+              <input
+                formControlName="nombre"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': _vs.invalid(nombre_FB),
+                  'is-valid': _vs.valid(nombre_FB)
+                }"
+              />
+              <small class="form-text text-muted">Nombre del almacen</small>
+              <app-validacion-inputs [campo]="nombre_FB">
+              </app-validacion-inputs>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group ">
+              <input
+                formControlName="descripcion"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': _vs.invalid(descripcion_FB),
+                  'is-valid': _vs.valid(descripcion_FB)
+                }"
+              />
+              <small class="form-text text-muted">Descripcion</small>
+              <app-validacion-inputs [campo]="descripcion_FB">
+              </app-validacion-inputs>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group ">
+              <input
+                formControlName="ubicacion"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': _vs.invalid(ubicacion_FB),
+                  'is-valid': _vs.valid(ubicacion_FB)
+                }"
+              />
+              <small class="form-text text-muted">Ubicacion</small>
+              <app-validacion-inputs [campo]="ubicacion_FB">
+              </app-validacion-inputs>
+            </div>
+          </div>
+
+          <br />
+          <hr />
+          <br />
+
+          <button
+            [disabled]="formulario.invalid"
+            (click)="submit(formulario.value, formulario.invalid, $event)"
+            class="btn btn-success button text-white mr-3"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </button>
+          <a
+            (click)="cancelar()"
+            data-toggle="modal"
+            data-target="#editarAlmacen"
+            class="btn btn-danger button text-white"
+            ><i class="fas fa-times"></i> Cancelar</a
+          >
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

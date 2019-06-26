@@ -52,6 +52,8 @@ import { VerificaTokenGuard } from "../services/guards/verifica-token.guard"
 import { PermisosGuard } from "../services/guards/permisos.guard"
 import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
 import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
+import { AlmacenDeMateriaPrimaYHerramientasComponent } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas.component"
+import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -144,6 +146,17 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
+  {
+    path: "almacen/materiaPrima",
+    component: AlmacenDeMateriaPrimaYHerramientasComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Materia prima y herramienta",
+      roles: [ROLES.ALMACEN_MATERIA_PRIMA, ROLES.ALMACEN_HERRAMIENTES]
+    }
+  },
+  
   {
     path: "almacen/productoTerminado",
     component: AlmacenDeProductoTerminadoComponent,
@@ -342,7 +355,8 @@ const pagesRoutes: Routes = [
       titulo: "Mantenimientos de usuarios",
       roles: [ROLES.ADMINISTRADOR_USUARIOS]
     }
-  },
+  }
+  ,
   {
     path: "clientes",
     component: ClientesComponent,
@@ -350,6 +364,16 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Mantenimientos de clientes",
       roles: [ROLES.ADMINISTRADOR_CLIENTES]
+    }
+  },
+  
+  {
+    path: "almacenDescripcion",
+    component: AlmacenDescripcionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Mantenimientos de clientes",
+      roles: [ROLES.ADMINISTRADOR_ALMACEN_DESCRIPCION]
     }
   },
 
