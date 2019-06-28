@@ -1,0 +1,93 @@
+<ng-container *ngIf="articulo">
+  <div class="d-flex aling-items-center justify-content-between">
+    <h1>Detalle de <b>articulo</b></h1>
+    <h3>{{ articulo.nombre }}</h3>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-6">
+      <h6><b>Codigo de localizacion: </b></h6>
+      {{ articulo?.codigoLocalizacion }} <br />
+      <h6><b>Codigo interno: </b></h6>
+      {{ articulo?.codigoInterno }} <br />
+      <h6><b>codigoProveedor: </b></h6>
+      {{ articulo?.codigoProveedor }} <br />
+      <h6><b>Almacen: </b></h6>
+      {{ articulo.almacen.nombre }}
+    </div>
+    <div class="col-6">
+      <h6><b>Presentacion: </b></h6>
+      {{ articulo.presentacion }} <br />
+      <h6><b>Unidad: </b></h6>
+      {{ articulo.unidad }} <br />
+      <h6><b>kg por unidad: </b></h6>
+      {{ articulo.kgPorUnidad | number }}
+    </div>
+  </div>
+
+  <br />
+
+  <h1 class="display-3">
+    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b>
+  </h1>
+  <h4>
+    Existencia en kg: <b>{{ articulo.existenciaEnKg() | number }}</b>
+  </h4>
+  Minimo {{ articulo.stockMinimo | number }} | Maximo
+  {{ articulo.stockMaximo | number }}
+
+  <hr />
+  <div class="row">
+    <div class="col-6">
+      <h3><b>Entradas</b></h3>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cantidad</th>
+            <th>Observaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entrada of articulo.entradas">
+            <td title="{{ entrada.fecha | fecha: 'LLL' }}">
+              {{ entrada.fecha | date: "dd/MM/yy" }}
+            </td>
+            <td>{{ entrada.cantidad | number }}</td>
+            <td>{{ entrada.observaciones }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-6">
+      <h3><b>Salidas</b></h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Departamento</th>
+            <th>Cantidad</th>
+            <th>observaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let salida of articulo.salidas">
+            <td title="{{ salida.fecha | fecha: 'LLL' }}">
+              {{ salida.fecha | date: "dd/MM/yy" }}
+            </td>
+            <td>{{ salida.departamento.nombre }}</td>
+            <td>{{ salida.cantidad | number }}</td>
+            <td>{{ salida.observaciones }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!articulo">
+  <h1 class="display-1">No has seleccinado ningun <b>articulo</b></h1>
+</ng-container>
