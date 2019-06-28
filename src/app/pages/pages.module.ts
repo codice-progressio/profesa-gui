@@ -106,7 +106,16 @@ import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './alma
 import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component';
 import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component';
 import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component';
-import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component'
+import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component';
+import { AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-salida.component';
+import { AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-entrada.component';
+import { AlamacenProduccion } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component';
+import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component';
+import { AlmacenDescripcionDetalleComponent } from './almacenes/almacenDescripcion/almacen-descripcion-detalle.component';
+import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component';
+import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component';
+import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component';
+import { ArticuloComponent } from './almacenes/articulo/articulo.component'
 
 @NgModule({
   declarations: [
@@ -206,7 +215,16 @@ import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDePro
     AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
     AlmacenDeProductoTerminadoCrearModificarDevolucionComponent,
     LoteDetalleComponent,
-    StockAlmacenProductoTerminadoComponent
+    StockAlmacenProductoTerminadoComponent,
+    AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent,
+    AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent,
+    AlamacenProduccion,
+    AlmacenDescripcionCrearModificarComponent,
+    AlmacenDescripcionDetalleComponent,
+    AlmacenDescripcionComponent,
+    ArticuloCrearModificarComponent,
+    ArticuloDetalleComponent,
+    ArticuloComponent
   ],
   exports: [
     DashboardComponent,

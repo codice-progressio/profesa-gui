@@ -1,0 +1,28 @@
+<ng-container *ngIf="detalle">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Detalle de <b>almacen</b></h1>
+
+    <h3>{{ detalle.nombre }}</h3>
+  </div>
+  <br />
+  <hr />
+  <br />
+
+  <h3><b>Descripcion</b></h3>
+  <hr />
+  <p>
+    {{ detalle.descripcion }}
+  </p>
+
+  <br /><br />
+
+  <h3><b>uUbicacion</b></h3>
+  <hr />
+  <p>
+    {{ detalle.ubicacion }}
+  </p>
+</ng-container>
+
+<ng-container *ngIf="!detalle">
+  <h1 class="display">No has seleccionado un <b>almacen</b>.</h1>
+</ng-container>

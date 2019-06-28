@@ -100,6 +100,9 @@ export class FiltrosDeConsultas<T>  {
     /**
      *Retorna un objeto con el par nombreDeCampo:datoAFiltrar en base a los 
      campos que se asignaron. Los campos en null se omiten. 
+     * Es importante que cuando se llame a la funcion getAll fuera del servicio, dentro de los componentes, se definan los filtros que corresponden al servicio. De otra manera esta funcion dara el error : 
+
+     ```ERROR TypeError: Cannot read property 'obtenerFiltros' of undefined```
      *
      * @returns {{[string:string]:string}}
      * @memberof FiltrosFolio <T>
