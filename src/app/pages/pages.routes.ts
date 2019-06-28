@@ -153,7 +153,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: "Materia prima y herramienta",
-      roles: [ROLES.ALMACEN_MATERIA_PRIMA, ROLES.ALMACEN_HERRAMIENTES]
+      roles: [ROLES.ALMACEN_MATERIA_PRIMA, ROLES.ALMACEN_HERRAMIENTAS]
     }
   },
   
