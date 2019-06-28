@@ -52,7 +52,7 @@ import { VerificaTokenGuard } from "../services/guards/verifica-token.guard"
 import { PermisosGuard } from "../services/guards/permisos.guard"
 import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
 import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
-import { AlmacenDeMateriaPrimaYHerramientasComponent } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas.component"
+import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
 import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
 
 const pagesRoutes: Routes = [
@@ -147,8 +147,8 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "almacen/materiaPrima",
-    component: AlmacenDeMateriaPrimaYHerramientasComponent,
+    path: "almacen/produccion",
+    component: AlmacenProduccion,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {

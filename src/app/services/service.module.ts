@@ -77,7 +77,7 @@ import { AlmacenProductoTerminadoService } from "./almacenDeProductoTerminado/al
     TerminadoService,
     SortService,
     FolioNewService,
-    AlmacenProductoTerminadoService
+    AlmacenProductoTerminadoService,
   ]
 })
 export class ServiceModule {}

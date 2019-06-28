@@ -504,4 +504,14 @@ export class CRUD<
       .join("&")
     return a
   }
+
+  /**
+   *El manejo de los error para simplificarnos la vida.
+   *
+   * @memberof CRUD
+   */
+  err = (err) => {
+    this._msjService.err(err)
+    return throwError(err)
+  }
 }

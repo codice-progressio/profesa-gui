@@ -1,0 +1,225 @@
+<div class="justify-content-between d-flex aling-items-center">
+  <h1>
+    <span *ngIf="!articulo?._id">Crear </span
+    ><span *ngIf="articulo?._id">Modificar </span> <b>articulo</b>
+  </h1>
+  <h3 *ngIf="articulo?._id">{{ articulo.nombre }}</h3>
+</div>
+
+<hr />
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(codigoLocalizacion_FB),
+            'is-valid': vs.valid(codigoLocalizacion_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="codigoLocalizacion"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Codigo localizante</small
+        >
+        <app-validacion-inputs
+          [campo]="codigoLocalizacion_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(codigoInterno_FB),
+            'is-valid': vs.valid(codigoInterno_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="codigoInterno"
+        />
+        <small id="helpId" class="form-text text-muted">Codigo interno</small>
+        <app-validacion-inputs
+          [campo]="codigoInterno_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(codigoProveedor_FB),
+            'is-valid': vs.valid(codigoProveedor_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="codigoProveedor"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Codigo del proveedor</small
+        >
+        <app-validacion-inputs
+          [campo]="codigoProveedor_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <select
+          formControlName="almacen"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': vs.invalid(almacen_FB),
+            'is-valid': vs.valid(almacen_FB)
+          }"
+        >
+          <option *ngFor="let almacen of almacenes" [value]="almacen._id">{{
+            almacen.nombre
+          }}</option>
+        </select>
+        <small id="helpId" class="form-text text-muted"
+          >Almacen al que pertenece</small
+        >
+        <app-validacion-inputs [campo]="almacen_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(nombre_FB),
+            'is-valid': vs.valid(nombre_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="nombre"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Nombre del articulo</small
+        >
+        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(presentacion_FB),
+            'is-valid': vs.valid(presentacion_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="presentacion"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Presentacion en que se almacena</small
+        >
+        <app-validacion-inputs
+          [campo]="presentacion_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(unidad_FB),
+            'is-valid': vs.valid(unidad_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="unidad"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Unidades de medida en que se maneja</small
+        >
+        <app-validacion-inputs [campo]="unidad_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(kgPorUnidad_FB),
+            'is-valid': vs.valid(kgPorUnidad_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="kgPorUnidad"
+        />
+        <small id="helpId" class="form-text text-muted">Kg por unidad</small>
+        <app-validacion-inputs [campo]="kgPorUnidad_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(stockMinimo_FB),
+            'is-valid': vs.valid(stockMinimo_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="stockMinimo"
+        />
+        <small id="helpId" class="form-text text-muted">Stock minimo</small>
+        <app-validacion-inputs [campo]="stockMinimo_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(stockMaximo_FB),
+            'is-valid': vs.valid(stockMaximo_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="stockMaximo"
+        />
+        <small id="helpId" class="form-text text-muted">Stock maximo</small>
+        <app-validacion-inputs [campo]="stockMaximo_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="col-12" *ngIf="this.formulario.invalid">
+      <app-validacion-inputs [campo]="this.formulario"></app-validacion-inputs>
+    </div>
+  </div>
+
+  <hr />
+
+  <br />
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#creaerModificarArticulo"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+</form>
