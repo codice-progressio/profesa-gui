@@ -39,9 +39,11 @@ export class AlamacenProduccion implements OnInit {
       .filtros(new FiltrosArticulos(this._articuloService))
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["nombre", 1]])
+      .setSortCampos([["nombre", -1]])
 
-      .serivicio.todo(this._paginadorService)
+      .servicio.todo(
+        // this._paginadorService
+      )
       .subscribe((articulos) => {
         this.articulos = articulos
         this._paginadorService.activarPaginador(this._articuloService.total)
