@@ -30,7 +30,7 @@
   <br />
 
   <h1 class="display-3">
-    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b>
+    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b> <small class='text-muted'> {{articulo.presentacion}}</small>
   </h1>
   <h4>
     Existencia en kg: <b>{{ articulo.existenciaEnKg() | number }}</b>
