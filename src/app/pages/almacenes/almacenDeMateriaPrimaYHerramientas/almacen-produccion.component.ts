@@ -5,6 +5,7 @@ import { ArticuloService } from "../../../services/articulo/articulo.service"
 import { FiltrosArticulos } from "../../../services/utilidades/filtrosParaConsultas/FiltrosArticulos"
 import { PaginadorService } from "../../../components/paginador/paginador.service"
 import { ManejoDeMensajesService } from "../../../services/utilidades/manejo-de-mensajes.service"
+import { ArticuloCrearModificarComponent } from "../articulo/articulo-crear-modificar.component"
 
 @Component({
   selector: "app-almacen-produccion",
@@ -19,6 +20,7 @@ export class AlamacenProduccion implements OnInit {
   articuloDetalle: Articulo = null
   articuloEntrada: Articulo = null
   articuloSalida: Articulo = null
+  componenteCrearModificar: ArticuloCrearModificarComponent
 
   constructor(
     public _articuloService: ArticuloService,
@@ -86,6 +88,10 @@ export class AlamacenProduccion implements OnInit {
 
   editar(ar: Articulo) {
     this.articuloCrearEditar = ar
+    setTimeout(
+      () => this.componenteCrearModificar.cargarDatos(),
+      100
+    )
   }
 
   entradaSalidaGuardada() {
@@ -97,7 +103,9 @@ export class AlamacenProduccion implements OnInit {
   }
 
   eliminar(ar: Articulo) {
-    let msj1 = `Si eliminas el articulo '${ar.nombre}' perderas los datos y toda la informacion relacionada a el. Esta operacion no se puede deshacer.`
+    let msj1 = `Si eliminas el articulo '${
+      ar.nombre
+    }' perderas los datos y toda la informacion relacionada a el. Esta operacion no se puede deshacer.`
 
     let msj2 = `De verdad estas muy seguro? Es puede perjudicar tu inventario.`
 
