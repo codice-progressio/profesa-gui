@@ -20,6 +20,7 @@
             />
 
             <a
+            (click)="componenteCrearModificar.crearFormulario()"
               data-toggle="modal"
               data-target="#creaerModificarArticulo"
               class="btn btn-success text-white"
@@ -219,6 +220,7 @@
         <app-articulo-crear-modificar
           [articulo]="articuloCrearEditar"
           (esteComponente)="componenteCrearModificar = $event"
+          (guardar)="cargarArticulos()"
         ></app-articulo-crear-modificar>
       </div>
     </div>
