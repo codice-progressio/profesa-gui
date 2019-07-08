@@ -44,12 +44,21 @@ export class ArticuloCrearModificarComponent implements OnInit {
   }
 
   cargarDatos() {
-    let intervalo = setInterval(() => {
-      if (this.articulo) {
-        clearInterval(intervalo)
-        throw "No se ha definido cargar datos. "
-      }
-    }, 100)
+        this.crearFormulario()
+        this.asignarValores(this.articulo)
+  }
+
+  asignarValores(ar: Articulo) {
+    this.codigoLocalizacion_FB.setValue(ar.codigoLocalizacion)
+    this.codigoInterno_FB.setValue(ar.codigoInterno)
+    this.codigoProveedor_FB.setValue(ar.codigoProveedor)
+    this.almacen_FB.setValue(ar.almacen._id)
+    this.nombre_FB.setValue(ar.nombre)
+    this.presentacion_FB.setValue(ar.presentacion)
+    this.unidad_FB.setValue(ar.unidad)
+    this.kgPorUnidad_FB.setValue(ar.kgPorUnidad)
+    this.stockMinimo_FB.setValue(ar.stockMinimo)
+    this.stockMaximo_FB.setValue(ar.stockMaximo)
   }
 
   crearFormulario() {

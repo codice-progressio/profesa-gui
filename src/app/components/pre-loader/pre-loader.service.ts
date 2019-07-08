@@ -12,7 +12,7 @@ export class PreLoaderService {
   leyenda: string[] = [];
   canceladoPorError:boolean = false;
   miniCarga:boolean = false;
-  tiempoDeEsperaAntesDePrecarga: number  = 1000;
+  // tiempoDeEsperaAntesDePrecarga: number  = 100;
   mostrar: boolean = false;
 
 
@@ -43,10 +43,10 @@ export class PreLoaderService {
       this.cargando = true;
       this.canceladoPorError = false;
 
-      setTimeout(() => {
+      // setTimeout(() => {
         // Si todavia se esta cargando entonces si se muestra. 
         this.mostrar = this.cargando;
-      }, this.tiempoDeEsperaAntesDePrecarga);
+      // }, this.tiempoDeEsperaAntesDePrecarga);
     }
 
     const id = Math.trunc(Math.random()*10000);

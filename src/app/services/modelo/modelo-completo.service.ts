@@ -46,10 +46,11 @@ export class ModeloCompletoService extends CRUD<
     return throwError(err)
   }
 
-  todo(): Observable<ModeloCompleto[]> {
-    console.log("aqui")
-    return this.getAll(undefined, undefined, undefined, ModeloCompleto)
-  }
+  // todo(): Observable<ModeloCompleto[]> {
+  //   return this.getAll(undefined, undefined, undefined, ModeloCompleto)
+  // }
+
+ 
 
   /**
    *Obtiene el total del modelo completo en transito.

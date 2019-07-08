@@ -3,7 +3,7 @@ import { FiltrosDeConsultas } from "./FiltrosDeConsultas";
 export class FiltrosArticulos <T> extends FiltrosDeConsultas<T> {
 
     constructor(
-        public serivicio: T
+        public servicio: T
     ){
         super()
     }
