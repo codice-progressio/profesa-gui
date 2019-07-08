@@ -38,25 +38,7 @@
   z-index: 9999;
 }
 
-.fondo-preloader {
-  background-color: #398bf7;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-}
 
-.fondo-preloader-top {
-  background-color: #ffffff;
-  position: absolute;
-  /* top: 0px; */
-  /* left: 0px; */
-  width: 100%;
-  /* height: 25%; */
-  z-index: 9999;
-}
 
 .animated.delay-0-1s {
   -webkit-animation-delay: 0.1s;
