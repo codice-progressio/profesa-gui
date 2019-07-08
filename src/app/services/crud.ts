@@ -213,6 +213,9 @@ export class CRUD<
    * @param {string} [filtros=null] La cadena de filtros en un objeto. Si se define este paramentro
    * es necesario que tambien se definan dentro de ellos el limite, desde, sort y campo para
    * la paginacion. Esto tambien debe incluir el paginador que se quiere utilizar.
+   * @param {boolean} [filtrosParaCRUDAnterior=false] Si se pone en true toma
+   * el primer valor del arrelglo de filtros y lo convierte al estilo de sort=1|-1?campo=campoDeOrdenamiento que es compatible con los routes del api que no 
+   * estan actualizados a la nueva forma de trabajo con los filtros.
    * @returns {Observable<T_TipoDeModelo[]>}
    * @memberof CRUD
    */
@@ -220,13 +223,20 @@ export class CRUD<
     msjLoading: string = `Cargando ${this.nombreDeDatos.plural}.`,
     urlAlternativa: string = null,
     filtros: { [key: string]: string },
-    type: { new (): T_TipoDeModelo }
+    type: { new (): T_TipoDeModelo },
+    filtrosParaCRUDAnterior: boolean = false
   ): Observable<T_TipoDeModelo[]> {
     const a: number = this._preLoaderService.loading(msjLoading)
 
     // Valores de la url
     let url = this.base + (urlAlternativa ? urlAlternativa : "") + "?"
     url += `${this.concatenerFiltros(filtros)}`
+
+    if( filtrosParaCRUDAnterior ) {
+      url += `&sort=${filtros.sortCampos.split('>')[1]}`
+      url += `&campo=${filtros.sortCampos.split('>')[0]}`
+    }
+
     return this.http.get(url).pipe(
       map((resp: any) =>
       {

@@ -20,8 +20,8 @@ import { Deserializable } from "../../models/deserealizable.model"
 })
 export class ArticuloService extends CRUD<
   Articulo,
-  AlmacenDeMateriaPrimaYHerramientasService,
-  FiltrosArticulos<AlmacenDeMateriaPrimaYHerramientasService>
+  ArticuloService,
+  FiltrosArticulos<ArticuloService>
 > {
   constructor(
     public http: HttpClient,
@@ -48,7 +48,8 @@ export class ArticuloService extends CRUD<
       undefined,
       undefined,
       this.filtrosDelFolio.obtenerFiltros(),
-      Articulo
+      Articulo, 
+      true
     )
   }
 
