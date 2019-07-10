@@ -16,7 +16,7 @@ import { ArticuloCrearModificarComponent } from "../articulo/articulo-crear-modi
 export class AlamacenProduccion implements OnInit {
   articulos: Articulo[] = []
   buscando: boolean = false
-  articuloCrearEditar: Articulo = null
+  // articuloCrearEditar: Articulo = null
   articuloDetalle: Articulo = null
   articuloEntrada: Articulo = null
   articuloSalida: Articulo = null
@@ -41,9 +41,7 @@ export class AlamacenProduccion implements OnInit {
       .setLimite(this._paginadorService.limite)
       .setSortCampos([["nombre", -1]])
 
-      .servicio.todo(
-        // this._paginadorService
-      )
+      .servicio.todo()
       .subscribe((articulos) => {
         this.articulos = articulos
         this._paginadorService.activarPaginador(this._articuloService.total)
@@ -51,7 +49,7 @@ export class AlamacenProduccion implements OnInit {
   }
 
   comprobarExistencias(ar: Articulo): number {
-    return this.articuloCrearEditar.existencia
+    return ar.existencia
   }
   asignarDetalle(ar: Articulo) {
     this.articuloDetalle = ar
@@ -82,18 +80,17 @@ export class AlamacenProduccion implements OnInit {
   }
 
   limpiar() {
-    this.articuloCrearEditar = null
     this.articuloDetalle = null
     this.articuloEntrada = null
     this.articuloSalida = null
   }
 
+  crear() {
+    this.componenteCrearModificar.crear()
+  }
+
   editar(ar: Articulo) {
-    this.articuloCrearEditar = ar
-    setTimeout(
-      () => this.componenteCrearModificar.cargarDatos(),
-      100
-    )
+    this.componenteCrearModificar.modificar(ar)
   }
 
   entradaSalidaGuardada() {
