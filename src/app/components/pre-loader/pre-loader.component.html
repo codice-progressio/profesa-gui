@@ -1,55 +1,30 @@
-<!-- <div *ngIf="_s.cargando" [ngClass]="{'animated zoomIn': _s.cargando}" class="jumbotron jumbotron-fluid bg-light fondo-negro"> -->
-<div *ngIf="!_s.canceladoPorError && !_s.miniCarga && _s.mostrar" [ngClass]="
-{
-    'animated fadeOut': _s.desvanecer,
-    'animated fadeIn': _s.mostrar
-}
- " class="fondo-preloader">
+<div
+  *ngIf="!_s.canceladoPorError && !_s.miniCarga && _s.mostrar"
+  class="preloader"
+>
+  <div class="loader w-100 text-center">
+    <div class="loader__figure"></div>
+    <p class="loader__label">
+      <img src="assets/images/logo-text.png" alt="Pagina principal" />
+    </p>
 
+    <br />
 
-    <div class="jumbotron vertical-center bg-info h-100">
-
-        <div class="container">
-            <h1 class='text-white w-100 display-1 text-center'>Falta un poco... <i class="fas fa-cloud-download animated bounce infinite"></i></h1>
-        </div>
+    <div
+      *ngFor="let ley of _s.Object.keys(_s.registro); let i = index"
+      [class]="' fadeIn animated delay-0-' + (i + 1) + 's'"
+    >
+      <hr class="w-25" />
+      <h5 class="text-white">
+        {{ _s.registro[ley] }}
+        <i
+          [class]="
+            'fas fa-cloud-download-alt animated fadeInDown infinite text-white  slower delay-0-' +
+            (i + 1) +
+            's'
+          "
+        ></i>
+      </h5>
     </div>
-
-    <div class="preloader">
-        <div class="loader w-100 text-center">
-            <div class="loader__figure"></div>
-            <p class="loader__label"><img src="assets/images/logo-text.png" alt="homepage" /></p>
-
-            <br>
-            <!-- <div *ngFor="let ley of _s.leyenda; let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' "> -->
-            <div *ngFor="let ley of _s.Object.keys(_s.registro); let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' ">
-                <hr class='w-25'>
-                <h5 class="text-inverse">{{_s.registro[ley]}} <i [class]="'fas fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
-            </div>
-        </div>
-    </div>
-
-
+  </div>
 </div>
-
-<!-- <div *ngIf="_s.cargando && !_s.canceladoPorError && _s.miniCarga" [ngClass]="
-{
-    'animated fadeOut': _s.desvanecer,
-    'animated fadeIn': _s.cargando
-}
- " class="fondo-preloader-top">
-
-    <div class="">
-        <div class=" w-100 text-center">
-            <div class="loader__figure"></div><br>
-
-
-            <br>
-            <div *ngFor="let ley of _s.leyenda; let i = index;" [class]="' fadeIn animated delay-0-'+(i+1)+'s' ">
-                <hr class='w-25'>
-                <h5 class="text-inverse">{{ley}} <i [class]="'fas fa-cloud-download animated fadeInDown infinite  slower delay-0-'+(i+1)+'s' "></i> </h5>
-            </div>
-        </div>
-    </div>
- -->
-
-<!-- </div> -->
