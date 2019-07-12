@@ -1,10 +1,35 @@
 import { Component, OnInit, Input , EventEmitter, Output} from '@angular/core';
 import { Observable, throwError, Subscription } from "rxjs"
 
+/**
+ * Este componente crea un input para busquedas. La manera de trabajar empieza * definiendo @Input() cbObservable en el componente que llame a este: 
+ *
+ *    //El termino aqui es el que genera el input de este componente. 
+ *    //No se puede hacer de otra manera por que el observable una ves que se 
+ *    //llama no modifica el termino. 
+ *    cbObserbable = (termino) => {
+ *        return this._articuloService.buscar(termino)
+ *    }
+ * 
+ * Despues tenemos que resivir los datos que esta generando este componente con * los siguientes @Output:
+ * 
+ * @Output() terminoPublico => Transmite el termino por si se necesita pero    * esta obsoleto en este momento. 
+ * @Output() resultado - Retorna todos los datos con el tipo generico. 
+ * @Output() cancelado - Evento que se emite siempre que termina de manera 
+ * repentina. 
+ * @Output() error - Evento que emite un error generado dentro del componente, 
+ * no en el servicio. 
+ *
+ * @export
+ * @class BuscadorPacienteComponent
+ * @implements {OnInit}
+ * @template T
+ */
 @Component({
   selector: 'app-buscador-paciente',
   templateUrl: './buscador-paciente.component.html'
 })
+
 export class BuscadorPacienteComponent<T> implements OnInit {
 
   private ob = Object
@@ -48,7 +73,7 @@ export class BuscadorPacienteComponent<T> implements OnInit {
    * Este es el observable que se va a llamar despues de la espera 
    * definida. 
    */
-  @Input() observable: Observable<T> = null
+  observable: Observable<T> = null
   @Input() cbObservable: any
   /**
    * Cuando el observable termina se emite el resultado en este evento
@@ -285,9 +310,9 @@ export class BuscadorPacienteComponent<T> implements OnInit {
     let esError = false
     let msj = []
 
-    if( !this.observable ) {
+    if( !this.cbObservable ) {
       esError = true
-      msj.push('No has defido el observable')
+      msj.push('No has defido el callback que debe contener el observable.')
     }
 
    if( esError ) throw 'EL BUSCADOR PACIENTE => ' +  msj.join('.')

@@ -22,7 +22,6 @@ export class AlamacenProduccion implements OnInit {
   articuloSalida: Articulo = null
   componenteCrearModificar: ArticuloCrearModificarComponent
 
-  observableAMandar: Observable<Articulo[]>
   termino: string = ""
 
   cbObserbable = (termino) => {
@@ -55,7 +54,6 @@ export class AlamacenProduccion implements OnInit {
 
   ngOnInit() {
     this.cargarArticulos()
-    this.observableAMandar = this._articuloService.buscar(this.termino)
   }
 
   cargarArticulos() {
