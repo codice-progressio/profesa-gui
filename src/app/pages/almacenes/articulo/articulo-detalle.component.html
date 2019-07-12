@@ -1,7 +1,7 @@
 <ng-container *ngIf="articulo">
   <div class="d-flex aling-items-center justify-content-between">
-    <h1>Detalle de <b>articulo</b></h1>
-    <h3>{{ articulo.nombre }}</h3>
+    <h1>{{ articulo.nombre }}</h1>
+    <h3>Detalle de <b>articulo</b></h3>
   </div>
 
   <hr />
@@ -23,9 +23,18 @@
       <h6><b>Unidad: </b></h6>
       {{ articulo.unidad }} <br />
       <h6><b>kg por unidad: </b></h6>
-      {{ articulo.kgPorUnidad | number }}
+      {{ articulo.kgPorUnidad | number }} <br />
+      <h6><b>Descripcion: </b></h6>
+      {{ articulo.descripcion }}
+    </div>
+
+    <div class="col-12">
+      <h6><b>Observaciones: </b></h6>
+      <p>{{articulo.observaciones}}</p>
     </div>
   </div>
+
+  <hr>
 
   <br />
 

@@ -18,7 +18,9 @@ export class Articulo implements Deserializable {
     public stockMinimo: number = 0,
     public stockMaximo: number = 0,
     public salidas: SalidaArticulo[] = [],
-    public entradas: EntradaArticulo[] = []
+    public entradas: EntradaArticulo[] = [],
+    public descripcion?: string,
+    public observaciones?: string,
   ) {}
 
   deserialize(input: this): this {
