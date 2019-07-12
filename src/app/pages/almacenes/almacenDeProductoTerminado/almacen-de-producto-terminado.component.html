@@ -6,16 +6,17 @@
           <h1 class=""><strong>Modelos</strong> existentes</h1>
 
           <div class="d-flex  align-items-center ">
-            <input
-              #inputBusqueda
-              (keyup)="buscar(inputBusqueda.value)"
-              type="text"
-              class="form-control mr-3"
-              name="busqueda"
-              id="busqueda"
-              aria-describedby="busquedahelp"
-              placeholder="Buscar un modelo"
-            />
+              <div class="mr-3">
+                  <app-buscador-paciente
+                    [cbObservable]="cbObserbable"
+                    [tiempoDeEspera]="1000"
+                    (resultado)="busqueda($event)"
+                    (cancelado)="cancelado()"
+                    (error)="error($event)"
+                    (terminoPublico)="termino = $event"
+                  ></app-buscador-paciente>
+                </div>
+    
           </div>
         </div>
         <hr />
