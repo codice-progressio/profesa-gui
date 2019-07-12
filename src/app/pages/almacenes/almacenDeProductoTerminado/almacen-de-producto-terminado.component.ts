@@ -2,15 +2,17 @@ import { Component, OnInit } from "@angular/core"
 import { ModeloCompleto } from "../../../models/modeloCompleto.modelo"
 import { AlmacenProductoTerminadoService } from "../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service"
 import { PaginadorService } from "../../../components/paginador/paginador.service"
-import { FiltrosModelosCompletos } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos"
+import { FiltrosModelosCompletos } from "../../../services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos";
 import { ModeloCompletoService } from "../../../services/modelo/modelo-completo.service"
 import { Lotes } from "../../../models/almacenProductoTerminado/lotes.model"
+import { ManejoDeMensajesService } from "../../../services/utilidades/manejo-de-mensajes.service"
 
 @Component({
   selector: "app-almacen-de-producto-terminado",
   templateUrl: "./almacen-de-producto-terminado.component.html",
   styles: []
 })
+
 export class AlmacenDeProductoTerminadoComponent implements OnInit {
   /**
    *El modeloCompleto al que se le va a agregar una entrada o salida.
@@ -29,10 +31,40 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   detalleLote: Lotes
 
+  termino: string = ""
+
+  cbObserbable = (termino) => {
+    this.buscando = true
+    return this._almacenDeProductoTerminadoService.search(
+      termino,
+      undefined,
+      undefined,
+      ModeloCompleto
+    )
+  }
+
+  busqueda(modelosCompletos: ModeloCompleto[]) {
+    modelosCompletos.map((mc) => {
+      mc._servicio = this._modeloCompletoService
+    })
+    this.modelosCompletos = modelosCompletos
+  }
+
+  cancelado() {
+    this.buscando = false
+    this.cargarModelos()
+  }
+
+  error(error: string) {
+    this._msjService.err(error)
+    throw error
+  }
+
   constructor(
     public _almacenDeProductoTerminadoService: AlmacenProductoTerminadoService,
     public _modeloCompletoService: ModeloCompletoService,
-    public _paginadorService: PaginadorService
+    public _paginadorService: PaginadorService,
+    public _msjService: ManejoDeMensajesService
   ) {
     this._paginadorService.callback = () => {
       this.cargarModelos()
@@ -72,24 +104,6 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
    * @memberof AlmacenDeProductoTerminadoComponent
    */
   buscando: boolean = false
-
-  buscar(termino: string) {
-    if (termino.trim().length === 0) {
-      this.cargarModelos()
-      this.buscando = false
-      return
-    }
-
-    this.buscando = true
-    this._almacenDeProductoTerminadoService
-      .search(termino, undefined, undefined, ModeloCompleto)
-      .subscribe((mcs) => {
-        mcs.map((mc) => {
-          mc._servicio = this._modeloCompletoService
-        })
-        this.modelosCompletos = mcs
-      })
-  }
 
   /**
    *Asigna el modeloCompleto al detalla y ejecuta varias operaciones
