@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from "@angular/core"
 import { Articulo } from "src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo"
-import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo"
 import { ArticuloService } from "../../../services/articulo/articulo.service"
 import { FiltrosArticulos } from "../../../services/utilidades/filtrosParaConsultas/FiltrosArticulos"
 import { PaginadorService } from "../../../components/paginador/paginador.service"
 import { ManejoDeMensajesService } from "../../../services/utilidades/manejo-de-mensajes.service"
 import { ArticuloCrearModificarComponent } from "../articulo/articulo-crear-modificar.component"
+import { Observable } from "rxjs"
 
 @Component({
   selector: "app-almacen-produccion",
@@ -21,6 +21,28 @@ export class AlamacenProduccion implements OnInit {
   articuloEntrada: Articulo = null
   articuloSalida: Articulo = null
   componenteCrearModificar: ArticuloCrearModificarComponent
+
+  termino: string = ""
+
+  cbObserbable = (termino) => {
+    this.buscando = true
+    return this._articuloService.buscar(termino)
+  }
+
+  busqueda(articulos: Articulo[]) {
+
+    this.articulos = articulos
+  }
+
+  cancelado() {
+    this.buscando = false
+    this.cargarArticulos()
+  }
+
+  error(error: string) {
+    this._msjService.err(error)
+    throw error
+  }
 
   constructor(
     public _articuloService: ArticuloService,
@@ -39,7 +61,7 @@ export class AlamacenProduccion implements OnInit {
       .filtros(new FiltrosArticulos(this._articuloService))
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["nombre", -1]])
+      .setSortCampos([["nombre", 1]])
 
       .servicio.todo()
       .subscribe((articulos) => {
@@ -59,18 +81,6 @@ export class AlamacenProduccion implements OnInit {
       this.articuloEntrada = ar
     } else {
       this.articuloSalida = ar
-    }
-  }
-
-  buscar(termino: string) {
-    if (termino.trim().length === 0) {
-      this.cargarArticulos()
-      this.buscando = false
-    } else {
-      this.buscando = true
-      this._articuloService
-        .buscar(termino)
-        .subscribe((articulos) => (this.articulos = articulos))
     }
   }
 
