@@ -1,9 +1,12 @@
 <div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="articulo?._id">{{ articulo.nombre }}</h1>
   <h1>
-    <span *ngIf="!articulo?._id">Crear </span
-    ><span *ngIf="articulo?._id">Modificar </span> <b>articulo</b>
+    <span class="text-success" *ngIf="!articulo?._id">
+      <i class="fas fa-plus-square    "></i> Crear articulo <b>articulo</b> </span
+    ><span class="text-warning" *ngIf="articulo?._id">
+        <i class="fas fa-pen-square"></i> Modificar <b>articulo</b>
+    </span>
   </h1>
-  <h3 *ngIf="articulo?._id">{{ articulo.nombre }}</h3>
 </div>
 
 <hr />
@@ -158,6 +161,38 @@
         />
         <small id="helpId" class="form-text text-muted">Kg por unidad</small>
         <app-validacion-inputs [campo]="kgPorUnidad_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <textarea
+          [ngClass]="{
+            'is-invalid': vs.invalid(descripcion_FB),
+            'is-valid': vs.valid(descripcion_FB)
+          }"
+          class="form-control"
+          formControlName="descripcion"
+        ></textarea>
+        <small id="helpId" class="form-text text-muted">Descripcion</small>
+        <app-validacion-inputs [campo]="descripcion_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <textarea
+          [ngClass]="{
+            'is-invalid': vs.invalid(observaciones_FB),
+            'is-valid': vs.valid(observaciones_FB)
+          }"
+          class="form-control"
+          formControlName="observaciones"
+        ></textarea>
+        <small id="helpId" class="form-text text-muted">Observaciones</small>
+        <app-validacion-inputs
+          [campo]="observaciones_FB"
+        ></app-validacion-inputs>
       </div>
     </div>
 

@@ -59,6 +59,8 @@ export class ArticuloCrearModificarComponent implements OnInit {
     this.kgPorUnidad_FB.setValue(ar.kgPorUnidad)
     this.stockMinimo_FB.setValue(ar.stockMinimo)
     this.stockMaximo_FB.setValue(ar.stockMaximo)
+    this.descripcion_FB.setValue(ar.descripcion)
+    this.observaciones_FB.setValue(ar.observaciones)
   }
 
   /**
@@ -94,6 +96,8 @@ export class ArticuloCrearModificarComponent implements OnInit {
         presentacion: ["", [Validators.required]],
         unidad: ["", [Validators.required]],
         kgPorUnidad: ["", [Validators.required, Validators.min(0)]],
+        descripcion: [""], 
+        observaciones: [""], 
         stockMinimo: [
           "",
           [Validators.required, Validators.max(999999), Validators.min(0)]
@@ -154,6 +158,12 @@ export class ArticuloCrearModificarComponent implements OnInit {
   }
   get stockMaximo_FB(): AbstractControl {
     return this.formulario.get("stockMaximo")
+  }
+  get descripcion_FB(): AbstractControl {
+    return this.formulario.get("descripcion")
+  }
+  get observaciones_FB(): AbstractControl {
+    return this.formulario.get("observaciones")
   }
 
   submit(modelo: Articulo, valid: boolean, e) {
