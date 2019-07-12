@@ -25,7 +25,8 @@ import { NgxMaskModule } from "ngx-mask"
 import { OrganizadorDragAndDropComponent } from "../components/organizador-drag-and-drop/organizador-drag-and-drop.component"
 import { Paginador2Component } from "../components/paginador2/paginador2.component"
 import { BotonParaImprecionComponent } from "./boton-para-imprecion/boton-para-imprecion.component"
-import { FormsModule } from "@angular/forms"
+import { FormsModule } from "@angular/forms";
+import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component'
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { FormsModule } from "@angular/forms"
     OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
-    BotonParaImprecionComponent
+    BotonParaImprecionComponent,
+    BuscadorPacienteComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -75,7 +77,8 @@ import { FormsModule } from "@angular/forms"
     ProgressBarComponent,
     NgxMaskModule,
     Paginador2Component,
-    BotonParaImprecionComponent
+    BotonParaImprecionComponent,
+    BuscadorPacienteComponent
   ],
   providers: [ModeloCompletoPipe]
 })

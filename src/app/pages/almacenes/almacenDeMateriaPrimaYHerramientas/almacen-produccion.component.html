@@ -6,18 +6,21 @@
           <h1 class=""><strong>Articulos</strong> existentes</h1>
 
           <div class="d-flex  align-items-center ">
-            <input
-              #inputBusqueda
-              (keyup)="buscar(inputBusqueda.value)"
-              type="text"
-              class="form-control mr-3"
-              name="busqueda"
-              id="busqueda"
-              l
-              aria-describedby="busquedahelp"
-              title="Nombre, id, codigo de proveedor, localizacion, interno, etc..."
-              placeholder="Buscar un articulo."
-            />
+
+            <div class="mr-3">
+              <app-buscador-paciente
+                [observable]="observableAMandar"
+                [cbObservable]="cbObserbable"
+                [tiempoDeEspera]="1000"
+                (resultado)="busqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error($event)"
+                (terminoPublico)="termino = $event"
+              ></app-buscador-paciente>
+
+            </div>
+            
+     
 
             <a
             (click)="crear()"
@@ -120,7 +123,6 @@
                 >
                   <i class="fas fa-minus    "></i>
                 </a>
-               
               </td>
               <td class="no-wrap ">{{ articulo.nombre }}</td>
               <td class="no-wrap fit">{{ articulo.almacen.nombre }}</td>
