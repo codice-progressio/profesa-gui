@@ -18,7 +18,7 @@ import { AlmacenDescripcionService } from "../../../services/almacenDeMateriaPri
   styles: []
 })
 export class ArticuloCrearModificarComponent implements OnInit {
-  @Input() articulo: Articulo = null
+  articulo: Articulo = null
   @Output() guardar = new EventEmitter<null>()
 
   @Output() esteComponente = new EventEmitter<this>()
@@ -59,6 +59,30 @@ export class ArticuloCrearModificarComponent implements OnInit {
     this.kgPorUnidad_FB.setValue(ar.kgPorUnidad)
     this.stockMinimo_FB.setValue(ar.stockMinimo)
     this.stockMaximo_FB.setValue(ar.stockMaximo)
+    this.descripcion_FB.setValue(ar.descripcion)
+    this.observaciones_FB.setValue(ar.observaciones)
+  }
+
+  /**
+   *Crea un nuevo articulo. 
+   *
+   * @memberof ArticuloCrearModificarComponent
+   */
+  crear(){
+    this.articulo = null
+    this.crearFormulario()
+  }
+
+  /**
+   *Modifica el articulo que se le pase como parametro. 
+   *
+   * @param {Articulo} articulo El articulo a modificar 
+   * @memberof ArticuloCrearModificarComponent
+   */
+  modificar( articulo: Articulo ){
+    this.articulo = articulo
+    this.crearFormulario()
+    this.cargarDatos()
   }
 
   crearFormulario() {
@@ -72,6 +96,8 @@ export class ArticuloCrearModificarComponent implements OnInit {
         presentacion: ["", [Validators.required]],
         unidad: ["", [Validators.required]],
         kgPorUnidad: ["", [Validators.required, Validators.min(0)]],
+        descripcion: [""], 
+        observaciones: [""], 
         stockMinimo: [
           "",
           [Validators.required, Validators.max(999999), Validators.min(0)]
@@ -133,6 +159,12 @@ export class ArticuloCrearModificarComponent implements OnInit {
   get stockMaximo_FB(): AbstractControl {
     return this.formulario.get("stockMaximo")
   }
+  get descripcion_FB(): AbstractControl {
+    return this.formulario.get("descripcion")
+  }
+  get observaciones_FB(): AbstractControl {
+    return this.formulario.get("observaciones")
+  }
 
   submit(modelo: Articulo, valid: boolean, e) {
     e.preventDefault()
@@ -153,6 +185,7 @@ export class ArticuloCrearModificarComponent implements OnInit {
 
   limpiar() {
     this.crearFormulario()
+    this.articulo = null
   }
 
   cancelar() {

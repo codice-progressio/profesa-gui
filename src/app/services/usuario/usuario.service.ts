@@ -34,6 +34,8 @@ export class UsuarioService {
 
   menu: any[] = [];
 
+  apiVersion: string
+
   constructor(
     // Para que este funcione hay que hacer un "imports"
     // en service.module.ts
@@ -166,6 +168,7 @@ export class UsuarioService {
       map( (resp: any) => {
        
         // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
+        this.apiVersion = resp.apiVersion
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
         this._msjService.ok_(resp,null, a);
         return true;
