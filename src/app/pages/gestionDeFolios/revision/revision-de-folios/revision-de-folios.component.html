@@ -64,7 +64,7 @@
   </div>
 </div>
 
-<div *ngIf="folios.length > 0" class="row animated fadeIn faster" >
+<div *ngIf="folios.length > 0" class="row animated fadeIn faster">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -77,37 +77,50 @@
               <th></th>
               <!-- <th title='Ver detalle rapido del folio.'><i class="fas fa-question-circle    "></i></th>
                             <th title='Revisar a fondo el folio y si es necesario alterar funciones basicas.'> <i class="fas fa-question-circle    "></i></th> -->
-              <th title="Numero consecutivo del folio.">
-                <i class="fas fa-question-circle    "></i>FOL
-              </th>
-              <th *ngIf="verComoPedidos" title="Numero de pedido.">
-                <i class="fas fa-question-circle    "></i>PED
-              </th>
-              <th title="El cliente.">
-                <i class="fas fa-question-circle    "></i>CLI
-              </th>
-              <th title="El vendedor al cual pertenece el folio.">
-                <i class="fas fa-question-circle    "></i>VEN
-              </th>
-              <th *ngIf="verComoPedidos" title="El modelo completo">
-                <i class="fas fa-question-circle    "></i>MOD
+              <th class="no-wrap" title="Numero consecutivo del folio.">
+                <i class="fas fa-question-circle    "></i> FOL
               </th>
               <th
+                *ngIf="verComoPedidos"
+                class="no-wrap"
+                title="Numero de pedido."
+              >
+                <i class="fas fa-question-circle    "></i> PED
+              </th>
+              <th class="no-wrap" title="El cliente.">
+                <i class="fas fa-question-circle    "></i> CLI
+              </th>
+              <th
+                class="no-wrap"
+                title="El vendedor al cual pertenece el folio."
+              >
+                <i class="fas fa-question-circle    "></i> VEN
+              </th>
+              <th
+                *ngIf="verComoPedidos"
+                class="no-wrap"
+                title="El modelo completo"
+              >
+                <i class="fas fa-question-circle    "></i> MOD
+              </th>
+              <th
+                class="no-wrap"
                 title="Fecha de entrega a produccion. Es la fecha en que el vendedor finaliza las modificaciones a su folio y lo entrega a produccion."
               >
-                <i class="fas fa-question-circle    "></i>FEP
+                <i class="fas fa-question-circle    "></i> FEP
               </th>
               <th
+                class="no-wrap"
                 title="La sumatoria de todas las piezas de todos los pedidos del folio"
               >
-                <i class="fas fa-question-circle    "></i>TPZ
+                <i class="fas fa-question-circle    "></i> TPZ
               </th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngIf="folios">
-              <ng-container *ngFor="let folio of folios, trackBy: customTB">
+              <ng-container *ngFor="let folio of folios; trackBy: customTB">
                 <tr
                   *ngFor="
                     let pedido of verComoPedidos
@@ -182,7 +195,6 @@
                     </ng-template>
                   </td>
                   <td class="fit">
-                  
                     <button
                       (click)="generarOrdenesDelFolio(folio)"
                       title="Generar las ordenes de este folio"
@@ -307,7 +319,6 @@
 =====================================
 -->
 
-
 <!-- 
 =====================================
  MODAL FOLIO REVISION DE ORDENES
@@ -338,5 +349,58 @@
 <!-- 
 =====================================
  END MODAL FOLIO REVISION DE ORDENES
+=====================================
+-->
+
+<!-- 
+=====================================
+ Modal Surtir desde almacen
+=====================================
+-->
+
+<!-- Button trigger modal -->
+<button
+  type="button"
+  class="btn btn-primary btn-lg"
+  data-toggle="modal"
+  data-target="#modalSurtirAlmacen"
+>
+  Abrir modal surtir desde almacen
+</button>
+
+<!-- Modal -->
+<div
+  class="modal  fade "
+  id="modalSurtirAlmacen"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h1>Surtir pedido desde <b>almacen</b></h1>
+        <app-modelo-completo-gestor-de-procesos-especiales></app-modelo-completo-gestor-de-procesos-especiales>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ END Modal Surtir desde almacen
+=====================================
+-->
+
+<!-- 
+=====================================
+ Modal agregar laser a modelo que no lo lleva en ruta
+=====================================
+-->
+
+<!-- 
+=====================================
+ END Modal agregar laser a modelo que no lo lleva en ruta
 =====================================
 -->
