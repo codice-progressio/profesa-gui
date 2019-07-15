@@ -26,7 +26,8 @@ import { OrganizadorDragAndDropComponent } from "../components/organizador-drag-
 import { Paginador2Component } from "../components/paginador2/paginador2.component"
 import { BotonParaImprecionComponent } from "./boton-para-imprecion/boton-para-imprecion.component"
 import { FormsModule } from "@angular/forms";
-import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component'
+import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component';
+import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente
     ProgressBarComponent,
     Paginador2Component,
     BotonParaImprecionComponent,
-    BuscadorPacienteComponent
+    BuscadorPacienteComponent,
+    ModeloCompletoGestorDeProcesosEspecialesComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -78,7 +80,8 @@ import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente
     NgxMaskModule,
     Paginador2Component,
     BotonParaImprecionComponent,
-    BuscadorPacienteComponent
+    BuscadorPacienteComponent,
+    ModeloCompletoGestorDeProcesosEspecialesComponent
   ],
   providers: [ModeloCompletoPipe]
 })
