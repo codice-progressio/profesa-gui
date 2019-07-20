@@ -197,6 +197,47 @@ export class CRUD<
     )
   }
 
+  todoAbstracto(
+    desde: number = 1,
+    limite: number = 5,
+    type: { new (): T_TipoDeModelo },
+    msjLoading: string = `Cargando ${this.nombreDeDatos.plural}.`
+  ): Observable<T_TipoDeModelo[]> {
+    // Valores de la url
+    let url = `${this.base}?desde=${desde}&limite=${limite}`
+    const a: number = this._preLoaderService.loading(msjLoading)
+
+    return this.http.get(url).pipe(
+      map(this.todoAbstracto_ok(a, type)),
+      catchError(this.manejoDeErrores)
+    )
+  }
+
+  todoAbstracto_ok(a: number, type) {
+    return (resp: any) => {
+      // Retornamos el total
+      this.total = resp.total
+      console.log(`total`,this.total)
+      // Quitamos el mensaje
+      this._msjService.ok_(resp, null, a)
+      // Convertimos los datos
+       return resp[this.nombreDeDatos.plural].map(this.deserealize(type))
+    }
+  }
+
+  manejoDeErrores = (err) => {
+    this._msjService.err(err)
+    return throwError(err)
+  }
+
+  deserealize(type: { new (): T_TipoDeModelo }){
+    return (dato) => {
+      let a: T_TipoDeModelo = new type()
+      a = a["deserialize"](dato)
+      return a
+    }
+  }
+
   /**
    *
    * Obtiene todos los elementos. Todos los limites se definen directamente en la funcion.
