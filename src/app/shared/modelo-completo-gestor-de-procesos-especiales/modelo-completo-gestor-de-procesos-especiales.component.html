@@ -1,3 +1,34 @@
-<p>
-  modelo-completo-gestor-de-procesos-especiales works!
-</p>
+<h1>Gestionar procesos especiales</h1>
+
+<pre *ngIf="debug">
+  {{mctemp?.nombreCompleto}} 
+  <hr>
+  Procesos especiales: 
+  <ng-container *ngFor="let proceso of mctemp?.procesosEspeciales">
+  -       | {{proceso | json}} <br>
+  </ng-container>
+  
+</pre>
+
+<div class="row">
+  <div class="col-6">
+    <app-organizador-drag-and-drop
+      (dropSuccess)="dropSuccess()"
+      [listaOrdenable]="true"
+    ></app-organizador-drag-and-drop>
+  </div>
+  <div class="col-6">
+    
+  
+    <app-organizador-drag-and-drop
+      (dropSuccess)="dropSuccess()"
+      [listaDeElementos]="true"
+    ></app-organizador-drag-and-drop>
+
+    <app-paginador-abstracto
+    (actualizacion)="cambiarPagina($event)"
+    (esteComponente)="paginador = $event"
+  >
+  </app-paginador-abstracto>
+  </div>
+</div>
