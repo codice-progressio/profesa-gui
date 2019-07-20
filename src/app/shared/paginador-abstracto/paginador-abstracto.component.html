@@ -1,0 +1,82 @@
+<nav *ngIf="totalDeElementos" class="animated fadeIn slow">
+    <ul class="pagination pagination-sm justify-content-end align-items-center">
+      <small class="mr-3"
+        ><strong> {{ totalDeElementos }} </strong> elementos</small
+      >
+  
+      <li
+        title='Retroceder a la siguiente pagina'
+        (click)="retrocederPagina()"
+        class="page-item pointer  "
+        [ngClass]="{
+          'text-light': esPrimeraPagina,
+          'text-dark': !esPrimeraPagina
+        }"
+      >
+        <a class="page-link " aria-label="Previous ">
+          <i class="fas fa-arrow-circle-left "></i>
+        </a>
+      </li>
+      <li
+        class="page-item disabled text-center "
+        title="Te encuentras  en la pagina {{ paginaActual }} de {{
+          totalDePaginas
+        }}"
+      >
+        <a class="page-link " aria-label="Next ">
+          <i *ngIf="cargandoDatos" class="fas fa-spinner fa-spin"></i>
+          <small *ngIf="!cargandoDatos"
+            >{{ paginaActual }}/{{ totalDePaginas }}</small
+          >
+        </a>
+      </li>
+      <li
+      title='Ir a la siguiente pagina'
+        (click)="avanzarPagina()"
+        class="page-item pointer "
+        [ngClass]="{ 'text-light': esUltimaPagina, 'text-dark': !esUltimaPagina }"
+      >
+        <a class="page-link animate fadeIn " aria-label="Next ">
+          <i class="fas fa-arrow-circle-right "></i>
+        </a>
+      </li>
+      <li
+        class="page-item pointer "
+        (click)="seleccionarElementosPorPagina(i)"
+        *ngFor="let cantidad of elementosPorPagina; let i = index"
+        [ngClass]="{
+          'active text-white': cantidad === elementosPorPaginaSeleccionado
+        }"
+        title="Mostrar {{ cantidad }} elementos por pagina "
+      >
+        <a class="page-link "
+          ><small>{{ cantidad }}</small></a
+        >
+      </li>
+    </ul>
+  </nav>
+  
+  <span *ngIf="!totalDeElementos" class="text-muted text-right w-100"
+    ><small><strong>No hay elementos para mostrar.</strong></small></span
+  >
+  <span
+    *ngIf="seMuestranTodosLosElementosExistentes() && totalDeElementos > 0"
+    class="text-muted text-right w-100"
+    ><small
+      ><strong>Mostrando todos los elementos existentes.</strong></small
+    ></span
+  >
+  
+  <pre *ngIf="debug" class="text-right float-left"> 
+      activarPaginador: {{activarPaginador}}
+      cargandoDatos: {{cargandoDatos}}
+      totalDeElementos: <b>{{totalDeElementos}}</b> 
+      paginaActual: <b>{{paginaActual}}</b> 
+      totalDePaginas: <b>{{totalDePaginas}}</b> 
+      esPrimeraPagina: <b>{{esPrimeraPagina}}</b> 
+      esUltimaPagina: <b>{{esUltimaPagina}}</b> 
+      elementosPorPaginaSeleccionado: <b>{{elementosPorPaginaSeleccionado}}</b> 
+      elementosPorPagina: <b>{{elementosPorPagina}}</b> 
+      <b>debug:{{debug}} </b>
+  </pre>
+  

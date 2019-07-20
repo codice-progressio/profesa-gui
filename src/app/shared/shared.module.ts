@@ -27,7 +27,8 @@ import { Paginador2Component } from "../components/paginador2/paginador2.compone
 import { BotonParaImprecionComponent } from "./boton-para-imprecion/boton-para-imprecion.component"
 import { FormsModule } from "@angular/forms";
 import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component';
-import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
+import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component';
+import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abstracto.component'
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-comp
     Paginador2Component,
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
-    ModeloCompletoGestorDeProcesosEspecialesComponent
+    ModeloCompletoGestorDeProcesosEspecialesComponent,
+    PaginadorAbstractoComponent
   ],
   exports: [
     NopagefoundComponent,
