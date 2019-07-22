@@ -83,37 +83,30 @@ export class OrganizadorDragAndDropComponent<T> implements OnInit {
   }
 
   onDragEndCallback() {
-    console.log(`onDragEndCallback`)
     this.s.actualizarPropiedadOrden()
   }
   onDraggSuccess() {
-    console.log(`onDraggSuccess`)
     this.s.actualizarPropiedadOrden()
   }
   dragend() {
-    console.log(`dragend`)
     this.s.actualizarPropiedadOrden()
     this.cambiosEnLaListaOrdenable()
   }
   dragleave() {
-    console.log(`dragleave`)
     this.s.actualizarPropiedadOrden()
     this.cambiosEnLaListaOrdenable()
   }
   onDropSuccess() {
-    console.log(`onDropSuccess`)
     this.s.actualizarPropiedadOrden()
     this.cambiosEnLaListaOrdenable()
   }
 
   dragStart() {
-    console.log(`s.dragStart()`)
     this.s.dragStart()
     this.minimizar = true
   }
 
   dragendListaDeElementos() {
-    console.log(`dragendListaDeElementos`)
     this.s.dragStop()
     this.minimizar = false
   }
