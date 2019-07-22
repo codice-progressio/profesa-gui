@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { OrganizadorDragAndDropService } from './organizador-drag-and-drop.service';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
+import { OrganizadorDragAndDropService } from "./organizador-drag-and-drop.service"
 
 /**
  *Esta clase gestiona el componente que generara una lista tipo dnd y
@@ -11,53 +11,52 @@ import { OrganizadorDragAndDropService } from './organizador-drag-and-drop.servi
  * @template T
  */
 @Component({
-  selector: 'app-organizador-drag-and-drop',
-  templateUrl: './organizador-drag-and-drop.component.html',
-  styles: [`
-    .dnd-drag-start {
-        -moz-transform:scale(0.8);
-        -webkit-transform:scale(0.8);
-        transform:scale(0.8);
-        opacity:0.7;
+  selector: "app-organizador-drag-and-drop",
+  templateUrl: "./organizador-drag-and-drop.component.html",
+  styles: [
+    `
+      .dnd-drag-start {
+        -moz-transform: scale(0.8);
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        opacity: 0.7;
         border: 2px dashed #000;
-    }
+      }
 
-    .dnd-drag-enter {
-        opacity:0.7;
+      .dnd-drag-enter {
+        opacity: 0.7;
         border: 2px dashed #000;
-    }
+      }
 
-    .dnd-drag-over {
+      .dnd-drag-over {
         border: 2px flat #000;
-    }
+      }
 
-    .dnd-sortable-drag {
-      -moz-transform:scale(0.9);
-      -webkit-transform:scale(0.9);
-      transform:scale(0.9);
-      opacity:0.7;
-      border: 1px dashed #000;
-    }
-
-  `]
+      .dnd-sortable-drag {
+        -moz-transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+        opacity: 0.7;
+        border: 1px dashed #000;
+      }
+    `
+  ]
 })
 export class OrganizadorDragAndDropComponent<T> implements OnInit {
-
   /**
-   *Define si se muestra o no la lista ordenable. 
+   *Define si se muestra o no la lista ordenable.
    *
    * @type {boolean}
    * @memberof OrganizadorDragAndDropComponent
    */
-  @Input() listaOrdenable: boolean = false;
+  @Input() listaOrdenable: boolean = false
   /**
    *Define si se muestra o no la lista de elementos.
    *
    * @type {boolean}
    * @memberof OrganizadorDragAndDropComponent
    */
-  @Input() listaDeElementos: boolean = false;
-
+  @Input() listaDeElementos: boolean = false
 
   /**
    *Emite un evento cuando se actualiza la lista ordenable con la 
@@ -66,24 +65,56 @@ export class OrganizadorDragAndDropComponent<T> implements OnInit {
    * @type {EventEmitter<void>}
    * @memberof OrganizadorDragAndDropComponent
    */
-  @Output() dropSuccess: EventEmitter<void> = new EventEmitter();
+  @Output() dropSuccess: EventEmitter<void> = new EventEmitter()
 
+  constructor(public s: OrganizadorDragAndDropService<T>) {}
 
+  minimizar: boolean = false
 
-  constructor(
-    public s: OrganizadorDragAndDropService<T>
-  ) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    *Ejecuta la emicion al aactualizar la lista
    *
    * @memberof OrganizadorDragAndDropComponent
    */
-  cambiosEnLaListaOrdenable(){
+  cambiosEnLaListaOrdenable() {
     this.dropSuccess.emit()
   }
 
+  onDragEndCallback() {
+    console.log(`onDragEndCallback`)
+    this.s.actualizarPropiedadOrden()
+  }
+  onDraggSuccess() {
+    console.log(`onDraggSuccess`)
+    this.s.actualizarPropiedadOrden()
+  }
+  dragend() {
+    console.log(`dragend`)
+    this.s.actualizarPropiedadOrden()
+    this.cambiosEnLaListaOrdenable()
+  }
+  dragleave() {
+    console.log(`dragleave`)
+    this.s.actualizarPropiedadOrden()
+    this.cambiosEnLaListaOrdenable()
+  }
+  onDropSuccess() {
+    console.log(`onDropSuccess`)
+    this.s.actualizarPropiedadOrden()
+    this.cambiosEnLaListaOrdenable()
+  }
+
+  dragStart() {
+    console.log(`s.dragStart()`)
+    this.s.dragStart()
+    this.minimizar = true
+  }
+
+  dragendListaDeElementos() {
+    console.log(`dragendListaDeElementos`)
+    this.s.dragStop()
+    this.minimizar = false
+  }
 }

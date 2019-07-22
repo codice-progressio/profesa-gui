@@ -32,7 +32,6 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
       this.procesos = procesos
       this.cargarProcesos(this.procesos)
 
-
       // Preparando paginador.
       let intervaloDeEsperaPaginador = setInterval(() => {
         if (this.paginador) {
@@ -77,21 +76,27 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   }
 
   dropSuccess() {
-    console.log("Drop success")
+    let hijos: Proceso[] = []
+    this._dndService.actualizarPropiedadOrden()
+    this._dndService
+      .obtenerHijosOrdenables()
+      .forEach((dnd) =>{
+       
+        throw 'Falta definir el orden del proceso especial que debe de ir en el pedido'
+         
+    })
   }
 
   cambiarPagina(e: { ["limite"]: number; ["desde"]: number }) {
-
-    this._procesoService.todoAbstracto(e.desde, e.limite, Proceso).subscribe((datos) => {
-      this.procesos = datos
-      this._dndService.limpiarListaDeElementos()
-      this.cargarProcesos( datos )
-      this.paginador.totalDeElementos = this._procesoService.total
-      this.paginador.cargaDePaginador(false)
-    })
-
-
-
+    this._procesoService
+      .todoAbstracto(e.desde, e.limite, Proceso)
+      .subscribe((datos) => {
+        this.procesos = datos
+        this._dndService.limpiarListaDeElementos()
+        this.cargarProcesos(datos)
+        this.paginador.totalDeElementos = this._procesoService.total
+        this.paginador.cargaDePaginador(false)
+      })
   }
 
   ngOnInit() {}
