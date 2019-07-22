@@ -19,6 +19,8 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
   paginador: PaginadorAbstractoComponent
 
+  procesosEspecialesSeleccionados: Proceso[] = []
+
   @Input() debug: boolean = false
 
   constructor(
@@ -28,7 +30,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
     public _procesoService: ProcesoService
   ) {
     this._smc.todo().subscribe((mcs) => this.cargarModeloCompleto(mcs.pop()))
-    this._procesoService.todo().subscribe((procesos) => {
+    this._procesoService.todoAbstracto(1, 5, Proceso).subscribe((procesos) => {
       this.procesos = procesos
       this.cargarProcesos(this.procesos)
 
@@ -65,6 +67,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   }
 
   cargarProcesos(procesos: Proceso[]) {
+    this._dndService.limpiarListaDeElementos()
     procesos.forEach((proceso) => {
       let a = new DndObject<Proceso>()
       a.setEliminable(true)
@@ -78,12 +81,9 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   dropSuccess() {
     let hijos: Proceso[] = []
     this._dndService.actualizarPropiedadOrden()
-    this._dndService
-      .obtenerHijosOrdenables()
-      .forEach((dnd) =>{
-       
-        throw 'Falta definir el orden del proceso especial que debe de ir en el pedido'
-         
+    this.procesosEspecialesSeleccionados = []
+    this._dndService.obtenerHijosOrdenables().forEach((dnd) => {
+      this.procesosEspecialesSeleccionados.push(dnd.objeto)
     })
   }
 

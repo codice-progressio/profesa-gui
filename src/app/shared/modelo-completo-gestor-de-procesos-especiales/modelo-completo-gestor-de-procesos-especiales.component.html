@@ -1,14 +1,5 @@
 <h1>Gestionar procesos especiales</h1>
 
-<pre *ngIf="debug">
-  {{mctemp?.nombreCompleto}} 
-  <hr>
-  Procesos especiales: 
-  <ng-container *ngFor="let proceso of mctemp?.procesosEspeciales">
-  -       | {{proceso | json}} <br>
-  </ng-container>
-  
-</pre>
 
 <div class="row">
   <div class="col-6">
@@ -25,10 +16,24 @@
       [listaDeElementos]="true"
     ></app-organizador-drag-and-drop>
 
-    <app-paginador-abstracto
-    (actualizacion)="cambiarPagina($event)"
-    (esteComponente)="paginador = $event"
-  >
-  </app-paginador-abstracto>
-  </div>
+
+
+      <app-paginador-abstracto
+        (actualizacion)="cambiarPagina($event)"
+        (esteComponente)="paginador = $event"
+      
+      >
+      
+      </app-paginador-abstracto>
+
+s  </div>
 </div>
+
+<pre *ngIf="debug">
+    {{mctemp?.nombreCompleto}} 
+    <hr>
+    Procesos especiales: 
+    {{ procesosEspecialesSeleccionados | json}}
+    
+  </pre>
+  
