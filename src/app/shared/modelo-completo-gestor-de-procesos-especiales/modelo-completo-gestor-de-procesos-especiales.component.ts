@@ -7,9 +7,7 @@ import { DndObject } from "src/app/components/organizador-drag-and-drop/models/d
 import { FamiliaDeProcesosService } from "../../services/proceso/familia-de-procesos.service"
 import { ProcesoService } from "../../services/proceso/proceso.service"
 import { PaginadorAbstractoComponent } from "../paginador-abstracto/paginador-abstracto.component"
-import { Laser } from "src/app/models/laser.models"
 import { FolioLinea } from "../../models/folioLinea.models"
-import { PROCESOS } from "../../config/procesos"
 import { DefaultsService } from "../../services/configDefualts/defaults.service"
 import { DefaultModelData } from "../../config/defaultModelData"
 
@@ -163,16 +161,6 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
       .setLeyenda("Procesos para este pedido")
       .setOrden('0')
 
-    // Los procesos que vamos a cargar
-
-    let pa = [
-      this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION,
-      this.defaultModelData.PROCESOS.ALMACEN_DE_BOTON,
-      this.defaultModelData.PROCESOS.EMPAQUE_DE_PRODUCTO,
-      this.defaultModelData.PROCESOS.EMPAQUE_DE_PRODUCTO,
-
-
-    ]
 
 
 
@@ -185,12 +173,12 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
     console.log(`seSurteDeAlmacenYNoVaLaserado`)
   }
-  seSurteDeAlmacenYVaLaserado(self: this) {
+  seSurteDeAlmacenYVaLaserado() {
     console.log(`seSurteDeAlmacenYVaLaserado`)
   }
 
 
-  noSeSurteDeAlmacenYVaLaserado(self: this) {
+  noSeSurteDeAlmacenYVaLaserado() {
     console.log(`noSeSurteDeAlmacenYVaLaserado`)
   }
 
