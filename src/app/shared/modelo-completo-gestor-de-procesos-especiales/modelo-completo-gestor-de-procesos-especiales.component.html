@@ -1,6 +1,14 @@
-<h1>Gestionar procesos especiales</h1>
+
+<span class="d-flex justify-content-between aling-items-center">
+    <h2> </h2>
+    <h3 >Gestionar <b>procesos</b></h3  >
 
 
+</span>
+
+
+
+<br>
 <div class="row">
   <div class="col-6">
     <app-organizador-drag-and-drop
@@ -9,31 +17,25 @@
     ></app-organizador-drag-and-drop>
   </div>
   <div class="col-6">
-    
-  
     <app-organizador-drag-and-drop
       (dropSuccess)="dropSuccess()"
       [listaDeElementos]="true"
     ></app-organizador-drag-and-drop>
 
+    <app-paginador-abstracto
+      (actualizacion)="cambiarPagina($event)"
+      (esteComponente)="paginador = $event"
+    >
+    </app-paginador-abstracto>
 
 
-      <app-paginador-abstracto
-        (actualizacion)="cambiarPagina($event)"
-        (esteComponente)="paginador = $event"
-      
-      >
-      
-      </app-paginador-abstracto>
-
-s  </div>
+  </div>
 </div>
 
 <pre *ngIf="debug">
-    {{mctemp?.nombreCompleto}} 
-    <hr>
-    Procesos especiales: 
-    {{ procesosEspecialesSeleccionados | json}}
-    
-  </pre>
+  {{mctemp?.nombreCompleto}} 
+  <hr>
+  Procesos especiales: 
+  {{ procesosEspecialesSeleccionados | json}}
   
+</pre>

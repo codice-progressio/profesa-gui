@@ -38,6 +38,14 @@
         </span>
         <strong>Surtir de almacen: </strong> <i *ngIf="pedido.almacen" class="fas fa-check fa-2x text-success"></i>
 
+        <ng-container *ngIf="pedido.almacen || pedido.laserCliente.laser"> 
+            <a  
+            data-toggle="modal" 
+            data-target="#modalModeloCompletoGestorDeProcesosEspeciales"
+            
+            (click)="surtirOLaserar(pedido)" class="btn btn-warning"> <i class="fas fa-edit    "></i></a>
+        </ng-container>
+        
 
         <div class="form-group">
             <label for="observacionesVendedor">Observaciones del vendedor</label>
