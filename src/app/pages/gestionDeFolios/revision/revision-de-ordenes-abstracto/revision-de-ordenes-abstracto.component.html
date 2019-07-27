@@ -4,10 +4,22 @@
      Encabezado
     =====================================
     -->
-  <div class="d-flex align-items-center justify-content-between ">
-    <h1 class="display-6 ">
-      FOL:<b># {{ folio.numeroDeFolio }}</b>
-    </h1>
+  <div class="d-flex align-items-center justify-content-between">
+    
+    <div class="d-flex align-items-center justify-content-between">
+      <h1 class="display-6 ">
+        FOL:<b># {{ folio.numeroDeFolio }}</b>
+      </h1>
+      <a
+      (click)="guardarCambios()"
+      class="btn btn-success btn-sm text-white ml-3 mb-1"
+      title="Genera las ordenes para produccion."
+      data-dismiss="modal"
+      role="button"
+    >
+      Generar ordenes</a
+    >
+    </div>
     <h3>Revision de <b>ordenes</b></h3>
   </div>
   <!-- 
@@ -31,7 +43,7 @@
     <div class="col-6">
       <div class="form-group">
         <label for="obserProduccionFol"
-          ><h6>Observaciones de produccion</h6></label
+          ><h6> <b>Observaciones de produccion</b> </h6></label
         >
         <textarea
           [(ngModel)]="folio.observaciones"
@@ -137,20 +149,14 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label for="observacionesVendedor">Observaciones del vendedor</label>
-          <textarea
-            disabled
-            class="form-control"
-            name="observacionesVendedor"
-            id="observacionesVendedor"
-            rows="1"
-            [(ngModel)]="pedido.observacionesVendedor"
-          ></textarea>
+          <h6><b>Observaciones del vendedor:</b></h6>
+          <p>{{pedido.observacionesVendedor}}</p>
+          
         </div>
       </div>
       <div class="col-6">
         <div class="form-group">
-          <label for="">Observaciones de produccion</label>
+          <label for=""> <b>Observaciones de produccion</b> </label>
           <textarea
             class="form-control"
             name=""
