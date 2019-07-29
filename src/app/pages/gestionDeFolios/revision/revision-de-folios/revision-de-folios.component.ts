@@ -190,11 +190,7 @@ export class RevisionDeFoliosComponent implements OnInit {
   }
 
   calcularTotalDePiezas(folio: Folio): number {
-    let total = 0
-    folio.folioLineas.map((ped) => {
-      total += ped.cantidad
-    })
-    return total
+    return folio.totalDePiezas()
   }
 
   /**

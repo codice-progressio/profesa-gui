@@ -191,7 +191,7 @@
                       {{ pedido.cantidad | number }}
                     </ng-container>
                     <ng-template #elseTemplate>
-                      {{ folio.totalDePiezas | number }}
+                      {{ folio.totalDePiezas() | number }}
                     </ng-template>
                   </td>
                   <td class="fit">
