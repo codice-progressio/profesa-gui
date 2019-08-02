@@ -82,10 +82,10 @@ export class Folio implements Deserializable {
    * @type {Number}
    * @memberof Folio
    */
-  get totalDePiezas(): Number
+  totalDePiezas(): number
   {
     let total = 0
-    this.folioLineas.map((ped) => { total = + ped.cantidad })
+    this.folioLineas.forEach((ped) => { total += ped.cantidad })
     return total
   }
 }

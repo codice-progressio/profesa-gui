@@ -15,6 +15,7 @@ import { DefaultsService } from 'src/app/services/configDefualts/defaults.servic
 import { DepartamentosConfig } from 'src/app/config/departamentosConfig';
 import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
 import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { filter } from 'rxjs/operators'
 
 
 
@@ -70,13 +71,29 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
 
 
 
+  
+  filtrarMaquinas( maquinas: Maquina[]){
+    return maquinas.filter(m=>{
+    let depto = this.filtrarDeptos(m)
+    return depto.length > 0
+
+    } ); 
+  }
+
+  filtrarDeptos( m: Maquina ){
+    return m.departamentos.filter( 
+      (d)=>{ 
+        return d.nombre == 'MATERIALES'} 
+    )
+  }
+
   ngOnInit() {
 
     // Propios del departamento.
     this.cargarUsuarios();
-    this._maquinaService.todo()
+    this._maquinaService.todoAbstracto(1, 1000, Maquina)
       .subscribe( ( maquinas:Maquina[] )=>{
-        this.maquinas = maquinas;
+        this.maquinas = this.filtrarMaquinas(maquinas)
     });
 
   

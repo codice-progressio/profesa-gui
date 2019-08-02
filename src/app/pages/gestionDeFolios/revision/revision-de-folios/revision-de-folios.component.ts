@@ -7,7 +7,8 @@ import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/F
 import { FolioLinea } from "../../../../models/folioLinea.models"
 import { Orden } from "src/app/models/orden.models"
 import { RevisionDeOrdenesAbstractoComponent } from "../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
+import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
+import { ModeloCompletoGestorDeProcesosEspecialesComponent } from "../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component"
 
 @Component({
   selector: "app-revision-de-folios",
@@ -43,6 +44,8 @@ export class RevisionDeFoliosComponent implements OnInit {
   esNecesarioReinciarPaginador: boolean
 
   actualizarVista: boolean = false
+
+  pedidoParaSurtirOLaserar: FolioLinea
 
   /**
    *El folio del cual se generaran ordenes.
@@ -88,8 +91,8 @@ export class RevisionDeFoliosComponent implements OnInit {
       .setFechaDeEntregaEstimadaHasta(false)
       .setFechaFinalizacionDelFolioHasta(false)
       .setFechaFinalizacionDelFolioDesdeEl(false)
-      .setOrdenesGeneradas( false )
-      .setEntregarAProduccion( false )
+      .setOrdenesGeneradas(false)
+      .setEntregarAProduccion(false)
   }
 
   cambiarVerComoPedidos(val: boolean) {
@@ -169,7 +172,6 @@ export class RevisionDeFoliosComponent implements OnInit {
         this._paginadorService.activarPaginador(this._folioService.total)
         this.actualizarVista = false
       })
-
   }
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
@@ -188,11 +190,7 @@ export class RevisionDeFoliosComponent implements OnInit {
   }
 
   calcularTotalDePiezas(folio: Folio): number {
-    let total = 0
-    folio.folioLineas.map((ped) => {
-      total += ped.cantidad
-    })
-    return total
+    return folio.totalDePiezas()
   }
 
   /**
@@ -208,11 +206,9 @@ export class RevisionDeFoliosComponent implements OnInit {
     el vendedor tendra disponible el folio para editarlo. Quieres continuar?`
 
     this._msjService.confirmarAccion(msj, () => {
-      this._folioService
-        .iniciarProduccion(folio._id, false)
-        .subscribe(() => {
-          this.cargarFolios()
-        })
+      this._folioService.iniciarProduccion(folio._id, false).subscribe(() => {
+        this.cargarFolios()
+      })
     })
   }
   generarOrdenesDelFolio(folio: Folio) {
@@ -229,10 +225,9 @@ export class RevisionDeFoliosComponent implements OnInit {
       .modificar(folio)
       .toPromise()
       .then(() => {
-        setTimeout( ()=>{
+        setTimeout(() => {
           this.cargarFolios()
-
-        }, 1000 )
+        }, 1000)
       })
   }
 
@@ -242,5 +237,18 @@ export class RevisionDeFoliosComponent implements OnInit {
 
   customTB(index, folio) {
     return `${index}-${folio._id}`
+  }
+
+  modeloCompletoGestorDeProcesosEspecialesComponent: ModeloCompletoGestorDeProcesosEspecialesComponent
+
+  inicializarSurtidoOLaserado(e) {
+    console.log(`inicializarSurtidoOLaserado`, e)
+    this.pedidoParaSurtirOLaserar = e
+        this.modeloCompletoGestorDeProcesosEspecialesComponent.inicializar()
+  }
+
+  procesosEspeciales(e ){
+    console.log(`procesosEspeciales`)
+    this.modeloCompletoGestorDeProcesosEspecialesComponent = e
   }
 }

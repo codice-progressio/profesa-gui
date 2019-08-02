@@ -60,17 +60,17 @@ export class FolioLinea {
     this.modeloCompleto = new ModeloCompleto().deserialize(input.modeloCompleto)
     //console.log("x  ?.2");
     this.laserCliente = new Laser().deserialize(input.laserCliente)
-    this.coloresTenidos = input.coloresTenidos.map(color =>
+    this.coloresTenidos = input.coloresTenidos.map((color) =>
       new ColoresTenidos().deserialize(color)
     )
     //console.log("x  ?.3");
 
-    this.procesos = input.procesos.map(proceso =>
+    this.procesos = input.procesos.map((proceso) =>
       new Procesos().deserialize(proceso)
     )
 
     //console.log("x  ?.4");
-    this.ordenes = input.ordenes.map(orden => new Orden().deserialize(orden))
+    this.ordenes = input.ordenes.map((orden) => new Orden().deserialize(orden))
     //console.log("x  ?");
     return this
   }
@@ -78,52 +78,134 @@ export class FolioLinea {
   popularOrdenes(forzarMedias: boolean = false) {
     // Si las ordenes ya fueron generadas no
     // ejecutamos de nuevo.
-    this.ordenes = []
     // Calculamos la cantidad de ordenes
+    this.ordenes = []
+    if (this.almacen) {
+      this.generarOrdenesParaAlmacen()
+    } else {
+      this.generarOrdenes(forzarMedias)
+    }
+  }
 
-    let ordenesConDecimales: number =
-      this.cantidad / this.modeloCompleto.tamano.estandar
+  /**
+   * Genera las ordenes para dividir la cantidaad en base al total solicitado
+   * por el pedido. Se hace de esta manera por que no requerimos ordenes para
+   * surtir desde el almacen.
+   *
+   * @private
+   * @memberof FolioLinea
+   */
+  private generarOrdenesParaAlmacen() {
+    // Generamos la orden en base a la cantidad de almacen y he ignoramos el
+    // valor de generacion de medias ordenes.
+
+    let orden = new Orden()
+    orden.unidad = 1
+    orden.piezasTeoricas = this.cantidad
+    orden.nivelDeUrgencia = this.nivelDeUrgencia
+
+    this.ordenes.push(orden)
+  }
+
+  /**
+   *Genera las ordenes para divir la cantidad en base al estandar de produccion.
+   *
+   * @private
+   * @param {boolean} forzarMedias
+   * @memberof FolioLinea
+   */
+  private generarOrdenes(forzarMedias: boolean) {
+    let ordenesConDecimales: number = this.comprobarCantidadDeOrdenes()
 
     let cantidadDeOrdenes = Math.trunc(ordenesConDecimales)
 
     // Si son medias ordenes multiplicamos la cantidad de ordenes por dos.
-    cantidadDeOrdenes =
-      this.modeloCompleto.medias || forzarMedias
-        ? cantidadDeOrdenes * 2
-        : cantidadDeOrdenes
+    cantidadDeOrdenes = this.comprobarMediasOrdenesEnCantidad(
+      cantidadDeOrdenes,
+      forzarMedias
+    )
 
     // Obtenemos el sobrante
 
     let decimalUltimaOrden = Number((ordenesConDecimales % 1).toFixed(4))
 
-    let unidad = this.modeloCompleto.medias || forzarMedias ? 0.5 : 1
+    let unidad = this.calcularUnidad(forzarMedias)
 
     for (let i = 0; i < cantidadDeOrdenes; i++) {
-      let orden = new Orden()
-
-      orden.unidad = unidad
-      orden.piezasTeoricas = Math.round(
-        this.modeloCompleto.tamano.estandar * unidad
-      )
-      orden.nivelDeUrgencia = this.nivelDeUrgencia
-
-      this.ordenes.push(orden)
+      this.ordenes.push(this.popularOrden(new Orden(), unidad))
     }
 
     if (ordenesConDecimales % 1 > 0) {
-      let orden = new Orden()
-      orden.unidad = decimalUltimaOrden
-      orden.piezasTeoricas = Math.round(
-        this.modeloCompleto.tamano.estandar * decimalUltimaOrden
-      )
-      orden.nivelDeUrgencia = this.nivelDeUrgencia
-
-      this.ordenes.push(orden)
+      this.ordenes.push(this.popularOrden(new Orden(), decimalUltimaOrden))
     }
 
     for (let i = 0; i < this.ordenes.length; i++) {
       const orden = this.ordenes[i]
       orden.numeroDeOrden = i
     }
+  }
+
+  /**
+   * Popula una orden para la generacion de las mismas dentro de los pedidos.
+   *
+   * @private
+   * @param {Orden} orden El objeto a popular
+   * @param {number} unidad La unidad que tendra la orden.
+   * @returns {Orden}
+   * @memberof FolioLinea
+   */
+  private popularOrden(orden: Orden, unidad: number): Orden {
+    orden.unidad = unidad
+    orden.piezasTeoricas = Math.round(
+      this.modeloCompleto.tamano.estandar * orden.unidad
+    )
+    orden.nivelDeUrgencia = this.nivelDeUrgencia
+    return orden
+  }
+
+  /**
+   * Retorna la cantidad de ordenes en base a el estandar junto con decimales
+   *
+   * @private
+   * @returns {number} La cantidad de ordenes con decimales.
+   * @memberof FolioLinea
+   */
+  private comprobarCantidadDeOrdenes(): number {
+    return this.cantidad / this.modeloCompleto.tamano.estandar
+  }
+
+  /**
+   * Revisa la cantidad de ordenes que se van a generar en base a si se
+   * seleccionaron medias ordenes o completas. Si es el caso de un
+   * folio que se va a surtir de alamacen entonces unicamente permite que se
+   * genere una orden
+   *
+   * @private
+   * @param {number} cantidadDeOrdenes El numero de ordenes que ya se calcularon
+   * @param {boolean} forzarMedias Obliga a la construccion de medias. Este
+   * valor se ignora si es un folio de almacen.
+   *
+   * @returns {number}
+   * @memberof FolioLinea
+   */
+  private comprobarMediasOrdenesEnCantidad(
+    cantidadDeOrdenes: number,
+    forzarMedias: boolean
+  ): number {
+    return this.modeloCompleto.medias || forzarMedias
+      ? cantidadDeOrdenes * 2
+      : cantidadDeOrdenes
+  }
+
+  /**
+   *Retorna el valor de la unidad segun corresponda a medias u ordenes
+   *
+   * @private
+   * @param {boolean} forzarMedias
+   * @returns {number}
+   * @memberof FolioLinea
+   */
+  private calcularUnidad(forzarMedias: boolean): number {
+    return this.modeloCompleto.medias || forzarMedias ? 0.5 : 1
   }
 }

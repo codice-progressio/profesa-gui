@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core"
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
 import { ModeloCompleto } from "../../models/modeloCompleto.modelo"
 import { ModeloCompletoService } from "../../services/modelo/modelo-completo.service"
 import { OrganizadorDragAndDropService } from "../../components/organizador-drag-and-drop/organizador-drag-and-drop.service"
@@ -7,6 +7,9 @@ import { DndObject } from "src/app/components/organizador-drag-and-drop/models/d
 import { FamiliaDeProcesosService } from "../../services/proceso/familia-de-procesos.service"
 import { ProcesoService } from "../../services/proceso/proceso.service"
 import { PaginadorAbstractoComponent } from "../paginador-abstracto/paginador-abstracto.component"
+import { FolioLinea } from "../../models/folioLinea.models"
+import { DefaultsService } from "../../services/configDefualts/defaults.service"
+import { DefaultModelData } from "../../config/defaultModelData"
 
 @Component({
   selector: "app-modelo-completo-gestor-de-procesos-especiales",
@@ -14,39 +17,181 @@ import { PaginadorAbstractoComponent } from "../paginador-abstracto/paginador-ab
 })
 export class ModeloCompletoGestorDeProcesosEspecialesComponent
   implements OnInit {
-  mctemp: ModeloCompleto = null
+  /**
+   *Este modelo completo temporal no sirve para estructurar los procesos
+   * y obtener el orden de los especiales. Es necesario definirlo.
+   *
+   * @type {ModeloCompleto}
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
+  @Input() mctemp: ModeloCompleto = null
+
+  /**
+   *Retorna este componente.
+   *
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
+  @Output() esteComponente = new EventEmitter<this>()
+
+  /**
+   *La lista de procesos cargados desde la bd
+   *
+   * @type {Proceso[]}
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   procesos: Proceso[] = null
 
+  /**
+   *El paginador abstracto.
+   *
+   * @type {PaginadorAbstractoComponent}
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   paginador: PaginadorAbstractoComponent
 
+  /**
+   *La lista de procesos seleccionados.
+   *
+   * @type {Proceso[]}
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
+  procesosEspecialesSeleccionados: Proceso[] = []
+
+  /**
+   *Bandera para mostrar la informacion de debugueo.
+   *
+   * @type {boolean}
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   @Input() debug: boolean = false
+
+  @Input() pedido: FolioLinea
+
+  defaultModelData: DefaultModelData
+
+  leyenda: string = " Arrastra procesos de la lista para agregarlos."
 
   constructor(
     public _smc: ModeloCompletoService,
     public _dndService: OrganizadorDragAndDropService<Proceso>,
     public _familiaService: FamiliaDeProcesosService,
-    public _procesoService: ProcesoService
-  ) {
-    this._smc.todo().subscribe((mcs) => this.cargarModeloCompleto(mcs.pop()))
-    this._procesoService.todo().subscribe((procesos) => {
-      this.procesos = procesos
-      this.cargarProcesos(this.procesos)
+    public _procesoService: ProcesoService,
+    public _defaultsService: DefaultsService
+  ) {}
 
-      // Preparando paginador.
-      let intervaloDeEsperaPaginador = setInterval(() => {
-        if (this.paginador) {
-          this.paginador.totalDeElementos = this._procesoService.total
-          this.paginador.inciarPaginador()
-          this.paginador.cargandoDatos = false
-          clearInterval(intervaloDeEsperaPaginador)
-        }
-      }, 100)
-    })
+  ngOnInit() {
+    this.esteComponente.emit(this)
   }
 
-  cargarModeloCompleto(mc: ModeloCompleto) {
+  inicializar() {
+    this._defaultsService.cargarDefaults().subscribe((d) => {
+      this.defaultModelData = d
+      this._procesoService
+        .todoAbstracto(1, 5, Proceso)
+        .subscribe(this.primeraCargaDeProcesos)
+    })
+
+    this._dndService.leyendaListaSeleccionable = this.leyenda
+  }
+
+  primeraCargaDeProcesos = (procesos) => {
+    this.procesos = procesos
+
+    this.cargarProcesos(this.procesos)
+
+    // Preparando paginador.
+    let intervaloDeEsperaPaginador = setInterval(() => {
+      if (this.paginador) {
+        clearInterval(intervaloDeEsperaPaginador)
+        this.paginador.totalDeElementos = this._procesoService.total
+        this.paginador.inciarPaginador()
+        this.paginador.cargandoDatos = false
+      }
+    }, 100)
+
+    // Necesitamos saber si este pedido tiene alguno de los siguientes trayectos.
+
+    /**
+     * x. Es de almacen y no va laserado.
+     * x. Es de almacen y va laserado.
+     * x. No es de almacen y va laserado.
+     *
+     *
+     */
+
+    this.comprobarProcesosACargar()
+  }
+
+  comprobarProcesosACargar() {
+    console.log(`this.comprobarProcesosACargar()`)
+    let cb = null
+
+    let surtir = !!this.pedido.almacen
+    let laserar = !!this.pedido.laserCliente.laser
+
+    if (surtir) {
+      cb = this.comprobarSiSeLaseraCuandoSeSurte(laserar)
+    } else {
+      cb = laserar ? this.noSeSurteDeAlmacenYVaLaserado : null
+    }
+
+    // Si no se surte o no se lasera no se debe de mostrar
+    // el componente.
+
+    if (cb) {
+      cb(this)
+    }
+  }
+
+  comprobarSiSeLaseraCuandoSeSurte(laserado: boolean): any {
+    // Se surte
+    return laserado
+      ? this.seSurteDeAlmacenYVaLaserado
+      : this.seSurteDeAlmacenYNoVaLaserado
+  }
+
+  seSurteDeAlmacenYNoVaLaserado(self: this) {
+    console.log(`entro`)
+
+    let keyArea = "1"
+    let organizador = self._dndService.nuevaArea(keyArea)
+    organizador
+      .setPadre()
+      .setEliminable(false)
+      .setLeyenda("Procesos para este pedido")
+      .setOrden('0')
+
+
+
+
+    organizador.hijos
+      .addFijo()
+      .setEliminable(false)
+      .setLeyenda("Hijo fijo")
+
+    self._dndService.actualizarPropiedadOrden()
+
+    console.log(`seSurteDeAlmacenYNoVaLaserado`)
+  }
+  seSurteDeAlmacenYVaLaserado() {
+    console.log(`seSurteDeAlmacenYVaLaserado`)
+  }
+
+
+  noSeSurteDeAlmacenYVaLaserado() {
+    console.log(`noSeSurteDeAlmacenYVaLaserado`)
+  }
+
+  /**
+   *Genera los datos del paginador para el modelo seleccionado.
+   *
+   * @param {ModeloCompleto} mc
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
+  cargarLosProcesosPorDefault(mc: ModeloCompleto) {
     // Este es con fines de debugueo
-    this.mctemp = mc
+
+    // this.mctemp = mc
     // ---------------------------
     this._dndService.leyendaListaSeleccionable =
       "Arrastra procesos de la lista para agregarlos."
@@ -64,7 +209,14 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
     this._dndService.actualizarPropiedadOrden()
   }
 
+  /**
+   *Genera la lista del paginador para seleccionar.
+   *
+   * @param {Proceso[]} procesos
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   cargarProcesos(procesos: Proceso[]) {
+    this._dndService.limpiarListaDeElementos()
     procesos.forEach((proceso) => {
       let a = new DndObject<Proceso>()
       a.setEliminable(true)
@@ -75,18 +227,26 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
     })
   }
 
+  /**
+   *Carga los dato de la lista a procesosEspecialesSeleccionados.
+   *
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   dropSuccess() {
-    let hijos: Proceso[] = []
     this._dndService.actualizarPropiedadOrden()
-    this._dndService
-      .obtenerHijosOrdenables()
-      .forEach((dnd) =>{
-       
-        throw 'Falta definir el orden del proceso especial que debe de ir en el pedido'
-         
+    this.procesosEspecialesSeleccionados = []
+    this._dndService.obtenerHijosOrdenables().forEach((dnd) => {
+      this.procesosEspecialesSeleccionados.push(dnd.objeto)
     })
   }
 
+  /**
+   *Ejecuta los procesos necesario y consultas para hacer el cambio de pagina
+   en la lista de elementos del dnd.
+   *
+   * @param {{ ["limite"]: number; ["desde"]: number }} e
+   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+   */
   cambiarPagina(e: { ["limite"]: number; ["desde"]: number }) {
     this._procesoService
       .todoAbstracto(e.desde, e.limite, Proceso)
@@ -98,6 +258,4 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
         this.paginador.cargaDePaginador(false)
       })
   }
-
-  ngOnInit() {}
 }

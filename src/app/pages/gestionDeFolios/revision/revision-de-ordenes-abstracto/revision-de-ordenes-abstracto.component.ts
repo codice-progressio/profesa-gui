@@ -2,6 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Folio } from '../../../../models/folio.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Orden } from 'src/app/models/orden.models';
+import { ModeloCompletoGestorDeProcesosEspecialesComponent } from '../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
 
 @Component({
   selector: 'app-revision-de-ordenes-abstracto',
@@ -27,7 +28,8 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
   @Output() esteComponente = new  EventEmitter<RevisionDeOrdenesAbstractoComponent> ()
 
   @Output() guardar = new EventEmitter<Folio>()
-  
+  @Output() pedidoASurtirOLaserar = new EventEmitter<FolioLinea>()
+
   constructor() { }
 
 
@@ -46,6 +48,12 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
    */
   guardarCambios(  ){
     this.guardar.emit( this.folio )
+  }
+
+
+  surtirOLaserar( pedido: FolioLinea ){
+    console.log(`surtirOLaserar`,pedido)
+    this.pedidoASurtirOLaserar.emit(pedido)
   }
 
 
