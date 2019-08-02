@@ -191,7 +191,7 @@
                       {{ pedido.cantidad | number }}
                     </ng-container>
                     <ng-template #elseTemplate>
-                      {{ folio.totalDePiezas | number }}
+                      {{ folio.totalDePiezas() | number }}
                     </ng-template>
                   </td>
                   <td class="fit">
@@ -242,7 +242,7 @@
   aria-labelledby="modelTitleId"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <app-folios-detalle-abstracto
@@ -273,7 +273,7 @@
   aria-labelledby="modelTitleId"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <app-pedidos-detalle
@@ -333,13 +333,14 @@
   aria-labelledby="modelTitleId"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <app-revision-de-ordenes-abstracto
           [folio]="folioParaGenerarOrdenes"
           (guardar)="generarOrdenes($event)"
           (esteComponente)="revisionDeOrdenesCargarComponente($event)"
+          (pedidoASurtirOLaserar)="inicializarSurtidoOLaserado($event)"
         ></app-revision-de-ordenes-abstracto>
       </div>
     </div>
@@ -354,24 +355,14 @@
 
 <!-- 
 =====================================
- Modal Surtir desde almacen
+ Modal surtir desde almacen o laserar
 =====================================
 -->
 
-<!-- Button trigger modal -->
-<button
-  type="button"
-  class="btn btn-primary btn-lg"
-  data-toggle="modal"
-  data-target="#modalSurtirAlmacen"
->
-  Abrir modal surtir desde almacen
-</button>
-
 <!-- Modal -->
 <div
-  class="modal  fade "
-  id="modalSurtirAlmacen"
+  class="modal fade"
+  id="modalModeloCompletoGestorDeProcesosEspeciales"
   tabindex="-1"
   role="dialog"
   aria-labelledby="modelTitleId"
@@ -380,8 +371,12 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <h1>Surtir pedido desde <b>almacen</b></h1>
-        <app-modelo-completo-gestor-de-procesos-especiales></app-modelo-completo-gestor-de-procesos-especiales>
+        <app-modelo-completo-gestor-de-procesos-especiales
+          (esteComponente)="procesosEspeciales($event)"
+          [debug]="true"
+          [pedido]="pedidoParaSurtirOLaserar"
+        >
+        </app-modelo-completo-gestor-de-procesos-especiales>
       </div>
     </div>
   </div>
@@ -389,18 +384,6 @@
 
 <!-- 
 =====================================
- END Modal Surtir desde almacen
-=====================================
--->
-
-<!-- 
-=====================================
- Modal agregar laser a modelo que no lo lleva en ruta
-=====================================
--->
-
-<!-- 
-=====================================
- END Modal agregar laser a modelo que no lo lleva en ruta
+ END Modal surtir desde almacen o laserar
 =====================================
 -->
