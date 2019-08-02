@@ -94,23 +94,52 @@
               ></app-nivel-urgencia>
             </div>
             <div>
-              <a
-                (click)="
-                  pedido.popularOrdenes(
-                    (pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias)
-                  )
-                "
-                class="btn btn-info btn-sm text-white mr-3"
-                title="Convierte todas las ordenes en medias ordnenes."
-                role="button"
-              >
-                <span *ngIf="pedido.gui_generarComoMedias">
-                  <i class="fas fa-star    "></i> Convertir a ordenes
-                </span>
-                <span *ngIf="!pedido.gui_generarComoMedias">
-                  <i class="fas fa-star-half    "></i> Convertir a medias</span
+
+              <!-- 
+              =====================================
+               Boton convertir a medias.
+              =====================================
+              -->
+              <ng-container 
+                *ngIf="!pedido.almacen; else botonDesactivadoTemplate">
+                  <a
+                  (click)="
+                    pedido.popularOrdenes(
+                      (pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias)
+                    )
+                  "
+                  class="btn btn-info btn-sm text-white mr-3"
+                  title="Convierte todas las ordenes en medias ordnenes."
+                  role="button"
                 >
-              </a>
+                  <span *ngIf="pedido.gui_generarComoMedias">
+                    <i class="fas fa-star    "></i> Convertir a ordenes
+                  </span>
+                  <span *ngIf="!pedido.gui_generarComoMedias">
+                    <i class="fas fa-star-half    "></i> Convertir a medias</span
+                  >
+                </a>
+              </ng-container>
+              <ng-template #botonDesactivadoTemplate>
+                  <a
+                  class="btn btn-light btn-sm mr-3"
+                  title="Las ordenes del almacen no se pueden hacer medias."
+                  role="button"
+                >
+                  <span >
+                    <i class="fas fa-star-half    "></i> Convertir a medias</span
+                  >
+                </a>
+              </ng-template>
+              
+              
+              <!-- 
+              =====================================
+               END Boton convertir a medias.
+              =====================================
+              -->
+
+
             </div>
           </div>
         </div>
