@@ -7,7 +7,7 @@
   [paginador]="_paginadorService"
 >
   <div class="row">
-    <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
+    <div class="col-12 col-sm-6 col-lg-5 col-xl-4">
       <button
         [disabled]="!this.activarBotonFoliosDeProduccion"
         type="button"
@@ -18,13 +18,14 @@
             !this.mostrarFoliosConOrdenes
           )
         "
-        class="btn btn-primary btn-sm btn-block "
+        class="btn btn-primary btn-block "
       >
         <ng-container *ngIf="mostrarFoliosConOrdenes; else elseTemplate">
-          Capturar
+          <i class="fas fa-file-alt    "></i> Ir a folios por confirmar
         </ng-container>
         <ng-template #elseTemplate>
-          Dar seguimiento
+          <i class="fas fa-cogs    "></i> 
+          Ir a folios en proceso
         </ng-template>
       </button>
     </div>
@@ -46,7 +47,7 @@
       </button>
     </div>
     <div
-      class="col-12 col-sm-6 col-lg-3 col-xl-2"
+      class="col-12 col-sm-6 col-lg-5 col-xl-4"
       *ngIf="this.mostrarFoliosConOrdenes"
     >
       <button
@@ -59,6 +60,9 @@
       </button>
     </div>
   </div>
+
+  <hr>
+
 
   <div *ngIf="this.mostrarFoliosConOrdenes" class="collapse mt-5" id="filtros">
     <app-grupo-de-filtro

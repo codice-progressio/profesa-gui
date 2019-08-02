@@ -134,6 +134,14 @@ hr.thin.no-margin-bottom {
     /* border-top: 1px solid rgba(0, 0, 0, 0.1); */
 }
 
+hr.dashed  {
+  width: 100%;
+  height: 0;
+  border: medium none;
+  border-top: 1px dashed black!important
+}
+
+
 /* Evita que se rompan las lineas de texto  */
 .no-wrap {
   white-space: nowrap;
