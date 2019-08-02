@@ -35,11 +35,11 @@
                 =====================================
                 -->
                 <ng-container *ngFor="let departamento of departamentos">
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="custom-control custom-checkbox mt-3">
-                            <input (change)="agregarQuitarId(departamento._id, $event)" [checked]='estaAgregado( departamento._id )' type="checkbox" class="custom-control-input" [id]="departamento._id">
-                            <label class="custom-control-label" [for]="departamento._id">{{departamento.nombre}}</label>
-                        </div>
+                    <div class="col-12 col-sm-6 col-lg-3">  
+                       
+                            <input (change)="agregarQuitarId(departamento._id, $event)" [checked]='estaAgregado( departamento._id )' type="checkbox" class="" [id]="departamento._id">
+                            <label [for]="departamento._id">{{departamento.nombre}}</label>
+                        
 
                     </div>
 

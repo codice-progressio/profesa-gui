@@ -231,30 +231,23 @@
           ></app-validacion-inputs>
         </div>
 
-        <div class="form-check col-12 col-md-4 col-lg-3">
+        <div class="checkbox col-12 col-md-4 col-lg-3">
           <input
-            *ngIf="false"
+            [id]="'almacen' + iPed"
             [ngClass]="{
               'is-invalid': vs.invalid(almacen_FB(iPed)),
               'is-valid': vs.valid(almacen_FB(iPed))
             }"
             formControlName="almacen"
-            name="almacen"
-            class="form-check-input"
             type="checkbox"
-            [id]="'almacen' + iPed"
           />
-
           <label
-            class="form-check-label"
             [for]="'almacen' + iPed"
             title="Cuando se selecciona esta opcion el producto se obtiene desde almacen "
           >
             <i class="fas fa-question-circle"></i> Surtir desde almacen
           </label>
-          <app-validacion-inputs
-            [campo]="almacen_FB(iPed)"
-          ></app-validacion-inputs>
+         
         </div>
 
         <div class="form-group  col-lg-12">

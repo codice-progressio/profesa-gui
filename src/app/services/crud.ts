@@ -198,6 +198,132 @@ export class CRUD<
   }
 
   /**
+   *Esta funcion retorna todos los elementos de la bd paginados. Esta hecho
+   * para trabajar con  el paginador component sin tener complicaciones. 
+   * 
+   * Es necesario definir siempre estos parametros cada vez que se llame a esta funcion, de lo contrario se tomara el valor por defecto que es `desde=1 y limite=30` que estan definidos asi desde la api. 
+   * 
+   * 
+   * Estamos trabajando con dos funciones  en cada componente.La primera funcion
+   * se ejecuta en `constructor()` o en `ngOnInit`. Se debe de meter
+   * manualmente los valores `desde` y `limite` para que no cargue los valores
+   * por defecto. 
+   * ``` typescript
+   * this._servicio.todo(1, 5, Type).subscribe(...)
+   * 
+   * ```
+   * 
+   * De esta manera se cargan los elementos que coincidan con los valores por
+   * defecto del paginador. En caso que se cambien los valores hay que poner 
+   * los que coincidan con el paginador. 
+   * 
+   * La segunda funcion es la que va a realizar la busqueda. Esta se debe de 
+   * llamar desde el `@Output` del paginador cuando se emite un evento. 
+   * 
+   * ``` typescript 
+   *     
+   *  cambiarPagina(e: { ["limite"]: number; ["desde"]: number }) {
+   *    this._procesoService
+   *      .todoAbstracto(e.desde, e.limite, Proceso)
+   *      .subscribe((datos) => {
+   *        this.procesos = datos
+   *        this._dndService.limpiarListaDeElementos()
+   *        this.cargarProcesos(datos)
+   *        this.paginador.totalDeElementos = this._procesoService.total
+   *        this.paginador.cargaDePaginador(false)
+   *      })
+   *  }
+   * 
+   * ```
+   * 
+   * La estructura del paginador en el html es la siguiente: 
+   * 
+   * ```  
+   * 
+   *   <app-paginador-abstracto
+   *    (actualizacion)="cambiarPagina($event)"
+   *    (esteComponente)="paginador = $event"
+   *  
+   *  >
+   *  
+   *  </app-paginador-abstracto>
+   *  
+   *  ```
+   * 
+   *  
+   * @param {number} [desde=1] Desde donde se va a empezar a obtener numeros. 
+   * @param {number} [limite=5] La cantidad maxima de resultados que se van a
+   * solicitar. 
+   * @param {{ new (): T_TipoDeModelo }} type El tipo de objeto que se esta
+   * utilizando para deserealizar el json que viene como respuesta. 
+   * @param {string} [msjLoading=`Cargando ${this.nombreDeDatos.plural}.`] El mensaje que de carga que se quiere mostrar. 
+   * @returns {Observable<T_TipoDeModelo[]>} Un observable con los datos transformados.  
+   * @memberof CRUD
+   */
+  todoAbstracto(
+    desde: number = 1,
+    limite: number = 5,
+    type: { new (): T_TipoDeModelo },
+    msjLoading: string = `Cargando ${this.nombreDeDatos.plural}.`
+  ): Observable<T_TipoDeModelo[]> {
+    // Valores de la url
+    let url = `${this.base}?desde=${desde}&limite=${limite}`
+    const a: number = this._preLoaderService.loading(msjLoading)
+
+    return this.http.get(url).pipe(
+      map(this.todoAbstracto_ok(a, type)),
+      catchError(this.manejoDeErrores)
+    )
+  }
+
+  /**
+   *Retorna el cb para la gestionar la respuesta del servidor.
+   *
+   * @param {number} a
+   * @param {*} type
+   * @returns
+   * @memberof CRUD
+   */
+  private todoAbstracto_ok(a: number, type) {
+    return (resp: any) => {
+      // Retornamos el total
+      this.total = resp.total
+      // Quitamos el mensaje
+      this._msjService.ok_(resp, null, a)
+      // Convertimos los datos
+       return resp[this.nombreDeDatos.plural].map(this.deserealize(type))
+    }
+  }
+
+
+  /**
+   * Retorna el cb para el manejo de errores. 
+   *
+   * @private
+   * @memberof CRUD
+   */
+  private manejoDeErrores = (err) => {
+    this._msjService.err(err)
+    return throwError(err)
+  }
+
+  /**
+   *La funcion para deserealizar el json de la respuesta.
+   *
+   * @private
+   * @param {{ new (): T_TipoDeModelo }} type
+   * @returns
+   * @memberof CRUD
+   */
+  private deserealize(type: { new (): T_TipoDeModelo }){
+    return (dato) => {
+      let a: T_TipoDeModelo = new type()
+      a = a["deserialize"](dato)
+      return a
+    }
+  }
+
+  /**
    *
    * Obtiene todos los elementos. Todos los limites se definen directamente en la funcion.
    *
