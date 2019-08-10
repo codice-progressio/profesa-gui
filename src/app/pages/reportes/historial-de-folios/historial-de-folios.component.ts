@@ -9,6 +9,7 @@ import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/F
 import { FolioNewService } from "src/app/services/folio/folio-new.service";
 import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
 import { UsuarioService } from '../../../services/usuario/usuario.service'
+import { _ROLES } from "src/app/config/roles.const";
 
 @Component({
   selector: "app-historial-de-folios",
@@ -226,7 +227,7 @@ export class HistorialDeFoliosComponent implements OnInit {
   }
   generarOrdenesDelFolio(folio: Folio) {
     this.folioParaGenerarOrdenes = folio
-    folio.popularOrdenesDeTodosLosPedidos()
+    folio.popularOrdenesDeTodosLosPedidos(null)
   }
 
   generarOrdenes(folio: Folio) {

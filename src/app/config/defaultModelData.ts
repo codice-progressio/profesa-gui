@@ -50,6 +50,8 @@ class ProcesosDefaults {
         public PRODUCTO_TERMINADO?: string,
         public EMPAQUE?: string,
         public SELECCION?: string,
+        public LAVADO?: string,
+        public TRANSFORMACION_1ER_PASO?: string,
 
     ) {
         
