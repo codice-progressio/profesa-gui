@@ -97,7 +97,7 @@
                     <option value="-" disabled selected >Selecciona un familiaDeProcesos de la lista</option>
                     <option  *ngFor="let familiaDeProcesos of familias" [value]="familiaDeProcesos._id">{{familiaDeProcesos.nombre}}</option>
                   </select>
-                    <small class="form-text text-muted">familiaDeProcesos</small>
+                    <small class="form-text text-muted">Familia de procesos</small>
                     <app-validacion-inputs [campo]="familiaDeProcesos_FB"></app-validacion-inputs>
                 </div>
 
