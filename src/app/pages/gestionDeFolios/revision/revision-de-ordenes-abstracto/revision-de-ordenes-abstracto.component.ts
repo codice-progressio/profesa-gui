@@ -3,6 +3,9 @@ import { Folio } from '../../../../models/folio.models';
 import { FolioLinea } from 'src/app/models/folioLinea.models';
 import { Orden } from 'src/app/models/orden.models';
 import { ModeloCompletoGestorDeProcesosEspecialesComponent } from '../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
+import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
+import { DefaultModelData } from '../../../../config/defaultModelData'
+import { filter } from 'rxjs/operators'
 
 @Component({
   selector: 'app-revision-de-ordenes-abstracto',
@@ -30,7 +33,15 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
   @Output() guardar = new EventEmitter<Folio>()
   @Output() pedidoASurtirOLaserar = new EventEmitter<FolioLinea>()
 
-  constructor() { }
+
+  defaultData: DefaultModelData
+  constructor(
+    public _defaultService: DefaultsService
+  ) { 
+    this._defaultService
+      .cargarDefaults()
+      .subscribe( d => this.defaultData = d)
+  }
 
 
   ngOnInit() {
@@ -52,11 +63,15 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
 
 
   surtirOLaserar( pedido: FolioLinea ){
-    console.log(`surtirOLaserar`,pedido)
     this.pedidoASurtirOLaserar.emit(pedido)
   }
 
 
+  permitirEdicionDeProcesos(pedido: FolioLinea): boolean {
+    return  pedido.revisarSiRequiereRevisionExtraordinaria(
+      this.defaultData.PROCESOS.LASER
+    )
+  }
 
 
 }

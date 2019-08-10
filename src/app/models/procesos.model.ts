@@ -5,7 +5,7 @@ export class Procesos {
     public proceso?: Proceso,
     public orden?: string,
     // El padre de este proceso. Nos sirve para ordenar.
-    public procesoPadre: Proceso = new Proceso(),
+    // public procesoPadre: Proceso = new Proceso(),
     // Solo para GUI
     public esDeFamilia: boolean = true,
     // Para ordenador visual.
@@ -18,7 +18,7 @@ export class Procesos {
     //console.log("x  ?.1.5.1.1");
     this.proceso = new Proceso().deserialize(input.proceso)
     //console.log("x  ?.1.5.1.2", input.procesoPadre);
-    this.procesoPadre = new Proceso().deserialize(input.procesoPadre)
+    // this.procesoPadre = new Proceso().deserialize(input.procesoPadre)
     //console.log("x  ?.1.5.1.3");
 
     return this

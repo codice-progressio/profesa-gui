@@ -9,6 +9,8 @@ import { Orden } from "src/app/models/orden.models"
 import { RevisionDeOrdenesAbstractoComponent } from "../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
 import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
 import { ModeloCompletoGestorDeProcesosEspecialesComponent } from "../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component"
+import { DefaultModelData } from '../../../../config/defaultModelData'
+import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
 
 @Component({
   selector: "app-revision-de-folios",
@@ -17,10 +19,13 @@ import { ModeloCompletoGestorDeProcesosEspecialesComponent } from "../../../../s
   providers: [{ provide: "paginadorFolios", useClass: PaginadorService }]
 })
 export class RevisionDeFoliosComponent implements OnInit {
+  
+  defaultData: DefaultModelData
   constructor(
     public _folioService: FolioNewService,
     @Inject("paginadorFolios") public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
+    public _msjService: ManejoDeMensajesService,
+    public _defaultService: DefaultsService
   ) {
     this._paginadorService.callback = () => {
       if (this.esNecesarioReinciarPaginador) {
@@ -29,6 +34,8 @@ export class RevisionDeFoliosComponent implements OnInit {
         this.aplicarFiltros(this.componenteFiltrador)
       }
     }
+
+    this._defaultService.cargarDefaults().subscribe( d => this.defaultData = d)
 
     this.cargarFolios()
   }
@@ -172,6 +179,8 @@ export class RevisionDeFoliosComponent implements OnInit {
         this._paginadorService.activarPaginador(this._folioService.total)
         this.actualizarVista = false
       })
+
+    
   }
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
@@ -213,22 +222,40 @@ export class RevisionDeFoliosComponent implements OnInit {
   }
   generarOrdenesDelFolio(folio: Folio) {
     this.folioParaGenerarOrdenes = folio
-    folio.popularOrdenesDeTodosLosPedidos()
+    folio.popularOrdenesDeTodosLosPedidos(this.defaultData.PROCESOS.LASER)
   }
 
   generarOrdenes(folio: Folio) {
-    this.folios = []
-    folio.ordenesGeneradas = true
-    folio.limpiarParaOrdenesGeneradas()
+    if (!folio.esValidoParaPedidosEspeciales()) {
+      this.validacionesFallidas(folio)
+    } else {
+      this.folios = []
+      folio.ordenesGeneradas = true
+      folio.limpiarParaOrdenesGeneradas()
+      
+      this._folioService
+        .modificar(folio)
+        .toPromise()
+        .then(() => {
+          setTimeout(() => {
+            this.cargarFolios()
+          }, 1000)
+        })
+    }
+  }
 
-    this._folioService
-      .modificar(folio)
-      .toPromise()
-      .then(() => {
-        setTimeout(() => {
-          this.cargarFolios()
-        }, 1000)
-      })
+  private validacionesFallidas(folio: Folio) {
+    let msj = "No has validado los siguientes pedidos de este folio: "
+
+    folio.pedidosConValidacionExtraordinariaFallada().forEach((ped) => {
+      msj += ped.pedido + " | "
+    })
+
+    this._msjService.invalido(
+      msj,
+      'Falta definir trayectos',
+      5000
+    )
   }
 
   revisionDeOrdenesCargarComponente(com: RevisionDeOrdenesAbstractoComponent) {
@@ -242,13 +269,11 @@ export class RevisionDeFoliosComponent implements OnInit {
   modeloCompletoGestorDeProcesosEspecialesComponent: ModeloCompletoGestorDeProcesosEspecialesComponent
 
   inicializarSurtidoOLaserado(e) {
-    console.log(`inicializarSurtidoOLaserado`, e)
     this.pedidoParaSurtirOLaserar = e
-        this.modeloCompletoGestorDeProcesosEspecialesComponent.inicializar()
+    this.modeloCompletoGestorDeProcesosEspecialesComponent.inicializar()
   }
 
-  procesosEspeciales(e ){
-    console.log(`procesosEspeciales`)
+  procesosEspeciales(e) {
     this.modeloCompletoGestorDeProcesosEspecialesComponent = e
   }
 }
