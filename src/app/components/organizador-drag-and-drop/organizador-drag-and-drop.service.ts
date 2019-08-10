@@ -113,6 +113,17 @@ export class OrganizadorDragAndDropService <T>{
     this.listaDeElementos = [];
   }
 
+  /**
+   * Destruye la lista de objetos seleccionados junto con los padres he hijos
+   * que se hayan agregado. Deja intacta la lista de elementos seleccionables.
+   *
+   * @memberof OrganizadorDragAndDropService
+   */
+  limpiarListaDeObjetosSeleccionados_Destruir(){
+    this.listaDeObjetos = {}
+    this.listaDeObjetosTemp = {}
+  }
+
 
 
 
@@ -335,7 +346,10 @@ existeObjectoPorCampo(dato: string, campo: string='_id'): boolean {
     for (const key in this.listaDeObjetos) {
       if (this.listaDeObjetos.hasOwnProperty(key)) {
         const element:OrganizadorDragAndDrop<T> = this.listaDeObjetos[key];
-        if( element.padre.objeto[campo] === dato ) return true;
+        //Permitimos que no haya un objeto definido en el padre. 
+        if( element.padre.objeto ){
+          if( element.padre.objeto[campo] === dato ) return true;
+        }
         for (let i = 0; i < element.hijos.fijos.length; i++) {
           const hijoFijo = element.hijos.fijos[i];
           if(hijoFijo.objeto[campo]===dato) return true;

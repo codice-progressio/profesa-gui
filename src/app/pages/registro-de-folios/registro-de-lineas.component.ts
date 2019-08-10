@@ -271,20 +271,20 @@ export class RegistroDeLineasComponent implements OnInit {
 
     mc.procesosEspeciales.forEach((x:Procesos)=>{
       // Obtenemos el id del padre para agregarlo. 
-      let idPadre = <string><any> x.procesoPadre;
+      // let idPadre = <string><any> x.procesoPadre;
       // Buscamos el padre. 
       
-      let dndPadre =  this._organizadorDragAndDropService
-      .obtenerObjetoPadre(idPadre);
+      // let dndPadre =  this._organizadorDragAndDropService
+      // .obtenerObjetoPadre(idPadre);
 
-      // Agregamos el hijo fijo. 
-      dndPadre.hijos
-        .addFijo()
-          .setObjeto(x.proceso)
-          .setOrden(x.orden.toString())
-          .setEliminable(false)
-          .setLeyenda(x.proceso.nombre)
-          .setLeyendaOptativa(x.proceso.departamento.nombre);
+      // // Agregamos el hijo fijo. 
+      // dndPadre.hijos
+      //   .addFijo()
+      //     .setObjeto(x.proceso)
+      //     .setOrden(x.orden.toString())
+      //     .setEliminable(false)
+      //     .setLeyenda(x.proceso.nombre)
+      //     .setLeyendaOptativa(x.proceso.departamento.nombre);
     });
 
 
@@ -352,15 +352,15 @@ export class RegistroDeLineasComponent implements OnInit {
         for (let i = 0; i < procesosDelPedido.length; i++) {
           const proc = procesosDelPedido[i];
           // Buscamos el padre. 
-          this._organizadorDragAndDropService
-            .obtenerObjetoPadre(proc.procesoPadre.toString())
-              .hijos
-                .addOrdenable()
-                  .setEliminable( true )
-                  .setLeyenda( proc.proceso.nombre )
-                  .setLeyendaOptativa( proc.proceso.departamento.nombre )
-                  .setObjeto( proc.proceso )
-                  .setOrden( proc.orden.toString());
+          // this._organizadorDragAndDropService
+          //   .obtenerObjetoPadre(proc.procesoPadre.toString())
+          //     .hijos
+          //       .addOrdenable()
+          //         .setEliminable( true )
+          //         .setLeyenda( proc.proceso.nombre )
+          //         .setLeyendaOptativa( proc.proceso.departamento.nombre )
+          //         .setObjeto( proc.proceso )
+          //         .setOrden( proc.orden.toString());
           // Ordenamos todos los datos por el campo orden. 
           this._organizadorDragAndDropService.ordenarPorPropiedadOrden();
         }
@@ -481,7 +481,7 @@ export class RegistroDeLineasComponent implements OnInit {
         let procesos: Procesos = new Procesos();
         procesos.orden = dndObject.orden;
         procesos.proceso = dndObject.objeto;
-        procesos.procesoPadre = dndObject.objetoPadre;
+        // procesos.procesoPadre = dndObject.objetoPadre;
         procesosArr.push(procesos);
   
       });

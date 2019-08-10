@@ -5,20 +5,19 @@
     =====================================
     -->
   <div class="d-flex align-items-center justify-content-between">
-    
     <div class="d-flex align-items-center justify-content-between">
       <h1 class="display-6 ">
         FOL:<b># {{ folio.numeroDeFolio }}</b>
       </h1>
       <a
-      (click)="guardarCambios()"
-      class="btn btn-success btn-sm text-white ml-3 mb-1"
-      title="Genera las ordenes para produccion."
-      data-dismiss="modal"
-      role="button"
-    >
-      Generar ordenes</a
-    >
+        (click)="guardarCambios()"
+        class="btn btn-success btn-sm text-white ml-3 mb-1"
+        title="Genera las ordenes para produccion."
+        data-dismiss="modal"
+        role="button"
+      >
+        Generar ordenes</a
+      >
     </div>
     <h3>Revision de <b>ordenes</b></h3>
   </div>
@@ -43,7 +42,7 @@
     <div class="col-6">
       <div class="form-group">
         <label for="obserProduccionFol"
-          ><h6> <b>Observaciones de produccion</b> </h6></label
+          ><h6><b>Observaciones de produccion</b></h6></label
         >
         <textarea
           [(ngModel)]="folio.observaciones"
@@ -63,13 +62,13 @@
   -->
 
   <div class="row mt-3">
-      <div
-        class="col-12 d-flex align-items-center bg-light"
-        style="height: 10px;"
-      >
-        <hr class="dashed" />
-      </div>
+    <div
+      class="col-12 d-flex align-items-center bg-light"
+      style="height: 10px;"
+    >
+      <hr class="dashed" />
     </div>
+  </div>
 
   <!-- 
   =====================================
@@ -82,6 +81,11 @@
       <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
           <h3 class="display-6">
+            <small 
+            title='Este pedido esta revisado.'
+            *ngIf="!pedido.requiereRevisionExtraordinaria" class="text-success mr-3 animated tada">
+              <i class="fas fa-check"></i
+            ></small>
             PEDIDO # <b>{{ pedido.pedido }}</b>
             <span class="pl-5">{{ pedido.cantidad | number }} <b>pz</b></span>
           </h3>
@@ -94,15 +98,15 @@
               ></app-nivel-urgencia>
             </div>
             <div>
-
               <!-- 
               =====================================
                Boton convertir a medias.
               =====================================
               -->
-              <ng-container 
-                *ngIf="!pedido.almacen; else botonDesactivadoTemplate">
-                  <a
+              <ng-container
+                *ngIf="!pedido.almacen; else botonDesactivadoTemplate"
+              >
+                <a
                   (click)="
                     pedido.popularOrdenes(
                       (pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias)
@@ -116,30 +120,29 @@
                     <i class="fas fa-star    "></i> Convertir a ordenes
                   </span>
                   <span *ngIf="!pedido.gui_generarComoMedias">
-                    <i class="fas fa-star-half    "></i> Convertir a medias</span
+                    <i class="fas fa-star-half    "></i> Convertir a
+                    medias</span
                   >
                 </a>
               </ng-container>
               <ng-template #botonDesactivadoTemplate>
-                  <a
+                <a
                   class="btn btn-light btn-sm mr-3"
                   title="Las ordenes del almacen no se pueden hacer medias."
                   role="button"
                 >
-                  <span >
-                    <i class="fas fa-star-half    "></i> Convertir a medias</span
+                  <span>
+                    <i class="fas fa-star-half    "></i> Convertir a
+                    medias</span
                   >
                 </a>
               </ng-template>
-              
-              
+
               <!-- 
               =====================================
                END Boton convertir a medias.
               =====================================
               -->
-
-
             </div>
           </div>
         </div>
@@ -147,6 +150,11 @@
     </div>
 
     <div class="row pt-3" style="min-height: 100px">
+      <div class="col-12">
+        <h1 class="dispal-1">
+          {{pedido.modeloCompleto.nombreCompleto}}
+        </h1>
+      </div>
       <div class="col-6">
         <h6><b>Laser del cliente :</b></h6>
 
@@ -160,7 +168,7 @@
           <i *ngIf="pedido.almacen" class="fas fa-check text-success"></i>
         </h6>
 
-        <ng-container *ngIf="pedido.almacen || pedido.laserCliente.laser">
+        <ng-container *ngIf="permitirEdicionDeProcesos(pedido)">
           <a
             data-toggle="modal"
             data-target="#modalModeloCompletoGestorDeProcesosEspeciales"
@@ -179,8 +187,7 @@
       <div class="col-6">
         <div class="form-group">
           <h6><b>Observaciones del vendedor:</b></h6>
-          <p>{{pedido.observacionesVendedor}}</p>
-          
+          <p>{{ pedido.observacionesVendedor }}</p>
         </div>
       </div>
       <div class="col-6">

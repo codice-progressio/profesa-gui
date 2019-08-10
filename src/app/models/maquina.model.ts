@@ -41,11 +41,20 @@ export class Maquina implements Deserializable {
     //   input.datosDeTrabajo.modeloTrabajando
     // );
 
-    this.departamentos = input.departamentos.map(departamento =>
-      new Departamento().deserialize(departamento)
-    );
+   this.comprobarDepartamento(input)
 
     return this;
+  }
+
+  private comprobarDepartamento(input ){
+    if( input.departamentos ){
+      this.departamentos = input.departamentos.map(departamento =>
+        new Departamento().deserialize(departamento)
+      );
+
+    } else{
+      console.log(`La maquina no trae departamentos`)
+    }
   }
 
   static fromJSON(data: any) {

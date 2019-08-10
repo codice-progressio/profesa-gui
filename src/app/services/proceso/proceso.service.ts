@@ -41,18 +41,21 @@ export class ProcesoService extends CRUD<Proceso, undefined, undefined> {
     let a = this._preLoaderService.loading("Buscando procesos por defecto")
     let i = { busqueda: ids }
     return this.http.post(`${this.base}/buscar_multiple`, i).pipe(
-      map((resp: any) => {
-        console.log(`resp`,resp)
-        let p: Proceso[] = []
-        resp.procesos.forEach((pp) => {
-          let np = new Proceso().deserialize(pp)
-          p.push(np)
-        })
-        this._msjService.ok_(a)
-
-        return p
-      }),
+      map( (resp)=> this.findById_cb(resp, a) ),
       catchError(this.err)
     )
   }
+
+  private findById_cb(resp, a){
+    
+    let p: Proceso[] = []
+      resp.procesos.forEach((pp) => {
+        let np = new Proceso().deserialize(pp)
+        p.push(np)
+      })
+      this._msjService.ok_(a)
+  
+      return p
+  }
+
 }

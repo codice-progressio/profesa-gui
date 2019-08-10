@@ -130,6 +130,16 @@
                     ></a>
 
                     <a
+                      *ngIf="tienePermiso()"
+                      (click)="eliminarFolio(folio)"
+                      title="Eliminar completamente el folio"
+                      class="btn btn-danger text-white btn-sm mr-2"
+                      role="button"
+                    >
+                      <i class="fas fa-times    "></i
+                    ></a>
+
+                    <a
                       *ngIf="verComoPedidos"
                       (click)="pedidoParaDetalle = pedido"
                       title="Ver detalle rapido del pedido."
@@ -167,7 +177,7 @@
                       {{ pedido.cantidad | number }}
                     </ng-container>
                     <ng-template #elseTemplate>
-                      {{ folio.totalDePiezas | number }}
+                      {{ folio.totalDePiezas()| number }}
                     </ng-template>
                   </td>
                 </tr>

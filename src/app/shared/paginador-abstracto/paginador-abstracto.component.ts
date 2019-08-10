@@ -24,7 +24,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
   //La primera carga debe de definirse el limite y desde de manera 
   // manual por que no se ha cargado el componente.
    this._datosService.todo(20,1).subscribe((datos) => {
-      console.log(`datos`, datos)
       this.datos = datos
       let intervaloDeEsperaPaginador = setInterval(() => {
         if (this.paginador) {
@@ -40,7 +39,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
   //Codigo para cambiar de pagina.
   cambiarPagina(e) {
     this._datosService.todo(e.limite, e.desde).subscribe((datos) => {
-      console.log(`datos`, datos)
       this.datos = datos
       this.paginador.totalDeElementos = this._datosService.total
       this.paginador.cargaDePaginador(false)
@@ -254,7 +252,6 @@ export class PaginadorAbstractoComponent implements OnInit {
   }
 
   limite(): number {
-    console.log(`limite`, this.elementosPorPaginaSeleccionado)
     return this.elementosPorPaginaSeleccionado
   }
 
@@ -269,7 +266,6 @@ export class PaginadorAbstractoComponent implements OnInit {
       // 50
       desde = (this.paginaActual - 1) * this.elementosPorPaginaSeleccionado + 1
     }
-    console.log(`desde`, desde)
     return desde
   }
 

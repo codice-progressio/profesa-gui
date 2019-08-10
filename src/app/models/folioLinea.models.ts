@@ -17,13 +17,20 @@ export class FolioLinea {
    * @param {Date} [updatedAt]
    * @param {number} [porcentajeAvance]
    * @param {ColoresTenidos[]} [coloresTenidos=[]]
+   * @param {string} [pedido]
    * @param {Procesos[]} [procesos=[]]
+   * @param {boolean} [trayectoGenerado]
+   * @param {Date} [fechaTerminado]
+   * @param {number} [cantidadProducida]
    * @param {string} [observaciones]
+   * @param {string} [observacionesVendedor]
    * @param {boolean} [terminado]
    * @param {boolean} [eliminar=false]
    * @param {Orden[]} [ordenes=[]]
    * @param {boolean} [ordenesGeneradas=false]
    * @param {boolean} [mostrandoInfo=false]
+   * @param {boolean} [gui_generarComoMedias]
+   * @param {boolean} [requiereRevisionExtraordinaria=true] Revisa si el pedido ya se reviso en el GUI a la hora de generar los pedidos.
    * @memberof FolioLinea
    */
   constructor(
@@ -51,7 +58,10 @@ export class FolioLinea {
     public ordenesGeneradas: boolean = false,
     // Para mostrar la info
     public mostrandoInfo: boolean = false,
-    public gui_generarComoMedias?: boolean
+    public gui_generarComoMedias?: boolean,
+
+    //Este public funciona
+    public requiereRevisionExtraordinaria: boolean = false
   ) {}
 
   deserialize(input: this): this {
@@ -103,6 +113,7 @@ export class FolioLinea {
     orden.unidad = 1
     orden.piezasTeoricas = this.cantidad
     orden.nivelDeUrgencia = this.nivelDeUrgencia
+    orden.numeroDeOrden = 0
 
     this.ordenes.push(orden)
   }
@@ -207,5 +218,48 @@ export class FolioLinea {
    */
   private calcularUnidad(forzarMedias: boolean): number {
     return this.modeloCompleto.medias || forzarMedias ? 0.5 : 1
+  }
+
+
+
+  /**
+   *Chequeca si requiere una revision extraordinaria a la hora de generar las 
+   ordenes. Las cosas que revisa son: 
+   * * 1.- Viene de almacen.
+   * * 2.- Viene de almacen y se lasera.
+   * * 3.- Se va a producir y a laserar pero no tiene el departamento laser en *la familia de procesos.
+   * 
+   * Esta funcion modifica la propiedad ```this.requiereRevisionExtraordinara```
+   * que es la que se debe de usar para comprobar si el pedido requiere la revison. Esta revision se debe de llamar cuando se generan las ordenes del 
+   * folio de manera temporal para revisarlas. 
+   *
+   * @private
+   * @param {string} idProcesoLaser El id del proceso laser
+   * @returns
+   * @memberof FolioLinea
+   */
+  revisarSiRequiereRevisionExtraordinaria(idProcesoLaser: string ) {
+    // Solo se puede editar procesos en alguno de estos casos.
+    // 1- Viene de almacen.
+    // 2- Viene de almacen y se lasera.
+    if (this.almacen){ 
+        return this.almacen
+      }
+    // 3- Se va a producir y a laserar pero no tiene el departamento laser en la familia de procesos.
+     
+    return this.comprobarLaserEnFamiliaDeProcesos(this, idProcesoLaser )
+  }
+
+  private comprobarLaserEnFamiliaDeProcesos(pedido: FolioLinea, idProcesoLaser: string): boolean {
+    // Tiene marca laser
+    if (pedido.laserCliente.laser) {
+      // No incluye el proceso de laser dentro de sus procesos en la familia.
+      let l = pedido.modeloCompleto.familiaDeProcesos.procesos.find(
+        (p) => idProcesoLaser == p.proceso._id
+      )
+
+      // Solo si no tiene el departamento de laser agregado se puede modificar.
+      return !l
+    }
   }
 }

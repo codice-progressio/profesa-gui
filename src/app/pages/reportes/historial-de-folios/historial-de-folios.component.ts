@@ -8,6 +8,8 @@ import { RevisionDeOrdenesAbstractoComponent } from "../../gestionDeFolios/revis
 import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio"
 import { FolioNewService } from "src/app/services/folio/folio-new.service";
 import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service";
+import { UsuarioService } from '../../../services/usuario/usuario.service'
+import { _ROLES } from "src/app/config/roles.const";
 
 @Component({
   selector: "app-historial-de-folios",
@@ -19,7 +21,8 @@ export class HistorialDeFoliosComponent implements OnInit {
   constructor(
     public _folioService: FolioNewService,
     @Inject("paginadorFolios") public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
+    public _msjService: ManejoDeMensajesService,
+    public _usuarioService: UsuarioService
   ) {
     
   }
@@ -224,7 +227,7 @@ export class HistorialDeFoliosComponent implements OnInit {
   }
   generarOrdenesDelFolio(folio: Folio) {
     this.folioParaGenerarOrdenes = folio
-    folio.popularOrdenesDeTodosLosPedidos()
+    folio.popularOrdenesDeTodosLosPedidos(null)
   }
 
   generarOrdenes(folio: Folio) {
@@ -248,5 +251,27 @@ export class HistorialDeFoliosComponent implements OnInit {
 
   customTB(index, folio) {
     return `${index}-${folio._id}`
+  }
+
+  tienePermiso(): boolean {
+    return this._usuarioService.usuario.role.includes(
+      _ROLES.ADMINISTRADOR_FOLIOS_ELIMINAR_POR_COMPLETO
+    )
+  }
+
+  eliminarFolio(folio: Folio) {
+    let msj =
+      "Esta accion no se puede deshacer. Estas seguro que la quieres llevar a cabo. "
+
+    let msj1 =
+      "Eliminar este folio debe ser siempre la ultima opcion. Aun asi deseas continuar?"
+
+    this._msjService.confirmacionDeEliminacion(msj, () => {
+      this._msjService.confirmacionDeEliminacion(msj1, () => {
+        this._folioService
+          .eliminar(folio._id)
+          .subscribe(() => this.cargarFolios())
+      })
+    })
   }
 }
