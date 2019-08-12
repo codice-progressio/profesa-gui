@@ -13,7 +13,7 @@ declare function init_plugins();
 
 export class PagesComponent implements OnInit {
 
-  guiVersion: string = environment.version
+  guiVersion: string = environment.VERSION
   apiVersion: string
   constructor(
     public _usuarioService: UsuarioService
