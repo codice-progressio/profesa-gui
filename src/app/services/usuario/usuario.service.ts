@@ -151,7 +151,7 @@ export class UsuarioService {
 
 
   login (usuario: Usuario, recordar: boolean = false) {
-    const a: number = this._preLoaderService.loading('Iniciando secion.');
+    const a: number = this._preLoaderService.loading('Iniciando sesion.');
     
     // Recordamos el email guardandolo en el localStorage. Esto
     // se activa con el input de "Recuerdame" que esta en la
