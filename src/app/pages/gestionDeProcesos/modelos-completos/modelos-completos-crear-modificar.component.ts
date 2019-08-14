@@ -257,7 +257,7 @@ export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI
    */
   esconderBuscador: boolean = false;
 
-  @ViewChild('inputBusqueda') inputBusqueda: ElementRef
+  @ViewChild('inputBusqueda', { static: false }) inputBusqueda: ElementRef
 
   reiniciarBusqueda( ){
     this.esconderBuscador = false;
