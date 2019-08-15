@@ -115,7 +115,13 @@ import { AlmacenDescripcionDetalleComponent } from './almacenes/almacenDescripci
 import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component';
 import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component';
 import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component';
-import { ArticuloComponent } from './almacenes/articulo/articulo.component'
+import { ArticuloComponent } from './almacenes/articulo/articulo.component';
+import { ProveedorCrearModificarComponent } from './proveedor/proveedor-crear-modificar.component';
+import { ProveedorDetalleComponent } from './proveedor/proveedor-detalle.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
+import { DivisaCrearModificarComponent } from './divisa/divisa-crear-modificar.component';
+import { DivisaDetalleComponent } from './divisa/divisa-detalle.component';
+import { DivisaComponent } from './divisa/divisa.component'
 
 @NgModule({
   declarations: [
@@ -224,7 +230,13 @@ import { ArticuloComponent } from './almacenes/articulo/articulo.component'
     AlmacenDescripcionComponent,
     ArticuloCrearModificarComponent,
     ArticuloDetalleComponent,
-    ArticuloComponent
+    ArticuloComponent,
+    ProveedorCrearModificarComponent,
+    ProveedorDetalleComponent,
+    ProveedorComponent,
+    DivisaCrearModificarComponent,
+    DivisaDetalleComponent,
+    DivisaComponent
   ],
   exports: [
     DashboardComponent,
