@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing"
 
 import { PaginadorAbstractoComponent } from "./paginador-abstracto.component"
-import { EventEmitter, Component } from '@angular/core'
+import { EventEmitter, Component } from "@angular/core"
 
 describe("PaginadorAbstractoComponent valores por default", () => {
   let component: PaginadorAbstractoComponent
@@ -71,7 +71,4 @@ describe("PaginadorAbstractoComponent valores por default", () => {
     expect(component.actualizacion).not.toBeNull()
     expect(component.actualizacion).not.toBeUndefined()
   })
-
-  })
 })
-
