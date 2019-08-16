@@ -55,6 +55,7 @@ export class DepartamentosConfig {
     TRANSFORMACION = new VariablesDeptos (   'TRANSFORMACION', 'TRANSFORMACIÓN','transformacion' )
     PULIDO = new VariablesDeptos (   'PULIDO', 'PULIDO','pulido' )
     SELECCION = new VariablesDeptos (   'SELECCION', 'SELECCIÓN','seleccion' )
+    TENIDO = new VariablesDeptos (   'TENIDO', 'TEÑIDO','tenido' )
     EMPAQUE = new VariablesDeptos (   'EMPAQUE', 'EMPAQUE','empaque' )
     PRODUCTO_TERMINADO = new VariablesDeptos (   'PRODUCTO_TERMINADO', 'PRODUCTO TERMINADO','productoTermiando' )
     METALIZADO = new VariablesDeptos (   'METALIZADO', 'METALIZADO','metalizado' )
