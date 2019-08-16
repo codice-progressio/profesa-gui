@@ -121,7 +121,8 @@ import { ProveedorDetalleComponent } from './proveedor/proveedor-detalle.compone
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { DivisaCrearModificarComponent } from './divisa/divisa-crear-modificar.component';
 import { DivisaDetalleComponent } from './divisa/divisa-detalle.component';
-import { DivisaComponent } from './divisa/divisa.component'
+import { DivisaComponent } from './divisa/divisa.component';
+import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 
 @NgModule({
   declarations: [
@@ -236,7 +237,8 @@ import { DivisaComponent } from './divisa/divisa.component'
     ProveedorComponent,
     DivisaCrearModificarComponent,
     DivisaDetalleComponent,
-    DivisaComponent
+    DivisaComponent,
+    TenidoComponent
   ],
   exports: [
     DashboardComponent,
