@@ -1,0 +1,124 @@
+<app-qr-scanner></app-qr-scanner>
+
+<div class="row animated slideInDown" *ngIf="_qrScannerService.lecturaCorrecta">
+  <div class="col-12">
+    <div class="card border-dark">
+      <div class="card-header bg-success">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="box-title m-b-0"><strong>Teñido</strong></h3>
+            <p class="text-white m-b-30 font-13">
+              Registra los datos de la órden
+            </p>
+          </div>
+          <div class="col-6">
+            <h2>
+              <strong>
+                {{ linea.modeloCompleto | modeloCompleto }}
+              </strong>
+              <app-nivel-urgencia
+                [nivel]="orden?.nivelDeUrgencia"
+              ></app-nivel-urgencia>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 ">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <form
+                      (ngSubmit)="
+                        onSubmit(formulario.value, formulario.valid, $event)
+                      "
+                      [formGroup]="formulario"
+                    >
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-group">
+                            <input
+                              formControlName="peso10Botones"
+                              class="form-control form-control-lg"
+                              [ngClass]="{
+                                'is-invalid': _validacionesService.invalid(
+                                  peso10
+                                ),
+                                'is-valid': _validacionesService.valid(peso10)
+                              }"
+                              type="number"
+                              placeholder="Peso de 10 botones."
+                            />
+                            <app-validacion-inputs
+                              [campo]="peso10"
+                            ></app-validacion-inputs>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                            <input
+                              formControlName="pesoTotalBoton"
+                              class="form-control form-control-lg"
+                              [ngClass]="{
+                                'is-invalid': _validacionesService.invalid(
+                                  pesoTotal
+                                ),
+                                'is-valid': _validacionesService.valid(
+                                  pesoTotal
+                                )
+                              }"
+                              type="number"
+                              placeholder="Peso total del botón"
+                            />
+                            <app-validacion-inputs
+                              [campo]="pesoTotal"
+                            ></app-validacion-inputs>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h1>
+                        <small>Cantidad de botón: </small>
+                        <strong>{{
+                          (pesoTotal.value * 1000) / (peso10.value / 10)
+                            | number: "1.0-0"
+                        }}</strong>
+                      </h1>
+
+                      <br />
+
+                      <button
+                        type="submit"
+                        [ngClass]="{
+                          'btn-success': formulario.valid,
+                          'btn-outline-dark': formulario.invalid
+                        }"
+                        [disabled]="formulario.invalid"
+                        class="btn  btn-lg mr-3 "
+                      >
+                        <i class="fas fa-save "></i> Guardar
+                      </button>
+                      <button
+                        (click)="limpiar()"
+                        class="btn btn-danger btn-lg mr-3 "
+                      >
+                        <i class="fas fa-times "></i> Escannear de nuevo
+                      </button>
+
+                      <br />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo"> </app-lista-de-ordenes>

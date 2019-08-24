@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import swal from 'sweetalert2';
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { asQueryList } from '@angular/core/src/view';
 
 @Injectable({
   providedIn: 'root'
