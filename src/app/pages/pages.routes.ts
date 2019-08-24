@@ -54,6 +54,7 @@ import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProduc
 import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
 import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
 import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
+import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -450,6 +451,15 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Registro de órdenes",
       roles: [ROLES.PRODUCCION_PULIDO]
+    }
+  },
+  {
+    path: "produccion/tenido",
+    component: TenidoComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Registro de órdenes",
+      roles: [ROLES.PRODUCCION_TENIDO]
     }
   },
   {

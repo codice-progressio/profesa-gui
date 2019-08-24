@@ -41,7 +41,7 @@ export class FoliosCrearModificarAbstractoComponent
    *
    * @memberof FoliosCrearModificarComponent
    */
-  @ViewChild("inputCliente") inputCliente
+  @ViewChild("inputCliente", { static: true }) inputCliente
 
   /**
    *Los clientes que se van a listar en la busqueda.

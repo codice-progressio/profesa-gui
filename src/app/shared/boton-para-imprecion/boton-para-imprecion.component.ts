@@ -14,7 +14,7 @@ import {
   styles: []
 })
 export class BotonParaImprecionComponent implements OnInit {
-  @ViewChild("hiddenInput1") hiddenInput1: ElementRef
+  @ViewChild("hiddenInput1", { static: false }) hiddenInput1: ElementRef
   /**
    *El id propio que encierra el area a imprimirse. Tiene que ser unico.
    *
