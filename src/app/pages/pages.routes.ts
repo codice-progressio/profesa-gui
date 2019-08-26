@@ -55,6 +55,7 @@ import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDePro
 import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
 import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
 import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
+import { DivisaComponent } from './divisa/divisa.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -338,6 +339,25 @@ const pagesRoutes: Routes = [
   // <!--
   // =====================================
   //  END VENTAS
+  // =====================================
+  // -->
+  // <!--
+  // =====================================
+  //  COMPRAS
+  // =====================================
+  // -->
+
+  {
+    path: "divisas",
+    component: DivisaComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: { titulo: "Divisas", roles: [ROLES.COMPRAS_DIVISAS] }
+  },
+  
+
+  // <!--
+  // =====================================
+  //  END COMPRAS
   // =====================================
   // -->
 
