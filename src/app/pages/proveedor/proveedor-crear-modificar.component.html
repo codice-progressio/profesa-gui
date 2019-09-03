@@ -1,3 +1,722 @@
-<p>
-  proveedor-crear-modificar works!
-</p>
+<div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="proveedor?._id">{{ proveedor.nombre }}</h1>
+  <h1>
+    <span class="text-success" *ngIf="!proveedor?._id">
+      <i class="fas fa-plus-square    "></i> Crear <b>proveedor</b> </span
+    ><span class="text-warning" *ngIf="proveedor?._id">
+      <i class="fas fa-pen-square"></i> Modificar <b>proveedor</b>
+    </span>
+  </h1>
+</div>
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <!-- 
+    =====================================
+     nombre
+    =====================================
+    -->
+    <div class="col-4">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(nombre_FB),
+            'is-valid': vs.valid(nombre_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="nombre"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Nombre del proveedor</small
+        >
+        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END nombre
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     razonSocial
+    =====================================
+    -->
+    <div class="col-4">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(razonSocial_FB),
+            'is-valid': vs.valid(razonSocial_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="razonSocial"
+        />
+        <small id="helpId" class="form-text text-muted">Razon social</small>
+        <app-validacion-inputs [campo]="razonSocial_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END razonSocial
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     tiempoDeEntregaEstimadoEnDias
+    =====================================
+    -->
+    <div class="col-2">
+      <div class="form-group">
+        <input
+          title="El tiempo de entrega en dias corridos. Una estimacion que el proveedor debe de dar y poder cumplir el 90% de las veces. Tambien se le llama Order Lead time (OLT)"
+          [ngClass]="{
+            'is-invalid': vs.invalid(tiempoDeEntregaEstimadoEnDias_FB),
+            'is-valid': vs.valid(tiempoDeEntregaEstimadoEnDias_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="tiempoDeEntregaEstimadoEnDias"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Tiempo de entrega estimado en dias corridos</small
+        >
+        <app-validacion-inputs
+          [campo]="tiempoDeEntregaEstimadoEnDias_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END tiempoDeEntregaEstimadoEnDias
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+    Domicilios
+    =====================================
+    -->
+
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     Array domicilios 
+    =====================================
+    -->
+    <ng-container formArrayName="domicilios">
+      <ng-container
+        *ngFor="let domicilio of domicilios_FB.controls; let i = index"
+      >
+        <ng-container [formGroupName]="i">
+          <div class="d-flex justify-content-between align-items-center col-12">
+            <h3>Domicilio</h3>
+
+            <a
+              (click)="eliminarDomicilio(i)"
+              class=" btn btn-danger btn-xs text-white"
+              ><i class="fas fa-times"></i> Eliminar</a
+            >
+          </div>
+
+          <!-- 
+=====================================
+ domicilio - calle
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_calle(i)),
+                  'is-valid': vs.valid(domicilio_FB_calle(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="calle"
+              />
+              <small id="helpId" class="form-text text-muted">Calle</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_calle(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - calle
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - numeroInterior
+=====================================
+-->
+          <div class="col-2">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_numeroInterior(i)),
+                  'is-valid': vs.valid(domicilio_FB_numeroInterior(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="numeroInterior"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Numero interior</small
+              >
+              <app-validacion-inputs
+                [campo]="domicilio_FB_numeroInterior(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - numeroInterior
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - numeroExterior
+=====================================
+-->
+          <div class="col-2">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_numeroExterior(i)),
+                  'is-valid': vs.valid(domicilio_FB_numeroExterior(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="numeroExterior"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Numero exterior</small
+              >
+              <app-validacion-inputs
+                [campo]="domicilio_FB_numeroExterior(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - numeroExterior
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - colonia
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_colonia(i)),
+                  'is-valid': vs.valid(domicilio_FB_colonia(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="colonia"
+              />
+              <small id="helpId" class="form-text text-muted">Colonia</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_colonia(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - colonia
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - codigoPostal
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_codigoPostal(i)),
+                  'is-valid': vs.valid(domicilio_FB_codigoPostal(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="codigoPostal"
+              />
+              <small id="helpId" class="form-text text-muted">CP</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_codigoPostal(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - codigoPostal
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - estado
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_estado(i)),
+                  'is-valid': vs.valid(domicilio_FB_estado(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="estado"
+              />
+              <small id="helpId" class="form-text text-muted">Estado</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_estado(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - estado
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - pais
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_pais(i)),
+                  'is-valid': vs.valid(domicilio_FB_pais(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="pais"
+              />
+              <small id="helpId" class="form-text text-muted">pais</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_pais(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - pais
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - urlMaps
+=====================================
+-->
+          <div class="col-6">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_urlMaps(i)),
+                  'is-valid': vs.valid(domicilio_FB_urlMaps(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="urlMaps"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Url Google Maps</small
+              >
+              <app-validacion-inputs
+                [campo]="domicilio_FB_urlMaps(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - urlMaps
+=====================================
+-->
+
+          <div class="col-12">
+            <hr />
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <!-- 
+    =====================================
+     END Array domicilios 
+    =====================================
+    -->
+
+    <div class="col-12">
+      <a
+        (click)="addDomicilio()"
+        title="Agregar un domicilio"
+        class="btn btn-primary btn-xs text-white"
+        role="button"
+      >
+        <i class="fas fa-plus-circle"></i> Domicilio</a
+      >
+    </div>
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     END Domicilios
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     contactos
+    =====================================
+    -->
+
+    <!-- 
+      =====================================
+       Array contactos 
+      =====================================
+      -->
+    <ng-container formArrayName="contactos">
+      <ng-container *ngFor="let dummy of contactos_FB.controls; let i = index">
+        <ng-container [formGroupName]="i">
+          <div class="d-flex justify-content-between align-items-center col-12">
+            <h3>Contacto</h3>
+
+            <a
+              (click)="eliminarContacto(i)"
+              class=" btn btn-danger btn-xs text-white"
+              ><i class="fas fa-times"></i> Eliminar</a
+            >
+          </div>
+
+          <!-- 
+        =====================================
+         contacto - nombre
+        =====================================
+        -->
+          <div class="col-6">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(contacto_FB_nombre(i)),
+                  'is-valid': vs.valid(contacto_FB_nombre(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+              />
+              <small id="helpId" class="form-text text-muted">Nombre</small>
+              <app-validacion-inputs
+                [campo]="contacto_FB_nombre(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END contacto - nombre
+        =====================================
+        -->
+
+          <!-- 
+        =====================================
+         contacto - telefono
+        =====================================
+        -->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(contacto_FB_telefono(i)),
+                  'is-valid': vs.valid(contacto_FB_telefono(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="telefono"
+              />
+              <small id="helpId" class="form-text text-muted">Telefono</small>
+              <app-validacion-inputs
+                [campo]="contacto_FB_telefono(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END contacto - telefono
+        =====================================
+        -->
+
+          <!-- 
+        =====================================
+         contacto - correo
+        =====================================
+        -->
+          <div class="col-6">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(contacto_FB_correo(i)),
+                  'is-valid': vs.valid(contacto_FB_correo(i))
+                }"
+                type="email"
+                class="form-control"
+                formControlName="correo"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Correo electronico</small
+              >
+              <app-validacion-inputs
+                [campo]="contacto_FB_correo(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END contacto - correo
+        =====================================
+        -->
+
+          <!-- 
+        =====================================
+         contacto - puesto
+        =====================================
+        -->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(contacto_FB_puesto(i)),
+                  'is-valid': vs.valid(contacto_FB_puesto(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="puesto"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Puesto del contacto</small
+              >
+              <app-validacion-inputs
+                [campo]="contacto_FB_puesto(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END contacto - puesto
+        =====================================
+        -->
+
+          <div class="col-12">
+            <hr />
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <!-- 
+      =====================================
+       END Array contactos 
+      =====================================
+      -->
+
+    <div class="col-12">
+      <a
+        (click)="addContacto()"
+        title="Agregar un contacto"
+        class="btn btn-primary btn-xs text-white"
+        role="button"
+      >
+        <i class="fas fa-plus-circle"></i> Contacto</a
+      >
+    </div>
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     END contactos
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     Articulos
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     Array relacionArticulos 
+    =====================================
+    -->
+    <ng-container formArrayName="relacionArticulos">
+      <div class="col-12">
+        <h3>Relacion con articulos</h3>
+      </div>
+      <ng-container
+        *ngFor="let dummy of relacionArticulos_FB.controls; let i = index"
+      >
+        <ng-container [formGroupName]="i">
+          <!-- 
+            =====================================
+             relacionArticulo - precioUnitario
+            =====================================
+            -->
+          >
+          <div class="col-2">
+            <a
+              (click)="eliminarRelacioniArticulo(i)"
+              class=" btn btn-danger btn-xs text-white"
+              ><i class="fas fa-times"></i> Eliminar</a
+            >
+
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(
+                    relacionArticulo_FB_precioUnitario(i)
+                  ),
+                  'is-valid': vs.valid(relacionArticulo_FB_precioUnitario(i))
+                }"
+                type="number"
+                class="form-control"
+                formControlName="precioUnitario"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Precio unitario</small
+              >
+              <app-validacion-inputs
+                [campo]="relacionArticulo_FB_precioUnitario(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+            =====================================
+             END relacionArticulo - precioUnitario
+            =====================================
+            -->
+
+          <!-- 
+            =====================================
+             relacionArticulo - divisa
+            =====================================
+            -->
+          <div class="col-2">
+            <div class="form-group">
+              <select
+                [ngClass]="{
+                  'is-invalid': vs.invalid(relacionArticulo_FB_divisa(i)),
+                  'is-valid': vs.valid(relacionArticulo_FB_divisa(i))
+                }"
+                class="form-control"
+                formControlName="divisa"
+              >
+                <option *ngFor="let divisa of divisas" [value]="divisa._id">
+                  {{ divisa.nombre }}</option
+                >
+              </select>
+
+              <small id="helpId" class="form-text text-muted">Divisa</small>
+              <app-validacion-inputs
+                [campo]="relacionArticulo_FB_divisa(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+            =====================================
+             END relacionArticulo - divisa
+            =====================================
+            -->
+
+
+
+
+
+
+          <app-data-list
+            [debug]="true"
+            (ejecutarBusquedaDeItems)="
+              ejecutarOperacionesDeBusquedaArticulos($event)
+            "
+          ></app-data-list>
+
+
+
+
+
+
+          
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <!-- 
+    =====================================
+     END Array relacionArticulos 
+    =====================================
+    -->
+
+    <div class="col-12">
+      <a
+        (click)="addRelacionArticulo()"
+        title="Agregar una relacion con un articulo"
+        class="btn btn-primary btn-xs text-white"
+        role="button"
+      >
+        <i class="fas fa-plus-circle"></i> Articulo</a
+      >
+    </div>
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     END Articulos
+    =====================================
+    -->
+
+    <br />
+  </div>
+
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#crearModificarDivisaModal"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+</form>

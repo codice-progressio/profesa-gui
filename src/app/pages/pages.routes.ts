@@ -55,6 +55,7 @@ import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDePro
 import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
 import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
 import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
+import { ProveedorComponent } from './proveedor/proveedor.component'
 import { DivisaComponent } from './divisa/divisa.component'
 
 const pagesRoutes: Routes = [
@@ -347,6 +348,12 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
+  {
+    path: "proveedores",
+    component: ProveedorComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: { titulo: "Proveedores.", roles: [ROLES.COMPRAS_PROVEEDORES] }
+  },
   {
     path: "divisas",
     component: DivisaComponent,
