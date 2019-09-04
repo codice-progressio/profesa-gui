@@ -1,3 +1,70 @@
-<p>
-  divisa-crear-modificar works!
-</p>
+<div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="divisa?._id">{{ divisa.nombre }}</h1>
+  <h1>
+    <span class="text-success" *ngIf="!divisa?._id">
+      <i class="fas fa-plus-square    "></i> Crear <b>divisa</b> </span
+    ><span class="text-warning" *ngIf="divisa?._id">
+      <i class="fas fa-pen-square"></i> Modificar <b>divisa</b>
+    </span>
+  </h1>
+</div>
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(nombre_FB),
+            'is-valid': vs.valid(nombre_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="nombre"
+        />
+        <small id="helpId" class="form-text text-muted">Nombre divisa</small>
+        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(tipoDeCambio_FB),
+            'is-valid': vs.valid(tipoDeCambio_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="tipoDeCambio"
+        />
+        <small id="helpId" class="form-text text-muted">Tipo de cambio</small>
+        <app-validacion-inputs
+          [campo]="tipoDeCambio_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+
+    <br />
+  </div>
+
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#crearModificarDivisaModal"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+</form>

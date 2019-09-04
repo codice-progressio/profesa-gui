@@ -1,0 +1,88 @@
+<!-- 
+=====================================
+ input
+=====================================
+-->
+
+<div class="input-busqueda">
+  <div class="d-flex align-items-center justify-content-between">
+    <input
+    [ngClass]="{
+      'is-invalid': invalid,
+      'is-valid': valid
+    }"
+      *ngIf="!leyendaInputDeshabilitado"
+      #inputBuscarNativo
+      [formControl]="inputBusqueda"
+      type="text"
+      class="form-control"
+      placeholder="Escribe para buscar"
+    />
+
+    <input
+    [ngClass]="{
+      'is-invalid': invalid,
+      'is-valid': valid
+    }"
+      *ngIf="leyendaInputDeshabilitado"
+      [(ngModel)]="leyendaInputDeshabilitado"
+      type="text"
+      class="form-control"
+      disabled="true`"
+    />
+
+    <a
+      *ngIf="this.mostrarBotonParaLimpiar"
+      class="btn  btn-danger text-white btn-sm ml-1 animated fadeIn"
+      role="button"
+      (click)="cancelarBusqueda()"
+    >
+      <i class="fas fa-times-circle    "></i>
+    </a>
+  </div>
+ 
+</div>
+
+<!-- 
+=====================================
+ END input
+=====================================
+-->
+
+<!-- 
+=====================================
+  Lista
+=====================================
+-->
+<div *ngIf="mostrarLista" class="list-group list-scroll animated fadeIn faster">
+  <a
+    *ngFor="let dato of datosParaLista"
+    (click)="seleccionarElemento(dato)"
+    class="list-group-item list-group-item-action flex-column align-items-start shadow "
+  >
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ dato.leyendaPrincipal }}</h5>
+      <small>{{ dato.leyendaSecundaria }}</small>
+    </div>
+    <p class="mb-1">
+      {{ dato.descripcionPrincipal }}
+    </p>
+    <small>{{ dato.descripcionSecundaria }}</small>
+  </a>
+  <a
+    *ngIf="mostrarLista && datosParaLista.length === 0"
+    class="list-group-item list-group-item-action flex-column align-items-start  list-group-item-danger bg-danger"
+  >
+    <div class="d-flex w-100 justify-content-between align-items-center">
+      <h5 class=" text-white">
+        No hubo coincidencias
+      </h5>
+    </div>
+  </a>
+</div>
+
+<!-- 
+=====================================
+  END Lista
+=====================================
+-->
