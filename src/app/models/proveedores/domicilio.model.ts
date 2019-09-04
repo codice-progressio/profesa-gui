@@ -26,11 +26,11 @@ export class Domicilio implements Deserializable {
     let d = `${this.calle} #${this.numeroExterior} `
 
     d += this.numeroInterior ? `int. ${this.numeroInterior}.` :''
-    d += this.colonia ? `Col. ${this.colonia}. ` :''
-    d += this.codigoPostal ? `CP. ${this.codigoPostal} ` :''
+    d += this.colonia ? ` Col. ${this.colonia}. ` :''
+    d += this.codigoPostal ? ` CP. ${this.codigoPostal} ` :''
     d += this.ciudad ? ` ${this.ciudad}, ` :''
     d += this.estado ? ` ${this.estado}, ` :''
-    d += this.pais ? ` ${this.estado} ` :''
+    d += this.pais ? ` ${this.pais} ` :''
     
 
 

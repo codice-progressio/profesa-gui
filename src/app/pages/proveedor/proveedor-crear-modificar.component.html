@@ -98,6 +98,32 @@
 
     <!-- 
     =====================================
+     rfc
+    =====================================
+    -->
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(rfc_FB),
+            'is-valid': vs.valid(rfc_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="rfc"
+        />
+        <small id="helpId" class="form-text text-muted">RFC</small>
+        <app-validacion-inputs [campo]="rfc_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END rfc
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
     Domicilios
     =====================================
     -->
@@ -267,6 +293,34 @@
           <!-- 
 =====================================
  END domicilio - codigoPostal
+=====================================
+-->
+
+          <!-- 
+=====================================
+ domicilio - ciudad
+=====================================
+-->
+          <div class="col-4">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(domicilio_FB_ciudad(i)),
+                  'is-valid': vs.valid(domicilio_FB_ciudad(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="ciudad"
+              />
+              <small id="helpId" class="form-text text-muted">Ciudad</small>
+              <app-validacion-inputs
+                [campo]="domicilio_FB_ciudad(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+=====================================
+ END domicilio - ciudad
 =====================================
 -->
 
@@ -572,26 +626,43 @@
     =====================================
     -->
     <ng-container formArrayName="relacionArticulos">
-      <div class="col-12">
+      <div *ngIf="relacionArticulos_FB.controls.length > 0" class="col-12">
         <h3>Relacion con articulos</h3>
       </div>
       <ng-container
         *ngFor="let dummy of relacionArticulos_FB.controls; let i = index"
       >
         <ng-container [formGroupName]="i">
+          <div *ngIf="i > 0" class="col-12">
+            <hr />
+          </div>
+
           <!-- 
-            =====================================
-             relacionArticulo - precioUnitario
-            =====================================
-            -->
-          >
-          <div class="col-2">
+          =====================================
+           Boton eliminar
+          =====================================
+          -->
+
+          <div class="col-6 col-sm-2 col-lg-1">
             <a
               (click)="eliminarRelacioniArticulo(i)"
               class=" btn btn-danger btn-xs text-white"
               ><i class="fas fa-times"></i> Eliminar</a
             >
+          </div>
 
+          <!-- 
+          =====================================
+           END Boton eliminar
+          =====================================
+          -->
+          <!-- 
+              =====================================
+               relacionArticulo - precioUnitario
+              =====================================
+              -->
+
+          <div class="col-12 col-sm-5 col-lg-3">
             <div class="form-group">
               <input
                 [ngClass]="{
@@ -613,17 +684,17 @@
             </div>
           </div>
           <!-- 
-            =====================================
-             END relacionArticulo - precioUnitario
-            =====================================
-            -->
+              =====================================
+               END relacionArticulo - precioUnitario
+              =====================================
+              -->
 
           <!-- 
-            =====================================
-             relacionArticulo - divisa
-            =====================================
-            -->
-          <div class="col-2">
+              =====================================
+               relacionArticulo - divisa
+              =====================================
+              -->
+          <div class="col-12 col-sm-5 col-lg-3">
             <div class="form-group">
               <select
                 [ngClass]="{
@@ -645,29 +716,114 @@
             </div>
           </div>
           <!-- 
+              =====================================
+               END relacionArticulo - divisa
+              =====================================
+              -->
+
+          <!-- 
             =====================================
-             END relacionArticulo - divisa
+             relacionArticulo - item
+            =====================================
+            -->
+          <div class="col-12 col-sm-6 col-lg-5">
+            <div class="form-group">
+              <app-data-list
+                (ejecutarBusquedaDeItems)="
+                  ejecutarOperacionesDeBusquedaArticulos($event)
+                "
+                (elementoSeleccionado)="articuloSeleccionado($event, i)"
+                [valid]="vs.valid(relacionArticulo_FB_item(i))"
+                [invalid]="vs.invalid(relacionArticulo_FB_item(i))"
+                (touched)="relacionArticulo_FB_item(i).markAsTouched()"
+                [cargarModifcacion]="cargarModificacionDeItem(i)"
+              ></app-data-list>
+              <input
+                type="hidden"
+                class="form-control"
+                formControlName="item"
+              />
+              <small id="helpId" class="form-text text-muted">Articulo</small>
+              <app-validacion-inputs
+                [campo]="relacionArticulo_FB_item(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+            =====================================
+             END relacionArticulo - item
             =====================================
             -->
 
+          <div class="col-sm-12 col-lg-1"></div>
 
+          <!-- 
+            =====================================
+             relacionArticulo - tiempoDeEntregaEnDias
+            =====================================
+            -->
+          <div class="col-6 col-sm-3 col-lg-2">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(
+                    relacionArticulo_FB_tiempoDeEntregaEnDias(i)
+                  ),
+                  'is-valid': vs.valid(
+                    relacionArticulo_FB_tiempoDeEntregaEnDias(i)
+                  )
+                }"
+                type="number"
+                class="form-control"
+                formControlName="tiempoDeEntregaEnDias"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Tiempo de entrega en dias aproximado</small
+              >
+              <app-validacion-inputs
+                [campo]="relacionArticulo_FB_tiempoDeEntregaEnDias(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+            =====================================
+             END relacionArticulo - tiempoDeEntregaEnDias
+            =====================================
+            -->
 
+          <!-- 
+            =====================================
+             relacionArticulo - prioridad
+            =====================================
+            -->
+          <div class="col-6 col-sm-5 col-lg-3">
+            <div class="form-group">
+              <select
+                formControlName="prioridad"
+                [ngClass]="{
+                  'is-invalid': vs.invalid(relacionArticulo_FB_prioridad(i)),
+                  'is-valid': vs.valid(relacionArticulo_FB_prioridad(i))
+                }"
+                class="form-control"
+              >
+                <option value="1">Mejor proveedor</option>
+                <option value="2">Proveedor regular</option>
+                <option value="3">Ultima opcion</option>
+              </select>
 
-
-
-          <app-data-list
-            [debug]="true"
-            (ejecutarBusquedaDeItems)="
-              ejecutarOperacionesDeBusquedaArticulos($event)
-            "
-          ></app-data-list>
-
-
-
-
-
-
-          
+              <small id="helpId" class="form-text text-muted"
+                >Prioridad del proveedor para este articulo</small
+              >
+              <app-validacion-inputs
+                [campo]="relacionArticulo_FB_prioridad(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+            =====================================
+             END relacionArticulo - prioridad
+            =====================================
+            -->
         </ng-container>
       </ng-container>
     </ng-container>
@@ -697,6 +853,319 @@
     =====================================
     -->
 
+    <!-- 
+    =====================================
+     Metodos de pago aceptados
+    =====================================
+    -->
+    <div class="col-12">
+      <h3>Metodos de pago</h3>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <div class="d-flex justify-content-between">
+          <input #inputMetodoDePago type="text" class="form-control valid" />
+          <a
+            (click)="agregarMetodoDePago(inputMetodoDePago.value)"
+            class="btn btn-success text-white"
+            role="button"
+          >
+            <i class="fas fa-plus-circle"></i
+          ></a>
+        </div>
+        <small id="helpId" class="form-text text-muted"
+          >Ingresa metodo de pago</small
+        >
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="list-group">
+        <a class="text-white list-group-item list-group-item-action active"
+          >Metodos de pago aceptados</a
+        >
+
+        <a
+          *ngIf="metodosDePagoAceptados_FB.controls.length === 0"
+          class="list-group-item list-group-item-action bg-dark text-white list-group-item-dark disabled"
+          >No hay metodos de pago aceptados</a
+        >
+        <a
+          *ngFor="
+            let metodo of metodosDePagoAceptados_FB.controls;
+            let i = index
+          "
+          class="list-group-item list-group-item-action"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ metodo.value }}</span>
+            <a
+              (click)="eliminarMetodoDePago(i)"
+              class="btn btn-danger btn-sm text-white"
+              role="button"
+            >
+              <i class="fas fa-times-circle"></i
+            ></a>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 
+    =====================================
+     END Metodos de pago aceptados
+    =====================================
+    -->
+
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     Condiciones de pago
+    =====================================
+    -->
+    <div class="col-12">
+      <h3>Condiciones de pago</h3>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <div class="d-flex justify-content-between">
+          <input #inputCondicionesDePago type="text" class="form-control" />
+          <a
+            (click)="agregarCondicionesDePago(inputCondicionesDePago.value)"
+            class="btn btn-success text-white"
+            role="button"
+          >
+            <i class="fas fa-plus-circle"></i
+          ></a>
+        </div>
+        <small id="helpId" class="form-text text-muted"
+          >Ingresa condicion de pago</small
+        >
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="list-group">
+        <a class="text-white list-group-item list-group-item-action active"
+          >Condiciones de pago</a
+        >
+
+        <a
+          *ngIf="condicionesDePago_FB.controls.length === 0"
+          class="list-group-item list-group-item-action bg-dark text-white list-group-item-dark disabled"
+          >No hay Condiciones de pago</a
+        >
+        <a
+          *ngFor="let metodo of condicionesDePago_FB.controls; let i = index"
+          class="list-group-item list-group-item-action"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ metodo.value }}</span>
+            <a
+              (click)="eliminarCondicionesDePago(i)"
+              class="btn btn-danger btn-sm text-white"
+              role="button"
+            >
+              <i class="fas fa-times-circle"></i
+            ></a>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 
+    =====================================
+     END Condiciones de pago
+    =====================================
+    -->
+    <!-- 
+    =====================================
+     Formas de pago
+    =====================================
+    -->
+    <div class="col-12">
+      <h3>Formas de pago</h3>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <div class="d-flex justify-content-between">
+          <input #inputFormasDePago type="text" class="form-control" />
+          <a
+            (click)="agregarFormasDePago(inputFormasDePago.value)"
+            class="btn btn-success text-white"
+            role="button"
+          >
+            <i class="fas fa-plus-circle"></i
+          ></a>
+        </div>
+        <small id="helpId" class="form-text text-muted"
+          >Ingresa forma de pago</small
+        >
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="list-group">
+        <a class="text-white list-group-item list-group-item-action active"
+          >Formas de pago</a
+        >
+
+        <a
+          *ngIf="formasDePago_FB.controls.length === 0"
+          class="list-group-item list-group-item-action bg-dark text-white list-group-item-dark disabled"
+          >No hay Formas de pago</a
+        >
+        <a
+          *ngFor="let metodo of formasDePago_FB.controls; let i = index"
+          class="list-group-item list-group-item-action"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ metodo.value }}</span>
+            <a
+              (click)="eliminarFormasDePago(i)"
+              class="btn btn-danger btn-sm text-white"
+              role="button"
+            >
+              <i class="fas fa-times-circle"></i
+            ></a>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 
+    =====================================
+     END Formas de pago
+    =====================================
+    -->
+
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <!-- 
+    =====================================
+     Cuentas
+    =====================================
+    -->
+    <!-- 
+    =====================================
+     Array cuentas 
+    =====================================
+    -->
+
+    <div *ngIf="cuentas_FB.controls.length > 0" class="col-12">
+      <hr />
+    </div>
+    <ng-container formArrayName="cuentas">
+      <ng-container *ngFor="let dummy of cuentas_FB.controls; let i = index">
+        <ng-container [formGroupName]="i">
+          <!-- 
+        =====================================
+         cuentas - clabe
+        =====================================
+        -->
+          <div class="col-12 col-sm-6 col-lg-5">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(cuentas_FB_clabe(i)),
+                  'is-valid': vs.valid(cuentas_FB_clabe(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="clabe"
+              />
+              <small id="helpId" class="form-text text-muted">Clabe</small>
+              <app-validacion-inputs
+                [campo]="cuentas_FB_clabe(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END cuentas - clabe
+        =====================================
+        -->
+
+          <!-- 
+        =====================================
+         cuentas - banco
+        =====================================
+        -->
+          <div class="col-12 col-sm-6 col-lg-5">
+            <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(cuentas_FB_banco(i)),
+                  'is-valid': vs.valid(cuentas_FB_banco(i))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="banco"
+              />
+              <small id="helpId" class="form-text text-muted">Banco</small>
+              <app-validacion-inputs
+                [campo]="cuentas_FB_banco(i)"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+          <!-- 
+        =====================================
+         END cuentas - banco
+        =====================================
+        -->
+
+          <!-- 
+        =====================================
+         Boton para eliminar
+        =====================================
+        -->
+          <div class="col-12 col-lg-2 mb-3 mb-sm-0">
+            <a
+              (click)="eliminarRelacionCuenta(i)"
+              class=" btn btn-danger btn-xs text-white mr-3"
+              ><i class="fas fa-times"></i> Eliminar</a
+            >
+          </div>
+          <!-- 
+        =====================================
+         END Boton para eliminar
+        =====================================
+        -->
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <!-- 
+    =====================================
+     END Array cuentas 
+    =====================================
+    -->
+
+    <div class="col-12">
+      <a
+        (click)="addRelacionCuenta()"
+        title="Agregar una relacion con una cuenta"
+        class="btn btn-primary btn-xs text-white"
+        role="button"
+      >
+        <i class="fas fa-plus-circle"></i> Cuenta</a
+      >
+    </div>
+    <div class="col-12">
+      <hr />
+    </div>
+    <!-- 
+    =====================================
+     END Cuentas
+    =====================================
+    -->
     <br />
   </div>
 
@@ -712,7 +1181,7 @@
   </button>
   <a
     data-toggle="modal"
-    data-target="#crearModificarDivisaModal"
+    data-target="#crearModificarProveedorModal"
     (click)="cancelar()"
     class="text-white btn btn-danger"
     role="button"
