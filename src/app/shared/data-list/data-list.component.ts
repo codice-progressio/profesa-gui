@@ -49,11 +49,37 @@ import { Dato } from "./dato.model"
  * ```crear-modificar.component.html```
  *
  * ``` html
- *  <app-data-list
- *  (ejecutarBusquedaDeItems)=" ejecutarOperacionesDeBusquedaArticulos($event)"
+ *  <div class="">
+ *    <div class="form-group">
  *
- *  >
- *   </app-data-list>
+ *      // Esta es la parte que nos interesa
+ *      <app-data-list
+ *        (ejecutarBusquedaDeItems)="
+ *          ejecutarOperacionesDeBusquedaArticulos($event)
+ *        "
+ *        (elementoSeleccionado)="articuloSeleccionado($event, i)"
+ *        [valid]='vs.valid(relacionArticulo_FB_item(i))'
+ *        [invalid]='vs.invalid(relacionArticulo_FB_item(i))'
+ *        (touched)='relacionArticulo_FB_item(i).markAsTouched()'
+ *
+ *      ></app-data-list>
+ *
+ *      // Fin de la parte interesante
+ *      <input
+ *      [ngClass]="{
+ *        'is-invalid': vs.invalid(relacionArticulo_FB_item(i)),
+ *        'is-valid': vs.valid(relacionArticulo_FB_item(i))
+ *      }"
+ *        type="text"
+ *        class="form-control"
+ *        formControlName="item"
+ *      />
+ *      <small id="helpId" class="form-text text-muted">Articulo</small>
+ *      <app-validacion-inputs
+ *        [campo]="relacionArticulo_FB_item(i)"
+ *      ></app-validacion-inputs>
+ *    </div>
+ *  </div>
  * ```
  *
  * @export
@@ -92,7 +118,6 @@ export class DataListComponent implements OnInit {
    */
   buscando: boolean = false
 
-  
   /**
    *Define el estatus visible o no de la lista de items.
    *
@@ -126,7 +151,38 @@ export class DataListComponent implements OnInit {
   @ViewChild("inputBuscarNativo", { static: false })
   inputBusquedaFocus: ElementRef
 
+  /**
+   * El texto que se muestra en el input deshabilitado
+   * despues de que se selecciono un elemento. Corresponde
+   * a la propiedad dato.leyendaPrincipal.
+   *
+   * @type {string}
+   * @memberof DataListComponent
+   */
   leyendaInputDeshabilitado: string = null
+
+  /**
+   *Recive el estatus de validacion del input.
+   *
+   * @type {boolean}
+   * @memberof DataListComponent
+   */
+  @Input() valid: boolean
+  /**
+   *Recive el estatus de invalidacion del input
+   *
+   * @type {boolean}
+   * @memberof DataListComponent
+   */
+  @Input() invalid: boolean
+  /**
+   *Cuando el input para buscar es tocado emite un evento
+   * que permite la validacion del hidden input real fuera
+   * de este componente.
+   *
+   * @memberof DataListComponent
+   */
+  @Output() touched = new EventEmitter<null>()
 
   /**
    *Emite el evento para que se ejecute la busqueda
@@ -137,6 +193,9 @@ export class DataListComponent implements OnInit {
     termino: string
     dataList: DataListComponent
   }>()
+
+
+  @Input() cargarModifcacion: Dato 
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
@@ -177,6 +236,16 @@ export class DataListComponent implements OnInit {
       )
       // Cancelamos la busqueda.
       .subscribe(() => this.cancelarBusqueda())
+    
+    // Emitimos el evento de touched
+    this.inputBusqueda.statusChanges.subscribe((e) => {
+      this.touched.emit()
+    })
+
+
+    if( this.cargarModifcacion ){
+      this.cargarElementoPorModificacion( this.cargarModifcacion)
+    }
   }
 
   /**
@@ -255,6 +324,11 @@ export class DataListComponent implements OnInit {
     this.elementoSeleccionado.emit(dato)
     this.terminarBusquedaDespuesDeSeleccionarElemento()
   }
+
+  cargarElementoPorModificacion( dato: Dato ){
+    this.leyendaInputDeshabilitado = dato.leyendaPrincipal
+    this.terminarBusquedaDespuesDeSeleccionarElemento()
+  } 
 
   private cancelarBusqueda() {
     this.buscando = false

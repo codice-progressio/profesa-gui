@@ -25,10 +25,11 @@ import { NgxMaskModule } from "ngx-mask"
 import { OrganizadorDragAndDropComponent } from "../components/organizador-drag-and-drop/organizador-drag-and-drop.component"
 import { Paginador2Component } from "../components/paginador2/paginador2.component"
 import { BotonParaImprecionComponent } from "./boton-para-imprecion/boton-para-imprecion.component"
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component';
 import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component';
 import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abstracto.component'
+import { DataListComponent } from './data-list/data-list.component'
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abs
     PipesModule,
     DndModule,
     NgxMaskModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     HeaderComponent,
@@ -60,7 +62,7 @@ import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abs
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
     ModeloCompletoGestorDeProcesosEspecialesComponent,
-    PaginadorAbstractoComponent
+    PaginadorAbstractoComponent, DataListComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -83,7 +85,8 @@ import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abs
     Paginador2Component,
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
-    ModeloCompletoGestorDeProcesosEspecialesComponent
+    ModeloCompletoGestorDeProcesosEspecialesComponent, 
+    DataListComponent
   ],
   providers: [ModeloCompletoPipe]
 })
