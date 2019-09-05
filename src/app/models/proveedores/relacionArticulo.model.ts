@@ -12,7 +12,7 @@ export class RelacionArticulo implements Deserializable {
   deserialize(input: this): this {
     Object.assign(this, input)
     this.item = new Articulo().deserialize(input.item)
-    this.divisa = new Divisa().deserialize(input.divisa)
+    if( this.divisa )this.divisa = new Divisa().deserialize(input.divisa)
     return this
   }
 }
