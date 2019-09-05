@@ -176,7 +176,7 @@
                 <tbody>
                   <tr *ngFor="let relacion of proveedor.relacionArticulos">
                     <td>{{ relacion.precioUnitario | number: "0.0-4" }}</td>
-                    <td>{{ relacion.divisa.nombre }}</td>
+                    <td>{{ relacion?.divisa?.nombre }}</td>
                     <td>{{ relacion.item.nombre }}</td>
                     <td>{{ relacion.tiempoDeEntregaEnDias }}</td>
                     <td>{{ relacion.prioridad }}</td>

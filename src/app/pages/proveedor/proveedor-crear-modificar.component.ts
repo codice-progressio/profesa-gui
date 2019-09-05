@@ -132,7 +132,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     let grupo = this.crearGrupo_relacionArticulo()
 
     grupo.get("precioUnitario").setValue(relacionArticiulo.precioUnitario)
-    grupo.get("divisa").setValue(relacionArticiulo.divisa._id)
+    grupo.get("divisa").setValue(relacionArticiulo.divisa?relacionArticiulo.divisa._id : '' )
     grupo.get("item").setValue(relacionArticiulo.item._id)
     grupo
       .get("tiempoDeEntregaEnDias")
@@ -234,12 +234,10 @@ export class ProveedorCrearModificarComponent implements OnInit {
         this.guardar.emit()
         this.limpiar()
       }
-      console.log(`modelo`,modelo)
       if (this.proveedor) {
         modelo._id = this.proveedor._id
         this._proveedorService.modificar(modelo).subscribe(cb)
       } else {
-        // delete modelo._id
         this._proveedorService.guardar(modelo).subscribe(cb)
       }
     }
