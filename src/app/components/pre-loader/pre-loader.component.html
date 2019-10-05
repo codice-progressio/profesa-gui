@@ -14,7 +14,7 @@
       *ngFor="let ley of _s.Object.keys(_s.registro); let i = index"
       [class]="' fadeIn animated delay-0-' + (i + 1) + 's'"
     >
-      <hr class="w-25" />
+      <hr class="w-25 border-white bg-transparent" />
       <h5 class="text-white">
         {{ _s.registro[ley] }}
         <i
@@ -25,6 +25,33 @@
           "
         ></i>
       </h5>
+    </div>
+
+    <div
+      *ngFor="let barra of _s.barrasDeProgresoActivas; let i = index"
+      [class]="' fadeIn animated delay-0-' + (i + 1) + 's'"
+    >
+      <hr class="w-25 border-white bg-transparent" />
+      <h5 class="text-white">
+        {{ barra.msj }}
+        <i
+        [ngClass]="{'
+          fa-cloud-upload-alt fadeInUp': barra.upload ,'
+          fa-cloud-download-alt fadeInDown': !barra.upload
+        }"
+        [class]="
+          'fas animated  infinite text-white  slower delay-0-' +
+          (i + 1) +
+          's'
+        "
+        ></i>
+      </h5>
+      <h2 class="text-white display-1">
+        <b>{{ barra.progreso | number: '2.0'}}</b> %
+
+      </h2>
+      <hr class="w-25" />
+  
     </div>
   </div>
 </div>

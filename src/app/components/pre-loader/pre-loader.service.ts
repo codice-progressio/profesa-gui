@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UtilidadesService } from '../../services/utilidades/utilidades.service';
 import { log } from 'util';
+import { BarraDeProgresoTransporte } from './pre-loader_barraDeProgresoTransporte';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,12 @@ export class PreLoaderService {
   ok(idPreLoader: number ) {
     
     delete this.registro[idPreLoader];
+    // Borrar progreso de barra
+    let index = this.barrasDeProgresoActivas.findIndex(x=>{ return x.id===idPreLoader})
+    if( index>-1) this.barrasDeProgresoActivas.splice(index, 1)
+    
+
+
     let b = 0;
     for (const x in this.registro) {
       b++;
@@ -101,6 +108,7 @@ export class PreLoaderService {
     this.canceladoPorError = false;
     this.miniCarga = false;
     this.registro = {};
+    this.barrasDeProgresoActivas = []
     
 
     
@@ -108,6 +116,28 @@ export class PreLoaderService {
 
   definirMensajeParaMostrar( msj: string  ) {
     this.leyenda.push(msj);
+  }
+
+
+  barrasDeProgresoActivas: BarraDeProgresoTransporte[] = []
+  /**
+   *Le damos el mismo numero que el mensaje de preloader. 
+   *
+   * @param {number} id El mismo numero de mensaje que preloader
+   * @param {number} progreso El % de avance.preloader
+   * @param {string} msj El mensaje que se va a mostrar
+   * @memberof PreLoaderService
+   */
+  progreso(id: number, progreso: number, msj: string, upload=true ) {
+    let barra = this.barrasDeProgresoActivas.find((x) => x.id === id)
+
+    if (barra) {
+      barra.progreso = progreso
+    } else {
+      
+      let b = new BarraDeProgresoTransporte(id, progreso, msj, upload)
+      this.barrasDeProgresoActivas.push(b)
+    }
   }
 
 
