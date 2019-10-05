@@ -1,0 +1,11 @@
+<!-- The Modal -->
+<div
+  title="Click para cerrar"
+  (click)="servicio.cerrar()"
+  class="modal fadeIn animated faster pointer"
+  [ngStyle]="{ display: servicio.mostrar }"
+>
+  <div class="contenedor">
+    <img [src]="servicio.imagenParaMostrar" />
+  </div>
+</div>
