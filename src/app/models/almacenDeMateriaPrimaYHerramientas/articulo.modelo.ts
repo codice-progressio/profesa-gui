@@ -21,6 +21,7 @@ export class Articulo implements Deserializable {
     public entradas: EntradaArticulo[] = [],
     public descripcion?: string,
     public observaciones?: string,
+    public imagenes: string[] = []
   ) {}
 
   deserialize(input: this): this {
@@ -36,8 +37,7 @@ export class Articulo implements Deserializable {
     return a
   }
 
-
-  comprobarExistencias( ) {
+  comprobarExistencias() {
     let valor: number = 2
 
     if (this.existencia > this.stockMaximo) valor = 1
@@ -45,5 +45,9 @@ export class Articulo implements Deserializable {
     if (this.existencia == 0) valor = 0
 
     return valor
+  }
+
+  obtenerPrimeraImagenSiExiste() {
+    if (this.imagenes.length > 0) return this.imagenes[0]
   }
 }

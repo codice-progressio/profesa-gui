@@ -1,0 +1,196 @@
+<div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="requisicion?._id">Folio #<b>{{ requisicion.folio }}</b></h1>
+  <h1>
+    <span class="text-success" *ngIf="!requisicion?._id">
+      <i class="fas fa-plus-square    "></i> Crear <b>requisicion</b> </span
+    ><span class="text-warning" *ngIf="requisicion?._id">
+      <i class="fas fa-pen-square"></i> Modificar <b>requisicion</b>
+    </span>
+  </h1>
+</div>
+
+<br />
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <div class="col-12">
+      <div class=" mb-5 d-flex justify-content-start align-content-center">
+        <!-- 
+            =====================================
+            materiaPrima
+            =====================================
+            -->
+        <div class="form-check">
+          <input
+            (click)="soloUnCheckBox('materiaPrima')"
+            [ngClass]="{
+              'is-invalid': vs.invalid(materiaPrima_FB),
+              'is-valid': vs.valid(materiaPrima_FB)
+            }"
+            class="form-check-input"
+            type="checkbox"
+            id="materiaPrima"
+            formControlName="materiaPrima"
+          />
+          <label class="form-check-label" for="materiaPrima">
+            Materia prima
+          </label>
+          <app-validacion-inputs
+            [campo]="materiaPrima_FB"
+          ></app-validacion-inputs>
+        </div>
+        <!-- 
+            =====================================
+            END materiaPrima
+            =====================================
+            -->
+
+        <!-- 
+            =====================================
+            consumibles
+            =====================================
+            -->
+        <div class="form-check">
+          <input
+            (click)="soloUnCheckBox('consumibles')"
+            [ngClass]="{
+              'is-invalid': vs.invalid(consumibles_FB),
+              'is-valid': vs.valid(consumibles_FB)
+            }"
+            class="form-check-input"
+            type="checkbox"
+            id="consumibles"
+            formControlName="consumibles"
+          />
+          <label class="form-check-label" for="consumibles">
+            Consumibles
+          </label>
+          <app-validacion-inputs
+            [campo]="consumibles_FB"
+          ></app-validacion-inputs>
+        </div>
+        <!-- 
+            =====================================
+            END consumibles
+            =====================================
+            -->
+
+        <!-- 
+            =====================================
+            gastosYServicios
+            =====================================
+            -->
+        <div class="form-check">
+          <input
+            (click)="soloUnCheckBox('gastosYServicios')"
+            [ngClass]="{
+              'is-invalid': vs.invalid(gastosYServicios_FB),
+              'is-valid': vs.valid(gastosYServicios_FB)
+            }"
+            class="form-check-input"
+            type="checkbox"
+            id="gastosYServicios"
+            formControlName="gastosYServicios"
+          />
+          <label class="form-check-label" for="gastosYServicios">
+            Gastos y servicios
+          </label>
+          <app-validacion-inputs
+            [campo]="gastosYServicios_FB"
+          ></app-validacion-inputs>
+        </div>
+
+        <!-- 
+            =====================================
+            END gastosYServicios
+            =====================================
+            -->
+      </div>
+    </div>
+
+    <!-- 
+    =====================================
+     articulo
+    =====================================
+    -->
+    <div class="col-12 col-sm-6 col-lg-6">
+      <div class="form-group">
+        <app-data-list
+          (ejecutarBusquedaDeItems)="
+            ejecutarOperacionesDeBusquedaArticulos($event)
+          "
+          (elementoSeleccionado)="articuloSeleccionado($event)"
+          [valid]="vs.valid(articulo_FB)"
+          [invalid]="vs.invalid(articulo_FB)"
+          (touched)="articulo_FB.markAsTouched()"
+          [cargarModifcacion]='crearModificacionDeItem()'
+          (esteComponente)='dataListComponent=$event'
+        ></app-data-list>
+        <input type="hidden" formControlName="articulo" />
+        <small id="helpId" class="form-text text-muted">Articulo</small>
+        <app-validacion-inputs [campo]="articulo_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+    END articulo
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     cantidad
+    =====================================
+    -->
+    <div class="col-6 col-sm-4 col-lg-2">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(cantidad_FB),
+            'is-valid': vs.valid(cantidad_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="cantidad"
+        />
+        <small id="helpId" class="form-text text-muted">
+          <ng-container
+            *ngIf="!articuloSeleccionadoParaInput; else cantidadTemplate"
+          >
+            Cantidad a solicitar
+          </ng-container>
+          <ng-template #cantidadTemplate>
+            Presentacion: {{ articuloSeleccionadoParaInput.presentacion }}
+          </ng-template>
+        </small>
+
+        <app-validacion-inputs [campo]="cantidad_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END cantidad
+    =====================================
+    -->
+  </div>
+
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#crearModificarRequisicion"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times"></i> Cancelar</a
+  >
+</form>
