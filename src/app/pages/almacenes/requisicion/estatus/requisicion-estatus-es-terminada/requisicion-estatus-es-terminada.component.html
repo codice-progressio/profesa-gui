@@ -1,0 +1,62 @@
+<div class="d-flex align-items-center justify-content-center">
+  <i class="fas fa-check-circle fa-5x mr-3 text-success"></i>
+  <span>
+    <h1 class="display-6">
+      Requisicion <b class="text-success">completada</b> el dia
+      <span class="text-muted">
+        {{
+          historialEstatus.estatus.fechaTermino | fecha: "LLLL"
+        }}
+      </span>
+    </h1>
+
+    <h4>
+      <ng-container
+        *ngIf="
+          historialEstatus.estatus.imagenesFacturas.length > 1;
+          else facturasTemplate
+        "
+      >
+        Facturas
+      </ng-container>
+      <ng-template #facturasTemplate>
+        Factura
+      </ng-template>:
+    </h4>
+
+    <div class="row">
+      <div
+        *ngFor="let objetoImg of historialEstatus.estatus.imagenesFacturas"
+        class="col-lg-3 col-md-6 m-b-20"
+      >
+        <img
+          (click)="mostrarImagen(objetoImg.imagen)"
+          [src]="objetoImg.imagen | imagen:'facturas'"
+          class="img-responsive radius shadow pointer"
+        />
+        <span
+          title="Factura recivida el {{ objetoImg.fecha | fecha: 'LLLl' }}"
+          class="sl-date"
+        >
+          {{ objetoImg.fecha | date: "dd/MM/yy" }}
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <a class="link"
+        >Recepcion completa confirmada por
+        {{ historialEstatus.usuarioQueModifica.nombre | titlecase }}
+        <img
+          [src]="historialEstatus.usuarioQueModifica.img | imagen"
+          alt="usuario"
+          class="profile-pic img-50"
+        />
+
+        <br /> </a
+      ><span class="sl-date">
+        el {{ historialEstatus.fechaModificacion | fecha: "LLLL" }}</span
+      >
+    </div>
+  </span>
+</div>

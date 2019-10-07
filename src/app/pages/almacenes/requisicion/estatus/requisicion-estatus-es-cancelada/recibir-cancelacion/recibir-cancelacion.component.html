@@ -1,0 +1,83 @@
+<ng-container *ngIf="requisicion">
+  <div class="justify-content-between d-flex aling-items-center">
+    <h1 *ngIf="requisicion">
+      Requisicion # <b>{{ requisicion.folio }}</b>
+    </h1>
+    <h1>
+      <span class="text-danger">
+        <i class="fas fa-ban    "></i> Cancelar esta <b>requisicion</b>
+      </span>
+    </h1>
+  </div>
+  <hr />
+  <br />
+
+  <div class="alert alert-warning" role="alert">
+    <strong>
+      <i class="fas fa-exclamation-circle animated tada"></i>
+      Atencion:</strong
+    >
+    La cancelacion no descuenta lo que se haya registrado como parcialidad.
+  </div>
+
+  <form [formGroup]="formulario">
+    <div class="row">
+      <!-- 
+      =====================================
+          motivoCancelacion
+      =====================================
+      -->
+      <div class="col-6">
+        <div class="form-group">
+          <textarea
+            cols="30"
+            rows="10"
+            [ngClass]="{
+              'is-invalid': vs.invalid(motivoCancelacion_FB),
+              'is-valid': vs.valid(motivoCancelacion_FB)
+            }"
+            class="form-control"
+            formControlName="motivoCancelacion"
+          >
+          </textarea>
+          <small id="helpId" class="form-text text-muted"
+            >Motivo de cancelacion</small
+          >
+          <app-validacion-inputs
+            [campo]="motivoCancelacion_FB"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+      =====================================
+          END motivoCancelacion
+      =====================================
+      -->
+    </div>
+    <br />
+
+    <button
+      data-toggle="modal"
+      data-target="#recibirCancelacion"
+      (click)="submit(formulario.value, formulario.invalid, $event)"
+      [disabled]="formulario.invalid"
+      class="text-white btn btn-success mr-3"
+      role="button"
+    >
+      <i class="fas fa-save    "></i> Guardar
+    </button>
+    <a
+      data-toggle="modal"
+      data-target="#recibirCancelacion"
+      (click)="cancelar()"
+      class="text-white btn btn-danger"
+      role="button"
+    >
+      <i class="fas fa-times    "></i> Cancelar</a
+    >
+  </form>
+</ng-container>
+
+<ng-container *ngIf="!requisicion">
+  <h1>No has seleccionado ninguna <b>requisicion</b></h1>
+</ng-container>

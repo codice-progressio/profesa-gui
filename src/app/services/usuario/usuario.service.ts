@@ -344,4 +344,16 @@ export class UsuarioService {
   //   const token = `token=${this.token}`;
   //   return url.includes('?') ? u + `&${token}` : u + `?${token}`;
   // }
+
+  /**
+   *Comprueba si el usuario logueado contiene el rol que se 
+   le pase como parametro. 
+   *
+   * @param {string} rol
+   * @returns {boolean}
+   * @memberof UsuarioService
+   */
+  comprobarRol(rol: string): boolean{
+    return this.usuario.role.includes(rol)
+  }
 }

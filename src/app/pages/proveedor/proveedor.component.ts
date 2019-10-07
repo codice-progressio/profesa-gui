@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Divisa } from 'src/app/models/divisas/divisa.model';
-import { DivisaCrearModificarComponent } from '../divisa/divisa-crear-modificar.component';
 import { PaginadorService } from 'src/app/components/paginador/paginador.service';
-import { DivisaService } from 'src/app/services/divisa.service';
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
-import { FiltrosDivisas } from 'src/app/services/utilidades/filtrosParaConsultas/FiltrosDivisas';
 import { ProveedorCrearModificarComponent } from './proveedor-crear-modificar.component'
 import { Proveedor } from '../../models/proveedores/proveedor.model'
 import { ProveedorService } from 'src/app/services/proveedor.service';

@@ -87,16 +87,20 @@
   @page {
     margin: 5mm;
     
-    /* size: 107.95mm 279.4mm; */
+    size: 66 279mm;
   }
 
   .orden {
     width: 100%;
-    max-height: 64mm;
-    min-height: 64mm;
-    height: 64mm;
+    max-height: 66mm;
+    min-height: 66mm;
+    height: 66mm;
+
     position: relative;
-    padding-bottom: 200px;
+    
+    page-break-inside: avoid;
+    -webkit-region-break-inside: avoid; 
+    margin-bottom: 4mm;
   }
 
    .orden-footer {
@@ -105,9 +109,12 @@
     width: 100%;
   }
   .salto-de-pagina {
+    position: relative;
+    page-break-inside: avoid;
     page-break-after: always;
-    page-break-before: always;
   }
+
+  
 }
 
 hr {
