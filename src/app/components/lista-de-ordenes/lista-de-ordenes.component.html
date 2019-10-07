@@ -69,7 +69,7 @@
                         *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando"
                         class="fas fa-spin fa-2x fa-cog text-warning"
                       ></i>
-                      <i title='Esta orden esta pendiente por recivir'
+                      <i title='Esta orden esta pendiente por recibir'
                         *ngIf="!orden.ubicacionActual.recivida"
                         class="fas fa-exclamation  animated tada infinite"
                       ></i>
@@ -78,7 +78,7 @@
                       {{ orden.numeroDeOrden + 1 }} / {{ orden.totalOrdenes }}
                     </td>
                     <td class="fit">
-                      {{ orden.ordenViajera }}
+                      {{ orden.orden }}
                     </td>
                     <td class="fit">
                       {{ orden.fechaFolio | fecha: "DD/MM/YYYY" }}

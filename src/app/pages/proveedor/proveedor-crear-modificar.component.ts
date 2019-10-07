@@ -142,6 +142,14 @@ export class ProveedorCrearModificarComponent implements OnInit {
     return grupo
   }
 
+  /**
+   *Esta operacion la jala el Input cargarModificacion 
+   * del componente data-list
+   *
+   * @param {number} i El indice del cual queremos obtener el id
+   * @returns {Dato} El dato estrucutrado
+   * @memberof ProveedorCrearModificarComponent
+   */
   cargarModificacionDeItem(i: number): Dato {
     let id = this.relacionArticulo_FB_item(i).value
     if (this.proveedor) {

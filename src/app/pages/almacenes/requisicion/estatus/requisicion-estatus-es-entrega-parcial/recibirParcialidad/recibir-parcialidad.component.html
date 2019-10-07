@@ -1,0 +1,98 @@
+<ng-container *ngIf="requisicion">
+  <div class="justify-content-between d-flex aling-items-center">
+    <h1 *ngIf="requisicion">
+      Requisicion # <b>{{ requisicion.folio }}</b>
+    </h1>
+    <h1>
+      <span class="text-secondary">
+        <i class="fas fa-star-half    "></i> Agregar <b> parcialidad</b>
+      </span>
+    </h1>
+  </div>
+
+  <hr />
+  <br />
+
+  <form [formGroup]="formulario">
+    <div class="row">
+      <!-- 
+      =====================================
+        cantidadEntregadaALaFecha
+      =====================================
+      -->
+      <div class="col-2">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(cantidadEntregadaALaFecha_FB),
+              'is-valid': vs.valid(cantidadEntregadaALaFecha_FB)
+            }"
+            type="number"
+            class="form-control"
+            formControlName="cantidadEntregadaALaFecha"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Cantidad de parcialidad</small
+          >
+          <app-validacion-inputs [campo]="cantidadEntregadaALaFecha_FB"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+      =====================================
+        END cantidadEntregadaALaFecha
+      =====================================
+      -->
+      <div class="col-4">
+        <button
+
+          (click)="submit(formulario.value, formulario.invalid, $event)"
+          class="btn btn-success "
+          [ngClass]="{'active': formulario.valid}"
+          [disabled]='formulario.invalid'
+          data-toggle="modal"
+          data-target="#recibirParcialidad"
+        >
+          <i class="fas fa-save"></i>
+          Guardar</button
+        >
+      </div>
+
+      
+      <div class="col-12" *ngIf="this.formulario.invalid">
+          <app-validacion-inputs
+            [campo]="this.formulario"
+            [directo]='true'
+          ></app-validacion-inputs>
+        </div>
+
+      <div class="col-12">
+        <app-carga-de-imagenes
+          [activeColor]="'orangered'"
+          [baseColor]="'lightgray'"
+          (imagenesParaSubir)="imagenesParaSubir($event)"
+        >
+        </app-carga-de-imagenes>
+      </div>
+    </div>
+
+    <br>
+    
+  
+  <a
+    data-toggle="modal"
+    data-target="#recibirParcialidad"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+  </form>
+</ng-container>
+
+
+
+
+<ng-container *ngIf="!requisicion">
+  <h1>No has seleccionado ninguna <b>requisicion</b></h1>
+</ng-container>

@@ -1,0 +1,40 @@
+<ng-container *ngIf="historialEstatus">
+  <ng-container *ngIf="historialEstatus.estatus?.esRequisicion">
+    <app-requisicion-estatus-es-requisicion
+      [historialEstatus]="historialEstatus"
+    ></app-requisicion-estatus-es-requisicion>
+    <hr />
+  </ng-container>
+
+  <ng-container *ngIf="historialEstatus.estatus?.esOrdenDeCompra">
+    <app-requisicion-estatus-es-orden-de-compra
+      [historialEstatus]="historialEstatus"
+    ></app-requisicion-estatus-es-orden-de-compra>
+    <hr />
+  </ng-container>
+
+  <ng-container *ngIf="historialEstatus.estatus?.esEntregaParcial">
+    <app-requisicion-estatus-es-entrega-parcial
+      [historialEstatus]="historialEstatus"
+    ></app-requisicion-estatus-es-entrega-parcial>
+    <hr />
+  </ng-container>
+
+  <ng-container *ngIf="historialEstatus.estatus?.esTerminada">
+    <app-requisicion-estatus-es-terminada
+      [historialEstatus]="historialEstatus"
+    ></app-requisicion-estatus-es-terminada>
+    <hr />
+  </ng-container>
+
+  <ng-container *ngIf="historialEstatus.estatus?.esCancelada">
+    <app-requisicion-estatus-es-cancelada
+      [historialEstatus]="historialEstatus"
+    ></app-requisicion-estatus-es-cancelada>
+    <hr />
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!historialEstatus">
+  <h3>No hay historial de cambios</h3>
+</ng-container>

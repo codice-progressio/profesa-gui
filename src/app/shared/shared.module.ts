@@ -29,7 +29,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component';
 import { ModeloCompletoGestorDeProcesosEspecialesComponent } from './modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component';
 import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abstracto.component'
-import { DataListComponent } from './data-list/data-list.component'
+import { DataListComponent } from './data-list/data-list.component';
+import { VisorDeImagenesGeneralComponent } from './visor-de-imagenes-general/visor-de-imagenes-general.component';
+import { CargaDeImagenesComponent } from './carga-de-imagenes/carga-de-imagenes.component';
+import { VisorDeImagenesConPaginacionComponent } from './visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 
 @NgModule({
   imports: [
@@ -62,7 +65,7 @@ import { DataListComponent } from './data-list/data-list.component'
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
     ModeloCompletoGestorDeProcesosEspecialesComponent,
-    PaginadorAbstractoComponent, DataListComponent
+    PaginadorAbstractoComponent, DataListComponent, VisorDeImagenesGeneralComponent, CargaDeImagenesComponent, VisorDeImagenesConPaginacionComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -86,7 +89,10 @@ import { DataListComponent } from './data-list/data-list.component'
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
     ModeloCompletoGestorDeProcesosEspecialesComponent, 
-    DataListComponent
+    DataListComponent,
+    VisorDeImagenesGeneralComponent,
+    VisorDeImagenesConPaginacionComponent,
+    CargaDeImagenesComponent
   ],
   providers: [ModeloCompletoPipe]
 })

@@ -195,11 +195,31 @@ export class DataListComponent implements OnInit {
   }>()
 
 
-  @Input() cargarModifcacion: Dato 
+  /**
+   *Este evento se lanza cuando se cancela la busqueda o
+   cuando se pulsa el boton limpiar. 
+   *
+   * @memberof DataListComponent
+   */
+  @Output() cancelado = new EventEmitter<null>()
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  /**
+   *    Carga el Dato que se le pase como parametro
+   * para modificarlo sin alterar la propiedad touched.
+   *
+   * @type {Dato}
+   * @memberof DataListComponent
+   */
+  @Input() cargarModifcacion: Dato
+
+  @Output() esteComponente = new EventEmitter<this>()
+
+  constructor(private cdRef: ChangeDetectorRef) {
+    
+  }
 
   ngOnInit(): void {
+    this.esteComponente.emit(this)
     // PURA TECONOLOGIA. RXJS
     this.inputBusqueda.valueChanges
       .pipe(
@@ -236,15 +256,14 @@ export class DataListComponent implements OnInit {
       )
       // Cancelamos la busqueda.
       .subscribe(() => this.cancelarBusqueda())
-    
+
     // Emitimos el evento de touched
     this.inputBusqueda.statusChanges.subscribe((e) => {
       this.touched.emit()
     })
 
-
-    if( this.cargarModifcacion ){
-      this.cargarElementoPorModificacion( this.cargarModifcacion)
+    if (this.cargarModifcacion) {
+      this.cargarElementoPorModificacion(this.cargarModifcacion)
     }
   }
 
@@ -268,7 +287,7 @@ export class DataListComponent implements OnInit {
   /**
    * Esta operacion se debe de llamar desde el componente padre cuando
    * este finalizo su promesa. Para eso se le paso como parametro este
-   * componente dentro de ```this.ejecutarBusqudeddaDeItems.emit()```
+   * componente dentro de ```this.ejecutarBusquedaDeItems.emit()```
    *
    *
    * Ejemplo de como se deben de crear los datos cuando la busqueda termino:
@@ -325,10 +344,10 @@ export class DataListComponent implements OnInit {
     this.terminarBusquedaDespuesDeSeleccionarElemento()
   }
 
-  cargarElementoPorModificacion( dato: Dato ){
+  cargarElementoPorModificacion(dato: Dato) {
     this.leyendaInputDeshabilitado = dato.leyendaPrincipal
     this.terminarBusquedaDespuesDeSeleccionarElemento()
-  } 
+  }
 
   private cancelarBusqueda() {
     this.buscando = false
@@ -343,6 +362,7 @@ export class DataListComponent implements OnInit {
     // Actualiza el cambio en el input para que se pueda hacer el focus.
     this.cdRef.detectChanges()
     this.inputBusquedaFocus.nativeElement.focus()
+    this.cancelado.emit()
   }
 
   private terminarBusquedaDespuesDeSeleccionarElemento() {
@@ -350,5 +370,16 @@ export class DataListComponent implements OnInit {
     this.mostrarLista = false
     this.mostrarBotonParaLimpiar = true
     this.datosParaLista = []
+  }
+
+  limpiarParaNuevo() {
+    this.inputBusqueda.enable()
+    this.inputBusqueda.reset()
+    this.buscando = false
+    this.mostrarBotonParaLimpiar = false
+    this.mostrarLista = false
+    this.datosParaLista = []
+    this.elementoSeleccionado.emit(null)
+    this.leyendaInputDeshabilitado = null
   }
 }

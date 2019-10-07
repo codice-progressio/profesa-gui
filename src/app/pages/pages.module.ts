@@ -96,33 +96,47 @@ import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-d
 import { FoliosDetalleAbstractoComponent } from "./gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component"
 import { FoliosCrearModificarAbstractoComponent } from "./gestionDeFolios/folios/abstractos/folios-crear-modificar-abstracto.component"
 import { RevisionDeOrdenesAbstractoComponent } from "./gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
-import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component";
-import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component';
-import { ClientesDetalleComponent } from './clientes/clientes-detalle.component';
-import { AlmacenDeProductoTerminadoCrearModificarComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component';
-import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component';
-import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component';
-import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component';
-import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component';
-import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component';
-import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component';
-import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component';
-import { AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-salida.component';
-import { AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-entrada.component';
-import { AlamacenProduccion } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component';
-import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component';
-import { AlmacenDescripcionDetalleComponent } from './almacenes/almacenDescripcion/almacen-descripcion-detalle.component';
-import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component';
-import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component';
-import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component';
-import { ArticuloComponent } from './almacenes/articulo/articulo.component';
-import { ProveedorCrearModificarComponent } from './proveedor/proveedor-crear-modificar.component';
-import { ProveedorDetalleComponent } from './proveedor/proveedor-detalle.component';
-import { ProveedorComponent } from './proveedor/proveedor.component';
-import { DivisaCrearModificarComponent } from './divisa/divisa-crear-modificar.component';
-import { DivisaDetalleComponent } from './divisa/divisa-detalle.component';
-import { DivisaComponent } from './divisa/divisa.component';
-import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
+import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
+import { ClientesCrearModificarComponent } from "./clientes/clientes-crear-modificar.component"
+import { ClientesDetalleComponent } from "./clientes/clientes-detalle.component"
+import { AlmacenDeProductoTerminadoCrearModificarComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component"
+import { AlmacenDeProductoTerminadoDetalleComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component"
+import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
+import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from "./almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component"
+import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from "./almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component"
+import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from "./almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component"
+import { LoteDetalleComponent } from "./gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component"
+import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
+import { AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-salida.component"
+import { AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas-crear-modificar-entrada.component"
+import { AlamacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
+import { AlmacenDescripcionCrearModificarComponent } from "./almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component"
+import { AlmacenDescripcionDetalleComponent } from "./almacenes/almacenDescripcion/almacen-descripcion-detalle.component"
+import { AlmacenDescripcionComponent } from "./almacenes/almacenDescripcion/almacen-descripcion.component"
+import { ArticuloCrearModificarComponent } from "./almacenes/articulo/articulo-crear-modificar.component"
+import { ArticuloDetalleComponent } from "./almacenes/articulo/articulo-detalle.component"
+import { ArticuloComponent } from "./almacenes/articulo/articulo.component"
+import { ProveedorCrearModificarComponent } from "./proveedor/proveedor-crear-modificar.component"
+import { ProveedorDetalleComponent } from "./proveedor/proveedor-detalle.component"
+import { ProveedorComponent } from "./proveedor/proveedor.component"
+import { DivisaCrearModificarComponent } from "./divisa/divisa-crear-modificar.component"
+import { DivisaDetalleComponent } from "./divisa/divisa-detalle.component"
+import { DivisaComponent } from "./divisa/divisa.component"
+import { TenidoComponent } from "./departamentos/tenido/tenido/tenido.component"
+import { RequisicionCrearModificarComponent } from "./almacenes/requisicion/requisicion-crear-modificar.component"
+import { RequisicionDetalleComponent } from "./almacenes/requisicion/requisicion-detalle.component"
+import { RequisicionComponent } from "./almacenes/requisicion/requisicion.component"
+import { RequisicionEstatusGeneralComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-general/requisicion-estatus-general.component"
+import { RequisicionEstatusEsRequisicionComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-es-requisicion/requisicion-estatus-es-requisicion.component"
+import { RequisicionEstatusEsOrdenDeCompraComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-es-orden-de-compra/requisicion-estatus-es-orden-de-compra.component"
+import { RequisicionEstatusEsEntregaParcialComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/requisicion-estatus-es-entrega-parcial.component"
+import { RequisicionEstatusEsTerminadaComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-es-terminada/requisicion-estatus-es-terminada.component"
+import { RequisicionEstatusEsCanceladaComponent } from "./almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/requisicion-estatus-es-cancelada.component"
+import { ImagenPipe } from '../pipes/imagen.pipe';
+import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/recibirParcialidad/recibir-parcialidad.component';
+import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component';
+import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component';
+import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion-filtros/requisicion-filtros.component";
 
 @NgModule({
   declarations: [
@@ -238,7 +252,20 @@ import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
     DivisaCrearModificarComponent,
     DivisaDetalleComponent,
     DivisaComponent,
-    TenidoComponent
+    TenidoComponent,
+    RequisicionCrearModificarComponent,
+    RequisicionDetalleComponent,
+    RequisicionComponent,
+    RequisicionEstatusGeneralComponent,
+    RequisicionEstatusEsRequisicionComponent,
+    RequisicionEstatusEsOrdenDeCompraComponent,
+    RequisicionEstatusEsEntregaParcialComponent,
+    RequisicionEstatusEsTerminadaComponent,
+    RequisicionEstatusEsCanceladaComponent,
+    RecibirParcialidadComponent,
+    RecibirTerminacionComponent,
+    RecibirCancelacionComponent,
+    RequisicionFiltrosComponent
   ],
   exports: [
     DashboardComponent,
@@ -256,6 +283,7 @@ import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
     PipesModule,
     QRCodeModule
   ]
+,providers : [ ImagenPipe]
   // Para permitir la carga dinamica de componentes.
 })
 export class PagesModule {}
