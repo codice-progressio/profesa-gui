@@ -53,7 +53,7 @@ export class ProcesoService extends CRUD<Proceso, undefined, undefined> {
         let np = new Proceso().deserialize(pp)
         p.push(np)
       })
-      this._msjService.ok_(a)
+      this._msjService.ok_(resp, null, a)
   
       return p
   }

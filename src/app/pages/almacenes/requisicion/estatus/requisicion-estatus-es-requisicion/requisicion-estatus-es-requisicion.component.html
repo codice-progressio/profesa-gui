@@ -1,0 +1,23 @@
+<div class="d-flex align-items-center justify-content-start">
+  <i class="fas fa-cart-plus fa-5x mr-3 text-warning"></i>
+  <span>
+    <h1 class="display-6">
+      <b class="text-warning">En espera</b> de generacion de compra
+    </h1>
+    <div>
+      <a class="link"
+        >Requisicion creada por
+        {{ historialEstatus.usuarioQueModifica.nombre | titlecase }}
+        <img
+          [src]="historialEstatus.usuarioQueModifica.img | imagen"
+          alt="usuario"
+          class="profile-pic img-50"
+        />
+
+        <br /> </a
+      ><span class="sl-date">
+        el {{ historialEstatus.fechaModificacion | fecha: "LLLL" }}</span
+      >
+    </div>
+  </span>
+</div>

@@ -1,3 +1,194 @@
-<p>
-  proveedor-detalle works!
-</p>
+<ng-container *ngIf="proveedor">
+  <div class="d-flex aling-items-center justify-content-between">
+    <h1>{{ proveedor.nombre }}</h1>
+    <h3>Detalle de <b>proveedor</b></h3>
+  </div>
+
+  <hr />
+  <!-- Row -->
+  <div class="row">
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <small class="text-muted"> Tiempo de entrega</small>
+          <h6>{{ proveedor.tiempoDeEntregaEstimadoEnDias }} dias corridos.</h6>
+          <small class="text-muted">Razon social </small>
+          <h6>{{ proveedor.razonSocial }}</h6>
+          <small class="text-muted">RFC </small>
+          <h6>{{ proveedor.rfc }}</h6>
+          <small class="text-muted p-t-30 ">Telefonos</small>
+          <h6 *ngFor="let contacto of proveedor.contactos">
+            {{ contacto.telefono }}
+          </h6>
+          <hr />
+          <small class="text-muted p-t-30 ">Domicilios</small>
+          <ng-container *ngFor="let domicilio of proveedor.domicilios">
+            <h6>{{ domicilio.completo() }}</h6>
+            <div class="map-box">
+              <a
+                *ngIf="domicilio.urlMaps"
+                href="{{ domicilio.urlMaps }}"
+                target="_blank"
+                >Ver en maps</a
+              >
+            </div>
+          </ng-container>
+          <hr />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+      <div class="card">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs profile-tab" role="tablist">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              data-toggle="tab"
+              href="#datosDePago"
+              role="tab"
+              aria-expanded="true"
+              >Datos de pago</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              data-toggle="tab"
+              href="#contactos"
+              role="tab"
+              >Contactos</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#articulos" role="tab"
+              >Articulos</a
+            >
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div
+            class="tab-pane"
+            id="datosDePago"
+            role="tabpanel"
+            aria-expanded="true"
+          >
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 col-xs-6 b-r">
+                  <strong>Metodos de pago</strong>
+                  <br />
+                  <p *ngFor="let met of proveedor.metodosDePagoAceptados">
+                    {{ met }}
+                  </p>
+                </div>
+                <div class="col-md-4 col-xs-6 b-r">
+                  <strong>Condiciones de pago</strong>
+                  <br />
+                  <p
+                    *ngFor="let con of proveedor.condicionesDePago"
+                    class="text-muted"
+                  >
+                    {{ con }}
+                  </p>
+                </div>
+                <div class="col-md-4 col-xs-6 b-r">
+                  <strong>Formas de pago</strong>
+                  <br />
+                  <p
+                    *ngFor="let for of proveedor.formasDePago"
+                    class="text-muted"
+                  >
+                    {{ for }}
+                  </p>
+                </div>
+              </div>
+
+              <hr />
+              <div class="row">
+                <div class="col-12">
+                  <strong>Cuentas</strong>
+                </div>
+                <div
+                  *ngFor="let cue of proveedor.cuentas"
+                  class="col-md-4 col-xs-6 b-r"
+                >
+                  <strong>Banco</strong>
+                  <br />
+                  <p>{{ cue.banco }}</p>
+                  <strong>Clabe</strong>
+                  <br />
+                  <p>{{ cue.clabe }}</p>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+          <div class="tab-pane active" id="contactos" role="tabpanel">
+            <div
+              *ngFor="let contacto of proveedor.contactos"
+              class="card card-body "
+            >
+              <div class="row">
+                <div class="col-md-12 col-lg-6">
+                  <h3 class="box-title m-b-0">{{ contacto.nombre }}</h3>
+                  <small>{{ contacto.puesto }}</small>
+                  <address>
+                    <br />
+                    <abbr title="Telefono">Tel:</abbr> {{ contacto.telefono }}
+                    <br />
+                    <abbr title="Correo electronico">@: </abbr>
+                    <a href="mailto:{{ contacto.correo }}">{{
+                      contacto.correo
+                    }}</a>
+                  </address>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+          </div>
+
+          <div class="tab-pane" id="articulos" role="tabpanel">
+            <div class="col-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th title="El precio sin iva por unidad de producto">
+                      Precio unitario
+                    </th>
+                    <th title="Tipo de moneda">Divisa</th>
+                    <th title="El nombre del item">Item</th>
+                    <th title="El tiempo de entrega segun el proveedor">
+                      Tiempo
+                    </th>
+                    <th
+                      title="La prioridad del proveedor en relacion con el articulo. Esto define que tan prioritario debe ser la seleccion de proveedor para este articulo"
+                    >
+                      Prioridad
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let relacion of proveedor.relacionArticulos">
+                    <td>{{ relacion.precioUnitario | number: "0.0-4" }}</td>
+                    <td>{{ relacion?.divisa?.nombre }}</td>
+                    <td>{{ relacion.item.nombre }}</td>
+                    <td>{{ relacion.tiempoDeEntregaEnDias }}</td>
+                    <td>{{ relacion.prioridad }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!proveedor">
+    <h1 class="display-1">No has seleccinado ninguna <b>proveedor</b></h1>
+  </ng-container></ng-container
+>

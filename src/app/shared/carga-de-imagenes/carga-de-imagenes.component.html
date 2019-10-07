@@ -1,0 +1,63 @@
+<div class="input-group mb-3">
+  <div class="custom-file">
+    <input
+      type="file"
+      name="file"
+      accept="image/*"
+      (change)="handleInputChange($event, 'input')"
+      class="custom-file-input"
+      multiple
+    />
+    <label class="custom-file-label" for="inputGroupFile01"
+      >Seleccionar ficheros</label
+    >
+  </div>
+</div>
+
+<label
+  class="uploader"
+  ondragover="return false;"
+  [class.loaded]="loaded"
+  [style.outlineColor]="dragging ? activeColor : baseColor"
+  (dragenter)="handleDragEnter()"
+  (dragleave)="handleDragLeave()"
+  (drop)="handleDrop($event)"
+  [ngClass]="{
+    'd-flex justify-content-center align-items-center': files.length === 0
+  }"
+>
+  <i
+    *ngIf="files.length === 0"
+    class="fas fa-upload fa-4x animated fadeIn "
+    [style.color]="
+      dragging
+        ? imageSrc.length > 0
+          ? overlayColor
+          : activeColor
+        : imageSrc.length > 0
+        ? overlayColor
+        : baseColor
+    "
+  ></i>
+  <ng-container *ngIf="loaded || files.length > 0">
+    <div
+      *ngFor="let imgsrc of files; let i = index"
+      class="contenedor animated fadeIn"
+      [class.loaded]="imageLoaded"
+    >
+      <img
+        class="pointer"
+        (click)="verImagen(imgsrc.src)"
+        [src]="imgsrc.src"
+        (load)="handleImageLoad()"
+      />
+      <a
+        href="JavaScript: void(0);"
+        (click)="eliminarImagen(i)"
+        class="btn btn-sm btn-danger active"
+      >
+        <i class="fas fa-times-circle    "></i>
+      </a>
+    </div>
+  </ng-container>
+</label>
