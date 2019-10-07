@@ -52,8 +52,6 @@ export class Maquina implements Deserializable {
         new Departamento().deserialize(departamento)
       );
 
-    } else{
-      console.log(`La maquina no trae departamentos`)
     }
   }
 

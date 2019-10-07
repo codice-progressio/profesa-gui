@@ -57,6 +57,7 @@ import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/alma
 import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 import { ProveedorComponent } from './proveedor/proveedor.component'
 import { DivisaComponent } from './divisa/divisa.component'
+import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -168,6 +169,16 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Almacen de producto terminado",
       roles: [ROLES.ALMACEN_PRODUCTO_TERMINADO]
+    }
+  },
+  {
+    path: "almacen/requisiciones",
+    component: RequisicionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Requisiciones de articulos",
+      roles: [ROLES.ALMACEN_REQUISICION]
     }
   },
 
