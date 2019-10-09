@@ -7,7 +7,10 @@ import { Observable } from 'rxjs';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 
 /**
- *Gestiona la carga de los id por defaults. s
+ *Gestiona la carga de los id por defaults. Se usa bastante
+ en generales component y ya vienen cargalos los valores por defaults
+ cuando se gestionan las tareas de configuracion. Revisar su propiedad
+ metodo tareasDeConfiguracione() en GeneralesComponent
  *
  * @export
  * @class DefaultsService
