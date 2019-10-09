@@ -43,25 +43,29 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let lote of modeloCompleto.lotes">
-        <td>
-          <a
-            (click)="mostrarDetalleLote(lote)"
-            data-toggle="modal"
-            data-target="#modalDetalleLote"
-            class="btn btn-primary text-white"
-            role="button"
-          >
-            <i class="fa fa-eye"></i
-          ></a>
-        </td>
-        <td title="{{ lote.createAt | fecha }}">
-          {{ lote.createAt | date: "dd/MM/yyyy" }}
-        </td>
-        <td>{{ lote.cantidadEntrada  | number: "0.0-0" }}</td>
-        <td>{{ lote.existencia  | number: "0.0-0" }}</td>
-        <td>{{ lote.observaciones }}</td>
-      </tr>
+      <ng-container *ngFor="let lote of modeloCompleto.lotes">
+        <tr *ngIf="lote.existencia > 0" >
+          <td>
+            <a
+              (click)="mostrarDetalleLote(lote)"
+              data-toggle="modal"
+              data-target="#modalDetalleLote"
+              class="btn btn-primary text-white"
+              role="button"
+            >
+              <i class="fa fa-eye"></i
+            ></a>
+          </td>
+          <td title="{{ lote.createAt | fecha }}">
+            {{ lote.createAt | date: "dd/MM/yyyy" }}
+          </td>
+          <td>{{ lote.cantidadEntrada  | number: "0.0-0" }}</td>
+          <td>{{ lote.existencia  | number: "0.0-0" }}</td>
+          <td>{{ lote.observaciones }}</td>
+        </tr>
+
+      </ng-container>
+      
     </tbody>
   </table>
 </ng-container>
