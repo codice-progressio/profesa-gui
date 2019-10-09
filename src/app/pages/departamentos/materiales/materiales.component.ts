@@ -134,21 +134,4 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
     this.formulario.get('cargo').setValue( empleado._id );
  }
 
-  /**
-   *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace
-  asi poor que si no existe el departaemtno en el trayecto(Por modificaiones)
-  * lo crea. 
-  *
-  * @memberof MaterialesComponent
-  */
-  maquinaActualEnNulo(orden: Orden ) {
-    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
-    orden.ubicacionActual.materiales.maquinaActual = null;
-  }
-
-  setMaquinaActual( orden: Orden, maquina: Maquina ){
-    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
-    orden.ubicacionActual.materiales.maquinaActual = maquina
-  }
-
 }
