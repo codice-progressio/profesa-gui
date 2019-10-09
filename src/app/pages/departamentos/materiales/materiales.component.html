@@ -1,8 +1,7 @@
 <app-qr-scanner> </app-qr-scanner>
 
 <div *ngIf="_qrScannerService.lecturaCorrecta 
-&& orden.ubicacionActual.recivida 
-&& orden.ubicacionActual.materiales?.trabajando" class="row animated fadeInDown">
+&& orden.ubicacionActual.recivida " class="row animated fadeInDown">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -26,7 +25,6 @@
 
 
                     <br>
-                    <h1><small class='text-muted'>Maquina en la que se trabajo: </small> <strong>{{orden.ubicacionActual.materiales.maquinaActual.clave}}</strong></h1>
                     <hr>
 
                     <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"><i class="fas fa-save"> </i> Guardar</button>
@@ -37,33 +35,5 @@
     </div>
 </div>
 
-<div class="row animated fadeInDown" *ngIf="_qrScannerService.lecturaCorrecta 
-&& orden.ubicacionActual.recivida 
-&& !orden.ubicacionActual.materiales?.trabajando">
-    <div class="col-12">
-        <div class="card  card-body bg-inverse text-white">
-            <div class="card-body">
-
-                <h1 class='text-white'>Materiales <small class="text-muted"> Esta órden no se esta trabajando.</small></h1>
-                <hr>
-                <h3 class="text-white">Selecciona la máquina en que se trabajara:</h3>
-                <ng-container *ngFor="let maquina of maquinas; let i = index">
-
-                    <a (click)="setMaquinaActual(orden, maquina)" class="btn btn-outline-success btn-lg m-2">
-                        <i *ngIf="orden.ubicacionActual?.materiales?.maquinaActual?._id === maquina._id" class="fas fa-check animated tada text-warning">
-                        </i> {{maquina.clave}}</a>
-                </ng-container>
-
-
-                <hr>
-
-                <a *ngIf="orden.ubicacionActual.materiales?.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fas fa-save"></i> Guardar</a>
-                <button (click)="limpiar(); maquinaActualEnNulo(orden)" class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
-
-
-            </div>
-        </div>
-    </div>
-</div>
 
 <app-lista-de-ordenes *ngIf="!_qrScannerService.lecturaCorrecta"></app-lista-de-ordenes>
