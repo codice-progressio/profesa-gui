@@ -57,8 +57,8 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
         // Creamos el departamento transformación para que no nos de error. 
         this.orden.ubicacionActual.materiales = new Materiales();
         // False por que a esta altura solo vamos a guardar la máquina. 
-        this.orden.ubicacionActual.materiales.guardar = false;
-        this.orden.ubicacionActual.materiales.maquinaActual = null;
+        this.orden.ubicacionActual.materiales.guardar = true;
+        // this.orden.ubicacionActual.materiales.maquinaActual = null;
         
       } 
     }; 
