@@ -82,6 +82,8 @@ export class FolioLinea {
     //console.log("x  ?.4");
     this.ordenes = input.ordenes.map((orden) => new Orden().deserialize(orden))
     //console.log("x  ?");
+    if (this.ordenes.length > 0)
+      this.ordenes = this.ordenarOrdenes(this.ordenes)
     return this
   }
 
@@ -220,8 +222,6 @@ export class FolioLinea {
     return this.modeloCompleto.medias || forzarMedias ? 0.5 : 1
   }
 
-
-
   /**
    *Chequeca si requiere una revision extraordinaria a la hora de generar las 
    ordenes. Las cosas que revisa son: 
@@ -238,19 +238,22 @@ export class FolioLinea {
    * @returns
    * @memberof FolioLinea
    */
-  revisarSiRequiereRevisionExtraordinaria(idProcesoLaser: string ) {
+  revisarSiRequiereRevisionExtraordinaria(idProcesoLaser: string) {
     // Solo se puede editar procesos en alguno de estos casos.
     // 1- Viene de almacen.
     // 2- Viene de almacen y se lasera.
-    if (this.almacen){ 
-        return this.almacen
-      }
+    if (this.almacen) {
+      return this.almacen
+    }
     // 3- Se va a producir y a laserar pero no tiene el departamento laser en la familia de procesos.
-     
-    return this.comprobarLaserEnFamiliaDeProcesos(this, idProcesoLaser )
+
+    return this.comprobarLaserEnFamiliaDeProcesos(this, idProcesoLaser)
   }
 
-  private comprobarLaserEnFamiliaDeProcesos(pedido: FolioLinea, idProcesoLaser: string): boolean {
+  private comprobarLaserEnFamiliaDeProcesos(
+    pedido: FolioLinea,
+    idProcesoLaser: string
+  ): boolean {
     // Tiene marca laser
     if (pedido.laserCliente.laser) {
       // No incluye el proceso de laser dentro de sus procesos en la familia.
@@ -275,12 +278,17 @@ export class FolioLinea {
    * @memberof FolioLinea
    */
   ordenesSegunEstandar(): number {
-
     let estandar = this.modeloCompleto.tamano.estandar
     let totalDePedido = this.cantidad
 
-    return totalDePedido/estandar
-
+    return totalDePedido / estandar
   }
 
+  ordenarOrdenes(ordenes: Orden[]): Orden[] {
+    return ordenes.sort((a, b) => {
+      let an = Number(a.orden.split("-")[2])
+      let bn = Number(b.orden.split("-")[2])
+      return an - bn
+    })
+  }
 }
