@@ -33,7 +33,7 @@ export class Maquina implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) {
-      console.log("Deserialize: No existe el input en maquina");
+      // console.log("Deserialize: No existe el input en maquina");
       return this;
     }
     Object.assign(this, input);
