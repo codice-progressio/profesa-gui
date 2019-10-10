@@ -82,6 +82,9 @@
               <th title="Piezas solicitadas en el folio" class="text-right">
                 PZ SOL
               </th>
+              <th title="Cantidad de ordenes de este pedido en funcion de el estandar. Lo que aqui se entrega son conteo de ordenes para realizar las recetas. Esto se nota mas claramente cuando se piden modelos que solo se trabajan en medias ordenes. Se nota que se solicitan 4 medias ordenes pero aqui se generan 2." class="text-right">
+                #ORD
+              </th>
               <th title="Piezas producidas" class="text-right">
                 PZ PRO
               </th>
@@ -123,7 +126,9 @@
                 <td>{{ pedido.modeloCompleto | modeloCompleto }}</td>
                 <td class="text-right">{{ pedido.cantidad | number }}</td>
                 <td class="text-right">
-                  {{ pedido.cantidadProducida | number }}
+                  {{ pedido.ordenesSegunEstandar() | number:'0.0-3'}}
+                </td>
+                <td class="text-right">
                 </td>
                 <td><app-nivel-urgencia [nivel]='pedido.nivelDeUrgencia' ></app-nivel-urgencia> </td>
                 <td></td>
