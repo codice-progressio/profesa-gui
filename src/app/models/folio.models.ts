@@ -42,7 +42,8 @@ export class Folio implements Deserializable {
     this.folioLineas = input.folioLineas.map((pedido) =>
       new FolioLinea().deserialize(pedido)
     )
-
+    if (this.folioLineas.length > 0)
+      this.folioLineas = this.ordenarPedidos(this.folioLineas)
     return this
   }
 
@@ -116,10 +117,14 @@ export class Folio implements Deserializable {
    * @memberof Folio
    */
   pedidosConValidacionExtraordinariaFallada(): FolioLinea[] {
-    
-    return this.folioLineas.filter(
-      (ped) => ped.requiereRevisionExtraordinaria
-    )
+    return this.folioLineas.filter((ped) => ped.requiereRevisionExtraordinaria)
+  }
 
+  ordenarPedidos(folioLineas: FolioLinea[]): FolioLinea[] {
+    return folioLineas.sort((a, b) => {
+      let an = Number(a.pedido.split("-")[1])
+      let bn = Number(b.pedido.split("-")[1])
+      return an - bn
+    })
   }
 }
