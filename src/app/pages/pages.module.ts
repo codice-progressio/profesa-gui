@@ -137,6 +137,9 @@ import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/req
 import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component';
 import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component';
 import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion-filtros/requisicion-filtros.component";
+import { AreasCrearModificarComponent } from './recursosHumanos/areas/areas-crear-modificar.component';
+import { AreasDetalleComponent } from './recursosHumanos/areas/areas-detalle.component';
+import { AreasComponent } from './recursosHumanos/areas/areas.component';
 
 @NgModule({
   declarations: [
@@ -266,6 +269,9 @@ import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion
     RecibirTerminacionComponent,
     RecibirCancelacionComponent,
     RequisicionFiltrosComponent
+    AreasCrearModificarComponent,
+    AreasDetalleComponent,
+    AreasComponent,
   ],
   exports: [
     DashboardComponent,

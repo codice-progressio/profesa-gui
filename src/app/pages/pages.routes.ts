@@ -58,6 +58,7 @@ import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 import { ProveedorComponent } from './proveedor/proveedor.component'
 import { DivisaComponent } from './divisa/divisa.component'
 import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
+import { AreasComponent } from './recursosHumanos/areas/areas.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -561,6 +562,15 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
+  {
+    path: "areas",
+    component: AreasComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Gestion de areas",
+      roles: [ROLES.RH_AREAS]
+    }
+  },
   // =================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // -->
 
