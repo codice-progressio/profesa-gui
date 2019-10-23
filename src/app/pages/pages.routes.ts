@@ -58,6 +58,7 @@ import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 import { ProveedorComponent } from './proveedor/proveedor.component'
 import { DivisaComponent } from './divisa/divisa.component'
 import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
+import { CursosComponent } from './recursosHumanos/cursos/cursos.component'
 import { AreasComponent } from './recursosHumanos/areas/areas.component'
 
 const pagesRoutes: Routes = [
@@ -562,6 +563,16 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
+  {
+  {
+    path: "cursos",
+    component: CursosComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Gestion de cursos",
+      roles: [ROLES.RH_CURSOS]
+    }
+  },
   {
     path: "areas",
     component: AreasComponent,

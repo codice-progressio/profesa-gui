@@ -137,6 +137,9 @@ import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/req
 import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component';
 import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component';
 import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion-filtros/requisicion-filtros.component";
+import { CursosCrearModificarComponent } from './recursosHumanos/cursos/cursos-crear-modificar.component';
+import { CursosDetalleComponent } from './recursosHumanos/cursos/cursos-detalle.component';
+import { CursosComponent } from './recursosHumanos/cursos/cursos.component';
 import { AreasCrearModificarComponent } from './recursosHumanos/areas/areas-crear-modificar.component';
 import { AreasDetalleComponent } from './recursosHumanos/areas/areas-detalle.component';
 import { AreasComponent } from './recursosHumanos/areas/areas.component';
@@ -269,6 +272,9 @@ import { AreasComponent } from './recursosHumanos/areas/areas.component';
     RecibirTerminacionComponent,
     RecibirCancelacionComponent,
     RequisicionFiltrosComponent
+    CursosCrearModificarComponent,
+    CursosDetalleComponent,
+    CursosComponent,
     AreasCrearModificarComponent,
     AreasDetalleComponent,
     AreasComponent,
