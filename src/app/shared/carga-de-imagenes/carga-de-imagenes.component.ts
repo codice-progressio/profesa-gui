@@ -9,15 +9,32 @@ import { CargaDeImagenesTransporte } from "./carga-de-imagenes-transporte"
 })
 export class CargaDeImagenesComponent implements OnInit {
   constructor(public _visorDeImagenesService: VisorDeImagenesService) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.esteComponente.emit(this)
+  }
 
   @Input() activeColor: string = "green"
   @Input() baseColor: string = "#ccc"
   @Input() overlayColor: string = "rgba(255,255,255,0.5)"
-  @Output() imagenesParaSubir = new EventEmitter<CargaDeImagenesTransporte[]>()
 
-  dragging: boolean = false
+  /**
+   *Permite definir la subida de multiples archvis.
+   *
+   * @type {boolean}
+   * @memberof CargaDeImagenesComponent
+   */
+  @Input() multiple: boolean = true
+  @Output() imagenesParaSubir = new EventEmitter<CargaDeImagenesTransporte[]>()
+  @Output() esteComponente = new EventEmitter<this>()
+
   loaded: boolean = false
+  dragging: boolean = false
+  /**
+   *
+   *
+   * @type {boolean}
+   * @memberof CargaDeImagenesComponent
+   */
   imageLoaded: boolean = false
   imageSrc: string = ""
 
@@ -27,6 +44,7 @@ export class CargaDeImagenesComponent implements OnInit {
 
   handleDragLeave() {
     this.dragging = false
+    
   }
 
   handleDrop(e) {
@@ -76,6 +94,10 @@ export class CargaDeImagenesComponent implements OnInit {
     reader.onload = (e: any) => {
       var reader = e.target
       transporte.src = reader.result
+
+      if( !this.multiple ) {
+        this.files = []
+      }
       this.files.push(transporte)
 
       this.cargando.pop()
@@ -116,5 +138,10 @@ export class CargaDeImagenesComponent implements OnInit {
       this.files.splice(i, 1)
       this.imagenesParaSubir.emit(this.files)
     }, 100)
+  }
+
+
+  limpiarParaNuevo( ){
+    this.files = []
   }
 }

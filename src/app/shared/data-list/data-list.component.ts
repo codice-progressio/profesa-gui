@@ -194,7 +194,6 @@ export class DataListComponent implements OnInit {
     dataList: DataListComponent
   }>()
 
-
   /**
    *Este evento se lanza cuando se cancela la busqueda o
    cuando se pulsa el boton limpiar. 
@@ -214,9 +213,7 @@ export class DataListComponent implements OnInit {
 
   @Output() esteComponente = new EventEmitter<this>()
 
-  constructor(private cdRef: ChangeDetectorRef) {
-    
-  }
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.esteComponente.emit(this)
@@ -372,6 +369,14 @@ export class DataListComponent implements OnInit {
     this.datosParaLista = []
   }
 
+  /**
+   *Limpia el data list para una nueva busqueda. Esta funcion
+   * no se debe de usar si el data list solo funcionara como buscador.
+   * En ese caso usar `reiniciar()`
+   *
+   *
+   * @memberof DataListComponent
+   */
   limpiarParaNuevo() {
     this.inputBusqueda.enable()
     this.inputBusqueda.reset()
@@ -380,6 +385,25 @@ export class DataListComponent implements OnInit {
     this.mostrarLista = false
     this.datosParaLista = []
     this.elementoSeleccionado.emit(null)
+    this.leyendaInputDeshabilitado = null
+  }
+
+  /**
+   *Reinicia el data list. A diferencia de `limipiarParaNuevo()`
+   * y de `cancelarBusqueda()` no emite el evento de cancelacion.
+   * Esto permite limpiar desde fuera del componente sin caer
+   * en errores de pila de llamada. Aunado a esto deshabilita el
+   * boton de limpiar por defecto.
+   *
+   * @memberof DataListComponent
+   */
+  reiniciar() {
+    this.inputBusqueda.enable()
+    this.inputBusqueda.reset()
+    this.buscando = false
+    this.mostrarBotonParaLimpiar = false
+    this.mostrarLista = false
+    this.datosParaLista = []
     this.leyendaInputDeshabilitado = null
   }
 }

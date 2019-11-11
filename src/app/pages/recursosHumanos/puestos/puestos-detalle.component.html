@@ -1,0 +1,338 @@
+<ng-container *ngIf="puestoPadre">
+  <div class="d-flex aling-items-center justify-content-between">
+    <div>
+      <h1>
+        <b>
+          {{ puestoSeleccionado.puesto }}
+
+          <small
+            *ngIf="indiceSeleccionado > 0"
+            class="text-muted animated fadeIn"
+          >
+            <i class="fas fa-history ani    "></i>
+            Historial del
+            <span [title]="historialSeleccionado.fechaDeCambio | fecha: 'LLL'">
+              {{
+                historialSeleccionado.fechaDeCambio | fecha: "DD/MM/YY HH:mm"
+              }}
+            </span>
+          </small>
+        </b>
+      </h1>
+
+      <h5 class="text-muted">
+        <ng-container
+          *ngIf="indiceSeleccionado === puesto.historial.length - 1"
+        >
+          Creado por:
+        </ng-container>
+        <ng-container *ngIf="puesto.historial.length - 1 > indiceSeleccionado">
+          Modificado por:
+        </ng-container>
+
+        <b>{{ historialSeleccionado.usuarioQueModifica.nombre }}</b>
+      </h5>
+    </div>
+    <h3>Descripcion y perfil del <b>puesto</b></h3>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <p>
+        <a
+          class="btn btn-primary btn-xs"
+          data-toggle="collapse"
+          href="#listaDeHistorial"
+          aria-expanded="false"
+          aria-controls="listaDeHistorial"
+        >
+          <i class="fas fa-plus-circle    "></i>
+          Historial
+        </a>
+      </p>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="col-12"></div>
+      <div class="collapse" id="listaDeHistorial">
+        <ul class="list-group">
+          <li class="list-group-item active">Historial de cambios</li>
+          <a
+            *ngFor="let historia of puesto.historial; let i = index"
+            data-toggle="collapse"
+            href="#listaDeHistorial"
+            class="list-group-item list-group-item-action flex-column align-items-start"
+            (click)="cambiarHistorial(i, puesto)"
+          >
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">
+                <i
+                  [ngClass]="{
+                    'text-success': i === indiceSeleccionado
+                  }"
+                  class="fas fa-check-circle text-light"
+                >
+                </i>
+
+                {{ historia.usuarioQueModifica.nombre }}
+              </h5>
+              <small
+                title="{{ historia.fechaDeCambio | fecha: 'LLL' }}"
+                class="text-muted"
+                >{{ historia.fechaDeCambio | date: "dd/MM/yyyy" }}</small
+              >
+            </div>
+            <span class="text-muted">{{
+              historia.cambioAnterior.motivoDeCambio
+            }}</span>
+          </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <h6>
+        <small class="text-muted">Area: </small>
+        {{ puestoSeleccionado.departamento.area.nombre }}
+      </h6>
+    </div>
+    <div class="col-4">
+      <h6>
+        <small class="text-muted">Departamento: </small>
+        {{ puestoSeleccionado.departamento.nombre }}
+      </h6>
+    </div>
+    <div class="col-4">
+      <h6>
+        <small class="text-muted">Reporta a: </small>
+        <a
+          (click)="mostrarDetalleDeEmpleado(puestoSeleccionado.reportaA)"
+          data-toggle="modal"
+          href="#detalleEmpleado"
+        >
+          {{ puestoSeleccionado.reportaA.nombreCompleto() }}
+        </a>
+      </h6>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <h3>Organigrama</h3>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12 text-center">
+      <img
+        #img
+        (click)="mostrarImagen(img.src)"
+        [src]="puestoSeleccionado?.organigrama | imagen: 'organigramaPuesto'"
+        class="img-responsive radius shadow pointer w-100"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+      <h3>Mision del puesto</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p>{{ puestoSeleccionado.misionDelPuesto }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+      <h3>Personal a cargo</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="list-group">
+        <a
+          data-toggle="modal"
+          href="#detalleEmpleado"
+          class="list-group-item list-group-item-action"
+          *ngFor="let empleado of puestoSeleccionado.personalACargo"
+          (click)="mostrarDetalleDeEmpleado(empleado)"
+          >{{ empleado.idNomina }} | {{ empleado.nombreCompleto() }}</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+      <h3>Perfil del puesto</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+      <ul class="list-group">
+        <li class="list-group-item active">
+          <b>Conocimientos</b> <span class="text-muted"> (Que hacer)</span>
+        </li>
+        <li
+          class="list-group-item"
+          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.conocimientos"
+        >
+          {{ x }}
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+      <ul class="list-group">
+        <li class="list-group-item active">
+          <b>Habilidades</b> <span class="text-muted"> (Como hacer)</span>
+        </li>
+        <li
+          class="list-group-item"
+          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.habilidades"
+        >
+          {{ x }}
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+      <ul class="list-group">
+        <li class="list-group-item active">
+          <b>Aptitues</b> <span class="text-muted"> (Por que hacer)</span>
+        </li>
+        <li
+          class="list-group-item"
+          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.aptitudes"
+        >
+          {{ x }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="row">
+        <div class="col-12">
+          <hr />
+          <h3>Funciones especificas del puesto</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 ">
+          <table class="table table-responsive">
+            <thead class="thead-dark">
+              <tr>
+                <th>Actividad</th>
+                <th>Proposito</th>
+                <th>Frecuencia</th>
+                <th>Prioridad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let x of puestoSeleccionado.funcionesEspecificasDelPuesto
+                "
+              >
+                <td>{{ x.actividad }}</td>
+                <td>{{ x.proposito }}</td>
+                <td>{{ x.frecuencia }}</td>
+                <td>{{ x.prioridad }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="row">
+        <div class="col-12">
+          <hr />
+          <h3>Relacion Cliente proveedor internos</h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table  table-responsive">
+            <thead class="thead-dark">
+              <tr>
+                <th>Departamento</th>
+                <th>Relacion</th>
+                <th>Asunto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let x of puestoSeleccionado.relacionClienteProveedor.internos
+                "
+              >
+                <td>{{ x.departamento.nombre }}</td>
+                <td>{{ x.relacion }}</td>
+                <td>{{ x.asunto }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item active">
+          Indices de efectividad del puesto
+        </li>
+        <li
+          *ngFor="let indice of puestoSeleccionado.indicesDeEfectividad"
+          class="list-group-item"
+        >
+          {{ indice }}
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="list-group">
+        <li class="list-group-item active">
+          El puesto puede desarrollarse en las siguientes areas
+        </li>
+        <li
+          *ngFor="
+            let x of puestoSeleccionado.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
+          "
+          class="list-group-item list-group-item-action"
+        >
+          {{ x.puesto }}
+        </li>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="!puesto" class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="display-1">No has seleccionado un <b>puesto</b></h1>
+      </div>
+    </div>
+  </div>
+</div>

@@ -60,6 +60,7 @@ import { DivisaComponent } from './divisa/divisa.component'
 import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
 import { CursosComponent } from './recursosHumanos/cursos/cursos.component'
 import { AreasComponent } from './recursosHumanos/areas/areas.component'
+import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -563,7 +564,21 @@ const pagesRoutes: Routes = [
   // =====================================
   // -->
 
+  // <!--
+  // =====================================
+  //  RH
+  // =====================================
+  // -->
+
   {
+    path: "empleado",
+    component: EmpleadoComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Gestion de empleados",
+      roles: [ROLES.RH_EMPLEADOS]
+    }
+  },
   {
     path: "cursos",
     component: CursosComponent,
@@ -579,9 +594,27 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: "Gestion de areas",
-      roles: [ROLES.RH_AREAS]
+      roles: [ROLES.ADMINISTRADOR_AREAS]
     }
   },
+
+
+  {
+    path: "puestos",
+    component: PuestosComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Gestion de puestos",
+      roles: [ROLES.RH_PUESTOS]
+    }
+  },
+
+  // <!--
+  // =====================================
+  //  END RH
+  // =====================================
+  // -->
+
   // =================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // -->
 

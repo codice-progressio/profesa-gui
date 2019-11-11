@@ -143,6 +143,9 @@ import { CursosComponent } from './recursosHumanos/cursos/cursos.component';
 import { AreasCrearModificarComponent } from './recursosHumanos/areas/areas-crear-modificar.component';
 import { AreasDetalleComponent } from './recursosHumanos/areas/areas-detalle.component';
 import { AreasComponent } from './recursosHumanos/areas/areas.component';
+import { PuestosCrearModificarComponent } from './recursosHumanos/puestos/puestos-crear-modificar.component';
+import { PuestosDetalleComponent } from './recursosHumanos/puestos/puestos-detalle.component';
+import { PuestosComponent } from './recursosHumanos/puestos/puestos.component';
 
 @NgModule({
   declarations: [
@@ -278,6 +281,9 @@ import { AreasComponent } from './recursosHumanos/areas/areas.component';
     AreasCrearModificarComponent,
     AreasDetalleComponent,
     AreasComponent,
+    PuestosCrearModificarComponent,
+    PuestosDetalleComponent,
+    PuestosComponent,
   ],
   exports: [
     DashboardComponent,
