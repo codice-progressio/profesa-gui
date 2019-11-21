@@ -31,7 +31,6 @@ export class CursosCrearModificarComponent implements OnInit {
     public fb: FormBuilder,
     public vs: ValidacionesService,
     public _cursoService: CursoService,
-    public _articuloService: ArticuloService,
     public _msjService: ManejoDeMensajesService
   ) {}
 

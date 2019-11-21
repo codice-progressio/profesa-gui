@@ -11,7 +11,7 @@
 
 <br />
 
-<form [formGroup]="formulario">
+<form [formGroup]="formulario" (keydown.enter)="$event.preventDefault()">
   <div class="row">
     <!-- 
     =====================================
@@ -56,9 +56,10 @@
           class="form-control"
           formControlName="departamento"
         >
+          <option [ngValue]="null" disabled>Escoge un departamento</option>
           <option
             *ngFor="let departamento of departamentos"
-            [value]="departamento._id"
+            [ngValue]="departamento._id"
             >{{ departamento.nombre }}</option
           >
         </select>
@@ -145,12 +146,13 @@
       <div class="form-group">
         <app-data-list
           (ejecutarBusquedaDeItems)="
-            ejecutarOperacionesDeBusquedaEmpleados($event)
+            ejecutarOperacionesDeBusquedaPuestos($event)
           "
-          (elementoSeleccionado)="empleadoSeleccionado($event)"
+          (elementoSeleccionado)="reportaASeleccionado($event)"
           [valid]="vs.valid(reportaA_FB)"
           [invalid]="vs.invalid(reportaA_FB)"
           (touched)="reportaA_FB.markAsTouched()"
+          (esteComponente)="reportaADatalist = $event"
         ></app-data-list>
 
         <input type="hidden" formControlName="reportaA" />
@@ -165,7 +167,46 @@
 END reportaA
 =====================================
 -->
+
+    <!-- 
+=====================================
+ numeroDeExtencion
+=====================================
+-->
+    <div class="col-12 col-sm-4 col-md-2">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(numeroDeExtencion_FB),
+            'is-valid': vs.valid(numeroDeExtencion_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="numeroDeExtencion"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Numero de extencion telefonica</small
+        >
+        <app-validacion-inputs
+          [campo]="numeroDeExtencion_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+=====================================
+ END numeroDeExtencion
+=====================================
+-->
   </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-12">
+      <h3>Perfil del puesto</h3>
+    </div>
+  </div>
+
   <div class="row mt-3">
     <!-- 
     =====================================
@@ -385,6 +426,117 @@ END reportaA
     =====================================
     -->
   </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h3>Posicion en el organigrama</h3>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div
+      [ngClass]="{
+        'col-12': !puesto?.organigrama,
+        'col-12 col-md-4 mt-sm-3': puesto?.organigrama
+      }"
+    >
+      <app-carga-de-imagenes
+        [multiple]="false"
+        (imagenesParaSubir)="agregarImagen($event)"
+        (esteComponente)="cargaDeImagenesComponent = $event"
+        (error)="msjDeErrorImagenes($event)"
+      >
+      </app-carga-de-imagenes>
+    </div>
+    <div *ngIf="puesto?.organigrama" class="col-12 col-md-8 mt-sm-3">
+      <img
+        (click)="mostrarImagen(puesto?.organigrama)"
+        [src]="puesto?.organigrama | imagen: 'organigramaPuesto'"
+        class="img-responsive radius shadow pointer"
+      />
+      <span title="Organigrama del puesto" class="sl-date">
+        Organigrama del puesto
+      </span>
+    </div>
+  </div>
+
+  <hr />
+  <div class="row">
+    <div class="col-12">
+      <h3>Cursos obligatorios</h3>
+    </div>
+  </div>
+
+  <!-- 
+=====================================
+ Cursos
+=====================================
+-->
+
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <div class="form-group">
+        <app-data-list
+          (ejecutarBusquedaDeItems)="
+            ejecutarOperacionesDeBusquedaCursos($event)
+          "
+          (elementoSeleccionado)="agregarCursoSeleccionado($event)"
+          (esteComponente)="cursoDataList = $event"
+        ></app-data-list>
+
+        <small id="helpId" class="form-text text-muted">Buscar cursos</small>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <ul class="list-group">
+        <li class="list-group-item active">
+          Cursos de este puesto
+        </li>
+        <li
+          *ngFor="let curso of cursosSeleccionados; let i = index"
+          class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white"
+        >
+          {{ curso.nombre }}
+
+          <a
+            (click)="eliminarCursoSeleccionado(i)"
+            class="btn btn-danger btn-xs"
+            href="javascript: void(0)"
+            role="button"
+          >
+            <i class="fas fa-times-circle    "></i
+          ></a>
+        </li>
+        <li
+          *ngIf="1 > cursosSeleccionados.length"
+          class="list-group-item text-center"
+        >
+          No has agregado cursos para este puesto
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <a
+        (click)="agregarCursosDeTroncoComun()"
+        class=" btn btn-primary btn-xs"
+        href="javascript:void(0)"
+      >
+        <i class="fas fa-plus-circle    "> </i> Agregar todos los cursos de
+        tronco comun
+      </a>
+    </div>
+  </div>
+
+  <!-- 
+=====================================
+ END Cursos
+=====================================
+-->
+
   <!-- 
       =====================================
       FuncionesEspecificasDelPuesto
@@ -418,7 +570,7 @@ Array funcionesEspecificasDelPuesto
 funcionesEspecificasDelPuesto - actividad
 =====================================
 -->
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-lg-3">
             <div class="form-group">
               <input
                 [ngClass]="{
@@ -450,7 +602,7 @@ funcionesEspecificasDelPuesto - actividad
  funcionesEspecificasDelPuesto - proposito
 =====================================
 -->
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-lg-3">
             <div class="form-group">
               <input
                 [ngClass]="{
@@ -509,23 +661,18 @@ funcionesEspecificasDelPuesto - actividad
 =====================================
 -->
 
-          <div class="col-12 col-sm-1">
-            <a
-              *ngIf="funcionesEspecificasDelPuesto_FB.controls.length > 1"
-              (click)="eliminarFuncionesEspecificasDelPuesto(i)"
-              class="btn btn-danger btn-xs"
-              href="javascript: void(0)"
-              role="button"
-              ><i class="fas fa-times-circle    "></i>
-            </a>
-          </div>
-
           <!-- 
 =====================================
  funcionesEspecificasDelPuesto - prioridad
 =====================================
 -->
-          <!-- <div class="col-6">
+          <div
+            class="col-12 "
+            [ngClass]="{
+              'col-lg-2': funcionesEspecificasDelPuesto_FB.controls.length > 1,
+              'col-lg-3': funcionesEspecificasDelPuesto_FB.controls.length === 1
+            }"
+          >
             <div class="form-group">
               <input
                 [ngClass]="{
@@ -540,19 +687,28 @@ funcionesEspecificasDelPuesto - actividad
                 class="form-control"
                 formControlName="prioridad"
               />
-              <small id="helpId" class="form-text text-muted"
-                >Prioridad - Posiblemente quitarlo</small
-              >
+              <small id="helpId" class="form-text text-muted">Prioridad </small>
               <app-validacion-inputs
                 [campo]="funcionesEspecificasDelPuesto_FB_prioridad(i)"
               ></app-validacion-inputs>
             </div>
-          </div> -->
+          </div>
           <!-- 
 =====================================
  END funcionesEspecificasDelPuesto - prioridad
 =====================================
 -->
+
+          <div class="col-12 col-sm-1">
+            <a
+              *ngIf="funcionesEspecificasDelPuesto_FB.controls.length > 1"
+              (click)="eliminarFuncionesEspecificasDelPuesto(i)"
+              class="btn btn-danger btn-xs"
+              href="javascript: void(0)"
+              role="button"
+              ><i class="fas fa-times-circle    "></i>
+            </a>
+          </div>
         </div>
       </ng-container>
     </ng-container>
@@ -602,7 +758,7 @@ funcionesEspecificasDelPuesto - actividad
         <div class="input-group mb-2">
           <app-data-list
             (ejecutarBusquedaDeItems)="
-              ejecutarOperacionesDeBusquedaEmpleados($event)
+              ejecutarOperacionesDeBusquedaPersonalACargo($event)
             "
             (elementoSeleccionado)="agregarPersonalACargo($event)"
             (esteComponente)="personalACargoDataList = $event"
@@ -619,10 +775,10 @@ funcionesEspecificasDelPuesto - actividad
           Personal a cargo
         </li>
         <li
-          *ngFor="let personal of personalACargo; let i = index"
+          *ngFor="let puesto of personalACargo; let i = index"
           class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white"
         >
-          {{ personal.nombreCompleto() }}
+          {{ puesto.puesto }}
 
           <a
             (click)="eliminarPersonalACargo(i)"
@@ -1028,9 +1184,9 @@ funcionesEspecificasDelPuesto - actividad
       <div class="form-group">
         <app-data-list
           (ejecutarBusquedaDeItems)="
-            ejecutarOperacionesDeBusquedaDepartamentos($event)
+            ejecutarOperacionesDeBusquedaPuestos($event)
           "
-          (elementoSeleccionado)="agregarDepartamento($event)"
+          (elementoSeleccionado)="agregarPuesto($event)"
           (esteComponente)="
             elPuestoPuedeDesarrollarseEnLasSiguientesAreasComponente = $event
           "
@@ -1052,12 +1208,12 @@ funcionesEspecificasDelPuesto - actividad
         </li>
         <li
           *ngFor="
-            let departamento of elPuestoPuedeDesarrollarseEnLasSiguientesAreas;
+            let puesto of elPuestoPuedeDesarrollarseEnLasSiguientesAreas;
             let i = index
           "
           class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white"
         >
-          {{ departamento.nombre }}
+          {{ puesto.puesto }}
 
           <a
             (click)="eliminarElPuestoPuedeDesarrollarseEnLasSiguientesAreas(i)"
@@ -1146,6 +1302,11 @@ END sueldoBase
 =====================================
 -->
   </div>
+  <div class="row">
+    <div class="col-12">
+      <app-validacion-inputs [campo]="this.formulario"></app-validacion-inputs>
+    </div>
+  </div>
 
   <hr />
   <div class="row">
@@ -1156,10 +1317,10 @@ END sueldoBase
 
   <div class="row">
     <!-- 
-=====================================
-desarrollo
-=====================================
--->
+      =====================================
+      desarrollo
+      =====================================
+    -->
     <div class="col-12 col-sm-4">
       <div class="form-group">
         <app-data-list
@@ -1170,6 +1331,7 @@ desarrollo
           [valid]="vs.valid(desarrollo_FB)"
           [invalid]="vs.invalid(desarrollo_FB)"
           (touched)="desarrollo_FB.markAsTouched()"
+          (esteComponente)="desarrolloDataList = $event"
         ></app-data-list>
         <input type="hidden" formControlName="desarrollo" />
         <small id="helpId" class="form-text text-muted">Desarrollo</small>
@@ -1177,16 +1339,16 @@ desarrollo
       </div>
     </div>
     <!-- 
-=====================================
-END desarrollo
-=====================================
--->
+      =====================================
+      END desarrollo
+      =====================================
+    -->
 
     <!-- 
-=====================================
- reviso
-=====================================
--->
+      =====================================
+      reviso
+      =====================================
+    -->
     <div class="col-12 col-sm-4">
       <div class="form-group">
         <app-data-list
@@ -1197,6 +1359,7 @@ END desarrollo
           [valid]="vs.valid(reviso_FB)"
           [invalid]="vs.invalid(reviso_FB)"
           (touched)="reviso_FB.markAsTouched()"
+          (esteComponente)="revisoDataList = $event"
         ></app-data-list>
         <input type="hidden" formControlName="reviso" />
         <small id="helpId" class="form-text text-muted">Reviso</small>
@@ -1205,14 +1368,14 @@ END desarrollo
     </div>
     <!-- 
 =====================================
- END reviso
+END reviso
 =====================================
 -->
 
     <!-- 
-=====================================
- aprobo
-=====================================
+  =====================================
+  aprobo
+  =====================================
 -->
     <div class="col-12 col-sm-4">
       <div class="form-group">
@@ -1224,6 +1387,7 @@ END desarrollo
           [valid]="vs.valid(aprobo_FB)"
           [invalid]="vs.invalid(aprobo_FB)"
           (touched)="aprobo_FB.markAsTouched()"
+          (esteComponente)="aproboDataList = $event"
         ></app-data-list>
         <input type="hidden" formControlName="aprobo" />
         <small id="helpId" class="form-text text-muted">Aprobo</small>
@@ -1231,17 +1395,53 @@ END desarrollo
       </div>
     </div>
     <!-- 
-=====================================
- END aprobo
-=====================================
+  =====================================
+  END aprobo
+  =====================================
 -->
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <app-validacion-inputs [campo]="this.formulario"></app-validacion-inputs>
+  <ng-container *ngIf="puesto?._id">
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <h3>Motivo de modificacion</h3>
+      </div>
     </div>
-  </div>
+
+    <div class="row">
+      <!-- 
+   =====================================
+    motivoDeCambio
+   =====================================
+   -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(motivoDeCambio_FB),
+              'is-valid': vs.valid(motivoDeCambio_FB)
+            }"
+            type="text"
+            class="form-control"
+            formControlName="motivoDeCambio"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Motivo de cambio</small
+          >
+          <app-validacion-inputs
+            [campo]="motivoDeCambio_FB"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+   =====================================
+    END motivoDeCambio
+   =====================================
+ 
+ -->
+    </div>
+  </ng-container>
 
   <br />
 

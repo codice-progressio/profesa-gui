@@ -53,14 +53,16 @@ import { PermisosGuard } from "../services/guards/permisos.guard"
 import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
 import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
 import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
-import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
-import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
-import { ProveedorComponent } from './proveedor/proveedor.component'
-import { DivisaComponent } from './divisa/divisa.component'
-import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
+import { AlmacenDescripcionComponent } from "./almacenes/almacenDescripcion/almacen-descripcion.component"
+import { TenidoComponent } from "./departamentos/tenido/tenido/tenido.component"
+import { ProveedorComponent } from "./proveedor/proveedor.component"
+import { DivisaComponent } from "./divisa/divisa.component"
+import { RequisicionComponent } from "./almacenes/requisicion/requisicion.component"
+import { EmpleadoComponent } from "./recursosHumanos/empleado/empleado.component";
 import { CursosComponent } from './recursosHumanos/cursos/cursos.component'
 import { AreasComponent } from './recursosHumanos/areas/areas.component'
 import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
+import { DepartamentoComponent } from './departamento/departamento.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -163,7 +165,7 @@ const pagesRoutes: Routes = [
       roles: [ROLES.ALMACEN_MATERIA_PRIMA, ROLES.ALMACEN_HERRAMIENTAS]
     }
   },
-  
+
   {
     path: "almacen/productoTerminado",
     component: AlmacenDeProductoTerminadoComponent,
@@ -374,7 +376,6 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: { titulo: "Divisas", roles: [ROLES.COMPRAS_DIVISAS] }
   },
-  
 
   // <!--
   // =====================================
@@ -397,8 +398,7 @@ const pagesRoutes: Routes = [
       titulo: "Mantenimientos de usuarios",
       roles: [ROLES.ADMINISTRADOR_USUARIOS]
     }
-  }
-  ,
+  },
   {
     path: "clientes",
     component: ClientesComponent,
@@ -408,7 +408,7 @@ const pagesRoutes: Routes = [
       roles: [ROLES.ADMINISTRADOR_CLIENTES]
     }
   },
-  
+
   {
     path: "almacenDescripcion",
     component: AlmacenDescripcionComponent,
@@ -571,7 +571,7 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "empleado",
+    path: "empleados",
     component: EmpleadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
@@ -630,10 +630,10 @@ const pagesRoutes: Routes = [
 
   {
     path: "departamentos",
-    component: GestionDepartamentoComponent,
+    component: DepartamentoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Mantenimientos de departamentos",
+      titulo: "Departamentos",
       roles: [ROLES.ADMIN_ROLE]
     }
   },

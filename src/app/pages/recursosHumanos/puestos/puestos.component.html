@@ -103,11 +103,11 @@
                 {{ puesto.departamento?.area.nombre }}
               </td>
               <td>
-                <ng-container *ngIf="!puesto.reportaA?.nombreCompleto()">
+                <ng-container *ngIf="!puesto.reportaA?.puesto">
                   Aun no definido
                 </ng-container>
-                <ng-container *ngIf="puesto.reportaA?.nombreCompleto()">
-                  {{ puesto.reportaA?.nombreCompleto() }}
+                <ng-container *ngIf="puesto.reportaA?.puesto">
+                  {{ puesto.reportaA?.puesto }}
                 </ng-container>
               </td>
               <td>${{ puesto.sueldoBase | number: "4.0-3" }}</td>

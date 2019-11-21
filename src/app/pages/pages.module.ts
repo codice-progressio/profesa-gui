@@ -137,6 +137,9 @@ import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/req
 import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component';
 import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component';
 import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion-filtros/requisicion-filtros.component";
+import { EmpleadoCrearModificarComponent } from './recursosHumanos/empleado/empleado-crear-modificar.component';
+import { EmpleadoDetalleComponent } from './recursosHumanos/empleado/empleado-detalle.component';
+import { EmpleadoComponent } from './recursosHumanos/empleado/empleado.component';
 import { CursosCrearModificarComponent } from './recursosHumanos/cursos/cursos-crear-modificar.component';
 import { CursosDetalleComponent } from './recursosHumanos/cursos/cursos-detalle.component';
 import { CursosComponent } from './recursosHumanos/cursos/cursos.component';
@@ -146,6 +149,10 @@ import { AreasComponent } from './recursosHumanos/areas/areas.component';
 import { PuestosCrearModificarComponent } from './recursosHumanos/puestos/puestos-crear-modificar.component';
 import { PuestosDetalleComponent } from './recursosHumanos/puestos/puestos-detalle.component';
 import { PuestosComponent } from './recursosHumanos/puestos/puestos.component';
+import { DepartamentoCrearModificarComponent } from './departamento/departamento-crear-modificar.component';
+import { DepartamentoDetalleComponent } from './departamento/departamento-detalle.component';
+import { DepartamentoComponent } from './departamento/departamento.component';
+import { EmpleadoFiltrosComponent } from './recursosHumanos/empleado/empleado-filtros/empleado-filtros.component';
 
 @NgModule({
   declarations: [
@@ -274,7 +281,10 @@ import { PuestosComponent } from './recursosHumanos/puestos/puestos.component';
     RecibirParcialidadComponent,
     RecibirTerminacionComponent,
     RecibirCancelacionComponent,
-    RequisicionFiltrosComponent
+    RequisicionFiltrosComponent,
+    EmpleadoCrearModificarComponent,
+    EmpleadoDetalleComponent,
+    EmpleadoComponent,
     CursosCrearModificarComponent,
     CursosDetalleComponent,
     CursosComponent,
@@ -284,6 +294,10 @@ import { PuestosComponent } from './recursosHumanos/puestos/puestos.component';
     PuestosCrearModificarComponent,
     PuestosDetalleComponent,
     PuestosComponent,
+    DepartamentoCrearModificarComponent,
+    DepartamentoDetalleComponent,
+    DepartamentoComponent,
+    EmpleadoFiltrosComponent
   ],
   exports: [
     DashboardComponent,

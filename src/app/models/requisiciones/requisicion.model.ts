@@ -22,6 +22,7 @@ export class Requisicion implements Deserializable {
     public updatedAt?: Date
   ) {}
   deserialize(input: this): this {
+    if( !input ) return this
     Object.assign(this, input)
     this.usuario = new Usuario().deserialize(input.usuario)
 

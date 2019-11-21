@@ -5,6 +5,7 @@ import { Empleado } from "src/app/models/recursosHumanos/empleados/empleado.mode
 import { VisorDeImagenesService } from "../../../services/visorDeImagenes/visor-de-imagenes.service"
 import { ImagenPipe } from "../../../pipes/imagen.pipe"
 import { PuestoService } from "../../../services/recursosHumanos/puesto.service"
+import { ManejoDeMensajesService } from "../../../services/utilidades/manejo-de-mensajes.service"
 
 @Component({
   selector: "app-puestos-detalle",
@@ -20,42 +21,31 @@ export class PuestosDetalleComponent implements OnInit {
   constructor(
     public _visorDeImagenesService: VisorDeImagenesService,
     public imganPipe: ImagenPipe,
+    public _puestoService: PuestoService,
+    public _msjService: ManejoDeMensajesService
   ) {}
 
   ngOnInit() {}
 
   @Output() detalleEmpleado = new EventEmitter<Empleado>()
 
-  @Input() set puesto(value: Puesto) {
-    //Establecemos el ultimo historial como el mas
-    //reciente.
+  @Input() puesto: Puesto = null
 
-    this.reiniciarDatos()
-    if (value !== null) {
-      this.puestoPadre = value
-      this.cambiarHistorial(0, this.puestoPadre)
-    }
-  }
 
-  get puesto() {
-    return this.puestoPadre
-  }
-
-  reiniciarDatos() {}
-
-  cambiarHistorial(i: number, value: Puesto) {
-    this.indiceSeleccionado = i
-    this.historialSeleccionado = value.historial[i]
-    this.puestoSeleccionado = this.historialSeleccionado.cambioAnterior
-  }
-
-  mostrarDetalleDeEmpleado(emp: Empleado) {
-    this.detalleEmpleado.emit(emp)
-  }
 
   mostrarImagen(i: string) {
     this._visorDeImagenesService.mostrarImagen(i)
   }
 
-
+  subDetalle(id: string) {
+    if( !id ) return 
+    this._puestoService.findById(id, undefined, undefined, Puesto).subscribe(
+      (puesto) => {
+        this.puesto = puesto
+      },
+      (err) => {
+        this._msjService.invalido(err, "Error en puesto", 10000)
+      }
+    )
+  }
 }

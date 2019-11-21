@@ -1,0 +1,18 @@
+<ng-container *ngIf="empleado">
+  <div class="d-flex aling-items-center justify-content-between">
+    <h1>
+      Empleado # <b>{{ empleado.nombreCompleto() }}</b>
+    </h1>
+    <h3>Detalle de <b>empleado</b></h3>
+  </div></ng-container
+>
+
+<div *ngIf="!empleado" class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="display-1">No has seleccionado una <b>requiscion</b></h1>
+      </div>
+    </div>
+  </div>
+</div>

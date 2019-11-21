@@ -1,13 +1,17 @@
 import { Deserializable } from "./deserealizable.model"
+import { AreaRH } from "./recursosHumanos/areas/areaRH.model"
 
 export class Departamento implements Deserializable {
-  constructor(public _id?: string, public nombre?: string) {}
+  constructor(
+    public _id?: string,
+    public nombre?: string,
+    public area?: AreaRH
+  ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.4.4.1.0");
     Object.assign(this, input)
-    //console.log("x  ?.4.4.1.1");
-    // console.log(this)
+    if( !input ) return this
+    this.area = new AreaRH().deserialize(input.area)
     return this
   }
 
@@ -18,6 +22,6 @@ export class Departamento implements Deserializable {
   static fromJSON_Array(data: any[]) {
     if (!data) return
 
-    return data.map(x => (x = Departamento.fromJSON(x)))
+    return data.map((x) => (x = Departamento.fromJSON(x)))
   }
 }

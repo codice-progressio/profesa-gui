@@ -16,6 +16,7 @@ export class CargaDeImagenesComponent implements OnInit {
   @Input() activeColor: string = "green"
   @Input() baseColor: string = "#ccc"
   @Input() overlayColor: string = "rgba(255,255,255,0.5)"
+  @Output() error = new EventEmitter<string>()
 
   /**
    *Permite definir la subida de multiples archvis.
@@ -80,7 +81,7 @@ export class CargaDeImagenesComponent implements OnInit {
     var reader = new FileReader()
 
     if (!file.type.match(pattern)) {
-      alert("invalid format")
+      this.error.emit('No es un formato valido')
       return
     }
 

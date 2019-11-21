@@ -1,90 +1,43 @@
-<ng-container *ngIf="puestoPadre">
+<ng-container *ngIf="puesto">
   <div class="d-flex aling-items-center justify-content-between">
     <div>
       <h1>
         <b>
-          {{ puestoSeleccionado.puesto }}
-
-          <small
-            *ngIf="indiceSeleccionado > 0"
-            class="text-muted animated fadeIn"
-          >
-            <i class="fas fa-history ani    "></i>
-            Historial del
-            <span [title]="historialSeleccionado.fechaDeCambio | fecha: 'LLL'">
-              {{
-                historialSeleccionado.fechaDeCambio | fecha: "DD/MM/YY HH:mm"
-              }}
-            </span>
-          </small>
+          {{ puesto.puesto }}
         </b>
       </h1>
-
-      <h5 class="text-muted">
-        <ng-container
-          *ngIf="indiceSeleccionado === puesto.historial.length - 1"
-        >
-          Creado por:
-        </ng-container>
-        <ng-container *ngIf="puesto.historial.length - 1 > indiceSeleccionado">
-          Modificado por:
-        </ng-container>
-
-        <b>{{ historialSeleccionado.usuarioQueModifica.nombre }}</b>
-      </h5>
     </div>
     <h3>Descripcion y perfil del <b>puesto</b></h3>
   </div>
 
   <div class="row">
-    <div class="col-12 col-sm-6">
+    <div class="col-12">
       <p>
-        <a
-          class="btn btn-primary btn-xs"
-          data-toggle="collapse"
-          href="#listaDeHistorial"
-          aria-expanded="false"
-          aria-controls="listaDeHistorial"
-        >
-          <i class="fas fa-plus-circle    "></i>
-          Historial
+        <a class="btn btn-primary" data-toggle="collapse" href="#contentId">
+          Historial de cambios
         </a>
       </p>
-    </div>
-    <div class="col-12 col-sm-6">
-      <div class="col-12"></div>
-      <div class="collapse" id="listaDeHistorial">
+      <div class="collapse" id="contentId">
         <ul class="list-group">
-          <li class="list-group-item active">Historial de cambios</li>
-          <a
-            *ngFor="let historia of puesto.historial; let i = index"
-            data-toggle="collapse"
-            href="#listaDeHistorial"
-            class="list-group-item list-group-item-action flex-column align-items-start"
-            (click)="cambiarHistorial(i, puesto)"
+          <li class="list-group-item active">Cambios realizados</li>
+          <li
+            class="list-group-item"
+            *ngFor="let cambio of puesto.motivoDeCambio"
           >
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">
-                <i
-                  [ngClass]="{
-                    'text-success': i === indiceSeleccionado
-                  }"
-                  class="fas fa-check-circle text-light"
-                >
-                </i>
+            <div class="row">
+              <div class="col-12 col-md-4">{{cambio.motivo}}</div>
+              <div class="col-12 col-md-4">{{cambio.usuario.nombre}}</div>
+              <div class="col-12 col-md-4">{{cambio.fecha | fecha:'LLLL'}}</div>
 
-                {{ historia.usuarioQueModifica.nombre }}
-              </h5>
-              <small
-                title="{{ historia.fechaDeCambio | fecha: 'LLL' }}"
-                class="text-muted"
-                >{{ historia.fechaDeCambio | date: "dd/MM/yyyy" }}</small
-              >
             </div>
-            <span class="text-muted">{{
-              historia.cambioAnterior.motivoDeCambio
-            }}</span>
-          </a>
+
+          </li>
+          <li
+            *ngIf="!puesto.motivoDeCambio.length"
+            class="list-group-item disabled"
+          >
+            No se han echo cambios
+          </li>
         </ul>
       </div>
     </div>
@@ -99,25 +52,28 @@
   <div class="row">
     <div class="col-4">
       <h6>
-        <small class="text-muted">Area: </small>
-        {{ puestoSeleccionado.departamento.area.nombre }}
+        <small class="text-muted">Area: </small> <br />
+
+        {{ puesto.departamento.area.nombre }}
       </h6>
     </div>
     <div class="col-4">
       <h6>
-        <small class="text-muted">Departamento: </small>
-        {{ puestoSeleccionado.departamento.nombre }}
+        <small class="text-muted">Departamento: </small> <br />
+        {{ puesto.departamento.nombre }}
       </h6>
     </div>
     <div class="col-4">
       <h6>
-        <small class="text-muted">Reporta a: </small>
-        <a
-          (click)="mostrarDetalleDeEmpleado(puestoSeleccionado.reportaA)"
-          data-toggle="modal"
-          href="#detalleEmpleado"
-        >
-          {{ puestoSeleccionado.reportaA.nombreCompleto() }}
+        <small class="text-muted">Reporta a: </small> <br />
+
+        <a (click)="subDetalle(puesto.reportaA?._id)" href="javascript:void(0)">
+          <ng-container *ngIf="!puesto.reportaA?.puesto">
+            Aun no definido
+          </ng-container>
+          <ng-container *ngIf="puesto.reportaA?.puesto">
+            {{ puesto.reportaA?.puesto }}
+          </ng-container>
         </a>
       </h6>
     </div>
@@ -136,7 +92,7 @@
       <img
         #img
         (click)="mostrarImagen(img.src)"
-        [src]="puestoSeleccionado?.organigrama | imagen: 'organigramaPuesto'"
+        [src]="puesto?.organigrama | imagen: 'organigramaPuesto'"
         class="img-responsive radius shadow pointer w-100"
       />
     </div>
@@ -150,7 +106,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <p>{{ puestoSeleccionado.misionDelPuesto }}</p>
+      <p>{{ puesto.misionDelPuesto }}</p>
     </div>
   </div>
 
@@ -166,12 +122,18 @@
       <div class="list-group">
         <a
           data-toggle="modal"
-          href="#detalleEmpleado"
           class="list-group-item list-group-item-action"
-          *ngFor="let empleado of puestoSeleccionado.personalACargo"
-          (click)="mostrarDetalleDeEmpleado(empleado)"
-          >{{ empleado.idNomina }} | {{ empleado.nombreCompleto() }}</a
+          *ngFor="let puesto of puesto.personalACargo"
         >
+          {{ puesto.puesto }}
+        </a>
+        <a
+          *ngIf="!puesto.personalACargo.length"
+          href="javascript:void(0)"
+          class="list-group-item disabled"
+        >
+          No se han defino personal a cargo
+        </a>
       </div>
     </div>
   </div>
@@ -191,9 +153,15 @@
         </li>
         <li
           class="list-group-item"
-          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.conocimientos"
+          *ngFor="let x of puesto.perfilDelPuesto.conocimientos"
         >
           {{ x }}
+        </li>
+        <li
+          class="list-group-item"
+          *ngIf="!puesto.perfilDelPuesto.conocimientos.length"
+        >
+          Sin conocimientos definidos
         </li>
       </ul>
     </div>
@@ -204,9 +172,15 @@
         </li>
         <li
           class="list-group-item"
-          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.habilidades"
+          *ngFor="let x of puesto.perfilDelPuesto.habilidades"
         >
           {{ x }}
+        </li>
+        <li
+          class="list-group-item"
+          *ngIf="!puesto.perfilDelPuesto.habilidades.length"
+        >
+          Sin habilidades definidas
         </li>
       </ul>
     </div>
@@ -217,81 +191,125 @@
         </li>
         <li
           class="list-group-item"
-          *ngFor="let x of puestoSeleccionado.perfilDelPuesto.aptitudes"
+          *ngFor="let x of puesto.perfilDelPuesto.aptitudes"
         >
           {{ x }}
+        </li>
+        <li
+          class="list-group-item"
+          *ngIf="!puesto.perfilDelPuesto.aptitudes.length"
+        >
+          Sin aptitudes definidas
         </li>
       </ul>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-12 col-lg-6">
-      <div class="row">
-        <div class="col-12">
-          <hr />
-          <h3>Funciones especificas del puesto</h3>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 ">
-          <table class="table table-responsive">
-            <thead class="thead-dark">
-              <tr>
-                <th>Actividad</th>
-                <th>Proposito</th>
-                <th>Frecuencia</th>
-                <th>Prioridad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let x of puestoSeleccionado.funcionesEspecificasDelPuesto
-                "
-              >
-                <td>{{ x.actividad }}</td>
-                <td>{{ x.proposito }}</td>
-                <td>{{ x.frecuencia }}</td>
-                <td>{{ x.prioridad }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="col-12">
+      <hr />
+      <h3>Funciones especificas del puesto</h3>
     </div>
-    <div class="col-12 col-lg-6">
-      <div class="row">
-        <div class="col-12">
-          <hr />
-          <h3>Relacion Cliente proveedor internos</h3>
-        </div>
-      </div>
+  </div>
 
-      <div class="row">
-        <div class="col-12">
-          <table class="table  table-responsive">
-            <thead class="thead-dark">
-              <tr>
-                <th>Departamento</th>
-                <th>Relacion</th>
-                <th>Asunto</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let x of puestoSeleccionado.relacionClienteProveedor.internos
-                "
-              >
-                <td>{{ x.departamento.nombre }}</td>
-                <td>{{ x.relacion }}</td>
-                <td>{{ x.asunto }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-12 table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th>Proposito</th>
+            <th>Frecuencia</th>
+            <th>Prioridad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of puesto.funcionesEspecificasDelPuesto">
+            <td>{{ x.actividad }}</td>
+            <td>{{ x.proposito }}</td>
+            <td>{{ x.frecuencia }}</td>
+            <td>{{ x.prioridad }}</td>
+          </tr>
+          <tr>
+            <td
+              *ngIf="!puesto.funcionesEspecificasDelPuesto.length"
+              colspan="4"
+            >
+              No se han definido funciones espesificas del puesto
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6 table-responsive">
+      <h3>Relacion cliente proveedor internos</h3>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Departamento</th>
+            <th>Relacion</th>
+            <th>Asunto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of puesto.relacionClienteProveedor.internos">
+            <td>{{ x.departamento.nombre }}</td>
+            <td>{{ x.relacion }}</td>
+            <td>{{ x.asunto }}</td>
+          </tr>
+          <tr>
+            <td
+              *ngIf="!puesto.relacionClienteProveedor.internos.length"
+              colspan="3"
+            >
+              No se han definido relaciones internas
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-12 col-md-6 table-responsive">
+      <h3>Relacion cliente proveedor externos</h3>
+      <table class="table table-hover ">
+        <thead>
+          <tr>
+            <th>Contacto</th>
+            <th>Relacion</th>
+            <th>Asunto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of puesto.relacionClienteProveedor.externos">
+            <td>{{ x.contacto }}</td>
+            <td>{{ x.relacion }}</td>
+            <td>{{ x.asunto }}</td>
+          </tr>
+          <tr>
+            <td
+              *ngIf="!puesto.relacionClienteProveedor.externos.length"
+              colspan="3"
+            >
+              No se han definido relaciones externas
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
     </div>
   </div>
 
@@ -302,10 +320,13 @@
           Indices de efectividad del puesto
         </li>
         <li
-          *ngFor="let indice of puestoSeleccionado.indicesDeEfectividad"
+          *ngFor="let indice of puesto.indicesDeEfectividad"
           class="list-group-item"
         >
           {{ indice }}
+        </li>
+        <li class="list-group-item" *ngIf="!puesto.indicesDeEfectividad.length">
+          Sin indices de efectividad definidos
         </li>
       </ul>
     </div>
@@ -316,13 +337,66 @@
         </li>
         <li
           *ngFor="
-            let x of puestoSeleccionado.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
+            let x of puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
           "
           class="list-group-item list-group-item-action"
         >
           {{ x.puesto }}
         </li>
+        <li
+          class="list-group-item"
+          *ngIf="!puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.length"
+        >
+          Sin areas de desarrollo definidas
+        </li>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+      <h3>Cursos obligatorios</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <ul class="list-group">
+        <li
+          *ngFor="let curso of puesto.cursosRequeridos"
+          class="list-group-item"
+        >
+          <h3>
+            <b>{{ curso.nombre }}</b>
+          </h3>
+          {{ curso.descripcionDeCurso }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row bg-dark mt-3 pt-3 pb-3">
+    <div class="col-12 ">
+      <h2 class="text-white">Autorizaciones</h2>
+    </div>
+  </div>
+
+  <div class="row text-center bg-dark text-white pb-5 ">
+    <div class="col-12 col-md-4">
+      {{ puesto.quien.desarrollo.nombreCompleto() }}
+      <hr class="bg-light" />
+      <span class="font-weight-bold">Desarrollo </span>
+    </div>
+    <div class="col-12 col-md-4">
+      {{ puesto.quien.reviso.nombreCompleto() }}
+      <hr class="bg-light" />
+      <span class="font-weight-bold"> Reviso </span>
+    </div>
+    <div class="col-12 col-md-4">
+      {{ puesto.quien.aprobo.nombreCompleto() }}
+      <hr class="bg-light" />
+      <span class="font-weight-bold">Aprobo </span>
     </div>
   </div>
 </ng-container>

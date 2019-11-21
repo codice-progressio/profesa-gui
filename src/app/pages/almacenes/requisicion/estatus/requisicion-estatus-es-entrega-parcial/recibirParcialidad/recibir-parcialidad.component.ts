@@ -135,7 +135,6 @@ export class RecibirParcialidadComponent implements OnInit {
   submit(modelo, invalid, e) {
     e.preventDefault()
     if (invalid) return
-
     let imgs: File[] = this.imagenesCargadas.map((x) => x.file)
     this._subirArchivoService
       .facturasRequisicion(imgs, this.requisicion._id)

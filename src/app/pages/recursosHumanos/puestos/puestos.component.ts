@@ -68,6 +68,7 @@ export class PuestosComponent implements OnInit {
   }
 
   asignarDetalle(puesto: Puesto) {
+    console.log(`puesto`,puesto)
     this.puestoDetalle = puesto
   }
 

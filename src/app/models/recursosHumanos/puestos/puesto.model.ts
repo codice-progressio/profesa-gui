@@ -7,21 +7,22 @@ import { Curso } from "../cursos/curso.model"
 import { PuestoAprobaciones } from "./puestoAprobaciones.model"
 import { Deserializable } from "../../deserealizable.model"
 import { Puesto_RelacionClienteProveedor } from "./puesto_relacionClienteProveedor.model"
+import { Puesto_MotivoDeCambio } from "./puesto_motivoDeCambio.model"
 export class Puesto implements Deserializable {
   constructor(
     public _id?: string,
-    public motivoDeCambio?: string,
+    public motivoDeCambio: Puesto_MotivoDeCambio[] = [],
     public fechaDeCreacionDePuesto?: Date,
     public vigenciaEnAnios?: number,
-    public historial: HistorialDePuesto[] = [],
+    // public historial: HistorialDePuesto[] = [],
     public cursosRequeridos: Curso[] = [],
     public puesto?: string,
     public departamento?: Departamento,
-    public reportaA?: Empleado,
+    public reportaA: Puesto = null,
     //Se genera desde la GUI.
     public organigrama?: string,
     public misionDelPuesto?: string,
-    public personalACargo: Empleado[] = [],
+    public personalACargo: Puesto[] = [],
     public perfilDelPuesto: PerfilDelPuesto = new PerfilDelPuesto(),
     public funcionesEspecificasDelPuesto: FuncionesEspecificasDelPuesto[] = [],
     public relacionClienteProveedor: Puesto_RelacionClienteProveedor = new Puesto_RelacionClienteProveedor(),
@@ -42,13 +43,13 @@ export class Puesto implements Deserializable {
     return this
   }
 
-  private deserialize1(input) {
+  private deserialize1(input: this) {
     this.fechaDeCreacionDePuesto = new Date(input.fechaDeCreacionDePuesto)
-    if (input.hasOwnProperty("historial")) {
-      this.historial = input.historial.map((x) => {
-        return new HistorialDePuesto().deserialize(x)
-      })
-    }
+
+    this.motivoDeCambio = input.motivoDeCambio.map((motivo) =>
+      new Puesto_MotivoDeCambio().deserialize(motivo)
+    )
+
     if (input.hasOwnProperty("cursosRequeridos")) {
       this.cursosRequeridos = input.cursosRequeridos.map((x) => {
         return new Curso().deserialize(x)
@@ -57,10 +58,12 @@ export class Puesto implements Deserializable {
   }
   private deserialize2(input) {
     this.departamento = new Departamento().deserialize(input.departamento)
-    this.reportaA = new Empleado().deserialize(input.reportaA)
+    this.reportaA = input.reportaA
+      ? new Puesto().deserialize(input.reportaA)
+      : null
     if (input.hasOwnProperty("personalACargo")) {
       this.personalACargo = input.personalACargo.map((x) => {
-        return new Empleado().deserialize(x)
+        return new Puesto().deserialize(x)
       })
     }
   }

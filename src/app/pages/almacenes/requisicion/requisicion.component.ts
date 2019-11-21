@@ -244,7 +244,8 @@ export class RequisicionComponent implements OnInit {
     req.estatus.fechaDeGeneracionDeOrdenDeCompra = new Date()
     this._requisicionService.actualizarEstatus(req).subscribe((reqResp) => {
       // this.cargarRequisiciones()
-      req = reqResp
+      // req = reqResp
+      this.cargarRequisiciones()
     })
   }
 

@@ -46,7 +46,6 @@ export class RequisicionService extends CRUD<
   todo(): Observable<Requisicion[]> {
 
 
-    console.log(`this.filtrosDelFolio`,this.filtrosDelFolio)
     return this.getAll(
       undefined,
       undefined,

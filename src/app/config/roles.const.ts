@@ -98,7 +98,4 @@ export const _ROLES = {
   RH_EMPLEADOS: "RH_EMPLEADOS",
   RH_CURSOS: "RH_CURSOS",
   RH_PUESTOS: "RH_PUESTOS"
-
-
-
 }

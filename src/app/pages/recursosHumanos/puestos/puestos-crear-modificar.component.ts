@@ -34,7 +34,8 @@ import { CargaDeImagenesTransporte } from "../../../shared/carga-de-imagenes/car
 import { SubirArchivoService } from "src/app/services/subir-archivo/subir-archivo.service"
 import { ImagenPipe } from "src/app/pipes/imagen.pipe"
 import { CargaDeImagenesComponent } from "../../../shared/carga-de-imagenes/carga-de-imagenes.component"
-import { Validators } from "@angular/forms"
+import { Puesto_MotivoDeCambio } from "../../../models/recursosHumanos/puestos/puesto_motivoDeCambio.model"
+import { UsuarioService } from "../../../services/usuario/usuario.service"
 
 @Component({
   selector: "app-puestos-crear-modificar",
@@ -60,7 +61,8 @@ export class PuestosCrearModificarComponent implements OnInit {
     public _cursoService: CursoService,
     public _visorDeImagenesService: VisorDeImagenesService,
     public _uploadService: SubirArchivoService,
-    public imagenPipe: ImagenPipe
+    public imagenPipe: ImagenPipe,
+    public _usuarioService: UsuarioService
   ) {}
 
   ngOnInit() {
@@ -89,9 +91,11 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.misionDelPuesto_FB.setValue(this.puesto.misionDelPuesto)
 
     this.reportaA_FB.setValue(this.puesto.reportaA)
-    this.reportaADatalist.cargarElementoPorModificacion(
-      this.reportaACrearDato(this.puesto.reportaA)
-    )
+    if (this.puesto.reportaA) {
+      this.reportaADatalist.cargarElementoPorModificacion(
+        this.reportaACrearDato(this.puesto.reportaA)
+      )
+    }
 
     let cur = this.puesto.cursosRequeridos.map((x) => {
       this.fb.control(x)
@@ -153,15 +157,15 @@ export class PuestosCrearModificarComponent implements OnInit {
 
     this.desarrollo_FB.setValue(this.puesto.quien.desarrollo)
     this.desarrolloDataList.seleccionarElemento(
-      this.reportaACrearDato(this.puesto.quien.desarrollo)
+      this.empleadosCrearDato(this.puesto.quien.desarrollo)
     )
     this.reviso_FB.setValue(this.puesto.quien.reviso)
     this.revisoDataList.seleccionarElemento(
-      this.reportaACrearDato(this.puesto.quien.reviso)
+      this.empleadosCrearDato(this.puesto.quien.reviso)
     )
     this.aprobo_FB.setValue(this.puesto.quien.aprobo)
     this.aproboDataList.seleccionarElemento(
-      this.reportaACrearDato(this.puesto.quien.aprobo)
+      this.empleadosCrearDato(this.puesto.quien.aprobo)
     )
     this.sueldoBase_FB.setValue(this.puesto.sueldoBase)
     this.sueldoMaximo_FB.setValue(this.puesto.sueldoMaximo)
@@ -194,7 +198,7 @@ export class PuestosCrearModificarComponent implements OnInit {
         cursosRequeridos: this.fb.array([]),
         puesto: ["", [Validators.required]],
         departamento: ["", Validators.required],
-        reportaA: ["", Validators.required],
+        reportaA: null,
 
         misionDelPuesto: ["", [Validators.required]],
         personalACargo: this.fb.array([]),
@@ -238,7 +242,7 @@ export class PuestosCrearModificarComponent implements OnInit {
             Validators.max(999)
           ]
         ],
-        motivoDeCambio: ["", [Validators.required]]
+        motivoDeCambio: ["Creacion del documento", [Validators.required]]
       },
       { validator: this.validarSueldos }
     )
@@ -318,6 +322,11 @@ export class PuestosCrearModificarComponent implements OnInit {
     e.preventDefault()
     let puesto = new Puesto()
     Object.assign(puesto, modelo)
+    puesto.motivoDeCambio = this.puesto ? this.puesto.motivoDeCambio : []
+    let a = new Puesto_MotivoDeCambio()
+    a.motivo = this.motivoDeCambio_FB.value
+    a.usuario = this._usuarioService.usuario
+    puesto.motivoDeCambio.unshift(a)
 
     puesto.perfilDelPuesto.conocimientos = this.conocimientos_FB.value
     puesto.perfilDelPuesto.habilidades = this.habilidades_FB.value
@@ -325,7 +334,7 @@ export class PuestosCrearModificarComponent implements OnInit {
 
     puesto.cursosRequeridos = this.cursosSeleccionados
 
-    puesto.personalACargo = this.personalACargo
+    puesto.personalACargo = this.personalACargo_FB.value
     puesto.relacionClienteProveedor.internos = this.internos_FB.value
     puesto.relacionClienteProveedor.externos = this.externos_FB.value
 
@@ -674,6 +683,41 @@ export class PuestosCrearModificarComponent implements OnInit {
   // =====================================
   // -->
 
+  ejecutarOperacionesDeBusquedaEmpleados(evento) {
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this._empleadoService
+      .search(termino, undefined, undefined, Empleado)
+      .subscribe((empleados) => {
+        let datos: Dato[] = []
+        empleados.forEach((pue: Empleado) => {
+          datos.push(this.empleadosCrearDato(pue))
+        })
+
+        dataList.terminoBusqueda(datos)
+      })
+  }
+
+  empleadosCrearDato(emp: Empleado) {
+    let d = new Dato()
+    d.leyendaPrincipal = emp.nombreCompleto()
+    d.leyendaSecundaria = `NOM: ${emp.idNomina} | CHE: ${emp.idChecador}`
+    d.objeto = emp
+
+    return d
+  }
+
+  empleadosSeleccionado(dato: Dato) {
+    if (!dato) {
+      this.reportaA_FB.reset()
+      this.reportaA_FB.markAsTouched()
+      return
+    }
+    let puesto = <Puesto>dato.objeto
+    this.reportaA_FB.setValue(puesto._id)
+    this.reportaA_FB.updateValueAndValidity()
+  }
+
   // <!--
   // =====================================
   //  reporta a
@@ -682,38 +726,41 @@ export class PuestosCrearModificarComponent implements OnInit {
 
   reportaADatalist: DataListComponent = null
 
-  ejecutarOperacionesDeBusquedaEmpleados(evento) {
+  ejecutarOperacionesDeBusquedaPersonalACargo(evento) {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
-    this._empleadoService
-      .search(termino, undefined, undefined, Empleado)
-      .subscribe((articulos) => {
+    this._puestoService
+      .search(termino, undefined, undefined, Puesto)
+      .subscribe((puestos) => {
         let datos: Dato[] = []
-        articulos.forEach((emp: Empleado) => {
-          datos.push(this.reportaACrearDato(emp))
+        puestos.forEach((pue: Puesto) => {
+          let a = this.reportaACrearDato(pue)
+          datos.push()
         })
 
         dataList.terminoBusqueda(datos)
       })
   }
 
-  reportaACrearDato(emp: Empleado) {
+  reportaACrearDato(emp: Puesto) {
+    if (!emp) return null
+
     let d = new Dato()
-    d.leyendaPrincipal = emp.nombreCompleto()
-    d.descripcionPrincipal = "Nomina:" + emp.idNomina
+    d.leyendaPrincipal = emp.puesto
+    d.descripcionPrincipal = emp.misionDelPuesto
     d.objeto = emp
 
     return d
   }
 
-  empleadoSeleccionado(dato: Dato) {
+  reportaASeleccionado(dato: Dato) {
     if (!dato) {
       this.reportaA_FB.reset()
       this.reportaA_FB.markAsTouched()
       return
     }
-    let empleado = <Empleado>dato.objeto
-    this.reportaA_FB.setValue(empleado._id)
+    let puesto = <Puesto>dato.objeto
+    this.reportaA_FB.setValue(puesto)
     this.reportaA_FB.updateValueAndValidity()
   }
 
@@ -729,7 +776,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   // =====================================
   // -->
   personalACargoDataList: DataListComponent = null
-  personalACargo: Empleado[] = []
+  personalACargo: Puesto[] = []
 
   agregarPersonalACargo(dato: Dato) {
     if (dato) {
@@ -825,9 +872,12 @@ export class PuestosCrearModificarComponent implements OnInit {
     let dataList = <DataListComponent>evento.dataList
     this._puestoService
       .search(termino, undefined, undefined, Puesto)
-      .subscribe((articulos) => {
+      .subscribe((p) => {
         let datos: Dato[] = []
-        articulos.forEach((dep: Puesto) => {
+        p.filter(
+          (px) => {
+            return px._id !== (this.puesto ? this.puesto._id : null)}
+        ).forEach((dep: Puesto) => {
           let d = new Dato()
           d.leyendaPrincipal = dep.puesto
           d.descripcionSecundaria = dep.misionDelPuesto
@@ -1005,4 +1055,8 @@ export class PuestosCrearModificarComponent implements OnInit {
   //  END organigrama
   // =====================================
   // -->
+
+  msjDeErrorImagenes(msj) {
+    this._msjService.invalido(msj, "Formato de imagen invalido", 4000)
+  }
 }
