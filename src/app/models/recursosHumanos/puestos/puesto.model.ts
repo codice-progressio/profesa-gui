@@ -1,13 +1,13 @@
-import { HistorialDePuesto } from "./historialDePuesto.model"
-import { Departamento } from "../../departamento.models"
-import { Empleado } from "../empleados/empleado.model"
-import { PerfilDelPuesto } from "./perfilDelPuesto.model"
-import { FuncionesEspecificasDelPuesto } from "./funcionesEspecificasDelPuesto.model"
-import { Curso } from "../cursos/curso.model"
-import { PuestoAprobaciones } from "./puestoAprobaciones.model"
-import { Deserializable } from "../../deserealizable.model"
-import { Puesto_RelacionClienteProveedor } from "./puesto_relacionClienteProveedor.model"
-import { Puesto_MotivoDeCambio } from "./puesto_motivoDeCambio.model"
+import { HistorialDePuesto } from './historialDePuesto.model'
+import { Departamento } from '../../departamento.models'
+import { Empleado } from '../empleados/empleado.model'
+import { PerfilDelPuesto } from './perfilDelPuesto.model'
+import { FuncionesEspecificasDelPuesto } from './funcionesEspecificasDelPuesto.model'
+import { Curso } from '../cursos/curso.model'
+import { PuestoAprobaciones } from './puestoAprobaciones.model'
+import { Deserializable } from '../../deserealizable.model'
+import { Puesto_RelacionClienteProveedor } from './puesto_relacionClienteProveedor.model'
+import { Puesto_MotivoDeCambio } from './puesto_motivoDeCambio.model'
 export class Puesto implements Deserializable {
   constructor(
     public _id?: string,
@@ -36,22 +36,43 @@ export class Puesto implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) return this
-    Object.assign(this, input)
-    this.deserialize1(input)
-    this.deserialize2(input)
-    this.deserialize3(input)
+
+    //Este caso es muy especial por que aqui estmos tratando
+    //de compensar el problema de la populacion automatica de mongoose
+    // que me mete en un ciclo infinito cuando referenciamos un modelo
+    // a si mismo. Lo que vamos a hacer es diferenciar cuando estamos
+    // deserealizando un objeto completamente populado de la base de datos
+    // de uno que no lo hizo. Asi, podemos meter ese id que viene
+    // como tengo dentro de this._id
+
+    if (input.hasOwnProperty('_id')) {
+      //Si el input tiene la propiedad _id quiere
+      // decir que si viene populado y hacemos lo normal
+
+      Object.assign(this, input)
+      this.deserialize1(input)
+      this.deserialize2(input)
+      this.deserialize3(input)
+    } else {
+      //Si no viene la propiedad entonces forzamos
+      // la conversion a texto para para luego asignarlo
+      // correctamente al id.
+      this._id = <string>(<any>input)
+    }
+
     return this
   }
 
   private deserialize1(input: this) {
     this.fechaDeCreacionDePuesto = new Date(input.fechaDeCreacionDePuesto)
+    if (input.motivoDeCambio) {
+      this.motivoDeCambio = input.motivoDeCambio.map(motivo =>
+        new Puesto_MotivoDeCambio().deserialize(motivo)
+      )
+    }
 
-    this.motivoDeCambio = input.motivoDeCambio.map((motivo) =>
-      new Puesto_MotivoDeCambio().deserialize(motivo)
-    )
-
-    if (input.hasOwnProperty("cursosRequeridos")) {
-      this.cursosRequeridos = input.cursosRequeridos.map((x) => {
+    if (input.hasOwnProperty('cursosRequeridos')) {
+      this.cursosRequeridos = input.cursosRequeridos.map(x => {
         return new Curso().deserialize(x)
       })
     }
@@ -61,8 +82,8 @@ export class Puesto implements Deserializable {
     this.reportaA = input.reportaA
       ? new Puesto().deserialize(input.reportaA)
       : null
-    if (input.hasOwnProperty("personalACargo")) {
-      this.personalACargo = input.personalACargo.map((x) => {
+    if (input.hasOwnProperty('personalACargo')) {
+      this.personalACargo = input.personalACargo.map(x => {
         return new Puesto().deserialize(x)
       })
     }
@@ -71,9 +92,9 @@ export class Puesto implements Deserializable {
     this.perfilDelPuesto = new PerfilDelPuesto().deserialize(
       this.perfilDelPuesto
     )
-    if (input.hasOwnProperty("funcionesEspecificasDelPuesto")) {
+    if (input.hasOwnProperty('funcionesEspecificasDelPuesto')) {
       this.funcionesEspecificasDelPuesto = input.funcionesEspecificasDelPuesto.map(
-        (x) => {
+        x => {
           return new FuncionesEspecificasDelPuesto().deserialize(x)
         }
       )
@@ -83,11 +104,11 @@ export class Puesto implements Deserializable {
     )
 
     if (
-      input.hasOwnProperty("elPuestoPuedeDesarrollarseEnLasSiguientesAreas")
+      input.hasOwnProperty('elPuestoPuedeDesarrollarseEnLasSiguientesAreas')
     ) {
       this.elPuestoPuedeDesarrollarseEnLasSiguientesAreas = input.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.map(
-        (x) => {
-          return new Departamento().deserialize(x)
+        x => {
+          return new Puesto().deserialize(x)
         }
       )
     }

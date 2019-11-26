@@ -25,12 +25,12 @@
             *ngFor="let cambio of puesto.motivoDeCambio"
           >
             <div class="row">
-              <div class="col-12 col-md-4">{{cambio.motivo}}</div>
-              <div class="col-12 col-md-4">{{cambio.usuario.nombre}}</div>
-              <div class="col-12 col-md-4">{{cambio.fecha | fecha:'LLLL'}}</div>
-
+              <div class="col-12 col-md-4">{{ cambio.motivo }}</div>
+              <div class="col-12 col-md-4">{{ cambio.usuario.nombre }}</div>
+              <div class="col-12 col-md-4">
+                {{ cambio.fecha | fecha: 'LLLL' }}
+              </div>
             </div>
-
           </li>
           <li
             *ngIf="!puesto.motivoDeCambio.length"
@@ -67,14 +67,12 @@
       <h6>
         <small class="text-muted">Reporta a: </small> <br />
 
-        <a (click)="subDetalle(puesto.reportaA?._id)" href="javascript:void(0)">
-          <ng-container *ngIf="!puesto.reportaA?.puesto">
-            Aun no definido
-          </ng-container>
-          <ng-container *ngIf="puesto.reportaA?.puesto">
-            {{ puesto.reportaA?.puesto }}
-          </ng-container>
-        </a>
+        <ng-container *ngIf="!puesto?.reportaA?.puesto">
+          Aun no definido
+        </ng-container>
+        <ng-container *ngIf="puesto?.reportaA?.puesto">
+          {{ puesto?.reportaA?.puesto }}
+        </ng-container>
       </h6>
     </div>
   </div>
@@ -123,9 +121,9 @@
         <a
           data-toggle="modal"
           class="list-group-item list-group-item-action"
-          *ngFor="let puesto of puesto.personalACargo"
+          *ngFor="let per of puesto.personalACargo"
         >
-          {{ puesto.puesto }}
+          {{ per?.puesto }}
         </a>
         <a
           *ngIf="!puesto.personalACargo.length"
@@ -337,11 +335,11 @@
         </li>
         <li
           *ngFor="
-            let x of puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
+            let x of puesto?.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
           "
           class="list-group-item list-group-item-action"
         >
-          {{ x.puesto }}
+          {{ x?.puesto }}
         </li>
         <li
           class="list-group-item"

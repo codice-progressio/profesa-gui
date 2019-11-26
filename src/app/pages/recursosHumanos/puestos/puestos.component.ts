@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core"
-import { Puesto } from "src/app/models/recursosHumanos/puestos/puesto.model"
-import { PuestosCrearModificarComponent } from "./puestos-crear-modificar.component"
-import { PaginadorService } from "src/app/components/paginador/paginador.service"
-import { PuestoService } from "src/app/services/recursosHumanos/puesto.service"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { PuestoFiltros } from "src/app/services/utilidades/filtrosParaConsultas/puesto.filtros"
-import { Empleado } from "src/app/models/recursosHumanos/empleados/empleado.model";
+import { Component, OnInit } from '@angular/core'
+import { Puesto } from 'src/app/models/recursosHumanos/puestos/puesto.model'
+import { PuestosCrearModificarComponent } from './puestos-crear-modificar.component'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { PuestoService } from 'src/app/services/recursosHumanos/puesto.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { PuestoFiltros } from 'src/app/services/utilidades/filtrosParaConsultas/puesto.filtros'
+import { Empleado } from 'src/app/models/recursosHumanos/empleados/empleado.model'
 
 @Component({
-  selector: "app-puestos",
-  templateUrl: "./puestos.component.html",
+  selector: 'app-puestos',
+  templateUrl: './puestos.component.html',
   styles: []
 })
 export class PuestosComponent implements OnInit {
@@ -20,7 +20,7 @@ export class PuestosComponent implements OnInit {
   componenteCrearModificar: PuestosCrearModificarComponent
   detalleEmpleado: Empleado = null
 
-  cbObserbable = (termino) =>
+  cbObserbable = termino =>
     this._puestoService.search(termino, undefined, undefined, Puesto)
 
   constructor(
@@ -40,13 +40,69 @@ export class PuestosComponent implements OnInit {
       .filtros(new PuestoFiltros(this._puestoService))
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["puesto", 1]])
+      .setSortCampos([['puesto', 1]])
 
       .servicio.todo()
-      .subscribe((puestos) => {
-        this.puestos = puestos
-        this._paginadorService.activarPaginador(this._puestoService.total)
+      .subscribe(puestos => this.autoPopulate(puestos))
+  }
+
+  autoPopulate(puestos: Puesto[]) {
+    {
+      this.puestos = puestos
+      //Extraemos todos los ids que contengan los datos
+      // de reportaA y personalACargo
+      let ids = new Set<string>()
+
+      this.puestos.forEach(puesto => {
+        if (puesto.reportaA) ids.add(puesto.reportaA._id)
+
+        if (puesto.personalACargo.length > 0) {
+          puesto.personalACargo
+            .map(x => {
+              return x._id
+            })
+            .forEach(x => ids.add(x))
+        }
+
+        if (puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.length > 0) {
+          puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
+            .map(x => {
+              return x._id
+            })
+            .forEach(x => {
+              ids.add(x)
+            })
+        }
       })
+
+      this._puestoService
+        .findMultiple(Array.from(ids))
+        .subscribe(pRemplazos => {
+          this.puestos.forEach(puesto => {
+            if (puesto.reportaA) {
+              puesto.reportaA = this.filtrarPuesto(
+                pRemplazos,
+                puesto.reportaA._id
+              )
+            }
+
+            let operacion = x => {
+              let puestoFiltrado = this.filtrarPuesto(pRemplazos, x._id)
+              return puestoFiltrado
+            }
+            puesto.personalACargo = puesto.personalACargo.map(x => operacion(x))
+
+            puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas = puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.map(
+              x => operacion(x)
+            )
+          })
+        })
+    }
+  }
+
+  filtrarPuesto(remplazos: Puesto[], id: string) {
+    let filtrado = remplazos.find(p => p._id === id)
+    return filtrado
   }
 
   resultadoBusqueda(puestos: Puesto[]) {
@@ -68,7 +124,6 @@ export class PuestosComponent implements OnInit {
   }
 
   asignarDetalle(puesto: Puesto) {
-    console.log(`puesto`,puesto)
     this.puestoDetalle = puesto
   }
 
@@ -77,7 +132,7 @@ export class PuestosComponent implements OnInit {
   }
 
   eliminar(puesto: Puesto) {
-    let msj = "Esta accion no se puede deshacer."
+    let msj = 'Esta accion no se puede deshacer.'
 
     this._msjService.confirmacionDeEliminacion(msj, () => {
       this._puestoService.eliminar(puesto._id).subscribe(() => {

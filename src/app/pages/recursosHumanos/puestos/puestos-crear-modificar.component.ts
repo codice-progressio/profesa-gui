@@ -334,7 +334,7 @@ export class PuestosCrearModificarComponent implements OnInit {
 
     puesto.cursosRequeridos = this.cursosSeleccionados
 
-    puesto.personalACargo = this.personalACargo_FB.value
+    puesto.personalACargo = this.personalACargo
     puesto.relacionClienteProveedor.internos = this.internos_FB.value
     puesto.relacionClienteProveedor.externos = this.externos_FB.value
 
@@ -726,21 +726,21 @@ export class PuestosCrearModificarComponent implements OnInit {
 
   reportaADatalist: DataListComponent = null
 
-  ejecutarOperacionesDeBusquedaPersonalACargo(evento) {
-    let termino = <string>evento.termino
-    let dataList = <DataListComponent>evento.dataList
-    this._puestoService
-      .search(termino, undefined, undefined, Puesto)
-      .subscribe((puestos) => {
-        let datos: Dato[] = []
-        puestos.forEach((pue: Puesto) => {
-          let a = this.reportaACrearDato(pue)
-          datos.push()
-        })
+  // ejecutarOperacionesDeBusquedaPersonalACargo(evento) {
+  //   let termino = <string>evento.termino
+  //   let dataList = <DataListComponent>evento.dataList
+  //   this._puestoService
+  //     .search(termino, undefined, undefined, Puesto)
+  //     .subscribe((puestos) => {
+  //       let datos: Dato[] = []
+  //       puestos.forEach((pue: Puesto) => {
+  //         let a = this.reportaACrearDato(pue)
+  //         datos.push()
+  //       })
 
-        dataList.terminoBusqueda(datos)
-      })
-  }
+  //       dataList.terminoBusqueda(datos)
+  //     })
+  // }
 
   reportaACrearDato(emp: Puesto) {
     if (!emp) return null
