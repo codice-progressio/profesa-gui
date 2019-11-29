@@ -124,7 +124,36 @@ export class EmpleadoCrearModificarComponent implements OnInit {
         this.hayPuestoActual(empleado.puestoActual),
         [Validators.required]
       ],
-      fotografia: [empleado.fotografia, [Validators.required]]
+      fotografia: [empleado.fotografia, [Validators.required]],
+      email: [empleado.email, [Validators.email]],
+      celular: [
+        empleado.celular,
+        [
+          this.vs.numberValidator,
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(10)
+        ]
+      ],
+      telCasa: [
+        empleado.telCasa,
+        [
+          this.vs.numberValidator,
+          Validators.maxLength(10),
+          Validators.minLength(10)
+        
+        ]
+      ],
+      telEmergencia: [
+        empleado.telEmergencia,
+        [
+          this.vs.numberValidator,
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(10)
+        ]
+      ],
+      nombreEmergencia: [empleado.nombreEmergencia, [Validators.required]]
     })
   }
 

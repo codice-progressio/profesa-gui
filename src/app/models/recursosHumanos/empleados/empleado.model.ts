@@ -27,7 +27,14 @@ export class Empleado implements Deserializable {
     public eventos?: HistorialDeEventos,
     public documentos?: EmpleadoDocumentos,
 
-    public asistencia?: EmpleadoAsistencia
+    public asistencia?: EmpleadoAsistencia,
+
+    public email?: String,
+    public celular?: String,
+    public telCasa?: String,
+    public telEmergencia?: String,
+    public nombreEmergencia?: String,
+
   ) {}
 
   deserialize(input: this): this {
