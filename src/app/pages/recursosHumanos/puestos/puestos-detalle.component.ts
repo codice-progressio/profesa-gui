@@ -42,6 +42,7 @@ export class PuestosDetalleComponent implements OnInit {
     this._puestoService.findById(id, undefined, undefined, Puesto).subscribe(
       (puesto) => {
         this.puesto = puesto
+        this._puestoService.autoPopulate([this.puesto])
       },
       (err) => {
         this._msjService.invalido(err, "Error en puesto", 10000)

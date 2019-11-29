@@ -27,6 +27,7 @@ export class ImagenPipe implements PipeTransform {
   rutasValidas = {
     usuario: "/usuarios/",
     facturas: "/facturas/",
-    organigramaPuesto: "/organigramaPuesto/"
+    organigramaPuesto: "/organigramaPuesto/",
+    empleados: "/empleados/"
   }
 }

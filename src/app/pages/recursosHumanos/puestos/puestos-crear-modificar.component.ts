@@ -180,6 +180,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   }
 
   modificar(puesto: Puesto) {
+    this.limpiarDespuesDeGuardarOModificar()
     this.puesto = puesto
     this.crearFormulario()
     this.cargarDatos()
@@ -267,6 +268,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.desarrolloDataList.reiniciar()
     this.revisoDataList.reiniciar()
     this.aproboDataList.reiniciar()
+    this.reportaADatalist.reiniciar()
 
     this.organigrama = null
   }

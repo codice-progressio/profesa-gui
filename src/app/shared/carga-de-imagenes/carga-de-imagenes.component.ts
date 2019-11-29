@@ -16,6 +16,11 @@ export class CargaDeImagenesComponent implements OnInit {
   @Input() activeColor: string = "green"
   @Input() baseColor: string = "#ccc"
   @Input() overlayColor: string = "rgba(255,255,255,0.5)"
+  /**
+   *Cuando ocurre un error emite una cadena de texto con la razon. 
+   *
+   * @memberof CargaDeImagenesComponent
+   */
   @Output() error = new EventEmitter<string>()
 
   /**
@@ -25,6 +30,14 @@ export class CargaDeImagenesComponent implements OnInit {
    * @memberof CargaDeImagenesComponent
    */
   @Input() multiple: boolean = true
+
+
+  /**
+   * Cuando se a seleccionado o arrastrado una imagen emite un arreglo
+   * con las imagenes seleccionadas para poder cargarlas posteriormente
+   *
+   * @memberof CargaDeImagenesComponent
+   */
   @Output() imagenesParaSubir = new EventEmitter<CargaDeImagenesTransporte[]>()
   @Output() esteComponente = new EventEmitter<this>()
 
@@ -142,6 +155,11 @@ export class CargaDeImagenesComponent implements OnInit {
   }
 
 
+  /**
+   *Elimina los datos que tenga cargados. 
+   *
+   * @memberof CargaDeImagenesComponent
+   */
   limpiarParaNuevo( ){
     this.files = []
   }

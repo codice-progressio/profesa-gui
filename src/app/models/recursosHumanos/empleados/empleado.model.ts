@@ -2,11 +2,11 @@ import { HistorialDeEventos } from "./eventos/historialDeEventos.model"
 import { EmpleadoDocumentos } from "./documentos/empleadoDocumentos.model"
 import { EmpleadoAsistencia } from "./asistencias/empleadoAsistencia.model"
 import { Deserializable } from "../../deserealizable.model"
-import { Puesto } from "../puestos/puesto.model";
+import { Puesto } from "../puestos/puesto.model"
 
 export class Empleado implements Deserializable {
   constructor(
-    public _id?: string, 
+    public _id?: string,
     public idChecador?: number,
     public idNomina?: number,
     public nombres: string = null,
@@ -20,7 +20,7 @@ export class Empleado implements Deserializable {
     public numeroDeSeguridadSocial?: string,
     public fotografia?: string,
     public sueldoActual?: number,
-    public puestoActual?: Puesto,
+    public puestoActual: Puesto = null,
     //Relacionado a eventosRH. estatusLaboral.
     public activo?: boolean,
     //El puesto esta dentro de los eventos.
@@ -32,11 +32,13 @@ export class Empleado implements Deserializable {
 
   deserialize(input: this): this {
     Object.assign(this, input)
-    if(!input ) return this
+    if (!input) return this
 
     this.fechaDeNacimiento = new Date(input.fechaDeNacimiento)
-    this.puestoActual = new Puesto().deserialize(input.puestoActual)
-    
+    if (input.puestoActual) {
+      this.puestoActual = new Puesto().deserialize(input.puestoActual)
+    }
+
     this.eventos = new HistorialDeEventos().deserialize(input.eventos)
     this.documentos = new EmpleadoDocumentos().deserialize(input.documentos)
     this.asistencia = new EmpleadoAsistencia().deserialize(input.asistencia)
@@ -44,10 +46,8 @@ export class Empleado implements Deserializable {
     return this
   }
 
-
   nombreCompleto(): string {
-
-    if( !this.nombres ) return null
+    if (!this.nombres) return null
     return `${this.nombres} ${this.apellidos}`
   }
 }

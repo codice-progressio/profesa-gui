@@ -43,66 +43,10 @@ export class PuestosComponent implements OnInit {
       .setSortCampos([['puesto', 1]])
 
       .servicio.todo()
-      .subscribe(puestos => this.autoPopulate(puestos))
-  }
-
-  autoPopulate(puestos: Puesto[]) {
-    {
-      this.puestos = puestos
-      //Extraemos todos los ids que contengan los datos
-      // de reportaA y personalACargo
-      let ids = new Set<string>()
-
-      this.puestos.forEach(puesto => {
-        if (puesto.reportaA) ids.add(puesto.reportaA._id)
-
-        if (puesto.personalACargo.length > 0) {
-          puesto.personalACargo
-            .map(x => {
-              return x._id
-            })
-            .forEach(x => ids.add(x))
-        }
-
-        if (puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.length > 0) {
-          puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
-            .map(x => {
-              return x._id
-            })
-            .forEach(x => {
-              ids.add(x)
-            })
-        }
+      .subscribe(puestos => {
+        this.puestos = puestos
+        this._puestoService.autoPopulate(this.puestos)
       })
-
-      this._puestoService
-        .findMultiple(Array.from(ids))
-        .subscribe(pRemplazos => {
-          this.puestos.forEach(puesto => {
-            if (puesto.reportaA) {
-              puesto.reportaA = this.filtrarPuesto(
-                pRemplazos,
-                puesto.reportaA._id
-              )
-            }
-
-            let operacion = x => {
-              let puestoFiltrado = this.filtrarPuesto(pRemplazos, x._id)
-              return puestoFiltrado
-            }
-            puesto.personalACargo = puesto.personalACargo.map(x => operacion(x))
-
-            puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas = puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.map(
-              x => operacion(x)
-            )
-          })
-        })
-    }
-  }
-
-  filtrarPuesto(remplazos: Puesto[], id: string) {
-    let filtrado = remplazos.find(p => p._id === id)
-    return filtrado
   }
 
   resultadoBusqueda(puestos: Puesto[]) {
@@ -128,6 +72,7 @@ export class PuestosComponent implements OnInit {
   }
 
   editar(puesto: Puesto) {
+    this.puestoDetalle = puesto
     this.componenteCrearModificar.modificar(puesto)
   }
 

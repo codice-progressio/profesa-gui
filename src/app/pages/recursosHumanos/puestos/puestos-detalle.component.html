@@ -67,10 +67,22 @@
       <h6>
         <small class="text-muted">Reporta a: </small> <br />
 
-        <ng-container *ngIf="!puesto?.reportaA?.puesto">
+        <span
+          class="text-muted font-weight-bold"
+          *ngIf="!puesto?.reportaA?.puesto"
+        >
           Aun no definido
-        </ng-container>
+        </span>
+
         <ng-container *ngIf="puesto?.reportaA?.puesto">
+          <a
+            (click)="subDetalle(puesto.reportaA._id)"
+            class="btn btn-xs btn-primary"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i class="fas fa-eye    "></i>
+          </a>
           {{ puesto?.reportaA?.puesto }}
         </ng-container>
       </h6>
@@ -119,12 +131,21 @@
     <div class="col-12">
       <div class="list-group">
         <a
-          data-toggle="modal"
+          href="javascript:void(0)"
           class="list-group-item list-group-item-action"
           *ngFor="let per of puesto.personalACargo"
         >
+          <a
+            (click)="subDetalle(per._id)"
+            class="btn btn-xs btn-primary"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i class="fas fa-eye    "></i>
+          </a>
           {{ per?.puesto }}
         </a>
+
         <a
           *ngIf="!puesto.personalACargo.length"
           href="javascript:void(0)"
@@ -333,14 +354,22 @@
         <li class="list-group-item active">
           El puesto puede desarrollarse en las siguientes areas
         </li>
-        <li
+        <a
           *ngFor="
             let x of puesto?.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
           "
           class="list-group-item list-group-item-action"
         >
+          <a
+            (click)="subDetalle(x._id)"
+            class="btn btn-xs btn-primary"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i class="fas fa-eye    "></i>
+          </a>
           {{ x?.puesto }}
-        </li>
+        </a>
         <li
           class="list-group-item"
           *ngIf="!puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.length"
