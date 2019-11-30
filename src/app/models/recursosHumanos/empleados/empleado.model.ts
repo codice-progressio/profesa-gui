@@ -35,6 +35,12 @@ export class Empleado implements Deserializable {
     public telEmergencia?: String,
     public nombreEmergencia?: String,
 
+    public estadoCivil?: boolean,
+    public hijos: number[] = [],
+    public nivelDeEstudios?: string,
+    public domicilio?: string,
+
+
   ) {}
 
   deserialize(input: this): this {
@@ -57,4 +63,17 @@ export class Empleado implements Deserializable {
     if (!this.nombres) return null
     return `${this.nombres} ${this.apellidos}`
   }
+
+
+  edad(){
+    let today = new Date();
+    let birthDate = new Date(this.fechaDeNacimiento);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+  }
+
 }

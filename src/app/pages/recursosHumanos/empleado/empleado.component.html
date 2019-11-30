@@ -236,6 +236,7 @@
       <div class="modal-body">
         <app-empleado-detalle
           [empleado]="empleadoDetalle"
+          (detallePuesto)="asiganarDetalleDePuesto($event)"
         ></app-empleado-detalle>
       </div>
     </div>

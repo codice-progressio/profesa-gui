@@ -103,7 +103,14 @@ export function toFormData<T>(formValue: T) {
 
   for (const key of Object.keys(formValue)) {
     const value = formValue[key]
-    formData.append(key, value)
+
+    if (Array.isArray(value)) {
+      value.forEach(valor => {
+        formData.append(key, valor)
+      })
+    } else {
+      formData.append(key, value)
+    }
   }
 
   return formData

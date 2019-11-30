@@ -23,15 +23,18 @@
             -->
 
             <div *ngIf="hayFoto()" class="col-12">
-              <div class="image-cropper shadow" style="width: 100%; height: 400px;">
-                  <img
+              <div
+                class="image-cropper shadow"
+                style="width: 100%; height: 400px;"
+              >
+                <img
                   #img
                   (click)="mostrarImagen(img.src)"
-                [src]="f('fotografia').value | imagen: 'empleados'"
-                    class=" profile-pic"
-                    [src]="empleado.fotografia | imagen: 'empleados'"
-                  />
-                </div>
+                  [src]="f('fotografia').value | imagen: 'empleados'"
+                  class=" profile-pic"
+                  [src]="empleado.fotografia | imagen: 'empleados'"
+                />
+              </div>
             </div>
             <div class="col-12 text-right mt-3">
               <a
@@ -102,16 +105,15 @@
                 </div>
               </div>
               <!-- 
-                                =====================================
-                                 END idChecador
-                                =====================================
-                                -->
-
+              =====================================
+                END idChecador
+              =====================================
+              -->
               <!-- 
-                                =====================================
-                                 idNomina
-                                =====================================
-                                -->
+              =====================================
+                idNomina
+              =====================================
+              -->
               <div class="col-12 col-sm-6 col-md-2">
                 <div class="form-group">
                   <input
@@ -132,16 +134,62 @@
                 </div>
               </div>
               <!-- 
-                                =====================================
-                                 END idNomina
-                                =====================================
-                                -->
+                  =====================================
+                    END idNomina
+                  =====================================
+                  -->
 
               <!-- 
-                                =====================================
-                                 nombres
-                                =====================================
-                                -->
+                =====================================
+                 puestoActual
+                =====================================
+                -->
+              <div *ngIf="!empleado?._id" class="col-6">
+                <div class="form-group">
+                  <input type="hidden" formControlName="puestoActual" />
+
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarPuestos($event)"
+                    (elementoSeleccionado)="articuloSeleccionado($event)"
+                    (esteComponente)="puestoComponent = $event"
+                    [valid]="vs.valid(f('puestoActual'))"
+                    [invalid]="vs.invalid(f('puestoActual'))"
+                    (touched)="f('puestoActual').markAsTouched()"
+                  >
+                  </app-data-list>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Puesto actual</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('puestoActual')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                  =====================================
+                   END puestoActual
+                  =====================================
+                  -->
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <hr />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <h3>Datos del empleado</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 
+                =====================================
+                  nombres
+                =====================================
+                -->
               <div class="col-12 col-sm-6 col-md-4">
                 <div class="form-group">
                   <input
@@ -162,16 +210,16 @@
                 </div>
               </div>
               <!-- 
-                                =====================================
-                                 END nombres
-                                =====================================
-                                -->
+                =====================================
+                  END nombres
+                =====================================
+                -->
 
               <!-- 
-                                =====================================
-                                 apellidos
-                                =====================================
-                                -->
+                =====================================
+                  apellidos
+                =====================================
+                -->
               <div class="col-12 col-sm-6 col-md-4">
                 <div class="form-group">
                   <input
@@ -190,18 +238,15 @@
                 </div>
               </div>
               <!-- 
-                                =====================================
-                                 END apellidos
-                                =====================================
-                                -->
-            </div>
-
-            <div class="row">
+              =====================================
+              END apellidos
+              =====================================
+              -->
               <!-- 
-                            =====================================
-                             fechaDeNacimiento
-                            =====================================
-                            -->
+              =====================================
+              fechaDeNacimiento
+              =====================================
+              -->
 
               <div class="col-12 col-sm-6 col-md-4 ">
                 <div class="form-group">
@@ -223,16 +268,16 @@
                 </div>
               </div>
               <!-- 
-                            =====================================
-                             END fechaDeNacimiento
-                            =====================================
-                            -->
+                =====================================
+                  END fechaDeNacimiento
+                =====================================
+                -->
 
               <!-- 
-                            =====================================
-                             sexo
-                            =====================================
-                            -->
+                =====================================
+                  sexo
+                =====================================
+                -->
               <div class="col-12 col-sm-6 col-md-4 ">
                 <div class="form-group">
                   <select
@@ -257,16 +302,279 @@
                 </div>
               </div>
               <!-- 
-                            =====================================
-                             END sexo
-                            =====================================
-                            -->
+            =====================================
+              END sexo
+            =====================================
+            -->
 
               <!-- 
-                            =====================================
-                             rfc
-                            =====================================
-                            -->
+            =====================================
+              estadoCivil
+            =====================================
+            -->
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="form-group">
+                  <select
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('estadoCivil')),
+                      'is-valid': vs.valid(f('estadoCivil'))
+                    }"
+                    class="form-control"
+                    formControlName="estadoCivil"
+                  >
+                    <option value="false">Soltero</option>
+                    <option value="true">Casado</option>
+                  </select>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Estado civil</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('estadoCivil')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+              =====================================
+                END estadoCivil
+              =====================================
+              -->
+
+              <!-- 
+              =====================================
+              nivelDeEstudios
+              =====================================
+              -->
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('nivelDeEstudios')),
+                      'is-valid': vs.valid(f('nivelDeEstudios'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="nivelDeEstudios"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Nivel de estudios</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('nivelDeEstudios')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+              =====================================
+              END nivelDeEstudios
+              =====================================
+              -->
+
+              <div class="col-12 col-sm-6 ">
+                <div class="form-group" d-flex align-items-center>
+                  <input
+                    (keyup.enter)="agregarHijo(inputHijo.value)"
+                    #inputHijo
+                    type="number"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    placeholder="Ingresa edad de hijo"
+                  />
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Ingresa edad de hijo y presiona enter</small
+                  >
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 ">
+                <ul class="list-group">
+                  <li class="list-group-item active">Hijos</li>
+                  <li
+                    *ngFor="let hijo of fa('hijos').controls; let i = index"
+                    class="list-group-item"
+                  >
+                    <div
+                      class="d-flex align-items-center justify-content-between"
+                    ></div>
+                    <a
+                      class="btn btn-danger btn-xs mr-3"
+                      href="javascript:void(0)"
+                      role="button"
+                      (click)="eliminarHijo(i)"
+                    >
+                      <i class="fas fa-times-circle    "></i>
+                    </a>
+                    Edad de hijo: {{ hijo.value }}
+                    <ng-container *ngIf="hijo.value > 1; else singular">
+                      años
+                    </ng-container>
+                    <ng-template #singular>
+                      año
+                    </ng-template>
+                  </li>
+                  <li
+                    *ngIf="!fa('hijos').controls?.length"
+                    class="list-group-item disabled"
+                  >
+                    Sin hijos
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <hr />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <h3>Datos de contacto</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 
+              =====================================
+               celular
+              =====================================
+              -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('celular')),
+                      'is-valid': vs.valid(f('celular'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="celular"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Celular personal</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('celular')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                =====================================
+                 END celular
+                =====================================
+                -->
+
+              <!-- 
+            =====================================
+             telCasa
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('telCasa')),
+                      'is-valid': vs.valid(f('telCasa'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="telCasa"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Telefono de casa</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('telCasa')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+              =====================================
+               END telCasa
+              =====================================
+              -->
+
+              <!-- 
+              =====================================
+               email
+              =====================================
+              -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('email')),
+                      'is-valid': vs.valid(f('email'))
+                    }"
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Correo electronico</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('email')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                  =====================================
+                   END email
+                  =====================================
+                  -->
+
+              <!-- 
+                  =====================================
+                   domicilio
+                  =====================================
+                  -->
+              <div class="col-12">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('domicilio')),
+                      'is-valid': vs.valid(f('domicilio'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="domicilio"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Domicilio completo</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('domicilio')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                  =====================================
+                   END domicilio
+                  =====================================
+                  -->
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <hr />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <h3>Documentacion</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 
+              =====================================
+                rfc
+              =====================================
+              -->
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <input
@@ -285,16 +593,16 @@
                 </div>
               </div>
               <!-- 
-                                  =====================================
-                                   END rfc
-                                  =====================================
-                                  -->
+              =====================================
+                END rfc
+              =====================================
+              -->
 
               <!-- 
-                            =====================================
-                             curp
-                            =====================================
-                            -->
+              =====================================
+                curp
+              =====================================
+              -->
               <div class="col-12 col-md-6 ">
                 <div class="form-group">
                   <input
@@ -313,16 +621,16 @@
                 </div>
               </div>
               <!-- 
-                            =====================================
-                             END curp
-                            =====================================
-                            -->
+                =====================================
+                  END curp
+                =====================================
+                -->
 
               <!-- 
-                            =====================================
-                             numeroDeCuenta
-                            =====================================
-                            -->
+                =====================================
+                  numeroDeCuenta
+                =====================================
+                -->
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-group">
                   <input
@@ -375,39 +683,6 @@
                     END numeroDeSeguridadSocial
                 =====================================
                 -->
-
-              <!-- 
-                =====================================
-                 puestoActual
-                =====================================
-                -->
-              <div *ngIf="!empleado?._id" class="col-6">
-                <div class="form-group">
-                  <input type="hidden" formControlName="puestoActual" />
-
-                  <app-data-list
-                    (ejecutarBusquedaDeItems)="buscarPuestos($event)"
-                    (elementoSeleccionado)="articuloSeleccionado($event)"
-                    (esteComponente)="puestoComponent = $event"
-                    [valid]="vs.valid(f('puestoActual'))"
-                    [invalid]="vs.invalid(f('puestoActual'))"
-                    (touched)="f('puestoActual').markAsTouched()"
-                  >
-                  </app-data-list>
-
-                  <small id="helpId" class="form-text text-muted"
-                    >Puesto actual</small
-                  >
-                  <app-validacion-inputs
-                    [campo]="f('puestoActual')"
-                  ></app-validacion-inputs>
-                </div>
-              </div>
-              <!-- 
-                =====================================
-                 END puestoActual
-                =====================================
-                -->
             </div>
 
             <div class="row">
@@ -418,101 +693,11 @@
 
             <div class="row">
               <div class="col-12">
-                <h3>Datos de contacto y emergencia</h3>
+                <h3>Contacto de emergencia</h3>
               </div>
             </div>
 
             <div class="row">
-              <!-- 
-              =====================================
-               email
-              =====================================
-              -->
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="form-group">
-                  <input
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('email')),
-                      'is-valid': vs.valid(f('email'))
-                    }"
-                    type="email"
-                    class="form-control"
-                    formControlName="email"
-                  />
-                  <small id="helpId" class="form-text text-muted"
-                    >Correo electronico</small
-                  >
-                  <app-validacion-inputs
-                    [campo]="f('email')"
-                  ></app-validacion-inputs>
-                </div>
-              </div>
-              <!-- 
-              =====================================
-               END email
-              =====================================
-              -->
-
-              <!-- 
-              =====================================
-               celular
-              =====================================
-              -->
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="form-group">
-                  <input
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('celular')),
-                      'is-valid': vs.valid(f('celular'))
-                    }"
-                    type="text"
-                    class="form-control"
-                    formControlName="celular"
-                  />
-                  <small id="helpId" class="form-text text-muted"
-                    >Celular personal</small
-                  >
-                  <app-validacion-inputs
-                    [campo]="f('celular')"
-                  ></app-validacion-inputs>
-                </div>
-              </div>
-              <!-- 
-              =====================================
-               END celular
-              =====================================
-              -->
-
-              <!-- 
-            =====================================
-             telCasa
-            =====================================
-            -->
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="form-group">
-                  <input
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('telCasa')),
-                      'is-valid': vs.valid(f('telCasa'))
-                    }"
-                    type="text"
-                    class="form-control"
-                    formControlName="telCasa"
-                  />
-                  <small id="helpId" class="form-text text-muted"
-                    >Telefono de casa</small
-                  >
-                  <app-validacion-inputs
-                    [campo]="f('telCasa')"
-                  ></app-validacion-inputs>
-                </div>
-              </div>
-              <!-- 
-            =====================================
-             END telCasa
-            =====================================
-            -->
-
               <!-- 
             =====================================
              nombreEmergencia

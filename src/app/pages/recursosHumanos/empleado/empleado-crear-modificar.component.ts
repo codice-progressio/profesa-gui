@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 import { Empleado } from 'src/app/models/recursosHumanos/empleados/empleado.model'
 import {
   FormGroup,
@@ -18,6 +26,7 @@ import { PuestoService } from '../../../services/recursosHumanos/puesto.service'
 import { Dato } from '../../../shared/data-list/dato.model'
 import { CargaDeImagenesComponent } from '../../../shared/carga-de-imagenes/carga-de-imagenes.component'
 import { VisorDeImagenesService } from '../../../services/visorDeImagenes/visor-de-imagenes.service'
+import { FormArray } from '@angular/forms'
 
 @Component({
   selector: 'app-empleado-crear-modificar',
@@ -141,7 +150,6 @@ export class EmpleadoCrearModificarComponent implements OnInit {
           this.vs.numberValidator,
           Validators.maxLength(10),
           Validators.minLength(10)
-        
         ]
       ],
       telEmergencia: [
@@ -153,12 +161,35 @@ export class EmpleadoCrearModificarComponent implements OnInit {
           Validators.minLength(10)
         ]
       ],
-      nombreEmergencia: [empleado.nombreEmergencia, [Validators.required]]
+      nombreEmergencia: [empleado.nombreEmergencia, [Validators.required]],
+
+      estadoCivil: [empleado.estadoCivil, [Validators.required]],
+      hijos: this.fb.array(empleado.hijos.map(x => this.fb.control(x))),
+      nivelDeEstudios: [empleado.nivelDeEstudios, null],
+      domicilio: [
+        empleado.domicilio,
+        [Validators.required, Validators.minLength(10)]
+      ]
     })
   }
 
   f(s: string): AbstractControl {
     return this.formulario.get(s)
+  }
+
+  fa(s: string): FormArray {
+    return <FormArray>this.formulario.get(s)
+  }
+  @ViewChild('inputHijo', { static: false }) inputHijo: ElementRef
+
+  agregarHijo(valor: number) {
+    this.fa('hijos').push(this.fb.control(valor))
+    this.inputHijo.nativeElement.value = ''
+    this.inputHijo.nativeElement.focus()
+  }
+
+  eliminarHijo(i: number) {
+    this.fa('hijos').removeAt(i)
   }
 
   hayPuestoActual(puesto: Puesto) {
@@ -189,8 +220,8 @@ export class EmpleadoCrearModificarComponent implements OnInit {
       this.guardar.emit()
     }
 
+    modelo.hijos = modelo.hijos.map(x => x * 1)
     if (this.empleado._id) modelo._id = this.empleado._id
-
     this._empleadoService.guardarOModificarConFoto(modelo).subscribe(operacion)
   }
 
