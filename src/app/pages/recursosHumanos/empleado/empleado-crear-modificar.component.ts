@@ -165,7 +165,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
       estadoCivil: [empleado.estadoCivil, [Validators.required]],
       hijos: this.fb.array(empleado.hijos.map(x => this.fb.control(x))),
-      nivelDeEstudios: [empleado.nivelDeEstudios, null],
+      nivelDeEstudios: [empleado.nivelDeEstudios, [Validators.required]],
       domicilio: [
         empleado.domicilio,
         [Validators.required, Validators.minLength(10)]
@@ -269,6 +269,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
   }
 
   mostrarImagen(i: string) {
+    console.log(`i`,i)
     this._visorDeImagenesService.mostrarImagen(i)
   }
 

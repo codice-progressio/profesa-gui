@@ -195,4 +195,36 @@ export class ValidacionesService {
 
     return error
   }
+
+  fechaMenorQue(
+    campoFecha1: string,
+    campoFecha2: string,
+    campoValidador: {} = {
+      general: {
+        mensaje: 'Se han encontrado fechas invalidas'
+      }
+    }
+  ): ValidatorFn {
+    return (c: AbstractControl): { [key: string]: boolean } | null => {
+      const date1 = c.get(campoFecha1).value
+      const date2 = c.get(campoFecha2).value
+      if (date1 !== null && date2 !== null && date1 > date2) {
+        c.get(campoFecha1).setErrors({
+          general: {
+            mensaje: 'Esta fecha tiene que ser menor que la de finalizacion'
+          }
+        })
+        c.get(campoFecha2).setErrors({
+          general: {
+            mensaje: 'Esta fecha tiene que ser mayor que la de inicio'
+          }
+        })
+        return campoValidador
+      }
+
+      c.get(campoFecha1).updateValueAndValidity({onlySelf: true})
+      c.get(campoFecha2).updateValueAndValidity({onlySelf: true})
+      return null
+    }
+  }
 }

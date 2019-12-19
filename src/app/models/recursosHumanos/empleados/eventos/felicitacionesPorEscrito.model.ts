@@ -1,6 +1,6 @@
 import { Deserializable } from "../../../deserealizable.model"
 import { Puesto } from "../../puestos/puesto.model"
-export class FelicitacionesPorEscrito implements Deserializable {
+export class FelicitacionPorEscrito implements Deserializable {
   constructor(public fecha?: Date, public documento?: string) {}
 
   deserialize(input: this): this {

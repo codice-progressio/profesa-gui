@@ -1,8 +1,8 @@
-import { HistorialDeEventos } from "./eventos/historialDeEventos.model"
-import { EmpleadoDocumentos } from "./documentos/empleadoDocumentos.model"
-import { EmpleadoAsistencia } from "./asistencias/empleadoAsistencia.model"
-import { Deserializable } from "../../deserealizable.model"
-import { Puesto } from "../puestos/puesto.model"
+import { HistorialDeEventos } from './eventos/historialDeEventos.model'
+import { EmpleadoDocumentos } from './documentos/empleadoDocumentos.model'
+import { EmpleadoAsistencia } from './asistencias/empleadoAsistencia.model'
+import { Deserializable } from '../../deserealizable.model'
+import { Puesto } from '../puestos/puesto.model'
 
 export class Empleado implements Deserializable {
   constructor(
@@ -24,23 +24,21 @@ export class Empleado implements Deserializable {
     //Relacionado a eventosRH. estatusLaboral.
     public activo?: boolean,
     //El puesto esta dentro de los eventos.
-    public eventos?: HistorialDeEventos,
+    public eventos: HistorialDeEventos[] = [],
     public documentos?: EmpleadoDocumentos,
 
     public asistencia?: EmpleadoAsistencia,
 
-    public email?: String,
-    public celular?: String,
-    public telCasa?: String,
-    public telEmergencia?: String,
-    public nombreEmergencia?: String,
+    public email: string ='',
+    public celular: string ='',
+    public telCasa: string ='',
+    public telEmergencia: string ='',
+    public nombreEmergencia: string ='',
 
     public estadoCivil?: boolean,
     public hijos: number[] = [],
     public nivelDeEstudios?: string,
-    public domicilio?: string,
-
-
+    public domicilio?: string
   ) {}
 
   deserialize(input: this): this {
@@ -52,7 +50,10 @@ export class Empleado implements Deserializable {
       this.puestoActual = new Puesto().deserialize(input.puestoActual)
     }
 
-    this.eventos = new HistorialDeEventos().deserialize(input.eventos)
+    this.eventos = input.eventos
+      ? input.eventos.map(eve => new HistorialDeEventos().deserialize(eve))
+      : []
+
     this.documentos = new EmpleadoDocumentos().deserialize(input.documentos)
     this.asistencia = new EmpleadoAsistencia().deserialize(input.asistencia)
 
@@ -64,16 +65,14 @@ export class Empleado implements Deserializable {
     return `${this.nombres} ${this.apellidos}`
   }
 
-
-  edad(){
-    let today = new Date();
-    let birthDate = new Date(this.fechaDeNacimiento);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    let m = today.getMonth() - birthDate.getMonth();
+  edad() {
+    let today = new Date()
+    let birthDate = new Date(this.fechaDeNacimiento)
+    let age = today.getFullYear() - birthDate.getFullYear()
+    let m = today.getMonth() - birthDate.getMonth()
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
+      age--
     }
-    return age;
+    return age
   }
-
 }

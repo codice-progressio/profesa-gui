@@ -1448,8 +1448,7 @@ END reviso
   <hr />
 
   <button
-    (click)="submit(formulario.value, formulario.valid, $event)"
-    [disabled]="formulario.invalid"
+    (click)="submit(formulario.value, formulario.invalid, $event)"
     [ngClass]="{ active: !formulario.invalid }"
     class="text-white btn btn-success mr-3"
     role="button"

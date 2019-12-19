@@ -1,0 +1,71 @@
+<div *ngIf="evento" class="profiletimeline">
+
+  <app-empleado-evento-curso
+    *ngIf="evento.curso"
+    [fecha]="fecha"
+    [curso]="evento.curso"
+  >
+  </app-empleado-evento-curso>
+
+  <app-empleado-evento-estatus-laboral
+    *ngIf="evento.estatusLaboral"
+    [fecha]="fecha"
+    [estatusLaboral]="evento.estatusLaboral"
+  >
+  </app-empleado-evento-estatus-laboral>
+
+  <app-empleado-evento-bono
+    *ngIf="evento.bono"
+    [fecha]="fecha"
+    [bono]="evento.bono"
+  >
+  </app-empleado-evento-bono>
+
+  <app-empleado-evento-permiso
+    *ngIf="evento.permiso"
+    [fecha]="fecha"
+    [permiso]="evento.permiso"
+    (autorizacion)=autorizar($event)
+  ></app-empleado-evento-permiso>
+
+  <app-empleado-evento-castigo
+    *ngIf="evento.castigo"
+    [fecha]="fecha"
+    [castigo]="evento.castigo"
+  ></app-empleado-evento-castigo>
+
+  <app-empleado-evento-amonestaciones-por-escrito
+    *ngIf="evento.amonestacionPorEscrito"
+    [fecha]="fecha"
+    [amonestacionPorEscrito]="evento.amonestacionPorEscrito"
+  ></app-empleado-evento-amonestaciones-por-escrito>
+
+  <app-empleado-evento-felicitaciones-por-escrito
+    *ngIf="evento.felicitacionPorEscrito"
+    [fecha]="fecha"
+    [felicitacionPorEscrito]="evento.felicitacionPorEscrito"
+  ></app-empleado-evento-felicitaciones-por-escrito>
+
+  <app-empleado-evento-puesto
+    *ngIf="evento.puesto"
+    [fecha]="fecha"
+    [puesto]="evento.puesto"
+  >
+  </app-empleado-evento-puesto>
+
+  <app-empleado-evento-cambio-de-sueldo
+    *ngIf="evento.cambiosDeSueldo"
+    [fecha]="fecha"
+    [cambiosDeSueldo]="evento.cambiosDeSueldo"
+  >
+  </app-empleado-evento-cambio-de-sueldo>
+
+  <app-empleado-evento-vacaciones
+    *ngIf="evento.vacaciones"
+    [fecha]="fecha"
+    [vacaciones]="evento.vacaciones"
+  >
+  </app-empleado-evento-vacaciones>
+
+  <ng-content></ng-content>
+</div>

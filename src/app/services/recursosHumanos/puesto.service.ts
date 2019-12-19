@@ -10,6 +10,9 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
 import { URL_SERVICIOS } from 'src/app/config/config'
 import { Observable, pipe, throwError } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
+import { uploadProgress } from '../../utils/subidaDeImagenes/uploadProgess'
+import { toResponseBody } from '../../utils/subidaDeImagenes/toResponseBody'
+import { toFormData } from '../../utils/subidaDeImagenes/toFormData'
 
 @Injectable({
   providedIn: 'root'
@@ -63,55 +66,49 @@ export class PuestoService extends CRUD<
     )
   }
 
-  private pTemp: Puesto[]
-  autoPopulate(puestos: Puesto[]) {
-    {
-      //Extraemos todos los ids que contengan los datos
-      // de reportaA y personalACargo
-      let ids: Set<string> = this.obtenerIds(puestos)
-
-      this.findMultiple(Array.from(ids)).subscribe(pRemplazos =>
-        this.operacionesDeRemplazo(pRemplazos, puestos)
-      )
-    }
-  }
-
-  private operacionesDeRemplazo(pRemplazos, puestos) {
-    puestos.forEach(puesto => {
-      if (puesto.reportaA)
-        puesto.reportaA = this.filtrarPuesto(pRemplazos, puesto.reportaA._id)
-
-      let operacion = x => this.filtrarPuesto(pRemplazos, x._id)
-      puesto.personalACargo = puesto.personalACargo.map(x => operacion(x))
-      puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas = puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.map(
-        x => operacion(x)
-      )
-    })
-  }
-
-  private obtenerIds(puestos: Puesto[]): Set<string> {
-    let ids = new Set<string>()
-    puestos.forEach(puesto => {
-      if (puesto.reportaA) ids.add(puesto.reportaA._id)
-
-      this.obtenerIds_arreglos(puesto.personalACargo, ids)
-      this.obtenerIds_arreglos(
-        puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas,
-        ids
-      )
-    })
-
-    return ids
-  }
-
-  private obtenerIds_arreglos(arreglo: Puesto[], ids: Set<string>) {
-    if (arreglo.length > 0) {
-      arreglo.map(x => x._id).forEach(x => ids.add(x))
-    }
-  }
-
   filtrarPuesto(remplazos: Puesto[], id: string) {
     let filtrado = remplazos.find(p => p._id === id)
     return filtrado
+  }
+
+  guardarConOrganigrama(puesto: Puesto) {
+    const a = this._preLoaderService.loading(
+      'Guardando puesto con su organigrama'
+    )
+
+    console.log(`puesto.organigrama`,puesto.organigrama)
+    const url = `${this.base}/`
+    return this.http.post(url, toFormData(puesto), {
+      reportProgress: true,
+      observe: 'events'
+    } ).pipe(
+      uploadProgress(progress => {
+        this._preLoaderService.progreso(a, progress, 'Cargando organigrama')
+      }),
+      toResponseBody((respuesta, nada, a) => {
+        this._msjService.ok_(respuesta, null, a)
+        return respuesta.puesto
+      }, a),
+      catchError(err => this.err(err))
+    )
+  }
+  modificarConOrganigrama(puesto: Puesto) {
+    const a = this._preLoaderService.loading(
+      'Modificando puesto con su organigrama'
+    )
+    const url = `${this.base}/`
+    return this.http.put(url, toFormData(puesto),  {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      uploadProgress(p => {
+        this._preLoaderService.progreso(a, p, 'Cargando organigrama')
+      }),
+      toResponseBody((res, nada, a) => {
+        this._msjService.ok_(res, null, a)
+        return res.puesto
+      }, a),
+      catchError(err => this.err(err))
+    )
   }
 }

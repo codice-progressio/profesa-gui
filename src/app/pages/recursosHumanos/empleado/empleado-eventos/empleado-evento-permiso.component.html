@@ -1,0 +1,53 @@
+<app-empleado-evento-plantilla
+  [icono]="icono"
+  [mensaje]="mensaje"
+  [fecha]="fecha"
+>
+  <h3>{{ motivo }}</h3>
+  <div class="span bold-text">
+    <span *ngIf="permiso.conGoceDeSueldo">Con goce de sueldo</span>
+
+    <span *ngIf="permiso.sinGoceDeSueldo">Sin goce de sueldo</span>
+  </div>
+  <br />
+
+  Desde el {{ permiso.fechaDeInicio | fecha: 'LL' }} hasta el
+  {{ permiso.fechaDeFinalizacion | fecha: 'LL' }}
+  <br />
+
+  <h3 class="text-muted">
+    {{ otroMotivo }}
+  </h3>
+
+  <br />
+
+  <span *ngIf="permiso.autorizacionSupervisor">
+    <i class="fas fa-check-circle  text-success  "></i> Autorizado por
+    supervisor
+  </span>
+  <br />
+  <span *ngIf="permiso.autorizacionRH">
+    <i class="fas fa-check-circle  text-success  "></i>
+    Autorizado RH</span
+  >
+  <br />
+  <br />
+
+  <p>{{ permiso.comentario }}</p>
+  <ng-container *ngIf="!permiso.autorizacionRH">
+    <hr />
+
+    <b class="text-muted">Se requiere una accion: </b>
+    <a
+      (click)="autorizar(permiso)"
+      class="btn btn-success"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-check    "></i>
+
+      Dar autorizacion
+    </a>
+  </ng-container>
+
+</app-empleado-evento-plantilla>

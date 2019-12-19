@@ -5,7 +5,11 @@
         <div class="d-flex justify-content-between align-items-center">
           <h1 class=""><strong>Puestos</strong> existentes</h1>
 
-          <div class="d-flex  align-items-center ">
+          <div class="d-flex  align-items-center mr-3">
+            <a (click)="cargarPuestos()" class="btn btn-primary" role="button">
+              <i class="fas fa-location-arrow    "></i>
+            </a>
+
             <div class="mr-3">
               <app-buscador-paciente
                 [cbObservable]="cbObserbable"

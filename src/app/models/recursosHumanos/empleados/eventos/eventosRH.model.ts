@@ -2,7 +2,7 @@ import { Curso } from "../../cursos/curso.model"
 import { Vacaciones } from "./vacaciones.model"
 import { CambiosDeSueldo } from "./cambiosDeSueldo.model"
 import { EventosPuesto } from "./evento_puesto.model"
-import { FelicitacionesPorEscrito } from "./felicitacionesPorEscrito.model"
+import { FelicitacionPorEscrito as FelicitacionPorEscrito } from "./felicitacionesPorEscrito.model"
 import { AmonestacionPorEscrito } from "./amonestacionPorEscrito.model"
 import { Permiso } from "./permiso.model"
 import { Bono } from "./bono.model"
@@ -17,7 +17,7 @@ export class EventosRH implements Deserializable {
     public cambiosDeSueldo?: CambiosDeSueldo,
     public puesto?: EventosPuesto,
     // Una url a un documento pdf
-    public felicitacionPorEscrito?: FelicitacionesPorEscrito,
+    public felicitacionPorEscrito?: FelicitacionPorEscrito,
     // Una url a un documento pdf
     public amonestacionPorEscrito?: AmonestacionPorEscrito,
     public castigo?: Castigo,
@@ -51,7 +51,7 @@ export class EventosRH implements Deserializable {
   private deserialize2(input: this) {
     // Una url a un documento pdf
     this.felicitacionPorEscrito = input.felicitacionPorEscrito
-      ? new FelicitacionesPorEscrito().deserialize(input.felicitacionPorEscrito)
+      ? new FelicitacionPorEscrito().deserialize(input.felicitacionPorEscrito)
       : null
     // Una url a un documento pdf
     this.amonestacionPorEscrito = input.amonestacionPorEscrito

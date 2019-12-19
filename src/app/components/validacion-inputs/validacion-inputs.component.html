@@ -7,7 +7,7 @@
     <hr />
   </ng-container>
 
-  <!-- {{j.stringify(campo?.errors)}} -->
+  <pre *ngIf="debug">{{ campo?.errors | json }}</pre>
 </ng-container>
 
 <ng-container *ngIf="especial">

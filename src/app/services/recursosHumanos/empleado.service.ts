@@ -7,15 +7,16 @@ import { UtilidadesService } from '../utilidades/utilidades.service'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import { URL_SERVICIOS } from 'src/app/config/config'
-import { Observable, pipe, throwError } from 'rxjs'
-import {
-  HttpClient,
-  HttpEvent,
-  HttpEventType,
-  HttpResponse
-} from '@angular/common/http'
+import { Observable, throwError } from 'rxjs'
+import { HttpClient } from '@angular/common/http'
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service'
-import { filter, map, tap, catchError } from 'rxjs/operators'
+import { map, catchError } from 'rxjs/operators'
+import { Permiso } from 'src/app/models/recursosHumanos/empleados/eventos/permiso.model'
+import { Bono } from 'src/app/models/recursosHumanos/empleados/eventos/bono.model'
+import { EstatusLaboral } from 'src/app/models/recursosHumanos/empleados/eventos/estatusLaboral.model'
+import { toFormData } from 'src/app/utils/subidaDeImagenes/toFormData'
+import { uploadProgress } from 'src/app/utils/subidaDeImagenes/uploadProgess'
+import { toResponseBody } from 'src/app/utils/subidaDeImagenes/toResponseBody'
 
 @Injectable({
   providedIn: 'root'
@@ -91,45 +92,166 @@ export class EmpleadoService extends CRUD<
         })
       )
   }
-}
 
-// ).subscribe(response => {
-//   this.progress = 0;
-//   this.signup.reset();
-//   // do something with the response
-// });
-export function toFormData<T>(formValue: T) {
-  const formData = new FormData()
-
-  for (const key of Object.keys(formValue)) {
-    const value = formValue[key]
-
-    if (Array.isArray(value)) {
-      value.forEach(valor => {
-        formData.append(key, valor)
-      })
-    } else {
-      formData.append(key, value)
-    }
+  mapFun(resp: any, a) {
+    this._msjService.ok_(resp, null, a)
+    return true
   }
 
-  return formData
-}
+  errFun(err) {
+    this._msjService.err(err)
+    return throwError(err)
+  }
+  registroDeEventoGenerico(url, a, datos): Observable<boolean> {
+    return this.http.put(url, datos).pipe(
+      map((resp: any) => this.mapFun(resp, a)),
+      catchError(err => this.errFun(err))
+    )
+  }
 
-export function toResponseBody<T>(cbFinalizar, a) {
-  return pipe(
-    filter((event: HttpEvent<T>) => event.type === HttpEventType.Response),
-    map((res: HttpResponse<T>) => {
-      cbFinalizar(res.body, null, a)
-      res.body
+  preloaderEvento = msj => this._preLoaderService.loading('EVENTO: ' + msj)
+  urlEvento = url => `${this.base}/evento/${url}`
+
+  registrarCurso(
+    _id: string,
+    fecha: Date,
+    idCurso: string
+  ): Observable<boolean> {
+    const a = this.preloaderEvento('Agregando curso a empleado')
+    const url = this.urlEvento('curso')
+    return this.registroDeEventoGenerico(url, a, { _id: _id, idCurso, fecha })
+  }
+
+  registrarVacaciones(
+    _id: string,
+    fecha: Date = new Date(),
+    desde: Date,
+    hasta: Date
+  ) {
+    const a = this.preloaderEvento('Agregando vacaciones a empleado')
+    const url = this.urlEvento('vacaciones')
+    return this.registroDeEventoGenerico(url, a, {
+      _id,
+      fecha,
+      desde,
+      hasta
     })
-  )
-}
+  }
 
-export function uploadProgress<T>(cb: (progress: number) => void) {
-  return tap((event: HttpEvent<T>) => {
-    if (event.type === HttpEventType.UploadProgress) {
-      cb(Math.round((100 * event.loaded) / event.total))
-    }
-  })
+  registrarSueldo(_id: string, nuevoSueldo: number, observaciones: string) {
+    const a = this.preloaderEvento('Agregando aumento al empleado')
+    const url = this.urlEvento('sueldo')
+    return this.registroDeEventoGenerico(url, a, {
+      _id,
+      nuevoSueldo,
+      observaciones
+    })
+  }
+
+  registrarPuesto(_id: string, _idPuestoNuevo: number, observaciones: string) {
+    const a = this.preloaderEvento('Aplicando cambio de puesto')
+    const url = this.urlEvento('puesto')
+    return this.registroDeEventoGenerico(url, a, {
+      _id,
+      _idPuestoNuevo,
+      observaciones
+    })
+  }
+
+  registrarFelicitacionPorEscrito(_id: string, documento: File, fecha: Date) {
+    const a = this.preloaderEvento('Registrando felicitacion por escrito')
+    const url = this.urlEvento('felicitacion')
+
+    return this.http
+      .put(url, toFormData({ _id, documento, fecha }), {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        uploadProgress(progress =>
+          this._preLoaderService.progreso(
+            a,
+            progress,
+            'Cargando documento felicitacion del empleado'
+          )
+        ),
+        toResponseBody((respuesta, nada, a) => {
+          this._msjService.ok_(respuesta, nada, a)
+        }, a),
+        catchError(err => this.errFun(err))
+      )
+  }
+
+  registrarAmonestacionPorEscrito(_id: string, documento: File, fecha: Date) {
+    const a = this.preloaderEvento('Registrando monestacion por escrito')
+    const url = this.urlEvento('amonestacion')
+
+    return this.http
+      .put(url, toFormData({ _id, documento, fecha }), {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        uploadProgress(progress =>
+          this._preLoaderService.progreso(
+            a,
+            progress,
+            'Cargando documento amonestacion del empleado'
+          )
+        ),
+        toResponseBody((respuesta, nada, a) => {
+          this._msjService.ok_(respuesta, nada, a)
+        }, a),
+        catchError(err => this.errFun(err))
+      )
+  }
+
+  registrarCastigo(_id: string, acta: File, fecha: Date) {
+    const a = this.preloaderEvento('Registrando castigo por escrito')
+    const url = this.urlEvento('castigo')
+    return this.http
+      .put(url, toFormData({ _id, acta, fecha }), {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        uploadProgress(progress =>
+          this._preLoaderService.progreso(
+            a,
+            progress,
+            'Cargando documento castigo del empleado'
+          )
+        ),
+        toResponseBody((respuesta, nada, a) => {
+          this._msjService.ok_(respuesta, nada, a)
+        }, a),
+        catchError(err => this.errFun(err))
+      )
+  }
+
+  registrarPermiso(_id: string, permiso: Permiso) {
+    const a = this.preloaderEvento('Registrando permiso')
+    const url = this.urlEvento('permiso')
+
+    permiso['_id'] = _id
+
+    return this.registroDeEventoGenerico(url, a, permiso)
+  }
+
+  registrarBono(_id: string, bono: Bono) {
+    const a = this.preloaderEvento('Aplicando cambio de puesto')
+    const url = this.urlEvento('puesto')
+
+    bono['_id'] = _id
+
+    return this.registroDeEventoGenerico(url, a, bono)
+  }
+  registrarEstatusLaboral(_id: string, datos: EstatusLaboral) {
+    const a = this.preloaderEvento('Aplicando cambio de puesto')
+    const url = this.urlEvento('puesto')
+
+    datos['_id'] = _id
+
+    return this.registroDeEventoGenerico(url, a, datos)
+  }
 }

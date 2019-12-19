@@ -45,7 +45,7 @@ export class PuestosComponent implements OnInit {
       .servicio.todo()
       .subscribe(puestos => {
         this.puestos = puestos
-        this._puestoService.autoPopulate(this.puestos)
+        // this._puestoService.autoPopulate(this.puestos)
       })
   }
 

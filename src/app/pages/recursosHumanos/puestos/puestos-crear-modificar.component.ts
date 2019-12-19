@@ -6,40 +6,40 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef
-} from "@angular/core"
-import { Puesto } from "src/app/models/recursosHumanos/puestos/puesto.model"
+} from '@angular/core'
+import { Puesto } from 'src/app/models/recursosHumanos/puestos/puesto.model'
 import {
   FormGroup,
   FormBuilder,
   Validators,
   AbstractControl,
   FormArray
-} from "@angular/forms"
-import { ValidacionesService } from "src/app/services/utilidades/validaciones.service"
-import { PuestoService } from "src/app/services/recursosHumanos/puesto.service"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { Puesto_RelacionClienteProveedorInternos } from "src/app/models/recursosHumanos/puestos/puesto_relacionClienteProveedorInternos.model"
-import { FuncionesEspecificasDelPuesto } from "../../../models/recursosHumanos/puestos/funcionesEspecificasDelPuesto.model"
-import { Puesto_RelacionClienteProveedorExternos } from "../../../models/recursosHumanos/puestos/puesto_relacionClienteProveedorIExternos.model"
-import { Departamento } from "../../../models/departamento.models"
-import { DepartamentoService } from "../../../services/departamento/departamento.service"
-import { DataListComponent } from "src/app/shared/data-list/data-list.component"
-import { Empleado } from "../../../models/recursosHumanos/empleados/empleado.model"
-import { Dato } from "src/app/shared/data-list/dato.model"
-import { EmpleadoService } from "../../../services/recursosHumanos/empleado.service"
-import { CursoService } from "../../../services/recursosHumanos/curso.service"
-import { Curso } from "../../../models/recursosHumanos/cursos/curso.model"
-import { VisorDeImagenesService } from "../../../services/visorDeImagenes/visor-de-imagenes.service"
-import { CargaDeImagenesTransporte } from "../../../shared/carga-de-imagenes/carga-de-imagenes-transporte"
-import { SubirArchivoService } from "src/app/services/subir-archivo/subir-archivo.service"
-import { ImagenPipe } from "src/app/pipes/imagen.pipe"
-import { CargaDeImagenesComponent } from "../../../shared/carga-de-imagenes/carga-de-imagenes.component"
-import { Puesto_MotivoDeCambio } from "../../../models/recursosHumanos/puestos/puesto_motivoDeCambio.model"
-import { UsuarioService } from "../../../services/usuario/usuario.service"
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { PuestoService } from 'src/app/services/recursosHumanos/puesto.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { Puesto_RelacionClienteProveedorInternos } from 'src/app/models/recursosHumanos/puestos/puesto_relacionClienteProveedorInternos.model'
+import { FuncionesEspecificasDelPuesto } from '../../../models/recursosHumanos/puestos/funcionesEspecificasDelPuesto.model'
+import { Puesto_RelacionClienteProveedorExternos } from '../../../models/recursosHumanos/puestos/puesto_relacionClienteProveedorIExternos.model'
+import { Departamento } from '../../../models/departamento.models'
+import { DepartamentoService } from '../../../services/departamento/departamento.service'
+import { DataListComponent } from 'src/app/shared/data-list/data-list.component'
+import { Empleado } from '../../../models/recursosHumanos/empleados/empleado.model'
+import { Dato } from 'src/app/shared/data-list/dato.model'
+import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
+import { CursoService } from '../../../services/recursosHumanos/curso.service'
+import { Curso } from '../../../models/recursosHumanos/cursos/curso.model'
+import { VisorDeImagenesService } from '../../../services/visorDeImagenes/visor-de-imagenes.service'
+import { CargaDeImagenesTransporte } from '../../../shared/carga-de-imagenes/carga-de-imagenes-transporte'
+import { SubirArchivoService } from 'src/app/services/subir-archivo/subir-archivo.service'
+import { ImagenPipe } from 'src/app/pipes/imagen.pipe'
+import { CargaDeImagenesComponent } from '../../../shared/carga-de-imagenes/carga-de-imagenes.component'
+import { Puesto_MotivoDeCambio } from '../../../models/recursosHumanos/puestos/puesto_motivoDeCambio.model'
+import { UsuarioService } from '../../../services/usuario/usuario.service'
 
 @Component({
-  selector: "app-puestos-crear-modificar",
-  templateUrl: "./puestos-crear-modificar.component.html",
+  selector: 'app-puestos-crear-modificar',
+  templateUrl: './puestos-crear-modificar.component.html',
   styles: []
 })
 export class PuestosCrearModificarComponent implements OnInit {
@@ -68,8 +68,8 @@ export class PuestosCrearModificarComponent implements OnInit {
   ngOnInit() {
     this.esteComponente.emit(this)
     this._departamentoService
-      .todoAbstracto(0, 100, Departamento, "Obteniendo departamentos")
-      .subscribe((departamentos) => (this.departamentos = departamentos))
+      .todoAbstracto(0, 100, Departamento, 'Obteniendo departamentos')
+      .subscribe(departamentos => (this.departamentos = departamentos))
     this.crearFormulario()
   }
 
@@ -97,30 +97,30 @@ export class PuestosCrearModificarComponent implements OnInit {
       )
     }
 
-    let cur = this.puesto.cursosRequeridos.map((x) => {
+    let cur = this.puesto.cursosRequeridos.map(x => {
       this.fb.control(x)
     })
     this.cursosSeleccionados = this.puesto.cursosRequeridos
-    this.formulario.controls["cursosRequeridos"] = this.fb.array(cur)
+    this.formulario.controls['cursosRequeridos'] = this.fb.array(cur)
 
-    let pac = this.puesto.personalACargo.map((x) => this.fb.control(x))
+    let pac = this.puesto.personalACargo.map(x => this.fb.control(x))
     this.personalACargo = this.puesto.personalACargo
-    this.formulario.controls["personalACargo"] = this.fb.array(pac)
+    this.formulario.controls['personalACargo'] = this.fb.array(pac)
 
     this.conocimientos = new Set(this.puesto.perfilDelPuesto.conocimientos)
-    this.generarStringArrayFBDesdeSet(this.conocimientos, "conocimientos")
+    this.generarStringArrayFBDesdeSet(this.conocimientos, 'conocimientos')
 
     this.habilidades = new Set(this.puesto.perfilDelPuesto.habilidades)
-    this.generarStringArrayFBDesdeSet(this.habilidades, "habilidades")
+    this.generarStringArrayFBDesdeSet(this.habilidades, 'habilidades')
 
     this.aptitudes = new Set(this.puesto.perfilDelPuesto.aptitudes)
-    this.generarStringArrayFBDesdeSet(this.habilidades, "aptitudes")
+    this.generarStringArrayFBDesdeSet(this.habilidades, 'aptitudes')
   }
   private asignar2() {
-    this.formulario.controls["funcionesEspecificasDelPuesto"] = this.fb.array(
+    this.formulario.controls['funcionesEspecificasDelPuesto'] = this.fb.array(
       []
     )
-    this.puesto.funcionesEspecificasDelPuesto.forEach((funciones) => {
+    this.puesto.funcionesEspecificasDelPuesto.forEach(funciones => {
       let f = this.crearGrupo_FuncionesEspecificasDelPuesto(funciones)
       this.funcionesEspecificasDelPuesto_FB.push(f)
     })
@@ -128,29 +128,29 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.indicesDeEfectividadSet = new Set(this.puesto.indicesDeEfectividad)
     this.generarStringArrayFBDesdeSet(
       this.indicesDeEfectividadSet,
-      "indicesDeEfectividad"
+      'indicesDeEfectividad'
     )
   }
 
   private asignar3() {
     let elp = this.puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.map(
-      (x) => this.fb.control(x)
+      x => this.fb.control(x)
     )
 
     this.formulario.controls[
-      "elPuestoPuedeDesarrollarseEnLasSiguientesAreas"
+      'elPuestoPuedeDesarrollarseEnLasSiguientesAreas'
     ] = this.fb.control(elp)
 
     this.elPuestoPuedeDesarrollarseEnLasSiguientesAreas = this.puesto.elPuestoPuedeDesarrollarseEnLasSiguientesAreas
 
-    this.formulario.controls["internos"] = this.fb.array([])
-    this.puesto.relacionClienteProveedor.internos.forEach((int) => {
+    this.formulario.controls['internos'] = this.fb.array([])
+    this.puesto.relacionClienteProveedor.internos.forEach(int => {
       let f = this.crearGrupo_relacionClienteProveedor_internos(int)
       this.internos_FB.push(f)
     })
 
-    this.formulario.controls["externos"] = this.fb.array([])
-    this.puesto.relacionClienteProveedor.externos.forEach((ext) => {
+    this.formulario.controls['externos'] = this.fb.array([])
+    this.puesto.relacionClienteProveedor.externos.forEach(ext => {
       let f = this.crearGrupo_relacionClienteProveedor_externos(ext)
       this.externos_FB.push(f)
     })
@@ -176,7 +176,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.puesto = null
     this.crearFormulario()
     this.limpiarDespuesDeGuardarOModificar()
-    this.motivoDeCambio_FB.setValue("Creacion del puesto")
+    this.motivoDeCambio_FB.setValue('Creacion del puesto')
   }
 
   modificar(puesto: Puesto) {
@@ -184,7 +184,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.puesto = puesto
     this.crearFormulario()
     this.cargarDatos()
-    this.motivoDeCambio_FB.setValue("")
+    this.motivoDeCambio_FB.setValue('')
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
   }
@@ -197,11 +197,11 @@ export class PuestosCrearModificarComponent implements OnInit {
           [Validators.required, this.vs.numberValidator, Validators.min(0)]
         ],
         cursosRequeridos: this.fb.array([]),
-        puesto: ["", [Validators.required]],
-        departamento: ["", Validators.required],
+        puesto: ['', [Validators.required]],
+        departamento: ['', Validators.required],
         reportaA: null,
 
-        misionDelPuesto: ["", [Validators.required]],
+        misionDelPuesto: ['', [Validators.required]],
         personalACargo: this.fb.array([]),
 
         conocimientos: this.fb.array([]),
@@ -222,16 +222,16 @@ export class PuestosCrearModificarComponent implements OnInit {
         indicesDeEfectividad: this.fb.array([]),
         elPuestoPuedeDesarrollarseEnLasSiguientesAreas: this.fb.array([]),
 
-        desarrollo: ["", [Validators.required]],
-        reviso: ["", [Validators.required]],
-        aprobo: ["", [Validators.required]],
+        desarrollo: [null, null],
+        reviso: [null, null],
+        aprobo: [null, null],
 
         sueldoBase: [
-          "",
+          '',
           [Validators.required, this.vs.numberValidator, Validators.min(1)]
         ],
         sueldoMaximo: [
-          "",
+          '',
           [Validators.required, this.vs.numberValidator, Validators.min(1)]
         ],
         numeroDeExtencion: [
@@ -243,7 +243,7 @@ export class PuestosCrearModificarComponent implements OnInit {
             Validators.max(999)
           ]
         ],
-        motivoDeCambio: ["Creacion del documento", [Validators.required]]
+        motivoDeCambio: ['Creacion del documento', [Validators.required]]
       },
       { validator: this.validarSueldos }
     )
@@ -274,10 +274,10 @@ export class PuestosCrearModificarComponent implements OnInit {
   }
 
   private validarSueldos(group: FormGroup) {
-    let sueldoBaseFB = group.get("sueldoBase")
-    let sueldoMaximoFB = group.get("sueldoMaximo")
+    let sueldoBaseFB = group.get('sueldoBase')
+    let sueldoMaximoFB = group.get('sueldoMaximo')
     let base = sueldoBaseFB.value
-    let maxi = <number>group.get("sueldoMaximo").value
+    let maxi = <number>group.get('sueldoMaximo').value
 
     let validacion = null
 
@@ -286,13 +286,13 @@ export class PuestosCrearModificarComponent implements OnInit {
     if (base >= maxi) {
       sueldoMaximoFB.setErrors({
         general: {
-          mensaje: "Debe ser mayor que " + base
+          mensaje: 'Debe ser mayor que ' + base
         }
       })
 
       validacion = {
         general: {
-          mensaje: "El sueldo base no puede ser igual o menor al sueldo maximo"
+          mensaje: 'El sueldo base no puede ser igual o menor al sueldo maximo'
         }
       }
     }
@@ -303,10 +303,10 @@ export class PuestosCrearModificarComponent implements OnInit {
     relacion: FuncionesEspecificasDelPuesto = null
   ): FormGroup {
     return this.fb.group({
-      actividad: [relacion ? relacion.actividad : "", [Validators.required]],
-      proposito: [relacion ? relacion.proposito : "", [Validators.required]],
-      frecuencia: [relacion ? relacion.frecuencia : "", [Validators.required]],
-      prioridad: [relacion ? relacion.prioridad : "", [Validators.required]]
+      actividad: [relacion ? relacion.actividad : '', [Validators.required]],
+      proposito: [relacion ? relacion.proposito : '', [Validators.required]],
+      frecuencia: [relacion ? relacion.frecuencia : '', [Validators.required]],
+      prioridad: [relacion ? relacion.prioridad : '', [Validators.required]]
     })
   }
 
@@ -320,8 +320,18 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.funcionesEspecificasDelPuesto_FB.removeAt(i)
   }
 
-  submit(modelo: Puesto, valid: boolean, e) {
-    e.preventDefault()
+  submit(modelo: Puesto, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      console.log(this.formulario.errors)
+      return
+    }
+
     let puesto = new Puesto()
     Object.assign(puesto, modelo)
     puesto.motivoDeCambio = this.puesto ? this.puesto.motivoDeCambio : []
@@ -348,27 +358,21 @@ export class PuestosCrearModificarComponent implements OnInit {
     puesto.quien.desarrollo = this.desarrollo_FB.value
     puesto.quien.reviso = this.reviso_FB.value
 
-    if (valid) {
-      let cbLimpiar = () => {
-        this.guardar.emit()
-        this.limpiar()
-        this.cargaDeImagenesComponent.limpiarParaNuevo()
-      }
-      let cb = (puesto) => {
-        if (this.organigrama) {
-          this._uploadService
-            .organigramaPuesto(this.organigrama, puesto._id)
-            .subscribe(cbLimpiar)
-        } else {
-          cbLimpiar()
-        }
-      }
-      if (this.puesto) {
-        puesto._id = this.puesto._id
-        this._puestoService.modificar(puesto).subscribe(cb)
-      } else {
-        this._puestoService.guardar(puesto).subscribe(cb)
-      }
+    puesto.organigrama = this.organigrama
+
+    let cbLimpiar = () => {
+      this.guardar.emit()
+      this.limpiar()
+      this.cargaDeImagenesComponent.limpiarParaNuevo()
+    }
+    let cb = puesto => {
+      cbLimpiar()
+    }
+    if (this.puesto) {
+      puesto._id = this.puesto._id
+      this._puestoService.modificarConOrganigrama(puesto).subscribe(cb)
+    } else {
+      this._puestoService.guardarConOrganigrama(puesto).subscribe(cb)
     }
   }
 
@@ -383,66 +387,66 @@ export class PuestosCrearModificarComponent implements OnInit {
   }
 
   public get vigenciaEnAnios_FB(): AbstractControl {
-    return this.formulario.get("vigenciaEnAnios")
+    return this.formulario.get('vigenciaEnAnios')
   }
 
   public get cursosRequeridos_FB(): FormArray {
-    return <FormArray>this.formulario.get("cursosRequeridos")
+    return <FormArray>this.formulario.get('cursosRequeridos')
   }
 
   public get puesto_FB(): AbstractControl {
-    return this.formulario.get("puesto")
+    return this.formulario.get('puesto')
   }
 
   public get departamento_FB(): AbstractControl {
-    return this.formulario.get("departamento")
+    return this.formulario.get('departamento')
   }
 
   public get reportaA_FB(): AbstractControl {
-    return this.formulario.get("reportaA")
+    return this.formulario.get('reportaA')
   }
 
   public get misionDelPuesto_FB(): AbstractControl {
-    return this.formulario.get("misionDelPuesto")
+    return this.formulario.get('misionDelPuesto')
   }
 
   public get personalACargo_FB() {
-    return <FormArray>this.formulario.get("personalACargo")
+    return <FormArray>this.formulario.get('personalACargo')
   }
 
   public get conocimientos_FB(): FormArray {
-    return <FormArray>this.formulario.get("conocimientos")
+    return <FormArray>this.formulario.get('conocimientos')
   }
   public get habilidades_FB(): FormArray {
-    return <FormArray>this.formulario.get("habilidades")
+    return <FormArray>this.formulario.get('habilidades')
   }
   public get aptitudes_FB(): FormArray {
-    return <FormArray>this.formulario.get("aptitudes")
+    return <FormArray>this.formulario.get('aptitudes')
   }
 
   public get funcionesEspecificasDelPuesto_FB(): FormArray {
-    return <FormArray>this.formulario.get("funcionesEspecificasDelPuesto")
+    return <FormArray>this.formulario.get('funcionesEspecificasDelPuesto')
   }
 
   public funcionesEspecificasDelPuesto_FB_actividad(
     i: number
   ): AbstractControl {
-    return this.funcionesEspecificasDelPuesto_FB.at(i).get("actividad")
+    return this.funcionesEspecificasDelPuesto_FB.at(i).get('actividad')
   }
   public funcionesEspecificasDelPuesto_FB_proposito(
     i: number
   ): AbstractControl {
-    return this.funcionesEspecificasDelPuesto_FB.at(i).get("proposito")
+    return this.funcionesEspecificasDelPuesto_FB.at(i).get('proposito')
   }
   public funcionesEspecificasDelPuesto_FB_frecuencia(
     i: number
   ): AbstractControl {
-    return this.funcionesEspecificasDelPuesto_FB.at(i).get("frecuencia")
+    return this.funcionesEspecificasDelPuesto_FB.at(i).get('frecuencia')
   }
   public funcionesEspecificasDelPuesto_FB_prioridad(
     i: number
   ): AbstractControl {
-    return this.funcionesEspecificasDelPuesto_FB.at(i).get("prioridad")
+    return this.funcionesEspecificasDelPuesto_FB.at(i).get('prioridad')
   }
 
   // <!--
@@ -452,28 +456,28 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   public get internos_FB(): FormArray {
-    return <FormArray>this.formulario.get("internos")
+    return <FormArray>this.formulario.get('internos')
   }
 
   public internos_FB_departamento(i: number): AbstractControl {
-    return this.internos_FB.at(i).get("departamento")
+    return this.internos_FB.at(i).get('departamento')
   }
   public internos_FB_relacion(i: number): AbstractControl {
-    return this.internos_FB.at(i).get("relacion")
+    return this.internos_FB.at(i).get('relacion')
   }
   public internos_FB_asunto(i: number): AbstractControl {
-    return this.internos_FB.at(i).get("asunto")
+    return this.internos_FB.at(i).get('asunto')
   }
   crearGrupo_relacionClienteProveedor_internos(
     relacion: Puesto_RelacionClienteProveedorInternos = null
   ) {
     return this.fb.group({
       departamento: [
-        relacion ? relacion.departamento._id : "",
+        relacion ? relacion.departamento._id : '',
         [Validators.required]
       ],
-      relacion: [relacion ? relacion.relacion : "", [Validators.required]],
-      asunto: [relacion ? relacion.asunto : "", [Validators.required]]
+      relacion: [relacion ? relacion.relacion : '', [Validators.required]],
+      asunto: [relacion ? relacion.asunto : '', [Validators.required]]
     })
   }
 
@@ -498,26 +502,26 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   public get externos_FB(): FormArray {
-    return <FormArray>this.formulario.get("externos")
+    return <FormArray>this.formulario.get('externos')
   }
 
   public externos_FB_contacto(i: number): AbstractControl {
-    return this.externos_FB.at(i).get("contacto")
+    return this.externos_FB.at(i).get('contacto')
   }
   public externos_FB_relacion(i: number): AbstractControl {
-    return this.externos_FB.at(i).get("relacion")
+    return this.externos_FB.at(i).get('relacion')
   }
   public externos_FB_asunto(i: number): AbstractControl {
-    return this.externos_FB.at(i).get("asunto")
+    return this.externos_FB.at(i).get('asunto')
   }
 
   crearGrupo_relacionClienteProveedor_externos(
     relacion: Puesto_RelacionClienteProveedorExternos = null
   ) {
     return this.fb.group({
-      contacto: [relacion ? relacion.contacto : "", [Validators.required]],
-      relacion: [relacion ? relacion.relacion : "", [Validators.required]],
-      asunto: [relacion ? relacion.asunto : "", [Validators.required]]
+      contacto: [relacion ? relacion.contacto : '', [Validators.required]],
+      relacion: [relacion ? relacion.relacion : '', [Validators.required]],
+      asunto: [relacion ? relacion.asunto : '', [Validators.required]]
     })
   }
 
@@ -536,36 +540,36 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   public get indicesDeEfectividad_FB(): FormArray {
-    return <FormArray>this.formulario.get("indicesDeEfectividad")
+    return <FormArray>this.formulario.get('indicesDeEfectividad')
   }
 
   public get elPuestoPuedeDesarrollarseEnLasSiguientesAreas_FB(): FormArray {
     return <FormArray>(
-      this.formulario.get("elPuestoPuedeDesarrollarseEnLasSiguientesAreas")
+      this.formulario.get('elPuestoPuedeDesarrollarseEnLasSiguientesAreas')
     )
   }
 
   public get desarrollo_FB(): AbstractControl {
-    return this.formulario.get("desarrollo")
+    return this.formulario.get('desarrollo')
   }
   public get reviso_FB(): AbstractControl {
-    return this.formulario.get("reviso")
+    return this.formulario.get('reviso')
   }
   public get aprobo_FB(): AbstractControl {
-    return this.formulario.get("aprobo")
+    return this.formulario.get('aprobo')
   }
 
   public get sueldoBase_FB(): AbstractControl {
-    return this.formulario.get("sueldoBase")
+    return this.formulario.get('sueldoBase')
   }
   public get sueldoMaximo_FB(): AbstractControl {
-    return this.formulario.get("sueldoMaximo")
+    return this.formulario.get('sueldoMaximo')
   }
   public get numeroDeExtencion_FB(): AbstractControl {
-    return this.formulario.get("numeroDeExtencion")
+    return this.formulario.get('numeroDeExtencion')
   }
   public get motivoDeCambio_FB(): AbstractControl {
-    return this.formulario.get("motivoDeCambio")
+    return this.formulario.get('motivoDeCambio')
   }
 
   private validadNoVacio(st: string) {
@@ -580,21 +584,21 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   conocimientos: Set<string> = new Set()
-  @ViewChild("conocimientosInput", { static: false })
+  @ViewChild('conocimientosInput', { static: false })
   conocimientosIn: ElementRef
 
   agregarConocimientos(valor: string) {
     if (!this.validadNoVacio(valor)) return
     this.conocimientos.add(valor)
-    this.conocimientosIn.nativeElement.value = ""
+    this.conocimientosIn.nativeElement.value = ''
     this.conocimientosIn.nativeElement.focus()
 
-    this.generarStringArrayFBDesdeSet(this.conocimientos, "conocimientos")
+    this.generarStringArrayFBDesdeSet(this.conocimientos, 'conocimientos')
   }
 
   eliminarConocimiento(i: string) {
     this.conocimientos.delete(i)
-    this.generarStringArrayFBDesdeSet(this.conocimientos, "conocimientos")
+    this.generarStringArrayFBDesdeSet(this.conocimientos, 'conocimientos')
   }
 
   private generarStringArrayFBDesdeSet(set: Set<string>, campo: string) {
@@ -614,19 +618,19 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   habilidades: Set<string> = new Set()
-  @ViewChild("habilidadesInput", { static: false }) habilidadesIn: ElementRef
+  @ViewChild('habilidadesInput', { static: false }) habilidadesIn: ElementRef
 
   agregarHabilidades(valor: string) {
     if (!this.validadNoVacio(valor)) return
     this.habilidades.add(valor)
-    this.habilidadesIn.nativeElement.value = ""
+    this.habilidadesIn.nativeElement.value = ''
     this.habilidadesIn.nativeElement.focus()
-    this.generarStringArrayFBDesdeSet(this.habilidades, "habilidades")
+    this.generarStringArrayFBDesdeSet(this.habilidades, 'habilidades')
   }
 
   eliminarHabilidad(i) {
     this.habilidades.delete(i)
-    this.generarStringArrayFBDesdeSet(this.habilidades, "habilidades")
+    this.generarStringArrayFBDesdeSet(this.habilidades, 'habilidades')
   }
 
   // <!--
@@ -642,19 +646,19 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   aptitudes: Set<string> = new Set()
-  @ViewChild("aptitudesInput", { static: false }) aptitudesIn: ElementRef
+  @ViewChild('aptitudesInput', { static: false }) aptitudesIn: ElementRef
 
   agregarAptitudes(valor: string) {
     if (!this.validadNoVacio(valor)) return
     this.aptitudes.add(valor)
-    this.aptitudesIn.nativeElement.value = ""
+    this.aptitudesIn.nativeElement.value = ''
     this.aptitudesIn.nativeElement.focus()
-    this.generarStringArrayFBDesdeSet(this.aptitudes, "aptitudes")
+    this.generarStringArrayFBDesdeSet(this.aptitudes, 'aptitudes')
   }
 
   eliminarAptitud(i) {
     this.aptitudes.delete(i)
-    this.generarStringArrayFBDesdeSet(this.aptitudes, "aptitudes")
+    this.generarStringArrayFBDesdeSet(this.aptitudes, 'aptitudes')
   }
 
   // <!--
@@ -690,7 +694,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     let dataList = <DataListComponent>evento.dataList
     this._empleadoService
       .search(termino, undefined, undefined, Empleado)
-      .subscribe((empleados) => {
+      .subscribe(empleados => {
         let datos: Dato[] = []
         empleados.forEach((pue: Empleado) => {
           datos.push(this.empleadosCrearDato(pue))
@@ -701,6 +705,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   }
 
   empleadosCrearDato(emp: Empleado) {
+    if (!emp) return
     let d = new Dato()
     d.leyendaPrincipal = emp.nombreCompleto()
     d.leyendaSecundaria = `NOM: ${emp.idNomina} | CHE: ${emp.idChecador}`
@@ -782,9 +787,7 @@ export class PuestosCrearModificarComponent implements OnInit {
 
   agregarPersonalACargo(dato: Dato) {
     if (dato) {
-      let repetido = this.personalACargo.filter(
-        (x) => dato.objeto._id === x._id
-      )
+      let repetido = this.personalACargo.filter(x => dato.objeto._id === x._id)
 
       if (!repetido.length) {
         this.personalACargo.push(dato.objeto)
@@ -874,12 +877,11 @@ export class PuestosCrearModificarComponent implements OnInit {
     let dataList = <DataListComponent>evento.dataList
     this._puestoService
       .search(termino, undefined, undefined, Puesto)
-      .subscribe((p) => {
+      .subscribe(p => {
         let datos: Dato[] = []
-        p.filter(
-          (px) => {
-            return px._id !== (this.puesto ? this.puesto._id : null)}
-        ).forEach((dep: Puesto) => {
+        p.filter(px => {
+          return px._id !== (this.puesto ? this.puesto._id : null)
+        }).forEach((dep: Puesto) => {
           let d = new Dato()
           d.leyendaPrincipal = dep.puesto
           d.descripcionSecundaria = dep.misionDelPuesto
@@ -895,7 +897,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   agregarPuesto(dato: Dato) {
     if (dato) {
       let repetido = this.elPuestoPuedeDesarrollarseEnLasSiguientesAreas.filter(
-        (x) => dato.objeto._id === x._id
+        x => dato.objeto._id === x._id
       )
 
       if (!repetido.length) {
@@ -924,7 +926,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   indicesDeEfectividadSet = new Set<string>()
-  @ViewChild("indiceDeEfectividadInput", { static: true })
+  @ViewChild('indiceDeEfectividadInput', { static: true })
   indiceDeEfectividadIn: ElementRef
 
   agregarIndicesDeEfectividad(val: string) {
@@ -933,9 +935,9 @@ export class PuestosCrearModificarComponent implements OnInit {
 
     this.generarStringArrayFBDesdeSet(
       this.indicesDeEfectividadSet,
-      "indicesDeEfectividad"
+      'indicesDeEfectividad'
     )
-    this.indiceDeEfectividadIn.nativeElement.value = ""
+    this.indiceDeEfectividadIn.nativeElement.value = ''
     this.indiceDeEfectividadIn.nativeElement.focus()
   }
 
@@ -943,7 +945,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     this.indicesDeEfectividadSet.delete(val)
     this.generarStringArrayFBDesdeSet(
       this.indicesDeEfectividadSet,
-      "indicesDeEfectividad"
+      'indicesDeEfectividad'
     )
   }
 
@@ -973,7 +975,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     let dataList = <DataListComponent>evento.dataList
     this._cursoService
       .search(termino, undefined, undefined, Curso)
-      .subscribe((articulos) => {
+      .subscribe(articulos => {
         let datos: Dato[] = []
         articulos.forEach((curso: Curso) => {
           datos.push(this.cursoCrearDato(curso))
@@ -988,8 +990,8 @@ export class PuestosCrearModificarComponent implements OnInit {
     d.leyendaPrincipal = curso.nombre
     d.descripcionPrincipal = curso.descripcionDeCurso
     d.leyendaSecundaria = curso.esCursoDeTroncoComun
-      ? "Tronco comun"
-      : "Especializante"
+      ? 'Tronco comun'
+      : 'Especializante'
 
     d.objeto = curso
 
@@ -999,7 +1001,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   agregarCursoSeleccionado(dato: Dato) {
     if (dato) {
       let repetido = this.cursosSeleccionados.filter(
-        (x) => dato.objeto._id === x._id
+        x => dato.objeto._id === x._id
       )
 
       if (!repetido.length) {
@@ -1010,8 +1012,8 @@ export class PuestosCrearModificarComponent implements OnInit {
   }
 
   agregarCursosDeTroncoComun() {
-    this._cursoService.todosTroncoComun().subscribe((cursos) => {
-      cursos.forEach((curso) => {
+    this._cursoService.todosTroncoComun().subscribe(cursos => {
+      cursos.forEach(curso => {
         let d = new Dato()
         d.objeto = curso
         this.agregarCursoSeleccionado(d)
@@ -1031,7 +1033,7 @@ export class PuestosCrearModificarComponent implements OnInit {
 
   mostrarImagen(url: string) {
     this._visorDeImagenesService.mostrarImagen(
-      this.imagenPipe.transform(url, "organigramaPuesto")
+      this.imagenPipe.transform(url, 'organigramaPuesto')
     )
   }
 
@@ -1059,6 +1061,6 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   msjDeErrorImagenes(msj) {
-    this._msjService.invalido(msj, "Formato de imagen invalido", 4000)
+    this._msjService.invalido(msj, 'Formato de imagen invalido', 4000)
   }
 }

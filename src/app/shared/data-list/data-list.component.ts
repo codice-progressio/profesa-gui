@@ -336,6 +336,7 @@ export class DataListComponent implements OnInit {
   }
 
   seleccionarElemento(dato: Dato) {
+    if( !dato) return
     this.leyendaInputDeshabilitado = dato.leyendaPrincipal
     this.elementoSeleccionado.emit(dato)
     this.terminarBusquedaDespuesDeSeleccionarElemento()

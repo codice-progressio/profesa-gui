@@ -4,7 +4,8 @@ export class PermisoMotivo implements Deserializable {
     public porPaternidad?: boolean,
     public porDefunción?: boolean,
     public porMatrimonio?: boolean,
-    public paraDesempeñarUnCargoDeElecciónPopular?: boolean,
+    public paraDesempenarUnCargoDeEleccionPopular?: boolean,
+    public citaMedica?: boolean,
     public otro?: string
   ) {}
 

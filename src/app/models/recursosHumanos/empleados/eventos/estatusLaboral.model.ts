@@ -4,6 +4,9 @@ export class EstatusLaboral implements Deserializable {
     public alta?: boolean,
       public baja?: boolean,
       public reingreso?: boolean,
+      public incapacidadEnfermedadGeneral?: boolean,
+      public incapacidadRiesgoDeTrabajo?: boolean,
+      public incapacidadMaternidad?: boolean,
       public observaciones?: string
   ) {}
 

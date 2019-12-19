@@ -5,7 +5,11 @@ export class Bono implements Deserializable {
     public porPuntualidad?: number,
     public porProductividad?: number,
     public porResultados?: number,
-    public ayudaEscolarEventual?: number
+    public ayudaEscolarEventual?: number,
+    public otros?: {
+      cantidad: number,
+      motivo: string
+    }
   ) {}
 
   deserialize(input: this): this {

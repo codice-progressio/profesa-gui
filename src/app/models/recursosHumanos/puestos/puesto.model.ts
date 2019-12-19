@@ -20,7 +20,7 @@ export class Puesto implements Deserializable {
     public departamento?: Departamento,
     public reportaA: Puesto = null,
     //Se genera desde la GUI.
-    public organigrama?: string,
+    public organigrama?: string | File,
     public misionDelPuesto?: string,
     public personalACargo: Puesto[] = [],
     public perfilDelPuesto: PerfilDelPuesto = new PerfilDelPuesto(),

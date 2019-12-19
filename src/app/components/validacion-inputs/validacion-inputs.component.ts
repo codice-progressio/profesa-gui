@@ -73,7 +73,8 @@ export class ValidacionInputsComponent implements OnInit {
    */
   @Input() directo: boolean = false
 
-  j = JSON
+  @Input() debug: boolean = false
+
 
   constructor() {}
 
@@ -103,9 +104,8 @@ export class ValidacionInputsComponent implements OnInit {
   }
   maxlength(): string {
     let campo = this.cge('maxlength')
-    console.log(`campo`,campo)
     let cantidadCar = campo.requiredLength
-    let sobran =  campo.actualLength - cantidadCar
+    let sobran = campo.actualLength - cantidadCar
     let conjuncion = cantidadCar > 1 ? cantidadCar : 'un '
     let caracteres = cantidadCar > 1 ? 'caracteres' : 'caracter'
     return `El maximo es  ${conjuncion} ${caracteres}. (Sobran ${sobran})`

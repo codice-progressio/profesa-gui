@@ -1,0 +1,310 @@
+<div class="row">
+  <div class="col-12">
+    <h2>
+      Permiso para <b>{{ empleado?.nombreCompleto() }}</b>
+    </h2>
+    <hr />
+  </div>
+
+  <form [formGroup]="formulario" class="col-12">
+    <div class="row">
+      <!-- 
+=====================================
+Con goce o sin goce
+=====================================
+-->
+
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <select
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('conGoceDeSueldo')),
+              'is-valid': vs.valid(f('conGoceDeSueldo'))
+            }"
+            (change)="conGoce($event.target.value)"
+            class="form-control"
+          >
+            <option value="false">Sin goce de sueldo</option>
+            <option value="true">Con goce de sueldo</option>
+          </select>
+          <small class="form-text text-muted">Tipo de permiso</small>
+
+          <input type="hidden" formControlName="conGoceDeSueldo" />
+          <input type="hidden" formControlName="sinGoceDeSueldo" />
+        </div>
+      </div>
+
+      <!-- 
+=====================================
+END Con goce o sin goce
+=====================================
+-->
+
+      <!-- 
+=====================================
+Motivo
+=====================================
+-->
+
+      <ng-container formGroupName="motivo">
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <select
+              (change)="motivo($event.target.value)"
+              class="custom-select"
+              [ngClass]="{
+                'is-invalid': motivoValido === 0,
+                'is-valid': motivoValido === 1
+              }"
+            >
+              <option selected disabled>Selecciona un motivo</option>
+              <option value="citaMedica">Cita medica</option>
+              <option value="porPaternidad">Por paternidad</option>
+              <option value="porDefuncion">Por defuncion</option>
+              <option value="porMatrimonio">Por matrimonio</option>
+              <option value="paraDesempenarUnCargoDeEleccionPopular"
+                >Para desempenar un cargo de eleccion popular</option
+              >
+
+              <option value="otro">Otro</option>
+            </select>
+
+            <small class="form-text text-muted">Motivo</small>
+
+            <input type="hidden" formControlName="porPaternidad" />
+            <input type="hidden" formControlName="porDefuncion" />
+            <input type="hidden" formControlName="porMatrimonio" />
+            <input
+              type="hidden"
+              formControlName="paraDesempenarUnCargoDeEleccionPopular"
+            />
+            <input type="hidden" formControlName="citaMedica" />
+          </div>
+        </div>
+        <!-- 
+              =====================================
+               motivo.otro
+              =====================================
+              -->
+        <div *ngIf="mostrarOtro" class="col-12 ">
+          <div class="form-group">
+            <textarea
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('motivo.otro')),
+                'is-valid': vs.valid(f('motivo.otro'))
+              }"
+              class="form-control"
+              formControlName="otro"
+              rows="10"
+            ></textarea>
+
+            <small class="form-text text-muted">Descripcion del motivo</small>
+            <app-validacion-inputs
+              [campo]="f('motivo.otro')"
+            ></app-validacion-inputs>
+          </div>
+        </div>
+        <!-- 
+              =====================================
+               END motivo.otro
+              =====================================
+              -->
+      </ng-container>
+
+      <!-- 
+=====================================
+END Motivo
+=====================================
+-->
+
+      <!-- 
+=====================================
+fechaDeInicio
+=====================================
+-->
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('fechaDeInicio')),
+              'is-valid': vs.valid(f('fechaDeInicio'))
+            }"
+            type="date"
+            class="form-control"
+            formControlName="fechaDeInicio"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Fecha de inicio</small
+          >
+          <app-validacion-inputs
+            [campo]="f('fechaDeInicio')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+=====================================
+END fechaDeInicio
+=====================================
+-->
+
+      <!-- 
+=====================================
+fechaDeFinalizacion
+=====================================
+-->
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('fechaDeFinalizacion')),
+              'is-valid': vs.valid(f('fechaDeFinalizacion'))
+            }"
+            type="date"
+            class="form-control"
+            formControlName="fechaDeFinalizacion"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Fecha de finalizacion</small
+          >
+          <app-validacion-inputs
+            [campo]="f('fechaDeFinalizacion')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+=====================================
+END fechaDeFinalizacion
+=====================================
+-->
+
+      <!-- 
+=====================================
+autorizacionSupervisor
+=====================================
+-->
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <div class="form-check">
+            <input
+              formControlName="autorizacionSupervisor"
+              id="exampleCheck1"
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('autorizacionSupervisor')),
+                'is-valid': vs.valid(f('autorizacionSupervisor'))
+              }"
+              type="checkbox"
+              class="form-check-input"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              >Autorizacion Supervisor</label
+            >
+            <br />
+            <app-validacion-inputs
+              [campo]="f('autorizacionSupervisor')"
+            ></app-validacion-inputs>
+          </div>
+        </div>
+      </div>
+      <!-- 
+=====================================
+END autorizacionSupervisor
+=====================================
+-->
+
+      <!-- 
+=====================================
+autorizacionRH
+=====================================
+-->
+
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <div class="form-check">
+            <input
+              formControlName="autorizacionRH"
+              id="exampleCheck1"
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('autorizacionRH')),
+                'is-valid': vs.valid(f('autorizacionRH'))
+              }"
+              type="checkbox"
+              class="form-check-input"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              >Autorizacion RH</label
+            >
+            <app-validacion-inputs
+              [campo]="f('autorizacionRH')"
+            ></app-validacion-inputs>
+          </div>
+        </div>
+      </div>
+
+      <!-- 
+=====================================
+END autorizacionRH
+=====================================
+-->
+
+      <!-- 
+=====================================
+comentario
+=====================================
+-->
+      <div class="col-12">
+        <div class="form-group">
+          <textarea
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('comentario')),
+              'is-valid': vs.valid(f('comentario'))
+            }"
+            class="form-control"
+            formControlName="comentario"
+            cols="30"
+            rows="5"
+          ></textarea>
+
+          <small class="form-text text-muted">comentario</small>
+          <app-validacion-inputs
+            [campo]="f('comentario')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+=====================================
+END comentario
+=====================================
+-->
+      <div class="col-12">
+        <app-validacion-inputs [campo]="formulario"></app-validacion-inputs>
+      </div>
+
+      <div class="col-12">
+        <hr />
+      </div>
+
+      <div class="col-12">
+        <button
+          (click)="submit($event, formulario.invalid, formulario.value)"
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          [ngClass]="{ active: invalido }"
+          class="text-white btn btn-success mr-3 active"
+          role="button"
+        >
+          <i class="fas fa-save    "></i> Guardar
+        </button>
+        <a
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          (click)="cancelar()"
+          class="text-white btn btn-danger active"
+          role="button"
+        >
+          <i class="fas fa-times    "></i> Cancelar</a
+        >
+      </div>
+    </div>
+  </form>
+
+</div>
