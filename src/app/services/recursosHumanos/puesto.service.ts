@@ -76,39 +76,42 @@ export class PuestoService extends CRUD<
       'Guardando puesto con su organigrama'
     )
 
-    console.log(`puesto.organigrama`,puesto.organigrama)
     const url = `${this.base}/`
-    return this.http.post(url, toFormData(puesto), {
-      reportProgress: true,
-      observe: 'events'
-    } ).pipe(
-      uploadProgress(progress => {
-        this._preLoaderService.progreso(a, progress, 'Cargando organigrama')
-      }),
-      toResponseBody((respuesta, nada, a) => {
-        this._msjService.ok_(respuesta, null, a)
-        return respuesta.puesto
-      }, a),
-      catchError(err => this.err(err))
-    )
+    return this.http
+      .post(url, toFormData(puesto), {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        uploadProgress(progress => {
+          this._preLoaderService.progreso(a, progress, 'Cargando organigrama')
+        }),
+        toResponseBody((respuesta, nada, a) => {
+          this._msjService.ok_(respuesta, null, a)
+          return respuesta.puesto
+        }, a),
+        catchError(err => this.err(err))
+      )
   }
   modificarConOrganigrama(puesto: Puesto) {
     const a = this._preLoaderService.loading(
       'Modificando puesto con su organigrama'
     )
     const url = `${this.base}/`
-    return this.http.put(url, toFormData(puesto),  {
-      reportProgress: true,
-      observe: 'events'
-    }).pipe(
-      uploadProgress(p => {
-        this._preLoaderService.progreso(a, p, 'Cargando organigrama')
-      }),
-      toResponseBody((res, nada, a) => {
-        this._msjService.ok_(res, null, a)
-        return res.puesto
-      }, a),
-      catchError(err => this.err(err))
-    )
+    return this.http
+      .put(url, toFormData(puesto), {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        uploadProgress(p => {
+          this._preLoaderService.progreso(a, p, 'Cargando organigrama')
+        }),
+        toResponseBody((res, nada, a) => {
+          this._msjService.ok_(res, null, a)
+          return res.puesto
+        }, a),
+        catchError(err => this.err(err))
+      )
   }
 }
