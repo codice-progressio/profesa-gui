@@ -35,29 +35,29 @@
 
       <!-- 
           =====================================
-           observaciones
+           observacion
           =====================================
           -->
       <div class="col-12 col-md-6">
         <div class="form-group">
           <input
             [ngClass]="{
-              'is-invalid': vs.invalid(f('observaciones')),
-              'is-valid': vs.valid(f('observaciones'))
+              'is-invalid': vs.invalid(f('observacion')),
+              'is-valid': vs.valid(f('observacion'))
             }"
             type="text"
             class="form-control"
-            formControlName="observaciones"
+            formControlName="observacion"
           />
-          <small id="helpId" class="form-text text-muted">observaciones</small>
+          <small id="helpId" class="form-text text-muted">Observacion</small>
           <app-validacion-inputs
-            [campo]="f('observaciones')"
+            [campo]="f('observacion')"
           ></app-validacion-inputs>
         </div>
       </div>
       <!-- 
           =====================================
-           END observaciones
+           END observacion
           =====================================
           -->
       <div class="col-12">

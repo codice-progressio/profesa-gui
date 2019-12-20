@@ -17,6 +17,7 @@ Con goce o sin goce
       <div class="col-12 col-md-6">
         <div class="form-group">
           <select
+          #selectConGoce
             [ngClass]="{
               'is-invalid': vs.invalid(f('conGoceDeSueldo')),
               'is-valid': vs.valid(f('conGoceDeSueldo'))
@@ -50,6 +51,7 @@ Motivo
         <div class="col-12 col-sm-6">
           <div class="form-group">
             <select
+            #select
               (change)="motivo($event.target.value)"
               class="custom-select"
               [ngClass]="{
@@ -187,7 +189,7 @@ autorizacionSupervisor
           <div class="form-check">
             <input
               formControlName="autorizacionSupervisor"
-              id="exampleCheck1"
+              id="supervisor"
               [ngClass]="{
                 'is-invalid': vs.invalid(f('autorizacionSupervisor')),
                 'is-valid': vs.valid(f('autorizacionSupervisor'))
@@ -195,7 +197,7 @@ autorizacionSupervisor
               type="checkbox"
               class="form-check-input"
             />
-            <label class="form-check-label" for="exampleCheck1"
+            <label class="form-check-label" for="supervisor"
               >Autorizacion Supervisor</label
             >
             <br />
@@ -222,7 +224,7 @@ autorizacionRH
           <div class="form-check">
             <input
               formControlName="autorizacionRH"
-              id="exampleCheck1"
+              id="rh"
               [ngClass]="{
                 'is-invalid': vs.invalid(f('autorizacionRH')),
                 'is-valid': vs.valid(f('autorizacionRH'))
@@ -230,7 +232,7 @@ autorizacionRH
               type="checkbox"
               class="form-check-input"
             />
-            <label class="form-check-label" for="exampleCheck1"
+            <label class="form-check-label" for="rh"
               >Autorizacion RH</label
             >
             <app-validacion-inputs

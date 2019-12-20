@@ -34,6 +34,7 @@ export class Empleado implements Deserializable {
     public telCasa: string ='',
     public telEmergencia: string ='',
     public nombreEmergencia: string ='',
+    public parentescoEmergencia: string = '',
 
     public estadoCivil?: boolean,
     public hijos: number[] = [],

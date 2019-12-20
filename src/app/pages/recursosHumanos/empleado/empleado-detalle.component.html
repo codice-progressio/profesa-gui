@@ -83,7 +83,7 @@
             </span>
             <span>
               <small class="text-muted p-t-30 db">Hijos</small>
-              <h6  *ngIf="empleado.hijos.length === 0">Sin hijos</h6>
+              <h6 *ngIf="empleado.hijos.length === 0">Sin hijos</h6>
               <h6 *ngIf="empleado.hijos.length > 0">
                 {{ empleado.hijos.length }} de
 
@@ -137,11 +137,17 @@
               >
               <h6>{{ empleado.nombreEmergencia }}</h6>
             </span>
+
             <span>
               <small class="text-muted p-t-30 db">Tel</small>
               <h6>{{ empleado.telEmergencia }}</h6>
             </span>
           </div>
+
+          <span>
+            <small class="text-muted p-t-30 db">Parentesco</small>
+            <h6>{{ empleado.parentescoEmergencia }}</h6>
+          </span>
         </div>
       </div>
     </div>
@@ -178,9 +184,8 @@
               <app-empleado-evento-manejador
                 *ngFor="let historial of empleado?.eventos"
                 [historialDeEventos]="historial"
-                (autorizacion)='autorizarPermiso($event)'
+                (autorizacion)="autorizarPermiso($event)"
               >
-
               </app-empleado-evento-manejador>
 
               <h1 *ngIf="1 > empleado.eventos.length">

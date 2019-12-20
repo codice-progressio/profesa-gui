@@ -138,13 +138,13 @@ export class EmpleadoService extends CRUD<
     })
   }
 
-  registrarSueldo(_id: string, nuevoSueldo: number, observaciones: string) {
+  registrarSueldo(_id: string, nuevoSueldo: number, observacion: string) {
     const a = this.preloaderEvento('Agregando aumento al empleado')
     const url = this.urlEvento('sueldo')
     return this.registroDeEventoGenerico(url, a, {
       _id,
       nuevoSueldo,
-      observaciones
+      observacion
     })
   }
 
@@ -161,7 +161,6 @@ export class EmpleadoService extends CRUD<
   registrarFelicitacionPorEscrito(_id: string, documento: File, fecha: Date) {
     const a = this.preloaderEvento('Registrando felicitacion por escrito')
     const url = this.urlEvento('felicitacion')
-
     return this.http
       .put(url, toFormData({ _id, documento, fecha }), {
         reportProgress: true,

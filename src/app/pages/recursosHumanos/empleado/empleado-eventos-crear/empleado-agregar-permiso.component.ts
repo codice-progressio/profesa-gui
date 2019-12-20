@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import {
   EmpleadoAgregarEventosGeneral,
   iEmpleadoAgregarEventosGeneral
@@ -23,6 +23,9 @@ import * as moment from 'moment'
 export class EmpleadoAgregarPermisoComponent
   extends EmpleadoAgregarEventosGeneral<Empleado>
   implements OnInit, iEmpleadoAgregarEventosGeneral {
+  @ViewChild('select', { static: false }) select: ElementRef
+  @ViewChild('selectConGoce', { static: false }) selectConGoce: ElementRef
+
   constructor(
     public _empleadoService: EmpleadoService,
     public _notiService: ManejoDeMensajesService,
@@ -81,7 +84,7 @@ export class EmpleadoAgregarPermisoComponent
     return (c: AbstractControl): { general: { mensaje: string } } | null => {
       var unCampoEsTrue = false
       var touched = false
-      const campos = [
+      ;[
         'motivo.porPaternidad',
         'motivo.porDefuncion',
         'motivo.porMatrimonio',
@@ -151,11 +154,12 @@ export class EmpleadoAgregarPermisoComponent
 
     if (!esOtro) {
       this.f('motivo.' + opcion).setValue(true)
+      this.f('motivo.otro').clearValidators()
     } else {
       this.mostrarOtro = true
       this.f('motivo.otro').setValidators(Validators.required)
-      this.f('motivo.otro').updateValueAndValidity({ onlySelf: true })
     }
+    this.f('motivo.otro').updateValueAndValidity()
   }
 
   submit(e: any, invalid: boolean, model: any): void {
@@ -167,7 +171,6 @@ export class EmpleadoAgregarPermisoComponent
       e.stopPropagation()
       return
     }
-
     this._empleadoService.registrarPermiso(this.empleado._id, model).subscribe(
       ok => {
         this.guardado.emit()
@@ -187,5 +190,7 @@ export class EmpleadoAgregarPermisoComponent
   limpiar() {
     this.mostrarOtro = false
     this.motivoValido = -1
+    this.select.nativeElement.selectedIndex = 0
+    this.selectConGoce.nativeElement.selectedIndex = 0
   }
 }

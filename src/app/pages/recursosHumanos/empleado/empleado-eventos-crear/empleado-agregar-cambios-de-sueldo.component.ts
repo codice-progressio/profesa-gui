@@ -41,7 +41,7 @@ export class EmpleadoAgregarCambiosDeSueldoComponent
           this.vs.numberValidator
         ]
       ],
-      observaciones: ['', null]
+      observacion: ['', null]
     })
   }
 

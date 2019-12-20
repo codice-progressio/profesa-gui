@@ -144,11 +144,24 @@
                  puestoActual
                 =====================================
                 -->
-              <div *ngIf="!empleado?._id" class="col-6">
+              <div class="col-12 col-md-8">
                 <div class="form-group">
                   <input type="hidden" formControlName="puestoActual" />
 
+                  <input
+                    *ngIf="empleado?.puestoActual?._id"
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('puestoActual')),
+                      'is-valid': vs.valid(f('puestoActual'))
+                    }"
+                    type="text"
+                    disabled
+                    class="form-control"
+                    [value]="empleado.puestoActual.puesto"
+                  />
+
                   <app-data-list
+                    *ngIf="!empleado?.puestoActual?._id"
                     (ejecutarBusquedaDeItems)="buscarPuestos($event)"
                     (elementoSeleccionado)="articuloSeleccionado($event)"
                     (esteComponente)="puestoComponent = $event"
@@ -166,6 +179,7 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
+
               <!-- 
                   =====================================
                    END puestoActual
@@ -756,7 +770,37 @@
             =====================================
              END telEmergencia
             =====================================
-            --></div>
+          -->
+              <!-- 
+          =====================================
+           parentescoEmergencia
+          =====================================
+          -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('parentescoEmergencia')),
+                      'is-valid': vs.valid(f('parentescoEmergencia'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="parentescoEmergencia"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Parentesco</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('parentescoEmergencia')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+          =====================================
+           END parentescoEmergencia
+          =====================================
+          -->
+            </div>
 
             <div class="row">
               <div class="col-12">

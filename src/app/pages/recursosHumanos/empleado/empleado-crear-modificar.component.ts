@@ -162,7 +162,10 @@ export class EmpleadoCrearModificarComponent implements OnInit {
         ]
       ],
       nombreEmergencia: [empleado.nombreEmergencia, [Validators.required]],
-
+      parentescoEmergencia: [
+        empleado.parentescoEmergencia,
+        [Validators.required]
+      ],
       estadoCivil: [empleado.estadoCivil, [Validators.required]],
       hijos: this.fb.array(empleado.hijos.map(x => this.fb.control(x))),
       nivelDeEstudios: [empleado.nivelDeEstudios, [Validators.required]],
@@ -211,8 +214,18 @@ export class EmpleadoCrearModificarComponent implements OnInit {
   submit(modelo: Empleado, invalid: boolean, e) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
-    e.preventDefault()
-    if (invalid) return
+
+    for (const key in this.formulario.controls) {
+      if (this.formulario.controls.hasOwnProperty(key)) {
+        const element = this.formulario.controls[key]
+      }
+    }
+
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
 
     let operacion = () => {
       this.limpiar()
@@ -269,7 +282,6 @@ export class EmpleadoCrearModificarComponent implements OnInit {
   }
 
   mostrarImagen(i: string) {
-    console.log(`i`,i)
     this._visorDeImagenesService.mostrarImagen(i)
   }
 
