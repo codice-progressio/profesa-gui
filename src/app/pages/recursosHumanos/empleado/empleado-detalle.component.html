@@ -185,6 +185,7 @@
                 *ngFor="let historial of empleado?.eventos"
                 [historialDeEventos]="historial"
                 (autorizacion)="autorizarPermiso($event)"
+                (rechazar)='rechazarPermiso($event)'
               >
               </app-empleado-evento-manejador>
 

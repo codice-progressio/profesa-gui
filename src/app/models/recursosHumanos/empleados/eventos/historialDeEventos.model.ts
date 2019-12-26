@@ -3,6 +3,7 @@ import { Deserializable } from "../../../deserealizable.model"
 
 export class HistorialDeEventos implements Deserializable {
   constructor(
+    public _id?: string,
     public fechaDeRegistroDeEvento?: Date,
     public evento?: EventosRH
   ) {}

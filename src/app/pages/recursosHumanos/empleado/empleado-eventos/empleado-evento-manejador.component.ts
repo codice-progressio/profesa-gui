@@ -30,7 +30,8 @@ export class EmpleadoEventoManejadorComponent implements OnInit {
     this.evento = hist.evento
   }
 
-  @Output() autorizacion = new EventEmitter<Permiso>() 
+  @Output() autorizacion = new EventEmitter<string>()
+  @Output() rechazar = new EventEmitter<{ idHisto: string; motivo: string }>()
 
   get historialDeEventos(): HistorialDeEventos {
     return this._historialDeEventos
@@ -38,12 +39,15 @@ export class EmpleadoEventoManejadorComponent implements OnInit {
 
   fecha: Date
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {}
 
-  autorizar(permiso: Permiso){
-    this.autorizacion.emit(permiso)
+  autorizar() {
+    this.autorizacion.emit(this.historialDeEventos._id)
+  }
+
+  rechazado(motivo: string) {
+    this.rechazar.emit({ idHisto: this.historialDeEventos._id, motivo })
   }
 }

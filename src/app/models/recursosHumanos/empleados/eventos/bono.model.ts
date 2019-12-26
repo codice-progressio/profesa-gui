@@ -1,15 +1,15 @@
 import { Deserializable } from "../../../deserealizable.model"
 export class Bono implements Deserializable {
   constructor(
-    public porAsistencia?: number,
-    public porPuntualidad?: number,
-    public porProductividad?: number,
-    public porResultados?: number,
-    public ayudaEscolarEventual?: number,
-    public otros?: {
+    public porAsistencia: number = null,
+    public porPuntualidad: number = null,
+    public porProductividad: number = null,
+    public porResultados: number = null,
+    public ayudaEscolarEventual: number = null,
+    public otros: {
       cantidad: number,
       motivo: string
-    }
+    } = null
   ) {}
 
   deserialize(input: this): this {

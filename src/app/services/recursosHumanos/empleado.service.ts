@@ -237,17 +237,53 @@ export class EmpleadoService extends CRUD<
     return this.registroDeEventoGenerico(url, a, permiso)
   }
 
+
+  /**
+   * Autoriza un permiso que este pendiente de autorizacion. 
+   *
+   * @param {string} _id
+   * @param {string} idHisto El id del historial de eventos que contiene
+   * el objeto 'permiso' y que queremos autorizar. 
+   * @returns
+   * @memberof EmpleadoService
+   */
+  permisoAutorizar(_id: string, idHisto: string) {
+    const a = this.preloaderEvento('Autorizando permiso')
+    const url = this.urlEvento('permiso/autorizar')
+
+    return this.registroDeEventoGenerico(url, a, {_id, idHisto})
+  }
+  /**
+   * Rechaza un permiso que este pendiente de autorizacion. 
+   *
+   * @param {string} _id
+   * @param {string} idHisto El id del historial de eventos que contiene
+   * el objeto 'permiso' y que queremos autorizar. 
+   * @returns
+   * @memberof EmpleadoService
+   */
+  permisoRechazar(_id: string, idHisto: string, motivo: string) {
+    const a = this.preloaderEvento('Rechazando permiso')
+    const url = this.urlEvento('permiso/rechazar')
+
+    return this.registroDeEventoGenerico(url, a, {_id, idHisto, motivo})
+  }
+
+
+  
+
   registrarBono(_id: string, bono: Bono) {
-    const a = this.preloaderEvento('Aplicando cambio de puesto')
-    const url = this.urlEvento('puesto')
+    const a = this.preloaderEvento('Aplicando cambio de bono')
+    const url = this.urlEvento('bono')
 
     bono['_id'] = _id
 
     return this.registroDeEventoGenerico(url, a, bono)
   }
+  
   registrarEstatusLaboral(_id: string, datos: EstatusLaboral) {
-    const a = this.preloaderEvento('Aplicando cambio de puesto')
-    const url = this.urlEvento('puesto')
+    const a = this.preloaderEvento('Aplicando cambio de estatus laboral')
+    const url = this.urlEvento('estatusLaboral')
 
     datos['_id'] = _id
 

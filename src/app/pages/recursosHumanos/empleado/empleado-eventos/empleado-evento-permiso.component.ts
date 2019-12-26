@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 import { Permiso } from '../../../../models/recursosHumanos/empleados/eventos/permiso.model'
+import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-empleado-evento-permiso',
@@ -19,6 +20,7 @@ export class EmpleadoEventoPermisoComponent implements OnInit {
   }
 
   @Output() autorizacion = new EventEmitter<Permiso>()
+  @Output() rechazado = new EventEmitter<string>()
 
   icono: string
   motivo: string
@@ -51,6 +53,7 @@ export class EmpleadoEventoPermisoComponent implements OnInit {
     }
   }
 
+  constructor(public noti: ManejoDeMensajesService) {}
   ngOnInit() {}
   seleccionarDatos(permiso: Permiso) {
     Object.keys(permiso.motivo).forEach(key => {
@@ -63,9 +66,18 @@ export class EmpleadoEventoPermisoComponent implements OnInit {
     })
   }
 
+  autorizar() {
+    this.autorizacion.emit()
+  }
 
-  autorizar(permiso:Permiso){
-    permiso.autorizacionRH = true
-    this.autorizacion.emit(permiso)
+  rechazar(event, motivo: string) {
+    if (motivo.trim() === '') {
+      event.preventDefault()
+      event.stopPropagation()
+      this.noti.invalido('Debes definir el motivo de rechazo.')
+
+      return
+    }
+    this.rechazado.emit(motivo)
   }
 }

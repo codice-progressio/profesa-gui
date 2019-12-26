@@ -4,6 +4,7 @@ import { Puesto } from 'src/app/models/recursosHumanos/puestos/puesto.model'
 import { VisorDeImagenesService } from '../../../services/visorDeImagenes/visor-de-imagenes.service'
 import { Permiso } from 'src/app/models/recursosHumanos/empleados/eventos/permiso.model'
 import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
+import { HistorialDeEventos } from '../../../models/recursosHumanos/empleados/eventos/historialDeEventos.model'
 
 @Component({
   selector: 'app-empleado-detalle',
@@ -13,7 +14,7 @@ import { EmpleadoService } from '../../../services/recursosHumanos/empleado.serv
 export class EmpleadoDetalleComponent implements OnInit {
   @Input() empleado: Empleado = null
   @Output() detallePuesto = new EventEmitter<Puesto>()
-  @Output() permisoActualizado= new EventEmitter<null>()
+  @Output() permisoActualizado = new EventEmitter<null>()
   constructor(
     private _visual: VisorDeImagenesService,
     public _empleadoService: EmpleadoService
@@ -28,11 +29,19 @@ export class EmpleadoDetalleComponent implements OnInit {
     this._visual.mostrarImagen(src)
   }
 
-  autorizarPermiso(permiso: Permiso) {
+  autorizarPermiso(idHisto: string) {
     this._empleadoService
-    .registrarPermiso(this.empleado._id, permiso)
-    .subscribe( x=> {
-      this.permisoActualizado.emit()
-    } )
+      .permisoAutorizar(this.empleado._id, idHisto)
+      .subscribe(x => {
+        this.permisoActualizado.emit()
+      })
+  }
+
+  rechazarPermiso(rechazo: { idHisto: string; motivo: string }) {
+    this._empleadoService
+      .permisoRechazar(this.empleado._id, rechazo.idHisto, rechazo.motivo)
+      .subscribe(x => {
+        this.permisoActualizado.emit()
+      })
   }
 }

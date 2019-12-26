@@ -25,7 +25,8 @@
     *ngIf="evento.permiso"
     [fecha]="fecha"
     [permiso]="evento.permiso"
-    (autorizacion)=autorizar($event)
+    (autorizacion)=autorizar()
+    (rechazado)=rechazado($event)
   ></app-empleado-evento-permiso>
 
   <app-empleado-evento-castigo
