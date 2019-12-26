@@ -50,7 +50,7 @@ export class EmpleadoEventoBonoComponent implements OnInit {
   definirDatos(bono: Bono) {
     Object.keys(bono).forEach(x => {
       if (this.datos.hasOwnProperty(x)) {
-        if (bono[x] > 0) {
+        if (bono[x] !== null) {
           if (x === 'otros') {
             this.mensaje = 'Bono especial: ' + bono.otros.motivo
             this.cantidad = bono.otros.cantidad
