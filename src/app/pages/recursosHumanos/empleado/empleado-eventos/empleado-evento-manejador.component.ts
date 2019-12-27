@@ -15,6 +15,8 @@ import { PermisoMotivo } from 'src/app/models/recursosHumanos/empleados/eventos/
 import { EstatusLaboral } from 'src/app/models/recursosHumanos/empleados/eventos/estatusLaboral.model'
 import { HistorialDeEventos } from '../../../../models/recursosHumanos/empleados/eventos/historialDeEventos.model'
 import { EmpleadoService } from '../../../../services/recursosHumanos/empleado.service'
+import { Empleado } from '../../../../models/recursosHumanos/empleados/empleado.model'
+import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-empleado-evento-manejador',
@@ -24,6 +26,7 @@ import { EmpleadoService } from '../../../../services/recursosHumanos/empleado.s
 export class EmpleadoEventoManejadorComponent implements OnInit {
   evento: EventosRH
   private _historialDeEventos
+  estasDentro: boolean = false
   @Input() set historialDeEventos(hist: HistorialDeEventos) {
     this.fecha = hist.fechaDeRegistroDeEvento
     this._historialDeEventos = hist
@@ -32,6 +35,7 @@ export class EmpleadoEventoManejadorComponent implements OnInit {
 
   @Output() autorizacion = new EventEmitter<string>()
   @Output() rechazar = new EventEmitter<{ idHisto: string; motivo: string }>()
+  @Output() eliminarEvento = new EventEmitter<string>()
 
   get historialDeEventos(): HistorialDeEventos {
     return this._historialDeEventos
@@ -39,7 +43,7 @@ export class EmpleadoEventoManejadorComponent implements OnInit {
 
   fecha: Date
 
-  constructor() {}
+  constructor(private _noti: ManejoDeMensajesService) {}
 
   ngOnInit() {}
 
@@ -49,5 +53,14 @@ export class EmpleadoEventoManejadorComponent implements OnInit {
 
   rechazado(motivo: string) {
     this.rechazar.emit({ idHisto: this.historialDeEventos._id, motivo })
+  }
+
+  eliminar() {
+    this._noti.confirmacionDeEliminacion(
+      'Si eliminas este evento los cambios hasta ahora echos en el kardex del empleado no se reflejaran de manera congruente al faltar informacion. Esto aplica especialmente en eventos donde se hizo un ajuste de sueldo. Aun asi quieres continuar?',
+      () => {
+        this.eliminarEvento.emit(this._historialDeEventos._id)
+      }
+    )
   }
 }

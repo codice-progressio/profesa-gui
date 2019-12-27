@@ -44,4 +44,12 @@ export class EmpleadoDetalleComponent implements OnInit {
         this.permisoActualizado.emit()
       })
   }
+
+  eliminarEvento(idHisto: string){
+    this._empleadoService
+    .eliminarEvento(this.empleado._id, idHisto)
+    .subscribe(x => {
+      this.permisoActualizado.emit()
+    })
+  }
 }

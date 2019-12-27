@@ -1,5 +1,10 @@
-<div *ngIf="evento" class="profiletimeline">
-
+<div
+  (mouseenter)="estasDentro = true"
+  (mouseleave)="estasDentro = false"
+  *ngIf="evento"
+  class="profiletimeline"
+  [ngClass]="{ 'bg-light': estasDentro }"
+>
   <app-empleado-evento-curso
     *ngIf="evento.curso"
     [fecha]="fecha"
@@ -25,8 +30,8 @@
     *ngIf="evento.permiso"
     [fecha]="fecha"
     [permiso]="evento.permiso"
-    (autorizacion)=autorizar()
-    (rechazado)=rechazado($event)
+    (autorizacion)="autorizar()"
+    (rechazado)="rechazado($event)"
   ></app-empleado-evento-permiso>
 
   <app-empleado-evento-castigo
@@ -69,4 +74,19 @@
   </app-empleado-evento-vacaciones>
 
   <ng-content></ng-content>
+
+  <div *ngIf="estasDentro" class="row">
+    <div class="col-12">
+      <a
+        data-dismiss="modal"
+        (click)="eliminar()"
+        class="btn btn-danger btn-sm btn-rounded"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-times-circle    "></i> Eliminar evento
+      </a>
+      <hr />
+    </div>
+  </div>
 </div>

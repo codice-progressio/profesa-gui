@@ -187,7 +187,7 @@
               >Historial de eventos</a
             >
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#profile" role="tab"
               >Profile</a
             >
@@ -196,7 +196,7 @@
             <a class="nav-link" data-toggle="tab" href="#settings" role="tab"
               >Settings</a
             >
-          </li>
+          </li> -->
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -207,6 +207,7 @@
                 [historialDeEventos]="historial"
                 (autorizacion)="autorizarPermiso($event)"
                 (rechazar)="rechazarPermiso($event)"
+                (eliminarEvento)='eliminarEvento($event)'
               >
               </app-empleado-evento-manejador>
 
@@ -407,7 +408,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 class="display-1">No has seleccionado una <b>requiscion</b></h1>
+        <h1 class="display-1">No has seleccionado un <b>empleado</b></h1>
       </div>
     </div>
   </div>

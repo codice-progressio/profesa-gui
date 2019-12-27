@@ -289,14 +289,14 @@ export class EmpleadoService extends CRUD<
   registrarEstatusLaboral_baja(_id: string, observaciones: string) {
     const a = this.preloaderEvento('Aplicando baja al empleado')
     const url = this.urlEvento('estatusLaboral/baja')
-    const datos = {_id, observaciones}
+    const datos = { _id, observaciones }
     return this.registroDeEventoGenerico(url, a, datos)
   }
 
   registrarEstatusLaboral_reingreso(_id: string, observaciones: string) {
     const a = this.preloaderEvento('Aplicando reingreso al empleado')
     const url = this.urlEvento('estatusLaboral/reingreso')
-    const datos = {_id, observaciones}
+    const datos = { _id, observaciones }
     return this.registroDeEventoGenerico(url, a, datos)
   }
 
@@ -325,7 +325,7 @@ export class EmpleadoService extends CRUD<
     datos['_id'] = _id
     return this.registroDeEventoGenerico(url, a, datos)
   }
-  
+
   registrarEstatusLaboral_incapacidad_maternidad(
     _id: string,
     datos: EstatusLaboral
@@ -344,4 +344,14 @@ export class EmpleadoService extends CRUD<
   //  END Estatus laboral
   // =====================================
   // -->
+
+  eliminarEvento(_id: string, idHisto: string) {
+    const a = this.preloaderEvento('Aplicando baja al empleado')
+    const url = this.urlEvento(`${_id}/${idHisto}`)
+
+    return this.http.delete(url).pipe(
+      map((resp: any) => this.mapFun(resp, a)),
+      catchError(err => this.errFun(err))
+    )
+  }
 }
