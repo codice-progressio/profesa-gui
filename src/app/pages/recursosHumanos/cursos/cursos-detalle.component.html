@@ -1,0 +1,45 @@
+<ng-container *ngIf="curso">
+  <div class="d-flex aling-items-center justify-content-between">
+    <h1>{{ curso.nombre }}</h1>
+    <h3>Detalle de <b>curso</b></h3>
+  </div>
+
+  <h3>
+    <small>Duracion: </small><b>{{ curso.duracion }}</b> horas
+  </h3>
+  <h3>
+    <small>Ambito: </small>
+    <b>
+      <ng-container *ngIf="curso.esCursoDeTroncoComun">
+        Tronco comun</ng-container
+      >
+      <ng-container *ngIf="curso.esCursoDeEspecializacion">
+        Especializante</ng-container
+      >
+    </b>
+  </h3>
+
+  <h3>Instructor: {{ curso.instructor }}</h3>
+
+  <h4>Descripcion:</h4>
+  <p>{{ curso.descripcionDeCurso }}</p>
+
+  <p>Asistencia:</p>
+
+  <ul class="list-group">
+    <li class="list-group-item active">Empleados que han asistido</li>
+
+    <li *ngIf="1 > curso.asistencias.length" class="list-group-item text-muted">
+      No hay asistencia a este curso.
+    </li>
+
+    <li class="list-group-item" *ngFor="let asistencia of curso.asistencias">
+      {{ asistencia.empleado.nombreCompleto() }} -
+      {{ asistencia.fecha | fecha: "LLL" }}
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="!curso">
+  <h1 class="display-1">No has seleccinado ningun <b>curso</b></h1>
+</ng-container>

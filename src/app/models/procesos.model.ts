@@ -13,13 +13,13 @@ export class Procesos {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.1.5.1.0");
+    
     Object.assign(this, input)
-    //console.log("x  ?.1.5.1.1");
+    
     this.proceso = new Proceso().deserialize(input.proceso)
-    //console.log("x  ?.1.5.1.2", input.procesoPadre);
+    
     // this.procesoPadre = new Proceso().deserialize(input.procesoPadre)
-    //console.log("x  ?.1.5.1.3");
+    
 
     return this
   }

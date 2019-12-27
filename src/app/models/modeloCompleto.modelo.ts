@@ -44,28 +44,28 @@ export class ModeloCompleto
   ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.1.0");
+    
     Object.assign(this, input)
 
     this.modelo = new Modelo().deserialize(input.modelo)
-    //console.log("x  ?.1.1");
+    
     this.tamano = new Tamano().deserialize(input.tamano)
-    //console.log("x  ?.1.2");
+    
     this.color = new Color().deserialize(input.color)
-    //console.log("x  ?.1.3");
+    
     this.terminado = new Terminado().deserialize(input.terminado)
-    //console.log("x  ?.1.4");
+    
     this.laserAlmacen = new Laser().deserialize(input.laserAlmacen)
-    //console.log("x  ?.1.5");
+    
     this.familiaDeProcesos = new FamiliaDeProcesos().deserialize(
       input.familiaDeProcesos
     )
-    //console.log("x  ?.1.6");
+    
 
     this.procesosEspeciales = input.procesosEspeciales.map((proceso) =>
       new Procesos().deserialize(proceso)
     )
-    //console.log("x  ?.1.7");
+    
 
     return this
   }

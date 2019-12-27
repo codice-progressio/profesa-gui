@@ -1,0 +1,96 @@
+<app-empleado-evento-plantilla
+  [icono]="icono"
+  [mensaje]="mensaje"
+  [fecha]="fecha"
+>
+  <h3>{{ motivo }}</h3>
+  <div class="span bold-text">
+    <span *ngIf="permiso.conGoceDeSueldo">Con goce de sueldo</span>
+
+    <span *ngIf="permiso.sinGoceDeSueldo">Sin goce de sueldo</span>
+  </div>
+  <br />
+
+  Desde el {{ permiso.fechaDeInicio | fecha: 'LL' }} hasta el
+  {{ permiso.fechaDeFinalizacion | fecha: 'LL' }}
+  <br />
+
+  <h3 class="text-muted">
+    {{ otroMotivo }}
+  </h3>
+
+  <br />
+
+  <span *ngIf="permiso.autorizacionSupervisor">
+    <i class="fas fa-check-circle  text-success  "></i> Autorizado por
+    supervisor
+  </span>
+  <br />
+  <span *ngIf="permiso.autorizacionRH">
+    <i class="fas fa-check-circle  text-success  "></i>
+    Autorizado RH</span
+  >
+  <span *ngIf="permiso.rechazado">
+    <i class="fas fa-times-circle  text-danger  "></i>
+    No autorizado RH
+
+    <hr />
+
+    <b class="font-bold">Motivo de rechazo: </b>{{ permiso.motivoRechazo }}
+
+    <hr />
+
+    <small class="text-muted font-weight-lighter">
+      Rechazado el {{ permiso.fechaRechazo | fecha: 'LLLL' }}
+    </small>
+  </span>
+  <br />
+  <br />
+
+  <p>{{ permiso.comentario }}</p>
+  <ng-container *ngIf="!permiso.autorizacionRH && !permiso.rechazado">
+    <hr />
+
+    <b class="text-muted font-weight-bold">Se requiere una accion: </b>
+
+    <br />
+
+    <a
+      (click)="autorizar()"
+      class="btn btn-success mr-3"
+      href="javascript:void(0)"
+      role="button"
+      data-dismiss="modal"
+    >
+      <i class="fas fa-check    "></i>
+
+      Dar autorizacion
+    </a>
+
+    <a
+      (click)="rechazar($event, motivo.value)"
+      class="btn btn-danger"
+      href="javascript:void(0)"
+      role="button"
+      data-dismiss="modal"
+     
+    >
+      <i class="fas fa-times    "></i>
+
+      Rechazar
+    </a>
+
+    <div class="form-group">
+      <input
+        #motivo
+        type="text"
+        class="form-control mt-3"
+        name="motivo"
+        id="motivo"
+        aria-describedby="helpId"
+      />
+      <small id="helpId" class="form-text text-muted">Motivo del rechazo</small>
+    </div>
+  </ng-container>
+</app-empleado-evento-plantilla>
+

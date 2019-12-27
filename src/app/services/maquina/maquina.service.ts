@@ -37,11 +37,18 @@ export class MaquinaService extends CRUD <Maquina> {
     this.urlBusqueda = '/buscar';
   }
   
-  buscarMaquinasPorDepartamento(NOMBRE_DEPTO: string): any {
-    const url = URL_SERVICIOS + `/maquina`    ;
+  buscarMaquinasPorDepartamento(id: string): any {
+    let a = this._preLoaderService.loading('Buscando maquinas para este departamento')
+    const url = URL_SERVICIOS + `/maquina/departamento/${id}`;
     return this.http.get( url ).pipe(
       map( ( resp: any ) => {
-        return resp.maquinas;
+        this._msjService.ok_(resp, null, a)
+        let ordenadoPorNombre = <Maquina[]>  resp.maquinas
+
+        ordenadoPorNombre = ordenadoPorNombre.sort((a, b)=>{
+          return a.nombre < b.nombre ? 1 : -1
+        } )
+        return ordenadoPorNombre;
       }), 
       catchError( err => {
         this._msjService.err(err);

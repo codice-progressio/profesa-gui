@@ -65,12 +65,14 @@ export class LoginComponent implements OnInit {
 
     });
   }
-
+  loading = false
   ingresar (forma: NgForm) {
 
     if (forma.invalid) {
       return;
     }
+
+    this.loading = true
 
     const usuario = new Usuario(null, forma.value.email, forma.value.password);
     this._usuarioService.login(usuario, forma.value.recuerdame)

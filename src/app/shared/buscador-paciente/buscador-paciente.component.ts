@@ -32,7 +32,7 @@ import { Observable, throwError, Subscription } from "rxjs"
 
 export class BuscadorPacienteComponent<T> implements OnInit {
 
-  private ob = Object
+  ob = Object
   /**
    * El termino que se quiere buscar.
    */

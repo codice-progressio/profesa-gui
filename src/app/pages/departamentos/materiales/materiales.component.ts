@@ -57,8 +57,8 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
         // Creamos el departamento transformación para que no nos de error. 
         this.orden.ubicacionActual.materiales = new Materiales();
         // False por que a esta altura solo vamos a guardar la máquina. 
-        this.orden.ubicacionActual.materiales.guardar = false;
-        this.orden.ubicacionActual.materiales.maquinaActual = null;
+        this.orden.ubicacionActual.materiales.guardar = true;
+        // this.orden.ubicacionActual.materiales.maquinaActual = null;
         
       } 
     }; 
@@ -133,22 +133,5 @@ export class MaterialesComponent extends GeneralesComponents< Materiales > imple
  setEmpleado( empleado: Usuario ){ 
     this.formulario.get('cargo').setValue( empleado._id );
  }
-
-  /**
-   *Se ejecuta desde el html y pone en nulo la maquina actual. Se hace
-  asi poor que si no existe el departaemtno en el trayecto(Por modificaiones)
-  * lo crea. 
-  *
-  * @memberof MaterialesComponent
-  */
-  maquinaActualEnNulo(orden: Orden ) {
-    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
-    orden.ubicacionActual.materiales.maquinaActual = null;
-  }
-
-  setMaquinaActual( orden: Orden, maquina: Maquina ){
-    if( !orden.ubicacionActual.materiales ) orden.ubicacionActual.materiales = new Materiales();
-    orden.ubicacionActual.materiales.maquinaActual = maquina
-  }
 
 }

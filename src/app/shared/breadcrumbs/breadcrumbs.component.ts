@@ -18,7 +18,7 @@ constructor( private router: Router,
   private title: Title,
   private meta: Meta) {
     this.getDataRoute().subscribe( data => {
-      // console.log( event );
+      
       this.titulo = data.titulo;
       this.title.setTitle( this.titulo );
 

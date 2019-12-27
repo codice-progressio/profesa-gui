@@ -85,7 +85,6 @@ export class UsuariosComponent implements OnInit {
 
     this._usuarioServivce.cargarUsuarios(this.desde)
           .subscribe( (resp: any) => {
-            // console.log(resp);
             
             this.usuarios = <Usuario[]>resp.usuarios.filter( (x: Usuario)=> x.nombre !=='SUPER-ADMIN' );
             this.totalRegistros = resp.total;
@@ -96,7 +95,6 @@ export class UsuariosComponent implements OnInit {
 
   cambiarDesde(valor: number) {
     const desde = this.desde + valor;
-    // console.log(desde);
     if ( desde >= this.totalRegistros) {
       return;
     }
@@ -144,7 +142,6 @@ export class UsuariosComponent implements OnInit {
 
         this._usuarioServivce.borrarUsuario( usuario._id )
               .subscribe( () => {
-                // console.log(borrado);
                 this.cargarUsuarios();
               });
       }
@@ -154,8 +151,6 @@ export class UsuariosComponent implements OnInit {
   }
   // Guarda las modificaciones echas a un usuario.
   guardarUsuario( usuario: Usuario ) {
-    // console.log( usuario);
-    
     const a: any = () => {if ( usuario._id ) {
         this._usuarioServivce.actualizarUsuario(usuario)
         .subscribe(() => {

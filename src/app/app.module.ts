@@ -3,7 +3,7 @@ import { BrowserModule } from "@angular/platform-browser"
 // FECHAS EN ESPAÑOL
 import { NgModule, LOCALE_ID } from "@angular/core"
 import localePy from "@angular/common/locales/es-MX"
-import { registerLocaleData } from "@angular/common"
+import { registerLocaleData, APP_BASE_HREF } from "@angular/common"
 registerLocaleData(localePy, "es-MX")
 
 // Rutas
@@ -50,6 +50,7 @@ import { NgxMaskModule } from "ngx-mask"
   ],
   providers: [
     // Configuraciones de idioma.
+    {provide: APP_BASE_HREF, useValue : '/' },
     { provide: LOCALE_ID, useValue: "es-MX" },
     // Interceptor para agregar Bearer token.
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }

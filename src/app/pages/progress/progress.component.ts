@@ -18,7 +18,7 @@ export class ProgressComponent implements OnInit {
   // Si queremos mandar por función el valor cuando se modifica.
 
   // actualizar( event: number ) {
-  //   console.log( ' Evento: ', event);
+  
   // }
 
 }

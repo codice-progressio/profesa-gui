@@ -12,6 +12,17 @@ import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo";
 import { FolioService } from "src/app/services/folio/folio.service";
 import { DepartamentoService } from "src/app/services/departamento/departamento.service";
 
+/**
+ *Gestiona las propiedades generales para la gestion de los 
+ departamentos que registrar ordenes. El principal metodo
+ a tomar en cuenta es tareasDeConfiguracion que entre otras
+ cosas carga los valores por default como los id de los 
+ departamentos y la lista de ordenes filtrada.
+ *
+ * @export
+ * @class GeneralesComponents
+ * @template T
+ */
 export class GeneralesComponents<T> {
     
     /**
@@ -164,6 +175,7 @@ export class GeneralesComponents<T> {
             this._defaultService.cargarDefaults()
            .toPromise()
            .then( (def: DefaultModelData ) =>{
+               this.defaults = def
                this.ID_DEPTO = def.DEPARTAMENTOS[ this.variablesDepto._v ];
                // Obtenemos el nombre. 
                return this._departamentoService.buscarPorId( this.ID_DEPTO )
