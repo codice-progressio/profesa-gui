@@ -38,48 +38,48 @@ export class Trayecto implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.4.4.0", input)
+    
     if (!input) {
       console.log("No esta definido  el trayecto ")
       return this
     }
     Object.assign(this, input)
-    //console.log("x  ?.4.4.1", input.departamento)
+    
     this.departamento = new Departamento().deserialize(input.departamento)
-    //console.log("x  ?.4.4.2")
+    
 
-    //console.log("x  ?.4.4.3")
+    
 
     this.materiales = new Materiales().deserialize(input.materiales)
-    //console.log("x  ?.4.4.4")
+    
     this.transformacion = new Transformacion().deserialize(input.transformacion)
-    //console.log("x  ?.4.4.5")
+    
     this.pulido = new Pulido().deserialize(input.pulido)
-    //console.log("x  ?.4.4.6")
+    
     this.seleccion = new Seleccion().deserialize(input.seleccion)
-    //console.log("x  ?.4.4.7")
+    
     this.controlDeProduccion = new ControlDeProduccion().deserialize(
       input.controlDeProduccion
     )
-    //console.log("x  ?.4.4.8")
+    
     this.pastilla = new Pastilla().deserialize(input.pastilla)
-    //console.log("x  ?.4.4.9")
+    
     this.empaque = new Empaque().deserialize(input.empaque)
-    //console.log("x  ?.4.4.10")
+    
     this.productoTerminado = new ProductoTerminado().deserialize(
       input.productoTerminado
     )
-    //console.log("x  ?.4.4.11")
+    
     this.metalizado = new Metalizado().deserialize(input.metalizado)
-    //console.log("x  ?.4.4.12")
+    
     this.burato = new Burato().deserialize(input.burato)
-    //console.log("x  ?.4.4.13")
+    
     this.barnizado = new Barnizado().deserialize(input.barnizado)
-    //console.log("x  ?.4.4.14")
+    
     this.laser = new Laser().deserialize(input.laser)
-    //console.log("x  ?.4.4.15")
+    
     this.almacenDeBoton = new AlmacenDeBoton().deserialize(input.almacenDeBoton)
-    //console.log("x  ?.4.4.16")
+    
 
     return this
   }

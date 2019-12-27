@@ -45,7 +45,7 @@ export class UsuarioService {
     public _msjService: ManejoDeMensajesService,
     public _preLoaderService: PreLoaderService
   ) {
-    // console.log('Servicio de usuario listo');
+    
     this.cargarStorage();
   }
 
@@ -67,7 +67,7 @@ export class UsuarioService {
         this.token = resp.token;
         localStorage.setItem('token', this.token);
         // Si lo hace recive true
-        // console.log('token renovado. ');
+        
         this._msjService.ok_('Token renovado');
         return true;
       }),
@@ -174,7 +174,7 @@ export class UsuarioService {
         return true;
       }),
       catchError( err => {
-        // console.log( err.error);
+        
        this._msjService.err(err);
         return throwError(err);
       })

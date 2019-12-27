@@ -1,0 +1,180 @@
+<div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="curso?._id">{{ curso.nombre }}</h1>
+  <h1>
+    <span class="text-success" *ngIf="!curso?._id">
+      <i class="fas fa-plus-square    "></i> Crear <b>curso</b> </span
+    ><span class="text-warning" *ngIf="curso?._id">
+      <i class="fas fa-pen-square"></i> Modificar <b>curso</b>
+    </span>
+  </h1>
+</div>
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h3>Ambito del curso</h3>
+
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label
+          (click)="seleccionarAmbito(true)"
+          class="btn btn-primary"
+          [ngClass]="{ active: esCursoDeTroncoComun_FB?.value }"
+        >
+          <input
+            type="radio"
+            name="options"
+            id="option1"
+            autocomplete="off"
+            checked
+          />
+          <i
+            *ngIf="esCursoDeTroncoComun_FB?.value"
+            class="fas fa-check    "
+          ></i>
+          Tronco comun
+        </label>
+        <label
+          (click)="seleccionarAmbito(false)"
+          class="btn btn-primary"
+          [ngClass]="{ active: esCursoDeEspecializacion_FB?.value }"
+        >
+          <input type="radio" name="options" id="option2" autocomplete="off" />
+          <i
+            *ngIf="esCursoDeEspecializacion_FB?.value"
+            class="fas fa-check    "
+          ></i>
+          Especializante
+        </label>
+      </div>
+    </div>
+
+    <!-- 
+    =====================================
+     nombre
+    =====================================
+    -->
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(nombre_FB),
+            'is-valid': vs.valid(nombre_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="nombre"
+        />
+        <small id="helpId" class="form-text text-muted">Nombre del curso</small>
+        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END nombre
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     duracion
+    =====================================
+    -->
+    <div class="col-2">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(duracion_FB),
+            'is-valid': vs.valid(duracion_FB)
+          }"
+          type="number"
+          class="form-control"
+          formControlName="duracion"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Duracion en horas</small
+        >
+        <app-validacion-inputs [campo]="duracion_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END duracion
+    =====================================
+    -->
+
+    <!-- 
+    =====================================
+     instructor
+    =====================================
+    -->
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(instructor_FB),
+            'is-valid': vs.valid(instructor_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="instructor"
+        />
+        <small id="helpId" class="form-text text-muted">Intructor(es)</small>
+        <app-validacion-inputs [campo]="instructor_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END instructor
+    =====================================
+    -->
+    <!-- 
+    =====================================
+     descripcionDeCurso
+    =====================================
+    -->
+    <div class="col-12">
+      <div class="form-group">
+        <textarea
+          [ngClass]="{
+            'is-invalid': vs.invalid(descripcionDeCurso_FB),
+            'is-valid': vs.valid(descripcionDeCurso_FB)
+          }"
+          class="form-control"
+          formControlName="descripcionDeCurso"
+        ></textarea>
+        <small id="helpId" class="form-text text-muted"
+          >Descripcion del curso</small
+        >
+        <app-validacion-inputs
+          [campo]="descripcionDeCurso_FB"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END descripcionDeCurso
+    =====================================
+    -->
+  </div>
+
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    [ngClass]="{ active: !formulario.invalid }"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#crearModificarCursoModal"
+    (click)="cancelar()"
+    class="text-white btn btn-danger active"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+</form>

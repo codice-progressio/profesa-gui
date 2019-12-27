@@ -6,7 +6,7 @@ import { SharedModule } from "../shared/shared.module"
 import { PAGES_ROUTES } from "./pages.routes"
 import { ProgressComponent } from "./progress/progress.component"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { CommonModule } from "@angular/common"
+import { CommonModule, DecimalPipe } from "@angular/common"
 
 // ng2-charts
 import { ChartsModule } from "ng2-charts"
@@ -137,6 +137,45 @@ import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/req
 import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component';
 import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component';
 import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion-filtros/requisicion-filtros.component";
+import { EmpleadoCrearModificarComponent } from './recursosHumanos/empleado/empleado-crear-modificar.component';
+import { EmpleadoDetalleComponent } from './recursosHumanos/empleado/empleado-detalle.component';
+import { EmpleadoComponent } from './recursosHumanos/empleado/empleado.component';
+import { CursosCrearModificarComponent } from './recursosHumanos/cursos/cursos-crear-modificar.component';
+import { CursosDetalleComponent } from './recursosHumanos/cursos/cursos-detalle.component';
+import { CursosComponent } from './recursosHumanos/cursos/cursos.component';
+import { AreasCrearModificarComponent } from './recursosHumanos/areas/areas-crear-modificar.component';
+import { AreasDetalleComponent } from './recursosHumanos/areas/areas-detalle.component';
+import { AreasComponent } from './recursosHumanos/areas/areas.component';
+import { PuestosCrearModificarComponent } from './recursosHumanos/puestos/puestos-crear-modificar.component';
+import { PuestosDetalleComponent } from './recursosHumanos/puestos/puestos-detalle.component';
+import { PuestosComponent } from './recursosHumanos/puestos/puestos.component';
+import { DepartamentoCrearModificarComponent } from './departamento/departamento-crear-modificar.component';
+import { DepartamentoDetalleComponent } from './departamento/departamento-detalle.component';
+import { DepartamentoComponent } from './departamento/departamento.component';
+import { EmpleadoFiltrosComponent } from './recursosHumanos/empleado/empleado-filtros/empleado-filtros.component';
+import { EmpleadoEventoCursoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-curso.component';
+import { EmpleadoEventoVacacionesComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-vacaciones.component';
+import { EmpleadoEventoCambioDeSueldoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-cambio-de-sueldo.component';
+import { EmpleadoEventoPuestoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-puesto.component';
+import { EmpleadoEventoFelicitacionesPorEscritoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-felicitaciones-por-escrito.component';
+import { EmpleadoEventoAmonestacionesPorEscritoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-amonestaciones-por-escrito.component';
+import { EmpleadoEventoCastigoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-castigo.component';
+import { EmpleadoEventoPermisoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-permiso.component';
+import { EmpleadoEventoBonoComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-bono.component';
+import { EmpleadoEventoEstatusLaboralComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-estatus-laboral.component';
+import { EmpleadoEventoManejadorComponent } from './recursosHumanos/empleado/empleado-eventos/empleado-evento-manejador.component';
+import { EmpleadoEventoPlantillaComponent } from "./recursosHumanos/empleado/empleado-eventos/empleado-evento-plantilla/empleado-evento-plantilla.component";
+import { EmpleadoEventoAgregarCursoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-evento-agregar-curso.component';
+import { EmpleadoEventosCrearModalComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-eventos-crear-modal/empleado-eventos-crear-modal.component';
+import { EmpleadoAgregarVacacionesComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-vacaciones.component';
+import { EmpleadoAgregarCambiosDeSueldoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-cambios-de-sueldo.component';
+import { EmpleadoAgregarPuestoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-puesto.component';
+import { EmpleadoAgregarFelicitacionPorEscritoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-felicitacion-por-escrito.component';
+import { EmpleadoAgregarAmonestacionPorEscritoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-amonestacion-por-escrito.component';
+import { EmpleadoAgregarCastigoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-castigo.component';
+import { EmpleadoAgregarPermisoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-permiso.component';
+import { EmpleadoAgregarBonoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-bono.component';
+import { EmpleadoAgregarEstatusLaboralComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-estatus-laboral.component';
 
 @NgModule({
   declarations: [
@@ -265,7 +304,46 @@ import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion
     RecibirParcialidadComponent,
     RecibirTerminacionComponent,
     RecibirCancelacionComponent,
-    RequisicionFiltrosComponent
+    RequisicionFiltrosComponent,
+    EmpleadoCrearModificarComponent,
+    EmpleadoDetalleComponent,
+    EmpleadoComponent,
+    CursosCrearModificarComponent,
+    CursosDetalleComponent,
+    CursosComponent,
+    AreasCrearModificarComponent,
+    AreasDetalleComponent,
+    AreasComponent,
+    PuestosCrearModificarComponent,
+    PuestosDetalleComponent,
+    PuestosComponent,
+    DepartamentoCrearModificarComponent,
+    DepartamentoDetalleComponent,
+    DepartamentoComponent,
+    EmpleadoFiltrosComponent,
+    EmpleadoEventoCursoComponent,
+    EmpleadoEventoVacacionesComponent,
+    EmpleadoEventoCambioDeSueldoComponent,
+    EmpleadoEventoPuestoComponent,
+    EmpleadoEventoFelicitacionesPorEscritoComponent,
+    EmpleadoEventoAmonestacionesPorEscritoComponent,
+    EmpleadoEventoCastigoComponent,
+    EmpleadoEventoPermisoComponent,
+    EmpleadoEventoBonoComponent,
+    EmpleadoEventoEstatusLaboralComponent,
+    EmpleadoEventoManejadorComponent,
+    EmpleadoEventoPlantillaComponent,
+    EmpleadoEventoAgregarCursoComponent,
+    EmpleadoEventosCrearModalComponent,
+    EmpleadoAgregarVacacionesComponent,
+    EmpleadoAgregarCambiosDeSueldoComponent,
+    EmpleadoAgregarPuestoComponent,
+    EmpleadoAgregarFelicitacionPorEscritoComponent,
+    EmpleadoAgregarAmonestacionPorEscritoComponent,
+    EmpleadoAgregarCastigoComponent,
+    EmpleadoAgregarPermisoComponent,
+    EmpleadoAgregarBonoComponent,
+    EmpleadoAgregarEstatusLaboralComponent
   ],
   exports: [
     DashboardComponent,
@@ -283,7 +361,7 @@ import { RequisicionFiltrosComponent } from "./almacenes/requisicion/requisicion
     PipesModule,
     QRCodeModule
   ]
-,providers : [ ImagenPipe]
+,providers : [ ImagenPipe, DecimalPipe]
   // Para permitir la carga dinamica de componentes.
 })
 export class PagesModule {}

@@ -50,7 +50,6 @@ export class HospitalesComponent implements OnInit {
       this.cargarHospitales();
       return true;
     }
-    // console.log( 'este es el termino: ' + termino);
     this.termino = termino;
     this.cargando = true;
     this._hospitalService.buscarHospital( this.termino )
@@ -83,7 +82,6 @@ export class HospitalesComponent implements OnInit {
 
         this._hospitalService.borrarHospital( hospital._id )
               .subscribe( borrado => {
-                // console.log(borrado);
                 this.cargarHospitales();
               });
       }
@@ -92,7 +90,6 @@ export class HospitalesComponent implements OnInit {
 
   cambiarDesde( valor: number) {
     const desde = this.desde + valor;
-    // console.log(desde);
     if ( desde >= this._hospitalService.totalHospitales) {
       return;
     }

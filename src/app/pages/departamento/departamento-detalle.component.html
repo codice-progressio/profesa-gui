@@ -1,0 +1,12 @@
+<ng-container *ngIf="departamento">
+  <h1>
+    <small>Departamento: </small> <b>{{ departamento.nombre }}</b>
+  </h1>
+
+  <h3>
+    <small class="text-muted">Area: </small> {{ departamento.area.nombre }}
+  </h3>
+</ng-container>
+<ng-container *ngIf="!departamento">
+  <h1>No has seleccionado un <b>departamento</b></h1>
+</ng-container>

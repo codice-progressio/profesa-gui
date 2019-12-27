@@ -1,0 +1,17 @@
+<app-empleado-evento-plantilla
+  [icono]="'fa-user-tie'"
+  [mensaje]="mensaje"
+  [fecha]="fecha"
+>
+  <h3>
+    <span class="text-muted">Puesto nuevo: </span
+    ><b>{{ puesto.nuevo.puesto }}</b>
+  </h3>
+
+  <span class="text-muted"
+    >Puesto anterior:
+    <span class="font-bold">{{ puesto.anterior.puesto }}</span></span
+  >
+
+  <p>{{ puesto.observaciones }}</p>
+</app-empleado-evento-plantilla>

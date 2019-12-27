@@ -1,0 +1,60 @@
+<div class="justify-content-between d-flex aling-items-center">
+  <h1 *ngIf="area?._id">{{ area.nombre }}</h1>
+  <h1>
+    <span class="text-success" *ngIf="!area?._id">
+      <i class="fas fa-plus-square    "></i> Crear <b>area</b> </span
+    ><span class="text-warning" *ngIf="area?._id">
+      <i class="fas fa-pen-square"></i> Modificar <b>area</b>
+    </span>
+  </h1>
+</div>
+
+<form [formGroup]="formulario">
+  <div class="row">
+    <!-- 
+    =====================================
+     nombre
+    =====================================
+    -->
+    <div class="col-6">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(nombre_FB),
+            'is-valid': vs.valid(nombre_FB)
+          }"
+          type="text"
+          class="form-control"
+          formControlName="nombre"
+        />
+        <small id="helpId" class="form-text text-muted">Nombre del area</small>
+        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+    =====================================
+     END nombre
+    =====================================
+    -->
+  </div>
+
+  <br />
+
+  <button
+    (click)="submit(formulario.value, formulario.valid, $event)"
+    [disabled]="formulario.invalid"
+    class="text-white btn btn-success mr-3"
+    role="button"
+  >
+    <i class="fas fa-save    "></i> Guardar
+  </button>
+  <a
+    data-toggle="modal"
+    data-target="#crearModificarArea"
+    (click)="cancelar()"
+    class="text-white btn btn-danger"
+    role="button"
+  >
+    <i class="fas fa-times    "></i> Cancelar</a
+  >
+</form>

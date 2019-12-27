@@ -1,0 +1,249 @@
+<div class="row">
+  <div class="col-12">
+    <h2>
+      Estatus laboral de <b>{{ empleado?.nombreCompleto() }}</b>
+    </h2>
+    <hr />
+  </div>
+
+  <div class="col-12 text-center">
+    <h1>
+      <span class="text-muted">ESTATUS ACTUAL</span>
+      <br />
+      <br />
+      <span class="animated infinite pulse slower d-block">
+        [
+        <span class="font-bold text-success" *ngIf="empleado.activo"
+          >ACTIVO</span
+        >
+        <span class="font-bold text-dark" *ngIf="!empleado.activo">BAJA</span> ]
+      </span>
+    </h1>
+  </div>
+  <div class="col-12">
+    <br />
+    <br />
+    <br />
+  </div>
+  <div class="col-4"></div>
+  <div class="col-4">
+    <button
+      (click)="baja()"
+      *ngIf="empleado.activo"
+      type="button"
+      class="btn btn-danger btn-lg btn-block"
+      data-dismiss="modal"
+    >
+      <i class="fas fa-user-slash    "></i> DAR DE BAJA
+    </button>
+    <button
+      (click)="reingreso()"
+      *ngIf="!empleado.activo"
+      type="button"
+      class="btn btn-success btn-lg btn-block"
+      data-dismiss="modal"
+    >
+      <i class="fas fa-user-plus    "></i> REINGRESAR
+    </button>
+  </div>
+  <div class="col-4"></div>
+  <div class="col-12 mt-3">
+    <div class="form-group">
+      <textarea
+        [(ngModel)]="observacionesIndependientes"
+        class="form-control"
+        name="obs"
+        id="obs"
+        rows="5"
+      ></textarea>
+      <small id="helpId" class="form-text text-muted"
+        >Si es necesario exprese los motivos aqui.</small
+      >
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+<br />
+
+<hr />
+
+<ng-container *ngIf="empleado.activo">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1 class="text-muted">INCAPACIDAD</h1>
+    </div>
+    <div class="col-12 text-center">
+      <div class="btn-group" data-toggle="buttons">
+        <label
+          (click)="seleccionarIncapacidad('enfermedadGeneral')"
+          class="btn btn-dark"
+        >
+          <input
+            [(ngModel)]="enfermedadGeneral"
+            type="radio"
+            autocomplete="off"
+          />
+          <i
+            *ngIf="enfermedadGeneral"
+            class="fas fa-check-circle animated pulse    "
+          ></i>
+          Enfermedad general
+        </label>
+        <label
+          (click)="seleccionarIncapacidad('riesgoDeTrabajo')"
+          class="btn btn-dark"
+        >
+          <input
+            [(ngModel)]="riesgoDeTrabajo"
+            type="radio"
+            autocomplete="off"
+          />
+          <i
+            *ngIf="riesgoDeTrabajo"
+            class="fas fa-check-circle animated pulse    "
+          ></i>
+          Riesgo de trabajo
+        </label>
+        <label
+          (click)="seleccionarIncapacidad('maternidad')"
+          class="btn btn-dark"
+        >
+          <input [(ngModel)]="maternidad" type="radio" autocomplete="off" />
+          <i
+            *ngIf="maternidad"
+            class="fas fa-check-circle animated pulse   "
+          ></i>
+          Maternidad
+        </label>
+      </div>
+    </div>
+
+    <div class="col-12 text-center mt-3">
+      <app-validacion-inputs [campo]="f('opcion')"></app-validacion-inputs>
+    </div>
+  </div>
+
+  <form [formGroup]="formulario" class="row mt-5">
+    <!-- 
+      =====================================
+       fechaInicioIncapacidad
+      =====================================
+      -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(f('fechaInicioIncapacidad')),
+            'is-valid': vs.valid(f('fechaInicioIncapacidad'))
+          }"
+          type="date"
+          class="form-control"
+          formControlName="fechaInicioIncapacidad"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Fecha de inicio incapacidad</small
+        >
+        <app-validacion-inputs
+          [campo]="f('fechaInicioIncapacidad')"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+      =====================================
+       END fechaInicioIncapacidad
+      =====================================
+      -->
+
+    <!-- 
+      =====================================
+       fechaFinalizacionIncapacidad
+      =====================================
+      -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <input
+          [ngClass]="{
+            'is-invalid': vs.invalid(f('fechaFinalizacionIncapacidad')),
+            'is-valid': vs.valid(f('fechaFinalizacionIncapacidad'))
+          }"
+          type="date"
+          class="form-control"
+          formControlName="fechaFinalizacionIncapacidad"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Fecha de finalizacion de incapacidad</small
+        >
+        <app-validacion-inputs
+          [campo]="f('fechaFinalizacionIncapacidad')"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+      =====================================
+       END fechaFinalizacionIncapacidad
+      =====================================
+      -->
+
+    <!-- 
+      =====================================
+       observaciones
+      =====================================
+      -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <textarea
+          rows="5"
+          [ngClass]="{
+            'is-invalid': vs.invalid(f('observaciones')),
+            'is-valid': vs.valid(f('observaciones'))
+          }"
+          class="form-control"
+          formControlName="observaciones"
+        ></textarea>
+        <small id="helpId" class="form-text text-muted">Observaciones</small>
+        <app-validacion-inputs
+          [campo]="f('observaciones')"
+        ></app-validacion-inputs>
+      </div>
+    </div>
+    <!-- 
+      =====================================
+       END observaciones
+      =====================================
+      -->
+
+    <div class="col-12">
+      <app-validacion-inputs [campo]="formulario"></app-validacion-inputs>
+    </div>
+
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <div class="col-12 text-right">
+      <a
+        data-toggle="modal"
+        [attr.data-target]="'#' + idModal"
+        (click)="cancelar()"
+        class="text-white btn btn-danger mr-3 active"
+        role="button"
+        data-dismiss="modal"
+      >
+        <i class="fas fa-times    "></i> Cancelar</a
+      >
+      <button
+        (click)="submit($event, formulario.invalid, formulario.value)"
+        data-toggle="modal"
+        [attr.data-target]="'#' + idModal"
+        [ngClass]="{ active: invalido }"
+        class="text-white btn btn-success  active"
+        role="button"
+        data-dismiss="modal"
+      >
+        <i class="fas fa-save    "></i> Guardar
+      </button>
+    </div>
+  </form>
+</ng-container>
