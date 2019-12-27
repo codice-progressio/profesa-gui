@@ -2,6 +2,21 @@
   <div class="d-flex aling-items-center justify-content-between">
     <h1>
       <b>{{ empleado.nombreCompleto() }}</b>
+
+      <span
+        [title]="
+          'Este usuario se encuentra con estatus laboral: ' + (empleado.activo
+            ? 'ACTIVO'
+            : 'BAJA')
+        "
+      >
+        [<span class="font-weight-lighter text-success" *ngIf="empleado.activo">
+          ACTIVO
+        </span>
+        <span class="font-weight-lighter text-muted" *ngIf="!empleado.activo">
+          BAJA </span
+        >]
+      </span>
     </h1>
     <h3>Kardex de <b>empleado</b></h3>
   </div>
@@ -27,6 +42,12 @@
       </div>
       <div class="card">
         <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span>
+              <small class="text-muted">Sueldo actual: </small>
+              <h6>${{ empleado.sueldoActual | number }}</h6>
+            </span>
+          </div>
           <div class="d-flex justify-content-between">
             <span>
               <small class="text-muted">Nomina </small>
@@ -185,7 +206,7 @@
                 *ngFor="let historial of empleado?.eventos"
                 [historialDeEventos]="historial"
                 (autorizacion)="autorizarPermiso($event)"
-                (rechazar)='rechazarPermiso($event)'
+                (rechazar)="rechazarPermiso($event)"
               >
               </app-empleado-evento-manejador>
 

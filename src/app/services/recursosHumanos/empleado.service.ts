@@ -237,13 +237,12 @@ export class EmpleadoService extends CRUD<
     return this.registroDeEventoGenerico(url, a, permiso)
   }
 
-
   /**
-   * Autoriza un permiso que este pendiente de autorizacion. 
+   * Autoriza un permiso que este pendiente de autorizacion.
    *
    * @param {string} _id
    * @param {string} idHisto El id del historial de eventos que contiene
-   * el objeto 'permiso' y que queremos autorizar. 
+   * el objeto 'permiso' y que queremos autorizar.
    * @returns
    * @memberof EmpleadoService
    */
@@ -251,14 +250,14 @@ export class EmpleadoService extends CRUD<
     const a = this.preloaderEvento('Autorizando permiso')
     const url = this.urlEvento('permiso/autorizar')
 
-    return this.registroDeEventoGenerico(url, a, {_id, idHisto})
+    return this.registroDeEventoGenerico(url, a, { _id, idHisto })
   }
   /**
-   * Rechaza un permiso que este pendiente de autorizacion. 
+   * Rechaza un permiso que este pendiente de autorizacion.
    *
    * @param {string} _id
    * @param {string} idHisto El id del historial de eventos que contiene
-   * el objeto 'permiso' y que queremos autorizar. 
+   * el objeto 'permiso' y que queremos autorizar.
    * @returns
    * @memberof EmpleadoService
    */
@@ -266,11 +265,8 @@ export class EmpleadoService extends CRUD<
     const a = this.preloaderEvento('Rechazando permiso')
     const url = this.urlEvento('permiso/rechazar')
 
-    return this.registroDeEventoGenerico(url, a, {_id, idHisto, motivo})
+    return this.registroDeEventoGenerico(url, a, { _id, idHisto, motivo })
   }
-
-
-  
 
   registrarBono(_id: string, bono: Bono) {
     const a = this.preloaderEvento('Aplicando cambio de bono')
@@ -280,13 +276,72 @@ export class EmpleadoService extends CRUD<
 
     return this.registroDeEventoGenerico(url, a, bono)
   }
-  
-  registrarEstatusLaboral(_id: string, datos: EstatusLaboral) {
-    const a = this.preloaderEvento('Aplicando cambio de estatus laboral')
-    const url = this.urlEvento('estatusLaboral')
 
-    datos['_id'] = _id
+  // <!--
+  // =====================================
+  //  Estatus laboral
+  // =====================================
+  // -->
 
+  // Cada operacion la hizimos de manera atomica.
+  // No permite tener mas control
+
+  registrarEstatusLaboral_baja(_id: string, observaciones: string) {
+    const a = this.preloaderEvento('Aplicando baja al empleado')
+    const url = this.urlEvento('estatusLaboral/baja')
+    const datos = {_id, observaciones}
     return this.registroDeEventoGenerico(url, a, datos)
   }
+
+  registrarEstatusLaboral_reingreso(_id: string, observaciones: string) {
+    const a = this.preloaderEvento('Aplicando reingreso al empleado')
+    const url = this.urlEvento('estatusLaboral/reingreso')
+    const datos = {_id, observaciones}
+    return this.registroDeEventoGenerico(url, a, datos)
+  }
+
+  registrarEstatusLaboral_incapacidad_enfermedadGeneral(
+    _id: string,
+    datos: EstatusLaboral
+  ) {
+    const a = this.preloaderEvento(
+      'Aplicando incapacidad por enfermedad general al empleado'
+    )
+    const url = this.urlEvento('estatusLaboral/incapacidad/enfermedadGeneral')
+
+    datos['_id'] = _id
+    return this.registroDeEventoGenerico(url, a, datos)
+  }
+
+  registrarEstatusLaboral_incapacidad_riesgoDeTrabajo(
+    _id: string,
+    datos: EstatusLaboral
+  ) {
+    const a = this.preloaderEvento(
+      'Aplicando incapacidad por riesgo de trabajo al empleado'
+    )
+    const url = this.urlEvento('estatusLaboral/incapacidad/riesgoDeTrabajo')
+
+    datos['_id'] = _id
+    return this.registroDeEventoGenerico(url, a, datos)
+  }
+  
+  registrarEstatusLaboral_incapacidad_maternidad(
+    _id: string,
+    datos: EstatusLaboral
+  ) {
+    const a = this.preloaderEvento(
+      'Aplicando incapacidad por maternidad al empleado'
+    )
+    const url = this.urlEvento('estatusLaboral/incapacidad/maternidad')
+
+    datos['_id'] = _id
+    return this.registroDeEventoGenerico(url, a, datos)
+  }
+
+  // <!--
+  // =====================================
+  //  END Estatus laboral
+  // =====================================
+  // -->
 }

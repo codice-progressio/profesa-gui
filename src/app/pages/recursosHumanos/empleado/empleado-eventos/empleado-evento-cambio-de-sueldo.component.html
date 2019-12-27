@@ -3,11 +3,11 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
-  <h3>Aumento: ${{ cambiosDeSueldo.aumento }}</h3>
+  <h3>Aumento: ${{ cambiosDeSueldo.aumento | number }}</h3>
   Sueldo anterior: $
   <span class="text-muted font-bold">{{
     cambiosDeSueldo.sueldAnteriorAlCambio | number: '0.2-4'
   }}</span>
 
-  <p>{{cambiosDeSueldo.observacion}}</p>
+  <p>{{ cambiosDeSueldo.observacion }}</p>
 </app-empleado-evento-plantilla>

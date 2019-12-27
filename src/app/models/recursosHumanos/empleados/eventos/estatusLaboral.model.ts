@@ -7,7 +7,9 @@ export class EstatusLaboral implements Deserializable {
       public incapacidadEnfermedadGeneral?: boolean,
       public incapacidadRiesgoDeTrabajo?: boolean,
       public incapacidadMaternidad?: boolean,
-      public observaciones?: string
+      public observaciones?: string,
+      public fechaInicioIncapacidad?: Date,
+      public fechaFinalizacionIncapacidad?: Date,
   ) {}
 
   deserialize(input: this): this {
