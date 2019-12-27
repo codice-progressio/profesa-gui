@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-12">
+    <h2>
+      Agregar vacaciones a <b>{{ empleado?.nombreCompleto() }}</b>
+    </h2>
+  </div>
+
+  <form [formGroup]="formulario" class="col-12">
+    <div class="row">
+      <!-- 
+      =====================================
+       desde
+      =====================================
+      -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('desde')),
+              'is-valid': vs.valid(f('desde'))
+            }"
+            type="date"
+            class="form-control"
+            formControlName="desde"
+          />
+          <small id="helpId" class="form-text text-muted">Fecha desde</small>
+          <app-validacion-inputs [campo]="f('desde')"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+      =====================================
+       END desde
+      =====================================
+      -->
+
+      <!-- 
+      =====================================
+       hasta
+      =====================================
+      -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('hasta')),
+              'is-valid': vs.valid(f('hasta'))
+            }"
+            type="date"
+            class="form-control"
+            formControlName="hasta"
+          />
+          <small id="helpId" class="form-text text-muted">Fecha hasta</small>
+          <app-validacion-inputs [campo]="f('hasta')"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+      =====================================
+       END hasta
+      =====================================
+      -->
+
+      <div class="col-12">
+        <app-validacion-inputs
+          [campo]="formulario"
+        ></app-validacion-inputs>
+      </div>
+
+      <div class="col-12">
+        <hr />
+      </div>
+
+      <div class="col-12">
+        <button
+          (click)="submit($event, formulario.invalid, formulario.value)"
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          [ngClass]="{ active: invalido }"
+          class="text-white btn btn-success mr-3 active"
+          role="button"
+        >
+          <i class="fas fa-save    "></i> Guardar
+        </button>
+        <a
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          (click)="cancelar()"
+          class="text-white btn btn-danger active"
+          role="button"
+        >
+          <i class="fas fa-times    "></i> Cancelar</a
+        >
+      </div>
+    </div>
+  </form>
+</div>

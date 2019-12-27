@@ -6,7 +6,7 @@
       accept="image/*"
       (change)="handleInputChange($event, 'input')"
       class="custom-file-input"
-      multiple
+      [multiple] = multiple
     />
     <label class="custom-file-label" for="inputGroupFile01"
       >Seleccionar ficheros</label

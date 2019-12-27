@@ -1,0 +1,15 @@
+<app-empleado-evento-plantilla
+  [icono]="'fa-sad-cry'"
+  [mensaje]="mensaje"
+  [fecha]="fecha"
+>
+  Castigo el dia {{ castigo.fecha | fecha: 'LLL' }}
+  <br />
+  <img
+    style="width: 100px; height: auto;"
+    #img
+    (click)="mostrarImagen(img.src)"
+    [src]="castigo.acta | imagen: 'empleados'"
+    class="img-responsive radius shadow pointer"
+  />
+</app-empleado-evento-plantilla>

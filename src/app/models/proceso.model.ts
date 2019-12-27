@@ -21,20 +21,20 @@ export class Proceso implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.1.5.1.1.0");
+    
     if( !input ){
       return this
     }
     Object.assign(this, input)
-    //console.log("x  ?.1.5.1.1.1", input.departamento);
+    
     this.departamento = new Departamento().deserialize(input.departamento)
-    //console.log("x  ?.1.5.1.1.2", input.maquinas);
+    
     if (input.maquinas) {
       this.maquinas = input.maquinas.map(maquina =>
         new Maquina().deserialize(maquina)
       )
     }
-    //console.log("x  ?.1.5.1.1.3");
+    
 
     return this
   }

@@ -18,24 +18,23 @@ export class SettingsService {
 
 
   guardarAjustes() {
-    // console.log('Guardado en el local storage');
     localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
   }
 
   cargarAjustes () {
     if ( localStorage.getItem('ajustes') ) {
       this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
-      // console.log('Cargando de localStorage');
+      
       this.aplicarTema( this.ajustes.tema);
     } else {
-      // console.log('Usando valores por defecto.');
+      
       this.aplicarTema( this.ajustes.tema);
 
     }
   }
 
   aplicarTema( tema: string ) {
-    // console.log('tema:' + tema);
+    
 
     const url: string = `assets/css/colors/${ tema }.css`;
     this._document.getElementById('tema').setAttribute('href', url);

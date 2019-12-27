@@ -32,4 +32,4 @@ const appRoutes: Routes = [
 // La palabra "export" es para poder importar la ruta desde
 // otro lugar.
 
-export const APP_ROUTES = RouterModule.forRoot(appRoutes, {useHash: true});
+export const APP_ROUTES = RouterModule.forRoot(appRoutes, {useHash: false});
