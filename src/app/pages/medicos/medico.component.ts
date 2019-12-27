@@ -65,8 +65,6 @@ export class MedicoComponent implements OnInit {
   }
 
   guardarMedico ( f: NgForm) {
-    // console.log( f.valid );
-    // console.log( f.value );
 
     if (f.invalid) {
       return;

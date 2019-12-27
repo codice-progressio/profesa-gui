@@ -16,16 +16,16 @@ export class FamiliaDeProcesos {
   ) {}
 
   deserialize(input: this): this {
-    //console.log("x  ?.1.5.0");
+    
     Object.assign(this, input)
-    //console.log("x  ?.1.5.1");
+    
     if (input.procesos) {
       this.procesos = input.procesos.map(proceso =>
         new Procesos().deserialize(proceso)
       )
-      //console.log("x  ?.1.5.2");
+      
     }
-    //console.log("x  ?.1.5.3");
+    
 
     return this
   }

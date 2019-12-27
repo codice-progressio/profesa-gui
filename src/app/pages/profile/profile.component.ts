@@ -23,7 +23,6 @@ export class ProfileComponent implements OnInit {
 
   guardar ( usuario: Usuario) {
     // Aunque no tengamos el objeto puro 'Usuario' lo podemos obtener asi
-    // console.log(usuario);
 
     // Solo necesitamos modificar el usuario que ya existe y no necesitamos volver a llamar
     // a un usuario.

@@ -60,7 +60,6 @@ export class HospitalService {
   // Modifica un hospital.
   actualizarHospital( hospital: Hospital) {
     const url = URL_SERVICIOS + `/hospital/${hospital._id}?token=${this._usuarioService.token}`;
-    // console.log( hospital );
     return this.http.put( url, hospital ).pipe(
       map((resp: any) => {
         swal({

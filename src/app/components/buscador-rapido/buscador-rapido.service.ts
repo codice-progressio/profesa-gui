@@ -209,7 +209,6 @@ export class BuscadorRapidoService<T> {
             const sonSuficientesCaracteres = this.cantidadDeCaracteresParaEmpezarBusqueda <= this.termino.length
             // Si el termino esta vacio no ejecutamos la promesa
             if( this.vacio(this.termino) ){
-              console.log('No se ejecuta la promesa.');
               this.limpiarIntervalo();
               this.limpiar();
               return;

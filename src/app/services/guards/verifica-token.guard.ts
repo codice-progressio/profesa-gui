@@ -12,7 +12,6 @@ export class VerificaTokenGuard implements CanActivate {
     public router: Router
   ) {}
   canActivate(): Promise<boolean> | boolean {
-    // console.log('Inicio de verificaToken guard');
     const token = this._usuarioService.token;
     // Recuperar la fecha de expiración del token.
     const payload = JSON.parse( atob( token.split('.')[1] ));
@@ -28,7 +27,6 @@ export class VerificaTokenGuard implements CanActivate {
   }
 
   verificaRenueva( fechaExp: number ): Promise<boolean> {
-    // console.log('Verifica renueva');
 
     // tslint:disable-next-line:no-shadowed-variable
     return new Promise( (resolve, reject) => {
@@ -36,9 +34,6 @@ export class VerificaTokenGuard implements CanActivate {
       const ahora = new Date();
 
       ahora.setTime( ahora.getTime() + (1 * 60 * 60 * 1000) );
-
-      // console.log(tokenExp);
-      // console.log(ahora);
 
       if ( tokenExp.getTime() > ahora.getTime() ) {
         resolve(true);
