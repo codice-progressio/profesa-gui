@@ -34,7 +34,7 @@
                 </div>
 
                 <ng-container formArrayName="procesos">
-                    <ng-container *ngFor="let proceso of formulario.controls['procesos'].controls; let i = index">
+                    <ng-container *ngFor="let proceso of f('procesos').controls; let i = index">
                         <ng-container [formGroupName]='i'>
                             <input type="hidden" formControlName="orden">
                             <input type="hidden" formControlName="proceso">
