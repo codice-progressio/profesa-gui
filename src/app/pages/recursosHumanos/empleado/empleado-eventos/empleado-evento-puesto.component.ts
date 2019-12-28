@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Puesto } from '../../../../models/recursosHumanos/puestos/puesto.model'
+import { Component, OnInit, Input } from '@angular/core'
+import { EventosPuesto } from '../../../../models/recursosHumanos/empleados/eventos/evento_puesto.model'
 
 @Component({
   selector: 'app-empleado-evento-puesto',
@@ -7,15 +7,13 @@ import { Puesto } from '../../../../models/recursosHumanos/puestos/puesto.model'
   styles: []
 })
 export class EmpleadoEventoPuestoComponent implements OnInit {
-
   mensaje: string
   @Input() fecha: string
-  @Input() puesto: Puesto
+  @Input() puesto: EventosPuesto
 
   constructor() {
     this.mensaje = 'Cambio de puesto'
   }
 
   ngOnInit() {}
-
 }
