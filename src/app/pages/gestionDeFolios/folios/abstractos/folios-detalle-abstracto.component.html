@@ -2,7 +2,7 @@
   <h3>
     <b>DETALLE DE FOLIO</b>
     <small class="text-muted ml-5 mr-5">{{
-      horaDeConsulta() | date: "dd/MM/yyyy HH:mm"
+      horaDeConsulta() | date: 'dd/MM/yyyy HH:mm'
     }}</small>
 
     <app-nivel-urgencia [nivel]="folio.nivelDeUrgencia"></app-nivel-urgencia>
@@ -29,17 +29,17 @@
           <p>
             <b>Fecha de creacion de folio</b> <br />
             <i class="fas fa-calendar"></i>
-            {{ folio.fechaFolio | fecha: "LLLL" }}
+            {{ folio.fechaFolio | fecha: 'LLLL' }}
           </p>
           <p>
             <b>Fecha de entrega a produccion</b> <br />
             <i class="fas fa-calendar"></i>
-            {{ folio.fechaDeEntregaAProduccion | fecha: "LLLL" }}
+            {{ folio.fechaDeEntregaAProduccion | fecha: 'LLLL' }}
           </p>
           <p>
             <ng-container *ngIf="folio.fechaTerminado">
               <b>Folio terminado el: </b>
-              {{ folio.fechaTerminado | fecha: "LLL" }}
+              {{ folio.fechaTerminado | fecha: 'LLL' }}
             </ng-container>
 
             <ng-container *ngIf="!folio.fechaTerminado">
@@ -82,13 +82,19 @@
               <th title="Piezas solicitadas en el folio" class="text-right">
                 PZ SOL
               </th>
-              <th title="Cantidad de ordenes de este pedido en funcion de el estandar. Lo que aqui se entrega son conteo de ordenes para realizar las recetas. Esto se nota mas claramente cuando se piden modelos que solo se trabajan en medias ordenes. Se nota que se solicitan 4 medias ordenes pero aqui se generan 2." class="text-right">
+              <th
+                title="Cantidad de ordenes de este pedido en funcion de el estandar. Lo que aqui se entrega son conteo de ordenes para realizar las recetas. Esto se nota mas claramente cuando se piden modelos que solo se trabajan en medias ordenes. Se nota que se solicitan 4 medias ordenes pero aqui se generan 2."
+                class="text-right"
+              >
                 #ORD
               </th>
               <th title="Piezas producidas" class="text-right">
                 PZ PRO
               </th>
-              <th class=" text-center fit" title="Prioridad del pedido. Si hay ordenes con niveles de prioridad diferente se toma el de mayor importancia siempre cuando supere la prioridad del pedido.">
+              <th
+                class=" text-center fit"
+                title="Prioridad del pedido. Si hay ordenes con niveles de prioridad diferente se toma el de mayor importancia siempre cuando supere la prioridad del pedido."
+              >
                 PRI
               </th>
               <th
@@ -126,11 +132,14 @@
                 <td>{{ pedido.modeloCompleto | modeloCompleto }}</td>
                 <td class="text-right">{{ pedido.cantidad | number }}</td>
                 <td class="text-right">
-                  {{ pedido.ordenesSegunEstandar() | number:'0.0-3'}}
+                  {{ pedido.ordenesSegunEstandar() | number: '0.0-3' }}
                 </td>
-                <td class="text-right">
+                <td class="text-right"></td>
+                <td>
+                  <app-nivel-urgencia
+                    [nivel]="pedido.nivelDeUrgencia"
+                  ></app-nivel-urgencia>
                 </td>
-                <td><app-nivel-urgencia [nivel]='pedido.nivelDeUrgencia' ></app-nivel-urgencia> </td>
                 <td></td>
                 <td class="text-right">
                   <app-progress-bar
@@ -190,7 +199,7 @@
                             >
                               <i class="fab fa-clock"></i>
                               {{
-                                colorTenido.fechaTerminado | date: "dd/MM/yy"
+                                colorTenido.fechaTerminado | date: 'dd/MM/yy'
                               }}
                             </span>
                           </ng-container>
@@ -239,7 +248,7 @@
 
 <hr />
 
-<app-boton-para-imprecion [id]='"print-folio"'></app-boton-para-imprecion>
+<app-boton-para-imprecion [id]="'print-folio'"></app-boton-para-imprecion>
 
 <div *ngIf="!folio">
   <h1>No has definido un folio para ver su detalle</h1>
