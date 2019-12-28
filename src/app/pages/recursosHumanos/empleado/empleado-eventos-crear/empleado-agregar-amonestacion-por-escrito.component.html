@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-12">
+    <h2>
+      Amonestacion por escrito <b>{{ empleado?.nombreCompleto() }}</b>
+    </h2>
+    <hr />
+  </div>
+
+  <form [formGroup]="formulario" class="col-12">
+    <div class="row">
+      <!-- 
+                  =====================================
+                   fecha
+                  =====================================
+                  -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('fecha')),
+              'is-valid': vs.valid(f('fecha'))
+            }"
+            type="date"
+            class="form-control"
+            formControlName="fecha"
+          />
+          <small id="helpId" class="form-text text-muted">fecha</small>
+          <app-validacion-inputs
+            [campo]="f('fecha')"
+            [directo]="true"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+                  =====================================
+                   END fecha
+                  =====================================
+                  -->
+
+      <!-- 
+                  =====================================
+                   documento
+                  =====================================
+                  -->
+
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <app-carga-de-imagenes
+            [multiple]="false"
+            (esteComponente)="cargaDeImagenesComponent = $event"
+            (imagenesParaSubir)="documentoCargado($event)"
+          >
+          </app-carga-de-imagenes>
+
+          <input type="hidden" formControlName="documento" />
+          <small id="helpId" class="form-text text-muted">Documento</small>
+          <app-validacion-inputs
+            [campo]="f('documento')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+                  =====================================
+                   END documento
+                  =====================================
+                  -->
+
+      <div class="col-12">
+        <hr />
+      </div>
+
+      <div class="col-12">
+        <button
+          (click)="submit($event, formulario.invalid, formulario.value)"
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          class="text-white btn btn-success mr-3 active"
+          role="button"
+        >
+          <i class="fas fa-save    "></i> Guardar
+        </button>
+        <a
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          (click)="cancelar()"
+          class="text-white btn btn-danger active"
+          role="button"
+        >
+          <i class="fas fa-times    "></i> Cancelar</a
+        >
+      </div>
+    </div>
+  </form>
+</div>

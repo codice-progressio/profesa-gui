@@ -5,7 +5,7 @@ export class ProductoTerminado implements Deserializable {
 
   deserialize(input: this): this {
     if (!input) {
-      //console.log\("No se definio el input");
+      
       return this
     }
     Object.assign(this, input)

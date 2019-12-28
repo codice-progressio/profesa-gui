@@ -1,0 +1,15 @@
+<app-empleado-evento-plantilla
+  [icono]="'fa-laugh-beam'"
+  [mensaje]="mensaje"
+  [fecha]="fecha"
+>
+  Felicitacion del dia {{ felicitacionPorEscrito.fecha | fecha: 'LL' }}
+  <br>
+  <img
+    style="width: 100px; height: auto;"
+    #img
+    (click)="mostrarImagen(img.src)"
+    [src]="felicitacionPorEscrito.documento | imagen: 'empleados'"
+    class="img-responsive radius shadow pointer"
+  />
+</app-empleado-evento-plantilla>

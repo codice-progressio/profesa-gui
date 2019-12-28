@@ -33,7 +33,6 @@ export class BusquedaComponent implements OnInit {
 
     activatedRoute.params.subscribe( params => {
       const termino = params['termino'];
-      // console.log(termino);
       this.termino = termino;
       this.buscar( termino );
 
@@ -47,7 +46,6 @@ export class BusquedaComponent implements OnInit {
     const url = URL_SERVICIOS + `/busqueda/todo/${termino}`;
     this.http.get(url).subscribe(
       (busqueda: any) => {
-        // console.log( busqueda);
           this.usuarios = busqueda.usuarios;
           this.medicos = busqueda.medicos;
           this.hospitales = busqueda.hospitales;

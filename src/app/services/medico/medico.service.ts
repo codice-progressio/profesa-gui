@@ -24,8 +24,6 @@ export class MedicoService {
 
     return this.http.get( url ).pipe(
       map( (resp: any) => {
-        // console.log( resp.medicos);
-
         this.totalMedicos = resp.total;
         return resp.medicos;
       })

@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-12">
+    <h3>Filtros de requisiciones</h3>
+    <hr />
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <div class="form-group">
+      <app-data-list
+        (ejecutarBusquedaDeItems)="ejecutarOperacionesdeBusquedaPuesto($event)"
+        (elementoSeleccionado)="puestoSeleccionado($event)"
+        (cancelado)="puestoActual = null"
+        (esteComponente)="puestoDataList = $event"
+      >
+      </app-data-list>
+      <small class="form-text text-muted">Puesto actual </small>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="btn-group-toggle" data-toggle="buttons">
+      <label
+        (click)="this.activo = !this.activo"
+        class="btn"
+        [ngClass]="{
+          'btn-secondary text-muted': this.activo,
+          'btn-success animated fadeIn': !this.activo
+        }"
+      >
+        <input type="checkbox" checked autocomplete="off" />
+        <i
+          *ngIf="!activo"
+          [ngClass]="{
+            'text-white': !activo,
+            'text-secondary': activo
+          }"
+          class="fas fa-check-circle"
+        ></i>
+        Ver inactivos
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr />
+
+    <a (click)="filtrar()" class="btn btn-success text-white active" role="button">
+      <i class="fas fa-filter"></i> Filtrar
+    </a>
+    <a (click)="limpiar()" class="btn btn-info text-white ml-3 active" role="button">
+      <i class="fas fa-broom"></i> Limpiar filtros
+    </a>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ END puestoActual
+=====================================
+-->

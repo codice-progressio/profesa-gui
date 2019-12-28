@@ -7,10 +7,10 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectorRef
-} from "@angular/core"
-import { FormControl } from "@angular/forms"
-import { debounceTime, distinctUntilChanged, map, filter } from "rxjs/operators"
-import { Dato } from "./dato.model"
+} from '@angular/core'
+import { FormControl } from '@angular/forms'
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators'
+import { Dato } from './dato.model'
 
 /**
  * Gestiona un input un data-list que permite
@@ -87,9 +87,9 @@ import { Dato } from "./dato.model"
  * @implements {OnInit}
  */
 @Component({
-  selector: "app-data-list",
-  templateUrl: "./data-list.component.html",
-  styleUrls: ["./data-list.component.css"]
+  selector: 'app-data-list',
+  templateUrl: './data-list.component.html',
+  styleUrls: ['./data-list.component.css']
 })
 export class DataListComponent implements OnInit {
   /**
@@ -148,7 +148,7 @@ export class DataListComponent implements OnInit {
    */
   inputBusqueda = new FormControl()
 
-  @ViewChild("inputBuscarNativo", { static: false })
+  @ViewChild('inputBuscarNativo', { static: false })
   inputBusquedaFocus: ElementRef
 
   /**
@@ -194,7 +194,6 @@ export class DataListComponent implements OnInit {
     dataList: DataListComponent
   }>()
 
-
   /**
    *Este evento se lanza cuando se cancela la busqueda o
    cuando se pulsa el boton limpiar. 
@@ -214,9 +213,7 @@ export class DataListComponent implements OnInit {
 
   @Output() esteComponente = new EventEmitter<this>()
 
-  constructor(private cdRef: ChangeDetectorRef) {
-    
-  }
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.esteComponente.emit(this)
@@ -228,15 +225,15 @@ export class DataListComponent implements OnInit {
         // Se espera this.tiempoDeEsperaParaBusqueda permitiendo digitar al usuario.
         debounceTime(this.tiempoDeEsperaParaBusqueda),
         // Eliminamos los flujos vacios para no ejecutar el subscribe.
-        filter((result) => !!result),
+        filter(result => !!result),
         // Quitamos los espacios blancos al termino de busqueda.
-        map((x) => {
+        map(x => {
           // Si hay espacios en blanco remplazamos el value del input
           // para que no se vea feo.
           return x.trim()
         })
       )
-      .subscribe((termino) => {
+      .subscribe(termino => {
         // Si no hay un termino no hacemos nada.
         if (termino) {
           this.ejecutarBusqueda(termino)
@@ -252,13 +249,13 @@ export class DataListComponent implements OnInit {
         // Evitamos repeticiones.
         distinctUntilChanged(),
         // Solo filtramos el flujo cuando este vacio.
-        filter((x) => !x)
+        filter(x => !x)
       )
       // Cancelamos la busqueda.
       .subscribe(() => this.cancelarBusqueda())
 
     // Emitimos el evento de touched
-    this.inputBusqueda.statusChanges.subscribe((e) => {
+    this.inputBusqueda.statusChanges.subscribe(e => {
       this.touched.emit()
     })
 
@@ -339,6 +336,7 @@ export class DataListComponent implements OnInit {
   }
 
   seleccionarElemento(dato: Dato) {
+    if( !dato) return
     this.leyendaInputDeshabilitado = dato.leyendaPrincipal
     this.elementoSeleccionado.emit(dato)
     this.terminarBusquedaDespuesDeSeleccionarElemento()
@@ -360,7 +358,9 @@ export class DataListComponent implements OnInit {
     this.leyendaInputDeshabilitado = null
 
     // Actualiza el cambio en el input para que se pueda hacer el focus.
-    this.cdRef.detectChanges()
+    if (!this.cdRef['destroyed']) {
+      this.cdRef.detectChanges()
+    }
     this.inputBusquedaFocus.nativeElement.focus()
     this.cancelado.emit()
   }
@@ -372,6 +372,14 @@ export class DataListComponent implements OnInit {
     this.datosParaLista = []
   }
 
+  /**
+   *Limpia el data list para una nueva busqueda. Esta funcion
+   * no se debe de usar si el data list solo funcionara como buscador.
+   * En ese caso usar `reiniciar()`
+   *
+   *
+   * @memberof DataListComponent
+   */
   limpiarParaNuevo() {
     this.inputBusqueda.enable()
     this.inputBusqueda.reset()
@@ -380,6 +388,25 @@ export class DataListComponent implements OnInit {
     this.mostrarLista = false
     this.datosParaLista = []
     this.elementoSeleccionado.emit(null)
+    this.leyendaInputDeshabilitado = null
+  }
+
+  /**
+   *Reinicia el data list. A diferencia de `limipiarParaNuevo()`
+   * y de `cancelarBusqueda()` no emite el evento de cancelacion.
+   * Esto permite limpiar desde fuera del componente sin caer
+   * en errores de pila de llamada. Aunado a esto deshabilita el
+   * boton de limpiar por defecto.
+   *
+   * @memberof DataListComponent
+   */
+  reiniciar() {
+    this.inputBusqueda.enable()
+    this.inputBusqueda.reset()
+    this.buscando = false
+    this.mostrarBotonParaLimpiar = false
+    this.mostrarLista = false
+    this.datosParaLista = []
     this.leyendaInputDeshabilitado = null
   }
 }

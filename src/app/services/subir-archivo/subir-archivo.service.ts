@@ -12,6 +12,7 @@ import {
 } from "@angular/common/http"
 
 import { catchError, map } from "rxjs/operators"
+import { Puesto } from "src/app/models/recursosHumanos/puestos/puesto.model"
 
 @Injectable({
   providedIn: "root"
@@ -45,10 +46,10 @@ export class SubirArchivoService {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            // console.log('imagen subida');
+            
             resolve(JSON.parse(xhr.response))
           } else {
-            // console.log('Fallo la subida.');
+            
             reject(JSON.parse(xhr.response))
           }
         }
@@ -68,14 +69,52 @@ export class SubirArchivoService {
    * @memberof SubirArchivoService
    */
   facturasRequisicion(archivos: File[], id: string): Observable<string[]> {
-    let a = this._preLoaderService.loading("Cargando facturas")
+    return this.subirImagenes(
+      archivos,
+      id,
+      "facturas",
+      "Cargando facturas"
+    )
+  }
+
+  organigramaPuesto(archivo: File, id: string): Observable<string[]> {
+    return this.subirImagenes(
+      [archivo],
+      id,
+      "organigramaPuesto",
+      "Cargando organigrama"
+    )
+  }
+
+  /**
+   *Carga las imagenes
+   *
+   * @param {File[]} archivos
+   * @param {string} id el
+   * @param {string} tipo El tipo corresponde a su funcion. Todas son imagenes
+   * pero pueden ser facturas, usuarios, empleados, etc. La api valida esto.
+   * @param {string} msj El mensaje de carga
+   * @returns {Observable<string[]>}
+   * @memberof SubirArchivoService
+   */
+  private subirImagenes(
+    archivos: File[],
+    id: string,
+    tipo: string,
+    msj: string
+  ): Observable<string[]> {
+    this.soloImagenes(archivos)
+
+    let a = this._preLoaderService.loading(msj)
 
     // Creamos el formulario
     const formData = new FormData()
-    // Agregamos todas las facturas al formData para mandar los archivos.
-    archivos.forEach((f) => formData.append("facturas[]", f, f.name))
+    // Agregamos todas las tipo al formData para mandar los archivos.
+    archivos.forEach((f) =>
+      formData.append('imagenes', f, f.name)
+    )
 
-    const url = URL_SERVICIOS + `/upload/facturas/${id}`
+    const url = URL_SERVICIOS + `/upload/${tipo}/${id}`
     return this.http
       .put(url, formData, {
         //Reporte el progreso de la carga
@@ -93,7 +132,7 @@ export class SubirArchivoService {
               this._preLoaderService.progreso(
                 a,
                 progress,
-                "Espera mientras terminamos de subir las imagenes de las facturas"
+                "Espera mientras terminamos de cargar las imagenes"
               )
               return null
 
@@ -102,14 +141,22 @@ export class SubirArchivoService {
 
               return event.body
             default:
-              return `Unhandled event: ${event.type}`
+              return `Evento no manejado: ${event.type}`
           }
         }),
         catchError((err) => {
-          console.log(`err`, err)
           this._msjService.err(err)
           throw throwError(err)
         })
       )
+  }
+
+  private soloImagenes(files: File[]) {
+    files.forEach((f) => {
+      let mimeType = f.type
+      if (mimeType.match(/image\/*/) == null) {
+        throw `${f.name} no es una imagen`
+      }
+    })
   }
 }

@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-12">
+    <h2>
+      Agregar cambio de sueldo <b>{{ empleado?.nombreCompleto() }}</b>
+    </h2>
+  </div>
+
+  <form [formGroup]="formulario" class="col-12">
+    <div class="row">
+      <!-- 
+          =====================================
+           aumento
+          =====================================
+          -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('aumento')),
+              'is-valid': vs.valid(f('aumento'))
+            }"
+            type="number"
+            class="form-control"
+            formControlName="aumento"
+          />
+          <small id="helpId" class="form-text text-muted">Nuevo salario</small>
+          <app-validacion-inputs [campo]="f('aumento')"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+          =====================================
+           END aumento
+          =====================================
+          -->
+
+      <!-- 
+          =====================================
+           observacion
+          =====================================
+          -->
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('observacion')),
+              'is-valid': vs.valid(f('observacion'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="observacion"
+          />
+          <small id="helpId" class="form-text text-muted">Observacion</small>
+          <app-validacion-inputs
+            [campo]="f('observacion')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+          =====================================
+           END observacion
+          =====================================
+          -->
+      <div class="col-12">
+        <app-validacion-inputs [campo]="formulario"></app-validacion-inputs>
+      </div>
+
+      <div class="col-12">
+        <hr />
+      </div>
+
+      <div class="col-12">
+        <button
+          (click)="submit($event, formulario.invalid, formulario.value)"
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          class="text-white btn btn-success mr-3 active"
+          role="button"
+        >
+          <i class="fas fa-save    "></i> Guardar
+        </button>
+        <a
+          data-toggle="modal"
+          [attr.data-target]="'#' + idModal"
+          (click)="cancelar()"
+          class="text-white btn btn-danger active"
+          role="button"
+        >
+          <i class="fas fa-times    "></i> Cancelar</a
+        >
+      </div>
+    </div>
+  </form>
+</div>
