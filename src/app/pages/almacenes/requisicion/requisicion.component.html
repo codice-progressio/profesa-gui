@@ -59,7 +59,10 @@
           *ngIf="!buscando"
         ></app-paginador>
 
-        <table *ngIf="requisiciones.length > 0" class="table table-hover ">
+        <table
+          *ngIf="requisiciones.length > 0"
+          class="table table-hover table-responsive "
+        >
           <thead>
             <tr>
               <th></th>
@@ -181,20 +184,20 @@
                 {{ requisicion.createdAt | date: "dd/MM/yy" }}
               </td>
               <td class=" no-wrap fit ">{{ requisicion.folio }}</td>
-              <td class=" fit text-right">
+              <td class=" text-right">
                 {{ requisicion.articulo.nombre }}
               </td>
               <td class=" no-wrap">
                 {{
                   requisicion.cantidad -
-                    requisicion.estatus.cantidadEntregadaALaFecha
+                    requisicion.estatus.cantidadEntregadaALaFecha | number: "0.0-2"
                 }}
               </td>
-              <td class=" no-wrap">
+              <td >
                 {{ requisicion.articulo.presentacion }}
               </td>
 
-              <td class=" no-wrap">
+              <td >
                 <span *ngIf="requisicion.gastosYServicios"
                   >Gastos/Servicios</span
                 >
@@ -202,7 +205,7 @@
                 <span *ngIf="requisicion.materiaPrima">Materia prima</span>
               </td>
 
-              <td class=" no-wrap">
+              <td >
                 {{ requisicion.usuario.nombre }}
               </td>
 

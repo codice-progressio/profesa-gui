@@ -216,4 +216,10 @@ export class FamiliaDeProcesosCrearModificarComponent
       }, 400);
     }
   }
+
+
+  f(campo):FormArray {
+    return <FormArray> this.formulario.get(campo)
+  }
+  
 }
