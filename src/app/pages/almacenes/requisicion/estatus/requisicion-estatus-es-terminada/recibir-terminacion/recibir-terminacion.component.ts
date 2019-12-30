@@ -1,23 +1,23 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { Requisicion } from "../../../../../../models/requisiciones/requisicion.model"
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Requisicion } from '../../../../../../models/requisiciones/requisicion.model'
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormArray,
   AbstractControl
-} from "@angular/forms"
-import { ValidacionesService } from "src/app/services/utilidades/validaciones.service"
-import { ProveedorService } from "src/app/services/proveedor.service"
-import { DivisaService } from "src/app/services/divisa.service"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { SubirArchivoService } from "src/app/services/subir-archivo/subir-archivo.service"
-import { RequisicionService } from "src/app/services/requisiciones/requisicion.service"
-import { CargaDeImagenesTransporte } from "src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte"
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ProveedorService } from 'src/app/services/proveedor.service'
+import { DivisaService } from 'src/app/services/divisa.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { SubirArchivoService } from 'src/app/services/subir-archivo/subir-archivo.service'
+import { RequisicionService } from 'src/app/services/requisiciones/requisicion.service'
+import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte'
 
 @Component({
-  selector: "app-recibir-terminacion",
-  templateUrl: "./recibir-terminacion.component.html",
+  selector: 'app-recibir-terminacion',
+  templateUrl: './recibir-terminacion.component.html',
   styles: []
 })
 export class RecibirTerminacionComponent implements OnInit {
@@ -25,7 +25,7 @@ export class RecibirTerminacionComponent implements OnInit {
   @Output() guardar = new EventEmitter<null>()
   @Output() esteComponente = new EventEmitter<this>()
   @Output() cancelado = new EventEmitter<null>()
-  
+
   formulario: FormGroup
 
   constructor(
@@ -43,13 +43,12 @@ export class RecibirTerminacionComponent implements OnInit {
   }
 
   crearFormulario(req: Requisicion) {
-    console.log(`crearFormulario`,req)
     this.requisicion = req
     this.formulario = this.fb.group(
       {
         imagenesFacturas: this.fb.array([])
       },
-      { validator: (group)=> this.validarTamanoDeArrayImagenesFacturas(group) }
+      { validator: group => this.validarTamanoDeArrayImagenesFacturas(group) }
     )
   }
 
@@ -61,10 +60,9 @@ export class RecibirTerminacionComponent implements OnInit {
    * @memberof RecibirParcialidadComponent
    */
   private validarTamanoDeArrayImagenesFacturas(group: FormGroup) {
-    let imagenesFacturas: FormArray = <FormArray>group.get("imagenesFacturas")
+    let imagenesFacturas: FormArray = <FormArray>group.get('imagenesFacturas')
 
     let validacion = null
-    console.log(`this`,this)
     // No es necesario cargar nada si ya se completo la requisicion en cantidad
     if (
       this.requisicion.cantidad ===
@@ -72,11 +70,11 @@ export class RecibirTerminacionComponent implements OnInit {
     )
       return null
 
-    // Si no esta terminado entonces si es necesario recibir.  
+    // Si no esta terminado entonces si es necesario recibir.
     if (imagenesFacturas.length < 1) {
       validacion = {
         general: {
-          mensaje: "Es necesario cargar una factura por lo menos."
+          mensaje: 'Es necesario cargar una factura por lo menos.'
         }
       }
     }
@@ -86,12 +84,12 @@ export class RecibirTerminacionComponent implements OnInit {
 
   crearGrupo_imagenesFacturas(): FormGroup {
     return this.fb.group({
-      imagen: ["", Validators.required]
+      imagen: ['', Validators.required]
     })
   }
 
   public get imagenesFacturas_FB(): FormArray {
-    return <FormArray>this.formulario.get("imagenesFacturas")
+    return <FormArray>this.formulario.get('imagenesFacturas')
   }
 
   obtenerMaximo(req: Requisicion): number {
@@ -122,7 +120,7 @@ export class RecibirTerminacionComponent implements OnInit {
   imagenesParaSubir(imagenes: CargaDeImagenesTransporte[]) {
     this.imagenesCargadas = imagenes
     this.imagenesFacturas_FB.clear()
-    this.imagenesCargadas.forEach((x) =>
+    this.imagenesCargadas.forEach(x =>
       this.imagenesFacturas_FB.push(this.fb.control(x.file.name))
     )
 
@@ -137,31 +135,40 @@ export class RecibirTerminacionComponent implements OnInit {
     e.preventDefault()
     if (invalid) return
 
-    let imgs: File[] = this.imagenesCargadas.map((x) => x.file)
-    console.log(`imgs para enviar`, imgs)
+    let imgs: File[] = this.imagenesCargadas.map(x => x.file)
     this._subirArchivoService
       .facturasRequisicion(imgs, this.requisicion._id)
-      .subscribe((x) => {
-        if (!x) return
-        if (x["ok"]) {
-          this.requisicion.estatus.reiniciar()
-          this.requisicion.razonDeCambioTemp = "Requisicion completada"
+      .subscribe(
+        x => {
+          if (!x) return
+          if (x['ok']) {
+            this.requisicion.estatus.reiniciar()
+            this.requisicion.razonDeCambioTemp = 'Requisicion completada'
 
-          this.requisicion.estatus.cantidadEntregadaALaFecha = this.obtenerMaximo(
-            this.requisicion
-          )
+            this.requisicion.estatus.cantidadEntregadaALaFecha = this.obtenerMaximo(
+              this.requisicion
+            )
 
-          this.requisicion.estatus.fechaTermino = new Date()
+            this.requisicion.estatus.fechaTermino = new Date()
 
-          this.requisicion.estatus.esTerminada = true
+            this.requisicion.estatus.esTerminada = true
 
-          this._requisicionService
-            .actualizarEstatus(this.requisicion)
-            .subscribe((req) => {
-              this.guardar.emit()
-              this.limpiar()
-            })
+            this._requisicionService
+              .actualizarEstatus(this.requisicion)
+              .subscribe(
+                req => {
+                  this.guardar.emit()
+                  this.limpiar()
+                },
+                err => {
+                  this.limpiar()
+                }
+              )
+          }
+        },
+        err => {
+          this.limpiar()
         }
-      })
+      )
   }
 }

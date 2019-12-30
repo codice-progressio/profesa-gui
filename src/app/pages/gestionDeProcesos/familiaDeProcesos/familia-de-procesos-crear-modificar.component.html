@@ -1,64 +1,110 @@
-<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"familia de procesos"' [esMasculino]='false'>
-    <ng-container *ngIf="mostrarCrearModificar">
+<app-crear-modificar
+  [mostrarCrearModificar]="mostrarCrearModificar"
+  [crearModificar]="crearModificar"
+  [esModificacion]="this.idModificar"
+  [nombreElemento]="'familia de procesos'"
+  [esMasculino]="false"
+>
+  <ng-container *ngIf="mostrarCrearModificar">
+    <form
+      (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)"
+      [formGroup]="formulario"
+    >
+      <div class="row">
+        <div class="form-group col-12 col-md-6 col-lg-4">
+          <input
+            formControlName="nombre"
+            type="text"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': _validacionesService.invalid(nombre_FB),
+              'is-valid': _validacionesService.valid(nombre_FB)
+            }"
+            name="nombre"
+            id="nombre"
+            aria-describedby="El nombre del equipo"
+            placeholder="Nombre de la familia"
+          />
+          <small id="El nombre del equipo" class="form-text text-muted"
+            >Ingresa el nombre de la familia</small
+          >
+          <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+        </div>
 
-        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+        <div class="form-group col-12 col-md-6 col-lg-8">
+          <textarea
+            formControlName="observaciones"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': _validacionesService.invalid(observaciones_FB),
+              'is-valid': _validacionesService.valid(observaciones_FB)
+            }"
+            name="observaciones"
+            id="observaciones"
+            rows="3"
+          ></textarea>
+          <small id="observaciones" class="form-text text-muted"
+            >Observaciones</small
+          >
+          <app-validacion-inputs
+            [campo]="observaciones_FB"
+          ></app-validacion-inputs>
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="nombre" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(nombre_FB), 'is-valid':_validacionesService.valid(nombre_FB)}" name="nombre" id="nombre" aria-describedby="El nombre del equipo" placeholder="Nombre de la familia">
-                    <small id="El nombre del equipo" class="form-text text-muted">Ingresa el nombre de la familia</small>
-                    <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
-                </div>
+      <hr />
 
-                <div class="form-group col-12 col-md-6 col-lg-8">
-                    <textarea formControlName="observaciones" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(observaciones_FB), 'is-valid':_validacionesService.valid(observaciones_FB)}" name="observaciones" id="observaciones" rows="3"></textarea>
-                    <small id="observaciones" class="form-text text-muted">Observaciones</small>
-                    <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
-                </div>
-            </div>
+      <div class="row mb-5">
+        <div class="col-12">
+          <h3>Agregar procesos</h3>
+        </div>
+        <div class="col-12 col-lg-6">
+          <app-organizador-drag-and-drop
+            (dropSuccess)="actualizarIds($event)"
+            [listaOrdenable]="true"
+          ></app-organizador-drag-and-drop>
+        </div>
+        <div class="col-12 col-lg-6">
+          <app-organizador-drag-and-drop
+            [listaDeElementos]="true"
+          ></app-organizador-drag-and-drop>
+        </div>
 
+        <ng-container formArrayName="procesos">
+          <ng-container
+            *ngFor="let proceso of f('procesos').controls; let i = index"
+          >
+            <ng-container [formGroupName]="i">
+              <input type="hidden" formControlName="orden" />
+              <input type="hidden" formControlName="proceso" />
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <app-validacion-inputs
+          [campo]="procesos_FB"
+          [directo]="true"
+        ></app-validacion-inputs>
+      </div>
 
-
-            <hr>
-
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h3>Agregar procesos</h3>
-
-                </div>
-                <div class="col-12 col-lg-6">
-                    <app-organizador-drag-and-drop (dropSuccess)='actualizarIds($event)' [listaOrdenable]='true'></app-organizador-drag-and-drop>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <app-organizador-drag-and-drop [listaDeElementos]='true'></app-organizador-drag-and-drop>
-                </div>
-
-                <ng-container formArrayName="procesos">
-                    <ng-container *ngFor="let proceso of formulario.controls['procesos'].controls; let i = index">
-                        <ng-container [formGroupName]='i'>
-                            <input type="hidden" formControlName="orden">
-                            <input type="hidden" formControlName="proceso">
-
-                        </ng-container>
-
-                    </ng-container>
-                </ng-container>
-                <app-validacion-inputs [campo]="procesos_FB" [directo]='true'></app-validacion-inputs>
-
-
-            </div>
-
-
-
-
-            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
-            <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
-            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
-        </button>
-
-        </form>
-
-    </ng-container>
+      <a
+        (click)="cancelar()"
+        class="btn btn-danger mr-3 text-white"
+        role="button"
+        >Cancelar</a
+      >
+      <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
+      <button
+        [disabled]="formulario.invalid || desactivarBotonEnGuardado"
+        class="btn btn-success mr-3 text-white"
+        role="button"
+      >
+        <span *ngIf="this.idModificar">
+          <i class="fas fa-edit "></i> Guardar cambios</span
+        >
+        <span *ngIf="!this.idModificar">
+          <i class="fas fa-save "></i> Guardar</span
+        >
+      </button>
+    </form>
+  </ng-container>
 </app-crear-modificar>
