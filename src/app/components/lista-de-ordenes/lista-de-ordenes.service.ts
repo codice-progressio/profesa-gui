@@ -1,16 +1,16 @@
-import { Injectable, Input } from '@angular/core';
-import { Orden } from '../../models/orden.models';
-import { PreLoaderService } from '../pre-loader/pre-loader.service';
-import { DEPARTAMENTOS } from '../../config/departamentos';
-import { DefaultsService } from 'src/app/services/configDefualts/defaults.service';
-import { DefaultModelData } from 'src/app/config/defaultModelData';
-import { FolioService } from 'src/app/services/folio/folio.service';
-import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
-import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service';
+import { Injectable, Input } from '@angular/core'
+import { Orden } from '../../models/orden.models'
+import { PreLoaderService } from '../pre-loader/pre-loader.service'
+import { DEPARTAMENTOS } from '../../config/departamentos'
+import { DefaultsService } from 'src/app/services/configDefualts/defaults.service'
+import { DefaultModelData } from 'src/app/config/defaultModelData'
+import { FolioService } from 'src/app/services/folio/folio.service'
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 
 /**
  * Provee los elementos necesarios para mostrar las ordenes
- * por departamento separado en prioridades. 
+ * por departamento separado en prioridades.
  *
  * @export
  * @class ListaDeOrdenesService
@@ -19,39 +19,34 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
   providedIn: 'root'
 })
 export class ListaDeOrdenesService {
-  
-  
-
-
   // depto: string;
   /**
-   * Las ordenes ordenadas por prioridad. 
+   * Las ordenes ordenadas por prioridad.
    *
    * @memberof ListaDeOrdenesService
    */
-  ordenes = {};
+  ordenes = {}
   /**
    * Los niveles de prioridad. Sirve para separar las ordenes ???
    *
    * @type {string[]}
    * @memberof ListaDeOrdenesService
    */
-  niveles: string[] = [];
+  niveles: string[] = []
   /**
    * Opciones????
    *
    * @memberof ListaDeOrdenesService
    */
-  opciones = {};
+  opciones = {}
   /**
-   * El departamento del cual se van a obtener las ordenes. 
-   * Esta variable senala a un modelo. 
+   * El departamento del cual se van a obtener las ordenes.
+   * Esta variable senala a un modelo.
    *
    * @type {string}
    * @memberof ListaDeOrdenesService
    */
-  depto_vm:string ='';
-
+  depto_vm: string = ''
 
   /**
    *Los id por default.
@@ -59,49 +54,50 @@ export class ListaDeOrdenesService {
    * @type {DefaultModelData}
    * @memberof ListaDeOrdenesService
    */
-  defaultModelData: DefaultModelData = new DefaultModelData();
+  defaultModelData: DefaultModelData = new DefaultModelData()
 
-  
+  ultimaActualizacion: Date = new Date()
+
   constructor(
     public _folioService: FolioService,
     public _preLoaderService: PreLoaderService,
     public _util: UtilidadesService,
     public _defaultService: DefaultsService,
     public _msjService: ManejoDeMensajesService
-    ) {
-      
-   
-    }
+  ) {}
 
-    cargarDefaults( ): Promise <DefaultModelData>{
-      return new Promise( (resolve, reject ) => {
-          this._defaultService.cargarDefaults().subscribe( 
-            resp => { 
-              resolve( resp )
-            });
-      });
-    }
+  cargarDefaults(): Promise<DefaultModelData> {
+    return new Promise((resolve, reject) => {
+      this._defaultService.cargarDefaults().subscribe(resp => {
+        resolve(resp)
+      })
+    })
+  }
 
-    
-    
-    
-    /**
-     * Extra las ordenes correspondientes a este departamento.
-     *
-     * @returns {*}
-     * @memberof ListaDeOrdenesService
-     */
-    controlDeProduccion(): any {
-        const a: number = this._preLoaderService.loading(`Cargando ordenes: ${DEPARTAMENTOS.CONTROL_DE_PRODUCCION._n}`);
-        this.cargarDefaults().then(d=>{
-          this.cargarOrdenes(d.DEPARTAMENTOS.CONTROL_DE_PRODUCCION, this.opciones,a);
-          this.depto_vm = DEPARTAMENTOS.CONTROL_DE_PRODUCCION._vm;
-        }).catch( err =>{
-          this._msjService.err(err);
-        })
-    }
+  /**
+   * Extra las ordenes correspondientes a este departamento.
+   *
+   * @returns {*}
+   * @memberof ListaDeOrdenesService
+   */
+  controlDeProduccion(): any {
+    const a: number = this._preLoaderService.loading(
+      `Cargando ordenes: ${DEPARTAMENTOS.CONTROL_DE_PRODUCCION._n}`
+    )
+    this.cargarDefaults()
+      .then(d => {
+        this.cargarOrdenes(
+          d.DEPARTAMENTOS.CONTROL_DE_PRODUCCION,
+          this.opciones,
+          a
+        )
+        this.depto_vm = DEPARTAMENTOS.CONTROL_DE_PRODUCCION._vm
+      })
+      .catch(err => {
+        this._msjService.err(err)
+      })
+  }
 
- 
   //    /**
   //    * Extra las ordenes correspondientes a este departamento.
   //    *
@@ -116,9 +112,9 @@ export class ListaDeOrdenesService {
   //     }).catch( err =>{
   //       this._msjService.err(err);
   //     })
-      
+
   //   }
-    
+
   //   /**
   //    * Extra las ordenes correspondientes a este departamento.
   //    *
@@ -135,10 +131,10 @@ export class ListaDeOrdenesService {
   //       }).catch( err =>{
   //         this._msjService.err(err);
   //       })
-        
+
   //     // }
   //   }
-    
+
   //   /**
   //    * Extra las ordenes correspondientes a este departamento.
   //    *
@@ -155,7 +151,7 @@ export class ListaDeOrdenesService {
   //       }).catch( err =>{
   //         this._msjService.err(err);
   //       })
-      
+
   //   // }
   // }
 
@@ -175,7 +171,7 @@ export class ListaDeOrdenesService {
   //       }).catch( err =>{
   //         this._msjService.err(err);
   //       })
-      
+
   //   // }
   // }
   // /**
@@ -194,10 +190,10 @@ export class ListaDeOrdenesService {
   //     }).catch( err =>{
   //       this._msjService.err(err);
   //     })
-      
+
   //   // }
   // }
-  
+
   // /**
   //    * Extrae las ordenes correspondientes a este departamento.
   //    *
@@ -213,9 +209,9 @@ export class ListaDeOrdenesService {
   //   }).catch( err =>{
   //     this._msjService.err(err);
   //   })
-    
+
   // }
-  
+
   // /**
   //    * Extrae las ordenes correspondientes a este departamento.
   //    *
@@ -232,7 +228,7 @@ export class ListaDeOrdenesService {
   //     this._msjService.err(err);
   //   })
   // }
-  
+
   // /**
   //    * Extrae las ordenes correspondientes a este departamento.
   //    *
@@ -249,7 +245,7 @@ export class ListaDeOrdenesService {
   //     this._msjService.err(err);
   //   })
   // }
-  
+
   // /**
   //    * Extrae las ordenes correspondientes a este departamento.
   //    *
@@ -298,7 +294,7 @@ export class ListaDeOrdenesService {
   //     this._msjService.err(err);
   //   })
   // }
-  
+
   // /**
   //    * Extrae las ordenes correspondientes a este departamento.
   //    *
@@ -310,122 +306,155 @@ export class ListaDeOrdenesService {
   //   this.cargarDefaults().then(d=>{
   //     this.cargarOrdenes(d.DEPARTAMENTOS.PRODUCTO_TERMINADO, this.opciones,a);
   //     this.depto_vm = DEPARTAMENTOS.PRODUCTO_TERMINADO._vm;
-      
+
   //   }).catch( err =>{
   //     this._msjService.err(err);
   //   })
-    
+
+  intervaloDeRefrescoDeOrdenes: any
+  /**
+   *Este valor es el tiempo que durara en refrescarse la lista
+   de ordenes.
+   *
+   * @memberof ListaDeOrdenesService
+   */
+  tiempoDeRefrescoDeOrdenes = 5 * 60 * 1000
+
+  /**
+   *Este cb almacena la operacion de con todos sus parametros
+   * para que se ejecute antes de tiempo.
+   *
+   * @type {*}
+   * @memberof ListaDeOrdenesService
+   */
+  cbDeRefrescoDeOrden: ()=>void
+
   // }
   /**
-   * Carga general para clase GeneralesComponents. 
+   * Carga general para clase GeneralesComponents.
    *
    *
-   * @param {string} nombreDepto El nombre del departamento que se mostrara en la precarga. 
-   * @param {string} idDepto El id del departamento del cual se quieren cargar las ordenes. 
+   * @param {string} nombreDepto El nombre del departamento que se mostrara en la precarga.
+   * @param {string} idDepto El id del departamento del cual se quieren cargar las ordenes.
    * @param {string} vm_Depto El string de la variable de modelo del depto. ( Esto es para buscar la orden en ese depto.)
    * @memberof ListaDeOrdenesService
    */
-  cargar(nombreDepto: string, idDepto: string, vm_Depto: string   ) {
-    const a: number = this._preLoaderService.loading(`Cargando ordenes: ${nombreDepto}`);
-      this.cargarOrdenes( idDepto , this.opciones,a );
-      this.depto_vm = vm_Depto;
+  cargar(nombreDepto: string, idDepto: string, vm_Depto: string) {
+    if (this.intervaloDeRefrescoDeOrdenes)
+      clearInterval(this.intervaloDeRefrescoDeOrdenes)
+    const a: number = this._preLoaderService.loading(
+      `Cargando ordenes: ${nombreDepto}`
+    )
+    //Almacena el cb con los datos que necesitamos 
+    // para el boton de refresco y no tener que hacer un
+    //desmain agregando el boton.
+    this.cbDeRefrescoDeOrden = () => {
+      this.ultimaActualizacion = new Date()
+      this.cargarOrdenes(idDepto, this.opciones, a)
+    }
+    
+    //La primera ejecucion de gratis.
+    this.cbDeRefrescoDeOrden()
+    
+    this.intervaloDeRefrescoDeOrdenes = setInterval(
+      () => this.cbDeRefrescoDeOrden(),
+      this.tiempoDeRefrescoDeOrdenes
+    )
+
+    this.depto_vm = vm_Depto
   }
-  
-  
+
   /**
    * Esta funcion carga las ordenes de manera genericia. Para un departamento
-   * en especifico utilizar las propiad de cada uno. 
+   * en especifico utilizar las propiad de cada uno.
    *
-   * @param {string} depto El id del departamento (FIX en 0.3.0) 
+   * @param {string} depto El id del departamento (FIX en 0.3.0)
    * @param {*} [opciones={}] Opciones para algo????
    * @param {number} a
    * @memberof ListaDeOrdenesService
    */
-  cargarOrdenes(depto: string, opciones = {}, a:number) {
-    this._folioService.cargarOrdenesDepartamento(depto, opciones)
-    .subscribe( (resp: any ) => {
-      this.ordenes = resp;
-      if ( this.ordenes ) {
-        this.niveles = Object.keys(this.ordenes);
-      }
-      this._preLoaderService.ok(a);
-    });
+  cargarOrdenes(depto: string, opciones = {}, a: number) {
+    this._folioService
+      .cargarOrdenesDepartamento(depto, opciones)
+      .subscribe((resp: any) => {
+        this.ordenes = resp
+        if (this.ordenes) {
+          this.niveles = Object.keys(this.ordenes)
+        }
+        this._preLoaderService.ok(a)
+      })
   }
 
   /**
-   * Comprueba si hay ordenes cargadas. 
+   * Comprueba si hay ordenes cargadas.
    *
    * @returns
    * @memberof ListaDeOrdenesService
    */
   hayOrdenes() {
     for (const x in this.ordenes) {
-      if ( this.ordenes[x].length > 0 ) {
-        return true;
+      if (this.ordenes[x].length > 0) {
+        return true
       }
     }
 
-    return false;
+    return false
   }
 
   /**
    * Quita una orden de la lista. Esta funcion esta depecrated.
    * Hay que cargar todas las ordenes cada vez que se elimine una
-   * para revisar si no se han agregado mas. 
-   * @deprecated 
+   * para revisar si no se han agregado mas.
+   * @deprecated
    *
    * @param {string} id
    * @memberof ListaDeOrdenesService
    */
-  remover( id: string ) {
-    // Removemos la órden que acabamos de eliminar. 
-    
+  remover(id: string) {
+    // Removemos la órden que acabamos de eliminar.
+
     // tslint:disable-next-line:forin
-    for ( const x in this.ordenes ) {
-      const a = this.ordenes[x];
-      this.ordenes[x] = this.ordenes[x].filter( orden => {
-        if ( orden._id !== id) {
-          return true;
+    for (const x in this.ordenes) {
+      const a = this.ordenes[x]
+      this.ordenes[x] = this.ordenes[x].filter(orden => {
+        if (orden._id !== id) {
+          return true
         }
-      });
+      })
     }
   }
 
   /**
-   * Retorna las ordenes del departamento sin los niveles de prioridad. 
+   * Retorna las ordenes del departamento sin los niveles de prioridad.
    *
-   * @returns {Orden[]} Un arreglo de todas las ordenes existentes. 
+   * @returns {Orden[]} Un arreglo de todas las ordenes existentes.
    * @memberof ListaDeOrdenesService
    */
-  obtenerTodasLasOrdenesDeEsteDepartamentoEnArray( ): Orden[] {
-    let a: Orden[] = [];
+  obtenerTodasLasOrdenesDeEsteDepartamentoEnArray(): Orden[] {
+    let a: Orden[] = []
     for (const x in this.ordenes) {
       if (this.ordenes.hasOwnProperty(x)) {
-        const ordenes = this.ordenes[x];
-        
+        const ordenes = this.ordenes[x]
+
         a = a.concat(ordenes)
       }
     }
-   
-    
-    return a;
+
+    return a
   }
 
   /**
-   *Obtiene id de las ordenes del departamento definido en un arreglo de strings. 
+   *Obtiene id de las ordenes del departamento definido en un arreglo de strings.
    *
    * @returns {string[]}
    * @memberof ListaDeOrdenesService
    */
   obtenerTodasLasOrdenesDeEsteDepartamentoEnArrayYSoloId(): string[] {
-    const ordenes:Orden []= this.obtenerTodasLasOrdenesDeEsteDepartamentoEnArray();
-    const ids: string [] = [];
-    ordenes.forEach((orden:Orden) => {
-
-      ids.push(orden._id);
-    });
-    return ids;
-    
+    const ordenes: Orden[] = this.obtenerTodasLasOrdenesDeEsteDepartamentoEnArray()
+    const ids: string[] = []
+    ordenes.forEach((orden: Orden) => {
+      ids.push(orden._id)
+    })
+    return ids
   }
-
 }
