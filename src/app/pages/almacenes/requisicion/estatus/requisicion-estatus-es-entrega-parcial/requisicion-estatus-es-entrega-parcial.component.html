@@ -11,7 +11,7 @@
       </span>
       <br />
       <small class="text-muted">
-        Cantidad recivida:
+        Cantidad recibida:
 
         <b class="text-dark">{{
           historialEstatus.estatus.cantidadEntregadaALaFecha | number: "0.0-2"
@@ -44,7 +44,7 @@
           class="img-responsive radius shadow pointer"
         />
         <span
-          title="Factura recivida el {{ objetoImg.fecha | fecha: 'LLL' }}"
+          title="Factura recibida el {{ objetoImg.fecha | fecha: 'LLL' }}"
           class="sl-date"
         >
           {{ objetoImg.fecha | date: "dd/MM/yy HH:mm" }}
@@ -54,7 +54,7 @@
 
     <div>
       <a class="link"
-        >Recivida por
+        >Recibida por
         {{ historialEstatus.usuarioQueModifica.nombre | titlecase }}
         <img
           [src]="historialEstatus.usuarioQueModifica.img | imagen"
