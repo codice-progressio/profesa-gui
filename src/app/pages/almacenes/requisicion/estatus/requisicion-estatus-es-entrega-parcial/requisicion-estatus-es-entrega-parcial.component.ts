@@ -17,7 +17,6 @@ export class RequisicionEstatusEsEntregaParcialComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.historialEstatus.estatus.fechaEntregaParcialidad = new Date()
   }
 
   mostrarImagen(img: string) {

@@ -12,6 +12,5 @@ export class RequisicionEstatusEsOrdenDeCompraComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.historialEstatus.estatus.fechaDeGeneracionDeOrdenDeCompra = new Date()
   }
 }
