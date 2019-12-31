@@ -51,11 +51,11 @@ export class RequisicionCrearModificarComponent implements OnInit {
   }
 
   asignarValores(req: Requisicion) {
-    this.materiaPrima_FB.setValue(req.materiaPrima)
-    this.consumibles_FB.setValue(req.consumibles)
-    this.gastosYServicios_FB.setValue(req.gastosYServicios)
-    this.cantidad_FB.setValue(req.cantidad)
-    this.articulo_FB.setValue(req.articulo)
+    this.f('materiaPrima').setValue(req.materiaPrima)
+    this.f('consumibles').setValue(req.consumibles)
+    this.f('gastosYServicios').setValue(req.gastosYServicios)
+    this.f('cantidad').setValue(req.cantidad)
+    this.f('articulo').setValue(req.articulo)
   }
 
   crear() {
@@ -89,24 +89,13 @@ export class RequisicionCrearModificarComponent implements OnInit {
           Validators.required
         ]
       ],
-      articulo: ["", [Validators.required]]
+      articulo: ["", [Validators.required]],
+      observaciones: ['', null]
     })
   }
 
-  public get materiaPrima_FB(): AbstractControl {
-    return this.formulario.get("materiaPrima")
-  }
-  public get consumibles_FB(): AbstractControl {
-    return this.formulario.get("consumibles")
-  }
-  public get gastosYServicios_FB(): AbstractControl {
-    return this.formulario.get("gastosYServicios")
-  }
-  public get cantidad_FB(): AbstractControl {
-    return this.formulario.get("cantidad")
-  }
-  public get articulo_FB(): AbstractControl {
-    return this.formulario.get("articulo")
+  public f(campo: string ): AbstractControl{
+    return this.formulario.get(campo)
   }
 
   submit(modelo: Requisicion, valid: boolean, e) {
@@ -145,9 +134,9 @@ export class RequisicionCrearModificarComponent implements OnInit {
     // Solo un checkbox puede estar en true
 
     let cb = {
-      materiaPrima: this.materiaPrima_FB,
-      consumibles: this.consumibles_FB,
-      gastosYServicios: this.gastosYServicios_FB
+      materiaPrima: this.f('materiaPrima'),
+      consumibles: this.f('consumibles'),
+      gastosYServicios: this.f('gastosYServicios')
     }
 
     for (const box in cb) {
@@ -175,11 +164,11 @@ export class RequisicionCrearModificarComponent implements OnInit {
   }
   articuloSeleccionado(dato: Dato) {
     let art: Articulo = <Articulo>dato ? dato.objeto : null
-    this.articulo_FB.patchValue(art ? art._id : null)
+    this.f('articulo').patchValue(art ? art._id : null)
 
     this.articuloSeleccionadoParaInput = art
-    this.articulo_FB.markAsTouched()
-    this.articulo_FB.updateValueAndValidity()
+    this.f('articulo').markAsTouched()
+    this.f('articulo').updateValueAndValidity()
   }
 
   cancelar() {

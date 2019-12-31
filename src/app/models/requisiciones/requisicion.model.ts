@@ -1,8 +1,8 @@
-import { Usuario } from "../usuario.model"
-import { Articulo } from "../almacenDeMateriaPrimaYHerramientas/articulo.modelo"
-import { EstatusRequisicion } from "./estatusRequisicion.model"
-import { HistorialDeEstatusRequisicion } from "./historialDeEstatusRequisicion.model"
-import { Deserializable } from "../deserealizable.model"
+import { Usuario } from '../usuario.model'
+import { Articulo } from '../almacenDeMateriaPrimaYHerramientas/articulo.modelo'
+import { EstatusRequisicion } from './estatusRequisicion.model'
+import { HistorialDeEstatusRequisicion } from './historialDeEstatusRequisicion.model'
+import { Deserializable } from '../deserealizable.model'
 
 export class Requisicion implements Deserializable {
   constructor(
@@ -19,10 +19,11 @@ export class Requisicion implements Deserializable {
     public historialDeEstatus: HistorialDeEstatusRequisicion[] = [],
     public razonDeCambioTemp?: string,
     public createdAt?: Date,
-    public updatedAt?: Date
+    public updatedAt?: Date,
+    public observaciones?: string
   ) {}
   deserialize(input: this): this {
-    if( !input ) return this
+    if (!input) return this
     Object.assign(this, input)
     this.usuario = new Usuario().deserialize(input.usuario)
 
@@ -30,7 +31,7 @@ export class Requisicion implements Deserializable {
     if (input.estatus) {
       this.estatus = new EstatusRequisicion().deserialize(input.estatus)
     }
-    this.historialDeEstatus = input.historialDeEstatus.map((x) =>
+    this.historialDeEstatus = input.historialDeEstatus.map(x =>
       new HistorialDeEstatusRequisicion().deserialize(x)
     )
 
