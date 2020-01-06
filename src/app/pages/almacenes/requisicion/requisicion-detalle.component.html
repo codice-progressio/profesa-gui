@@ -81,16 +81,7 @@
         <div>
           <hr />
         </div>
-        
-        <h4 class="card-title m-t-10 w-100">
-          Observaciones de la requisicion:
-        </h4>
-        
-        <p>{{ requisicion.observaciones }}</p>
 
-        <pre>{{requisicion | json}}</pre>
-        <hr />
-        
         <!-- 
         =====================================
          Descripcion de contactos
@@ -213,45 +204,80 @@
           -->
           <div class="tab-pane active" id="estatusActual" role="tabpanel">
             <div class="card-body">
-              <h2>
-                <small class="text-muted">Cantidad solicitada: </small>
-                <b>{{ requisicion.cantidad }} </b>
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <h2>
+                    <small class="text-muted">Cantidad solicitada: </small>
+                    <br />
+                    <b>{{ requisicion.cantidad }} </b>
 
-                <span *ngIf="requisicion.cantidad > 1">unidades.</span>
-                <span *ngIf="requisicion.cantidad === 1">unidad.</span>
-              </h2>
-              <h2>
-                <small class="text-muted">
-                  Presentacion del articulo:
-                </small>
-                <b>
-                  {{ requisicion.articulo.presentacion }}
-                </b>
-              </h2>
-              <h2>
-                <small> Cantidad restante </small>
-                <b
-                  >{{
-                    requisicion.cantidad -
-                      requisicion.estatus.cantidadEntregadaALaFecha
-                  }}
-                </b>
-              </h2>
-
-              <h4>
-                Este articulo es
-                <b>
-                  <ng-container *ngIf="requisicion.materiaPrima">
-                    materia prima.</ng-container
-                  >
-                  <ng-container *ngIf="requisicion.consumibles">
-                    un consumible.</ng-container
-                  >
-                  <ng-container *ngIf="requisicion.gastosYServicios">
-                    un gasto y/o servicio.</ng-container
-                  >
-                </b>
-              </h4>
+                    <span *ngIf="requisicion.cantidad > 1">unidades</span>
+                    <span *ngIf="requisicion.cantidad === 1">unidad</span>
+                  </h2>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h2>
+                    <small class="text-muted">
+                      Presentacion del articulo:
+                    </small>
+                    <br />
+                    <b>
+                      {{ requisicion.articulo.presentacion }}
+                    </b>
+                  </h2>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h2>
+                    <small class="text-muted"> Cantidad restante </small>
+                    <br />
+                    <b
+                      >{{
+                        requisicion.cantidad -
+                          requisicion.estatus.cantidadEntregadaALaFecha
+                      }}
+                    </b>
+                    <span
+                      *ngIf="
+                        requisicion.cantidad -
+                          requisicion.estatus.cantidadEntregadaALaFecha >
+                        1
+                      "
+                      >unidades</span
+                    >
+                    <span
+                      *ngIf="
+                        requisicion.cantidad -
+                          requisicion.estatus.cantidadEntregadaALaFecha ===
+                        1
+                      "
+                      >unidad</span
+                    >
+                  </h2>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h2>
+                    <small class="text-muted"> Este articulo es:</small>
+                    <br />
+                    <b>
+                      <ng-container *ngIf="requisicion.materiaPrima">
+                        Materia prima</ng-container
+                      >
+                      <ng-container *ngIf="requisicion.consumibles">
+                        Consumible</ng-container
+                      >
+                      <ng-container *ngIf="requisicion.gastosYServicios">
+                        Gasto y/o servicio</ng-container
+                      >
+                    </b>
+                  </h2>
+                </div>
+                <div class="col-12">
+                  <h4 class="text-muted">
+                    Observaciones de la requisicion:
+                  </h4>
+                  <p>{{ requisicion.observaciones }}</p>
+                </div>
+              </div>
 
               <hr />
 
