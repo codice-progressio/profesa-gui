@@ -28,8 +28,9 @@ export class EmpleadoComponent implements OnInit {
   empleadoSeleccionado: Empleado
 
   cbObservable = termino => {
-    this.empleadoFiltrosComponent.limpiar()
-    this.cargarEmpleados(termino)
+    if (this.empleadoFiltrosComponent) this.empleadoFiltrosComponent.limpiar()
+    
+    return this._empleadoService.search(termino, undefined, undefined, Empleado)
   }
 
   _idModal: string
@@ -121,8 +122,7 @@ export class EmpleadoComponent implements OnInit {
       class: 'btn-outline-primary',
       text: 'ESTATUS',
       cb: () => this.mec.estatusLaboral()
-    },
-   
+    }
   ]
 
   constructor(
@@ -134,11 +134,12 @@ export class EmpleadoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this._paginadorService.activarPaginador(1)
     this.cargarEmpleados()
   }
 
   cargarEmpleados(termino: string = null) {
-    this.buscando = false
+    this.buscando = true
 
     this.aplicarFiltros(
       this._empleadoService.filtros(new EmpleadoFiltros(this._empleadoService)),
@@ -147,9 +148,14 @@ export class EmpleadoComponent implements OnInit {
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
       .servicio.todo()
-      .subscribe(empleados => {
-        this.empleados = empleados
-      })
+      .subscribe(
+        empleados => {
+          this.buscando = false
+          this.empleados = empleados
+          this._paginadorService.activarPaginador(this._empleadoService.total)
+        },
+        err => (this.buscando = false)
+      )
   }
 
   private aplicarFiltros(
@@ -206,5 +212,4 @@ export class EmpleadoComponent implements OnInit {
       })
     })
   }
-
 }

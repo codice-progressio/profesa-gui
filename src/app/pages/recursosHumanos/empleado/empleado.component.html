@@ -58,7 +58,10 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <app-empleado-filtros> </app-empleado-filtros>
+        <app-empleado-filtros
+          (obtenerFiltros)='this.empleadoFiltrosComponent = $event'
+        > </app-empleado-filtros
+          >
       </div>
     </div>
   </div>

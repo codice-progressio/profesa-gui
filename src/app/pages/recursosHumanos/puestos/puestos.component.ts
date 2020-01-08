@@ -32,6 +32,7 @@ export class PuestosComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._paginadorService.activarPaginador(1)
     this.cargarPuestos()
   }
 
@@ -45,6 +46,7 @@ export class PuestosComponent implements OnInit {
       .servicio.todo()
       .subscribe(puestos => {
         this.puestos = puestos
+        this._paginadorService.activarPaginador(this._puestoService.total)
         // this._puestoService.autoPopulate(this.puestos)
       })
   }

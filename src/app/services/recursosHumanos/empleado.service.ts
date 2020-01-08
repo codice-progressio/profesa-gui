@@ -17,15 +17,14 @@ import { EstatusLaboral } from 'src/app/models/recursosHumanos/empleados/eventos
 import { toFormData } from 'src/app/utils/subidaDeImagenes/toFormData'
 import { uploadProgress } from 'src/app/utils/subidaDeImagenes/uploadProgess'
 import { toResponseBody } from 'src/app/utils/subidaDeImagenes/toResponseBody'
+import { URL_BASE } from '../../config/config'
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmpleadoService extends CRUD<
-  Empleado,
-  EmpleadoService,
-  EmpleadoFiltros<EmpleadoService>
-> {
+export class EmpleadoService {
+
+  base = URL_BASE('empleados')
   constructor(
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,
@@ -33,28 +32,23 @@ export class EmpleadoService extends CRUD<
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
     public _subirArchivo: SubirArchivoService
-  ) {
-    super(
-      http,
-      _msjService,
-      _utiliadesService,
-      _preLoaderService,
-      _paginadorService
-    )
-    this.base = URL_SERVICIOS + `/empleado`
-    this.nombreDeDatos.plural = 'empleados'
-    this.nombreDeDatos.singular = 'empleado'
-    this.urlBusqueda = '/buscar'
-  }
+  ) {}
 
-  todo(): Observable<Empleado[]> {
-    return this.getAll(
-      undefined,
-      undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
-      Empleado,
-      false
-    )
+  todo(desde: number = 1, limite:number = 5): Observable<Empleado[]> {
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
   /**
@@ -65,10 +59,10 @@ export class EmpleadoService extends CRUD<
    * @returns {Observable<null>}
    * @memberof EmpleadoService
    */
-  guardarOModificarConFoto(empleado: Empleado): Observable<any> {
+  guardarOModificar(empleado: Empleado): Observable<any> {
     let a = this._preLoaderService.loading('Haciendo algo con el empleado')
 
-    let url = this.base + '/guardarConFoto'
+    let url = this.base
     return this.http
       .post(url, toFormData(empleado), {
         reportProgress: true,
