@@ -235,7 +235,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
     modelo.hijos = modelo.hijos.map(x => x * 1)
     if (this.empleado._id) modelo._id = this.empleado._id
-    this._empleadoService.guardarOModificarConFoto(modelo).subscribe(operacion)
+    this._empleadoService.guardarOModificar(modelo).subscribe(operacion)
   }
 
   errorImagen(msj) {
