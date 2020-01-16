@@ -1,8 +1,6 @@
-import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core'
+import { Component, OnInit, Renderer2 } from '@angular/core'
 import { Empleado } from '../../../models/recursosHumanos/empleados/empleado.model'
 import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
-import { EmpleadoFiltros } from 'src/app/services/utilidades/filtrosParaConsultas/empleado.filtros'
 import { EmpleadoFiltrosComponent } from './empleado-filtros/empleado-filtros.component'
 import { EmpleadoCrearModificarComponent } from './empleado-crear-modificar.component'
 import { Puesto } from '../../../models/recursosHumanos/puestos/puesto.model'
@@ -11,7 +9,6 @@ import { PuestoService } from '../../../services/recursosHumanos/puesto.service'
 import { EmpleadoEventosCrearModalComponent } from './empleado-eventos-crear/empleado-eventos-crear-modal/empleado-eventos-crear-modal.component'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { iPaginadorData } from '../../../shared/paginador/paginador.component'
-import { totalmem } from 'os'
 
 @Component({
   selector: 'app-empleado',
@@ -128,9 +125,7 @@ export class EmpleadoComponent implements OnInit {
   constructor(
     private _empleadoService: EmpleadoService,
     public _msjService: ManejoDeMensajesService,
-    public _puestoService: PuestoService,
-    private _render: Renderer2
-  ) {}
+    public _puestoService: PuestoService  ) {}
 
   ngOnInit() {
     this.cargarEmpleados()
@@ -210,7 +205,7 @@ export class EmpleadoComponent implements OnInit {
     let msj2 =
       'Si estas completamente seguro de lo que haces continua, de lo contrario cancela.'
 
-    this._msjService.confirmacionDeEliminacion(msj1, dato => {
+    this._msjService.confirmacionDeEliminacion(msj1, () => {
       this._msjService.confirmacionDeEliminacion(msj2, () => {
         this._empleadoService.delete(empleado._id).subscribe(() => {
           this.cargarEmpleados()

@@ -10,7 +10,6 @@ import {
   ElementRef
 } from '@angular/core'
 import { Paginacion } from '../../utils/paginacion.util'
-import { setTimeout } from 'timers'
 
 /**
  *Paginador autonomo que permite trabajar con dos paginadores sincronos.
@@ -235,10 +234,10 @@ export class PaginadorComponent implements OnInit {
    *Este valor igualmente es de paso para completar la paginacion. No se puede 
    omitir pero tampoco afecta el desempeno del paginador. 
    *
-   * @type {('asc' | 'des')}
+   * @type {(1 | '-1)}
    * @memberof PaginadorComponent
    */
-  @Input() tipoDeOrden: 'asc' | 'des' = 'asc'
+  @Input() tipoDeOrden: 1 | -1 = 1
 
   _clonar: this
 

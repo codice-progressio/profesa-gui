@@ -43,7 +43,7 @@ export class AlmacenDescripcionService extends CRUD<
     return this.getAll(
       undefined,
       undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
+      undefined,
       AlmacenDescripcion
     )
   }

@@ -63,6 +63,7 @@ import { CursosComponent } from './recursosHumanos/cursos/cursos.component'
 import { AreasComponent } from './recursosHumanos/areas/areas.component'
 import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
 import { DepartamentoComponent } from './departamento/departamento.component'
+import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -174,6 +175,16 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Almacen de producto terminado",
       roles: [ROLES.ALMACEN_PRODUCTO_TERMINADO]
+    }
+  },
+  {
+    path: "almacen/produccion/entradasYSalidas",
+    component: AlmacenESComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Entradas y salidas de almacen",
+      roles: [ROLES.ALMACEN_MATERIA_PRIMA_ENTRADA_Y_SALIDA]
     }
   },
   {
