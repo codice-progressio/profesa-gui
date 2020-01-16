@@ -8,6 +8,10 @@
  * @export
  * @class FiltrosDeConsultas
  * @template T
+ * 
+ * @deprecated Esta clase se tiene que eliminar. Poco a poco
+ * vamos a ir limpiuando. 
+ * 
  */
 export class FiltrosDeConsultas<T>  {
        

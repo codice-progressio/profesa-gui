@@ -1,31 +1,42 @@
 <ng-container *ngIf="articulo">
   <h1>
-    Registrar <b>entrada</b> para <b>{{ articulo.nombre }}</b>
+    Registrar <b class="text-warning">entrada</b> para
+    <b>{{ articulo?.nombre }}</b>
   </h1>
 
   <hr />
 
-  <h1 class="display-3">
-    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b>
-  </h1>
-  <h4>
-    Existencia en kg: <b>{{ articulo.existenciaEnKg() | number }}</b>
-  </h4>
-  Minimo {{ articulo.stockMinimo | number }} | Maximo
-  {{ articulo.stockMaximo | number }}
+  <span class="d-flex justify-content-between align-items-center">
+    <p>
+      <b class="font-weight-bold">Existencia: </b>
+      {{ articulo?.existencia | number }}
+    </p>
 
-  <hr />
+    <p>
+      <b class="font-weight-bold">Presentacion:</b>{{ articulo?.presentacion }}
+    </p>
+    <p><b class="font-weight-bold">Unidades:</b>{{ articulo?.unidad }}</p>
 
-  <form [formGroup]="formulario">
-    <div class="col-6">
+    <p>
+      <b class="font-weight-bold">Minimo:</b>
+      {{ articulo?.stockMinimo | number }} |
+      <b class="font-weight-bold">Maximo:</b>
+      {{ articulo?.stockMaximo | number }}
+    </p>
+  </span>
+
+  <form [formGroup]="formulario" class="row">
+    <div class="col-12 col-sm-6">
       <div class="form-group">
         <input
+          #cantidad
+          id="cantidad"
           [ngClass]="{
             'is-invalid': vs.invalid(cantidad_FB),
             'is-valid': vs.valid(cantidad_FB)
           }"
-          type="number"
-          class="form-control"
+          type="text"
+          class="form-control shadow"
           formControlName="cantidad"
         />
         <small id="helpId" class="form-text text-muted"
@@ -35,17 +46,17 @@
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-12 col-sm-6">
       <div class="form-group">
-        <input
+        <textarea
           [ngClass]="{
             'is-invalid': vs.invalid(observaciones_FB),
             'is-valid': vs.valid(observaciones_FB)
           }"
-          type="text"
+          rows="5"
           class="form-control"
           formControlName="observaciones"
-        />
+        ></textarea>
         <small id="helpId" class="form-text text-muted">Observaciones</small>
         <app-validacion-inputs
           [campo]="observaciones_FB"

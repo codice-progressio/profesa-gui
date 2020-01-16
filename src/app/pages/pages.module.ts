@@ -176,6 +176,7 @@ import { EmpleadoAgregarCastigoComponent } from './recursosHumanos/empleado/empl
 import { EmpleadoAgregarPermisoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-permiso.component';
 import { EmpleadoAgregarBonoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-bono.component';
 import { EmpleadoAgregarEstatusLaboralComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-estatus-laboral.component';
+import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component';
 
 @NgModule({
   declarations: [
@@ -343,7 +344,8 @@ import { EmpleadoAgregarEstatusLaboralComponent } from './recursosHumanos/emplea
     EmpleadoAgregarCastigoComponent,
     EmpleadoAgregarPermisoComponent,
     EmpleadoAgregarBonoComponent,
-    EmpleadoAgregarEstatusLaboralComponent
+    EmpleadoAgregarEstatusLaboralComponent,
+    AlmacenESComponent
   ],
   exports: [
     DashboardComponent,
