@@ -55,7 +55,6 @@ export class AlmacenESComponent implements OnInit {
   }
 
   private limpiar() {
-    $('#detalles').collapse('hide')
     this.articulo = null
     this.dataList.reiniciar()
   }
