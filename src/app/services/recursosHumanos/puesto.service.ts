@@ -47,8 +47,7 @@ export class PuestoService extends CRUD<
       undefined,
       undefined,
       this.filtrosDelFolio.obtenerFiltros(),
-      Puesto,
-      true
+      Puesto
     )
   }
 

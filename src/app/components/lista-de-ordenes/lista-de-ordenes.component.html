@@ -18,20 +18,34 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <h1 class="card-title">
-                <app-nivel-urgencia [nivel]="lv"></app-nivel-urgencia>
-              </h1>
-            </div>
-            <div class="col-auto ">
-              <h3>
-                <small>
-                  Órdenes pendientes:
-                  <strong> {{ _s.ordenes[lv].length }} </strong></small
-                >
-              </h3>
-            </div>
+          <div class=" d-flex justify-content-between align-items-center">
+            <h1 class="card-title">
+              <app-nivel-urgencia [nivel]="lv"></app-nivel-urgencia>
+            </h1>
+
+            <span
+              class=" d-flex justify-content-between align-items-center"
+              title="Ultima actualizacion {{
+                _s.ultimaActualizacion | fecha: 'HH:mm:ss'
+              }}"
+            >
+              <i class="fas fa-clock mr-1"></i>
+              Ultima actualizacion:
+              {{ _s.ultimaActualizacion | fecha: 'HH:mm:ss' }}
+
+              <a
+                (click)="this._s.cbDeRefrescoDeOrden()"
+                class="ml-3 btn btn-outline-dark btn-xs"
+                href="javascript:void(0)"
+              >
+                Actualizar</a
+              >
+            </span>
+
+            <h3 class=" d-flex justify-content-between align-items-center">
+              Órdenes pendientes:
+              <strong> {{ _s.ordenes[lv].length }} </strong>
+            </h3>
           </div>
           <div class="table-responsive">
             <table
@@ -69,7 +83,8 @@
                         *ngIf="orden.ubicacionActual[_s.depto_vm]?.trabajando"
                         class="fas fa-spin fa-2x fa-cog text-warning"
                       ></i>
-                      <i title='Esta orden esta pendiente por recibir'
+                      <i
+                        title="Esta orden esta pendiente por recibir"
                         *ngIf="!orden.ubicacionActual.recivida"
                         class="fas fa-exclamation  animated tada infinite"
                       ></i>
@@ -81,7 +96,7 @@
                       {{ orden.orden }}
                     </td>
                     <td class="fit">
-                      {{ orden.fechaFolio | fecha: "DD/MM/YYYY" }}
+                      {{ orden.fechaFolio | fecha: 'DD/MM/YYYY' }}
                     </td>
                     <td class="fit">
                       {{ orden.modeloCompleto | modeloCompleto }}

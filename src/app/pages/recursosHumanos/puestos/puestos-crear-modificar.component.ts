@@ -36,6 +36,7 @@ import { ImagenPipe } from 'src/app/pipes/imagen.pipe'
 import { CargaDeImagenesComponent } from '../../../shared/carga-de-imagenes/carga-de-imagenes.component'
 import { Puesto_MotivoDeCambio } from '../../../models/recursosHumanos/puestos/puesto_motivoDeCambio.model'
 import { UsuarioService } from '../../../services/usuario/usuario.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-puestos-crear-modificar',
@@ -693,7 +694,7 @@ export class PuestosCrearModificarComponent implements OnInit {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
     this._empleadoService
-      .search(termino, undefined, undefined, Empleado)
+      .find(termino, new Paginacion(5, 0, 1, 'nombres'))
       .subscribe(empleados => {
         let datos: Dato[] = []
         empleados.forEach((pue: Empleado) => {

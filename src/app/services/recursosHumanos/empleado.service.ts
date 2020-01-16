@@ -7,7 +7,7 @@ import { UtilidadesService } from '../utilidades/utilidades.service'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import { URL_SERVICIOS } from 'src/app/config/config'
-import { Observable, throwError } from 'rxjs'
+import { Observable, throwError, concat } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service'
 import { map, catchError } from 'rxjs/operators'
@@ -17,15 +17,16 @@ import { EstatusLaboral } from 'src/app/models/recursosHumanos/empleados/eventos
 import { toFormData } from 'src/app/utils/subidaDeImagenes/toFormData'
 import { uploadProgress } from 'src/app/utils/subidaDeImagenes/uploadProgess'
 import { toResponseBody } from 'src/app/utils/subidaDeImagenes/toResponseBody'
+import { URL_BASE } from '../../config/config'
+import { Paginacion } from '../../utils/paginacion.util'
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmpleadoService extends CRUD<
-  Empleado,
-  EmpleadoService,
-  EmpleadoFiltros<EmpleadoService>
-> {
+export class EmpleadoService {
+  base = URL_BASE('empleado')
+  total: number = 0
+
   constructor(
     public http: HttpClient,
     public _msjService: ManejoDeMensajesService,
@@ -33,28 +34,123 @@ export class EmpleadoService extends CRUD<
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
     public _subirArchivo: SubirArchivoService
-  ) {
-    super(
-      http,
-      _msjService,
-      _utiliadesService,
-      _preLoaderService,
-      _paginadorService
-    )
-    this.base = URL_SERVICIOS + `/empleado`
-    this.nombreDeDatos.plural = 'empleados'
-    this.nombreDeDatos.singular = 'empleado'
-    this.urlBusqueda = '/buscar'
+  ) {}
+
+  errFun(err) {
+    this._msjService.err(err)
+    return throwError(err)
   }
 
-  todo(): Observable<Empleado[]> {
-    return this.getAll(
-      undefined,
-      undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
-      Empleado,
-      false
+  findAll(
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<Empleado[]> {
+    const a = this._preLoaderService.loading('Cargando empleados')
+    const url = this.base
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get(url).pipe(
+      map((respuesta: any) => {
+        this._msjService.ok_(respuesta, null, a)
+
+        const empleados: Empleado[] = []
+
+        respuesta.empleados.forEach(x =>
+          empleados.push(new Empleado().deserialize(x))
+        )
+        this.total = respuesta.total
+        return empleados
+      }),
+      catchError(err => this.errFun(err))
     )
+  }
+
+  findById(id: string): Observable<Empleado> {
+    const a = this._preLoaderService.loading('Cargando empleados')
+    const url = this.base.concat(`/${id}`)
+    return this.http.get(url).pipe(
+      map((respuesta: any) => {
+        this._msjService.ok_(respuesta, null, a)
+
+        return new Empleado().deserialize(respuesta.empleado)
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  find(
+    termino: string,
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<Empleado[]> {
+    const a = this._preLoaderService.loading(
+      'Buscando empleados con el termino: ' + termino
+    )
+    const url = this.base
+      .concat(`/buscar/${termino}`)
+      .concat('?')
+      .concat(`&desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get(url).pipe(
+      map((respuesta: any) => {
+        this._msjService.ok_(respuesta, null, a)
+
+        const empleados: Empleado[] = []
+
+        respuesta.empleados.forEach(x =>
+          empleados.push(new Empleado().deserialize(x))
+        )
+
+        this.total = respuesta.total
+
+        return empleados
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  delete(id: string): Observable<Empleado> {
+    const a = this._preLoaderService.loading('Buscando empleados')
+    const url = this.base.concat(`/${id}`)
+
+    return this.http.delete(url).pipe(
+      map((respuesta: any) => {
+        this._msjService.ok_(respuesta, null, a)
+
+        return new Empleado().deserialize(respuesta.empleado)
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  /**
+   *Es la misma operacion que guardar o modifcar. Solo lo pongo para semantica.
+   *
+   * @param {Empleado} empleado
+   * @returns {Observable<any>}
+   * @memberof EmpleadoService
+   */
+  update(empleado: Empleado): Observable<any> {
+    return this.guardarOModificar(empleado)
+  }
+  /**
+   *Es la misma operacion que guardarOModicar. Solo lo pongo para semantica
+   *
+   * @param {Empleado} empleado
+   * @returns {Observable<any>}
+   * @memberof EmpleadoService
+   */
+  save(empleado: Empleado): Observable<any> {
+    return this.guardarOModificar(empleado)
   }
 
   /**
@@ -65,10 +161,10 @@ export class EmpleadoService extends CRUD<
    * @returns {Observable<null>}
    * @memberof EmpleadoService
    */
-  guardarOModificarConFoto(empleado: Empleado): Observable<any> {
+  guardarOModificar(empleado: Empleado): Observable<any> {
     let a = this._preLoaderService.loading('Haciendo algo con el empleado')
 
-    let url = this.base + '/guardarConFoto'
+    let url = this.base
     return this.http
       .post(url, toFormData(empleado), {
         reportProgress: true,
@@ -98,10 +194,6 @@ export class EmpleadoService extends CRUD<
     return true
   }
 
-  errFun(err) {
-    this._msjService.err(err)
-    return throwError(err)
-  }
   registroDeEventoGenerico(url, a, datos): Observable<boolean> {
     return this.http.put(url, datos).pipe(
       map((resp: any) => this.mapFun(resp, a)),

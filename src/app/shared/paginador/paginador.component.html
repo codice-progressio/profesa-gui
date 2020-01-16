@@ -1,0 +1,64 @@
+<ul class="pagination pagination-sm mb-0 shadow " style="width: 300px;">
+  <li class="page-item pointer">
+    <a
+      [ngClass]="{
+        'text-light': actual === 1
+      }"
+      (click)="anterior()"
+      class="page-link  "
+      aria-label="Previous "
+    >
+      <i class="fas fa-arrow-circle-left "></i>
+    </a>
+  </li>
+  <li class="page-item disabled text-center" style="width: 100px;">
+    <span class="page-link " aria-label="Next ">
+      <ng-container *ngIf="cargando; else cargaTemplate">
+        <i class="fas fa-spinner  fa-spin  "></i>
+      </ng-container>
+      <ng-template #cargaTemplate>
+        {{ actual }}
+      </ng-template>
+
+      de {{ totalDePaginas }}
+    </span>
+  </li>
+  <li class="page-item pointer ">
+    <a
+      [ngClass]="{
+        'text-light': actual === totalDePaginas
+      }"
+      (click)="siguiente()"
+      class="page-link "
+      aria-label="Next "
+    >
+      <i class="fas fa-arrow-circle-right "></i>
+    </a>
+  </li>
+  <li title="Elementos por pagina" class="page-item disabled ">
+    <a class="page-link "><small>Elem/Pag</small></a>
+  </li>
+  <li
+    *ngFor="let x of cantidadesPorPagina"
+    title="Ver {{ x }} elementos por pagina"
+    class="page-item pointer"
+    [ngClass]="{ active: elementosPorPagina === x }"
+    (click)="cambiarElementosPorPagina(x)"
+  >
+    <a href="javascript:void(0)" class="page-link ">{{ x }}</a>
+  </li>
+</ul>
+
+<small
+  class="mt-0"
+  title="El total de elementos resultado de la consulta. Puede variar el total existente cuando se aplican filtros a la consulta"
+  ><strong> {{ totalDeElementos }} </strong> elementos para paginarse
+</small>
+
+<i
+  title="Ir a arriba"
+  (click)="scrollTop()"
+  #btnScroll
+  id="myBtn"
+  class="fas fa-arrow-circle-up fa-2x  animated fadeInUp text-info  "
+></i>

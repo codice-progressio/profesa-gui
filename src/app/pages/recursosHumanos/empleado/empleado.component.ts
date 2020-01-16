@@ -1,14 +1,14 @@
-import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core'
+import { Component, OnInit, Renderer2 } from '@angular/core'
 import { Empleado } from '../../../models/recursosHumanos/empleados/empleado.model'
 import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
-import { EmpleadoFiltros } from 'src/app/services/utilidades/filtrosParaConsultas/empleado.filtros'
 import { EmpleadoFiltrosComponent } from './empleado-filtros/empleado-filtros.component'
 import { EmpleadoCrearModificarComponent } from './empleado-crear-modificar.component'
 import { Puesto } from '../../../models/recursosHumanos/puestos/puesto.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { PuestoService } from '../../../services/recursosHumanos/puesto.service'
 import { EmpleadoEventosCrearModalComponent } from './empleado-eventos-crear/empleado-eventos-crear-modal/empleado-eventos-crear-modal.component'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 
 @Component({
   selector: 'app-empleado',
@@ -26,11 +26,9 @@ export class EmpleadoComponent implements OnInit {
   componenteCrearModificar: EmpleadoCrearModificarComponent
 
   empleadoSeleccionado: Empleado
-
-  cbObservable = termino => {
-    this.empleadoFiltrosComponent.limpiar()
-    this.cargarEmpleados(termino)
-  }
+  totalDeElementos: number
+  cargando: boolean = false
+  paginacion = new Paginacion(5, 0, 1, 'nombres')
 
   _idModal: string
   set idAgregarEventoModal(id) {
@@ -121,46 +119,47 @@ export class EmpleadoComponent implements OnInit {
       class: 'btn-outline-primary',
       text: 'ESTATUS',
       cb: () => this.mec.estatusLaboral()
-    },
-   
+    }
   ]
 
   constructor(
     private _empleadoService: EmpleadoService,
-    public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService,
-    public _puestoService: PuestoService,
-    private _render: Renderer2
-  ) {}
+    public _puestoService: PuestoService  ) {}
 
   ngOnInit() {
     this.cargarEmpleados()
   }
 
-  cargarEmpleados(termino: string = null) {
-    this.buscando = false
+  /**
+   *  Carga los empleados e inicializa el paginador. Muy importante tener
+   * en cuenta que el inicializador del paginador es el total.
+   *
+   * @memberof EmpleadoComponent
+   */
 
-    this.aplicarFiltros(
-      this._empleadoService.filtros(new EmpleadoFiltros(this._empleadoService)),
-      this.empleadoFiltrosComponent
-    )
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .servicio.todo()
-      .subscribe(empleados => {
-        this.empleados = empleados
-      })
+  cargarEmpleados() {
+    this.termino = null
+    this._empleadoService.findAll(this.paginacion).subscribe(empleados => {
+      this.empleados = empleados
+      this.totalDeElementos = this._empleadoService.total
+    })
   }
 
-  private aplicarFiltros(
-    filtros: EmpleadoFiltros<EmpleadoService>,
-    c: EmpleadoFiltrosComponent
-  ): EmpleadoFiltros<EmpleadoService> {
-    if (!c) return filtros
+  actualizarConsulta(data: iPaginadorData = null) {
+    this.cargando = true
+    this.paginacion = data ? data.paginacion : this.paginacion
 
-    filtros.set_activo(c.activo).set_puestoActual(c.puestoActual._id)
+    const cb = empleados => {
+      this.empleados = empleados
+      this.cargando = false
+    }
 
-    return filtros
+    if (this.termino) {
+      this._empleadoService.find(this.termino, this.paginacion).subscribe(cb)
+    } else {
+      this._empleadoService.findAll(data.paginacion).subscribe(cb)
+    }
   }
 
   guardar() {
@@ -175,12 +174,20 @@ export class EmpleadoComponent implements OnInit {
     this.componenteCrearModificar.crear(empleado)
   }
 
+  termino: string = null
+  cbObservable = termino => {
+    if (this.empleadoFiltrosComponent) this.empleadoFiltrosComponent.limpiar()
+    this.paginacion = new Paginacion(5, 0, 1, 'nombres')
+    this.termino = termino
+    return this._empleadoService.find(termino, this.paginacion)
+  }
+
   resultadoDeBusqueda(datos: Empleado[]) {
+    this.totalDeElementos = this._empleadoService.total
     this.empleados = datos
   }
 
   cancelado() {
-    console.log('Busqueda por termino cancelada.')
     this.cargarEmpleados()
   }
 
@@ -198,13 +205,12 @@ export class EmpleadoComponent implements OnInit {
     let msj2 =
       'Si estas completamente seguro de lo que haces continua, de lo contrario cancela.'
 
-    this._msjService.confirmacionDeEliminacion(msj1, dato => {
+    this._msjService.confirmacionDeEliminacion(msj1, () => {
       this._msjService.confirmacionDeEliminacion(msj2, () => {
-        this._empleadoService.eliminar(empleado._id).subscribe(() => {
+        this._empleadoService.delete(empleado._id).subscribe(() => {
           this.cargarEmpleados()
         })
       })
     })
   }
-
 }

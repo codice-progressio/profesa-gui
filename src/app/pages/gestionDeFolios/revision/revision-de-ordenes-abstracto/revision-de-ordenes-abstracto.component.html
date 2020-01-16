@@ -18,6 +18,14 @@
       >
         Generar ordenes</a
       >
+      <a
+        (click)="collapseAll()"
+        class="btn btn-info btn-sm text-white ml-3 mb-1"
+        role="button"
+      >
+        <span *ngIf="!collapsado"> Collapsar pedidos</span>
+        <span *ngIf="collapsado"> Mostrar pedidos</span>
+      </a>
     </div>
     <h3>Revision de <b>ordenes</b></h3>
   </div>
@@ -81,9 +89,11 @@
       <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
           <h3 class="display-6">
-            <small 
-            title='Este pedido esta revisado.'
-            *ngIf="!pedido.requiereRevisionExtraordinaria" class="text-success mr-3 animated tada">
+            <small
+              title="Este pedido esta revisado."
+              *ngIf="!pedido.requiereRevisionExtraordinaria"
+              class="text-success mr-3 animated tada"
+            >
               <i class="fas fa-check"></i
             ></small>
             PEDIDO # <b>{{ pedido.pedido }}</b>
@@ -150,9 +160,26 @@
     </div>
 
     <div class="row pt-3" style="min-height: 100px">
-      <div class="col-12">
-        <h1 class="dispal-1">
-          {{pedido.modeloCompleto.nombreCompleto}}
+      <div class="col-12 d-flex justify-content-start">
+        <span>
+          <a
+            (click)="collapse(pedido.pedido)"
+            class="btn btn-outline-primary"
+            href="javascript:void(0)"
+            aria-expanded="false"
+          >
+            <ng-container *ngIf="listaDeMuestra[pedido.pedido]">
+              <i class="fas fa-chevron-right    "></i>
+              Mostrar
+            </ng-container>
+            <ng-container *ngIf="!listaDeMuestra[pedido.pedido]">
+              <i class="fas fa-chevron-down    "></i>
+              Ocultar
+            </ng-container>
+          </a>
+        </span>
+        <h1 class=" ml-3 dispal-1">
+          {{ pedido.modeloCompleto.nombreCompleto }}
         </h1>
       </div>
       <div class="col-6">
@@ -183,7 +210,7 @@
 
     <hr class="thin" />
 
-    <div class="row">
+    <div class="row collapse show {{ pedido.pedido }} revisionDeFolios">
       <div class="col-6">
         <div class="form-group">
           <h6><b>Observaciones del vendedor:</b></h6>
@@ -204,7 +231,11 @@
       </div>
     </div>
 
-    <div class="container text-center">
+    <div
+      class="container text-center collapse show {{
+        pedido.pedido
+      }} revisionDeFolios"
+    >
       <table class="table table-hover w-100">
         <thead>
           <tr>

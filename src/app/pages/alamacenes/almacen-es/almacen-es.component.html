@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow animated fadeInDown">
+      <div class="card-body">
+        <app-data-list
+          (ejecutarBusquedaDeItems)="
+            ejecutarOperacionesDeBusquedaArticulos($event)
+          "
+          (elementoSeleccionado)="seleccionar($event)"
+        ></app-data-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="articulo" id="detalles" class="row collapse animated fadeIn">
+  <div class="col-12">
+    <div class="card shadow ">
+      <div class="card-body">
+        <app-articulo-detalle [articulo]="articulo"></app-articulo-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+
+<span *ngIf="articulo" class="animated fadeIn d-block">
+  <p>
+    <a
+      class="btn btn-primary mr-3"
+      data-toggle="collapse"
+      href="#detalles"
+      aria-expanded="false"
+      aria-controls="detalles"
+    >
+      <i class="fas fa-eye  "></i>
+    </a>
+    Click para registrar una:
+    <a
+      (click)="se = !se"
+      [ngClass]="{
+        'btn-warning': !se,
+        'btn-success': se
+      }"
+      class="btn"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <ng-container *ngIf="!se; else letrero">
+        <i class="fas fa-plus-circle    "></i>
+        Entrada
+      </ng-container>
+      <ng-template #letrero>
+        <i class="fas fa-minus-circle    "></i>
+        Salida
+      </ng-template>
+    </a>
+  </p>
+
+  <div class="row  ">
+    <div *ngIf="se" class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <app-almacen-de-materia-prima-yherramientas-crear-modificar-entrada
+            [articulo]="articulo"
+            (guardado)="entradaSalidaGuardada()"
+            (cancelado)="entradaSalidaCancelada()"
+          ></app-almacen-de-materia-prima-yherramientas-crear-modificar-entrada>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!se" class="col-12">
+      <div class="card shadow  ">
+        <div class="card-body">
+          <app-almacen-de-materia-prima-yherramientas-crear-modificar-salida
+            [articulo]="articulo"
+            (guardado)="entradaSalidaGuardada()"
+            (cancelado)="entradaSalidaCancelada()"
+          ></app-almacen-de-materia-prima-yherramientas-crear-modificar-salida>
+        </div>
+      </div>
+    </div>
+  </div>
+</span>
