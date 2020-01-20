@@ -30,7 +30,18 @@
 
   <hr />
 
-  <h3>Lotes con existencia</h3>
+  <h3>Lotes con existencia 
+
+    <a 
+    
+    (click)='verLotesSinExistencia = !verLotesSinExistencia'
+    class="btn btn-primary" href="javascript:void(0)" role="button">
+      <span *ngIf="!verLotesSinExistencia">Mostrar lotes sin existencia</span >
+      <span *ngIf="verLotesSinExistencia">Ocultar lotes sin existencia</span>
+
+
+    </a>
+  </h3>
 
   <table class="table table-hover">
     <thead>
@@ -44,7 +55,9 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let lote of modeloCompleto.lotes">
-        <tr *ngIf="lote.existencia > 0" >
+        <tr
+        [ngClass]="{'bg-dark text-white': !lote.existencia}"
+        *ngIf=" verLotesSinExistencia ? true:lote.existencia > 0" >
           <td>
             <a
               (click)="mostrarDetalleLote(lote)"
