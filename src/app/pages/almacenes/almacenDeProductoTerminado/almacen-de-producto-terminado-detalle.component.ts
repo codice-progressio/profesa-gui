@@ -11,6 +11,8 @@ export class AlmacenDeProductoTerminadoDetalleComponent implements OnInit {
 
   @Input() modeloCompleto: ModeloCompleto = null 
 
+  verLotesSinExistencia: boolean = false
+
   @Output() detalleLote = new EventEmitter<Lotes>()
 
     constructor() { }
