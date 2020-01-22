@@ -1,18 +1,17 @@
-import { Component, OnInit } from "@angular/core"
-import { ModeloCompleto } from "../../../models/modeloCompleto.modelo"
-import { AlmacenProductoTerminadoService } from "../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service"
-import { PaginadorService } from "../../../components/paginador/paginador.service"
-import { FiltrosModelosCompletos } from "../../../services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos";
-import { ModeloCompletoService } from "../../../services/modelo/modelo-completo.service"
-import { Lotes } from "../../../models/almacenProductoTerminado/lotes.model"
-import { ManejoDeMensajesService } from "../../../services/utilidades/manejo-de-mensajes.service"
+import { Component, OnInit } from '@angular/core'
+import { ModeloCompleto } from '../../../models/modeloCompleto.modelo'
+import { AlmacenProductoTerminadoService } from '../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
+import { PaginadorService } from '../../../components/paginador/paginador.service'
+import { FiltrosModelosCompletos } from '../../../services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos'
+import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
-  selector: "app-almacen-de-producto-terminado",
-  templateUrl: "./almacen-de-producto-terminado.component.html",
+  selector: 'app-almacen-de-producto-terminado',
+  templateUrl: './almacen-de-producto-terminado.component.html',
   styles: []
 })
-
 export class AlmacenDeProductoTerminadoComponent implements OnInit {
   /**
    *El modeloCompleto al que se le va a agregar una entrada o salida.
@@ -31,9 +30,9 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   detalleLote: Lotes
 
-  termino: string = ""
+  termino: string = ''
 
-  cbObserbable = (termino) => {
+  cbObserbable = termino => {
     this.buscando = true
     return this._almacenDeProductoTerminadoService.search(
       termino,
@@ -44,7 +43,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   }
 
   busqueda(modelosCompletos: ModeloCompleto[]) {
-    modelosCompletos.map((mc) => {
+    modelosCompletos.map(mc => {
       mc._servicio = this._modeloCompletoService
     })
     this.modelosCompletos = modelosCompletos
@@ -83,8 +82,8 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
       .servicio.todo()
-      .subscribe((mcs) => {
-        mcs.map((mc) => {
+      .subscribe(mcs => {
+        mcs.map(mc => {
           mc._servicio = this._modeloCompletoService
         })
         this.modelosCompletos = mcs
@@ -129,7 +128,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
    * `-1` => La existencia esta debajo del minimo.
    * ` 0` => No hay existencia.
    * ` 1` => La existencia supera el maximo.
-   * ` 2` => Todo esta dentro de los parametros.
+   * ` 2` => Todo esta dentro de l parametros.
    *
    *
    * @returns {(-1 | 0 | 1 | 2)} El valor segun la evaluacion.
@@ -143,5 +142,24 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
     if (mc.existencia == 0) valor = 0
 
     return valor
+  }
+
+  modeloAConsolidar: ModeloCompleto = null
+
+  consolidarLotes() {
+    this._almacenDeProductoTerminadoService
+      .consolidar(this.modeloAConsolidar._id)
+      .subscribe(modeloCompleto => {
+        this.modeloAConsolidar = null
+        if(this.termino){
+        this.cbObserbable(this.termino).subscribe(modelos => {
+          this.modelosCompletos = modelos
+          this.modelosCompletos.map(
+            x => (x._servicio = this._modeloCompletoService)
+          )
+        })} else {
+          this.cargarModelos()
+        }
+      })
   }
 }
