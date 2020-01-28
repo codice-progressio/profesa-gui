@@ -4,7 +4,7 @@ import { SidebarComponent } from './sidebar/sidebar.component'
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
 import { NopagefoundComponent } from './nopagefound/nopagefound.component'
 import { RouterModule } from '@angular/router'
-import { CommonModule } from '@angular/common'
+import { CommonModule, DecimalPipe } from '@angular/common'
 
 // Pipes
 import { PipesModule } from '../pipes/pipes.module'
@@ -35,6 +35,43 @@ import { CargaDeImagenesComponent } from './carga-de-imagenes/carga-de-imagenes.
 import { VisorDeImagenesConPaginacionComponent } from './visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 
 import { PaginadorComponent as Paginador } from './paginador/paginador.component'
+import { ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado-base-imprimible/reporte-de-faltantes-producto-terminado-base-imprimible.component'
+import { GestorDeImpresionesComponent } from './gestor-de-impresiones/gestor-de-impresiones.component'
+import { SettingsService } from '../services/settings/settings.service'
+import { SidebarService } from '../services/shared/sidebar.service'
+import { SharedService } from '../services/shared/shared.service'
+import { UsuarioService } from '../services/usuario/usuario.service'
+import { LoginGuardGuard } from '../services/guards/login-guard.guard'
+import { AdminGuard } from '../services/guards/admin.guard'
+import { SubirArchivoService } from '../services/subir-archivo/subir-archivo.service'
+import { PreLoaderService } from '../components/pre-loader/pre-loader.service'
+import { ModalUploadService } from '../components/modal-upload/modal-upload.service'
+import { HospitalService } from '../services/hospital/hospital.service'
+import { MedicoService } from '../services/medico/medico.service'
+import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
+import { ClienteService } from '../services/cliente/cliente.service'
+import { ModeloCompletoService } from '../services/modelo/modelo-completo.service'
+import { BuscadorRapidoService } from '../components/buscador-rapido/buscador-rapido.service'
+import { UtilidadesService } from '../services/utilidades/utilidades.service'
+import { ManejoDeMensajesService } from '../services/utilidades/manejo-de-mensajes.service'
+import { ValidacionesService } from '../services/utilidades/validaciones.service'
+import { MaquinaService } from '../services/maquina/maquina.service'
+import { DepartamentoService } from '../services/departamento/departamento.service'
+import { ProcesoService } from '../services/proceso/proceso.service'
+import { GastoService } from '../services/gastos/gasto.service'
+import { CalculosDeCostosService } from '../services/gastos/calculos-de-costos.service'
+import { OrdenadorVisualService } from '../components/ordenador-visual/ordenador-visual.service'
+import { PermisosGuard } from '../services/guards/permisos.guard'
+import { FamiliaDeProcesosService } from '../services/proceso/familia-de-procesos.service'
+import { ModeloService } from '../services/modelo/modelo.service'
+import { TamanoService } from '../services/modelo/tamano.service'
+import { ColorService } from '../services/modelo/color.service'
+import { TerminadoService } from '../services/modelo/terminado.service'
+import { SortService } from '../directives/sortableComponent/sort.service'
+import { FolioNewService } from '../services/folio/folio-new.service'
+import { AlmacenProductoTerminadoService } from '../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
+import { HttpClientModule } from '@angular/common/http'
+import { ImagenPipe } from '../pipes/imagen.pipe'
 
 @NgModule({
   imports: [
@@ -45,7 +82,10 @@ import { PaginadorComponent as Paginador } from './paginador/paginador.component
     DndModule,
     NgxMaskModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule,
+    // Para el httpcliente necesitamos importar este modulo.
+    HttpClientModule
   ],
   declarations: [
     HeaderComponent,
@@ -72,7 +112,9 @@ import { PaginadorComponent as Paginador } from './paginador/paginador.component
     VisorDeImagenesGeneralComponent,
     CargaDeImagenesComponent,
     VisorDeImagenesConPaginacionComponent,
-    Paginador
+    Paginador,
+    ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
+    GestorDeImpresionesComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -100,10 +142,54 @@ import { PaginadorComponent as Paginador } from './paginador/paginador.component
     VisorDeImagenesGeneralComponent,
     VisorDeImagenesConPaginacionComponent,
     Paginador,
-    CargaDeImagenesComponent
-  ],
-  providers: [ModeloCompletoPipe]
+    CargaDeImagenesComponent,
+    ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
+    GestorDeImpresionesComponent
+  ]
 })
 export class SharedModule {
-  
+  static forRoot() {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        ModeloCompletoPipe,
+        SettingsService,
+        SidebarService,
+        SharedService,
+        UsuarioService,
+        LoginGuardGuard,
+        AdminGuard,
+        SubirArchivoService,
+        PreLoaderService,
+        ModalUploadService,
+        HospitalService,
+        MedicoService,
+        VerificaTokenGuard,
+        // Sistema Carrduci
+        ClienteService,
+        ModeloCompletoService,
+        BuscadorRapidoService,
+        UtilidadesService,
+        ManejoDeMensajesService,
+        ValidacionesService,
+        MaquinaService,
+        DepartamentoService,
+        ProcesoService,
+        GastoService,
+        CalculosDeCostosService,
+        OrdenadorVisualService,
+        PermisosGuard,
+        FamiliaDeProcesosService,
+        ModeloService,
+        TamanoService,
+        ColorService,
+        TerminadoService,
+        SortService,
+        FolioNewService,
+        AlmacenProductoTerminadoService,
+        ImagenPipe,
+        DecimalPipe
+      ]
+    }
+  }
 }
