@@ -70,10 +70,12 @@ export class TransformacionReporteSimplificadoComponent extends Temporizador imp
    * @memberof TransformacionReporteSimplificadoComponent
    */
   consultarReporte( ){
-      this._reporteProduccion.transformacionSimplificado().subscribe( (reporte)=>{
-      this.reporte = reporte
-      this.ultimaActualizacion = new Date();
-    } )
+    //   this._reporteProduccion.transformacionSimplificado().subscribe( (reporte)=>{
+    //   this.reporte = reporte
+    //   this.ultimaActualizacion = new Date();
+    // } )
+    throw "No definido";
+    
   }
 
  

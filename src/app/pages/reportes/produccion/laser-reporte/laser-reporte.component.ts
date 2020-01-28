@@ -33,9 +33,7 @@ export class LaserReporteComponent extends Temporizador  implements OnInit {
   
 
    consultarReporte( ) {
-     this._reportesService.laser( ).subscribe( (reporteLaser)=>{
-       this.reporteLaser = reporteLaser
-       this.mostrarReporte = true
-     } )
+    throw "No definido";
+    
    }
 }
