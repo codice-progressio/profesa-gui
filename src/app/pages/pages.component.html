@@ -1,7 +1,8 @@
-<!-- ============================================================== -->
-<!-- Main wrapper - style you can find in pages.scss -->
-<!-- ============================================================== -->
-<div id="main-wrapper">
+
+  <!-- ============================================================== -->
+  <!-- Main wrapper - style you can find in pages.scss -->
+  <!-- ============================================================== -->
+  <div id="main-wrapper" class="no-imprimir">
     <app-pre-loader></app-pre-loader>
     <app-header></app-header>
     <app-sidebar></app-sidebar>
@@ -10,92 +11,101 @@
     <!-- Page Wrapper -->
     <!-- ============================================================== -->
     <div class="page-wrapper">
+      <!-- ============================================================== -->
+      <!-- Container fluid  -->
+      <!-- ============================================================== -->
+      <div class="container-fluid">
+        <app-breadcrumbs></app-breadcrumbs>
         <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
-        <div class="container-fluid">
-
-            <app-breadcrumbs></app-breadcrumbs>
-            <!-- ============================================================== -->
-            <!-- Start Page Content -->
-            <!-- ============================================================== -->
-
-            <router-outlet></router-outlet>
-            <!-- <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            This is some text within a card block.
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- ============================================================== -->
-            <!-- End Page Content -->
-            <!-- ============================================================== -->
-
-
-        </div>
-        <!-- ============================================================== -->
-        <!-- END Container fluid  -->
+        <!-- Start Page Content -->
         <!-- ============================================================== -->
 
+        <router-outlet></router-outlet>
+        <!-- <div class="row">
+                      <div class="col-12">
+                          <div class="card">
+                              <div class="card-body">
+                                  This is some text within a card block.
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+        <!-- ============================================================== -->
+        <!-- End Page Content -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- END Container fluid  -->
+      <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- END Page wrapper -->
     <!-- ============================================================== -->
+  </div>
 
+  <!-- Modal upload -->
+  <app-modal-upload></app-modal-upload>
 
-</div>
-
-<!-- Modal upload -->
-<app-modal-upload></app-modal-upload>
-
-
-<!-- 
-=====================================
- version
-=====================================
--->
-<div class="modal fade zoomInDown" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <!-- 
+      =====================================
+       version
+      =====================================
+      -->
+  <div
+    class="modal fade zoomInDown no-imprimir"
+    id="modelId"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modelTitleId"
+    aria-hidden="true"
+  >
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-                <div class="modal-header">
-                        <h5 class="modal-title"><b>CARRDUCIsys</b> 2019 </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                    </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Version de la interfaz: {{guiVersion}} 
-                    <hr>
-                    Version de la API : {{apiVersion}}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>CARRDUCIsys</b> 2019</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            Version de la interfaz: {{ guiVersion }}
+            <hr />
+            Version de la API : {{ apiVersion }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
+  <!-- 
+      =====================================
+       END version
+      =====================================
+      -->
 
-<!-- 
-=====================================
- END version
-=====================================
--->
+  <!-- 
+      =====================================
+       Visor de imagenes
+      =====================================
+      -->
+  <app-visor-de-imagenes-general></app-visor-de-imagenes-general>
 
-<!-- 
-=====================================
- Visor de imagenes
-=====================================
--->
-    <app-visor-de-imagenes-general></app-visor-de-imagenes-general>
+  <!-- 
+      =====================================
+       END Visor de imagenes
+      =====================================
+      -->
 
-<!-- 
-=====================================
- END Visor de imagenes
-=====================================
--->
+<app-gestor-de-impresiones >
+</app-gestor-de-impresiones>

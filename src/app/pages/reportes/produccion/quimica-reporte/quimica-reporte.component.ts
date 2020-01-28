@@ -38,10 +38,8 @@ export class QuimicaReporteComponent extends Temporizador implements OnInit {
   }
 
   consultarReporte( ) {
-    this._reportesService.quimica( ).subscribe( ( reporteQuimica )=>{
-      this.reporteQuimica = reporteQuimica
-      this.mostrarReporte = true
-    } )
+    throw "No definido";
+    
   }
 
 }

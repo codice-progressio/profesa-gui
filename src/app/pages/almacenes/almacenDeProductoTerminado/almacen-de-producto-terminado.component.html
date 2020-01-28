@@ -6,17 +6,16 @@
           <h1 class=""><strong>Modelos</strong> existentes</h1>
 
           <div class="d-flex  align-items-center ">
-              <div class="mr-3">
-                  <app-buscador-paciente
-                    [cbObservable]="cbObserbable"
-                    [tiempoDeEspera]="1000"
-                    (resultado)="busqueda($event)"
-                    (cancelado)="cancelado()"
-                    (error)="error($event)"
-                    (terminoPublico)="termino = $event"
-                  ></app-buscador-paciente>
-                </div>
-    
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObserbable"
+                [tiempoDeEspera]="1000"
+                (resultado)="busqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error($event)"
+                (terminoPublico)="termino = $event"
+              ></app-buscador-paciente>
+            </div>
           </div>
         </div>
         <hr />
@@ -28,7 +27,7 @@
           class="table table-hover table-borderless animated fadeIn"
         >
           <thead class="">
-            <tr >
+            <tr>
               <th class="fit"></th>
 
               <th class="" title="Modelo">
@@ -43,6 +42,7 @@
               <th class="fit" title="Existencia maxima">
                 MAX
               </th>
+              <th class="fit"></th>
             </tr>
           </thead>
           <tbody>
@@ -54,8 +54,7 @@
                 'bg-danger': 0 === comprobarExistencias(mc),
                 'bg-info': 1 === comprobarExistencias(mc)
               }"
-
-              [class.text-white]='comprobarExistencias(mc) !==2'
+              [class.text-white]="comprobarExistencias(mc) !== 2"
             >
               <td class="fit">
                 <a
@@ -94,22 +93,32 @@
               <td class="no-wrap fit">{{ mc.nombreCompleto }}</td>
               <td>
                 <ng-container *ngIf="mc.existencia">
-                  {{ mc.existencia | number: "0.0-0" }}
+                  {{ mc.existencia | number: '0.0-0' }}
                 </ng-container>
                 <ng-container *ngIf="!mc.existencia || mc.existencia === 0">
                   0
                 </ng-container>
               </td>
 
-              <td
-            
-              >
-                {{ mc.stockMinimo | number: "0.0-0" }}
+              <td>
+                {{ mc.stockMinimo | number: '0.0-0' }}
               </td>
-              <td
-               
-              >
-                {{ mc.stockMaximo | number: "0.0-0" }}
+              <td>
+                {{ mc.stockMaximo | number: '0.0-0' }}
+              </td>
+
+              <td class="fit">
+                <a
+                  href="javascript:void(0)"
+                  class="btn btn-secondary btn-xs"
+                  role="button"
+                  data-toggle="modal"
+                  data-target="#masOpciones"
+                  (click)="modeloAConsolidar = mc"
+                >
+                  <i class="fas fa-plus-circle"></i>
+                  Mas opciones
+                </a>
               </td>
             </tr>
           </tbody>
@@ -215,5 +224,69 @@
 <!-- 
 =====================================
  END Detalles de lote
+=====================================
+-->
+
+<!-- 
+=====================================
+ Opciones adicionales
+=====================================
+-->
+<div
+  class="modal fade"
+  id="masOpciones"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title ">
+          Opciones adicionales
+          <br />
+          <b>{{ modeloAConsolidar?.nombreCompleto }}</b>
+        </h5>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-sm-6 mb-1">
+              <button
+                class="btn btn-secondary"
+                role="button"
+                (click)="consolidarLotes()"
+                [disabled]='!modeloAConsolidar'
+                data-dismiss="modal"
+              >
+                <i class="fas fa-compress-arrows-alt"></i>
+                Consolidar lotes
+            </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ END Opciones adicionales
 =====================================
 -->

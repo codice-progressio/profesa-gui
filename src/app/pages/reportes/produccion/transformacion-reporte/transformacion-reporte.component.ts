@@ -59,11 +59,11 @@ export class TransformacionReporteComponent implements OnInit {
   constructor(
     public _reportesService: ReportesProduccionService
   ) { 
-    this._reportesService.transformacionDetalle()
-    .subscribe( (reporte)=>{
-      this.reporteDetalle = reporte
-      this.pasosKey =  Object.keys( this.reporteDetalle.objetoContenedorDePasos )
-    } )
+    // this._reportesService.transformacionDetalle()
+    // .subscribe( (reporte)=>{
+    //   this.reporteDetalle = reporte
+    //   this.pasosKey =  Object.keys( this.reporteDetalle.objetoContenedorDePasos )
+    // } )
 
     this.iniciarHoraYFecha();
 
