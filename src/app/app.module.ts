@@ -42,7 +42,6 @@ import { NgxMaskModule } from "ngx-mask"
     APP_ROUTES,
     // PagesModule, //Lo quitamos por que se esta cargando de forma dinámica con en lazyload.???
     FormsModule,
-    ServiceModule,
     ReactiveFormsModule,
     SharedModule,
     DndModule.forRoot(),
