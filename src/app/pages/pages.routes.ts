@@ -112,7 +112,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: "Reporte de faltantes de producto terminado",
-      roles: []
+      roles: [ROLES.REPORTES_PRODUCTO_TERMINADO_FALTANTES]
     }
   },
 
