@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-12">
+    <h3 class="text-dark pull-left font-weight-bolder">{{ s.titulo }}</h3>
+    <div class="pull-right font-weight-bold">
+      {{ s.fecha | fecha: 'LLLL' | titlecase }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr />
+  </div>
+</div>
+<app-reporte-de-faltantes-producto-terminado-base-imprimible
+  *ngIf="s.reportesProductoTerminadoFaltante"
+  [reportes]="s.reportesProductoTerminadoFaltante"
+></app-reporte-de-faltantes-producto-terminado-base-imprimible>
