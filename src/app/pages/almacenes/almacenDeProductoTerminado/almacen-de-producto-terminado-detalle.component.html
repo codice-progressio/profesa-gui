@@ -30,16 +30,27 @@
 
   <hr />
 
-  <h3>Lotes con existencia 
+  <h3 class="d-flex justify-content-between align-items-center ">
+    Lotes con existencia
 
-    <a 
-    
-    (click)='verLotesSinExistencia = !verLotesSinExistencia'
-    class="btn btn-primary" href="javascript:void(0)" role="button">
-      <span *ngIf="!verLotesSinExistencia">Mostrar lotes sin existencia</span >
-      <span *ngIf="verLotesSinExistencia">Ocultar lotes sin existencia</span>
-
-
+    <a
+      [ngClass]="{
+        'btn-dark': verLotesSinExistencia,
+        'btn-secondary': !verLotesSinExistencia
+      }"
+      (click)="verLotesSinExistencia = !verLotesSinExistencia"
+      class="btn btn-dark btn-sm"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <span *ngIf="!verLotesSinExistencia">
+        <i class="fa fa-eye" aria-hidden="true"></i>
+        Mostrar lotes sin existencia</span
+      >
+      <span *ngIf="verLotesSinExistencia">
+        <i class="fas fa-eye-slash    "></i>
+        Ocultar lotes sin existencia</span
+      >
     </a>
   </h3>
 
@@ -56,8 +67,9 @@
     <tbody>
       <ng-container *ngFor="let lote of modeloCompleto.lotes">
         <tr
-        [ngClass]="{'bg-dark text-white': !lote.existencia}"
-        *ngIf=" verLotesSinExistencia ? true:lote.existencia > 0" >
+          [ngClass]="{ 'bg-dark text-white': !lote.existencia }"
+          *ngIf="verLotesSinExistencia ? true : lote.existencia > 0"
+        >
           <td>
             <a
               (click)="mostrarDetalleLote(lote)"
@@ -70,15 +82,13 @@
             ></a>
           </td>
           <td title="{{ lote.createAt | fecha }}">
-            {{ lote.createAt | date: "dd/MM/yyyy" }}
+            {{ lote.createAt | date: 'dd/MM/yyyy' }}
           </td>
-          <td>{{ lote.cantidadEntrada  | number: "0.0-0" }}</td>
-          <td>{{ lote.existencia  | number: "0.0-0" }}</td>
+          <td>{{ lote.cantidadEntrada | number: '0.0-0' }}</td>
+          <td>{{ lote.existencia | number: '0.0-0' }}</td>
           <td>{{ lote.observaciones }}</td>
         </tr>
-
       </ng-container>
-      
     </tbody>
   </table>
 </ng-container>
@@ -88,5 +98,3 @@
     No has selecconado un <strong>modelo</strong>.
   </h1></ng-container
 >
-
-

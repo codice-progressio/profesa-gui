@@ -1,0 +1,16 @@
+app-gestor-de-impresiones {
+  display: none;
+}
+
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  app-gestor-de-impresiones {
+    display: block;
+  }
+
+  .no-imprimir {
+    display: none;
+  }
+}

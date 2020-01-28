@@ -64,6 +64,7 @@ import { AreasComponent } from './recursosHumanos/areas/areas.component'
 import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
 import { DepartamentoComponent } from './departamento/departamento.component'
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
+import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -103,44 +104,15 @@ const pagesRoutes: Routes = [
   //  Reportes
   // =====================================
   // -->
+  
   {
-    path: "folios/historial",
-    component: HistorialDeFoliosComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: "Historial de folios.",
-      roles: [ROLES.REPORTES_HISTORIAL_DE_FOLIOS]
-    }
-  },
-
-  {
-    path: "reportes/laser",
-    component: LaserReporteComponent,
+    path: "reportes/productoTerminado/faltantes",
+    component: ReporteDeFaltantesProductoTerminadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Reporte de laser",
-      roles: [ROLES.REPORTES_LASER]
-    }
-  },
-  {
-    path: "reportes/transformacion",
-    component: TransformacionReporteComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "Reporte de transformacion",
-      roles: [ROLES.REPORTES_TRANSFORMACION]
-    }
-  },
-  {
-    path: "reportes/quimica",
-    component: QuimicaReporteComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "Reporte de quimica",
-      roles: [ROLES.REPORTES_QUIMICA]
+      titulo: "Reporte de faltantes de producto terminado",
+      roles: []
     }
   },
 
