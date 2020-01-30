@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core'
 import { ReporteFaltantesProductoTerminado } from '../models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
+import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImpresionService {
   reportesProductoTerminadoFaltante: ReporteFaltantesProductoTerminado[] = null
-  titulo='Reporte sin titulo'
-  fecha= new Date()
+  reportesAlmacenProduccionFaltante: ReporteFaltantesAlmacenProduccion[] = null
+
+  titulo = 'Reporte sin titulo'
+  fecha = new Date()
   private operacionDeLimpieza: Function = null
   constructor() {}
 
@@ -16,21 +19,29 @@ export class ImpresionService {
   ): this {
     this.titulo = 'Reporte de faltantes. Producto terminado'
     this.reportesProductoTerminadoFaltante = reportes
-    this.operacionDeLimpieza = this.productoTerminadoFaltantesLimpiar
+
     return this
   }
 
-  private productoTerminadoFaltantesLimpiar() {
+  private limpiar() {
     this.reportesProductoTerminadoFaltante = null
+    this.reportesAlmacenProduccionFaltante = null
+  }
+
+  almacenProduccionFaltantes(
+    reportes: ReporteFaltantesAlmacenProduccion[]
+  ): this {
+    this.titulo = 'Reporte de faltantes. Almacen de produccion'
+    this.reportesAlmacenProduccionFaltante = reportes
+    this.operacionDeLimpieza
+    return this
   }
 
   imprimir() {
     this.fecha = new Date()
     setTimeout(() => {
       window.print()
-      console.log('termino imp')
-      this.operacionDeLimpieza()
-      this.operacionDeLimpieza = null
+      this.limpiar()
     }, 300)
   }
 }
