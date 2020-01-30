@@ -1,0 +1,34 @@
+.resaltar {
+    background-color: #eee;
+  }
+  thead {
+    background-color: rgb(32, 112, 204);
+    color: white;
+    -webkit-print-color-adjust: exact;
+  }
+  @media print {
+    thead {
+      color: black;
+    }
+  
+    table.table.tabla-delgada {
+      font-size: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  
+    .table.tabla-delgada tbody tr,
+    .table.tabla-delgada tbody td {
+      height: 10px;
+    }
+  
+    .table.tabla-delgada > tbody > tr > td,
+    .table.tabla-delgada > tbody > tr > th,
+    .table.tabla-delgada > tfoot > tr > td,
+    .table.tabla-delgada > tfoot > tr > th,
+    .table.tabla-delgada > thead > tr > td,
+    .table.tabla-delgada > thead > tr > th {
+      padding: 0;
+      vertical-align: 'center';
+    }
+  }
+  

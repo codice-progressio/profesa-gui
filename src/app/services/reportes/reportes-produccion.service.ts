@@ -7,6 +7,7 @@ import { UtilidadesService } from '../utilidades/utilidades.service'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { URL_BASE } from '../../config/config'
 import { ReporteFaltantesProductoTerminado } from 'src/app/models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
+import { ReporteFaltantesAlmacenProduccion } from '../../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +42,25 @@ export class ReportesProduccionService {
       catchError(err => this.error(err))
     )
   }
+
+
+  almacenProduccionFaltante(): Observable<ReporteFaltantesAlmacenProduccion[]>{
+    const a = this._preLoaderService.loading('Generando reporte de faltantes')
+    const url = URL_BASE('reportes/almacenDeProduccion/faltantes')
+
+    return this.http.get(url).pipe(
+      map((datos: any) => {
+        this._msjService.ok_(datos, null, a)
+
+        return datos.reporte.map(x =>
+          Object.assign(new ReporteFaltantesAlmacenProduccion(), x)
+        )
+      }),
+      catchError(err => this.error(err))
+    )
+  }
+
+
+
+
 }

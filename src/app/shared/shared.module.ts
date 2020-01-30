@@ -72,6 +72,7 @@ import { FolioNewService } from '../services/folio/folio-new.service'
 import { AlmacenProductoTerminadoService } from '../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
 import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
+import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 
 @NgModule({
   imports: [
@@ -114,7 +115,8 @@ import { ImagenPipe } from '../pipes/imagen.pipe'
     VisorDeImagenesConPaginacionComponent,
     Paginador,
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
-    GestorDeImpresionesComponent
+    GestorDeImpresionesComponent,
+    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -144,7 +146,8 @@ import { ImagenPipe } from '../pipes/imagen.pipe'
     Paginador,
     CargaDeImagenesComponent,
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
-    GestorDeImpresionesComponent
+    GestorDeImpresionesComponent,
+    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent
   ]
 })
 export class SharedModule {
