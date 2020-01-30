@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter } from '@angular/core'
 import { ReportesProduccionService } from 'src/app/services/reportes/reportes-produccion.service'
 import { ImpresionService } from 'src/app/services/impresion.service'
 import { ReporteFaltantesProductoTerminado } from 'src/app/models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
-import { ReporteFaltantesAlmacenProduccion } from '../../../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
 import {
   ReporteFaltantesAlmacenProduccion,
   iSalidasUltimosDias
@@ -45,6 +44,4 @@ export class ReporteDeFaltantesAlmacenDeProduccionComponent implements OnInit {
   imprimir(reportes: ReporteFaltantesAlmacenProduccion[]) {
     this.impresionService.almacenProduccionFaltantes(reportes).imprimir()
   }
-
-
 }
