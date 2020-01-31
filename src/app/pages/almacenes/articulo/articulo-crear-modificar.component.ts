@@ -118,11 +118,11 @@ export class ArticuloCrearModificarComponent implements OnInit {
     let maxA: AbstractControl = group.get("stockMaximo")
 
     let validacion = null
-    if (min >= max) {
+    if (min > max) {
       maxA.setErrors({ general: { mensaje: "Debe ser mayor que " + min } })
 
       validacion = {
-        general: { mensaje: "El maximo no puede ser igual o menor al minimo." }
+        general: { mensaje: "El maximo no puede ser menor al minimo." }
       }
     }
 

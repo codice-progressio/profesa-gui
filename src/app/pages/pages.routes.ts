@@ -65,6 +65,7 @@ import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
 import { DepartamentoComponent } from './departamento/departamento.component'
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
+import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -113,6 +114,16 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Reporte de faltantes de producto terminado",
       roles: [ROLES.REPORTES_PRODUCTO_TERMINADO_FALTANTES]
+    }
+  },
+  {
+    path: "reportes/almacenDeProduccion/faltantes",
+    component: ReporteDeFaltantesAlmacenDeProduccionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Reporte de faltantes - Almacen de produccion",
+      roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_FALTANTES]
     }
   },
 
