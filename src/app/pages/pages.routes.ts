@@ -21,13 +21,11 @@ import { SeleccionComponent } from "./departamentos/seleccion/seleccion.componen
 import { VistaParaImprecionComponent } from "./generador-de-ordenes/vista-para-imprecion.component"
 import { PastillaComponent } from "./departamentos/pastilla/pastilla.component"
 import { EmpaqueComponent } from "./departamentos/empaque/empaque.component"
-import { GestionDepartamentoComponent } from "./departamentos/gestion-departamento/gestion-departamento.component"
 import { IndicadorDeChecadasComponent } from "./reportes/indicador-de-checadas/indicador-de-checadas.component"
 import { _ROLES as ROLES } from "../config/roles.const"
 import { ClientesComponent } from "./clientes/clientes.component"
 import { ControlDeProduccionComponent } from "./departamentos/control-de-produccion/control-de-produccion.component"
 import { ProductoTerminadoComponent } from "./departamentos/producto-terminado/producto-terminado.component"
-import { HistorialDeFoliosComponent } from "./reportes/historial-de-folios/historial-de-folios.component"
 import { MetalizadoComponent } from "./departamentos/metalizado/metalizado.component"
 import { BarnizadoComponent } from "./departamentos/barnizado/barnizado.component"
 import { BuratoComponent } from "./departamentos/burato/burato.component"
@@ -36,15 +34,11 @@ import { AlmacenDeBotonComponent } from "./departamentos/almacen-de-boton/almace
 import { ProcesosComponent } from "./gestionDeProcesos/procesos/procesos.component"
 import { MaquinasComponent } from "./gestionDeProcesos/maquinas/maquinas.component"
 import { FamiliaDeProcesosComponent } from "./gestionDeProcesos/familia-de-procesos/familia-de-procesos.component"
-import { FamiliaDeProcesosDetalleComponent } from "./gestionDeProcesos/familia-de-procesos/familia-de-procesos-detalle.component"
 import { TamanosComponent } from "./gestionDeProcesos/tamanos/tamanos.component"
 import { ColoresComponent } from "./gestionDeProcesos/colores/colores.component"
 import { TerminadosComponent } from "./gestionDeProcesos/terminados/terminados.component"
 import { ModelosCompletosComponent } from "./gestionDeProcesos/modelos-completos/modelos-completos.component"
 import { ModelosComponent } from "./gestionDeProcesos/modelos/modelos.component"
-import { LaserReporteComponent } from "./reportes/produccion/laser-reporte/laser-reporte.component"
-import { TransformacionReporteComponent } from "./reportes/produccion/transformacion-reporte/transformacion-reporte.component"
-import { QuimicaReporteComponent } from "./reportes/produccion/quimica-reporte/quimica-reporte.component"
 import { PruebaParaDetallesComponent } from "./prueba-para-detalles/prueba-para-detalles.component"
 import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-de-folios/revision-de-folios.component"
 import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
@@ -66,6 +60,7 @@ import { DepartamentoComponent } from './departamento/departamento.component'
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
+import { ReportePersonalizadoAlmacenProduccionComponent } from './reportes/reporte-personalizado-almacen-produccion/reporte-personalizado-almacen-produccion.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -126,6 +121,16 @@ const pagesRoutes: Routes = [
       roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_FALTANTES]
     }
   },
+  {
+    path: "reportes/almacenDeProduccion/personalizado",
+    component: ReportePersonalizadoAlmacenProduccionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Reporte personalizado - Almacen de produccion",
+      roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_PERSONALIZADOS]
+    }
+  },
 
   // <!--
   // =====================================
@@ -178,6 +183,16 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Requisiciones de articulos",
       roles: [ROLES.ALMACEN_REQUISICION]
+    }
+  },
+  {
+    path: "almacen/reportesPersonalizados",
+    component: ReportePersonalizadoAlmacenProduccionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Gestion de reportes personalizados",
+      roles: [ROLES.ALMACEN_PRODUCCION_REPORTES_PERSONALIZADOS]
     }
   },
 

@@ -179,6 +179,11 @@ import { EmpleadoAgregarEstatusLaboralComponent } from './recursosHumanos/emplea
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component';
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component';
+import { ReportePersonalizadoAlmacenProduccionComponent } from './reportes/reporte-personalizado-almacen-produccion/reporte-personalizado-almacen-produccion.component';
+import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-crear-modificar.component';
+import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component';
+
+
 
 
 @NgModule({
@@ -351,6 +356,9 @@ import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/repor
     AlmacenESComponent,
     ReporteDeFaltantesProductoTerminadoComponent,
     ReporteDeFaltantesAlmacenDeProduccionComponent,
+    ReportePersonalizadoAlmacenProduccionComponent,
+    ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
+    ReportePersonalizadoAlmacenProduccionDetalleComponent,
   ],
   exports: [
     DashboardComponent,
