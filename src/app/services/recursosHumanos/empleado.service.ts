@@ -119,7 +119,7 @@ export class EmpleadoService {
   }
 
   delete(id: string): Observable<Empleado> {
-    const a = this._preLoaderService.loading('Buscando empleados')
+    const a = this._preLoaderService.loading('Eliminando empleado')
     const url = this.base.concat(`/${id}`)
 
     return this.http.delete(url).pipe(

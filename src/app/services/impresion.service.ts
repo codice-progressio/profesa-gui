@@ -8,6 +8,7 @@ import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenPro
 export class ImpresionService {
   reportesProductoTerminadoFaltante: ReporteFaltantesProductoTerminado[] = null
   reportesAlmacenProduccionFaltante: ReporteFaltantesAlmacenProduccion[] = null
+  reportesAlmacenPrdouccionPersonalizado: any [] = null
 
   titulo = 'Reporte sin titulo'
   fecha = new Date()
@@ -26,6 +27,7 @@ export class ImpresionService {
   private limpiar() {
     this.reportesProductoTerminadoFaltante = null
     this.reportesAlmacenProduccionFaltante = null
+    this.reportesAlmacenPrdouccionPersonalizado = null
   }
 
   almacenProduccionFaltantes(
@@ -33,6 +35,15 @@ export class ImpresionService {
   ): this {
     this.titulo = 'Reporte de faltantes. Almacen de produccion'
     this.reportesAlmacenProduccionFaltante = reportes
+    this.operacionDeLimpieza
+    return this
+  }
+ 
+  almacenProduccionPersonalizado(
+    reportes: any[], nombreReporte:string
+  ): this {
+    this.titulo = nombreReporte + ' Almacen de produccion'
+    this.reportesAlmacenPrdouccionPersonalizado = reportes
     this.operacionDeLimpieza
     return this
   }

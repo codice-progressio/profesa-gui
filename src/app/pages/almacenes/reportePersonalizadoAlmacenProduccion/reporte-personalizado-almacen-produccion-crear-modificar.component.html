@@ -1,0 +1,175 @@
+<ng-container *ngIf="this.formulario">
+  <div class="justify-content-between d-flex aling-items-center">
+    <h1 *ngIf="reporte?._id">{{ reporte.nombre }}</h1>
+    <h1>
+      <span class="text-success" *ngIf="!reporte?._id">
+        <i class="fas fa-plus-square    "></i> Crear <b>reporte</b> </span
+      ><span class="text-warning" *ngIf="reporte?._id">
+        <i class="fas fa-pen-square"></i> Modificar <b>reporte</b>
+      </span>
+    </h1>
+  </div>
+
+  <hr />
+
+  <form [formGroup]="formulario">
+    <div class="row">
+      <!-- 
+        =====================================
+         nombre
+        =====================================
+        -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('nombre')),
+              'is-valid': vs.valid(f('nombre'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="nombre"
+          />
+          <small id="helpId" class="form-text text-muted"> Nombre</small>
+          <app-validacion-inputs [campo]="f('nombre')"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+        =====================================
+         END nombre
+        =====================================
+        -->
+
+      <!-- 
+        =====================================
+         descripcion
+        =====================================
+        -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <textarea
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('descripcion')),
+              'is-valid': vs.valid(f('descripcion'))
+            }"
+            class="form-control"
+            formControlName="descripcion"
+            rows="5"
+          ></textarea>
+          <small id="helpId" class="form-text text-muted">Descripcion</small>
+          <app-validacion-inputs
+            [campo]="f('descripcion')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+        =====================================
+         END descripcion
+        =====================================
+        -->
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <app-data-list
+          (ejecutarBusquedaDeItems)="
+            ejecutarOperacionesDeBusquedaArticulos($event)
+          "
+          (elementoSeleccionado)="articuloSeleccionado($event)"
+        >
+        </app-data-list>
+      </div>
+      <div class="col-12 col-md-6">
+        <!-- 
+          =====================================
+           Array articulos 
+          =====================================
+        -->
+        <div class="list-group shadow ">
+          <a
+            href="javacript:void(0)"
+            class="list-group-item list-group-item-action disabled bg-dark text-white"
+            >Articulos seleccionados ({{ fa('articulos').controls.length }})</a
+          >
+
+          <a
+            *ngIf="fa('articulos').controls.length === 0"
+            href="javacript:void(0)"
+            class="list-group-item list-group-item-action disabled"
+            >No se han seleccionado articulos</a
+          >
+
+          <div
+            style="max-height: 300px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
+          >
+            <ng-container formArrayName="articulos">
+              <ng-container
+                *ngFor="let dummy of fa('articulos').controls; let i = index"
+              >
+                <ng-container [formGroupName]="i">
+                  <a
+                    href="javacript:void(0)"
+                    class="list-group-item list-group-item-action animated slideInRight faster"
+                  >
+                    <div
+                      class="d-flex justify-content-between align-items-center w-100"
+                    >
+                      <span>
+                        <a
+                          (click)="eliminar(i)"
+                          class="btn btn-danger btn-sm btn-rounded mr-3"
+                          href="javascript:void(0)"
+                          role="button"
+                          ><i class="fas fa-times-circle    "></i
+                        ></a>
+                        <a
+                          title="Click para ver el detalle de {{
+                            fa('articulos').at(i).value.nombre
+                          }}"
+                          data-toggle="modal"
+                          data-target="#detalleArticuloModal"
+                          (click)="detalleArticulo(i)"
+                          class="pointer"
+                          href="javascript:void(0)"
+                        >
+                          {{ dummy.value.nombre }}
+                        </a>
+                      </span>
+                    </div>
+                  </a>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+        <!-- 
+          =====================================
+           END Array articulos 
+          =====================================
+          -->
+      </div>
+    </div>
+
+    <app-validacion-inputs [campo]="formulario"></app-validacion-inputs>
+
+    <br />
+    <br />
+
+    <button
+      (click)="submit(formulario.value, formulario.invalid, $event)"
+      class="text-white btn btn-success mr-3 active"
+      role="button"
+    >
+      <i class="fas fa-save    "></i> Guardar
+    </button>
+    <a
+      data-toggle="modal"
+      data-target="#crearReporteModal"
+      (click)="cancelar()"
+      class="text-white btn btn-danger active"
+      role="button"
+    >
+      <i class="fas fa-times    "></i> Cancelar</a
+    >
+  </form>
+</ng-container>

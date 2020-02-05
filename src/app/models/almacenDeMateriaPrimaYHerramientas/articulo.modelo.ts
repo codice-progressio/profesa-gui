@@ -1,7 +1,7 @@
-import { AlmacenDescripcion } from "./almacen-descripcion.model"
-import { Deserializable } from "../deserealizable.model"
-import { SalidaArticulo } from "./salidaArticulo.model"
-import { EntradaArticulo } from "./entradaArticulo.model"
+import { AlmacenDescripcion } from './almacen-descripcion.model'
+import { Deserializable } from '../deserealizable.model'
+import { SalidaArticulo } from './salidaArticulo.model'
+import { EntradaArticulo } from './entradaArticulo.model'
 
 export class Articulo implements Deserializable {
   constructor(
@@ -21,14 +21,18 @@ export class Articulo implements Deserializable {
     public entradas: EntradaArticulo[] = [],
     public descripcion?: string,
     public observaciones?: string,
-    public imagenes: string[] = []
+    public imagenes: string[] = [],
+    public enTransito: []= [],
+    public _7: []= [],
+    public _30: []= [],
+    public _365: []= []
   ) {}
 
   deserialize(input: this): this {
     Object.assign(this, input)
     this.almacen = new AlmacenDescripcion().deserialize(input.almacen)
-    this.salidas.map((salida) => new SalidaArticulo().deserialize(salida))
-    this.entradas.map((entrada) => new EntradaArticulo().deserialize(entrada))
+    this.salidas.map(salida => new SalidaArticulo().deserialize(salida))
+    this.entradas.map(entrada => new EntradaArticulo().deserialize(entrada))
     return this
   }
 
