@@ -60,7 +60,10 @@ import { DepartamentoComponent } from './departamento/departamento.component'
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
-import { ReportePersonalizadoAlmacenProduccionComponent } from './reportes/reporte-personalizado-almacen-produccion/reporte-personalizado-almacen-produccion.component'
+import { ReportePersonalizadoAlmacenProduccionComponent } from "./almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component";
+import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
+
+
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -124,6 +127,16 @@ const pagesRoutes: Routes = [
   {
     path: "reportes/almacenDeProduccion/personalizado",
     component: ReportePersonalizadoAlmacenProduccionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: "Reporte personalizado - Almacen de produccion",
+      roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_PERSONALIZADOS]
+    }
+  },
+  {
+    path: "reportes/almacenDeProduccion/personalizado/:id",
+    component: RPersonalizadoAlmacenProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
