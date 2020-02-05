@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { ReportesProduccionService } from '../../../services/reportes/reportes-produccion.service'
 import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
 import { SalidaArticulo } from '../../../models/almacenDeMateriaPrimaYHerramientas/salidaArticulo.model'
+import { ImpresionService } from '../../../services/impresion.service'
+import { ReportesPersonalizadosAlmacenProduccionService } from '../../../services/reportes-personalizados-almacen-produccion.service'
+import { ReportePersonalizadoAlmacenProduccion } from '../../../models/reportePersonalizadoAlmacenProduccion/reportePersonalizadoAlmacenProduccion.model'
 
 @Component({
   selector: 'app-r-personalizado-almacen-produccion',
@@ -15,10 +18,14 @@ export class RPersonalizadoAlmacenProduccionComponent implements OnInit {
   actualizacion: Date
   detalleSalida
 
+  reporte: ReportePersonalizadoAlmacenProduccion
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private reportesService: ReportesProduccionService,
-    private router: Router
+    private router: Router,
+    private impresionService: ImpresionService,
+    private repoPersoService: ReportesPersonalizadosAlmacenProduccionService
   ) {}
   ngOnInit() {
     this.cargarReporte()
@@ -34,6 +41,10 @@ export class RPersonalizadoAlmacenProduccionComponent implements OnInit {
             this.reportes = articulos
             this.cargando = false
             this.actualizacion = new Date()
+
+            this.repoPersoService
+              .findById(parametros.get('id'))
+              .subscribe(reporte => (this.reporte = reporte))
           },
           err => {
             this.cargando = false
@@ -46,6 +57,8 @@ export class RPersonalizadoAlmacenProduccionComponent implements OnInit {
   }
 
   imprimir(articulos: Articulo[]) {
-    throw 'no definido'
+    this.impresionService
+      .almacenProduccionPersonalizado(articulos, this.reporte.nombre)
+      .imprimir()
   }
 }
