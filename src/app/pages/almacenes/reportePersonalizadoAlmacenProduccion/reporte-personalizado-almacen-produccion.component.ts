@@ -55,7 +55,8 @@ export class ReportePersonalizadoAlmacenProduccionComponent implements OnInit {
   cancelado() {
     this.cargarReportes()
   }
-  error() {
+  error(evento) {
+    console.error(evento)
     this.cargarReportes()
   }
 
