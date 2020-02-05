@@ -73,6 +73,8 @@ import { AlmacenProductoTerminadoService } from '../services/almacenDeProductoTe
 import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
+import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
+
 
 @NgModule({
   imports: [
@@ -116,7 +118,8 @@ import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '..
     Paginador,
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
-    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent
+    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
+    RPersonalizadoAlmacenProduccionImprimibleComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -147,7 +150,8 @@ import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '..
     CargaDeImagenesComponent,
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
-    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent
+    ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
+    RPersonalizadoAlmacenProduccionImprimibleComponent
   ]
 })
 export class SharedModule {

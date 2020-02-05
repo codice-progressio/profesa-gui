@@ -8,6 +8,8 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { URL_BASE } from '../../config/config'
 import { ReporteFaltantesProductoTerminado } from 'src/app/models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
 import { ReporteFaltantesAlmacenProduccion } from '../../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
+import { ReportePersonalizadoAlmacenProduccion } from '../../models/reportePersonalizadoAlmacenProduccion/reportePersonalizadoAlmacenProduccion.model'
+import { Articulo } from '../../models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +60,28 @@ export class ReportesProduccionService {
       }),
       catchError(err => this.error(err))
     )
+  }
+
+  almacenProduccionPersonalizado( id:string ): Observable<Articulo[]>{
+
+    const a = this._preLoaderService.loading('Generando reporte personalizado')
+    const url = URL_BASE(`reportes/almacenDeProduccion/personalizado/${id}`)
+
+    return this.http.get(url).pipe(
+      map((datos: any) => {
+        this._msjService.ok_(datos, null, a)
+
+        return datos.reportes.map(x =>
+          Object.assign(new Articulo(), x)
+        )
+      }),
+      catchError(err => this.error(err))
+    )
+
+
+
+
+
   }
 
 

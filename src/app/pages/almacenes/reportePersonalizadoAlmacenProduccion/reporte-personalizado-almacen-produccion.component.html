@@ -1,0 +1,254 @@
+<!-- 
+=====================================
+ Encabezado
+=====================================
+-->
+<div class="row fadeInDown animated">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class=""><strong>Reportes</strong> existentes</h1>
+  
+            <div class="d-flex  align-items-center ">
+              <div class="mr-3">
+                <app-buscador-paciente
+                  [cbObservable]="cbObservable"
+                  [tiempoDeEspera]="1000"
+                  (resultado)="resultadoDeBusqueda($event)"
+                  (cancelado)="cancelado()"
+                  (error)="error($event)"
+                ></app-buscador-paciente>
+              </div>
+  
+              <a
+                data-toggle="modal"
+                data-target="#crearReporteModal"
+                class="btn btn-success text-white active mr-3"
+              >
+                <i class="fas fa-plus "></i> Crear reporte</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 
+    =====================================
+     END Encabezado
+    =====================================
+    -->
+  
+  <div class="row ">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="totalDeElementos"
+        [campoDeOrdenamiento]="'nombres'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+        [cargando]="cargando"
+      ></paginador>
+    </div>
+  </div>
+  
+  <div *ngIf="reportes?.length > 0" class="row animated fadeInUp">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th></th>
+                <th title="Nombre del reporte">Nombre</th>
+                <th title="Descripcion">Descripcion</th>
+                <th title="Cantidad de articulos en el reporte">Can/Art</th>
+                <th title="Fecha de creacion">Creado</th>
+                <th title="Fecha de modificacion">Modificado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reporte of reportes">
+                <td>
+                  <a
+                    (click)="detalle = reporte"
+                    class="btn btn-primary btn-sm btn-rounded mr-2"
+                    href="javascript:void(0)"
+                    role="button"
+                    data-toggle="modal"
+                    data-target="#detalleReporteModal"
+                  >
+                    <i class="fas fa-eye   "></i>
+                  </a>
+                  <a
+                    (click)="modificar(reporte)"
+                    class="btn btn-success btn-sm btn-rounded mr-2"
+                    href="javascript:void(0)"
+                    role="button"
+                    data-toggle="modal"
+                    data-target="#crearReporteModal"
+                  >
+                    <i class="fas fa-edit   "></i>
+                  </a>
+                  <a
+                    (click)="verReporte(reporte)"
+                    class="btn btn-info btn-sm btn-rounded"
+                    href="javascript:void(0)"
+                    role="button"
+                   
+                  >
+                    <i class="fas fa-chart-line   "></i>
+                  </a>
+                </td>
+                <td>{{ reporte.nombre }}</td>
+                <td>{{ reporte.descripcion }}</td>
+                <td>{{ reporte.articulos.length }}</td>
+                <td title="{{ reporte.createdAt | fecha: 'LLLL' }}">
+                  {{ reporte.createdAt | date }}
+                </td>
+                <td title="{{ reporte.updatedAt | fecha: 'LLLL' }}">
+                  {{ reporte.updatedAt | date }}
+                </td>
+                <td>
+                  <a
+                    (click)="eliminar(reporte._id)"
+                    class="btn btn-danger btn-sm btn-rounded"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle   "></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <!-- 
+      =====================================
+       END tabla
+      =====================================
+      -->
+  </div>
+  <!-- 
+      =====================================
+       No reportes
+      =====================================
+      -->
+  <div *ngIf="reportes?.length === 0" class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="display-1">No hay <b>reportes</b> para mostrar</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 
+    =====================================
+     END No reportes
+    =====================================
+    -->
+  
+  <!-- 
+  =====================================
+   Modal crear/modificar
+  =====================================
+  -->
+  <div
+    class="modal fade"
+    id="crearReporteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modelTitleId"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-reporte-personalizado-almacen-produccion-crear-modificar
+            [reporte]="reporteModificar"
+            (verDetalleArticulo)="buscarArticulo($event)"
+            (esteComponente)="crearModificarComponente = $event"
+            (cancelado)="cancelado()"
+            (guardado)="guardado()"
+          ></app-reporte-personalizado-almacen-produccion-crear-modificar>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 
+  =====================================
+   END Modal crear/modificar
+  =====================================
+  -->
+  
+  <!-- 
+  =====================================
+   Modal detalle articulo
+  =====================================
+  -->
+  
+  <div
+    class="modal fade"
+    id="detalleArticuloModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modelTitleId"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-articulo-detalle
+            [articulo]="articuloDetalle"
+          ></app-articulo-detalle>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 
+  =====================================
+   END Modal detalle articulo
+  =====================================
+  -->
+  
+  <!-- 
+  =====================================
+   Detalle de reporte
+  =====================================
+  -->
+  
+  <div
+    class="modal fade"
+    id="detalleReporteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modelTitleId"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-body">
+            <app-reporte-personalizado-almacen-produccion-detalle
+              [reporte]="detalle"
+              (verDetalleArticullo)="buscarArticulo($event)"
+            ></app-reporte-personalizado-almacen-produccion-detalle>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 
+  =====================================
+   END Detalle de reporte
+  =====================================
+  --></div>
+  
