@@ -1,4 +1,11 @@
-import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  OnDestroy,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 import { Router } from '@angular/router'
 import { NgForm } from '@angular/forms'
 import { Usuario } from '../models/usuario.model'
@@ -35,6 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destruirEstilo()
+  }
+
+  destruirEstilo() {
     this.render.removeStyle(document.body, 'height')
     this.render.removeStyle(document.body, 'display')
     this.render.removeStyle(document.body, 'display')
@@ -42,7 +53,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.render.removeStyle(document.body, 'align-items')
     this.render.removeStyle(document.body, 'padding-top')
     this.render.removeStyle(document.body, 'padding-bottom')
-    this.render.removeStyle(document.body, 'background-color')
   }
 
   aplicarEstilos() {
@@ -70,7 +80,20 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     const usuario = new Usuario(null, this.email, this.password)
     this._usuarioService.login(usuario, true).subscribe(
-      () => this.router.navigate(['/dashboard']),
+      () => {
+        let contador = 1
+        const inte = setInterval(() => {
+          this.render.setStyle(document.body, 'opacity', (contador -= 0.1))
+
+          if (contador <= 0) {
+            clearInterval(inte)
+
+            this.render.removeStyle(document.body, 'background-image')
+            this.render.setStyle(document.body, 'opacity', 1)
+            this.router.navigate(['/dashboard'])
+          }
+        }, 50)
+      },
       err => {
         this.loading = false
       }

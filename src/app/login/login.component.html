@@ -1,4 +1,9 @@
-<form class="form-signin text-center shadow animated fadeIn delay-1s ">
+<form 
+[ngClass]="{
+  'fadeOut': loading,
+  'fadeIn delay-1s': !loading
+}"
+class="form-signin text-center shadow animated  ">
   <img
     class="mb-4 mt-4"
     src="assets/images/logo-text.png"

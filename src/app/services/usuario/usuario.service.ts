@@ -170,7 +170,10 @@ export class UsuarioService {
         // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
         this.apiVersion = resp.apiVersion
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
-        this._msjService.ok_(resp,null, a);
+        //Para esperar animacion de login
+        setTimeout(()=>{
+          this._msjService.ok_(resp,null, a);
+        } , 2000)
         return true;
       }),
       catchError( err => {
