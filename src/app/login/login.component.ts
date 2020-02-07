@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.render.removeStyle(document.body, 'align-items')
     this.render.removeStyle(document.body, 'padding-top')
     this.render.removeStyle(document.body, 'padding-bottom')
-    this.render.removeStyle(document.body, 'background-color')
+    this.render.removeStyle(document.body, 'background-image')
   }
 
   aplicarEstilos() {
