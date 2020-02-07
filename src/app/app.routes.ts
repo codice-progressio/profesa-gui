@@ -9,6 +9,7 @@ import { RegisterComponent } from './login/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { LoginGuardGuard } from './services/guards/login-guard.guard';
 import { PermisosGuard } from './services/guards/permisos.guard'
+import { VerificaTokenGuard } from './services/guards/verifica-token.guard'
 
 
 const appRoutes: Routes = [
@@ -20,7 +21,7 @@ const appRoutes: Routes = [
     {
         path: '',
         component: PagesComponent,
-        canActivate: [LoginGuardGuard],
+        canActivate: [LoginGuardGuard, VerificaTokenGuard],
         loadChildren: './pages/pages.module#PagesModule'
     },
     

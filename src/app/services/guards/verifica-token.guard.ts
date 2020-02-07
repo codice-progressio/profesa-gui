@@ -9,17 +9,23 @@ export class VerificaTokenGuard implements CanActivate {
 
   constructor (
     public _usuarioService: UsuarioService,
-    public router: Router
+    public router: Router,
   ) {}
   canActivate(): Promise<boolean> | boolean {
-    const token = this._usuarioService.token;
+    const token = localStorage.getItem('token')
+    if( !token ) {
+      this.navegarAlLogin()
+      return false
+    }
     // Recuperar la fecha de expiración del token.
     const payload = JSON.parse( atob( token.split('.')[1] ));
 
     const expirado = this.expirado(payload.exp);
 
     if (expirado ) {
-      this.router.navigate( ['/login']);
+
+      this.navegarAlLogin()
+      this._usuarioService._msjService.informar('Sesion caduca')
       return false;
     }
 
@@ -60,6 +66,13 @@ export class VerificaTokenGuard implements CanActivate {
       return false;
     }
 
+  }
+
+
+  navegarAlLogin(){
+    this._usuarioService.logout()
+    localStorage.clear()
+    this.router.navigate(['/login'])
   }
 
 }
