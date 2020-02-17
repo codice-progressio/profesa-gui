@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3>Ordenes pendientes de asignar: {{ ordenes?.length }}</h3>
+
+        <a
+          (click)="verComoPedido = !verComoPedido"
+          class="btn btn-primary btn-sm"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <ng-container *ngIf="verComoPedido; else unoUOtro">
+            <i class="fas fa-code-branch  fa-rotate-90  "></i>
+            Ver como ordenes
+          </ng-container>
+          <ng-template #unoUOtro>
+            <i class="fas fa-code-branch  fa-rotate-270 "></i>
+            Ver como pedidos
+          </ng-template>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="ordenes">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr
+              [appOrdenadorDeColumnas]="
+                filtroActivo ? ordenesFiltradas : ordenes
+              "
+            >
+              <th data-ordenar="numeroDeOrden">Pedido/Orden</th>
+              <th data-ordenar="modeloCompleto">Modelo</th>
+              <th data-ordenar="paso">Paso</th>
+              <th class="d-flex justify-content-between align-content-center">
+                <div class="form-group">
+                  <input
+                    #input
+                    (keyup)="filtrar(input.value)"
+                    type="text"
+                    class="form-control form-control-sm"
+                    aria-describedby="helpId"
+                    placeholder="Escribe para filtrar"
+                  />
+                </div>
+                <span *ngIf="filtroActivo">
+                  <a
+                    title="Limpiar filtro"
+                    (click)="limpiarFiltro()"
+                    class="btn btn-danger btn-xs btn-rounded"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle    "></i
+                  ></a>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="verComoPedido">
+              <ng-container *ngFor="let pedido of ordenesEnPedidos">
+                <tr>
+                  <td>Pedido #{{ pedido.pedido }}</td>
+                </tr>
+                <tr *ngFor="let orden of ordenesEnPedidos">
+                  <td>{{ orden.numeroDeOrden }}</td>
+                  <td>{{ orden.modeloCompleto }}</td>
+                  <td></td>
+                </tr>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="!verComoPedido">
+              <tr
+                *ngFor="let orden of filtroActivo ? ordenesFiltradas : ordenes"
+              >
+                <td>{{ orden.numeroDeOrden }}</td>
+                <td>{{ orden.modeloCompleto }}</td>
+                <td>{{ orden.paso }}</td>
+                <td></td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!ordenes" class="row">
+  <div class="col-12">
+    <div class="card shadow animated fadeInDown">
+      <div class="card-body">
+        <h1>No hay ordenes para asignar</h1>
+      </div>
+    </div>
+  </div>
+</div>

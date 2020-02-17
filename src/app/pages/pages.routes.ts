@@ -62,6 +62,7 @@ import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
 import { ReportePersonalizadoAlmacenProduccionComponent } from "./almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component";
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
+import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 
 
 
@@ -237,6 +238,15 @@ const pagesRoutes: Routes = [
     data: {
       titulo: "Seguimiento de folios.",
       roles: [ROLES.CONTROL_DE_PRODUCCION_SEGUIMIENTOS]
+    }
+  },
+  {
+    path: "folios/asignarOrdenes",
+    component: ProgramacionTransformacionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: "Asignar ordenes a maquinas.",
+      roles: [ROLES.CONTROL_DE_PRODUCCION_ASIGNAR_ORDENES]
     }
   },
 

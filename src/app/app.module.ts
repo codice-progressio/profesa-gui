@@ -26,14 +26,14 @@ import { DndModule } from "ng2-dnd"
 import { HTTP_INTERCEPTORS } from "@angular/common/http"
 import { TokenInterceptor } from "./interceptors/token.interceptor"
 
-import { NgxMaskModule } from "ngx-mask"
+import { NgxMaskModule } from "ngx-mask";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    PagesComponent
+    PagesComponent,
   ],
   // CUANDO MIREMOS UNA PALABRA MODULO SIEMPRE TIENEN QUE IR DENTRO DEL
   // IMPORT.

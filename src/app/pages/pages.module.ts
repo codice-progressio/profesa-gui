@@ -182,7 +182,8 @@ import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/repor
 import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-crear-modificar.component'
 import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component'
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
-import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component';
+import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
+import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 
 @NgModule({
   declarations: [
@@ -357,7 +358,8 @@ import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/repo
     ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
     ReportePersonalizadoAlmacenProduccionDetalleComponent,
     RPersonalizadoAlmacenProduccionComponent,
-    ReportePersonalizadoAlmacenProduccionComponent
+    ReportePersonalizadoAlmacenProduccionComponent,
+    ProgramacionTransformacionComponent
   ],
   exports: [
     DashboardComponent,

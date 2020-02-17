@@ -121,7 +121,8 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective
   ],
   exports: [
     NopagefoundComponent,
@@ -153,7 +154,8 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective
   ]
 })
 export class SharedModule {
