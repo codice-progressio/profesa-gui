@@ -130,13 +130,13 @@
               <td class=" ">{{ articulo.observaciones }}</td>
 
               <td class=" fit ">
-                {{ articulo.stockMinimo | number: "0.0-0" }}
+                {{ articulo.stockMinimo | number: '0.0-0' }}
               </td>
               <td class=" fit ">
                 <h5>
                   <b>
                     <ng-container *ngIf="articulo.existencia">
-                      {{ articulo.existencia | number: "0.0-4" }}
+                      {{ articulo.existencia | number: '0.0-4' }}
                     </ng-container>
                     <ng-container
                       *ngIf="!articulo.existencia || articulo.existencia === 0"
@@ -147,7 +147,7 @@
                 </h5>
               </td>
               <td class=" fit ">
-                {{ articulo.stockMaximo | number: "0.0-0" }}
+                {{ articulo.stockMaximo | number: '0.0-0' }}
               </td>
               <td class="fit">
                 <a
@@ -257,6 +257,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <app-almacen-de-materia-prima-yherramientas-crear-modificar-entrada
+          *ngIf="articuloEntrada"
           [articulo]="articuloEntrada"
           (guardado)="entradaSalidaGuardada()"
           (cancelado)="entradaSalidaCancelada()"
@@ -291,6 +292,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <app-almacen-de-materia-prima-yherramientas-crear-modificar-salida
+          *ngIf="articuloSalida"
           [articulo]="articuloSalida"
           (guardado)="entradaSalidaGuardada()"
           (cancelado)="entradaSalidaCancelada()"

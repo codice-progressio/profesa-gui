@@ -35,7 +35,14 @@ import { DepartamentoService } from '../../../services/departamento/departamento
 })
 export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
   implements OnInit {
-  @Input() articulo: Articulo = null
+  _articulo: Articulo
+  @Input() set articulo(articulo: Articulo) {
+    this._articulo = articulo
+    this.crearFormulario()
+  }
+  get articulo(): Articulo {
+    return this._articulo
+  }
   @Output() guardado = new EventEmitter<null>()
   @Output() cancelado = new EventEmitter<null>()
   @Output() esteComponente = new EventEmitter<this>()
@@ -52,8 +59,6 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
 
   ngOnInit() {
     this.esteComponente.emit(this)
-
-    this.crearFormulario()
     this._departamentoService
       .todo()
       .subscribe(departamentos => (this.departamentos = departamentos))
@@ -94,7 +99,14 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
     this.crearFormulario()
   }
   submit(modelo: SalidaArticulo, valid: boolean, e) {
-    e.preventDefault()
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+    if (!valid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
     if (valid) {
       this._articuloService
         .salida(this.articulo._id, modelo)
@@ -107,6 +119,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
   }
 
   cancelar() {
+    this.limpiar()
     this.cancelado.emit()
   }
 }
