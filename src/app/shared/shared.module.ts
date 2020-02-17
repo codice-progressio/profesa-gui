@@ -74,6 +74,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
+import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ReactiveFormsModule,
     CommonModule,
     // Para el httpcliente necesitamos importar este modulo.
-    HttpClientModule
+    HttpClientModule,
+    
   ],
   declarations: [
     HeaderComponent,
