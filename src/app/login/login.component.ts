@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   recuerdame: boolean = false
   password: string
 
+  copyRight = new Date().getFullYear()
+
   constructor(
     public router: Router,
     public _usuarioService: UsuarioService,
@@ -55,9 +57,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.render.setStyle(document.body, 'padding-bottom', '40px')
     this.render.setStyle(
       document.body,
-      'background-image',
-      'url(assets/images/background/nuevo.jpg)'
+      'background',
+      'url(assets/images/background/nuevo.jpg) no-repeat center center fixed'
     )
+
+    this.render.setStyle(document.body, 'background-size', 'cover')
   }
 
   loading = false
