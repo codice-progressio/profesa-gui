@@ -37,7 +37,7 @@
         [id]="maquina._id"
         cdkDropList 
         (cdkDropListDropped)="drop($event)"
-        [cdkDropListData]="original"
+        [cdkDropListData]="maquina.pila"
         [cdkDropListConnectedTo]="[loriginal, lvacia, lvacia2]"
         
         class="list-group list-maquina mt-2">

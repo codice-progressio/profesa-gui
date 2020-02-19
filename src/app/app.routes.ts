@@ -22,7 +22,7 @@ const appRoutes: Routes = [
         path: '',
         component: PagesComponent,
         canActivate: [LoginGuardGuard, VerificaTokenGuard],
-        loadChildren: './pages/pages.module#PagesModule'
+        loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
     },
     
     // Página de error cuando no encuentra una ruta.

@@ -23,8 +23,8 @@ import * as moment from 'moment'
 export class EmpleadoAgregarPermisoComponent
   extends EmpleadoAgregarEventosGeneral<Empleado>
   implements OnInit, iEmpleadoAgregarEventosGeneral {
-  @ViewChild('select', { static: false }) select: ElementRef
-  @ViewChild('selectConGoce', { static: false }) selectConGoce: ElementRef
+  @ViewChild('select') select: ElementRef
+  @ViewChild('selectConGoce') selectConGoce: ElementRef
 
   constructor(
     public _empleadoService: EmpleadoService,

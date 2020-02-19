@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, ModuleWithProviders } from '@angular/core'
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
@@ -162,48 +162,48 @@ import { DragDropModule} from '@angular/cdk/drag-drop'
   ]
 })
 export class SharedModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
-      ngModule: SharedModule,
-      providers: [
-        ModeloCompletoPipe,
-        SettingsService,
-        SidebarService,
-        SharedService,
-        UsuarioService,
-        LoginGuardGuard,
-        AdminGuard,
-        SubirArchivoService,
-        PreLoaderService,
-        ModalUploadService,
-        HospitalService,
-        MedicoService,
-        VerificaTokenGuard,
-        // Sistema Carrduci
-        ClienteService,
-        ModeloCompletoService,
-        BuscadorRapidoService,
-        UtilidadesService,
-        ManejoDeMensajesService,
-        ValidacionesService,
-        MaquinaService,
-        DepartamentoService,
-        ProcesoService,
-        GastoService,
-        CalculosDeCostosService,
-        OrdenadorVisualService,
-        PermisosGuard,
-        FamiliaDeProcesosService,
-        ModeloService,
-        TamanoService,
-        ColorService,
-        TerminadoService,
-        SortService,
-        FolioNewService,
-        AlmacenProductoTerminadoService,
-        ImagenPipe,
-        DecimalPipe
-      ]
-    }
-  }
+        ngModule: SharedModule,
+        providers: [
+            ModeloCompletoPipe,
+            SettingsService,
+            SidebarService,
+            SharedService,
+            UsuarioService,
+            LoginGuardGuard,
+            AdminGuard,
+            SubirArchivoService,
+            PreLoaderService,
+            ModalUploadService,
+            HospitalService,
+            MedicoService,
+            VerificaTokenGuard,
+            // Sistema Carrduci
+            ClienteService,
+            ModeloCompletoService,
+            BuscadorRapidoService,
+            UtilidadesService,
+            ManejoDeMensajesService,
+            ValidacionesService,
+            MaquinaService,
+            DepartamentoService,
+            ProcesoService,
+            GastoService,
+            CalculosDeCostosService,
+            OrdenadorVisualService,
+            PermisosGuard,
+            FamiliaDeProcesosService,
+            ModeloService,
+            TamanoService,
+            ColorService,
+            TerminadoService,
+            SortService,
+            FolioNewService,
+            AlmacenProductoTerminadoService,
+            ImagenPipe,
+            DecimalPipe
+        ]
+    };
+}
 }

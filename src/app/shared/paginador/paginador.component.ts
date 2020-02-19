@@ -331,7 +331,7 @@ export class PaginadorComponent implements OnInit {
 
   //Esta seccion es para crear el boton de scroll top
 
-  @ViewChild('btnScroll', { static: false }) btnScroll: ElementRef
+  @ViewChild('btnScroll') btnScroll: ElementRef
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
   onScroll(event) {

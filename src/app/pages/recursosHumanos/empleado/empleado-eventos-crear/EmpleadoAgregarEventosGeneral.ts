@@ -1,10 +1,11 @@
-import { Input, Output, EventEmitter } from '@angular/core'
+import { Input, Output, EventEmitter, Directive } from '@angular/core'
 import { EmpleadoService } from '../../../../services/recursosHumanos/empleado.service'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 import { FormGroup, FormBuilder, AbstractControl, FormControl } from '@angular/forms'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
 import { Empleado } from '../../../../models/recursosHumanos/empleados/empleado.model'
 
+@Directive()
 export class EmpleadoAgregarEventosGeneral<T> {
   @Input() empleado: T
   @Input() idModal: string

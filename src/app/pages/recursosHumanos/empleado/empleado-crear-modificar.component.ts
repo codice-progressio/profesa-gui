@@ -183,7 +183,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
   fa(s: string): FormArray {
     return <FormArray>this.formulario.get(s)
   }
-  @ViewChild('inputHijo', { static: false }) inputHijo: ElementRef
+  @ViewChild('inputHijo') inputHijo: ElementRef
 
   agregarHijo(valor: number) {
     this.fa('hijos').push(this.fb.control(valor))

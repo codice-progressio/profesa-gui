@@ -91,7 +91,7 @@ export class ProgramacionTransformacionComponent implements OnInit {
     })
   }
 
-  @ViewChild('input', { static: false }) inputTermino: ElementRef
+  @ViewChild('input') inputTermino: ElementRef
 
   limpiarFiltro() {
     this.ordenesFiltradas = undefined

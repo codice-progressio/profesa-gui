@@ -42,7 +42,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent
   formulario: FormGroup
   departamentos: Departamento[] = []
 
-  @ViewChild('cantidad', { static: false }) cantidad: ElementRef
+  @ViewChild('cantidad') cantidad: ElementRef
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
