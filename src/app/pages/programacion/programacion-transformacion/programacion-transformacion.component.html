@@ -24,8 +24,66 @@
   </div>
 </div>
 
-<div class="row" *ngIf="ordenes">
-  <div class="col-12">
+<div class="row mb-5">
+  <div class="col-2"></div>
+  <div class="col-8 d-flex justify-content-center">
+    <div class="row">
+      <div
+      
+        class="list-contenedor shadow mr-3 mb-2"
+        *ngFor="let maquina of maquinas"
+      >
+        <ul 
+        [id]="maquina._id"
+        cdkDropList 
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="original"
+        [cdkDropListConnectedTo]="[loriginal, lvacia, lvacia2]"
+        
+        class="list-group list-maquina mt-2">
+          <span class="list-orden-grupo">
+            <li class="list-group-item active text-center shadow rounded">
+              <span
+                class="d-flex justify-content-between align-items-center w-100 "
+              >
+                <span> {{ maquina.clave }}</span>
+                <span>
+                  | <i class="fas fa-cog    "></i>
+                  <span class="list-orden-en-cola">
+                    En cola:
+                  </span>
+                  {{ maquina.pila.length }}</span
+                >
+              </span>
+            </li>
+
+            <li
+              *ngIf="maquina.trabajando"
+              class="list-group-item list-orden shadow"
+            >
+              {{ maquina.trabajo }}
+            </li>
+            <li
+              *ngFor="let orden of maquina.pila"
+              class="list-group-item list-orden shadow"
+            >
+              {{ orden.modeloCompleto }}
+            </li>
+            <li
+              *ngIf="!maquina.pila.length"
+              class="list-group-item list-orden shadow"
+            >
+              No hay ordenes asignadas
+            </li>
+          </span>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div *ngIf="ordenes" class="col-12">
     <div class="card">
       <div class="card-body">
         <table class="table table-hover">

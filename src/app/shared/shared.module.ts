@@ -75,6 +75,7 @@ import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
 import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
+import { DragDropModule} from '@angular/cdk/drag-drop'
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
     CommonModule,
     // Para el httpcliente necesitamos importar este modulo.
     HttpClientModule,
+    DragDropModule
     
   ],
   declarations: [
@@ -122,7 +124,8 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
     RPersonalizadoAlmacenProduccionImprimibleComponent,
-    OrdenadorDeColumnasDirective
+    OrdenadorDeColumnasDirective,
+    
   ],
   exports: [
     NopagefoundComponent,
@@ -155,7 +158,7 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
     RPersonalizadoAlmacenProduccionImprimibleComponent,
-    OrdenadorDeColumnasDirective
+    OrdenadorDeColumnasDirective,
   ]
 })
 export class SharedModule {

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs'
 import { Maquina } from 'src/app/models/maquina.model';
 import { CRUD } from '../crud';
 
@@ -37,13 +37,13 @@ export class MaquinaService extends CRUD <Maquina> {
     this.urlBusqueda = '/buscar';
   }
   
-  buscarMaquinasPorDepartamento(id: string): any {
+  buscarMaquinasPorDepartamento(id: string): Observable<Maquina[]> {
     let a = this._preLoaderService.loading('Buscando maquinas para este departamento')
     const url = URL_SERVICIOS + `/maquina/departamento/${id}`;
     return this.http.get( url ).pipe(
       map( ( resp: any ) => {
         this._msjService.ok_(resp, null, a)
-        let ordenadoPorNombre = <Maquina[]>  resp.maquinas
+        let ordenadoPorNombre =  resp.maquinas as Maquina []
 
         ordenadoPorNombre = ordenadoPorNombre.sort((a, b)=>{
           return a.nombre < b.nombre ? 1 : -1

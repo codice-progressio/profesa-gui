@@ -9,6 +9,8 @@ import { OrdenParaAsignacion } from 'src/app/services/programacion-transformacio
 import { DefaultsService } from '../../../services/configDefualts/defaults.service'
 import { ProgramacionTransformacionService } from '../../../services/programacion-transformacion.service'
 import { DefaultModelData } from '../../../config/defaultModelData'
+import { MaquinaService } from '../../../services/maquina/maquina.service'
+import { Maquina } from 'src/app/models/maquina.model'
 
 @Component({
   selector: 'app-programacion-transformacion',
@@ -20,13 +22,35 @@ export class ProgramacionTransformacionComponent implements OnInit {
 
   ordenes: OrdenParaAsignacion[]
 
+  maquinas: Maquina[] = []
+
   constructor(
     private defaultService: DefaultsService,
-    private programacionSerivce: ProgramacionTransformacionService
+    private programacionSerivce: ProgramacionTransformacionService,
+    private maquinaService: MaquinaService,
   ) {}
 
   ngOnInit() {
     this.cargarOrdenes()
+    this.cargarMaquinas()
+  }
+
+  cargarMaquinas() {
+    this.defaultService.cargarDefaults().subscribe(
+      d => {
+        this.maquinaService
+          .buscarMaquinasPorDepartamento(d.DEPARTAMENTOS.TRANSFORMACION)
+          .subscribe(
+            maquinas =>
+              (this.maquinas = maquinas.sort((a, b) =>
+                a.clave > b.clave ? 1 : -1
+              ))
+          )
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   cargarOrdenes() {
