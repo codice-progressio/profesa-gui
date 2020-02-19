@@ -8,8 +8,8 @@ import { ProgressComponent } from './progress/progress.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { CommonModule, DecimalPipe } from '@angular/common'
 
-// ng2-charts
-import { ChartsModule } from 'ng2-charts'
+// // ng2-charts
+// import { ChartsModule } from 'ng2-charts'
 import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component'
 // Pipes module
 import { PipesModule } from '../pipes/pipes.module'
@@ -373,7 +373,7 @@ import { ProgramacionTransformacionComponent } from './programacion/programacion
     PAGES_ROUTES,
     FormsModule,
     ReactiveFormsModule,
-    ChartsModule,
+    // ChartsModule,
     PipesModule,
     QRCodeModule
   ],
