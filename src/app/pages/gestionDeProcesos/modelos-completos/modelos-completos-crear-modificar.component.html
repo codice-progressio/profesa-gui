@@ -105,36 +105,6 @@
 
             <br>
 
-            <div *ngIf="familiaDeProcesos_FB.value" class="row animated slideInUp">
-                <div class="col-12 col-md-6">
-                    <app-organizador-drag-and-drop (dropSuccess)='actualizarIds()' [listaOrdenable]='true'></app-organizador-drag-and-drop>
-
-                </div>
-                <div class="col-12 col-md-6">
-                    <app-organizador-drag-and-drop [listaDeElementos]='true'></app-organizador-drag-and-drop>
-
-                </div>
-            </div>
-
-
-
-
-            <ng-container formArrayName="procesosEspeciales">
-                <ng-container *ngFor="let proceso of formulario.controls['procesosEspeciales'].controls; let i = index">
-                    <ng-container [formGroupName]='i'>
-                        <input type="hidden" formControlName="orden">
-                        <input type="hidden" formControlName="proceso">
-                        <input type="hidden" formControlName="procesoPadre">
-
-                    </ng-container>
-
-                </ng-container>
-            </ng-container>
-
-
-
-
-
 
 
             <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
