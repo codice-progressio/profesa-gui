@@ -74,6 +74,7 @@ import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '..
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
 import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
 import { DragDropModule } from '@angular/cdk/drag-drop'
+import { FechaPipe } from '../pipes/fecha.pipe'
 
 @NgModule({
   imports: [
@@ -84,7 +85,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
     NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
     // Para el httpcliente necesitamos importar este modulo.
     HttpClientModule,
     DragDropModule
@@ -137,7 +137,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
     OrdenadorVisualComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
-    NgxMaskModule,
     Paginador2Component,
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
@@ -155,6 +154,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
     FormsModule,
     ReactiveFormsModule,
     NgxMaskModule,
+    PipesModule
   ]
 })
 export class SharedModule {
@@ -162,7 +162,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        ModeloCompletoPipe,
         SettingsService,
         SidebarService,
         SharedService,
@@ -195,8 +194,8 @@ export class SharedModule {
         SortService,
         FolioNewService,
         AlmacenProductoTerminadoService,
-        ImagenPipe,
-        DecimalPipe
+        ImagenPipe, FechaPipe, ModeloCompletoPipe, DecimalPipe
+        
       ]
     }
   }
