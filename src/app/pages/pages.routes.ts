@@ -1,15 +1,9 @@
 import { RouterModule, Routes } from "@angular/router"
-import { ProgressComponent } from "./progress/progress.component"
 import { DashboardComponent } from "./dashboard/dashboard.component"
-import { Graficas1Component } from "./graficas1/graficas1.component"
 import { AccountsSettingsComponent } from "./accounts-settings/accounts-settings.component"
-import { PromesasComponent } from "./promesas/promesas.component"
-import { RxjsComponent } from "./rxjs/rxjs.component"
 import { ProfileComponent } from "./profile/profile.component"
 import { RegistroDeFoliosComponent } from "./registro-de-folios/registro-de-folios.component"
 import { UsuariosComponent } from "./usuarios/usuarios.component"
-import { HospitalesComponent } from "./hospitales/hospitales.component"
-import { MedicosComponent } from "./medicos/medicos.component"
 import { BusquedaComponent } from "./busqueda/busqueda.component"
 import { RegistroDeLineasComponent } from "./registro-de-folios/registro-de-lineas.component"
 import { RevisionDeOrdenesComponent } from "./generador-de-ordenes/revision-de-ordenes.component"
@@ -744,61 +738,6 @@ const pagesRoutes: Routes = [
     pathMatch: "full"
   },
 
-  {
-    path: "medicos",
-    component: MedicosComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: "Medicos",
-      roles: [
-        // _ROLES.SUPER_ADMIN,
-        ROLES.EMPAQUE_REGISTRO_ROLE,
-        ROLES.SELECCION_REGISTRO_ROLE
-      ]
-    }
-  },
-
-  {
-    path: "hospitales",
-    component: HospitalesComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: "hOSPITALES DESDE ROUTES",
-      roles: [ROLES.SUPER_ADMIN]
-    }
-  },
-  {
-    path: "progress",
-    component: ProgressComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "Progress",
-      roles: [ROLES.SUPER_ADMIN]
-    }
-  },
-
-  {
-    path: "graficas1",
-    component: Graficas1Component,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "Graficas",
-      roles: [ROLES.SUPER_ADMIN]
-    }
-  },
-
-  {
-    path: "promesas",
-    component: PromesasComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "Promesas",
-      roles: [ROLES.SUPER_ADMIN]
-    }
-  },
 
   {
     path: "account-settings",
@@ -811,16 +750,7 @@ const pagesRoutes: Routes = [
     }
   },
 
-  {
-    path: "rxjs",
-    component: RxjsComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: "RxJs",
-      roles: [ROLES.SUPER_ADMIN]
-    }
-  }
+  
 ]
 
 export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes)

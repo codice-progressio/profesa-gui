@@ -1,29 +1,11 @@
 import { NgModule } from '@angular/core'
 import { DashboardComponent } from './dashboard/dashboard.component'
-import { Graficas1Component } from './graficas1/graficas1.component'
-import { PagesComponent } from './pages.component'
 import { SharedModule } from '../shared/shared.module'
 import { PAGES_ROUTES } from './pages.routes'
-import { ProgressComponent } from './progress/progress.component'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { CommonModule, DecimalPipe } from '@angular/common'
 
-// // ng2-charts
-// import { ChartsModule } from 'ng2-charts'
-import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component'
-// Pipes module
-import { PipesModule } from '../pipes/pipes.module'
-// temporal
-import { IncrementadorComponent } from '../components/incrementador/incrementador.component'
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
-import { PromesasComponent } from './promesas/promesas.component'
-import { RxjsComponent } from './rxjs/rxjs.component'
 import { ProfileComponent } from './profile/profile.component'
 import { UsuariosComponent } from './usuarios/usuarios.component'
-import { HospitalesComponent } from './hospitales/hospitales.component'
-import { MedicosComponent } from './medicos/medicos.component'
-import { MedicoComponent } from './medicos/medico.component'
-import { BusquedaComponent } from './busqueda/busqueda.component'
 
 // Sistema
 import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component'
@@ -35,7 +17,6 @@ import { TransformacionComponent } from './departamentos/transformacion/transfor
 import { PulidoComponent } from './departamentos/pulido/pulido.component'
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
 import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component'
-import { QRCodeModule } from 'angularx-qrcode'
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
 import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component'
@@ -132,7 +113,6 @@ import { RequisicionEstatusEsOrdenDeCompraComponent } from './almacenes/requisic
 import { RequisicionEstatusEsEntregaParcialComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/requisicion-estatus-es-entrega-parcial.component'
 import { RequisicionEstatusEsTerminadaComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/requisicion-estatus-es-terminada.component'
 import { RequisicionEstatusEsCanceladaComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/requisicion-estatus-es-cancelada.component'
-import { ImagenPipe } from '../pipes/imagen.pipe'
 import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/recibirParcialidad/recibir-parcialidad.component'
 import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component'
 import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component'
@@ -184,25 +164,16 @@ import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacen
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
 import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
+import { CommonModule } from '@angular/common'
 
 @NgModule({
   declarations: [
     // PagesComponent,
     DashboardComponent,
-    ProgressComponent,
-    Graficas1Component,
-    IncrementadorComponent,
-    GraficoDonaComponent,
+
     AccountsSettingsComponent,
-    PromesasComponent,
-    RxjsComponent,
     ProfileComponent,
     UsuariosComponent,
-    //    ModalUploadComponent,
-    HospitalesComponent,
-    MedicosComponent,
-    MedicoComponent,
-    BusquedaComponent,
     // sistema
     RegistroDeFoliosComponent,
     RegistroDeLineasComponent,
@@ -361,22 +332,8 @@ import { ProgramacionTransformacionComponent } from './programacion/programacion
     ReportePersonalizadoAlmacenProduccionComponent,
     ProgramacionTransformacionComponent
   ],
-  exports: [
-    DashboardComponent,
-    ProgressComponent,
-    // PagesComponent,
-    Graficas1Component
-  ],
-  imports: [
-    CommonModule,
-    SharedModule.forRoot(),
-    PAGES_ROUTES,
-    FormsModule,
-    ReactiveFormsModule,
-    // ChartsModule,
-    PipesModule,
-    QRCodeModule
-  ],
+  exports: [],
+  imports: [CommonModule ,  SharedModule.forRoot(), PAGES_ROUTES],
   providers: []
   // Para permitir la carga dinamica de componentes.
 })
