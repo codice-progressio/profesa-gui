@@ -154,7 +154,8 @@ import { FechaPipe } from '../pipes/fecha.pipe'
     FormsModule,
     ReactiveFormsModule,
     NgxMaskModule,
-    PipesModule
+    PipesModule,
+    DragDropModule
   ]
 })
 export class SharedModule {
