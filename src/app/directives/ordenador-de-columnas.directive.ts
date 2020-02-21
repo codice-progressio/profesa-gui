@@ -63,9 +63,7 @@ export class OrdenadorDeColumnasDirective implements AfterViewInit {
     this.ordenadores
       .filter(x => x.dataset.ordenar !== col)
       .forEach(x => {
-        console.log(`estamosAqui`)
         this.renderer.removeChild(x, x.children[0])
-        console.log(`yaPasamos aca`)
         this.notUse(x)
       })
   }
