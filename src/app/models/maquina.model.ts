@@ -32,14 +32,7 @@ export class Maquina implements Deserializable {
 
     //Debemos aplicar el PEPS. Estas ordenes no necesariamente
     //deben estar en transformacion
-    public pila?: [
-      {
-        folio: string
-        pedido: string
-        orden: string
-        paso: Number
-      }
-    ],
+    public pila: Pila[] = [],
 
     public trabajando?: boolean,
     public trabajo?: {
@@ -47,7 +40,11 @@ export class Maquina implements Deserializable {
       pedido: string
       orden: string
       inicio: Date
-      paso: Number
+      paso: number
+      modeloCompleto: string
+      pasos: number
+      numeroDeOrden: string
+      numerosDeOrden: number[]
     },
 
     public trabajado?: [
@@ -57,7 +54,7 @@ export class Maquina implements Deserializable {
         orden: string
         inicio: Date
         finalizacion: Date
-        paso: Number
+        paso: number
       }
     ],
     public parada?: boolean,
@@ -126,4 +123,17 @@ export class Maquina implements Deserializable {
   //         this.tiempos[id] = 0;
   //     }
   // }
+}
+
+class Pila {
+  constructor(
+    public folio?: string,
+    public pedido?: string,
+    public orden?: string,
+    public paso?: number,
+    public modeloCompleto?: string,
+    public pasos?: number,
+    public numeroDeOrden?: string,
+    public numerosDeOrden?: number[]
+  ) {}
 }

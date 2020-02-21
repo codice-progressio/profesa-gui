@@ -8,6 +8,7 @@ import { URL_BASE } from '../config/config'
 import { DefaultsService } from './configDefualts/defaults.service'
 import { HttpClient } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
+import { Maquina } from '../models/maquina.model'
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +40,24 @@ export class ProgramacionTransformacionService {
 
     return this.http.get(url).pipe(
       map((res: any) => {
-        this.msjService.ok_(res, null,  a)
+        this.msjService.ok_(res, null, a)
         return res.ordenes as OrdenParaAsignacion[]
       }),
       catchError(err => this.errFun(err))
     )
+  }
+  asignarOrdenes(maquina: Maquina): Observable<Maquina> {
+    const url = this.base.concat('/asignar')
+
+    return this.http
+      .post<Maquina>(url, { idMaquina: maquina._id, ordenes: maquina.pila })
+      .pipe(
+        map((res: any) => {
+          this.msjService.correcto(res.mensaje, maquina.clave)
+          return res.ordenes as Maquina
+        }),
+        catchError(err => this.errFun(err))
+      )
   }
 }
 
