@@ -436,7 +436,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     this.relacionArticulo_FB_item(i).updateValueAndValidity()
   }
 
-  @ViewChild("inputMetodoDePago", { static: false })
+  @ViewChild("inputMetodoDePago")
   inputMetodoDePago: ElementRef
 
   agregarMetodoDePago(txt: string) {
@@ -455,7 +455,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     )
   }
 
-  @ViewChild("inputCondicionesDePago", { static: false })
+  @ViewChild("inputCondicionesDePago")
   inputCondicionesDePago: ElementRef
 
   agregarCondicionesDePago(txt: string) {
@@ -474,7 +474,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     )
   }
 
-  @ViewChild("inputFormasDePago", { static: false })
+  @ViewChild("inputFormasDePago")
   inputFormasDePago: ElementRef
 
   agregarFormasDePago(txt: string) {

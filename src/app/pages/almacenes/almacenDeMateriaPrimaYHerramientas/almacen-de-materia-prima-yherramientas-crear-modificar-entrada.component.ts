@@ -42,7 +42,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent
   formulario: FormGroup
   departamentos: Departamento[] = []
 
-  @ViewChild('cantidad', { static: false }) cantidad: ElementRef
+  @ViewChild('cantidad') cantidad: ElementRef
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
@@ -51,7 +51,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent
 
   ngOnInit() {
     this.esteComponente.emit(this)
-    this.crearFormulario()
+    if (this.articulo) this.crearFormulario()
   }
 
   crearFormulario() {
@@ -82,7 +82,13 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent
     this.crearFormulario()
   }
   submit(modelo: EntradaArticulo, valid: boolean, e) {
-    e.preventDefault()
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+    if (!valid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
     if (valid) {
       this._articuloService
         .entrada(this.articulo._id, modelo)
@@ -95,6 +101,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarEntradaComponent
   }
 
   cancelar() {
+    this.limpiar()
     this.cancelado.emit()
   }
 }

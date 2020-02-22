@@ -58,7 +58,7 @@
         <div class="col-12">
           <h3>Agregar procesos</h3>
         </div>
-        <div class="col-12 col-lg-6">
+        <!-- <div class="col-12 col-lg-6">
           <app-organizador-drag-and-drop
             (dropSuccess)="actualizarIds($event)"
             [listaOrdenable]="true"
@@ -68,18 +68,82 @@
           <app-organizador-drag-and-drop
             [listaDeElementos]="true"
           ></app-organizador-drag-and-drop>
+        </div> -->
+
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <ul class="list-group">
+                <li class="list-group-item active">Procesos agregados</li>
+                <div
+                  id="procesos-agregados"
+                  cdkDropList
+                  (cdkDropListDropped)="drop($event)"
+                  [cdkDropListData]="procesosAgregados"
+                  style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
+                >
+                  <li
+                    cdkDrag
+                    *ngFor="let pro of procesosAgregados; let i = index"
+                    class="list-group-item  flex-column align-items-start"
+                  >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">
+                        <i
+                          (click)="quitarProceso(i)"
+                          class="fas fa-times-circle text-danger   "
+                        ></i>
+
+                        {{ i }}.-{{ pro.nombre }}
+                      </h5>
+                      <small class="text-muted">{{
+                        pro.departamento.nombre
+                      }}</small>
+                    </div>
+                  </li>
+                  <li
+                    *ngIf="!f('procesos').length"
+                    class="list-group-item disabled"
+                  >
+                    No se han asignado procesos
+                  </li>
+                </div>
+              </ul>
+            </div>
+            <div class="col-12 col-sm-6">
+              <ul class="list-group">
+                <li class="list-group-item active">Procesos disponibles</li>
+                <div
+                  id="procesos-disponibles"
+                  cdkDropList
+                  [cdkDropListData]="procesos"
+                  [cdkDropListConnectedTo]="['procesos-agregados']"
+                  style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
+                >
+                  <li
+                    cdkDrag
+                    *ngFor="let proceso of procesos"
+                    class="list-group-item  flex-column align-items-start"
+                  >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">
+                        <i class="fas fa-bars    "></i>
+                        {{ proceso.nombre }}
+                      </h5>
+                      <small class="text-muted">{{
+                        proceso.departamento.nombre
+                      }}</small>
+                    </div>
+                  </li>
+                </div>
+                <li *ngIf="!procesos.length" class="list-group-item disabled">
+                  No hay procesos
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <ng-container formArrayName="procesos">
-          <ng-container
-            *ngFor="let proceso of f('procesos').controls; let i = index"
-          >
-            <ng-container [formGroupName]="i">
-              <input type="hidden" formControlName="orden" />
-              <input type="hidden" formControlName="proceso" />
-            </ng-container>
-          </ng-container>
-        </ng-container>
         <app-validacion-inputs
           [campo]="procesos_FB"
           [directo]="true"
@@ -92,7 +156,7 @@
         role="button"
         >Cancelar</a
       >
-      <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
+      <!-- <button [disabled]='formulario.inv0alid' class="btn btn-success mr-3 text-white" role="button"> -->
       <button
         [disabled]="formulario.invalid || desactivarBotonEnGuardado"
         class="btn btn-success mr-3 text-white"

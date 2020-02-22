@@ -1,0 +1,201 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <h3>Por asignar: {{ ordenes?.length }}</h3>
+        <h3>Asignadas: {{ calcularOrdenesAsignadas(maquinas) }}</h3>
+        <h3>
+          Total por trabajar:
+          {{ calcularOrdenesAsignadas(maquinas) + ordenes?.length }}
+        </h3>
+
+        <a
+          (click)="cargarMaquinas(); cargarOrdenes()"
+          class="btn btn-outline-secondary btn-sm"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i
+            *ngIf="cargandoMaquinas || cargandoOrdenes"
+            class="fas fa-spinner fa-spin "
+          ></i>
+
+          Actualizar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <div class="col-2"></div>
+  <div class="col-8 d-flex justify-content-center">
+    <div class="row">
+      <div
+        class="list-contenedor shadow mr-3 mb-2"
+        *ngFor="let maquina of maquinas"
+      >
+        <ul class="list-group list-maquina mt-2">
+          <span
+            [id]="maquina._id"
+            cdkDropList
+            (cdkDropListDropped)="drop($event, maquina)"
+            [cdkDropListData]="maquina.pila"
+            [cdkDropListConnectedTo]="idsMaquinas()"
+            class="list-orden-grupo"
+          >
+            <li class="list-group-item active text-center shadow rounded">
+              <span
+                class="d-flex justify-content-between align-items-center w-100 "
+              >
+                <span> {{ maquina.clave }}</span>
+                <span>
+                  | <i class="fas fa-cog    "></i>
+                  <span class="list-orden-en-cola">
+                    En cola:
+                  </span>
+                  {{ maquina.pila.length }}</span
+                >
+              </span>
+            </li>
+
+            <li class="list-group-item list-orden shadow list-group-item-dark">
+              <ng-container *ngIf="maquina.trabajando; else sinTrabajoTemp">
+                <i class="fas fa-cog   fa-spin text-warning"></i>
+                {{ maquina.trabajo }}
+              </ng-container>
+              <ng-template #sinTrabajoTemp>
+                Sin trabajo asignado
+              </ng-template>
+            </li>
+
+            <li
+              *ngIf="maquina.pila.length"
+              class="list-group-item list-orden shadow d-flex justify-content-between"
+            >
+              <b>
+                <i
+                  (click)="reiniciarPila(maquina)"
+                  class="fas fa-recycle text-danger   "
+                ></i>
+              </b>
+              <b
+                class="pointer"
+                title="Click para ordenar por este campo"
+                (click)="ordenarPila(maquina, 'numeroDeOrden')"
+              >
+                #ORD
+              </b>
+              <b
+                class="pointer"
+                title="Click para ordenar por este campo"
+                (click)="ordenarPila(maquina, 'modeloCompleto')"
+              >
+                MOD
+              </b>
+              <b
+                class="pointer"
+                title="Click para ordenar por este campo"
+                (click)="ordenarPila(maquina, 'paso')"
+              >
+                PASO
+              </b>
+            </li>
+            <ng-container *ngFor="let orden of maquina.pila; let i = index">
+              <li
+                cdkDrag
+                [cdkDragData]="maquina"
+                class="list-group-item list-orden shadow d-flex justify-content-between"
+              >
+                <span class="no-wrap text-left"># {{ i }}.-</span>
+                <span class="no-wrap text-left">{{ orden.numeroDeOrden }}</span>
+                <span class=" text-left">{{ orden.modeloCompleto }}</span>
+                <span class="no-wrap text-left">{{ orden.paso }}</span>
+              </li>
+            </ng-container>
+            <li
+              *ngIf="!maquina.pila.length"
+              class="list-group-item list-orden shadow"
+            >
+              No hay ordenes asignadas
+            </li>
+          </span>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="ordenes.length >0" class="row">
+  <div  class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr [appOrdenadorDeColumnas]="ordenes">
+              <th data-ordenar="numeroDeOrden">Pedido/Orden</th>
+              <th data-ordenar="modeloCompleto">Modelo</th>
+              <th data-ordenar="paso">Paso</th>
+              <th class="d-flex justify-content-between align-content-center">
+                <div class="form-group">
+                  <input
+                    #input
+                    (keyup)="filtrar(input.value)"
+                    type="text"
+                    class="form-control form-control-sm"
+                    aria-describedby="helpId"
+                    placeholder="Escribe para filtrar"
+                  />
+                </div>
+                <span *ngIf="filtroActivo">
+                  <a
+                    title="Limpiar filtro"
+                    (click)="limpiarFiltro()"
+                    class="btn btn-danger btn-xs btn-rounded"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle    "></i
+                  ></a>
+                </span>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody
+            id="ordenes-por-asignar"
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListData]="ordenes"
+            [cdkDropListConnectedTo]="idsMaquinas()"
+          >
+            <tr cdkDrag [cdkDragData]="'lista'" *ngFor="let orden of ordenes">
+              <ng-container
+                *ngIf="
+                  filtroActivo
+                    ? ordenesAMostrar.includes(orden.numeroDeOrden)
+                    : true
+                "
+              >
+                <td>{{ orden.numeroDeOrden }}</td>
+                <td>{{ orden.modeloCompleto }}</td>
+                <td>{{ orden.paso }}</td>
+                <td></td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="ordenes.length === 0" class="row">
+  <div class="col-12">
+    <div class="card shadow animated fadeInDown">
+      <div class="card-body">
+        <h1>No hay ordenes para asignar</h1>
+      </div>
+    </div>
+  </div>
+</div>

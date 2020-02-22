@@ -148,7 +148,7 @@ export class DataListComponent implements OnInit {
    */
   inputBusqueda = new FormControl()
 
-  @ViewChild('inputBuscarNativo', { static: false })
+  @ViewChild('inputBuscarNativo')
   inputBusquedaFocus: ElementRef
 
   /**

@@ -18,11 +18,27 @@
       {{ articulo.almacen.nombre }}
     </div>
     <div class="col-6">
-      <h6><b>Presentacion: </b></h6>
+      <h6 title="La forma en que se recibe para ser almacenado">
+        <i class="fas fa-question-circle    "></i>
+        <b>
+          Presentacion en que se almacena y/o compra:
+        </b>
+      </h6>
       {{ articulo.presentacion }} <br />
-      <h6><b>Unidad: </b></h6>
+      <h6
+        title="La unidad en la que almacen va a estar surtiendo este producto"
+      >
+        <i class="fas fa-question-circle    "></i>
+
+        <b>Unidades en las que se surte: </b>
+      </h6>
       {{ articulo.unidad }} <br />
-      <h6><b>kg por unidad: </b></h6>
+      <h6
+        title="Factor de conversion de una unidad a kg. Este valor se utiliza para generar el inventario del almacen  en kg"
+      >
+        <i class="fas fa-question-circle    "></i>
+        <b> kg por unidad: </b>
+      </h6>
       {{ articulo.kgPorUnidad | number }} <br />
       <h6><b>Descripcion: </b></h6>
       {{ articulo.descripcion }}
@@ -30,16 +46,17 @@
 
     <div class="col-12">
       <h6><b>Observaciones: </b></h6>
-      <p>{{articulo.observaciones}}</p>
+      <p>{{ articulo.observaciones }}</p>
     </div>
   </div>
 
-  <hr>
+  <hr />
 
   <br />
 
   <h1 class="display-3">
-    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b> <small class='text-muted'> {{articulo.presentacion}}</small>
+    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b>
+    <small class="text-muted"> {{ articulo.presentacion }}</small>
   </h1>
   <h4>
     Existencia en kg: <b>{{ articulo.existenciaEnKg() | number }}</b>
@@ -63,7 +80,7 @@
         <tbody>
           <tr *ngFor="let entrada of articulo.entradas">
             <td title="{{ entrada.fecha | fecha: 'LLL' }}">
-              {{ entrada.fecha | date: "dd/MM/yy" }}
+              {{ entrada.fecha | date: 'dd/MM/yy' }}
             </td>
             <td>{{ entrada.cantidad | number }}</td>
             <td>{{ entrada.observaciones }}</td>
@@ -85,7 +102,7 @@
         <tbody>
           <tr *ngFor="let salida of articulo.salidas">
             <td title="{{ salida.fecha | fecha: 'LLL' }}">
-              {{ salida.fecha | date: "dd/MM/yy" }}
+              {{ salida.fecha | date: 'dd/MM/yy' }}
             </td>
             <td>{{ salida.departamento.nombre }}</td>
             <td>{{ salida.cantidad | number }}</td>

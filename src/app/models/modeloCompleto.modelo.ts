@@ -61,10 +61,11 @@ export class ModeloCompleto
       input.familiaDeProcesos
     )
     
-
-    this.procesosEspeciales = input.procesosEspeciales.map((proceso) =>
-      new Procesos().deserialize(proceso)
-    )
+      if (input.procesosEspeciales) {
+        this.procesosEspeciales = input.procesosEspeciales.map(proceso =>
+          new Procesos().deserialize(proceso)
+        )
+      }
     
 
     return this

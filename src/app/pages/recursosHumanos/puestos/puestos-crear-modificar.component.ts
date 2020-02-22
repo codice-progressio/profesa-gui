@@ -585,7 +585,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   conocimientos: Set<string> = new Set()
-  @ViewChild('conocimientosInput', { static: false })
+  @ViewChild('conocimientosInput')
   conocimientosIn: ElementRef
 
   agregarConocimientos(valor: string) {
@@ -619,7 +619,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   habilidades: Set<string> = new Set()
-  @ViewChild('habilidadesInput', { static: false }) habilidadesIn: ElementRef
+  @ViewChild('habilidadesInput') habilidadesIn: ElementRef
 
   agregarHabilidades(valor: string) {
     if (!this.validadNoVacio(valor)) return
@@ -647,7 +647,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   // -->
 
   aptitudes: Set<string> = new Set()
-  @ViewChild('aptitudesInput', { static: false }) aptitudesIn: ElementRef
+  @ViewChild('aptitudesInput') aptitudesIn: ElementRef
 
   agregarAptitudes(valor: string) {
     if (!this.validadNoVacio(valor)) return

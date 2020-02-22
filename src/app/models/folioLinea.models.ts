@@ -1,8 +1,8 @@
-import { ModeloCompleto } from "./modeloCompleto.modelo"
-import { Laser } from "./laser.models"
-import { Orden } from "./orden.models"
-import { Procesos } from "./procesos.model"
-import { ColoresTenidos } from "./ColoresTenidos"
+import { ModeloCompleto } from './modeloCompleto.modelo'
+import { Laser } from './laser.models'
+import { Orden } from './orden.models'
+import { Procesos } from './procesos.model'
+import { ColoresTenidos } from './ColoresTenidos'
 
 export class FolioLinea {
   /**
@@ -65,23 +65,25 @@ export class FolioLinea {
   ) {}
 
   deserialize(input: this): this {
-    
     Object.assign(this, input)
     this.modeloCompleto = new ModeloCompleto().deserialize(input.modeloCompleto)
-    
+
     this.laserCliente = new Laser().deserialize(input.laserCliente)
-    this.coloresTenidos = input.coloresTenidos.map((color) =>
-      new ColoresTenidos().deserialize(color)
-    )
-    
 
-    this.procesos = input.procesos.map((proceso) =>
-      new Procesos().deserialize(proceso)
-    )
+    if (input.coloresTenidos) {
+      this.coloresTenidos = input.coloresTenidos.map(color =>
+        new ColoresTenidos().deserialize(color)
+      )
+    }
 
-    
-    this.ordenes = input.ordenes.map((orden) => new Orden().deserialize(orden))
-    
+    if (input.procesos) {
+      this.procesos = input.procesos.map(proceso =>
+        new Procesos().deserialize(proceso)
+      )
+    }
+
+    this.ordenes = input.ordenes.map(orden => new Orden().deserialize(orden))
+
     if (this.ordenes.length > 0)
       this.ordenes = this.ordenarOrdenes(this.ordenes)
     return this
@@ -258,7 +260,7 @@ export class FolioLinea {
     if (pedido.laserCliente.laser) {
       // No incluye el proceso de laser dentro de sus procesos en la familia.
       let l = pedido.modeloCompleto.familiaDeProcesos.procesos.find(
-        (p) => idProcesoLaser == p.proceso._id
+        p => idProcesoLaser == p.proceso._id
       )
 
       // Solo si no tiene el departamento de laser agregado se puede modificar.
@@ -286,8 +288,8 @@ export class FolioLinea {
 
   ordenarOrdenes(ordenes: Orden[]): Orden[] {
     return ordenes.sort((a, b) => {
-      let an = Number(a.orden.split("-")[2])
-      let bn = Number(b.orden.split("-")[2])
+      let an = Number(a.orden.split('-')[2])
+      let bn = Number(b.orden.split('-')[2])
       return an - bn
     })
   }

@@ -44,7 +44,7 @@ export class EmpleadoAgregarBonoComponent
     this.crearFormulario()
   }
 
-  @ViewChild('select', { static: false })
+  @ViewChild('select')
   select: ElementRef
 
   crearFormulario(): void {

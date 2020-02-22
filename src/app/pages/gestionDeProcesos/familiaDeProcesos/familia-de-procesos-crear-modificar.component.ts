@@ -1,30 +1,38 @@
-import { Component, OnInit } from "@angular/core";
-import { FamiliaDeProcesos } from "../../../models/familiaDeProcesos.model";
-import { FamiliaDeProcesosService } from "../../../services/proceso/familia-de-procesos.service";
-import { Proceso } from "../../../models/proceso.model";
-import { CrearModificar_GUI_CRUD } from "../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD";
+import { Component, OnInit } from '@angular/core'
+import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model'
+import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-procesos.service'
+import { Proceso } from '../../../models/proceso.model'
+import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD'
 import {
   FormBuilder,
   Validators,
   FormArray,
   FormGroup,
   AbstractControl
-} from "@angular/forms";
-import { ProcesoService } from "../../../services/proceso/proceso.service";
-import { OrganizadorDragAndDropService } from "../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service";
-import { DndObject } from "../../../components/organizador-drag-and-drop/models/dndObject.model";
-import { PaginadorService } from "../../../components/paginador/paginador.service";
-import { ValidacionesService } from "src/app/services/utilidades/validaciones.service";
+} from '@angular/forms'
+import { ProcesoService } from '../../../services/proceso/proceso.service'
+import { OrganizadorDragAndDropService } from '../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service'
+import { DndObject } from '../../../components/organizador-drag-and-drop/models/dndObject.model'
+import { PaginadorService } from '../../../components/paginador/paginador.service'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { FormControl } from '@angular/forms'
+import { Procesos } from '../../../models/procesos.model'
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop'
 
 @Component({
-  selector: "app-familia-de-procesos-crear-modificar",
-  templateUrl: "./familia-de-procesos-crear-modificar.component.html",
+  selector: 'app-familia-de-procesos-crear-modificar',
+  templateUrl: './familia-de-procesos-crear-modificar.component.html',
   styles: []
 })
 export class FamiliaDeProcesosCrearModificarComponent
   extends CrearModificar_GUI_CRUD<FamiliaDeProcesos, FamiliaDeProcesosService>
   implements OnInit {
-  procesos: Proceso[] = null;
+  procesos: Proceso[] = null
+  procesosAgregados: Proceso[] = null
 
   constructor(
     public _elementoService: FamiliaDeProcesosService,
@@ -33,41 +41,32 @@ export class FamiliaDeProcesosCrearModificarComponent
     public _procesosService: ProcesoService,
     public _dndService: OrganizadorDragAndDropService<Proceso>
   ) {
-    super(_elementoService, formBuilder, _validacionesService);
+    super(_elementoService, formBuilder, _validacionesService)
 
     this.cbDatosParaEditar = (elemento: FamiliaDeProcesos) => {
-      this.cargarDatosParaEditar(elemento);
-      this.crearListasdnd(elemento);
-      this.cargarProcesos();
-    };
+      this.cargarProcesos()
+      this.crearFormulario(elemento)
+    }
 
     this.cbCrearFormulario = () => {
-      this.crearFormulario();
-      this.crearListasdnd();
-      this.cargarProcesos();
-    };
+      this.crearFormulario()
+      this.cargarProcesos()
+    }
 
-    this.configurar();
+    this.configurar()
   }
 
   ngOnInit() {}
 
   cargarProcesos() {
-    this._procesosService.listarTodo = true;
-    this._procesosService.todo().subscribe(procesos => {
-      this.procesos = procesos;
-      this.cargarListaDeObjetos_dnd();
-    });
-  }
-
-  cargarDatosParaEditar(elemento: FamiliaDeProcesos) {
-    this.nombre_FB.setValue(elemento.nombre);
-
-    elemento.procesos.forEach(d => {
-      this.agregarElemento(d.orden, d.proceso);
-    });
-
-    this.observaciones_FB.setValue(elemento.observaciones);
+    this._procesosService.listarTodo = true
+    this._procesosService.todo().subscribe(
+      procesos =>
+        (this.procesos = procesos.map(x => {
+          x.maquinas = null
+          return x
+        }))
+    )
   }
 
   /**
@@ -75,151 +74,59 @@ export class FamiliaDeProcesosCrearModificarComponent
    *
    * @memberof MaquinasCrearModificarComponent
    */
-  crearFormulario() {
+  crearFormulario(elemento: FamiliaDeProcesos = new FamiliaDeProcesos()) {
     this.formulario = this.formBuilder.group({
-      nombre: ["", [Validators.required]],
-      // soloParaProductoTerminado: [false, [
-      //   Validators.required
-      // ]],
-
-      observaciones: ["", []],
-
+      nombre: [elemento.nombre, [Validators.required]],
+      observaciones: [elemento.observaciones, []],
       procesos: new FormArray(
-        [],
+        elemento.procesos.map(x => new FormControl(x)),
         this._validacionesService.minSelectedCheckboxes()
       )
-    });
+    })
+
+    this.procesosAgregados = elemento.procesos.map(x => x.proceso)
   }
 
   public get nombre_FB(): AbstractControl {
-    return this.formulario.get("nombre");
+    return this.formulario.get('nombre')
   }
 
   public get observaciones_FB(): AbstractControl {
-    return this.formulario.get("observaciones");
+    return this.formulario.get('observaciones')
   }
 
   public get procesos_FB(): FormArray {
-    return <FormArray>this.formulario.get("procesos");
+    return <FormArray>this.formulario.get('procesos')
   }
 
-  /**
-   *Crea la lista ordenable y la lista de procesos dnd.
-   *
-   * @memberof FamiliaDeProcesosCrearModificarComponent
-   */
-  crearListasdnd(familia: FamiliaDeProcesos = null) {
-    this._dndService.limpiar();
-    this._dndService.limpiarListaDeElementos();
+  f(campo): FormArray {
+    return <FormArray>this.formulario.get(campo)
+  }
 
-    let dndOBjecto: DndObject<Proceso> = this._dndService
-      .nuevaArea("procesos")
-      .setPadre()
-      .setLeyenda("Familia de procesos")
-      .setLeyendaOptativa("")
-      .setEliminable(false)
-      .setOrden("0");
+  drop(e: CdkDragDrop<Proceso[]>) {
+    if (e.container !== e.previousContainer) {
+      this.procesosAgregados.splice(
+        e.currentIndex,
+        0,
+        this.procesos[e.previousIndex]
+      )
 
-    this._dndService.leyendaListaSeleccionable =
-      "Arrastra procesos de la lista para agregarlos.";
-    if (familia) {
-      familia.procesos.forEach(procesos => {
-        dndOBjecto.dnd.hijos
-          .addOrdenable()
-          .setEliminable(true)
-          .setLeyenda(procesos.proceso.nombre)
-          .setLeyendaOptativa(procesos.proceso.departamento.nombre)
-          .setOrden(procesos.orden)
-          .setObjeto(procesos.proceso);
-      });
-      this._dndService.actualizarPropiedadOrden();
-      this.actualizarIds(true);
+      this.f('procesos').clear()
+      let contador = 0
+      this.procesosAgregados.forEach(p => {
+        const procesos = new Procesos()
+        procesos.proceso = p
+        procesos.orden = contador+''
+        contador++
+        this.f('procesos').push(new FormControl(procesos))
+      })
+    } else {
+      moveItemInArray(e.container.data, e.previousIndex, e.currentIndex)
     }
   }
 
-  /**
-   *Crea la lista de procesos que se pueden arrastrar para selccionar.
-   *
-   * @memberof FamiliaDeProcesosCrearModificarComponent
-   */
-  cargarListaDeObjetos_dnd() {
-    this._procesosService.listarTodo = true;
-    this._dndService.limpiarListaDeElementos();
-    this.procesos.forEach(proceso => {
-      let dnd: DndObject<Proceso> = new DndObject();
-      dnd.setEliminable(true);
-      dnd.setLeyenda(proceso.nombre);
-      dnd.setLeyendaOptativa(proceso.departamento.nombre);
-      dnd.setObjeto(proceso);
-      this._dndService.listaDeElementos.push(dnd);
-    });
+  quitarProceso(i: number): void {
+    this.f('procesos').removeAt(i)
+    this.procesosAgregados.splice(i, 1)
   }
-
-  /**
-   *Crea y agrega un nuevo formGroup al control departamentos_FB
-   *
-   * @param {string} id El id del departamento que se va a gregar.
-   * @memberof MaquinasCrearModificarComponent
-   */
-  agregarElemento(orden: string, proceso: Proceso) {
-    let a: FormGroup = this.crearNuevoFormGroupElemento();
-    a.controls["orden"].setValue(orden);
-    a.controls["proceso"].setValue(proceso);
-    this.procesos_FB.push(a);
-  }
-
-  /**
-   *Retorna un nuevo grupo para agregar un id.
-   *
-   * @returns {FormGroup}
-   * @memberof MaquinasCrearModificarComponent
-   */
-  crearNuevoFormGroupElemento(): FormGroup {
-    return this.formBuilder.group({
-      orden: [""],
-      proceso: [""]
-    });
-  }
-
-  /**
-   *Elimina los elementos dentro del formArray de manera
-   recursiva. No se puede hacer de otra manera sin que pierda
-   la relacion. 
-   *
-   * @memberof FamiliaDeProcesosCrearModificarComponent
-   */
-  clearFormArray = (formArray: FormArray) => {
-    while (formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
-  };
-
-  ejecutarActualizadonIds: boolean = true;
-
-  /**
-   *Actualiza la lista de objetos id. Se ejecuta con el emiter.
-   *
-   * @param {boolean} valor
-   * @memberof FamiliaDeProcesosCrearModificarComponent
-   */
-  actualizarIds(valor: boolean) {
-    if (this.ejecutarActualizadonIds) {
-      this.ejecutarActualizadonIds = false;
-      setTimeout(() => {
-        this.clearFormArray(this.procesos_FB);
-
-        this._dndService.obtenerHijosOrdenables().forEach(dndProceso => {
-          this.agregarElemento(dndProceso.orden, dndProceso.objeto);
-        });
-        this.ejecutarActualizadonIds = true ;
-
-      }, 400);
-    }
-  }
-
-
-  f(campo):FormArray {
-    return <FormArray> this.formulario.get(campo)
-  }
-  
 }

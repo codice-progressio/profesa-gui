@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, ModuleWithProviders } from '@angular/core'
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
@@ -17,12 +17,11 @@ import { PaginadorComponent } from '../components/paginador/paginador.component'
 import { ListaDeOrdenesComponent } from '../components/lista-de-ordenes/lista-de-ordenes.component'
 import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component'
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component'
-import { DndModule } from 'ng2-dnd'
 import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe'
 import { NgxMaskModule } from 'ngx-mask'
-import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component'
+// import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component'
 import { Paginador2Component } from '../components/paginador2/paginador2.component'
 import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -46,8 +45,7 @@ import { AdminGuard } from '../services/guards/admin.guard'
 import { SubirArchivoService } from '../services/subir-archivo/subir-archivo.service'
 import { PreLoaderService } from '../components/pre-loader/pre-loader.service'
 import { ModalUploadService } from '../components/modal-upload/modal-upload.service'
-import { HospitalService } from '../services/hospital/hospital.service'
-import { MedicoService } from '../services/medico/medico.service'
+
 import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
 import { ClienteService } from '../services/cliente/cliente.service'
 import { ModeloCompletoService } from '../services/modelo/modelo-completo.service'
@@ -74,7 +72,9 @@ import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
-
+import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
+import { DragDropModule } from '@angular/cdk/drag-drop'
+import { FechaPipe } from '../pipes/fecha.pipe'
 
 @NgModule({
   imports: [
@@ -82,13 +82,12 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     // CommonModule trae el *ng-for
     CommonModule,
     PipesModule,
-    DndModule,
-    NgxMaskModule,
+    NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
     // Para el httpcliente necesitamos importar este modulo.
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule
   ],
   declarations: [
     HeaderComponent,
@@ -104,7 +103,7 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     QrScannerComponent,
     ValidacionInputsComponent,
     OrdenadorVisualComponent,
-    OrganizadorDragAndDropComponent,
+    // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
     BotonParaImprecionComponent,
@@ -119,7 +118,8 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective
   ],
   exports: [
     NopagefoundComponent,
@@ -134,11 +134,9 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ListaDeOrdenesComponent,
     QrScannerComponent,
     ValidacionInputsComponent,
-    DndModule,
     OrdenadorVisualComponent,
-    OrganizadorDragAndDropComponent,
+    // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
-    NgxMaskModule,
     Paginador2Component,
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
@@ -151,15 +149,20 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxMaskModule,
+    PipesModule,
+    DragDropModule
   ]
 })
 export class SharedModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [
-        ModeloCompletoPipe,
         SettingsService,
         SidebarService,
         SharedService,
@@ -169,8 +172,6 @@ export class SharedModule {
         SubirArchivoService,
         PreLoaderService,
         ModalUploadService,
-        HospitalService,
-        MedicoService,
         VerificaTokenGuard,
         // Sistema Carrduci
         ClienteService,
@@ -194,8 +195,8 @@ export class SharedModule {
         SortService,
         FolioNewService,
         AlmacenProductoTerminadoService,
-        ImagenPipe,
-        DecimalPipe
+        ImagenPipe, FechaPipe, ModeloCompletoPipe, DecimalPipe
+        
       ]
     }
   }
