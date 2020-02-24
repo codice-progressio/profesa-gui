@@ -1,29 +1,29 @@
-import { Component, OnInit, Inject } from "@angular/core"
-import { Folio } from "src/app/models/folio.models"
-import { GrupoDeFiltroComponent } from "../../folios/grupo-de-filtro.component"
-import { FolioNewService } from "../../../../services/folio/folio-new.service"
-import { PaginadorService } from "src/app/components/paginador/paginador.service"
-import { FiltrosFolio } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio"
-import { FolioLinea } from "../../../../models/folioLinea.models"
-import { Orden } from "src/app/models/orden.models"
-import { RevisionDeOrdenesAbstractoComponent } from "../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { ModeloCompletoGestorDeProcesosEspecialesComponent } from "../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component"
+import { Component, OnInit, Inject } from '@angular/core'
+import { Folio } from 'src/app/models/folio.models'
+import { GrupoDeFiltroComponent } from '../../folios/grupo-de-filtro.component'
+import { FolioNewService } from '../../../../services/folio/folio-new.service'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { FiltrosFolio } from 'src/app/services/utilidades/filtrosParaConsultas/FiltrosFolio'
+import { FolioLinea } from '../../../../models/folioLinea.models'
+import { Orden } from 'src/app/models/orden.models'
+import { RevisionDeOrdenesAbstractoComponent } from '../revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { ModeloCompletoGestorDeProcesosEspecialesComponent } from '../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
 import { DefaultModelData } from '../../../../config/defaultModelData'
 import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
 
 @Component({
-  selector: "app-revision-de-folios",
-  templateUrl: "./revision-de-folios.component.html",
+  selector: 'app-revision-de-folios',
+  templateUrl: './revision-de-folios.component.html',
   styles: [],
-  providers: [{ provide: "paginadorFolios", useClass: PaginadorService }]
+  providers: [{ provide: 'paginadorFolios', useClass: PaginadorService }]
 })
 export class RevisionDeFoliosComponent implements OnInit {
-  
   defaultData: DefaultModelData
+  cargando = false
   constructor(
     public _folioService: FolioNewService,
-    @Inject("paginadorFolios") public _paginadorService: PaginadorService,
+    @Inject('paginadorFolios') public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService,
     public _defaultService: DefaultsService
   ) {
@@ -35,7 +35,7 @@ export class RevisionDeFoliosComponent implements OnInit {
       }
     }
 
-    this._defaultService.cargarDefaults().subscribe( d => this.defaultData = d)
+    this._defaultService.cargarDefaults().subscribe(d => (this.defaultData = d))
 
     this.cargarFolios()
   }
@@ -63,7 +63,7 @@ export class RevisionDeFoliosComponent implements OnInit {
   folioParaGenerarOrdenes: Folio = null
 
   ngOnInit() {
-    new Promise((resolve) => {
+    new Promise(resolve => {
       // Esperamos a que el componenete este disponible.
       const intervalo = setInterval(() => {
         if (this.componenteFiltrador) {
@@ -76,7 +76,7 @@ export class RevisionDeFoliosComponent implements OnInit {
         // Definimos los componentes que deban existir.
         this.mostrarFiltros()
       })
-      .catch((err) => {
+      .catch(err => {
         throw err
       })
   }
@@ -171,16 +171,15 @@ export class RevisionDeFoliosComponent implements OnInit {
       // Paginador
       .setDesde(this._paginadorService.desde)
       .setLimite(this._paginadorService.limite)
-      .setSortCampos([["fechaDeEntregaAProduccion", -1]])
+      .setSortCampos([['fechaDeEntregaAProduccion', -1]])
       .servicio.todo()
-      .subscribe((folios) => {
+      .subscribe(folios => {
         this.folios = []
         this.folios = folios
         this._paginadorService.activarPaginador(this._folioService.total)
         this.actualizarVista = false
+        this.cargando = false
       })
-
-    
   }
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
@@ -189,6 +188,7 @@ export class RevisionDeFoliosComponent implements OnInit {
    * @memberof FoliosComponent
    */
   cargarFolios() {
+    this.cargando = true
     this.esNecesarioReinciarPaginador = true
     let interval = setInterval(() => {
       if (this.componenteFiltrador) {
@@ -229,33 +229,25 @@ export class RevisionDeFoliosComponent implements OnInit {
     if (!folio.esValidoParaPedidosEspeciales()) {
       this.validacionesFallidas(folio)
     } else {
+      this.cargando = true
       this.folios = []
       folio.ordenesGeneradas = true
       folio.limpiarParaOrdenesGeneradas()
-      
-      this._folioService
-        .modificar(folio)
-        .toPromise()
-        .then(() => {
-          setTimeout(() => {
-            this.cargarFolios()
-          }, 1000)
-        })
+
+      this._folioService.modificar(folio).subscribe(folio => {
+        setTimeout(() => this.cargarFolios(), 5000)
+      })
     }
   }
 
   private validacionesFallidas(folio: Folio) {
-    let msj = "No has validado los siguientes pedidos de este folio: "
+    let msj = 'No has validado los siguientes pedidos de este folio: '
 
-    folio.pedidosConValidacionExtraordinariaFallada().forEach((ped) => {
-      msj += ped.pedido + " | "
+    folio.pedidosConValidacionExtraordinariaFallada().forEach(ped => {
+      msj += ped.pedido + ' | '
     })
 
-    this._msjService.invalido(
-      msj,
-      'Falta definir trayectos',
-      5000
-    )
+    this._msjService.invalido(msj, 'Falta definir trayectos', 5000)
   }
 
   revisionDeOrdenesCargarComponente(com: RevisionDeOrdenesAbstractoComponent) {
