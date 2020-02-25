@@ -47,9 +47,6 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.actualizarTodo()
 
-    this.intervalo = setInterval(() => {
-      this.actualizarTodo()
-    }, 1000 * 60 * 5)
   }
 
   ngOnDestroy() {}
