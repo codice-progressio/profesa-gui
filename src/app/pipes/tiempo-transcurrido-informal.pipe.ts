@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment'
 @Pipe({
-  name: 'tiempoTranscurridoInformal'
+  name: 'tiempoTranscurridoInformal',
+  pure: false
 })
 export class TiempoTranscurridoInformalPipe implements PipeTransform {
 
