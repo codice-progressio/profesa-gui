@@ -76,6 +76,7 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
 import { DragDropModule } from '@angular/cdk/drag-drop'
 import { FechaPipe } from '../pipes/fecha.pipe'
 import { QRCodeModule } from 'angularx-qrcode';
+import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component';
 @NgModule({
   imports: [
     RouterModule,
@@ -120,7 +121,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
     RPersonalizadoAlmacenProduccionImprimibleComponent,
-    OrdenadorDeColumnasDirective
+    OrdenadorDeColumnasDirective,
+    TiempoTranscurridoComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -157,7 +159,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     NgxMaskModule,
     PipesModule,
     DragDropModule,
-    QRCodeModule
+    QRCodeModule,
+    TiempoTranscurridoComponent
   ]
 })
 export class SharedModule {
