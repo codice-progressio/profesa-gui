@@ -75,7 +75,7 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
 import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
 import { DragDropModule } from '@angular/cdk/drag-drop'
 import { FechaPipe } from '../pipes/fecha.pipe'
-
+import { QRCodeModule } from 'angularx-qrcode';
 @NgModule({
   imports: [
     RouterModule,
@@ -87,7 +87,8 @@ import { FechaPipe } from '../pipes/fecha.pipe'
     ReactiveFormsModule,
     // Para el httpcliente necesitamos importar este modulo.
     HttpClientModule,
-    DragDropModule
+    DragDropModule,
+    QRCodeModule
   ],
   declarations: [
     HeaderComponent,
@@ -155,7 +156,8 @@ import { FechaPipe } from '../pipes/fecha.pipe'
     ReactiveFormsModule,
     NgxMaskModule,
     PipesModule,
-    DragDropModule
+    DragDropModule,
+    QRCodeModule
   ]
 })
 export class SharedModule {
