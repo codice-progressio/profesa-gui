@@ -18,20 +18,24 @@ import {
 } from '@angular/cdk/drag-drop'
 import { forkJoin } from 'rxjs'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
+import { OnDestroy } from '@angular/core'
 
 @Component({
   selector: 'app-programacion-transformacion',
   templateUrl: './programacion-transformacion.component.html',
   styleUrls: ['./programacion-transformacion.component.css']
 })
-export class ProgramacionTransformacionComponent implements OnInit {
-  ordenes: OrdenParaAsignacion[] =[]
+export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
+  ordenes: OrdenParaAsignacion[] = []
 
   maquinas: Maquina[] = []
 
   cargandoOrdenes = false
   cargandoMaquinas = false
   totalOrdenesAsignadas: number = 0
+
+  ultimaActualizacion: Date
+  intervalo = null
 
   constructor(
     private msjService: ManejoDeMensajesService,
@@ -41,6 +45,16 @@ export class ProgramacionTransformacionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.actualizarTodo()
+
+    this.intervalo = setInterval(() => {
+      this.actualizarTodo()
+    }, 1000 * 60 * 5)
+  }
+
+  ngOnDestroy() {}
+
+  actualizarTodo() {
     this.cargarOrdenes()
     this.cargarMaquinas()
   }
@@ -60,7 +74,9 @@ export class ProgramacionTransformacionComponent implements OnInit {
               this.totalOrdenesAsignadas = this.calcularOrdenesAsignadas(
                 this.maquinas
               )
+
               this.cargandoMaquinas = false
+              this.ultimaActualizacion = new Date()
             },
             err => (this.cargandoMaquinas = false)
           )
@@ -87,6 +103,7 @@ export class ProgramacionTransformacionComponent implements OnInit {
           ordenes => {
             this.ordenes = ordenes
             this.cargandoOrdenes = false
+            this.ultimaActualizacion = new Date()
           },
           err => (this.cargandoOrdenes = false)
         )

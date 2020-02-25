@@ -9,19 +9,25 @@
           {{ calcularOrdenesAsignadas(maquinas) + ordenes?.length }}
         </h3>
 
-        <a
-          (click)="cargarMaquinas(); cargarOrdenes()"
-          class="btn btn-outline-secondary btn-sm"
-          href="javascript:void(0)"
-          role="button"
-        >
-          <i
-            *ngIf="cargandoMaquinas || cargandoOrdenes"
-            class="fas fa-spinner fa-spin "
-          ></i>
+        <span>
+          <a
+            (click)="actualizarTodo()"
+            class="btn btn-outline-secondary btn-sm"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i
+              *ngIf="cargandoMaquinas || cargandoOrdenes"
+              class="fas fa-spinner fa-spin "
+            ></i>
 
-          Actualizar
-        </a>
+            Actualizar
+          </a>
+          <br>
+          <span class="text-light font-10 font-light"
+            >Ultima actualizacion: {{ ultimaActualizacion | tiempoTranscurridoInformal }}</span
+          >
+        </span>
       </div>
     </div>
   </div>
@@ -64,16 +70,24 @@
               </span>
             </li>
 
-            <li class="list-group-item list-orden shadow bg-dark text-white">
+            <li
+              class="list-group-item list-orden shadow bg-dark text-white w-100 d-flex"
+            >
               <ng-container *ngIf="maquina.trabajando; else sinTrabajoTemp">
-                <i class="fas fa-cog   fa-spin text-warning"></i>
-                {{ maquina.trabajo.modeloCompleto }}
-                |
-                <app-tiempo-transcurrido
-                [inicio]='maquina.trabajo.inicio'
-                >
-
-                </app-tiempo-transcurrido>
+                <span style="width: 5%;"
+                  ><i class="fas fa-cog   fa-spin text-warning"></i
+                ></span>
+                <span style="width: 20%;">{{
+                  maquina.trabajo.numeroDeOrden
+                }}</span>
+                <span style="width: 50%;">{{
+                  maquina.trabajo.modeloCompleto
+                }}</span>
+                <span style="width: 5%;">{{ maquina.trabajo.paso }}P</span>
+                <span style="width: 20%;" class="text-right">
+                  <app-tiempo-transcurrido [inicio]="maquina.trabajo.inicio">
+                  </app-tiempo-transcurrido>
+                </span>
               </ng-container>
               <ng-template #sinTrabajoTemp>
                 Sin trabajo asignado
@@ -83,13 +97,12 @@
             <li
               *ngIf="maquina.pila.length"
               class="list-group-item list-orden shadow d-flex "
-           
             >
               <b>
                 <i
                   (click)="reiniciarPila(maquina)"
                   class="fas fa-recycle text-danger   "
-                  style="width: 10%;"
+                  style="width: 15%;"
                 ></i>
               </b>
               <b
