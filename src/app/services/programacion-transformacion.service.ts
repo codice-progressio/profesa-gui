@@ -82,5 +82,9 @@ export interface OrdenParaAsignacion {
   }
   pasos: number
   numerosDeOrden: number[]
-  paso: number
+  paso: number,
+  //No siempre aparecen estos
+  inicio: Date,
+  finalizacion:Date,
+
 }
