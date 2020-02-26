@@ -1,52 +1,52 @@
-import { RouterModule, Routes } from "@angular/router"
-import { DashboardComponent } from "./dashboard/dashboard.component"
-import { AccountsSettingsComponent } from "./accounts-settings/accounts-settings.component"
-import { ProfileComponent } from "./profile/profile.component"
-import { RegistroDeFoliosComponent } from "./registro-de-folios/registro-de-folios.component"
-import { UsuariosComponent } from "./usuarios/usuarios.component"
-import { BusquedaComponent } from "./busqueda/busqueda.component"
-import { RegistroDeLineasComponent } from "./registro-de-folios/registro-de-lineas.component"
-import { RevisionDeOrdenesComponent } from "./generador-de-ordenes/revision-de-ordenes.component"
-import { SeguimientoDeFoliosComponent } from "./seguimiento-de-folios/seguimiento-de-folios.component"
-import { MaterialesComponent } from "./departamentos/materiales/materiales.component"
-import { TransformacionComponent } from "./departamentos/transformacion/transformacion.component"
-import { PulidoComponent } from "./departamentos/pulido/pulido.component"
-import { SeleccionComponent } from "./departamentos/seleccion/seleccion.component"
-import { VistaParaImprecionComponent } from "./generador-de-ordenes/vista-para-imprecion.component"
-import { PastillaComponent } from "./departamentos/pastilla/pastilla.component"
-import { EmpaqueComponent } from "./departamentos/empaque/empaque.component"
-import { IndicadorDeChecadasComponent } from "./reportes/indicador-de-checadas/indicador-de-checadas.component"
-import { _ROLES as ROLES } from "../config/roles.const"
-import { ClientesComponent } from "./clientes/clientes.component"
-import { ControlDeProduccionComponent } from "./departamentos/control-de-produccion/control-de-produccion.component"
-import { ProductoTerminadoComponent } from "./departamentos/producto-terminado/producto-terminado.component"
-import { MetalizadoComponent } from "./departamentos/metalizado/metalizado.component"
-import { BarnizadoComponent } from "./departamentos/barnizado/barnizado.component"
-import { BuratoComponent } from "./departamentos/burato/burato.component"
-import { LaserComponent } from "./departamentos/laser/laser.component"
-import { AlmacenDeBotonComponent } from "./departamentos/almacen-de-boton/almacen-de-boton.component"
-import { ProcesosComponent } from "./gestionDeProcesos/procesos/procesos.component"
-import { MaquinasComponent } from "./gestionDeProcesos/maquinas/maquinas.component"
-import { FamiliaDeProcesosComponent } from "./gestionDeProcesos/familia-de-procesos/familia-de-procesos.component"
-import { TamanosComponent } from "./gestionDeProcesos/tamanos/tamanos.component"
-import { ColoresComponent } from "./gestionDeProcesos/colores/colores.component"
-import { TerminadosComponent } from "./gestionDeProcesos/terminados/terminados.component"
-import { ModelosCompletosComponent } from "./gestionDeProcesos/modelos-completos/modelos-completos.component"
-import { ModelosComponent } from "./gestionDeProcesos/modelos/modelos.component"
-import { PruebaParaDetallesComponent } from "./prueba-para-detalles/prueba-para-detalles.component"
-import { RevisionDeFoliosComponent } from "./gestionDeFolios/revision/revision-de-folios/revision-de-folios.component"
-import { FoliosSeguimientoComponent } from "./gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component"
-import { VerificaTokenGuard } from "../services/guards/verifica-token.guard"
-import { PermisosGuard } from "../services/guards/permisos.guard"
-import { AlmacenDeProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component"
-import { StockAlmacenProductoTerminadoComponent } from "./almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component"
-import { AlamacenProduccion as AlmacenProduccion } from "./almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component"
-import { AlmacenDescripcionComponent } from "./almacenes/almacenDescripcion/almacen-descripcion.component"
-import { TenidoComponent } from "./departamentos/tenido/tenido/tenido.component"
-import { ProveedorComponent } from "./proveedor/proveedor.component"
-import { DivisaComponent } from "./divisa/divisa.component"
-import { RequisicionComponent } from "./almacenes/requisicion/requisicion.component"
-import { EmpleadoComponent } from "./recursosHumanos/empleado/empleado.component";
+import { RouterModule, Routes } from '@angular/router'
+import { DashboardComponent } from './dashboard/dashboard.component'
+import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
+import { ProfileComponent } from './profile/profile.component'
+import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component'
+import { UsuariosComponent } from './usuarios/usuarios.component'
+import { BusquedaComponent } from './busqueda/busqueda.component'
+import { RegistroDeLineasComponent } from './registro-de-folios/registro-de-lineas.component'
+import { RevisionDeOrdenesComponent } from './generador-de-ordenes/revision-de-ordenes.component'
+import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
+import { MaterialesComponent } from './departamentos/materiales/materiales.component'
+import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
+import { PulidoComponent } from './departamentos/pulido/pulido.component'
+import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
+import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component'
+import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
+import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
+import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component'
+import { _ROLES as ROLES } from '../config/roles.const'
+import { ClientesComponent } from './clientes/clientes.component'
+import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component'
+import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component'
+import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component'
+import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component'
+import { BuratoComponent } from './departamentos/burato/burato.component'
+import { LaserComponent } from './departamentos/laser/laser.component'
+import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component'
+import { ProcesosComponent } from './gestionDeProcesos/procesos/procesos.component'
+import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.component'
+import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component'
+import { TamanosComponent } from './gestionDeProcesos/tamanos/tamanos.component'
+import { ColoresComponent } from './gestionDeProcesos/colores/colores.component'
+import { TerminadosComponent } from './gestionDeProcesos/terminados/terminados.component'
+import { ModelosCompletosComponent } from './gestionDeProcesos/modelos-completos/modelos-completos.component'
+import { ModelosComponent } from './gestionDeProcesos/modelos/modelos.component'
+import { PruebaParaDetallesComponent } from './prueba-para-detalles/prueba-para-detalles.component'
+import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component'
+import { FoliosSeguimientoComponent } from './gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component'
+import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
+import { PermisosGuard } from '../services/guards/permisos.guard'
+import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
+import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component'
+import { AlamacenProduccion as AlmacenProduccion } from './almacenes/almacenDeMateriaPrimaYHerramientas/almacen-produccion.component'
+import { AlmacenDescripcionComponent } from './almacenes/almacenDescripcion/almacen-descripcion.component'
+import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
+import { ProveedorComponent } from './proveedor/proveedor.component'
+import { DivisaComponent } from './divisa/divisa.component'
+import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
+import { EmpleadoComponent } from './recursosHumanos/empleado/empleado.component'
 import { CursosComponent } from './recursosHumanos/cursos/cursos.component'
 import { AreasComponent } from './recursosHumanos/areas/areas.component'
 import { PuestosComponent } from './recursosHumanos/puestos/puestos.component'
@@ -54,11 +54,10 @@ import { DepartamentoComponent } from './departamento/departamento.component'
 import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
-import { ReportePersonalizadoAlmacenProduccionComponent } from "./almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component";
+import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
-
-
+import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -78,11 +77,11 @@ const pagesRoutes: Routes = [
   //  =====================================
   //  -->
   {
-    path: "dashboard",
+    path: 'dashboard',
     component: DashboardComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Dashboard",
+      titulo: 'Dashboard',
       roles: [ROLES.USER_ROLE]
     }
   },
@@ -98,45 +97,55 @@ const pagesRoutes: Routes = [
   //  Reportes
   // =====================================
   // -->
-  
+
   {
-    path: "reportes/productoTerminado/faltantes",
+    path: 'reportes/productoTerminado/faltantes',
     component: ReporteDeFaltantesProductoTerminadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Reporte de faltantes de producto terminado",
+      titulo: 'Reporte de faltantes de producto terminado',
       roles: [ROLES.REPORTES_PRODUCTO_TERMINADO_FALTANTES]
     }
   },
   {
-    path: "reportes/almacenDeProduccion/faltantes",
+    path: 'reportes/almacenDeProduccion/faltantes',
     component: ReporteDeFaltantesAlmacenDeProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Reporte de faltantes - Almacen de produccion",
+      titulo: 'Reporte de faltantes - Almacen de produccion',
       roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_FALTANTES]
     }
   },
   {
-    path: "reportes/almacenDeProduccion/personalizado",
+    path: 'reportes/almacenDeProduccion/personalizado',
     component: ReportePersonalizadoAlmacenProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Reporte personalizado - Almacen de produccion",
+      titulo: 'Reporte personalizado - Almacen de produccion',
       roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_PERSONALIZADOS]
     }
   },
   {
-    path: "reportes/almacenDeProduccion/personalizado/:id",
+    path: 'reportes/almacenDeProduccion/personalizado/:id',
     component: RPersonalizadoAlmacenProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Reporte personalizado - Almacen de produccion",
+      titulo: 'Reporte personalizado - Almacen de produccion',
       roles: [ROLES.REPORTES_ALMACEN_PRODUCCION_PERSONALIZADOS]
+    }
+  },
+  {
+    path: 'reportes/transformacion',
+    component: ProgramacionTransformacionReporteComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Reporte personalizado - Almacen de produccion',
+      roles: [ROLES.REPORTES_TRANSFORMACION]
     }
   },
 
@@ -153,53 +162,53 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "almacen/produccion",
+    path: 'almacen/produccion',
     component: AlmacenProduccion,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Materia prima y herramienta",
+      titulo: 'Materia prima y herramienta',
       roles: [ROLES.ALMACEN_MATERIA_PRIMA, ROLES.ALMACEN_HERRAMIENTAS]
     }
   },
 
   {
-    path: "almacen/productoTerminado",
+    path: 'almacen/productoTerminado',
     component: AlmacenDeProductoTerminadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Almacen de producto terminado",
+      titulo: 'Almacen de producto terminado',
       roles: [ROLES.ALMACEN_PRODUCTO_TERMINADO]
     }
   },
   {
-    path: "almacen/produccion/entradasYSalidas",
+    path: 'almacen/produccion/entradasYSalidas',
     component: AlmacenESComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Entradas y salidas de almacen",
+      titulo: 'Entradas y salidas de almacen',
       roles: [ROLES.ALMACEN_MATERIA_PRIMA_ENTRADA_Y_SALIDA]
     }
   },
   {
-    path: "almacen/requisiciones",
+    path: 'almacen/requisiciones',
     component: RequisicionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Requisiciones de articulos",
+      titulo: 'Requisiciones de articulos',
       roles: [ROLES.ALMACEN_REQUISICION]
     }
   },
   {
-    path: "almacen/reportesPersonalizados",
+    path: 'almacen/reportesPersonalizados',
     component: ReportePersonalizadoAlmacenProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Gestion de reportes personalizados",
+      titulo: 'Gestion de reportes personalizados',
       roles: [ROLES.ALMACEN_PRODUCCION_REPORTES_PERSONALIZADOS]
     }
   },
@@ -217,29 +226,29 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "folios/revision",
+    path: 'folios/revision',
     component: RevisionDeFoliosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Revision de folios a produccion",
+      titulo: 'Revision de folios a produccion',
       roles: [ROLES.CONTROL_DE_PRODUCCION_REVISION_DE_FOLIOS]
     }
   },
   {
-    path: "folios/seguimiento",
+    path: 'folios/seguimiento',
     component: FoliosSeguimientoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Seguimiento de folios.",
+      titulo: 'Seguimiento de folios.',
       roles: [ROLES.CONTROL_DE_PRODUCCION_SEGUIMIENTOS]
     }
   },
   {
-    path: "folios/asignarOrdenes",
+    path: 'folios/asignarOrdenes',
     component: ProgramacionTransformacionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Asignar ordenes a maquinas.",
+      titulo: 'Asignar ordenes a maquinas.',
       roles: [ROLES.CONTROL_DE_PRODUCCION_ASIGNAR_ORDENES]
     }
   },
@@ -263,80 +272,80 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "procesos",
+    path: 'procesos',
     component: ProcesosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestión de procesos",
+      titulo: 'Gestión de procesos',
       roles: [ROLES.INGENIERIA_PROCESOS]
     }
   },
 
   {
-    path: "maquinas",
+    path: 'maquinas',
     component: MaquinasComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestión de Maquinas",
+      titulo: 'Gestión de Maquinas',
       roles: [ROLES.INGENIERIA_MAQUINAS]
     }
   },
 
   {
-    path: "modelos",
+    path: 'modelos',
     component: ModelosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de Modelos",
+      titulo: 'Gestion de Modelos',
       roles: [ROLES.INGENIERIA_MODELOS]
     }
   },
 
   {
-    path: "tamanos",
+    path: 'tamanos',
     component: TamanosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de Tamanos",
+      titulo: 'Gestion de Tamanos',
       roles: [ROLES.INGENIERIA_TAMANOS]
     }
   },
 
   {
-    path: "colores",
+    path: 'colores',
     component: ColoresComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de colores",
+      titulo: 'Gestion de colores',
       roles: [ROLES.INGENIERIA_COLORES]
     }
   },
 
   {
-    path: "terminados",
+    path: 'terminados',
     component: TerminadosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de terminados",
+      titulo: 'Gestion de terminados',
       roles: [ROLES.INGENIERIA_TERMINADOS]
     }
   },
 
   {
-    path: "modelosCompletos",
+    path: 'modelosCompletos',
     component: ModelosCompletosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de Modelos Completos",
+      titulo: 'Gestion de Modelos Completos',
       roles: [ROLES.INGENIERIA_MODELOS_COMPLETOS]
     }
   },
   {
-    path: "familiaDeProcesos",
+    path: 'familiaDeProcesos',
     component: FamiliaDeProcesosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestión de Familias de Procesos",
+      titulo: 'Gestión de Familias de Procesos',
       roles: [ROLES.INGENIERIA_FAMILIA_DE_PROCESOS]
     }
   },
@@ -363,18 +372,18 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "ventas/misFolios",
+    path: 'ventas/misFolios',
     component: PruebaParaDetallesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: "Mis folios.", roles: [ROLES.VENTAS_MIS_FOLIOS] }
+    data: { titulo: 'Mis folios.', roles: [ROLES.VENTAS_MIS_FOLIOS] }
   },
   {
-    path: "ventas/stock",
+    path: 'ventas/stock',
     component: StockAlmacenProductoTerminadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Minimos y maximos de productos en almacen",
+      titulo: 'Minimos y maximos de productos en almacen',
       roles: [ROLES.VENTAS_STOCK]
     }
   },
@@ -391,16 +400,16 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "proveedores",
+    path: 'proveedores',
     component: ProveedorComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: "Proveedores.", roles: [ROLES.COMPRAS_PROVEEDORES] }
+    data: { titulo: 'Proveedores.', roles: [ROLES.COMPRAS_PROVEEDORES] }
   },
   {
-    path: "divisas",
+    path: 'divisas',
     component: DivisaComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: "Divisas", roles: [ROLES.COMPRAS_DIVISAS] }
+    data: { titulo: 'Divisas', roles: [ROLES.COMPRAS_DIVISAS] }
   },
 
   // <!--
@@ -417,30 +426,30 @@ const pagesRoutes: Routes = [
 
   // Mantenimientos
   {
-    path: "usuarios",
+    path: 'usuarios',
     component: UsuariosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Mantenimientos de usuarios",
+      titulo: 'Mantenimientos de usuarios',
       roles: [ROLES.ADMINISTRADOR_USUARIOS]
     }
   },
   {
-    path: "clientes",
+    path: 'clientes',
     component: ClientesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Mantenimientos de clientes",
+      titulo: 'Mantenimientos de clientes',
       roles: [ROLES.ADMINISTRADOR_CLIENTES]
     }
   },
 
   {
-    path: "almacenDescripcion",
+    path: 'almacenDescripcion',
     component: AlmacenDescripcionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Mantenimientos de clientes",
+      titulo: 'Mantenimientos de clientes',
       roles: [ROLES.ADMINISTRADOR_ALMACEN_DESCRIPCION]
     }
   },
@@ -458,128 +467,128 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "produccion/controlDeProduccion",
+    path: 'produccion/controlDeProduccion',
     component: ControlDeProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_CONTROL_DE_PRODUCCION]
     }
   },
   {
-    path: "produccion/almacenDeBoton",
+    path: 'produccion/almacenDeBoton',
     component: AlmacenDeBotonComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Almacen de boton",
+      titulo: 'Almacen de boton',
       roles: [ROLES.PRODUCCION_ALMACEN_DE_BOTON]
     }
   },
   {
-    path: "produccion/materiales",
+    path: 'produccion/materiales',
     component: MaterialesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_MATERIALES]
     }
   },
   {
-    path: "produccion/pastilla",
+    path: 'produccion/pastilla',
     component: PastillaComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_PASTILLA]
     }
   },
   {
-    path: "produccion/transformacion",
+    path: 'produccion/transformacion',
     component: TransformacionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_TRANSFORMACION]
     }
   },
   {
-    path: "produccion/laser",
+    path: 'produccion/laser',
     component: LaserComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_LASER]
     }
   },
   {
-    path: "produccion/pulido",
+    path: 'produccion/pulido',
     component: PulidoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_PULIDO]
     }
   },
   {
-    path: "produccion/tenido",
+    path: 'produccion/tenido',
     component: TenidoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_TENIDO]
     }
   },
   {
-    path: "produccion/seleccion",
+    path: 'produccion/seleccion',
     component: SeleccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_SELECCION]
     }
   },
   {
-    path: "produccion/empaque",
+    path: 'produccion/empaque',
     component: EmpaqueComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_EMPAQUE]
     }
   },
   {
-    path: "produccion/metalizado",
+    path: 'produccion/metalizado',
     component: MetalizadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_METALIZADO]
     }
   },
   {
-    path: "produccion/barnizado",
+    path: 'produccion/barnizado',
     component: BarnizadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_BARNIZADO]
     }
   },
   {
-    path: "produccion/burato",
+    path: 'produccion/burato',
     component: BuratoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_BURATO]
     }
   },
   {
-    path: "produccion/productoTerminado",
+    path: 'produccion/productoTerminado',
     component: ProductoTerminadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de órdenes",
+      titulo: 'Registro de órdenes',
       roles: [ROLES.PRODUCCION_PRODUCTO_TERMINADO]
     }
   },
@@ -597,40 +606,39 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "empleados",
+    path: 'empleados',
     component: EmpleadoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de empleados",
+      titulo: 'Gestion de empleados',
       roles: [ROLES.RH_EMPLEADOS]
     }
   },
   {
-    path: "cursos",
+    path: 'cursos',
     component: CursosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de cursos",
+      titulo: 'Gestion de cursos',
       roles: [ROLES.RH_CURSOS]
     }
   },
   {
-    path: "areas",
+    path: 'areas',
     component: AreasComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de areas",
+      titulo: 'Gestion de areas',
       roles: [ROLES.ADMINISTRADOR_AREAS]
     }
   },
 
-
   {
-    path: "puestos",
+    path: 'puestos',
     component: PuestosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Gestion de puestos",
+      titulo: 'Gestion de puestos',
       roles: [ROLES.RH_PUESTOS]
     }
   },
@@ -645,112 +653,109 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: "busqueda/:termino",
+    path: 'busqueda/:termino',
     component: BusquedaComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Buscador",
+      titulo: 'Buscador',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
 
   {
-    path: "departamentos",
+    path: 'departamentos',
     component: DepartamentoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Departamentos",
+      titulo: 'Departamentos',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
 
   {
-    path: "perfil",
+    path: 'perfil',
     component: ProfileComponent,
-    data: { titulo: "Perfil de usuario." }
+    data: { titulo: 'Perfil de usuario.' }
   },
 
   // Esta sección es para el trabajo
 
   {
-    path: "folios",
+    path: 'folios',
     component: RegistroDeFoliosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registro de Folios",
+      titulo: 'Registro de Folios',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
 
   {
-    path: "folio/:id",
+    path: 'folio/:id',
     component: RegistroDeLineasComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Registrar pedidos",
+      titulo: 'Registrar pedidos',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
   {
-    path: "ordenes/:idFolio",
+    path: 'ordenes/:idFolio',
     component: RevisionDeOrdenesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Revisión de órdenes",
+      titulo: 'Revisión de órdenes',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
   {
-    path: "ordenes/imprecion/:idFolio",
+    path: 'ordenes/imprecion/:idFolio',
     component: VistaParaImprecionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Impreción de órdenes",
+      titulo: 'Impreción de órdenes',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
 
   {
-    path: "produccion",
+    path: 'produccion',
     component: SeguimientoDeFoliosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: "Seguimiento de folios",
+      titulo: 'Seguimiento de folios',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
 
   // reportes
   {
-    path: "reportes/indicadorChecadas",
+    path: 'reportes/indicadorChecadas',
     component: IndicadorDeChecadasComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Indicador de checas personal ( Beta )",
+      titulo: 'Indicador de checas personal ( Beta )',
       roles: [ROLES.ADMIN_ROLE]
     }
   },
   // Redirige al dashboard cuando no se ha puesto nada en la url.
   {
-    path: "",
-    redirectTo: "/dashboard",
-    pathMatch: "full"
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
   },
 
-
   {
-    path: "account-settings",
+    path: 'account-settings',
     component: AccountsSettingsComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: "Informaciónde la cuenta",
+      titulo: 'Informaciónde la cuenta',
       roles: [ROLES.SUPER_ADMIN]
     }
-  },
-
-  
+  }
 ]
 
 export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes)

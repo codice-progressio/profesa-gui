@@ -75,8 +75,9 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
 import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
 import { DragDropModule } from '@angular/cdk/drag-drop'
 import { FechaPipe } from '../pipes/fecha.pipe'
-import { QRCodeModule } from 'angularx-qrcode';
-import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component';
+import { QRCodeModule } from 'angularx-qrcode'
+import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component'
+import { ProgramacionTransformacionImprimirComponent } from '../pages/programacion/programacion-transformacion/programacion-transformacion-imprimir/programacion-transformacion-imprimir.component'
 @NgModule({
   imports: [
     RouterModule,
@@ -122,7 +123,8 @@ import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transc
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
     RPersonalizadoAlmacenProduccionImprimibleComponent,
     OrdenadorDeColumnasDirective,
-    TiempoTranscurridoComponent
+    TiempoTranscurridoComponent,
+    ProgramacionTransformacionImprimirComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -160,7 +162,8 @@ import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transc
     PipesModule,
     DragDropModule,
     QRCodeModule,
-    TiempoTranscurridoComponent
+    TiempoTranscurridoComponent,
+    ProgramacionTransformacionImprimirComponent
   ]
 })
 export class SharedModule {
@@ -200,8 +203,10 @@ export class SharedModule {
         SortService,
         FolioNewService,
         AlmacenProductoTerminadoService,
-        ImagenPipe, FechaPipe, ModeloCompletoPipe, DecimalPipe
-        
+        ImagenPipe,
+        FechaPipe,
+        ModeloCompletoPipe,
+        DecimalPipe
       ]
     }
   }

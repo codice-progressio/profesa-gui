@@ -165,6 +165,7 @@ import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personali
 import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 import { CommonModule } from '@angular/common'
+import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
 
 @NgModule({
   declarations: [
@@ -330,10 +331,11 @@ import { CommonModule } from '@angular/common'
     ReportePersonalizadoAlmacenProduccionDetalleComponent,
     RPersonalizadoAlmacenProduccionComponent,
     ReportePersonalizadoAlmacenProduccionComponent,
-    ProgramacionTransformacionComponent
+    ProgramacionTransformacionComponent,
+    ProgramacionTransformacionReporteComponent
   ],
   exports: [],
-  imports: [CommonModule ,  SharedModule.forRoot(), PAGES_ROUTES],
+  imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],
   providers: []
   // Para permitir la carga dinamica de componentes.
 })
