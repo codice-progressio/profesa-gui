@@ -20,6 +20,11 @@ import { SharedModule } from "./shared/shared.module"
 import { NgxMaskModule } from "ngx-mask";
 import { HTTP_INTERCEPTORS } from "@angular/common/http"
 import { TokenInterceptor } from "./interceptors/token.interceptor"
+import {
+  ToastrModule,
+  ToastNoAnimation,
+  ToastNoAnimationModule
+} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,12 @@ import { TokenInterceptor } from "./interceptors/token.interceptor"
     BrowserModule,
     APP_ROUTES,
     SharedModule.forRoot(),
+    ToastrModule,
+    ToastNoAnimationModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+    }),
+
   ],
   providers: [
     // Configuraciones de idioma.
