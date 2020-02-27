@@ -1,1 +1,176 @@
-<p>programacion-transformacion-imprimir works!</p>
+<ng-template
+  #contenido
+  let-disponible
+  let-cliente="cliente"
+  let-fechaPedidoProduccion="fechaPedidoProduccion"
+  let-paso="paso"
+  let-numeroDeOrden="numeroDeOrden"
+  let-modeloCompleto="modeloCompleto"
+  let-esBaston="esBaston"
+  let-marcaLaser="marcaLaser"
+  let-observacionesFolio="observacionesFolio"
+  let-observacionesPedido="observacionesPedido"
+  let-observacionesOrden="observacionesOrden"
+>
+  <td class="text-center" title="Este folio pertenece al cliente {{ cliente }}">
+    {{ cliente }}
+  </td>
+  <td
+    class="text-center"
+    title="Este folio entro a produccion el {{
+      fechaPedidoProduccion | fecha: 'LLLL'
+    }}"
+  >
+    {{ fechaPedidoProduccion | fecha: 'DD/MMM' }}
+  </td>
+  <td
+    class="text-center"
+    title="Esta orden esta en el {{ paso }}{{ termino[paso] }} paso"
+  >
+    {{ paso }}
+  </td>
+  <td
+    class="text-center nowrap"
+    title="Esta es la orden numero {{ numeroDeOrden }}"
+  >
+    <a
+      data-toggle="modal"
+      data-target="#ordenDetalle"
+      href="javascript:void(0)"
+    >
+      {{ numeroDeOrden }}
+    </a>
+  </td>
+  <td
+    class="text-center"
+    title="El modelo de esta orden es  {{ modeloCompleto }}"
+  >
+    {{ modeloCompleto }}
+  </td>
+  <td
+    class="text-center"
+    title="Este boton {{ esBaston ? '' : 'no' }} es baston"
+  >
+    <i *ngIf="esBaston" class="fas fa-check-circle    "></i>
+  </td>
+  <td
+    class="text-center"
+    title="{{
+      marcaLaser
+        ? 'La marca laser es ' + marcaLaser
+        : 'Esta orden no lleva marca laser'
+    }}"
+  >
+    {{ marcaLaser }}
+  </td>
+  <td class="text-center" title="Orden disponible para empezar a transormarse">
+    <i *ngIf="disponible" class="fas fa-check    "></i>
+  </td>
+  <td
+    class="text-center"
+    title="
+  Folio:  {{ observacionesFolio }}
+  Pedido: {{ observacionesPedido }}
+  Orden: {{ observacionesOrden }}
+
+  "
+  >
+    {{ observacionesFolio }} - {{ observacionesPedido }} -
+    {{ observacionesOrden }}
+  </td>
+</ng-template>
+
+<table class="table table-hover table-bordered">
+  <ng-container *ngFor="let maquina of maquinas">
+    <thead>
+      <tr class="border-0 bg-light">
+        <td colspan="100" class="border-0">
+          <div class="w-100 d-flex justify-content-between align-items-center">
+            <h3 class="font-bold">{{ maquina.clave }}</h3>
+
+            <span>Por trabajar: {{ maquina.pila.length }}</span>
+
+            <span style="width: 400px;" class="text-right">
+              <!-- Lo ponemos asi para que conserve el tamano -->
+              <span *ngIf="maquina.trabajando">
+                Tiempo trabajando:
+                <app-tiempo-transcurrido
+                  [inicio]="maquina.trabajo?.inicio"
+                ></app-tiempo-transcurrido>
+              </span>
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th title="Este folio pertenece al cliente :">CLIENTE</th>
+        <th title="Este folio entro a produccion el">F.PED</th>
+        <th title="Esta orden esta en el paso">P</th>
+        <th title="Esta es la orden numero ">#ORD</th>
+        <th title="El modelo de esta orden es">SKU</th>
+        <th title="Esta cargado en baston">B</th>
+        <th title="La marca laser de este boton es">ML</th>
+        <th title="Orden disponible para empezar a transormarse">DIS</th>
+        <th title="">OBSERVACIONES</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngIf="maquina.trabajando" class="bg-light-info">
+        <ng-container *ngTemplateOutlet="contenido; context: maquina.trabajo">
+        </ng-container>
+      </tr>
+      <tr *ngFor="let orden of maquina.pila">
+        <ng-container
+          *ngTemplateOutlet="contenido; context: orden"
+        ></ng-container>
+      </tr>
+
+      <tr *ngIf="maquina.pila.length === 0">
+        <td colspan="100">
+          No hay ordenes en la pila de trabajo de esta maquina
+        </td>
+      </tr>
+      <tr *ngIf="!maquina.trabajando">
+        <td colspan="100" class="bg-red">
+          Maquina sin trabajo
+        </td>
+      </tr>
+    </tbody>
+  </ng-container>
+</table>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="ordenDetalle"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h1>aqui debe ir el detalle de la orden</h1>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

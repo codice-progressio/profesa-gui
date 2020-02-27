@@ -59,9 +59,48 @@ export class ProgramacionTransformacionService {
         catchError(err => this.errFun(err))
       )
   }
+
+  /**
+   *Verifoca si esta orden esta disponible para transformacion.
+   *
+   * @param {string} idOrden El id de la orde
+   * @param {string} idPedido El id del pedido
+   * @param {string} idFolio El id del folio
+   * @param {string} idTransformacion El id del departamento de transformacion
+   * @returns {Observable<boolean>}
+   * @memberof ProgramacionTransformacionService
+   */
+  estaDisponible(
+    idOrden: string,
+    idPedido: string,
+    idFolio: string,
+    idTransformacion: string
+  ): Observable<boolean> {
+    const url = this.base
+      .concat(`estaDisponible`)
+      .concat(`/${idTransformacion}`)
+      .concat(`/${idFolio}`)
+      .concat(`/${idPedido}`)
+      .concat(`/${idOrden}`)
+
+    return this.http.get(url).pipe(
+      map((x: any) => {
+        this.msjService.ok_(x, null, null)
+
+        return x.estaDisponible
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
 }
 
 export interface OrdenParaAsignacion {
+  cliente: string
+  idCliente: string
+  fechaPedidoProduccion: Date
+  esBaston: boolean
+  marcaLaser: string
+  disponible: boolean
   folio: string
   pedido: string
   orden: string
@@ -82,9 +121,11 @@ export interface OrdenParaAsignacion {
   }
   pasos: number
   numerosDeOrden: number[]
-  paso: number,
-  //No siempre aparecen estos
-  inicio: Date,
-  finalizacion:Date,
-
+  paso: number
+  // No siempre aparecen estos
+  inicio: Date
+  finalizacion: Date
+  observacionesOrden: string
+  observacionesPedido: string
+  observacionesFolio: string
 }
