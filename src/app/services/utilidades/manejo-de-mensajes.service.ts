@@ -309,6 +309,6 @@ export class ManejoDeMensajesService {
   toastError(err) {
     const error = this.gestionarError(err)
 
-    this.toast.error(error.text, error.title)
+    this.toast.error(error.text.concat(' ').concat(error.footer), error.title)
   }
 }

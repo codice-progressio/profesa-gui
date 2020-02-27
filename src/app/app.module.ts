@@ -26,6 +26,9 @@ import {
   ToastNoAnimationModule
 } from 'ngx-toastr';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,9 +43,11 @@ import {
     APP_ROUTES,
     SharedModule.forRoot(),
     ToastrModule,
-    ToastNoAnimationModule.forRoot({
-      timeOut: 10000,
-      positionClass: 'toast-bottom-right',
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 20000,
+      positionClass: 'toast-top-right',
+      enableHtml:true
     }),
 
   ],
