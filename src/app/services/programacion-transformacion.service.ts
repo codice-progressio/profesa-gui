@@ -89,7 +89,10 @@ export class ProgramacionTransformacionService {
 
         return x.estaDisponible
       }),
-      catchError(err => this.errFun(err))
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
     )
   }
 }
