@@ -13,7 +13,11 @@
         </div>
 
         <div>
-          <button type="button" class="btn btn-outline-secondary">
+          <button
+            (click)="cargarDatos()"
+            type="button"
+            class="btn btn-outline-secondary"
+          >
             <i *ngIf="cargando" class="fas fa-spinner fa-spin  "></i>
 
             Actualizar
@@ -25,6 +29,15 @@
             {{ ultimaActualizacion | fecha: 'hh:mm:ss' }}</span
           >
         </div>
+        <button
+          (click)="imprimir()"
+          type="button"
+          class="btn btn-outline-secondary"
+        >
+          <i class="fas fa-print    "></i>
+
+          Imprimir
+        </button>
       </div>
     </div>
   </div>

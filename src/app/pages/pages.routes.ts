@@ -144,7 +144,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {
-      titulo: 'Reporte personalizado - Almacen de produccion',
+      titulo: 'Reporte de transformacion',
       roles: [ROLES.REPORTES_TRANSFORMACION]
     }
   },

@@ -54,7 +54,6 @@ export class ProgramacionTransformacionService {
       .post<Maquina>(url, { idMaquina: maquina._id, ordenes: maquina.pila })
       .pipe(
         map((res: any) => {
-          
           this.msjService.toastCorrecto(res.mensaje, maquina.clave)
           return res.ordenes as Maquina
         }),
@@ -86,13 +85,30 @@ export class ProgramacionTransformacionService {
       .concat(`/${idOrden}`)
 
     return this.http.get(url).pipe(
-      map((x:iEstaDisponible) => {
+      map((x: iEstaDisponible) => {
         return x
       }),
       catchError(err => {
         this.msjService.toastError(err)
         return throwError(err)
       })
+    )
+  }
+
+  actualizarUbicacion(idTransformacion: string): Observable<null> {
+    const a = this.preLoaderService.loading(
+      'Actualizando ubicacion de las ordenes en la pila de trabajo'
+    )
+
+    const url = this.base
+      .concat('/actualizarUbicacion/')
+      .concat(idTransformacion)
+    return this.http.put(url, null).pipe(
+      map((resp: any) => {
+        this.msjService.ok_(resp, null, a)
+        return null
+      }),
+      catchError(err => this.errFun(err))
     )
   }
 }
@@ -122,7 +138,7 @@ export interface OrdenParaAsignacion {
     _id: string
     departamento: string
     entrada: Date
-    orden: number,
+    orden: number
     tranformacion: any
   }
   trayectos: {

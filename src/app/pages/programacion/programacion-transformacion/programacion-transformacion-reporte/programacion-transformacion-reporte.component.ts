@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { MaquinaService } from '../../../../services/maquina/maquina.service'
 import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
 import { Maquina } from 'src/app/models/maquina.model'
+import { ImpresionService } from '../../../../services/impresion.service'
+import { ProgramacionTransformacionService } from '../../../../services/programacion-transformacion.service'
 
 @Component({
   selector: 'app-programacion-transformacion-reporte',
@@ -17,7 +19,9 @@ export class ProgramacionTransformacionReporteComponent implements OnInit {
 
   constructor(
     private defaulService: DefaultsService,
-    private maquinaService: MaquinaService
+    private maquinaService: MaquinaService,
+    private impresionService: ImpresionService,
+    private programacionService: ProgramacionTransformacionService
   ) {}
 
   ngOnInit(): void {
@@ -29,12 +33,25 @@ export class ProgramacionTransformacionReporteComponent implements OnInit {
     this.cargando = true
 
     this.defaulService.cargarDefaults().subscribe(def => {
-      this.maquinaService
-        .buscarMaquinasPorDepartamento(def.DEPARTAMENTOS.TRANSFORMACION)
-        .subscribe(maquinas => {
-          this.maquinas = maquinas
-          this.cargando = false
-        }, err=> this.cargando = false)
+      this.programacionService
+        .actualizarUbicacion(def.DEPARTAMENTOS.TRANSFORMACION)
+        .subscribe(() => {
+          this.maquinaService
+            .buscarMaquinasPorDepartamento(def.DEPARTAMENTOS.TRANSFORMACION)
+            .subscribe(
+              maquinas => {
+                this.maquinas = maquinas
+                this.cargando = false
+              },
+              err => (this.cargando = false)
+            )
+        })
     })
+  }
+
+  imprimir() {
+    this.impresionService
+      .programacionTransformacion(this.maquinas, 'Pila de trabajo')
+      .imprimir()
   }
 }

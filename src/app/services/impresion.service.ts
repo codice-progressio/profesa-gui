@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { ReporteFaltantesProductoTerminado } from '../models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
 import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
+import { Maquina } from '../models/maquina.model'
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class ImpresionService {
   reportesProductoTerminadoFaltante: ReporteFaltantesProductoTerminado[] = null
   reportesAlmacenProduccionFaltante: ReporteFaltantesAlmacenProduccion[] = null
   reportesAlmacenPrdouccionPersonalizado: any [] = null
+  reportesProgramacionTransformacion: Maquina [] = null
 
   titulo = 'Reporte sin titulo'
   fecha = new Date()
@@ -28,6 +30,7 @@ export class ImpresionService {
     this.reportesProductoTerminadoFaltante = null
     this.reportesAlmacenProduccionFaltante = null
     this.reportesAlmacenPrdouccionPersonalizado = null
+    this.reportesProgramacionTransformacion =  null
   }
 
   almacenProduccionFaltantes(
@@ -44,6 +47,14 @@ export class ImpresionService {
   ): this {
     this.titulo = nombreReporte + ' Almacen de produccion'
     this.reportesAlmacenPrdouccionPersonalizado = reportes
+    this.operacionDeLimpieza
+    return this
+  }
+  programacionTransformacion(
+    reportes: Maquina[], nombreReporte:string
+  ): this {
+    this.titulo = nombreReporte + ' Control de produccion'
+    this.reportesProgramacionTransformacion = reportes
     this.operacionDeLimpieza
     return this
   }
