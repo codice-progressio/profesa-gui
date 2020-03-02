@@ -6,6 +6,9 @@ import {
 } from '../../../../services/programacion-transformacion.service'
 import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
 import { Orden } from '../../../../models/orden.models'
+import { Observable, forkJoin } from 'rxjs'
+import { Departamento } from '../../../../models/departamento.models'
+import { iEstaDisponible } from '../../../../services/programacion-transformacion.service'
 
 @Component({
   selector: 'app-programacion-transformacion-imprimir',
@@ -14,6 +17,7 @@ import { Orden } from '../../../../models/orden.models'
 })
 export class ProgramacionTransformacionImprimirComponent implements OnInit {
   transformacion: string
+
   @Input() maquinas: Maquina[] = []
 
   termino = {
@@ -27,33 +31,22 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
   constructor(
     public ps: ProgramacionTransformacionService,
     public dfs: DefaultsService
-  ) {
-    dfs.cargarDefaults().subscribe(def => {
-      this.transformacion = def.DEPARTAMENTOS.TRANSFORMACION
-    })
-  }
+  ) {}
 
-  ngOnInit(): void {
-    const interval = setInterval(
-      () => {
-        if (this.maquinas.length > 0 && this.transformacion) {
-          clearInterval(interval)
-          this.ordenesDisponibles(this.maquinas, this.transformacion)
-        }
-      },
+  ngOnInit(): void {}
 
-      10
-    )
-  }
+  ordenesDisponibles(
+    maquinas: Maquina[],
+    idTr: string
+  ): Observable<iEstaDisponible>[] {
+    const subs: Observable<iEstaDisponible>[] = []
 
-  ordenesDisponibles(maquinas: Maquina[], idTr: string) {
-    maquinas
-      .filter(m => m.pila.length > 0)
-      .reduce((a, b) => a.concat(b.pila), new Array<OrdenParaAsignacion>())
-      .forEach(x => {
-        this.ps
-          .estaDisponible(x.orden, x.pedido, x.folio, idTr)
-          .subscribe(a => (x.disponible = a))
+    maquinas.forEach(m =>
+      m.pila.forEach(p => {
+        subs.push(this.ps.estaDisponible(p.orden, p.pedido, p.folio, idTr))
       })
+    )
+
+    return subs
   }
 }

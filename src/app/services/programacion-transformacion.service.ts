@@ -9,6 +9,7 @@ import { DefaultsService } from './configDefualts/defaults.service'
 import { HttpClient } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
 import { Maquina } from '../models/maquina.model'
+import { Departamento } from '../models/departamento.models'
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,8 @@ export class ProgramacionTransformacionService {
       .post<Maquina>(url, { idMaquina: maquina._id, ordenes: maquina.pila })
       .pipe(
         map((res: any) => {
-          this.msjService.correcto(res.mensaje, maquina.clave)
+          
+          this.msjService.toastCorrecto(res.mensaje, maquina.clave)
           return res.ordenes as Maquina
         }),
         catchError(err => this.errFun(err))
@@ -75,19 +77,17 @@ export class ProgramacionTransformacionService {
     idPedido: string,
     idFolio: string,
     idTransformacion: string
-  ): Observable<boolean> {
+  ): Observable<iEstaDisponible> {
     const url = this.base
-      .concat(`estaDisponible`)
+      .concat(`/estaDisponible`)
       .concat(`/${idTransformacion}`)
       .concat(`/${idFolio}`)
       .concat(`/${idPedido}`)
       .concat(`/${idOrden}`)
 
     return this.http.get(url).pipe(
-      map((x: any) => {
-        this.msjService.ok_(x, null, null)
-
-        return x.estaDisponible
+      map((x:iEstaDisponible) => {
+        return x
       }),
       catchError(err => {
         this.msjService.toastError(err)
@@ -95,6 +95,14 @@ export class ProgramacionTransformacionService {
       })
     )
   }
+}
+
+export interface iEstaDisponible {
+  disponible: boolean
+  ubicacion: Departamento
+  folio: string
+  pedido: string
+  orden: string
 }
 
 export interface OrdenParaAsignacion {
@@ -114,7 +122,8 @@ export interface OrdenParaAsignacion {
     _id: string
     departamento: string
     entrada: Date
-    orden: number
+    orden: number,
+    tranformacion: any
   }
   trayectos: {
     recivida: boolean
