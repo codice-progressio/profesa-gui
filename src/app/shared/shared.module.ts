@@ -78,6 +78,11 @@ import { FechaPipe } from '../pipes/fecha.pipe'
 import { QRCodeModule } from 'angularx-qrcode'
 import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component'
 import { ProgramacionTransformacionImprimirComponent } from '../pages/programacion/programacion-transformacion/programacion-transformacion-imprimir/programacion-transformacion-imprimir.component'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  ToastrModule,
+} from 'ngx-toastr';
+
 @NgModule({
   imports: [
     RouterModule,
@@ -90,7 +95,12 @@ import { ProgramacionTransformacionImprimirComponent } from '../pages/programaci
     // Para el httpcliente necesitamos importar este modulo.
     HttpClientModule,
     DragDropModule,
-    QRCodeModule
+    QRCodeModule,
+    ToastrModule.forRoot({
+      timeOut: 20000,
+      positionClass: 'toast-top-right',
+      enableHtml:true
+    }),
   ],
   declarations: [
     HeaderComponent,

@@ -41,14 +41,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     BrowserModule,
     APP_ROUTES,
-    SharedModule.forRoot(),
-    ToastrModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot({
-      timeOut: 20000,
-      positionClass: 'toast-top-right',
-      enableHtml:true
-    }),
+    SharedModule.forRoot(),
+
 
   ],
   providers: [

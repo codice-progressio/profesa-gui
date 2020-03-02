@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import swal from 'sweetalert2'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { ToastrService } from 'ngx-toastr'
+import { ModelosCompletosDetalleComponent } from '../../pages/gestionDeProcesos/modelos-completos/modelos-completos-detalle.component'
 
 interface errorEstructurado {
   type?: string
@@ -309,6 +310,17 @@ export class ManejoDeMensajesService {
   toastError(err) {
     const error = this.gestionarError(err)
 
-    this.toast.error(error.text.concat(' ').concat(error.footer), error.title)
+    this.toast.error(
+      error.text ? error.text.concat(' ').concat(error.footer) : error.text,
+      error.title
+    )
+  }
+
+  toastCorrecto(
+    msj: string,
+    titulo: string = 'Acción realizada',
+    timer: number = 3000
+  ): void {
+    this.toast.success(msj, titulo, { timeOut: timer })
   }
 }
