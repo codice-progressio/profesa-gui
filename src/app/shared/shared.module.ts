@@ -96,6 +96,9 @@ import { OrdenDetalleSeleccionComponent } from '../pages/orden-detalles/orden-de
 import { OrdenDetalleTenidoComponent } from '../pages/orden-detalles/orden-detalle-tenido/orden-detalle-tenido.component'
 import { OrdenDetalleTransformacionComponent } from '../pages/orden-detalles/orden-detalle-transformacion/orden-detalle-transformacion.component'
 import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detalle-avance/orden-detalle-avance.component'
+import { PedidosDetalleComponent } from '../pages/gestionDeFolios/pedidos/pedidos-detalle.component'
+import { FoliosDetalleAbstractoComponent } from '../pages/gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component'
+import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordenes-detalle.component'
 
 @NgModule({
   imports: [
@@ -162,7 +165,10 @@ import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detal
     OrdenDetalleSeleccionComponent,
     OrdenDetalleTenidoComponent,
     OrdenDetalleTransformacionComponent,
-    OrdenDetalleAvanceComponent
+    OrdenDetalleAvanceComponent,
+    PedidosDetalleComponent,
+    FoliosDetalleAbstractoComponent,
+    OrdenesDetalleComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -215,7 +221,10 @@ import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detal
     OrdenDetalleSeleccionComponent,
     OrdenDetalleTenidoComponent,
     OrdenDetalleTransformacionComponent,
-    OrdenDetalleAvanceComponent
+    OrdenDetalleAvanceComponent,
+    PedidosDetalleComponent,
+    FoliosDetalleAbstractoComponent,
+    OrdenesDetalleComponent
   ]
 })
 export class SharedModule {

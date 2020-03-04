@@ -17,6 +17,7 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   ignorarHasta = 0
   @Input() set orden(orden: OrdenParaAsignacion) {
     if (!orden) return
+    this.ordenConsultada = null
     this.folioService
       .detalleOrden(orden.folio, orden.pedido, orden.orden)
       .subscribe(ordenRes => {

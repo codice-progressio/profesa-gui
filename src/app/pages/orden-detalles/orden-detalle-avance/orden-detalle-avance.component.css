@@ -23,12 +23,12 @@
 }
 
 li:hover {
-  width: 400px;
+  width: 300px;
   background-color: #eee;
 }
 
 li:hover .esconde-sobrante {
-  width: 400px;
+  width: 300px;
   background-color: #eee;
   overflow: hidden;
 }
@@ -76,6 +76,7 @@ li:hover .esconde-sobrante {
   padding-top: -1px;
   padding-right: -1px;
   /* text-align: center; */
+  content:'';
   width: 25px;
   height: 25px;
   border-radius: 25px;
@@ -90,13 +91,13 @@ li:hover .esconde-sobrante {
 
 @keyframes desvanecer {
   0% {
-    background-color: #66dc71;
+    background-color: #05700f;
   }
   50% {
-    background-color: #fff;
+    background-color: #66dc71;
   }
   100% {
-    background-color: #66dc71;
+    background-color: #05700f;
   }
 }
 

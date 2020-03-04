@@ -144,7 +144,7 @@ export class FolioNewService extends CRUD<
   }
 
   detallePedido(folio: string, pedido: string): Observable<FolioLinea> {
-    const a = this._preLoaderService.loading('Buscando detalles de orden')
+    const a = this._preLoaderService.loading('Buscando detalles de folio')
     const url = this.base
       .concat('/detalle/pedido')
       .concat(`/${folio}`)
@@ -153,7 +153,8 @@ export class FolioNewService extends CRUD<
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.msjService.ok_(resp, null, a)
-        return resp.orden as FolioLinea
+        console.log(`resp.pedido`,resp.pedido)
+        return new FolioLinea().deserialize(resp.pedido)
       }),
       catchError(err => this.errFun(err))
     )
@@ -165,7 +166,7 @@ export class FolioNewService extends CRUD<
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.msjService.ok_(resp, null, a)
-        return resp.orden as Folio
+        return new Folio().deserialize(resp.folio)
       }),
       catchError(err => this.errFun(err))
     )

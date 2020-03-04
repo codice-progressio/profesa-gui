@@ -68,13 +68,10 @@ import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-c
 import { FoliosDetalleComponent } from './gestionDeFolios/folios/folios-detalle.component'
 import { FoliosComponent } from './gestionDeFolios/folios/folios.component'
 import { PedidosCrearModificarComponent } from './gestionDeFolios/pedidos/pedidos-crear-modificar.component'
-import { PedidosDetalleComponent } from './gestionDeFolios/pedidos/pedidos-detalle.component'
 import { OrdenesCrearModificarComponent } from './gestionDeFolios/ordenes/ordenes-crear-modificar.component'
-import { OrdenesDetalleComponent } from './gestionDeFolios/ordenes/ordenes-detalle.component'
 import { OrdenesComponent } from './gestionDeFolios/ordenes/ordenes.component'
 import { GrupoDeFiltroComponent } from './gestionDeFolios/folios/grupo-de-filtro.component'
 import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component'
-import { FoliosDetalleAbstractoComponent } from './gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component'
 import { FoliosCrearModificarAbstractoComponent } from './gestionDeFolios/folios/abstractos/folios-crear-modificar-abstracto.component'
 import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component'
 import { FoliosSeguimientoComponent } from './gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component'
@@ -236,13 +233,10 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
     FoliosDetalleComponent,
     FoliosComponent,
     PedidosCrearModificarComponent,
-    PedidosDetalleComponent,
     OrdenesCrearModificarComponent,
-    OrdenesDetalleComponent,
     OrdenesComponent,
     GrupoDeFiltroComponent,
     RevisionDeFoliosComponent,
-    FoliosDetalleAbstractoComponent,
     FoliosCrearModificarAbstractoComponent,
     RevisionDeOrdenesAbstractoComponent,
     FoliosSeguimientoComponent,

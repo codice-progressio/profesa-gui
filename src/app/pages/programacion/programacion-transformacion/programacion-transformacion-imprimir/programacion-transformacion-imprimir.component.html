@@ -1,19 +1,3 @@
-<div class="row">
-    <div class="col-12">
-        <div class="card shadow">
-            <div class="card-body">
-
-              <app-orden-detalle-avance
-              [orden]='ordenDetalle'
-              > </app-orden-detalle-avance>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 <ng-container *ngIf="maquinas">
   <table
     *ngFor="let maquina of maquinas"
@@ -125,7 +109,7 @@
         >
           <a
             data-toggle="modal"
-            data-target="#ordenDetalle"
+            data-target="#detalleOrden"
             href="javascript:void(0)"
             (click)="ordenDetalle = maquina.trabajo"
           >
@@ -155,7 +139,7 @@
           class="text-right"
           title="{{
             maquina.trabajo.marcaLaser
-              ? 'La marca laser es ' + marcaLaser
+              ? 'La marca laser es ' + maquina.trabajo.marcaLaser
               : 'Esta orden no lleva marca laser'
           }}"
         >
@@ -167,7 +151,8 @@
           [title]="
             maquina.trabajo.disponible
               ? ' Orden disponible para empezar a transformarse'
-              : 'Esta orden se encuentra en ' + ubicacionActual?.departamento
+              : 'Esta orden se encuentra en ' +
+                maquina.trabajo.ubicacionActual?.departamento
           "
         >
           <i class="fas fa-cog fa-2x fa-spin text-warning  "></i>
@@ -221,8 +206,8 @@
           title="Esta es la orden numero {{ pila.numeroDeOrden }}"
         >
           <a
-            data-toggle="modaXXXl"
-            data-target="#ordenDetalle"
+            data-toggle="modal"
+            data-target="#detalleOrden"
             href="javascript:void(0)"
             (click)="ordenDetalle = pila"
           >
@@ -245,7 +230,7 @@
           class="text-right"
           title="{{
             pila.marcaLaser
-              ? 'La marca laser es ' + marcaLaser
+              ? 'La marca laser es ' + pila.marcaLaser
               : 'Esta orden no lleva marca laser'
           }}"
         >
@@ -257,7 +242,8 @@
           [title]="
             pila.disponible
               ? ' Orden disponible para empezar a transformarse'
-              : 'Esta orden se encuentra en ' + ubicacionActual?.departamento
+              : 'Esta orden se encuentra en ' +
+                pila.ubicacionActual?.departamento
           "
         >
           <ng-container *ngIf="!pila.disponible">
@@ -308,7 +294,7 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="ordenDetalle"
+  id="detalleOrden"
   tabindex="-1"
   role="dialog"
   aria-labelledby="modelTitleId"
@@ -317,17 +303,147 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
+        <div
+          class="modal-title d-flex justify-content-between align-items-center w-100"
         >
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <h5>
+            Avance de orden:
+            <span class="font-weight-bolder"
+              >{{ ordenDetalle?.numeroDeOrden }}
+            </span>
+          </h5>
+
+          <a
+            class="btn btn-outline-primary btn-sm"
+            href="javascript:void(0)"
+            role="button"
+            data-toggle="modal"
+            data-target="#detalleFolio"
+            (click)="cargarFolio(ordenDetalle.folio)"
+          >
+            <i class="fas fa-eye    "></i>
+            Folio {{ (ordenDetalle?.numeroDeOrden.split('-'))[0] }}</a
+          >
+          <a
+            class="btn btn-outline-primary btn-sm"
+            href="javascript:void(0)"
+            role="button"
+            data-toggle="modal"
+            data-target="#detalleDePedido"
+
+            (click)="cargarPedido(ordenDetalle.folio, ordenDetalle.pedido)"
+          >
+            <i class="fas fa-eye    "></i>
+            Pedido {{ ordenDetalle?.numeroDeOrden.split('-').slice(0,2).join('-') }}</a
+          >
+
+          <h5>
+            SKU:
+            <span class="font-weight-bolder"
+              >{{ ordenDetalle?.modeloCompleto }}
+            </span>
+          </h5>
+        </div>
       </div>
       <div class="modal-body">
-        <app-orden-detalle-avance> </app-orden-detalle-avance>
+        <app-orden-detalle-avance [orden]="ordenDetalle">
+        </app-orden-detalle-avance>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="detalleFolio"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div
+          *ngIf="!folioDetalle"
+          class="d-flex justify-content-center align-items-center fadeIn animated w-100"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin"></i>
+          </h1>
+        </div>
+
+        <app-folios-detalle-abstracto
+          *ngIf="folioDetalle"
+          [folio]="folioDetalle"
+          (pedido)="pedidoDetalle = $event"
+        ></app-folios-detalle-abstracto>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="detalleDePedido"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div
+          *ngIf="!pedidoDetalle"
+          class="d-flex justify-content-center align-items-center fadeIn animated w-100"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin"></i>
+          </h1>
+        </div>
+        <app-pedidos-detalle
+          *ngIf="pedidoDetalle"
+          [pedido]="pedidoDetalle"
+          (orden)="ordenDetalleGeneral = $event"
+          
+        >
+        </app-pedidos-detalle>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="detalleDeLaOrden"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div
+          *ngIf="!ordenDetalleGeneral"
+          class="d-flex justify-content-center align-items-center fadeIn animated w-100"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin"></i>
+          </h1>
+        </div>
+
+
+        <app-ordenes-detalle
+        *ngIf="ordenDetalleGeneral"
+        [orden]='ordenDetalleGeneral'
+        [linea]='pedidoDetalle'
+        [folio]='folioDetalle'
+
+        ></app-ordenes-detalle>
+        
       </div>
     </div>
   </div>
