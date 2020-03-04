@@ -19,14 +19,14 @@ export class ProcesoService extends CRUD<Proceso, undefined, undefined> {
 
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -53,7 +53,7 @@ export class ProcesoService extends CRUD<Proceso, undefined, undefined> {
         let np = new Proceso().deserialize(pp)
         p.push(np)
       })
-      this._msjService.ok_(resp, null, a)
+      this.msjService.ok_(resp, null, a)
   
       return p
   }

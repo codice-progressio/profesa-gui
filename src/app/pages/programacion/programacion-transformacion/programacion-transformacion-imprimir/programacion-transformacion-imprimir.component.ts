@@ -5,10 +5,6 @@ import {
   OrdenParaAsignacion
 } from '../../../../services/programacion-transformacion.service'
 import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
-import { Orden } from '../../../../models/orden.models'
-import { Observable, forkJoin } from 'rxjs'
-import { Departamento } from '../../../../models/departamento.models'
-import { iEstaDisponible } from '../../../../services/programacion-transformacion.service'
 
 @Component({
   selector: 'app-programacion-transformacion-imprimir',
@@ -20,6 +16,7 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
 
   @Input() maquinas: Maquina[] = []
 
+  ordenDetalle: OrdenParaAsignacion = null
   termino = {
     1: 'er',
     2: 'do',

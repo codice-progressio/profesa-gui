@@ -23,14 +23,14 @@ export class MaquinaService extends CRUD <Maquina> {
   
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
     public _usuarioService: UsuarioService
   ) { 
 
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/maquina`;
     this.nombreDeDatos.plural = 'maquinas';
     this.nombreDeDatos.singular = 'maquina';
@@ -42,7 +42,7 @@ export class MaquinaService extends CRUD <Maquina> {
     const url = URL_SERVICIOS + `/maquina/departamento/${id}`;
     return this.http.get( url ).pipe(
       map( ( resp: any ) => {
-        this._msjService.ok_(resp, null, a)
+        this.msjService.ok_(resp, null, a)
         let ordenadoPorNombre =  resp.maquinas as Maquina []
 
         ordenadoPorNombre = ordenadoPorNombre.sort((a, b)=>{
@@ -51,7 +51,7 @@ export class MaquinaService extends CRUD <Maquina> {
         return ordenadoPorNombre;
       }), 
       catchError( err => {
-        this._msjService.err(err);
+        this.msjService.err(err);
         return throwError(err);
       })
     );

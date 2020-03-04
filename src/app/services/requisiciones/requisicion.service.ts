@@ -23,7 +23,7 @@ export class RequisicionService extends CRUD<
 > {
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
@@ -31,7 +31,7 @@ export class RequisicionService extends CRUD<
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -63,7 +63,7 @@ export class RequisicionService extends CRUD<
 
     return this.http.put(url, requisicion).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a)
+        this.msjService.ok_(resp, null, a)
 
         return new Requisicion().deserialize(resp.requisicion)
       }),

@@ -25,14 +25,14 @@ export class ArticuloService extends CRUD<
 > {
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -62,7 +62,7 @@ export class ArticuloService extends CRUD<
   }
 
   respuesta = (resp: any) => {
-    this._msjService.ok_(resp, null, this.aSE)
+    this.msjService.ok_(resp, null, this.aSE)
     let articulo: Articulo = new Articulo().deserialize(resp.articulo)
     return articulo
   }

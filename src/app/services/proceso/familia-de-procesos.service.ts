@@ -24,12 +24,12 @@ export class FamiliaDeProcesosService extends CRUD<FamiliaDeProcesos, undefined,
   // totalFamilias: any;
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/familiaDeProcesos`;
     this.nombreDeDatos.plural = 'familiasDeProcesos';
     this.nombreDeDatos.singular = 'familiaDeProcesos';

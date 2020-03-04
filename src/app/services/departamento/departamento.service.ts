@@ -17,13 +17,13 @@ export class DepartamentoService  extends CRUD<Departamento, undefined, undefine
 
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
     public _usuarioService: UsuarioService
   ) {
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/departamento`;
     this.nombreDeDatos.plural = 'departamentos';
     this.nombreDeDatos.singular = 'departamento';

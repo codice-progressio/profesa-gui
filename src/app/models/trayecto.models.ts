@@ -34,7 +34,8 @@ export class Trayecto implements Deserializable {
     // public anterior?: Departamento,
     public entrada?: Date,
     public salida?: Date,
-    public recivida: boolean = false
+    public recivida: boolean = false,
+    public recepcion?:Date
   ) {}
 
   deserialize(input: this): this {

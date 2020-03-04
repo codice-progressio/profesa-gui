@@ -23,14 +23,14 @@ export class ModeloCompletoService extends CRUD<
   // total: number;
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -42,7 +42,7 @@ export class ModeloCompletoService extends CRUD<
   }
 
   err = (err) => {
-    this._msjService.err(err)
+    this.msjService.err(err)
     return throwError(err)
   }
 
@@ -65,7 +65,7 @@ export class ModeloCompletoService extends CRUD<
     )
     return this.http.get(`${this.base}/transito/${id}`).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a)
+        this.msjService.ok_(resp, null, a)
         return <number>resp.total
       }),
       catchError(this.err)
@@ -85,7 +85,7 @@ export class ModeloCompletoService extends CRUD<
 
     return this.http.post(`${this.base}/stock`, m).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a)
+        this.msjService.ok_(resp, null, a)
 
         let mod = new ModeloCompleto()
         mod._servicio = this

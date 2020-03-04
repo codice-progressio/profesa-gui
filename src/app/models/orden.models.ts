@@ -4,6 +4,8 @@ import { Pulido } from "./pulido.models"
 import { Seleccion } from "./seleccion.models"
 import { Trayecto } from "./trayecto.models"
 import { Deserializable } from "./deserealizable.model"
+import { FamiliaDeProcesos } from './familiaDeProcesos.model'
+import { ModeloCompleto } from "./modeloCompleto.modelo"
 
 export class Orden implements Deserializable {
   constructor(
@@ -25,7 +27,8 @@ export class Orden implements Deserializable {
     public nivelDeUrgencia: string = "PRODUCCIÓN",
     public fechaFolio?: Date,
     // Esta es solo para facilitarnos la vida.
-    public editando: boolean = false
+    public editando: boolean = false,
+    public modeloCompleto?: ModeloCompleto
   ) {}
 
   deserialize(input: this): this {

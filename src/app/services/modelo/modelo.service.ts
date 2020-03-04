@@ -18,12 +18,12 @@ export class ModeloService extends CRUD<Modelo, undefined, undefined> {
   // base: string = URL_SERVICIOS + `/modelo`
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/modelo`;
     this.nombreDeDatos.plural = 'modelos';
     this.nombreDeDatos.singular = 'modelo';

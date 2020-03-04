@@ -8,7 +8,9 @@ export class TiempoTranscurridoInformalPipe implements PipeTransform {
 
   transform(value: Date, ...args: unknown[]): string {
     moment.locale('es')
-    return moment(value).fromNow()
+    const final = args.pop()
+
+    return !final ? moment(value).fromNow() : moment(value).from(final)
   }
 
 }

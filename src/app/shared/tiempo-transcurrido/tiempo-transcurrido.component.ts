@@ -8,13 +8,15 @@ import * as moment from 'moment'
 })
 export class TiempoTranscurridoComponent implements OnInit, OnDestroy {
   private _inicio
-  @Input() set inicio(f: Date) {
+  @Input() set inicio(f: Date | Date[]) {
+    
+   
     this._inicio = f
 
     this.calculo(f)
   }
 
-  get inicio(): Date {
+  get inicio(): Date|Date[] {
     return this._inicio
   }
 
@@ -36,15 +38,15 @@ export class TiempoTranscurridoComponent implements OnInit, OnDestroy {
     }
   }
 
-  private calculo(value: Date) {
+  private calculo(value: Date | Date []) {
     /**
      * La fecha actual o fecha de termino
      */
-    let fechaActual = moment()
+    let fechaActual = moment(Array.isArray(value)?value[1]: new Date())
     /**
      * La fecha de la cual se quiere calcular el tiempo transcurrido.
      */
-    let fechaDeInicio = moment(value)
+    let fechaDeInicio = moment(Array.isArray(value)?value[0]: value)
 
     // ESTE SE TIENE QUE CALCULAR COMO <1 POR QUE AL PARECER CUENTA LOS DIAS DESDE 0
     let leyendaDias =

@@ -22,13 +22,13 @@ export class ClienteService extends CRUD<Cliente, undefined, undefined>{
   
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
     public _usuarioService: UsuarioService
   ) {
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/cliente`;
     this.nombreDeDatos.plural = 'clientes';
     this.nombreDeDatos.singular = 'cliente';
@@ -45,13 +45,13 @@ export class ClienteService extends CRUD<Cliente, undefined, undefined>{
     return this.http.put(url, laser).pipe(
       map( (resp: any) => {
 
-        this._msjService.ok_(resp,null, a);
+        this.msjService.ok_(resp,null, a);
         return resp.cliente;
       }),
       catchError (err => {
         console.log('Capturando error.');
         
-        this._msjService.err(err);
+        this.msjService.err(err);
         return throwError(err);
       })
     );
@@ -66,11 +66,11 @@ export class ClienteService extends CRUD<Cliente, undefined, undefined>{
     const url =`${URL_SERVICIOS}/cliente/solicitarAutorizacion/modeloCompleto/${cliente._id}`;
     return this.http.put(url, datos).pipe(
       map((resp:any) => {
-        this._msjService.ok_(resp,null, a);
+        this.msjService.ok_(resp,null, a);
         return resp.clientes;
       }),
       catchError( err => {
-        this._msjService.err(err);
+        this.msjService.err(err);
         return throwError (err );
       })
     );

@@ -24,14 +24,14 @@ export class AlmacenProductoTerminadoService extends CRUD<
   // total: number;
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -52,7 +52,7 @@ export class AlmacenProductoTerminadoService extends CRUD<
   }
 
   errFun(err) {
-    this._msjService.err(err)
+    this.msjService.err(err)
     return throwError(err)
   }
   consolidar(id: string): Observable<ModeloCompleto> {
@@ -60,7 +60,7 @@ export class AlmacenProductoTerminadoService extends CRUD<
     const url = URL_BASE('almacenDeProductoTerminado').concat(`/consolidar/${id}`)
     return this.http.get<ModeloCompleto>(url).pipe(
       map((res: any) => {
-        this._msjService.ok_(res, null, a)
+        this.msjService.ok_(res, null, a)
         return new ModeloCompleto().deserialize(res.modeloCompleto)
       }),
       catchError(err => this.errFun(err))

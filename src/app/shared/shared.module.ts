@@ -82,6 +82,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ToastrModule,
 } from 'ngx-toastr';
+import { OrdenDetalleAlmacenDeBotonComponent } from '../pages/orden-detalles/orden-detalle-almacen-de-boton/orden-detalle-almacen-de-boton.component'
+import { OrdenDetalleBarnizadoComponent } from '../pages/orden-detalles/orden-detalle-barnizado/orden-detalle-barnizado.component'
+import { OrdenDetalleBuratoComponent } from '../pages/orden-detalles/orden-detalle-burato/orden-detalle-burato.component'
+import { OrdenDetalleEmpaqueComponent } from '../pages/orden-detalles/orden-detalle-empaque/orden-detalle-empaque.component'
+import { OrdenDetalleLaserComponent } from '../pages/orden-detalles/orden-detalle-laser/orden-detalle-laser.component'
+import { OrdenDetalleMaterialesComponent } from '../pages/orden-detalles/orden-detalle-materiales/orden-detalle-materiales.component'
+import { OrdenDetalleMetalizadoComponent } from '../pages/orden-detalles/orden-detalle-metalizado/orden-detalle-metalizado.component'
+import { OrdenDetallePastillaComponent } from '../pages/orden-detalles/orden-detalle-pastilla/orden-detalle-pastilla.component'
+import { OrdenDetalleProductoTerminadoComponent } from '../pages/orden-detalles/orden-detalle-producto-terminado/orden-detalle-producto-terminado.component'
+import { OrdenDetallePulidoComponent } from '../pages/orden-detalles/orden-detalle-pulido/orden-detalle-pulido.component'
+import { OrdenDetalleSeleccionComponent } from '../pages/orden-detalles/orden-detalle-seleccion/orden-detalle-seleccion.component'
+import { OrdenDetalleTenidoComponent } from '../pages/orden-detalles/orden-detalle-tenido/orden-detalle-tenido.component'
+import { OrdenDetalleTransformacionComponent } from '../pages/orden-detalles/orden-detalle-transformacion/orden-detalle-transformacion.component'
+import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detalle-avance/orden-detalle-avance.component'
 
 @NgModule({
   imports: [
@@ -134,7 +148,21 @@ import {
     RPersonalizadoAlmacenProduccionImprimibleComponent,
     OrdenadorDeColumnasDirective,
     TiempoTranscurridoComponent,
-    ProgramacionTransformacionImprimirComponent
+    ProgramacionTransformacionImprimirComponent,
+    OrdenDetalleAlmacenDeBotonComponent,
+    OrdenDetalleBarnizadoComponent,
+    OrdenDetalleBuratoComponent,
+    OrdenDetalleEmpaqueComponent,
+    OrdenDetalleLaserComponent,
+    OrdenDetalleMaterialesComponent,
+    OrdenDetalleMetalizadoComponent,
+    OrdenDetallePastillaComponent,
+    OrdenDetalleProductoTerminadoComponent,
+    OrdenDetallePulidoComponent,
+    OrdenDetalleSeleccionComponent,
+    OrdenDetalleTenidoComponent,
+    OrdenDetalleTransformacionComponent,
+    OrdenDetalleAvanceComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -173,7 +201,21 @@ import {
     DragDropModule,
     QRCodeModule,
     TiempoTranscurridoComponent,
-    ProgramacionTransformacionImprimirComponent
+    ProgramacionTransformacionImprimirComponent,
+    OrdenDetalleAlmacenDeBotonComponent,
+    OrdenDetalleBarnizadoComponent,
+    OrdenDetalleBuratoComponent,
+    OrdenDetalleEmpaqueComponent,
+    OrdenDetalleLaserComponent,
+    OrdenDetalleMaterialesComponent,
+    OrdenDetalleMetalizadoComponent,
+    OrdenDetallePastillaComponent,
+    OrdenDetalleProductoTerminadoComponent,
+    OrdenDetallePulidoComponent,
+    OrdenDetalleSeleccionComponent,
+    OrdenDetalleTenidoComponent,
+    OrdenDetalleTransformacionComponent,
+    OrdenDetalleAvanceComponent
   ]
 })
 export class SharedModule {

@@ -16,12 +16,12 @@ import { CRUD } from '../crud';
 export class TamanoService  extends CRUD<Tamano, undefined, undefined> {
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
-    super(http, _msjService, _utiliadesService, _preLoaderService, _paginadorService);
+    super(http, msjService, _utiliadesService, _preLoaderService, _paginadorService);
     this.base =  URL_SERVICIOS + `/tamano`;
     this.nombreDeDatos.plural = 'tamanos';
     this.nombreDeDatos.singular = 'tamano';
