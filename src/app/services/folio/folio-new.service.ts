@@ -153,7 +153,6 @@ export class FolioNewService extends CRUD<
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.msjService.ok_(resp, null, a)
-        console.log(`resp.pedido`,resp.pedido)
         return new FolioLinea().deserialize(resp.pedido)
       }),
       catchError(err => this.errFun(err))

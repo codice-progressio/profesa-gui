@@ -105,6 +105,19 @@
                   </app-progress-bar>
                 </td>
               </tr>
+
+              <tr>
+                <td colspan="6">
+                  <app-orden-detalle-avance
+                    [datos]="{
+                      folio: folio,
+                      pedido: pedido._id,
+                      orden: orden._id
+                    }"
+                  >
+                  </app-orden-detalle-avance>
+                </td>
+              </tr>
             </ng-container>
           </tbody>
         </table>

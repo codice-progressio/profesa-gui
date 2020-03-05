@@ -8,16 +8,16 @@ export class FechaDiferenciaPipe implements PipeTransform {
   transform(inicio: Date, final: Date = new Date(), corto = true): unknown {
     const leyendas = {
       segundos: {
-        singular: corto ? 's' : 'segundo',
-        plural: corto ? 's' : 'segundos'
+        singular: corto ? 's' : ' segundo',
+        plural: corto ? 's' : ' segundos'
       },
       minutos: {
-        singular: corto ? 'm' : 'minuto',
-        plural: corto ? 'm' : 'minutos'
+        singular: corto ? 'm' : ' minuto',
+        plural: corto ? 'm' : ' minutos'
       },
       horas: {
-        singular: corto ? 'h' : 'hora',
-        plural: corto ? 'h' : 'horas'
+        singular: corto ? 'h' : ' hora',
+        plural: corto ? 'h' : ' horas'
       },
       dias: { singular: 'dia', plural: 'dias' },
       meses: { singular: 'mes', plural: 'meses' },

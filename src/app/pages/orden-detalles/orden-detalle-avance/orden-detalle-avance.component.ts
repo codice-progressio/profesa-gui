@@ -13,15 +13,18 @@ import { Trayecto } from '../../../models/trayecto.models'
 export class OrdenDetalleAvanceComponent implements OnInit {
   _orden: OrdenParaAsignacion
   ordenConsultada: Orden
+  trayectoSeleccionado: Trayecto = null
+  procesoSeleccionado: string = null
 
   ignorarHasta = 0
   @Input() set orden(orden: OrdenParaAsignacion) {
+    this.trayectoSeleccionado =  null
     if (!orden) return
     this.ordenConsultada = null
     this.folioService
       .detalleOrden(orden.folio, orden.pedido, orden.orden)
       .subscribe(ordenRes => {
-        this.ignorarHasta = ordenRes.trayectoRecorrido.length + 1 //ubicacion actual
+        this.ignorarHasta = ordenRes.trayectoRecorrido.length  +1//ubicacion actual
         this.ordenConsultada = ordenRes
         this._orden = orden
       })
@@ -30,6 +33,23 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   get orden(): OrdenParaAsignacion {
     return this._orden
   }
+  @Input() set datos({folio, pedido, orden}) {
+    this.trayectoSeleccionado =  null
+    if (!orden) return
+    this.ordenConsultada = null
+    this.folioService
+      .detalleOrden(folio, pedido, orden)
+      .subscribe(ordenRes => {
+        this.ignorarHasta = ordenRes.trayectoRecorrido.length  +1//ubicacion actual
+        this.ordenConsultada = ordenRes
+      })
+  }
+
+  get datos(){
+    return null
+  }
+
+
 
   limpiarTrayectosYaTerminados(orden: Orden): Orden {
     for (let i = 0; i < orden.trayectoRecorrido.length; i++) {
@@ -42,4 +62,13 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   constructor(private folioService: FolioNewService) {}
 
   ngOnInit(): void {}
+
+  cargarDetalle(tra: Trayecto, proceso: string) {
+    if (this.trayectoSeleccionado === tra) {
+      this.trayectoSeleccionado = null
+    } else {
+      this.trayectoSeleccionado = tra
+      this.procesoSeleccionado = proceso
+    }
+  }
 }

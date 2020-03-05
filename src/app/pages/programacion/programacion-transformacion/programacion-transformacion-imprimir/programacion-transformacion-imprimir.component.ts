@@ -57,7 +57,6 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
   cargarPedido(folio: string, pedido: string) {
     this.folioDetalle = null
     this.pedidoDetalle = null
-    console.log(`folio`,folio)
     forkJoin([
       this.folioService.detalleFolio(folio),
       this.folioService.detallePedido(folio, pedido)

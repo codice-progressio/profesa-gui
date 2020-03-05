@@ -31,7 +31,7 @@
 
           {{
             (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre | titlecase
+              .proceso.nombre
           }}
         </span>
         <span
@@ -49,7 +49,16 @@
         </span>
       </div>
 
-      <a href="javascript:void(0)">
+      <a
+        (click)="
+          cargarDetalle(
+            dep.value,
+            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
+              .proceso.nombre
+          )
+        "
+        href="javascript:void(0)"
+      >
         <div class="status">
           <h4
             class="esconde-sobrante"
@@ -86,7 +95,7 @@
    Ubicacion actual
   =====================================
   -->
-  <li class="li">
+  <li  *ngIf=" ordenConsultada.ubicacionActual" class="li">
     <div class="timestamp">
       <span class="author esconde-sobrante"
         >{{ ordenConsultada?.ubicacionActual?.departamento.nombre | titlecase }}
@@ -95,7 +104,7 @@
         {{
           (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[
             ordenConsultada?.ubicacionActual?.orden
-          ].proceso.nombre | titlecase
+          ].proceso.nombre
         }}
       </span>
       <span
@@ -114,7 +123,19 @@
       </span>
     </div>
 
-    <a href="javascript:void(0)">
+    <a
+
+   
+      (click)="
+        cargarDetalle(
+          ordenConsultada.ubicacionActual,
+          (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[
+            ordenConsultada?.ubicacionActual?.orden
+          ].proceso.nombre
+        )
+      "
+      href="javascript:void(0)"
+    >
       <div class="status working">
         <h4
           class="esconde-sobrante"
@@ -150,21 +171,18 @@
   =====================================
   -->
   <ng-container
-    *ngFor="
-      let dep of ordenConsultada?.trayectoNormal | keyvalue;
-      let i = index
-    "
+    *ngFor="let dep of ordenConsultada?.trayectoNormal; let i = index"
   >
     <li *ngIf="i >= ignorarHasta" class="li">
       <div class="timestamp">
         <span class="author esconde-sobrante">
-          {{ dep.value.departamento.nombre | titlecase }}
+          {{ dep.departamento.nombre | titlecase }}
 
           <hr />
 
           {{
             (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre | titlecase
+              .proceso.nombre
           }}
         </span>
         <span title="Sin procesar en este departamento" class="date">
@@ -172,7 +190,16 @@
         </span>
       </div>
 
-      <a href="javascript:void(0)">
+      <a
+        (click)="
+          cargarDetalle(
+            dep,
+            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
+              .proceso.nombre
+          )
+        "
+        href="javascript:void(0)"
+      >
         <div class="status">
           <h4 class="esconde-sobrante">
             <i class="fas fa-time    "></i>
@@ -192,3 +219,109 @@
   =====================================
   -->
 </ul>
+
+<div *ngIf="trayectoSeleccionado" class="row animated fadeIn">
+  <div class="col-12">
+    <h3>
+      <span class="font-weight-bolder">Departamento:</span>
+      {{ trayectoSeleccionado.departamento.nombre }}
+    </h3>
+    <h3>
+      <span class="font-weight-bolder">Proceso:</span>
+      {{ procesoSeleccionado }}
+    </h3>
+    <h5>
+      <span class="font-weight-bolder">Recibida:</span>
+      <i
+        *ngIf="trayectoSeleccionado.recivida"
+        class="fas fa-check  text-success  "
+      ></i>
+
+      <span *ngIf="!trayectoSeleccionado.recivida">
+        Por recibir:
+        <i class="fas fa-exclamation  tada animated infinite  "></i>
+      </span>
+    </h5>
+    <h5>
+      <span class="font-weight-bolder">Hora de recepcion:</span>
+      {{
+        (trayectoSeleccionado.entrada
+          ? trayectoSeleccionado.entrada
+          : trayectoSeleccionado.recepcion
+        ) | fecha: 'LLL'
+      }}
+    </h5>
+    <h5>
+      <span class="font-weight-bolder">Hora de salida:</span>
+      {{ trayectoSeleccionado.salida | fecha: 'LLL' }}
+    </h5>
+    <h5>
+      <span class="font-weight-bolder">Tiempo de proceso:</span>
+      {{
+        (trayectoSeleccionado.entrada
+          ? trayectoSeleccionado.entrada
+          : trayectoSeleccionado.recepcion
+        ) | fechaDiferencia: trayectoSeleccionado.salida:false
+      }}
+    </h5>
+    <h5>
+      <span class="font-weight-bolder">Piezas solicitadas:</span>
+      {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
+    </h5>
+
+    <app-orden-detalle-almacen-de-boton
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.almacenDeBoton"
+    ></app-orden-detalle-almacen-de-boton>
+    <app-orden-detalle-barnizado
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.barnizado"
+    ></app-orden-detalle-barnizado>
+    <app-orden-detalle-burato
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.burato"
+    ></app-orden-detalle-burato>
+    <app-orden-detalle-empaque
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.empaque"
+    ></app-orden-detalle-empaque>
+    <app-orden-detalle-laser
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.laser"
+    ></app-orden-detalle-laser>
+    <app-orden-detalle-materiales
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.materiales"
+    ></app-orden-detalle-materiales>
+    <app-orden-detalle-metalizado
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.metalizado"
+    ></app-orden-detalle-metalizado>
+    <app-orden-detalle-pastilla
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.pastilla"
+    ></app-orden-detalle-pastilla>
+    <app-orden-detalle-producto-terminado
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.productoTerminado"
+    ></app-orden-detalle-producto-terminado>
+    <app-orden-detalle-pulido
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.pulido"
+    ></app-orden-detalle-pulido>
+    <app-orden-detalle-seleccion
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.seleccion"
+    ></app-orden-detalle-seleccion>
+    <app-orden-detalle-tenido
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.tenido"
+    ></app-orden-detalle-tenido>
+    <app-orden-detalle-transformacion
+      [trayecto]="trayectoSeleccionado"
+      *ngIf="trayectoSeleccionado?.transformacion"
+    ></app-orden-detalle-transformacion>
+  </div>
+
+  <pre>{{ trayectoSeleccionado | json }}</pre>
+</div>

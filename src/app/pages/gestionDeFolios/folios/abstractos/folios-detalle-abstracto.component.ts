@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { Folio } from 'src/app/models/folio.models'
 import { ColoresTenidos } from 'src/app/models/ColoresTenidos'
 import { FolioLinea } from 'src/app/models/folioLinea.models'
+import { Orden } from 'src/app/models/orden.models'
 
 @Component({
   selector: 'app-folios-detalle-abstracto',
@@ -15,12 +16,23 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    * @type {Folio}
    * @memberof FoliosDetalleAbstractoComponent
    */
-  @Input() folio: Folio = null
+  _folio: Folio
+  @Input() set folio(f: Folio) {
+    this.pedidoParaDetalle = null
+    this.ordenParaDetalle = null
+    this._folio = f
+  }
+
+  get folio(): Folio {
+    return this._folio
+  }
 
   Date = Date
 
   @Output() pedido = new EventEmitter<FolioLinea>()
-
+  @Output() idFolio = new EventEmitter<string>()
+  pedidoParaDetalle: FolioLinea = null
+  ordenParaDetalle: Orden = null
   constructor() {}
 
   ngOnInit() {}
@@ -38,7 +50,7 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    */
   sumarTenidos(coloresTenidos: ColoresTenidos[]): number {
     let total = 0
-    coloresTenidos.map((color) => {
+    coloresTenidos.map(color => {
       total += color.cantidad
     })
     return total
@@ -52,5 +64,7 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    */
   mostrarDetalleDePedido(pedido: FolioLinea) {
     this.pedido.emit(pedido)
+    this.pedidoParaDetalle = pedido
+    this.idFolio.emit(this.folio._id)
   }
 }

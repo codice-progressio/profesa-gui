@@ -29,6 +29,8 @@ export class FoliosComponent
   folioParaDetalle: Folio
   ordenParaDetalle: Orden
 
+  idFolio:string = null
+
   /**
    *Almacena la opcion para mostrar o no los folios termiandos. Por defecto no los muestra.
    *

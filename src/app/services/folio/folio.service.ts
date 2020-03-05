@@ -326,7 +326,7 @@ export class FolioService {
 
   // Recive una nueva órden.
   recivirUnaOrden(id: string, depto: string, callbackError: any = null) {
-    const a: number = this._preLoaderService.loading('Reciviendo la orden.')
+    const a: number = this._preLoaderService.loading('Recibiendo la orden.')
 
     const url = `${URL_SERVICIOS}/orden`
     return this.http.put(url, { _id: id, departamento: depto }).pipe(
