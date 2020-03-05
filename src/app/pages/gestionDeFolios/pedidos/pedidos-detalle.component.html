@@ -1,78 +1,94 @@
 <div id="print" *ngIf="pedido">
-    <h3>
-        <b>DETALLE DE PEDIDO</b>
-        <small class="ml-3">
+  <h3>
+    <b>DETALLE DE PEDIDO</b>
+    <small class="ml-3">
       <app-nivel-urgencia [nivel]="pedido.nivelDeUrgencia"></app-nivel-urgencia>
     </small>
-        <span class="pull-right">#{{ pedido.pedido }}</span>
-    </h3>
-    <hr />
-    <div class="row">
-        <div class="col-md-12">
-            <div class="pull-right w-50 b-l text-right">
-                <h1>
-                    <strong>{{ pedido.modeloCompleto | modeloCompleto }}</strong>
-                </h1>
-                <h6>
-                    Piezas solicitadas <strong>{{ pedido.cantidad | number }}</strong>
-                </h6>
-                <h6>
-                    Piezas producidas al dia de hoy
-                    <strong>{{ pedido.cantidadProducida | number }}</strong>
-                </h6>
-            </div>
+    <span class="pull-right">#{{ pedido.pedido }}</span>
+  </h3>
+  <hr />
+  <div class="row">
+    <div class="col-md-12">
+      <div class="pull-right w-50 b-l text-right">
+        <h1>
+          <strong>{{ pedido.modeloCompleto | modeloCompleto }}</strong>
+        </h1>
+        <h6>
+          Piezas solicitadas <strong>{{ pedido.cantidad | number }}</strong>
+        </h6>
+        <h6>
+          Piezas producidas al dia de hoy
+          <strong>{{ pedido.cantidadProducida | number }}</strong>
+        </h6>
+      </div>
 
-            <h6 title="Fecha estimada de entrega">Fecha estimada de entrega:</h6>
-            <span title="Fecha sin definir">
+      <h6 title="Fecha estimada de entrega">Fecha estimada de entrega:</h6>
+      <span title="Fecha sin definir">
         <i class="fas fa-clock-o" aria-hidden="true"></i> Sin definir
       </span>
-        </div>
+    </div>
 
-        <div class="col-12">
-            <h3>Observaciones:</h3>
-            <p>{{ pedido.observacionesVendedor }}</p>
-        </div>
-        <div *ngIf="pedido.observaciones" class="col-12">
-            <hr />
-            <h3>Observaciones de produccion:</h3>
-            <p>{{ pedido.observaciones }}</p>
-        </div>
-        <div class="col-md-12">
-            <hr />
-            <div class="table-responsive m-t-40" style="clear: both;">
-                <table class="table table-hover table-bordered" *ngIf="pedido.ordenesGeneradas">
-                    <thead class="100">
-                        <tr>
-                            <th></th>
-                            <th title="Numero de orden">
-                                ORD
-                            </th>
+    <div class="col-12">
+      <h3>Observaciones:</h3>
+      <p>{{ pedido.observacionesVendedor }}</p>
+    </div>
+    <div *ngIf="pedido.observaciones" class="col-12">
+      <hr />
+      <h3>Observaciones de produccion:</h3>
+      <p>{{ pedido.observaciones }}</p>
+    </div>
+    <div class="col-md-12">
+      <hr />
+      <div class="table-responsive m-t-40" style="clear: both;">
+        <table
+          class="table table-hover table-bordered"
+          *ngIf="pedido.ordenesGeneradas"
+        >
+          <thead class="100">
+            <tr>
+              <th></th>
+              <th title="Numero de orden">
+                ORD
+              </th>
 
-                            <th title="Ubicacion actual">
-                                UA
-                            </th>
-                            <th title="Piezas teoricas">
-                                PT
-                            </th>
-                            <th title="Piezas producidas">
-                                PP
-                            </th>
+              <th title="Ubicacion actual">
+                UA
+              </th>
+              <th title="Piezas teoricas">
+                PT
+              </th>
+              <th title="Piezas producidas">
+                PP
+              </th>
 
-                            <th title="El porcentaje de avance de produccion" class="text-right">
-                                % PRO
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let orden of pedido.ordenes">
-                            <tr>
-                                <td class="fit">
-                                    <a *ngIf="pedido.ordenesGeneradas" (click)="mostrarDetalleDeLaOrden(orden)" title="Ver detalle rapido de la orden." data-toggle="modal" data-target="#detalleDeLaOrden" name="" id="" class="btn btn-primary text-white btn-sm mr-2" role="button">
-                                        <i class="fas fa-eye    "></i
+              <th
+                title="El porcentaje de avance de produccion"
+                class="text-right"
+              >
+                % PRO
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let orden of pedido.ordenes">
+              <tr>
+                <td class="fit">
+                  <a
+                    *ngIf="pedido.ordenesGeneradas"
+                    (click)="mostrarDetalleDeLaOrden(orden)"
+                    title="Ver detalle rapido de la orden."
+                    data-toggle="modal"
+                    data-target="#detalleDeLaOrden"
+                    name=""
+                    id=""
+                    class="btn btn-primary text-white btn-sm mr-2"
+                    role="button"
+                  >
+                    <i class="fas fa-eye    "></i
                   ></a>
                 </td>
-                <td class='no-wrap' >{{ orden.orden }}</td>
-                <td >
+                <td class="no-wrap">{{ orden.orden }}</td>
+                <td>
                   {{ orden?.ubicacionActual?.departamento?.nombre }}
                 </td>
 
@@ -109,10 +125,10 @@
                 <a id="print" class="btn btn-default btn-outline"> <span><i class="fas fa-print"></i> Imprimir</span>
                                     </a>
             </div> -->
-        </div>
     </div>
+  </div>
 </div>
 
 <div *ngIf="!pedido">
-    <h1>No has definido un pedido para ver su detalle</h1>
+  <h1>No has definido un pedido para ver su detalle</h1>
 </div>
