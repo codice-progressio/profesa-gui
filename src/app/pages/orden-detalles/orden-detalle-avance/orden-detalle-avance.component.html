@@ -8,8 +8,9 @@
 </div>
 
 <ul
+  [id]="ordenConsultada._id"
   *ngIf="ordenConsultada"
-  class="timeline animated fadeIn deley-1"
+  class="timeline"
   id="timeline"
 >
   <!-- 
@@ -23,7 +24,7 @@
       let i = index
     "
   >
-    <li class="li complete">
+    <li [id]="'listo' + i" class="li complete">
       <div class="timestamp">
         <span class="author esconde-sobrante">
           {{ dep.value.departamento.nombre | titlecase }}
@@ -95,7 +96,7 @@
    Ubicacion actual
   =====================================
   -->
-  <li  *ngIf=" ordenConsultada.ubicacionActual" class="li">
+  <li *ngIf="ordenConsultada.ubicacionActual" class="li">
     <div class="timestamp">
       <span class="author esconde-sobrante"
         >{{ ordenConsultada?.ubicacionActual?.departamento.nombre | titlecase }}
@@ -124,8 +125,6 @@
     </div>
 
     <a
-
-   
       (click)="
         cargarDetalle(
           ordenConsultada.ubicacionActual,
@@ -173,7 +172,7 @@
   <ng-container
     *ngFor="let dep of ordenConsultada?.trayectoNormal; let i = index"
   >
-    <li *ngIf="i >= ignorarHasta" class="li">
+    <li [id]="'pendiente' + i" *ngIf="i >= ignorarHasta" class="li">
       <div class="timestamp">
         <span class="author esconde-sobrante">
           {{ dep.departamento.nombre | titlecase }}
@@ -220,18 +219,27 @@
   -->
 </ul>
 
+<div class="row">
+  <div class="col-12"><hr /></div>
+</div>
+
 <div *ngIf="trayectoSeleccionado" class="row animated fadeIn">
-  <div class="col-12">
+  <div class="col-12 col-sm-6">
     <h3>
       <span class="font-weight-bolder">Departamento:</span>
       {{ trayectoSeleccionado.departamento.nombre }}
     </h3>
+  </div>
+  <div class="col-12 col-sm-6">
     <h3>
       <span class="font-weight-bolder">Proceso:</span>
       {{ procesoSeleccionado }}
     </h3>
+  </div>
+  <div class="col-12 col-sm-6">
     <h5>
-      <span class="font-weight-bolder">Recibida:</span>
+      <span class="font-weight-bolder">Estatus:</span>
+      Recibida
       <i
         *ngIf="trayectoSeleccionado.recivida"
         class="fas fa-check  text-success  "
@@ -242,6 +250,8 @@
         <i class="fas fa-exclamation  tada animated infinite  "></i>
       </span>
     </h5>
+  </div>
+  <div class="col-12 col-sm-6">
     <h5>
       <span class="font-weight-bolder">Hora de recepcion:</span>
       {{
@@ -251,10 +261,14 @@
         ) | fecha: 'LLL'
       }}
     </h5>
+  </div>
+  <div class="col-12 col-sm-6">
     <h5>
       <span class="font-weight-bolder">Hora de salida:</span>
       {{ trayectoSeleccionado.salida | fecha: 'LLL' }}
     </h5>
+  </div>
+  <div class="col-12 col-sm-6">
     <h5>
       <span class="font-weight-bolder">Tiempo de proceso:</span>
       {{
@@ -264,11 +278,16 @@
         ) | fechaDiferencia: trayectoSeleccionado.salida:false
       }}
     </h5>
+  </div>
+  <div class="col-12 col-sm-6">
     <h5>
       <span class="font-weight-bolder">Piezas solicitadas:</span>
       {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
     </h5>
+  </div>
 
+  <div class="col-12">
+    <hr *ngIf="trayectoSeleccionado" />
     <app-orden-detalle-almacen-de-boton
       [trayecto]="trayectoSeleccionado"
       *ngIf="trayectoSeleccionado?.almacenDeBoton"
@@ -322,6 +341,4 @@
       *ngIf="trayectoSeleccionado?.transformacion"
     ></app-orden-detalle-transformacion>
   </div>
-
-  <pre>{{ trayectoSeleccionado | json }}</pre>
 </div>

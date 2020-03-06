@@ -53,16 +53,4 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
       }
     )
   }
-
-  cargarPedido(folio: string, pedido: string) {
-    this.folioDetalle = null
-    this.pedidoDetalle = null
-    forkJoin([
-      this.folioService.detalleFolio(folio),
-      this.folioService.detallePedido(folio, pedido)
-    ]).subscribe(datos => {
-      this.folioDetalle = datos[0]
-      this.pedidoDetalle = datos[1]
-    })
-  }
 }

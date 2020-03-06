@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Trayecto } from 'src/app/models/trayecto.models'
 
 @Component({
   selector: 'app-orden-detalle-seleccion',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdenDetalleSeleccionComponent implements OnInit {
 
+  @Input() trayecto : Trayecto = null
   constructor() { }
 
   ngOnInit(): void {

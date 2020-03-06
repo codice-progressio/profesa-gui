@@ -17,7 +17,6 @@ export class PedidosDetalleComponent implements OnInit {
   @Input() pedido: FolioLinea = null
   _folio
   @Input() set  folio(f:string){
-    console.log(`f`,f)
     this._folio = f
   }
 

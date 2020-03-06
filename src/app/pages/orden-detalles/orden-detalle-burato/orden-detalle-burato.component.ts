@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core'
+import { Trayecto } from '../../../models/trayecto.models'
 
 @Component({
   selector: 'app-orden-detalle-burato',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./orden-detalle-burato.component.css']
 })
 export class OrdenDetalleBuratoComponent implements OnInit {
+  @Input() trayecto: Trayecto = null
+  constructor() {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  calcularTotal(_10: number, total: number): number {
+    return (total * 1000) / (_10 / 10)
   }
-
 }

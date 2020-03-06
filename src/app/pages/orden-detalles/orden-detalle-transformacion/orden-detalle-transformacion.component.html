@@ -8,11 +8,23 @@
   </thead>
   <tbody>
     <tr>
-      <td>{{ trayecto.transformacion.espesorBoton | number: '0.2' }}</td>
-      <td>{{ trayecto.transformacion.bl | number: '0.0-0' }}</td>
+      <td>{{ trayecto.transformacion.espesorBoton | number: '#.2'  }}</td>
+      <td>{{ trayecto.transformacion.bl | number: '#.0-0' }}</td>
       <td>
-        {{ trayecto.transformacion.cantidadDeBoton | number:'0.0-0'}}
+        {{ trayecto.transformacion.cantidadDeBoton | number: '#.0-0'    }}
       </td>
     </tr>
   </tbody>
 </table>
+
+<h3 *ngIf="trayecto.transformacion.trabajando">
+  Esta orden se esta trabajando:
+  <i class="fas fa-cog fa-spin text-warning    "></i>
+</h3>
+
+<h3>
+  Tiempo trabajando:
+  <app-tiempo-transcurrido
+    [inicio]="trayecto.transformacion.maquinaActual.trabajo.inicio"
+  ></app-tiempo-transcurrido>
+</h3>
