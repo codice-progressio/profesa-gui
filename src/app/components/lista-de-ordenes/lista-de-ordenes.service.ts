@@ -1,4 +1,4 @@
-import { Injectable, Input } from '@angular/core'
+import { Injectable, Input, OnDestroy } from '@angular/core'
 import { Orden } from '../../models/orden.models'
 import { PreLoaderService } from '../pre-loader/pre-loader.service'
 import { DEPARTAMENTOS } from '../../config/departamentos'
@@ -18,7 +18,7 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 @Injectable({
   providedIn: 'root'
 })
-export class ListaDeOrdenesService {
+export class ListaDeOrdenesService implements OnDestroy {
   // depto: string;
   /**
    * Las ordenes ordenadas por prioridad.
@@ -65,6 +65,10 @@ export class ListaDeOrdenesService {
     public _defaultService: DefaultsService,
     public _msjService: ManejoDeMensajesService
   ) {}
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervaloDeRefrescoDeOrdenes)
+  }
 
   cargarDefaults(): Promise<DefaultModelData> {
     return new Promise((resolve, reject) => {
@@ -327,7 +331,7 @@ export class ListaDeOrdenesService {
    * @type {*}
    * @memberof ListaDeOrdenesService
    */
-  cbDeRefrescoDeOrden: ()=>void
+  cbDeRefrescoDeOrden: () => void
 
   // }
   /**
@@ -345,17 +349,17 @@ export class ListaDeOrdenesService {
     const a: number = this._preLoaderService.loading(
       `Cargando ordenes: ${nombreDepto}`
     )
-    //Almacena el cb con los datos que necesitamos 
+    //Almacena el cb con los datos que necesitamos
     // para el boton de refresco y no tener que hacer un
     //desmain agregando el boton.
     this.cbDeRefrescoDeOrden = () => {
       this.ultimaActualizacion = new Date()
       this.cargarOrdenes(idDepto, this.opciones, a)
     }
-    
+
     //La primera ejecucion de gratis.
     this.cbDeRefrescoDeOrden()
-    
+
     this.intervaloDeRefrescoDeOrdenes = setInterval(
       () => this.cbDeRefrescoDeOrden(),
       this.tiempoDeRefrescoDeOrdenes
