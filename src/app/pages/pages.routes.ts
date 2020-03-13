@@ -58,6 +58,7 @@ import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/repo
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
+import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/procesos-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -276,7 +277,25 @@ const pagesRoutes: Routes = [
     component: ProcesosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Gestión de procesos',
+      titulo: 'Procesos',
+      roles: [ROLES.INGENIERIA_PROCESOS]
+    }
+  },
+  {
+    path: 'proceso/crear',
+    component: ProcesosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Proceso',
+      roles: [ROLES.INGENIERIA_PROCESOS]
+    }
+  },
+  {
+    path: 'proceso/modificar/:id',
+    component: ProcesosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Proceso',
       roles: [ROLES.INGENIERIA_PROCESOS]
     }
   },
