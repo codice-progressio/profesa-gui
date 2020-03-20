@@ -68,7 +68,7 @@ export class ProcesosCrearModificarComponent implements OnInit {
 
         if (id) {
           this.cargando['id'] = 'Cargando departamento para modificacion'
-          this.procesoService.buscarPorId(id).subscribe(
+          this.procesoService.findById(id).subscribe(
             proceso => {
               this.proceso = proceso
               this.crearFormulario(proceso)
@@ -103,10 +103,9 @@ export class ProcesosCrearModificarComponent implements OnInit {
 
     const ids = this.maquinasSeleccionadas.map(x => x._id)
     this.maquinas = this.maquinas.filter(x => !ids.includes(x._id))
-
     this.formulario = this.fb.group({
       nombre: [proceso.nombre, [Validators.required, Validators.minLength]],
-      departamento: [proceso.departamento, [Validators.required]],
+      departamento: [proceso.departamento?._id, [Validators.required]],
       observaciones: [proceso.observaciones, []],
       maquinas: this.fb.array(proceso.maquinas.map(x => new FormControl(x))),
       requiereProduccion: [proceso.requiereProduccion, []]
@@ -124,6 +123,8 @@ export class ProcesosCrearModificarComponent implements OnInit {
     }
 
     this.cargando['submit'] = 'Guardando....'
+
+    const fin = () => delete this.cargando['submit']
     const cbGuardado = () => {
       if (!this.proceso._id) {
         this.limpiarFiltro()
@@ -133,14 +134,14 @@ export class ProcesosCrearModificarComponent implements OnInit {
         this.location.back()
       }
 
-      delete this.cargando['submit']
+      fin()
     }
 
     if (!this.proceso._id) {
-      this.procesoService.guardar(model).subscribe(cbGuardado)
+      this.procesoService.save(model).subscribe(cbGuardado, fin)
     } else {
       model._id = this.proceso._id
-      this.procesoService.modificar(model).subscribe(cbGuardado)
+      this.procesoService.update(model).subscribe(cbGuardado, fin)
     }
   }
 

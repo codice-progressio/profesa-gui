@@ -36,7 +36,7 @@
                     formControlName="nombre"
                   />
                   <small id="helpId" class="form-text text-muted"
-                    >Nombre del departamento</small
+                    >Nombre del proceso</small
                   >
                   <app-validacion-inputs
                     [campo]="f('nombre')"
@@ -65,7 +65,7 @@
                     formControlName="departamento"
                     class="form-control"
                   >
-                    <option *ngFor="let dep of departamentos" [value]="dep">{{
+                    <option *ngFor="let dep of departamentos" [ngValue]="dep._id">{{
                       dep.nombre
                     }}</option>
                   </select>

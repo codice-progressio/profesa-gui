@@ -101,7 +101,7 @@ export class ProcesosComponent implements OnInit {
 
   eliminar(id: string) {
     this.cargando['eliminar'] = 'Eliminando el elemento'
-    this.procesoService.eliminar(id).subscribe(
+    this.procesoService.delete(id).subscribe(
       Dato => {
         delete this.cargando['eliminar']
         this.cargar()
