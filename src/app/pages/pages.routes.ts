@@ -2,17 +2,13 @@ import { RouterModule, Routes } from '@angular/router'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
 import { ProfileComponent } from './profile/profile.component'
-import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component'
 import { UsuariosComponent } from './usuarios/usuarios.component'
 import { BusquedaComponent } from './busqueda/busqueda.component'
-import { RegistroDeLineasComponent } from './registro-de-folios/registro-de-lineas.component'
-import { RevisionDeOrdenesComponent } from './generador-de-ordenes/revision-de-ordenes.component'
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
 import { MaterialesComponent } from './departamentos/materiales/materiales.component'
 import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
 import { PulidoComponent } from './departamentos/pulido/pulido.component'
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
-import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component'
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component'
@@ -59,6 +55,8 @@ import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personali
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
 import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/procesos-crear-modificar.component'
+import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component'
+import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -236,6 +234,15 @@ const pagesRoutes: Routes = [
     }
   },
   {
+    path: 'folios/revision/:id',
+    component: RevisionDeOrdenesAbstractoComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Generar ordenes para folio',
+      roles: [ROLES.CONTROL_DE_PRODUCCION_REVISION_DE_FOLIOS]
+    }
+  },
+  {
     path: 'folios/seguimiento',
     component: FoliosSeguimientoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
@@ -395,6 +402,18 @@ const pagesRoutes: Routes = [
     component: PruebaParaDetallesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: { titulo: 'Mis folios.', roles: [ROLES.VENTAS_MIS_FOLIOS] }
+  },
+  {
+    path: 'ventas/misFolios/crear',
+    component: FoliosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: { titulo: 'Crear folio', roles: [ROLES.VENTAS_MIS_FOLIOS] }
+  },
+  {
+    path: 'ventas/misFolios/editar/:id',
+    component: FoliosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: { titulo: 'Crear folio', roles: [ROLES.VENTAS_MIS_FOLIOS] }
   },
   {
     path: 'ventas/stock',
@@ -698,44 +717,6 @@ const pagesRoutes: Routes = [
   },
 
   // Esta sección es para el trabajo
-
-  {
-    path: 'folios',
-    component: RegistroDeFoliosComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de Folios',
-      roles: [ROLES.ADMIN_ROLE]
-    }
-  },
-
-  {
-    path: 'folio/:id',
-    component: RegistroDeLineasComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registrar pedidos',
-      roles: [ROLES.ADMIN_ROLE]
-    }
-  },
-  {
-    path: 'ordenes/:idFolio',
-    component: RevisionDeOrdenesComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Revisión de órdenes',
-      roles: [ROLES.ADMIN_ROLE]
-    }
-  },
-  {
-    path: 'ordenes/imprecion/:idFolio',
-    component: VistaParaImprecionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Impreción de órdenes',
-      roles: [ROLES.ADMIN_ROLE]
-    }
-  },
 
   {
     path: 'produccion',

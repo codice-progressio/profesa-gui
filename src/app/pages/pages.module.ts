@@ -8,15 +8,11 @@ import { ProfileComponent } from './profile/profile.component'
 import { UsuariosComponent } from './usuarios/usuarios.component'
 
 // Sistema
-import { RegistroDeFoliosComponent } from './registro-de-folios/registro-de-folios.component'
-import { RegistroDeLineasComponent } from './registro-de-folios/registro-de-lineas.component'
-import { RevisionDeOrdenesComponent } from './generador-de-ordenes/revision-de-ordenes.component'
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
 import { MaterialesComponent } from './departamentos/materiales/materiales.component'
 import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
 import { PulidoComponent } from './departamentos/pulido/pulido.component'
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
-import { VistaParaImprecionComponent } from './generador-de-ordenes/vista-para-imprecion.component'
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
 import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component'
@@ -173,15 +169,11 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
     ProfileComponent,
     UsuariosComponent,
     // sistema
-    RegistroDeFoliosComponent,
-    RegistroDeLineasComponent,
-    RevisionDeOrdenesComponent,
     SeguimientoDeFoliosComponent,
     MaterialesComponent,
     TransformacionComponent,
     PulidoComponent,
     SeleccionComponent,
-    VistaParaImprecionComponent,
     PastillaComponent,
     EmpaqueComponent,
     GestionDepartamentoComponent,
