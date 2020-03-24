@@ -8,6 +8,16 @@ import {
   AfterViewInit
 } from '@angular/core'
 
+/**
+ *Esta directiva se encarga de organizar las columnas de una tabla. 
+ Para inicializar el proceso hay que agregar [appOrdenadorDeColumnas]="arregloDeObjetos" en el `tr` del `thead`. 
+
+ Despues en cada `th` de la cabe agregamos `data-ordendar="nombreDelCampo"` para que se active el ordenamiento.
+ *
+ * @export
+ * @class OrdenadorDeColumnasDirective
+ * @implements {AfterViewInit}
+ */
 @Directive({
   selector: '[appOrdenadorDeColumnas]'
 })
