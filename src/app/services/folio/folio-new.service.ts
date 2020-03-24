@@ -10,20 +10,18 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { UsuarioService } from '../usuario/usuario.service'
 import { Usuario } from 'src/app/models/usuario.model'
 import { FiltrosFolio } from '../utilidades/filtrosParaConsultas/FiltrosFolio'
-import { Observable, throwError } from 'rxjs'
+import { Observable, throwError, pipe } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
 import { Orden } from 'src/app/models/orden.models'
 import { URL_BASE } from '../../config/config'
 import { FolioLinea } from '../../models/folioLinea.models'
+import { Paginacion } from '../../utils/paginacion.util'
 
 @Injectable({
   providedIn: 'root'
 })
-export class FolioNewService extends CRUD<
-  Folio,
-  FolioNewService,
-  FiltrosFolio<FolioNewService>
-> {
+export class FolioNewService {
+  base = URL_BASE('folios')
   constructor(
     public http: HttpClient,
     public msjService: ManejoDeMensajesService,
@@ -32,18 +30,7 @@ export class FolioNewService extends CRUD<
     public _paginadorService: PaginadorService,
     public _usuarioService: UsuarioService
   ) {
-    super(
-      http,
-      msjService,
-      _utiliadesService,
-      _preLoaderService,
-      _paginadorService
-    )
-
     this.base = URL_SERVICIOS + `/folios`
-    this.nombreDeDatos.plural = 'folios'
-    this.nombreDeDatos.singular = 'folio'
-    this.urlBusqueda = '/buscar'
   }
 
   errFun(err) {
@@ -51,55 +38,73 @@ export class FolioNewService extends CRUD<
     return throwError(err)
   }
 
-  /**
-   *Carga los elementos filtrados bajo los parametros de filtros.
-   *
-   * @param {boolean} [foliosTerminados=false] Bandera que define si se cargan los folios terminados.
-   * @param {{[string:string]:string}} filtros El objeto que contenga la relacion parametro:valor como filtros aplicables.
-   *
-   * @returns {*}
-   * @memberof FolioNewService
-   */
-  todo(): Observable<Folio[]> {
-    return this.getAll(
-      undefined,
-      undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
-      Folio
+  find(
+    paginacion: Paginacion,
+    filtros: string = null
+  ): Observable<PedidosConsulta[]> {
+    const url = this.base
+      .concat('/filtrar')
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get<PedidosConsulta[]>(url).pipe(
+      map(
+        (resp: any) => {
+          console.log(resp.total)
+          return resp.pedidos as PedidosConsulta[]
+        },
+        catchError(err => this.errFun(err))
+      )
     )
   }
 
-  /**
-   *Entrega a produccion el folio que coincida con el id
-   que se le pase como paramentro. Esto dispara el proceso de produccion o 
-   hace lo inverso. Esto sirve para cuando control de produccion se da cuenta
-   de algun error en el folio y es necesario devolverselo al vendedor.
-   *
-   * @param {string} _id El id del folio
-   * @param {boolean} [entregarAProduccion=true] La bandera que se
-   * @returns {Observable<Folio>}
-   * @memberof FolioNewService
-   */
-  iniciarProduccion(
-    _id: string,
-    entregarAProduccion = true
-  ): Observable<Folio> {
-    let a = this._preLoaderService.loading(
-      'Estableciendo paramentros de produccion de folio.'
-    )
-
-    return this.http
-      .post(`${this.base}/enviarAProduccion`, { _id, entregarAProduccion })
-      .pipe(
-        map((resp: any) => {
-          this.msjService.ok_(resp, null, a)
-          return resp.folio
-        }),
-        catchError(err => {
-          this.msjService.err(err)
-          return throwError(err)
-        })
+  delete(id: string): Observable<Folio> {
+    const url = this.base.concat(`/${id}`)
+    return this.http.delete<Folio>(url).pipe(
+      map(
+        (resp: any) => {
+          this.msjService.toastCorrecto(resp.mensaje)
+          return resp.folio as Folio
+        },
+        catchError(err => this.errFun(err))
       )
+    )
+  }
+
+  save(folio: Folio): Observable<Folio> {
+    return this.http.post<Folio>(this.base, folio).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.folio as Folio
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findById(id: string): Observable<Folio> {
+    const url = this.base.concat(`/buscar/id/${id}`)
+    return this.http.get<Folio>(url).pipe(
+      map((resp: any) => {
+        return resp.folio as Folio
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  update(folio: Folio): Observable<Folio> {
+    const url = this.base
+
+    return this.http.put<Folio>(url, folio).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.folio as Folio
+      }),
+      catchError(err => this.errFun(err))
+    )
   }
 
   ordenesImpresas(id: string) {
@@ -176,4 +181,132 @@ export class FolioNewService extends CRUD<
   //  END Estas son las versiones ligeras de los detalles.
   // =====================================
   // -->
+
+  // <!--
+  // =====================================
+  //  Folios para revision
+  // =====================================
+  // -->
+
+  obtenerFoliosParaRevision(): Observable<FolioEnRevision[]> {
+    const url = this.base.concat('/reporte/paraRevision')
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        return resp.folios as FolioEnRevision[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  // <!--
+  // =====================================
+  //  END Folios para revision
+  // =====================================
+  // -->
+
+  // <!--
+  // =====================================
+  //  Folios pendientes de entregar a produccion
+  // =====================================
+  // -->
+
+  foliosPendientesDeEntregarAProduccion(
+    idVendedor: string
+  ): Observable<FoliosPendientesDeEntregarAProduccion[]> {
+    const url = this.base.concat('/porEntregarAProduccion/' + idVendedor)
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        return resp.folios as FoliosPendientesDeEntregarAProduccion[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  // <!--
+  // =====================================
+  //  END Folios pendientes de entregar a produccion
+  // =====================================
+  // -->
+
+  // <!--
+  // =====================================
+  //  Inicio o retorno de folio
+  // =====================================
+  // -->
+
+  private mapInicioYRetorno = (res: any) => {
+    this.msjService.toastCorrecto(res?.mensaje)
+    return null
+  }
+
+  revision_retornarAlVendedor(id: string): Observable<null> {
+    const url = this.base.concat('/retornarAlVendedor').concat(`/${id}`)
+    return this.http.get(url).pipe(
+      map(this.mapInicioYRetorno),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  revision_iniciarProduccion(id: string): Observable<null> {
+    const url = this.base.concat('/iniciarProduccion').concat(`/${id}`)
+    return this.http.get(url).pipe(
+      map(this.mapInicioYRetorno),
+      catchError(err => this.errFun(err))
+    )
+  }
+}
+// <!--
+// =====================================
+//  END Inicio o retorno de folio
+// =====================================
+// -->
+
+export interface FolioEnRevision {
+  folio: number
+  idFolio: string
+  cliente: string
+  idCliente: string
+  vendedor: string
+  idVendedor: string
+  fechaDeEntregaAProduccion: string
+  totalDePiezas: string
+}
+
+export interface PedidosConsulta {
+  folio: number
+  idFolio: string
+  cliente: string
+  idCliente: string
+  vendedor: string
+  idVendedor: string
+  fechaDeEntregaAProduccion: string
+  fechaTerminadoFolio: string
+  fechaTerminadoPedido: string
+  cantidadProducidaFolio: number
+  cantidadProducidaPedido: number
+
+  pedido: string
+  idPedido: string
+  sku: string
+  idSKU: string
+  porcentajeAvanceFolio: number
+  porcentajeAvancePedido: number
+
+  laserCliente: string
+
+  cantidadSolicitadaPedido: number
+}
+
+export interface FoliosPendientesDeEntregarAProduccion {
+  /**
+   *Obtiene el id del folio
+   *
+   * @type {string}
+   * @memberof FoliosPendientesEntregarAProduccion
+   */
+  _id: string
+  folio: string
+  cliente: string
+  fechaDeCreacion: string
+  idCliente: string
 }
