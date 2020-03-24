@@ -47,28 +47,28 @@ export class Folio implements Deserializable {
     return this
   }
 
-  /**
-   *Construye las ordenes para todos los pedidos. Esta funcion 
-   no guarda estos cambios, si no que los hace de manera temporal 
-   antes de realizar el cambio. Solo hace la construccion en el GUI
-   *
-   * @memberof Folio
-   */
-  popularOrdenesDeTodosLosPedidos(idLaser: string) {
-    this.folioLineas.forEach((ped) => {
-      ped.popularOrdenes()
-      // Defininomos en true las ordenes generadas para el
-      // al backend genera las ordenes al lanzar el pre save.
-      ped.ordenesGeneradas = true
+  // /**
+  //  *Construye las ordenes para todos los pedidos. Esta funcion 
+  //  no guarda estos cambios, si no que los hace de manera temporal 
+  //  antes de realizar el cambio. Solo hace la construccion en el GUI
+  //  *
+  //  * @memberof Folio
+  //  */
+  // popularOrdenesDeTodosLosPedidos(idLaser: string) {
+  //   this.folioLineas.forEach((ped) => {
+  //     ped.popularOrdenes()
+  //     // Defininomos en true las ordenes generadas para el
+  //     // al backend genera las ordenes al lanzar el pre save.
+  //     ped.ordenesGeneradas = true
 
-      // Damos la opcion de revisar laser dentro del folio
-      if (idLaser) {
-        ped.requiereRevisionExtraordinaria = ped.revisarSiRequiereRevisionExtraordinaria(
-          idLaser
-        )
-      }
-    })
-  }
+  //     // Damos la opcion de revisar laser dentro del folio
+  //     if (idLaser) {
+  //       ped.requiereRevisionExtraordinaria = ped.revisarSiRequiereRevisionExtraordinaria(
+  //         idLaser
+  //       )
+  //     }
+  //   })
+  // }
 
   limpiarParaOrdenesGeneradas() {
     this.folioLineas.forEach((pedido) => {
