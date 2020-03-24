@@ -57,7 +57,6 @@ import { DepartamentoService } from '../services/departamento/departamento.servi
 import { ProcesoService } from '../services/proceso/proceso.service'
 import { GastoService } from '../services/gastos/gasto.service'
 import { CalculosDeCostosService } from '../services/gastos/calculos-de-costos.service'
-import { OrdenadorVisualService } from '../components/ordenador-visual/ordenador-visual.service'
 import { PermisosGuard } from '../services/guards/permisos.guard'
 import { FamiliaDeProcesosService } from '../services/proceso/familia-de-procesos.service'
 import { ModeloService } from '../services/modelo/modelo.service'
