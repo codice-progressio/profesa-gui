@@ -17,7 +17,6 @@ import { PaginadorComponent } from '../components/paginador/paginador.component'
 import { ListaDeOrdenesComponent } from '../components/lista-de-ordenes/lista-de-ordenes.component'
 import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component'
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component'
-import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe'
 import { NgxMaskModule } from 'ngx-mask'
@@ -132,7 +131,6 @@ import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordene
     ListaDeOrdenesComponent,
     QrScannerComponent,
     ValidacionInputsComponent,
-    OrdenadorVisualComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
@@ -183,7 +181,6 @@ import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordene
     ListaDeOrdenesComponent,
     QrScannerComponent,
     ValidacionInputsComponent,
-    OrdenadorVisualComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
@@ -254,7 +251,6 @@ export class SharedModule {
         ProcesoService,
         GastoService,
         CalculosDeCostosService,
-        OrdenadorVisualService,
         PermisosGuard,
         FamiliaDeProcesosService,
         ModeloService,
