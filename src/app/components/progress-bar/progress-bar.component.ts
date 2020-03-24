@@ -10,7 +10,7 @@ import { UtilidadesService } from 'src/app/services/utilidades/utilidades.servic
 export class ProgressBarComponent implements OnInit {
 
   @Input() porcentaje: number =0;
-  @Input() nivel :string;
+  @Input() nivel :string = "PRODUCCIÓN";
   colores = {
     ALMACEN : {bg: 'bg-info', text: 'text-info'},
     PRODUCCIÓN : {bg: 'bg-inverse', text: 'text-inverse'},
