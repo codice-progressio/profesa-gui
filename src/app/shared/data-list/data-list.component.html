@@ -3,44 +3,54 @@
  input
 =====================================
 -->
-
-<div class="input-busqueda">
-  <div class="d-flex align-items-center justify-content-between">
+<ng-container *ngIf="!leyendaInputDeshabilitado">
+  <div class="input-group mb-1">
     <input
-    [ngClass]="{
-      'is-invalid': invalid,
-      'is-valid': valid
-    }"
-      *ngIf="!leyendaInputDeshabilitado"
+      [ngClass]="{
+        'is-invalid': invalid,
+        'is-valid': valid
+      }"
       #inputBuscarNativo
       [formControl]="inputBusqueda"
       type="text"
-      class="form-control"
+      class="form-control mr-0 pr-0"
       placeholder="Escribe para buscar"
     />
+    <div class="input-group-append">
+      <button
+        class="btn btn-sm {{
+          cargando ? 'btn-outline-secondary' : 'btn-outline-danger'
+        }}"
+        type="button"
+        (click)="cancelarBusqueda()"
+      >
+        <i *ngIf="!cargando" class="fas fa-times-circle  "></i>
+        <i *ngIf="cargando" class="fas fa-sync fa-spin "></i>
+      </button>
+    </div>
+  </div>
+</ng-container>
 
-    <input
+<div *ngIf="leyendaInputDeshabilitado" class="input-group mb-3">
+  <input
     [ngClass]="{
       'is-invalid': invalid,
       'is-valid': valid
     }"
-      *ngIf="leyendaInputDeshabilitado"
-      [(ngModel)]="leyendaInputDeshabilitado"
-      type="text"
-      class="form-control"
-      disabled="true`"
-    />
-
-    <a
-      *ngIf="this.mostrarBotonParaLimpiar"
-      class="btn  btn-danger text-white btn-sm ml-1 animated fadeIn"
-      role="button"
+    [(ngModel)]="leyendaInputDeshabilitado"
+    type="text"
+    class="form-control"
+    disabled="true"
+  />
+  <div class="input-group-append">
+    <button
       (click)="cancelarBusqueda()"
+      class="btn btn-danger btn-sm"
+      type="button"
     >
       <i class="fas fa-times-circle    "></i>
-    </a>
+    </button>
   </div>
- 
 </div>
 
 <!-- 
@@ -62,7 +72,7 @@
   >
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ dato.leyendaPrincipal }}</h5>
-      <span style='width: 20px;'></span>
+      <span style="width: 20px;"></span>
       <small>{{ dato.leyendaSecundaria }}</small>
     </div>
     <p class="mb-1">
@@ -71,14 +81,11 @@
     <small>{{ dato.descripcionSecundaria }}</small>
   </a>
   <a
+    (click)="cancelarBusqueda()"
     *ngIf="mostrarLista && datosParaLista.length === 0"
-    class="list-group-item list-group-item-action flex-column align-items-start  list-group-item-danger bg-danger"
+    class="list-group-item  list-group-item-action list-group-item-info bg-info text-white text-left"
   >
-    <div class="d-flex w-100 justify-content-between align-items-center">
-      <h5 class=" text-white">
-        No hubo coincidencias
-      </h5>
-    </div>
+    <i class="fas fa-times-circle animated tada   "></i> No hubo coincidencias
   </a>
 </div>
 
