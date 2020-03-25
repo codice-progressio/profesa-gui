@@ -59,6 +59,7 @@ import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/
 import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-crear-modificar.component'
 import { ColoresCrearModificarComponent } from './gestionDeProcesos/colores/colores-crear-modificar.component'
 import { ModelosCrearModificarComponent } from './gestionDeProcesos/modelos/modelos-crear-modificar.component'
+import { TamanosCrearModificarComponent } from './gestionDeProcesos/tamanos/tamanos-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -350,6 +351,24 @@ const pagesRoutes: Routes = [
   {
     path: 'tamanos',
     component: TamanosComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de Tamanos',
+      roles: [ROLES.INGENIERIA_TAMANOS]
+    }
+  },
+  {
+    path: 'tamano/crear',
+    component: TamanosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de Tamanos',
+      roles: [ROLES.INGENIERIA_TAMANOS]
+    }
+  },
+  {
+    path: 'tamano/modificar/:id',
+    component: TamanosCrearModificarComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Tamanos',

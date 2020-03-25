@@ -1,33 +1,92 @@
-<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"tamano"' [esMasculino]='true'>
-    <ng-container *ngIf="mostrarCrearModificar">
+<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="justify-content-between d-flex aling-items-center">
+            <h1 *ngIf="tamano?._id">{{ tamano.tamano }}</h1>
+            <h1>
+              <span class="text-success" *ngIf="!tamano?._id">
+                <i class="fas fa-plus-square    "></i> Crear
+                <b>tamano</b> </span
+              ><span class="text-warning" *ngIf="tamano?._id">
+                <i class="fas fa-pen-square"></i> Modificar <b>tamano</b>
+              </span>
+            </h1>
+          </div>
 
-        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+          <hr />
 
+          <form [formGroup]="formulario">
             <div class="row">
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="tamano" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(tamano_FB), 'is-valid':_validacionesService.valid(tamano_FB)}" name="tamano" id="tamano" placeholder="Ingresa el tamano">
-                    <small class="form-text text-muted">Ingresa el tamano </small>
-                    <app-validacion-inputs [campo]="tamano_FB"></app-validacion-inputs>
-                </div>
-
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="estandar" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(estandar_FB), 'is-valid':_validacionesService.valid(estandar_FB)}" name="estandar" id="estandar" placeholder="Ingresa la cantidad del estandar"
-                        mask="separator">
-                    <small class="form-text text-muted">Ingresa la cantidad del estandar</small>
-                    <app-validacion-inputs [campo]="estandar_FB"></app-validacion-inputs>
-                </div>
+              <div class="form-group col-12 col-md-6 col-lg-4">
+                <input
+                  formControlName="tamano"
+                  type="text"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('tamano')),
+                    'is-valid': vs.valid(f('tamano'))
+                  }"
+                  name="tamano"
+                  id="tamano"
+                  placeholder="Ingresa el nombre del tamano"
+                />
+                <small id="El tamano del equipo" class="form-text text-muted"
+                  >Ingresa el nombre del tamano</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('tamano')"
+                ></app-validacion-inputs>
+              </div>
             </div>
 
+            <div class="row">
+              <div class="col-12">
+                <app-validacion-inputs
+                  [campo]="formulario"
+                ></app-validacion-inputs>
 
+                <br />
+                <br />
 
+                <button
+                  (click)="submit(formulario.value, formulario.invalid, $event)"
+                  class="text-white btn btn-success mr-3 active"
+                  role="button"
+                  [disabled]="keys(cargando).length > 0"
+                >
+                  <i class="fas fa-save    "></i> Guardar
+                </button>
+                <a
+                  (click)="location.back()"
+                  class="text-white btn btn-danger active"
+                  role="button"
+                >
+                  <i class="fas fa-times    "></i> Cancelar</a
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
-            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
-        </button>
-
-        </form>
-
-    </ng-container>
-</app-crear-modificar>
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center text-center"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin   "></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
