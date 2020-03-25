@@ -136,8 +136,14 @@ export class BuscadorPacienteComponent<T> implements OnInit {
   buscar( termino: string ){
     //Asignamos el termino recortando espacios
     this.termino = termino.trim()
+    // Cualquier caracter que nos perjudique para el regex lo escapamos
+    this.termino = this.termino.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    // Cualquier caracter que nos perjudique en la url lo codificamos
+    this.termino = encodeURIComponent( this.termino )
+
+    
     //Emitimos el termino. 
-    this.terminoPublico.emit(termino)
+    this.terminoPublico.emit(this.termino)
 
     //Comprobaciones
     this.comprobaciones()
