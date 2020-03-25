@@ -1,61 +1,84 @@
-import { Component, OnInit } from '@angular/core';
-import { ModeloService } from '../../../services/modelo/modelo.service';
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
-import { Modelo } from 'src/app/models/modelo.models';
-import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { Component, OnInit } from '@angular/core'
+import { ModeloService } from '../../../services/modelo/modelo.service'
+import { Modelo } from 'src/app/models/modelo.models'
+import {
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  FormGroup
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-modelos-crear-modificar',
   templateUrl: './modelos-crear-modificar.component.html',
   styles: []
 })
-export class ModelosCrearModificarComponent extends CrearModificar_GUI_CRUD<Modelo, ModeloService > implements OnInit {
+export class ModelosCrearModificarComponent implements OnInit {
+  formulario: FormGroup
+
+  cargando = {}
+  modelo: Modelo
+  keys = Object.keys
 
   constructor(
-    public _elementoService: ModeloService,
+    public skuService: ModeloService,
     public formBuilder: FormBuilder,
-    public _validacionesService: ValidacionesService,) { 
-      super( _elementoService,
-        formBuilder,
-        _validacionesService)
-      
-      this.cbDatosParaEditar = (modelo: Modelo )=>{
-        this.cargarDatosParaEditar( modelo )
-      } 
-  
-      this.cbCrearFormulario = ()=>{
-        this.crearFormulario()
-      }
-  
-      this.configurar();
-  
-    }
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    if (id) {
+      this.cargando['cargando'] = 'Buscando modelo'
+      this.skuService.findById(id).subscribe(
+        modelo => {
+          this.crearFormulario(modelo)
+          this.modelo = modelo
+          delete this.cargando['cargando']
+        },
+        () => this.location.back()
+      )
+    } else {
+      this.crearFormulario()
+    }
   }
 
-  cargarDatosParaEditar( modelo: Modelo){
-    this.modelo_FB.setValue( modelo.modelo )
-  }
-
-  /**
-   *Crea el formulario de registro. 
-   *
-   * @memberof MaquinasCrearModificarComponent
-   */
-  crearFormulario( ){
+  crearFormulario(modelo: Modelo = new Modelo()) {
     this.formulario = this.formBuilder.group({
-      modelo: ['', [
-        Validators.required
-      ]],
-
-    });
+      modelo: [modelo.modelo, [Validators.required]]
+    })
   }
 
-  public get modelo_FB(): AbstractControl {
-    return this.formulario.get('modelo')
+  f(c: string): AbstractControl {
+    return this.formulario.get(c)
   }
 
+  submit(modelo: Modelo, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
 
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
+    this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
+
+    if (this.modelo) {
+      modelo._id = this.modelo._id
+      this.skuService.update(modelo).subscribe(() => this.location.back())
+    } else {
+      this.skuService.save(modelo).subscribe(() => {
+        this.crearFormulario()
+        delete this.cargando['guardando']
+      })
+    }
+  }
 }
