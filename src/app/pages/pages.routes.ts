@@ -57,6 +57,7 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
 import { ProcesosCrearModificarComponent } from './gestionDeProcesos/procesos/procesos-crear-modificar.component'
 import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component'
 import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-crear-modificar.component'
+import { ColoresCrearModificarComponent } from './gestionDeProcesos/colores/colores-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -340,6 +341,24 @@ const pagesRoutes: Routes = [
   {
     path: 'colores',
     component: ColoresComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de colores',
+      roles: [ROLES.INGENIERIA_COLORES]
+    }
+  },
+  {
+    path: 'color/crear',
+    component: ColoresCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de colores',
+      roles: [ROLES.INGENIERIA_COLORES]
+    }
+  },
+  {
+    path: 'color/modificar/:id',
+    component: ColoresCrearModificarComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de colores',
