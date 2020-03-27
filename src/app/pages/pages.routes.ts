@@ -62,6 +62,7 @@ import { ModelosCrearModificarComponent } from './gestionDeProcesos/modelos/mode
 import { TamanosCrearModificarComponent } from './gestionDeProcesos/tamanos/tamanos-crear-modificar.component'
 import { TerminadosCrearModificarComponent } from './gestionDeProcesos/terminados/terminados-crear-modificar.component'
 import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/familiaDeProcesos/familia-de-procesos-crear-modificar.component'
+import { ModelosCompletosCrearModificarComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -435,11 +436,29 @@ const pagesRoutes: Routes = [
   },
 
   {
-    path: 'modelosCompletos',
+    path: 'sku',
     component: ModelosCompletosComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Gestion de Modelos Completos',
+      titulo: 'Gestion de SKU - Produccion',
+      roles: [ROLES.INGENIERIA_MODELOS_COMPLETOS]
+    }
+  },
+  {
+    path: 'sku/crear',
+    component: ModelosCompletosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de SKU - Produccion',
+      roles: [ROLES.INGENIERIA_MODELOS_COMPLETOS]
+    }
+  },
+  {
+    path: 'sku/modificar/:id',
+    component: ModelosCompletosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de SKU - Produccion',
       roles: [ROLES.INGENIERIA_MODELOS_COMPLETOS]
     }
   },

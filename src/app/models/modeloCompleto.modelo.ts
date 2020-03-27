@@ -18,15 +18,15 @@ export class ModeloCompleto
 
   constructor(
     public _id?: string,
-    public modelo?: Modelo,
-    public tamano?: Tamano,
-    public color?: Color,
-    public terminado?: Terminado,
-    public laserAlmacen?: Laser,
+    public modelo: Modelo = new Modelo(),
+    public tamano: Tamano = new Tamano(),
+    public color: Color = new Color(),
+    public terminado: Terminado = new Terminado(),
+    public laserAlmacen: Laser = new Laser(),
     public versionModelo?: String,
     public medias: boolean = false,
     public nombreCompleto?: string,
-    public familiaDeProcesos?: FamiliaDeProcesos,
+    public familiaDeProcesos: FamiliaDeProcesos = new FamiliaDeProcesos(),
     public esBaston: boolean = false,
 
     public existencia: number = 0,
