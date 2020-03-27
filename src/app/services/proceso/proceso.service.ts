@@ -73,7 +73,7 @@ export class ProcesoService {
     )
   }
 
-  find(
+  findByTerm(
     termino: string,
     paginacion: Paginacion,
     filtros: string = ''

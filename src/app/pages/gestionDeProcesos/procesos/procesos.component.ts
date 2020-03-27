@@ -40,7 +40,7 @@ export class ProcesosComponent implements OnInit {
     this.cargando[
       'termino'
     ] = `Buscando procesos que coincidan con '${termino}'`
-    return this.procesoService.find(termino, new Paginacion(5, 0, 1, 'nombre'))
+    return this.procesoService.findByTerm(termino, new Paginacion(5, 0, 1, 'nombre'))
   }
 
   constructor(public procesoService: ProcesoService, private router: Router) {}
@@ -80,7 +80,7 @@ export class ProcesosComponent implements OnInit {
 
     if (this.termino) {
       this.procesoService
-        .find(this.termino, this.paginacion)
+        .findByTerm(this.termino, this.paginacion)
         .subscribe(cb, cancelado)
     } else {
       this.procesoService.findAll(data.paginacion).subscribe(cb, cancelado)
