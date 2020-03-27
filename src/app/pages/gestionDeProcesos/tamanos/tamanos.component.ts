@@ -10,9 +10,6 @@ import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
   selector: 'app-tamanos',
   templateUrl: './tamanos.component.html',
   styles: [],
-  providers: [
-    { provide: 'paginadorServiceTamanos', useClass: PaginadorService }
-  ]
 })
 export class TamanosComponent implements OnInit {
   cargando: {} = {}

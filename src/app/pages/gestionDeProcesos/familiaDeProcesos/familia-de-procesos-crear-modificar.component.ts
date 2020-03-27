@@ -2,72 +2,57 @@ import { Component, OnInit } from '@angular/core'
 import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model'
 import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-procesos.service'
 import { Proceso } from '../../../models/proceso.model'
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD'
-import {
-  FormBuilder,
-  Validators,
-  FormArray,
-  FormGroup,
-  AbstractControl
-} from '@angular/forms'
-import { ProcesoService } from '../../../services/proceso/proceso.service'
-import { OrganizadorDragAndDropService } from '../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service'
-import { DndObject } from '../../../components/organizador-drag-and-drop/models/dndObject.model'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms'
 import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
 import { FormControl } from '@angular/forms'
 import { Procesos } from '../../../models/procesos.model'
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem
-} from '@angular/cdk/drag-drop'
+import { ActivatedRoute } from '@angular/router'
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
+import { Location } from '@angular/common'
+import { ProcesoService } from '../../../services/proceso/proceso.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-familia-de-procesos-crear-modificar',
   templateUrl: './familia-de-procesos-crear-modificar.component.html',
   styles: []
 })
-export class FamiliaDeProcesosCrearModificarComponent
-  extends CrearModificar_GUI_CRUD<FamiliaDeProcesos, FamiliaDeProcesosService>
-  implements OnInit {
+export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
+  cargando = {}
+  keys = Object.keys
+
   procesos: Proceso[] = null
   procesosAgregados: Proceso[] = null
 
+  formulario: FormGroup
+  familia: FamiliaDeProcesos
+
   constructor(
-    public _elementoService: FamiliaDeProcesosService,
-    public formBuilder: FormBuilder,
-    public _validacionesService: ValidacionesService,
-    public _procesosService: ProcesoService,
-    public _dndService: OrganizadorDragAndDropService<Proceso>
+    private activatedRoute: ActivatedRoute,
+    public location: Location,
+    private familiaService: FamiliaDeProcesosService,
+    private fb: FormBuilder,
+    public vs: ValidacionesService,
+    private procesoService: ProcesoService
   ) {
-    super(_elementoService, formBuilder, _validacionesService)
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
 
-    this.cbDatosParaEditar = (elemento: FamiliaDeProcesos) => {
-      this.cargarProcesos()
-      this.crearFormulario(elemento)
-    }
-
-    this.cbCrearFormulario = () => {
+    if (id) {
+      this.cargando['cargar'] = 'Buscando familia para modificar'
+      this.familiaService.findById(id).subscribe(
+        familia => {
+          this.crearFormulario(familia)
+          delete this.cargando['cargar']
+        },
+        () => delete this.cargando['cargar']
+      )
+    } else {
       this.crearFormulario()
-      this.cargarProcesos()
+      delete this.cargando['cargar']
     }
-
-    this.configurar()
   }
 
   ngOnInit() {}
-
-  cargarProcesos() {
-    this._procesosService.listarTodo = true
-    this._procesosService.todo().subscribe(
-      procesos =>
-        (this.procesos = procesos.map(x => {
-          x.maquinas = null
-          return x
-        }))
-    )
-  }
 
   /**
    *Crea el formulario de registro.
@@ -75,28 +60,26 @@ export class FamiliaDeProcesosCrearModificarComponent
    * @memberof MaquinasCrearModificarComponent
    */
   crearFormulario(elemento: FamiliaDeProcesos = new FamiliaDeProcesos()) {
-    this.formulario = this.formBuilder.group({
+    this.familia = elemento
+    this.formulario = this.fb.group({
       nombre: [elemento.nombre, [Validators.required]],
       observaciones: [elemento.observaciones, []],
       procesos: new FormArray(
         elemento.procesos.map(x => new FormControl(x)),
-        this._validacionesService.minSelectedCheckboxes()
+        this.vs.minSelectedCheckboxes()
       )
     })
 
+    this.cargando['procesos'] = 'Cargando procesos'
+    this.procesoService
+      .findAll(new Paginacion(3000, 0, 1, 'nombre'))
+      .subscribe(procesos => {
+        this.procesos = procesos
+        this.mostrar = this.procesos.map(x => x._id)
+        delete this.cargando['procesos']
+      })
+
     this.procesosAgregados = elemento.procesos.map(x => x.proceso)
-  }
-
-  public get nombre_FB(): AbstractControl {
-    return this.formulario.get('nombre')
-  }
-
-  public get observaciones_FB(): AbstractControl {
-    return this.formulario.get('observaciones')
-  }
-
-  public get procesos_FB(): FormArray {
-    return <FormArray>this.formulario.get('procesos')
   }
 
   f(campo): FormArray {
@@ -116,7 +99,7 @@ export class FamiliaDeProcesosCrearModificarComponent
       this.procesosAgregados.forEach(p => {
         const procesos = new Procesos()
         procesos.proceso = p
-        procesos.orden = contador+''
+        procesos.orden = contador + ''
         contador++
         this.f('procesos').push(new FormControl(procesos))
       })
@@ -128,5 +111,54 @@ export class FamiliaDeProcesosCrearModificarComponent
   quitarProceso(i: number): void {
     this.f('procesos').removeAt(i)
     this.procesosAgregados.splice(i, 1)
+  }
+
+  submit(modelo: FamiliaDeProcesos, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+
+    if (invalid) {
+      e.stopPropagation()
+      e.preventDefault()
+      return
+    }
+
+    this.cargando['guardar'] = 'Aplicando cambios'
+    if (this.familia._id) {
+      modelo._id = this.familia._id
+      this.familiaService.update(modelo).subscribe(
+        () => this.location.back(),
+        () => delete this.cargando['guardar']
+      )
+    } else {
+      this.familiaService.save(modelo).subscribe(
+        () => {
+          delete this.cargando['guardar']
+          this.crearFormulario()
+        },
+        () => delete this.cargando['guardar']
+      )
+    }
+  }
+
+  mostrar = []
+  filtrarDisponibles(termino: string) {
+    const tLimpio = termino.trim()
+    console.log(`tLimpio`, tLimpio)
+    if (tLimpio) {
+      this.mostrar = this.procesos
+        .map(x => {
+          return x.nombre
+            .toLowerCase()
+            .concat(' ')
+            .concat(x.departamento.nombre.toLowerCase())
+            .concat(' ')
+            .concat('@@@' + x._id)
+        })
+        .filter(x => x.includes(termino.toLowerCase()))
+        .map(x => x.split('@@@')[1])
+    } else {
+      this.mostrar = this.procesos.map(x => x._id)
+    }
   }
 }

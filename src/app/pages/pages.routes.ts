@@ -60,6 +60,8 @@ import { FoliosCrearModificarComponent } from './gestionDeFolios/folios/folios-c
 import { ColoresCrearModificarComponent } from './gestionDeProcesos/colores/colores-crear-modificar.component'
 import { ModelosCrearModificarComponent } from './gestionDeProcesos/modelos/modelos-crear-modificar.component'
 import { TamanosCrearModificarComponent } from './gestionDeProcesos/tamanos/tamanos-crear-modificar.component'
+import { TerminadosCrearModificarComponent } from './gestionDeProcesos/terminados/terminados-crear-modificar.component'
+import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/familiaDeProcesos/familia-de-procesos-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -413,6 +415,24 @@ const pagesRoutes: Routes = [
       roles: [ROLES.INGENIERIA_TERMINADOS]
     }
   },
+  {
+    path: 'terminado/crear',
+    component: TerminadosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de terminados',
+      roles: [ROLES.INGENIERIA_TERMINADOS]
+    }
+  },
+  {
+    path: 'terminado/modificar/:id',
+    component: TerminadosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestion de terminados',
+      roles: [ROLES.INGENIERIA_TERMINADOS]
+    }
+  },
 
   {
     path: 'modelosCompletos',
@@ -426,6 +446,24 @@ const pagesRoutes: Routes = [
   {
     path: 'familiaDeProcesos',
     component: FamiliaDeProcesosComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestión de Familias de Procesos',
+      roles: [ROLES.INGENIERIA_FAMILIA_DE_PROCESOS]
+    }
+  },
+  {
+    path: 'familiaDeProcesos/crear',
+    component: FamiliaDeProcesosCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Gestión de Familias de Procesos',
+      roles: [ROLES.INGENIERIA_FAMILIA_DE_PROCESOS]
+    }
+  },
+  {
+    path: 'familiaDeProcesos/modificar/:id',
+    component: FamiliaDeProcesosCrearModificarComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestión de Familias de Procesos',
