@@ -314,6 +314,11 @@ export class ManejoDeMensajesService {
       error.text ? error.text.concat(' ').concat(error.footer) : error.text,
       error.title
     )
+    throw error
+  }
+
+  toastErrorMensaje(msj: string) {
+    this.toast.error(msj, 'Error')
   }
 
   toastCorrecto(
