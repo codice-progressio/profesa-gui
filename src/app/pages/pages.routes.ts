@@ -63,6 +63,7 @@ import { TamanosCrearModificarComponent } from './gestionDeProcesos/tamanos/tama
 import { TerminadosCrearModificarComponent } from './gestionDeProcesos/terminados/terminados-crear-modificar.component'
 import { FamiliaDeProcesosCrearModificarComponent } from './gestionDeProcesos/familiaDeProcesos/familia-de-procesos-crear-modificar.component'
 import { ModelosCompletosCrearModificarComponent } from './gestionDeProcesos/modelos-completos/modelos-completos-crear-modificar.component'
+import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -595,13 +596,31 @@ const pagesRoutes: Routes = [
       roles: [ROLES.ADMINISTRADOR_CLIENTES]
     }
   },
+  {
+    path: 'cliente/crear',
+    component: ClientesCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Mantenimientos de clientes',
+      roles: [ROLES.ADMINISTRADOR_CLIENTES]
+    }
+  },
+  {
+    path: 'cliente/modificar/:id',
+    component: ClientesCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Mantenimientos de clientes',
+      roles: [ROLES.ADMINISTRADOR_CLIENTES]
+    }
+  },
 
   {
     path: 'almacenDescripcion',
     component: AlmacenDescripcionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Mantenimientos de clientes',
+      titulo: 'Almacenes',
       roles: [ROLES.ADMINISTRADOR_ALMACEN_DESCRIPCION]
     }
   },
