@@ -5,11 +5,12 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 import { TamanoService } from 'src/app/services/modelo/tamano.service'
 import { Router } from '@angular/router'
 import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-tamanos',
   templateUrl: './tamanos.component.html',
-  styles: [],
+  styles: []
 })
 export class TamanosComponent implements OnInit {
   cargando: {} = {}
@@ -32,7 +33,11 @@ export class TamanosComponent implements OnInit {
     return this.tamanosService.findByTerm(termino, this.paginacion)
   }
 
-  constructor(public tamanosService: TamanoService, private router: Router) {}
+  constructor(
+    public tamanosService: TamanoService,
+    private router: Router,
+    private msjService: ManejoDeMensajesService
+  ) {}
 
   ngOnInit() {
     this.cargar()
@@ -90,13 +95,18 @@ export class TamanosComponent implements OnInit {
   }
 
   eliminar(id: string) {
-    this.cargando['eliminar'] = 'Eliminando el elemento'
-    this.tamanosService.delete(id).subscribe(
+    this.msjService.confirmacionDeEliminacion(
+      'Esta accion no se puede deshacer y eliminara tambien todos los folios e informacion relacionada con este elemento. Aun asi quieres continuar?',
       () => {
-        delete this.cargando['eliminar']
-        this.cargar()
-      },
-      () => delete this.cargando['eliminar']
+        this.cargando['eliminar'] = 'Eliminando el elemento'
+        this.tamanosService.delete(id).subscribe(
+          () => {
+            delete this.cargando['eliminar']
+            this.cargar()
+          },
+          () => delete this.cargando['eliminar']
+        )
+      }
     )
   }
 }
