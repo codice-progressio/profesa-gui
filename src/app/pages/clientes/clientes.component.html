@@ -1,123 +1,131 @@
-<ng-container *ngIf="!editando">
+<ng-container>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class=" card-body d-flex justify-content-between align-items-center"
+        >
+          <h1 class=""><strong>Clientes</strong> existentes</h1>
+
+          <div class="d-flex  align-items-center ">
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObservable"
+                [tiempoDeEspera]="1000"
+                (resultado)="resultadoDeBusqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error($event)"
+              ></app-buscador-paciente>
+            </div>
+
+            <a
+              (click)="this.crear()"
+              class="btn btn-success text-white active mr-3"
+            >
+              <i class="fas fa-plus "></i> Crear cliente</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="this.totalDeElementos"
+        [campoDeOrdenamiento]="'cliente'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+        [cargando]="keys(cargando).length > 0"
+      ></paginador>
+    </div>
+  </div>
   <div
-    class="row animated  faster"
-    [ngClass]="{ fadeOutUp: animando, fadeInDown: !animando }"
+    *ngIf="clientes.length && keys(cargando).length === 0"
+    class="row animated fadeIn"
   >
     <div class="col-12">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <h1 class=""><strong>Clientes</strong> existentes</h1>
-
-            <div class="d-flex  align-items-center ">
-              <input
-                #inputBusqueda
-                (keyup)="buscarCliente(inputBusqueda.value)"
-                type="text"
-                class="form-control mr-3"
-                name="busquedaDecliente"
-                id="busquedaDecliente"
-                aria-describedby="busquedadeclientehelp"
-                placeholder="Buscar un cliente"
-              />
-            </div>
-            <button
-              (click)="crearCliente()"
-              type="button"
-              class="btn btn-outline-primary"
-            >
-              <i class="fas fa-plus"></i> Crear nuevo
-            </button>
-          </div>
-          <hr />
-
-          <app-paginador></app-paginador>
-
-          <table class="table table-hover table-borderless">
-            <thead class="">
+          <table class="table table-hover w-100">
+            <thead>
               <tr>
-                <th class="fit"></th>
+                <th></th>
+                <th>Nombre</th>
 
-                <th
-                  class="fit"
-                  title="El codigo que referencia el id con el sistema ASPEL SAE"
-                >
-                  sae
-                </th>
-                <th title="El nombre del cliente">Nombre</th>
-                <th title="Los laserados autorizados para este cliente">
-                  Laserados
-                </th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cliente of clientes">
+              <tr *ngFor="let elemento of clientes">
+                <td class="fit">
+                  <button
+                    (click)="clienteDetalle = elemento"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#detalleCliente"
+                    role="button"
+                  >
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td>{{ elemento.nombre }}</td>
+
                 <td class="fit">
                   <a
-                    (click)="clienteDetalle = cliente"
-                    class="btn  text-white btn-primary btn-xs mr-1"
-                    role="button"
-                    data-toggle="modal"
-                    data-target="#clienteDetalle"
-                  >
-                    <i class="fas fa-eye    "></i>
-                  </a>
-                  <a
-                    (click)="modificarCliente(cliente)"
-                    class="btn  text-white btn-success btn-xs mr-1"
-                    role="button"
-                  >
-                    <i class="fas fa-edit    "></i>
-                  </a>
-                  <a
-                    (click)="eliminarCliente(cliente)"
-                    class="btn  text-white btn-danger btn-xs mr-1"
-                    role="button"
-                  >
-                    <i class="fas fa-times    "></i>
-                  </a>
+                    href="javascript:void(0)"
+                    (click)="modificar(elemento._id)"
+                    class="btn btn-success btn-sm"
+                    ><i class="fas fa-edit text-white    "></i
+                  ></a>
                 </td>
-                <td>{{ cliente.sae }}</td>
-                <td>{{ cliente.nombre }}</td>
-                <td>
-                  <ng-container
-                    *ngFor="let laser of cliente.laserados; let i = index"
-                  >
-                    {{ laser.laser }}
-                    <span *ngIf="cliente.laserados.length - 1! !== i">,</span>
-                  </ng-container>
+                <td class="fit">
+                  <a
+                    (click)="eliminar(elemento._id)"
+                    class="btn btn-danger btn-sm"
+                    ><i class="fas fa-times  text-white "></i
+                  ></a>
                 </td>
               </tr>
             </tbody>
           </table>
-          <app-paginador></app-paginador>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="clientes?.length === 0 && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body shadow">
+          <h1 class="display-1">No hay <b>clientes</b> para mostrar</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync  fa-spin   "></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+            {{ cargando[key] }}
+          </h2>
         </div>
       </div>
     </div>
   </div>
 </ng-container>
 
-<app-clientes-crear-modificar
-  (esteComponente)="cargarComponente($event)"
- 
->
-</app-clientes-crear-modificar>
-
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="clienteDetalle"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-clientes-detalle [cliente]="clienteDetalle"></app-clientes-detalle>
-      </div>
-    </div>
-  </div>
-</div>
+<app-clientes-detalle [detalle]="clienteDetalle" [id]="'detalleCliente'">
+</app-clientes-detalle>

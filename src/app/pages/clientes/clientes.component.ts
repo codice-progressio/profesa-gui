@@ -1,118 +1,115 @@
-import { Component, OnInit } from "@angular/core"
-import { Cliente } from "src/app/models/cliente.models"
-import { ClienteService } from "../../services/cliente/cliente.service"
-import { PaginadorService } from "src/app/components/paginador/paginador.service"
-import { ClientesCrearModificarComponent } from "./clientes-crear-modificar.component"
-import { ManejoDeMensajesService } from "../../services/utilidades/manejo-de-mensajes.service"
+import { Component, OnInit } from '@angular/core'
+import { Cliente } from 'src/app/models/cliente.models'
+import { ClienteService } from '../../services/cliente/cliente.service'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { ClientesCrearModificarComponent } from './clientes-crear-modificar.component'
+import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { Router } from '@angular/router'
+import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
 
 @Component({
-  selector: "app-clientes",
-  templateUrl: "./clientes.component.html",
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
   styles: []
 })
 export class ClientesComponent implements OnInit {
-  clientes: Cliente[] = null
-  clienteDetalle: Cliente = null
-  clienteEditandose: Cliente = null
+  cargando: {} = {}
 
-  editando: boolean = false
-  animando: boolean = false
+  totalDeElementos: number
+  clientes: Cliente[] = []
+  paginacion = new Paginacion(5, 0, 1, 'cliente')
+  termino: string
+  detalle: Cliente = null
+  reporteModificar: Cliente
 
-  crearModificarComponent: ClientesCrearModificarComponent
+  clienteDetalle: Cliente
+  mostrarCrear = false
+
+  keys = Object.keys
+
+  cbObservable = termino => {
+    this.termino = termino
+    this.cargando[
+      'termino'
+    ] = `Buscando clientes que coincidan con '${termino}'`
+    return this.clientesService.findByTerm(termino, this.paginacion)
+  }
 
   constructor(
-    public _clienteService: ClienteService,
-    public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
-  ) {
-    this._paginadorService.callback = () => {
-      this.cargarClientes()
-    }
-  }
+    public clientesService: ClienteService,
+    private router: Router,
+    private msjService: ManejoDeMensajesService
+  ) {}
 
   ngOnInit() {
-    this.cargarClientes()
+    this.cargar()
+  }
 
-    new Promise((resolve) => {
-      let i = setInterval(() => {
-        if (this.crearModificarComponent) {
-          clearInterval(i)
-          resolve()
-        }
-      }, 100)
-    }).then(() => {
-      this.crearModificarComponent.cancelado.subscribe(() => {
-        // this.clienteEditandose = null
+  resultadoDeBusqueda(datos) {
+    delete this.cargando['termino']
+    this.clientes = datos
+    this.totalDeElementos = this.clientesService.total
+  }
 
-        this.cargarClientes()
-        this.editando = false
-        this.animando = false
-        setTimeout(() => {}, 500)
-      })
-
-      this.crearModificarComponent.guardado.subscribe(() => {
-        this.animando = false
-        this.cargarClientes()
-        this.clienteEditandose = null
-        this.editando = false
-      })
+  cargar() {
+    this.cargando['cargar'] = 'Cargando elementos'
+    this.clientesService.findAll(this.paginacion).subscribe(p => {
+      this.clientes = p
+      this.totalDeElementos = this.clientesService.total
+      delete this.cargando['cargar']
     })
   }
 
-  cargarClientes() {
-    this._clienteService
-      .todo()
-      .subscribe((clientes) => (this.clientes = clientes))
+  error() {
+    this.cargar()
   }
 
-  buscarCliente(termino: string) {
-    termino = termino.trim()
-    if (!termino) {
-      this.cargarClientes()
-      return
-    }
+  actualizarConsulta(data: iPaginadorData = null) {
+    this.cargando['actualizarConsulta'] = 'Actualizando datos de consulta'
+    this.paginacion = data ? data.paginacion : this.paginacion
 
-    this._clienteService.buscar(termino).subscribe((clientes) => {
+    const cb = clientes => {
       this.clientes = clientes
-    })
+      delete this.cargando['actualizarConsulta']
+    }
+    const cancelado = () => delete this.cargando['actualizarConsulta']
+
+    if (this.termino) {
+      this.clientesService
+        .findByTerm(this.termino, this.paginacion)
+        .subscribe(cb, cancelado)
+    } else {
+      this.clientesService.findAll(data.paginacion).subscribe(cb, cancelado)
+    }
   }
 
-  crearCliente() {
-    this.animando = true
-    setTimeout(() => {
-      this.editando = true
-      this.crearModificarComponent.crearOModificar()
-    }, 500)
+  crear() {
+    this.router.navigate(['cliente', 'crear'])
   }
 
-  modificarCliente(cliente: Cliente) {
-    this.animando = true
-    setTimeout(() => {
-      this.editando = true
-
-      this.clienteEditandose = cliente
-      this.crearModificarComponent.crearOModificar(cliente)
-    }, 500)
+  modificar(id) {
+    this.router.navigate(['cliente', 'modificar', id])
   }
 
-  eliminarCliente(cliente: Cliente) {
-    let msj = `Estas a punto de eliminar al cliente '${cliente.nombre}'.
-    Esta accion no se puede deshacer. Todos los datos relacionados al cliente
-    seran eliminados (folios) y esto alterara las estadisticas de produccion, 
-    reportes de ventas, ordenes en proceso y el historial de folios. Aun asi quieres continuar?`
-
-    let msj2 = `Esto es muy importante. Es preferente no borrar el usuario bajo ninguna circunstancia, a menos que estes completamente seguro de que no te afectara en nada. `
-
-    this._msjService.confirmacionDeEliminacion(msj, () => {
-      this._msjService.confirmacionDeEliminacion(msj2, () => {
-        this._clienteService.eliminar(cliente._id).subscribe(() => {
-          this.cargarClientes()
-        })
-      })
-    })
+  cancelado() {
+    this.termino = ''
+    this.cargar()
   }
 
-  cargarComponente(e) {
-    this.crearModificarComponent = e
+  eliminar(id: string) {
+    this.msjService.confirmacionDeEliminacion(
+      'Esta accion no se puede deshacer y eliminara tambien todos los folios e informacion relacionada con este elemento. Aun asi quieres continuar?',
+      () => {
+        this.cargando['eliminar'] = 'Eliminando el elemento'
+        this.clientesService.delete(id).subscribe(
+          () => {
+            delete this.cargando['eliminar']
+            this.cargar()
+          },
+          () => delete this.cargando['eliminar']
+        )
+      }
+    )
   }
 }

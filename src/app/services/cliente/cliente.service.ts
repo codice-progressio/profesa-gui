@@ -8,7 +8,6 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { Cliente } from 'src/app/models/cliente.models'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo'
-import { CRUD } from '../crud'
 
 import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import { UtilidadesService } from '../utilidades/utilidades.service'
@@ -20,6 +19,8 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 })
 export class ClienteService {
   base = URL_BASE('cliente')
+
+  total = 0
   constructor(
     public http: HttpClient,
     public msjService: ManejoDeMensajesService,
@@ -47,7 +48,7 @@ export class ClienteService {
 
   findAll(
     paginacion: Paginacion = new Paginacion(30, 0, 1, 'nombre'),
-    filtros: string
+    filtros: string =''
   ): Observable<Cliente[]> {
     const url = this.base
       .concat('?')
@@ -59,13 +60,14 @@ export class ClienteService {
 
     return this.http.get<Cliente[]>(url).pipe(
       map((resp: any) => {
+        this.total = resp.total
         return resp.clientes as Cliente[]
       }),
       catchError(err => this.errFun(err))
     )
   }
 
-  findByTermn(
+  findByTerm(
     termino: string,
     paginacion: Paginacion = new Paginacion(30, 0, 1, 'nombre')
   ): Observable<Cliente[]> {
@@ -78,6 +80,7 @@ export class ClienteService {
 
     return this.http.get<Cliente[]>(url).pipe(
       map((resp: any) => {
+        this.total = resp.total
         return resp.clientes as Cliente[]
       }),
       catchError(err => this.errFun(err))
@@ -86,7 +89,7 @@ export class ClienteService {
 
   save(cliente: Cliente): Observable<Cliente> {
     return this.http.post<Cliente>(this.base, cliente).pipe(
-      map((resp: any) => {
+    map((resp: any) => {
         this.msjService.toastCorrecto(resp.mensaje)
         return resp.cliente as Cliente
       }),
@@ -104,8 +107,8 @@ export class ClienteService {
     )
   }
 
-  delete(id: string): Observable<Cliente> {
-    return this.http.delete<Cliente>(this.base).pipe(
+  delete(id:string): Observable<Cliente> {
+    return this.http.delete<Cliente>(this.base.concat('/'+id)).pipe(
       map((resp: any) => {
         this.msjService.toastCorrecto(resp.mensaje)
         return resp.cliente
