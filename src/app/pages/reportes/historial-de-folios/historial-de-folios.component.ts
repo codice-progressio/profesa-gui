@@ -217,13 +217,13 @@ export class HistorialDeFoliosComponent implements OnInit {
     Esto significa que la fecha para produccion se eliminara y 
     el vendedor tendra disponible el folio para editarlo. Quieres continuar?`
 
-    this._msjService.confirmarAccion(msj, () => {
-      this._folioService
-        .iniciarProduccion(folio._id, false)
-        .subscribe((folio) => {
-          this.cargarFolios()
-        })
-    })
+    // this._msjService.confirmarAccion(msj, () => {
+    //   this._folioService
+    //     .iniciarProduccion(folio._id, false)
+    //     .subscribe((folio) => {
+    //       this.cargarFolios()
+    //     })
+    // })
   }
   generarOrdenesDelFolio(folio: Folio) {
     this.folioParaGenerarOrdenes = folio

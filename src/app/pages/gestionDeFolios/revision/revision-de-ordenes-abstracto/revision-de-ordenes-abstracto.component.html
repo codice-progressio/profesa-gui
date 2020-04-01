@@ -1,304 +1,389 @@
-<ng-container *ngIf="folio; else folioLineasElseTemplate">
-  <!-- 
-    =====================================
-     Encabezado
-    =====================================
-    -->
-  <div class="d-flex align-items-center justify-content-between">
-    <div class="d-flex align-items-center justify-content-between">
-      <h1 class="display-6 ">
-        FOL:<b># {{ folio.numeroDeFolio }}</b>
-      </h1>
-      <a
-        (click)="guardarCambios()"
-        class="btn btn-success btn-sm text-white ml-3 mb-1"
-        title="Genera las ordenes para produccion."
-        data-dismiss="modal"
-        role="button"
-      >
-        Generar ordenes</a
-      >
-      <a
-        (click)="collapseAll()"
-        class="btn btn-info btn-sm text-white ml-3 mb-1"
-        role="button"
-      >
-        <span *ngIf="!collapsado"> Collapsar pedidos</span>
-        <span *ngIf="collapsado"> Mostrar pedidos</span>
-      </a>
-    </div>
-    <h3>Revision de <b>ordenes</b></h3>
-  </div>
-  <!-- 
-    =====================================
-     END Encabezado
-    =====================================
-    -->
+<!-- 
+=====================================
+  surtir desde almacen o laserar
+=====================================
+-->
 
-  <hr />
+<app-modelo-completo-gestor-de-procesos-especiales
+  [debug]="true"
+  [pedido]="pedidoParaSurtirOLaserar"
+  (esteComponente)="modeloCompletoGestor = $event"
+>
+</app-modelo-completo-gestor-de-procesos-especiales>
 
-  <!-- 
-  =====================================
-   Observaciones del folio
-  =====================================
-  -->
-  <div class="row ">
-    <div class="col-6">
-      <h6><b>Observaciones del vendedor</b></h6>
-      <p>{{ folio.observacionesVendedor }}</p>
-    </div>
-    <div class="col-6">
-      <div class="form-group">
-        <label for="obserProduccionFol"
-          ><h6><b>Observaciones de produccion</b></h6></label
-        >
-        <textarea
-          [(ngModel)]="folio.observaciones"
-          class="form-control"
-          name="obserProduccionFol"
-          id="obserProduccionFol"
-          rows="3"
-        ></textarea>
-      </div>
-    </div>
-  </div>
+<!-- 
+=====================================
+ END  surtir desde almacen o laserar
+=====================================
+-->
 
-  <!-- 
-  =====================================
-   END Observaciones del folio
-  =====================================
-  -->
-
-  <div class="row mt-3">
-    <div
-      class="col-12 d-flex align-items-center bg-light"
-      style="height: 10px;"
-    >
-      <hr class="dashed" />
-    </div>
-  </div>
-
-  <!-- 
-  =====================================
-   Descripcion de pedidos
-  =====================================
-  -->
-
-  <ng-container *ngFor="let pedido of folio.folioLineas">
-    <div class="row bg-light-extra pt-4 pb-3">
-      <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center">
-          <h3 class="display-6">
-            <small
-              title="Este pedido esta revisado."
-              *ngIf="!pedido.requiereRevisionExtraordinaria"
-              class="text-success mr-3 animated tada"
-            >
-              <i class="fas fa-check"></i
-            ></small>
-            PEDIDO # <b>{{ pedido.pedido }}</b>
-            <span class="pl-5">{{ pedido.cantidad | number }} <b>pz</b></span>
-          </h3>
-
+<div class="row fadeIn animated colapse show procesosEspeciales">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <ng-container *ngIf="keys(cargando).length === 0">
+          <!-- 
+                    =====================================
+                     Encabezado
+                    =====================================
+                    -->
           <div class="d-flex align-items-center justify-content-between">
-            <div class="mr-3">
-              Prioridad :
-              <app-nivel-urgencia
-                [nivel]="pedido.nivelDeUrgencia"
-              ></app-nivel-urgencia>
-            </div>
-            <div>
-              <!-- 
-              =====================================
-               Boton convertir a medias.
-              =====================================
-              -->
-              <ng-container
-                *ngIf="!pedido.almacen; else botonDesactivadoTemplate"
+            <div class="d-flex align-items-center justify-content-between">
+              <h1 class="display-6 ">
+                FOL:<b># {{ folio.numeroDeFolio }}</b>
+              </h1>
+              <a
+                (click)="location.back()"
+                class="btn btn-danger btn-sm text-white ml-3 mb-1"
+                data-dismiss="modal"
+                role="button"
               >
-                <a
-                  (click)="
-                    pedido.popularOrdenes(
-                      (pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias)
-                    )
-                  "
-                  class="btn btn-info btn-sm text-white mr-3"
-                  title="Convierte todas las ordenes en medias ordnenes."
-                  role="button"
-                >
-                  <span *ngIf="pedido.gui_generarComoMedias">
-                    <i class="fas fa-star    "></i> Convertir a ordenes
-                  </span>
-                  <span *ngIf="!pedido.gui_generarComoMedias">
-                    <i class="fas fa-star-half    "></i> Convertir a
-                    medias</span
-                  >
-                </a>
-              </ng-container>
-              <ng-template #botonDesactivadoTemplate>
-                <a
-                  class="btn btn-light btn-sm mr-3"
-                  title="Las ordenes del almacen no se pueden hacer medias."
-                  role="button"
-                >
-                  <span>
-                    <i class="fas fa-star-half    "></i> Convertir a
-                    medias</span
-                  >
-                </a>
-              </ng-template>
+                <i class="fas fa-times-circle "> </i> Cancelar</a
+              >
+              <a
+                (click)="guardarCambios()"
+                class="btn btn-success btn-sm text-white ml-3 mb-1"
+                title="Genera las ordenes para produccion."
+                data-dismiss="modal"
+                role="button"
+              >
+                <i class="fas fa-check-circle    "></i>
+                Generar ordenes</a
+              >
 
-              <!-- 
-              =====================================
-               END Boton convertir a medias.
-              =====================================
-              -->
+              <a
+                (click)="collapseAll()"
+                class="btn btn-info btn-sm text-white ml-3 mb-1"
+                role="button"
+              >
+                <span *ngIf="!collapsado">
+                  <i class="fas fa-chevron-down    "></i> Collapsar
+                  pedidos</span
+                >
+                <span *ngIf="collapsado">
+                  <i class="fas fa-chevron-right    "></i> Mostrar pedidos</span
+                >
+              </a>
+            </div>
+            <h3>Revision de <b>ordenes</b></h3>
+          </div>
+          <!-- 
+                    =====================================
+                     END Encabezado
+                    =====================================
+                    -->
+
+          <hr />
+
+          <!-- 
+                  =====================================
+                   Observaciones del folio
+                  =====================================
+                  -->
+          <div class="row ">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="obserProduccionVendedor"
+                  ><h6><b>Observaciones del vendedor</b></h6></label
+                >
+                <textarea
+                  [value]="folio.observacionesVendedor"
+                  class="form-control"
+                  name="obserProduccionVendedor"
+                  id="obserProduccionVendedor"
+                  rows="3"
+                  disabled
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="obserProduccionFol"
+                  ><h6><b>Observaciones de produccion</b></h6></label
+                >
+                <textarea
+                  [(ngModel)]="folio.observaciones"
+                  class="form-control"
+                  name="obserProduccionFol"
+                  id="obserProduccionFol"
+                  rows="3"
+                ></textarea>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row pt-3" style="min-height: 100px">
-      <div class="col-12 d-flex justify-content-start">
-        <span>
+          <!-- 
+                  =====================================
+                   END Observaciones del folio
+                  =====================================
+                  -->
+
+          <div class="row mt-3">
+            <div
+              class="col-12 d-flex align-items-center bg-light"
+              style="height: 10px;"
+            >
+              <hr class="dashed" />
+            </div>
+          </div>
+
+          <!-- 
+                  =====================================
+                   Descripcion de pedidos
+                  =====================================
+                  -->
+
+          <ng-container *ngFor="let pedido of folio.folioLineas">
+            <div class="row bg-light-extra pt-4 pb-3">
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="display-6">
+                    <small
+                      title="Este pedido esta revisado."
+                      *ngIf="!pedido.requiereRevisionExtraordinaria"
+                      class="text-success mr-3 animated tada"
+                    >
+                      <i class="fas fa-check"></i
+                    ></small>
+                    PEDIDO # <b>{{ pedido.pedido }}</b>
+                    <span class="pl-5"
+                      >{{ pedido.cantidad | number }} <b>pz</b></span
+                    >
+                  </h3>
+
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
+                    <div class="mr-3">
+                      Prioridad :
+                      <app-nivel-urgencia
+                        [nivel]="pedido.nivelDeUrgencia"
+                      ></app-nivel-urgencia>
+                    </div>
+                    <div>
+                      <!-- 
+                              =====================================
+                               Boton convertir a medias.
+                              =====================================
+                              -->
+                      <ng-container
+                        *ngIf="!pedido.almacen; else botonDesactivadoTemplate"
+                      >
+                        <a
+                          (click)="
+                            popularOrdenes(
+                              (pedido.gui_generarComoMedias = !pedido.gui_generarComoMedias),
+                              pedido
+                            )
+                          "
+                          class="btn btn-info btn-sm text-white mr-3"
+                          title="Convierte todas las ordenes en medias ordnenes."
+                          role="button"
+                        >
+                          <span *ngIf="pedido.gui_generarComoMedias">
+                            <i class="fas fa-star    "></i> Convertir a ordenes
+                          </span>
+                          <span *ngIf="!pedido.gui_generarComoMedias">
+                            <i class="fas fa-star-half    "></i> Convertir a
+                            medias</span
+                          >
+                        </a>
+                      </ng-container>
+                      <ng-template #botonDesactivadoTemplate>
+                        <a
+                          class="btn btn-light btn-sm mr-3"
+                          title="Las ordenes del almacen no se pueden hacer medias."
+                          role="button"
+                        >
+                          <span>
+                            <i class="fas fa-star-half    "></i> Convertir a
+                            medias</span
+                          >
+                        </a>
+                      </ng-template>
+
+                      <!-- 
+                              =====================================
+                               END Boton convertir a medias.
+                              =====================================
+                              -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row pt-3" style="min-height: 100px">
+              <div class="col-12 d-flex justify-content-start">
+                <span>
+                  <a
+                    (click)="collapse(pedido.pedido)"
+                    class="btn btn-outline-primary btn-sm"
+                    href="javascript:void(0)"
+                    aria-expanded="false"
+                  >
+                    <ng-container *ngIf="listaDeMuestra[pedido.pedido]">
+                      <i class="fas fa-chevron-right    "></i>
+                      Mostrar
+                    </ng-container>
+                    <ng-container *ngIf="!listaDeMuestra[pedido.pedido]">
+                      <i class="fas fa-chevron-down    "></i>
+                      Ocultar
+                    </ng-container>
+                  </a>
+                </span>
+                <h1 class=" ml-3 dispal-1">
+                  {{ pedido.modeloCompleto.nombreCompleto }}
+                </h1>
+              </div>
+              <div class="col-6">
+                <h6><b>Laser del cliente :</b></h6>
+
+                <h1 class="display-6">
+                  <b> {{ pedido.laserCliente.laser }}</b>
+                </h1>
+              </div>
+              <div
+                class="col-6 d-flex justify-content-between align-items-center"
+              >
+                <h6>
+                  <b>Surtir de almacen: </b>
+                  <i
+                    *ngIf="pedido.almacen"
+                    class="fas fa-check text-success"
+                  ></i>
+                </h6>
+
+                <ng-container *ngIf="permitirEdicionDeProcesos(pedido)">
+                  <a
+                    data-toggle="collapse"
+                    data-target=".procesosEspeciales"
+                    href="javascript:void(0)"
+                    (click)="surtirOLaserar(pedido)"
+                    class="btn btn-warning text-dark ml-5 btn-sm"
+                  >
+                    <i class="fas fa-edit    "></i> Editar procesos</a
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <hr class="thin" />
+
+            <div class="row collapse show {{ pedido.pedido }} revisionDeFolios">
+              <div class="col-6">
+                <div class="form-group">
+                  <label> <b>Observaciones de vendedor</b> </label>
+                  <textarea
+                    class="form-control"
+                    disabled
+                    rows="3"
+                    [value]="pedido.observacionesVendedor"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for=""> <b>Observaciones de produccion</b> </label>
+                  <textarea
+                    class="form-control"
+                    name=""
+                    id=""
+                    rows="3"
+                    [(ngModel)]="pedido.observaciones"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="container text-center collapse show {{
+                pedido.pedido
+              }} revisionDeFolios"
+            >
+              <table class="table table-hover w-100">
+                <thead>
+                  <tr>
+                    <th title="El consecutivo de la orden.">#</th>
+                    <th title="El valor de la orden con respecto al estadar">
+                      Unidad
+                    </th>
+                    <th title="Las piezas que la orden llevara.">Pzs</th>
+                    <th title="La marca para laserarse">Marca Laser</th>
+                    <th title="El nivel de urgencia definido">Prioridad</th>
+                    <th title="">Observaciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let orden of pedido.ordenes; let i = index">
+                    <td>{{ i }}</td>
+                    <td>{{ orden.unidad }}</td>
+                    <td>{{ orden.piezasTeoricas | number }}</td>
+                    <td>{{ pedido.laserCliente.laser }}</td>
+                    <td>{{ orden.nivelDeUrgencia }}</td>
+
+                    <td>
+                      <div class="form-group">
+                        <input
+                          [(ngModel)]="orden.observaciones"
+                          type=" text"
+                          class="form-control form-control-sm"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row mt-3">
+              <div
+                class="col-12 d-flex bg-light align-items-center w-100"
+                style="height: 10px;"
+              >
+                <hr class="dashed" />
+              </div>
+            </div>
+          </ng-container>
+
           <a
-            (click)="collapse(pedido.pedido)"
-            class="btn btn-outline-primary"
+            (click)="location.back()"
+            class="btn btn-danger btn-sm mr-3 pull-right"
             href="javascript:void(0)"
-            aria-expanded="false"
+            role="button"
           >
-            <ng-container *ngIf="listaDeMuestra[pedido.pedido]">
-              <i class="fas fa-chevron-right    "></i>
-              Mostrar
-            </ng-container>
-            <ng-container *ngIf="!listaDeMuestra[pedido.pedido]">
-              <i class="fas fa-chevron-down    "></i>
-              Ocultar
-            </ng-container>
-          </a>
-        </span>
-        <h1 class=" ml-3 dispal-1">
-          {{ pedido.modeloCompleto.nombreCompleto }}
-        </h1>
-      </div>
-      <div class="col-6">
-        <h6><b>Laser del cliente :</b></h6>
-
-        <h1 class="display-6">
-          <b> {{ pedido.laserCliente.laser }}</b>
-        </h1>
-      </div>
-      <div class="col-6 d-flex justify-content-between align-items-center">
-        <h6>
-          <b>Surtir de almacen: </b>
-          <i *ngIf="pedido.almacen" class="fas fa-check text-success"></i>
-        </h6>
-
-        <ng-container *ngIf="permitirEdicionDeProcesos(pedido)">
+            <i class="fas fa-times-circle "> </i> Cancelar</a
+          >
           <a
-            data-toggle="modal"
-            data-target="#modalModeloCompletoGestorDeProcesosEspeciales"
-            (click)="surtirOLaserar(pedido)"
-            class="btn btn-warning text-dark ml-5 btn-sm"
+            (click)="guardarCambios()"
+            class="btn btn-success btn-sm  pull-right"
+            title="Genera las ordenes para produccion."
+            href="javascript:void(0)"
+            role="button"
           >
-            <i class="fas fa-edit    "></i> Editar procesos</a
+            Generar ordenes</a
           >
+        </ng-container>
+
+        <ng-container *ngIf="keys(cargando).length === 0 && !folio">
+          <h1 class="display-5">
+            No has seleccionado un folio <b>para ver su informacion</b>.
+          </h1>
+        </ng-container>
+
+        <ng-container *ngIf="keys(cargando).length > 0">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin"></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)">{{ cargando[key] }}</h2>
         </ng-container>
       </div>
     </div>
-
-    <hr class="thin" />
-
-    <div class="row collapse show {{ pedido.pedido }} revisionDeFolios">
-      <div class="col-6">
-        <div class="form-group">
-          <h6><b>Observaciones del vendedor:</b></h6>
-          <p>{{ pedido.observacionesVendedor }}</p>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label for=""> <b>Observaciones de produccion</b> </label>
-          <textarea
-            class="form-control"
-            name=""
-            id=""
-            rows="3"
-            [(ngModel)]="pedido.observaciones"
-          ></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="container text-center collapse show {{
-        pedido.pedido
-      }} revisionDeFolios"
-    >
-      <table class="table table-hover w-100">
-        <thead>
-          <tr>
-            <th title="El consecutivo de la orden.">#</th>
-            <th title="El valor de la orden con respecto al estadar">Unidad</th>
-            <th title="Las piezas que la orden llevara.">Pzs</th>
-            <th title="La marca para laserarse">Marca Laser</th>
-            <th title="El nivel de urgencia definido">Prioridad</th>
-            <th title="">Observaciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let orden of pedido.ordenes; let i = index">
-            <td>{{ i }}</td>
-            <td>{{ orden.unidad }}</td>
-            <td>{{ orden.piezasTeoricas | number }}</td>
-            <td>{{ pedido.laserCliente.laser }}</td>
-            <td>{{ orden.nivelDeUrgencia }}</td>
-
-            <td>
-              <div class="form-group">
-                <input
-                  [(ngModel)]="orden.observaciones"
-                  type=" text"
-                  class="form-control form-control-sm"
-                />
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="row mt-3">
-      <div
-        class="col-12 d-flex bg-light align-items-center w-100"
-        style="height: 10px;"
-      >
-        <hr class="dashed" />
-      </div>
-    </div>
-  </ng-container>
-</ng-container>
+  </div>
+</div>
 
 <!-- 
-  =====================================
-   END Descripcion de pedidos
-  =====================================
+    =====================================
+    END Descripcion de pedidos
+    =====================================
   -->
-
-<a
-  (click)="guardarCambios()"
-  class="btn btn-success btn-sm text-white mt-3 pull-right"
-  title="Genera las ordenes para produccion."
-  data-dismiss="modal"
-  role="button"
->
-  Generar ordenes</a
->
-<!-- <a class="btn btn-info btn-sm text-white" title='Muestra la opcion para editar el trayecto de la orden.' role="button">  Editar trayecto </a> -->
-
-<ng-template #folioLineasElseTemplate>
-  <h1 class="display-5">
-    No has seleccionado un folio <b>para ver su informacion</b>.
-  </h1>
-</ng-template>

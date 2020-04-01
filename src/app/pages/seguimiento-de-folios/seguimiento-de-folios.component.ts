@@ -100,20 +100,20 @@ export class SeguimientoDeFoliosComponent implements OnInit {
     }
     
     filtrar( filtro: string) {
-      this.filtrando = !(!filtro);
-      this.filtro = filtro;
-      if ( this.filtrando ) {
-        this._paginadorService.callback = (desde, limite) => {
-          this.paginadorConFiltro(desde, limite);
-        };
-        this.paginadorConFiltro();
+      // this.filtrando = !(!filtro);
+      // this.filtro = filtro;
+      // if ( this.filtrando ) {
+      //   this._paginadorService.callback = (desde, limite) => {
+      //     this.paginadorConFiltro(desde, limite);
+      //   };
+      //   this.paginadorConFiltro();
         
-      } else {
-        this._paginadorService.callback = ( desde, limite ) => {
-          this.cargarFolios(desde, limite);
-        };
-        this.cargarFolios();
-      }
+      // } else {
+      //   this._paginadorService.callback = ( desde, limite ) => {
+      //     this.cargarFolios(desde, limite);
+      //   };
+      //   this.cargarFolios();
+      // }
 
 
    }

@@ -5,28 +5,56 @@ import {
   Output,
   EventEmitter,
   Self
-} from "@angular/core"
-import { ModeloCompleto } from "../../models/modeloCompleto.modelo"
-import { ModeloCompletoService } from "../../services/modelo/modelo-completo.service"
-import { OrganizadorDragAndDropService } from "../../components/organizador-drag-and-drop/organizador-drag-and-drop.service"
-import { Proceso } from "src/app/models/proceso.model"
-import { DndObject } from "src/app/components/organizador-drag-and-drop/models/dndObject.model"
-import { FamiliaDeProcesosService } from "../../services/proceso/familia-de-procesos.service"
-import { ProcesoService } from "../../services/proceso/proceso.service"
-import { PaginadorAbstractoComponent } from "../paginador-abstracto/paginador-abstracto.component"
-import { FolioLinea } from "../../models/folioLinea.models"
-import { DefaultsService } from "../../services/configDefualts/defaults.service"
-import { DefaultModelData } from "../../config/defaultModelData"
-import { OrganizadorDragAndDrop } from "../../components/organizador-drag-and-drop/models/organizador-drag-and-drop.model"
-import { Procesos } from "src/app/models/procesos.model"
-import { filter } from "rxjs/operators"
+} from '@angular/core'
+import { ModeloCompleto } from '../../models/modeloCompleto.modelo'
+import { ModeloCompletoService } from '../../services/modelo/modelo-completo.service'
+import { OrganizadorDragAndDropService } from '../../components/organizador-drag-and-drop/organizador-drag-and-drop.service'
+import { Proceso } from 'src/app/models/proceso.model'
+import { DndObject } from 'src/app/components/organizador-drag-and-drop/models/dndObject.model'
+import { FamiliaDeProcesosService } from '../../services/proceso/familia-de-procesos.service'
+import { ProcesoService } from '../../services/proceso/proceso.service'
+import { PaginadorAbstractoComponent } from '../paginador-abstracto/paginador-abstracto.component'
+import { FolioLinea } from '../../models/folioLinea.models'
+import { DefaultsService } from '../../services/configDefualts/defaults.service'
+import { DefaultModelData } from '../../config/defaultModelData'
+import { OrganizadorDragAndDrop } from '../../components/organizador-drag-and-drop/models/organizador-drag-and-drop.model'
+import { Procesos } from 'src/app/models/procesos.model'
+import { filter } from 'rxjs/operators'
+import { Paginacion } from '../../utils/paginacion.util'
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  copyArrayItem
+} from '@angular/cdk/drag-drop'
 
 @Component({
-  selector: "app-modelo-completo-gestor-de-procesos-especiales",
-  templateUrl: "./modelo-completo-gestor-de-procesos-especiales.component.html"
+  selector: 'app-modelo-completo-gestor-de-procesos-especiales',
+  templateUrl: './modelo-completo-gestor-de-procesos-especiales.component.html'
 })
 export class ModeloCompletoGestorDeProcesosEspecialesComponent
   implements OnInit {
+  cargando = {}
+  keys = Object.keys
+
+  _pedido: FolioLinea
+  @Input() set pedido(pedido: FolioLinea) {
+    if (pedido) {
+      this._pedido = pedido
+      this.mctemp = pedido.modeloCompleto
+    }
+  }
+
+  get pedido() {
+    return this._pedido
+  }
+
+  procesos: Proceso[] = []
+
+  procesosSeleccionados: Proceso[] = []
+
+  mostrarProcesos: string[] = []
+
   /**
    *Este modelo completo temporal no sirve para estructurar los procesos
    * y obtener el orden de los especiales. Es necesario definirlo.
@@ -34,7 +62,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
    * @type {ModeloCompleto}
    * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
    */
-  @Input() mctemp: ModeloCompleto = null
+  mctemp: ModeloCompleto = null
 
   /**
    *Retorna este componente.
@@ -49,15 +77,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
    * @type {Proceso[]}
    * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
    */
-  procesos: Proceso[] = null
-
-  /**
-   *El paginador abstracto.
-   *
-   * @type {PaginadorAbstractoComponent}
-   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
-   */
-  paginador: PaginadorAbstractoComponent
+  // procesos: Proceso[] = null
 
   /**
    *Bandera para mostrar la informacion de debugueo.
@@ -67,11 +87,9 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
    */
   @Input() debug: boolean = false
 
-  @Input() pedido: FolioLinea
-
   defaultModelData: DefaultModelData
 
-  leyenda: string = " Arrastra procesos de la lista para agregarlos."
+  leyenda: string = ' Arrastra procesos de la lista para agregarlos.'
 
   procesosBasicos: {
     CONTROL_DE_PRODUCCION: Proceso
@@ -97,56 +115,44 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   procesosFinales: Proceso[] = []
 
   constructor(
-    public _smc: ModeloCompletoService,
-    public _dndService: OrganizadorDragAndDropService<Proceso>,
-    public _familiaService: FamiliaDeProcesosService,
-    public _procesoService: ProcesoService,
-    public _defaultsService: DefaultsService
+    public smc: ModeloCompletoService,
+    public familiaService: FamiliaDeProcesosService,
+    public procesoService: ProcesoService,
+    public defaultsService: DefaultsService
   ) {}
 
   ngOnInit() {
     this.esteComponente.emit(this)
-
-    this._defaultsService.cargarDefaults().subscribe((d) => {
-      this.defaultModelData = d
-      this.obtenerProcesoBasicos()
-    })
   }
 
   inicializar() {
-    this._procesoService
-      .todoAbstracto(1, 5, Proceso)
-      .subscribe(this.primeraCargaDeProcesos)
+    this.cargando['default'] = 'Cargando defaults'
 
-    this._dndService.leyendaListaSeleccionable = this.leyenda
-  }
+    this.defaultsService.cargarDefaults().subscribe(d => {
+      this.defaultModelData = d
+      this.obtenerProcesoBasicos()
 
-  primeraCargaDeProcesos = (procesos) => {
-    this.procesos = procesos
+      delete this.cargando['default']
+      this.cargando['obteniendo procesos']
+      this.procesoService
+        .findAll(new Paginacion(500, 0, 1, 'nombre'), '')
+        .subscribe(procesos => {
+          this.procesos = procesos
+          this.mostrarProcesos = this.procesos.map(x => x._id)
 
-    this.cargarProcesos(this.procesos)
+          // Necesitamos saber si este pedido tiene alguno de los siguientes trayectos.
 
-    // Preparando paginador.
-    let intervaloDeEsperaPaginador = setInterval(() => {
-      if (this.paginador) {
-        clearInterval(intervaloDeEsperaPaginador)
-        this.paginador.totalDeElementos = this._procesoService.total
-        this.paginador.inciarPaginador()
-        this.paginador.cargandoDatos = false
-      }
-    }, 100)
+          /**
+           * x. Es de almacen y no va laserado.
+           * x. Es de almacen y va laserado.
+           * x. No es de almacen y va laserado.
+           *
+           *
+           */
 
-    // Necesitamos saber si este pedido tiene alguno de los siguientes trayectos.
-
-    /**
-     * x. Es de almacen y no va laserado.
-     * x. Es de almacen y va laserado.
-     * x. No es de almacen y va laserado.
-     *
-     *
-     */
-
-    this.comprobarProcesosACargar()
+          this.comprobarProcesosACargar()
+        })
+    })
   }
 
   comprobarProcesosACargar() {
@@ -190,37 +196,37 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   seSurteDeAlmacenYNoVaLaserado(self: this) {
     // Limpiamos la lista dnd, pero no toda, solo los objetos que se
     // pueden modificar.
-    self._dndService.limpiarListaDeObjetosSeleccionados_Destruir()
+    // self.dndService.limpiarListaDeObjetosSeleccionados_Destruir()
     // Los procesos que tienen que llevar todos las trayectorias.
     self.cargarProcesosPorDefault()
 
     // Generamos la nueva area. Dentro ira el padre fijo.
-    let keyArea = "1"
-    let organizador = self._dndService.nuevaArea(keyArea)
+    let keyArea = '1'
+    // let organizador = self.dndService.nuevaArea(keyArea)
 
     // Creamos el padre fijo(azul) en el que vamos a poder
     // arrastrar los procesos.
-    organizador
-      .setPadre()
-      .setEliminable(false)
-      .setLeyenda("Procesos para este pedido")
-      .setOrden("1")
+    // organizador
+    //   .setPadre()
+    //   .setEliminable(false)
+    //   .setLeyenda("Procesos para este pedido")
+    //   .setOrden("1")
 
     // Actualiamos el orden del proceso
-    self._dndService.actualizarPropiedadOrden()
+    // self.dndService.actualizarPropiedadOrden()
 
     // Si hay procesos ya cargados con anterioridad
     // esta linea se encarga de mostrarlos.
-    if (self.pedido.procesos.length > 0) {
-      self.cargarProcesosEnPedido(
-        self,
-        organizador,
-        self.contadorOmisionProcesos,
-        self.pedido.procesos.length,
-        2,
-        3
-      )
-    }
+    // if (self.pedido.procesos.length > 0) {
+    //   self.cargarProcesosEnPedido(
+    //     self,
+    //     organizador,
+    //     self.contadorOmisionProcesos,
+    //     self.pedido.procesos.length,
+    //     2,
+    //     3
+    //   )
+    // }
 
     // Actualizamos el drop success por que es el que
     // guarda la estructura de los procesos dentro
@@ -268,7 +274,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
     // Recorremos todos los procesos del pedido
     // para escoger los que no son por defecto.
-    pedido.procesos.forEach((procesos) => {
+    pedido.procesos.forEach(procesos => {
       if (
         !self.omitirProcesos(contador, total, procesosAlFinal, procesosALInicio)
       ) {
@@ -286,7 +292,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
       contador++
     })
 
-    self._dndService.actualizarPropiedadOrden()
+    // self.dndService.actualizarPropiedadOrden()
   }
 
   /**
@@ -357,34 +363,34 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   seSurteDeAlmacenYVaLaserado(self: this) {
     // Necesitamos conseguir los dos departamentos.
 
-    self._dndService.limpiarListaDeObjetosSeleccionados_Destruir()
+    // self.dndService.limpiarListaDeObjetosSeleccionados_Destruir()
     self.cargarProcesosPorDefault()
 
     // Agregamos tambien lavado de manera fija al principio de
     // procesosFinales.
     self.procesosFinales.unshift(self.procesosBasicos.LAVADO)
-    let organizador = self.crearAreaDnd("1", "Procesos para este pedido", 1)
+    // let organizador = self.crearAreaDnd("1", "Procesos para este pedido", 1)
 
     // Actualiamos el orden del proceso
-    self._dndService.actualizarPropiedadOrden()
+    // self.dndService.actualizarPropiedadOrden()
 
     // Si hay procesos ya cargados con anterioridad
     // esta linea se encarga de mostrarlos.
-    if (self.pedido.procesos.length > 0) {
-      self.cargarProcesosEnPedido(
-        self,
-        organizador,
-        self.contadorOmisionProcesos,
-        self.pedido.procesos.length,
-        2,
-        4
-      )
-    }
+    // if (self.pedido.procesos.length > 0) {
+    //   self.cargarProcesosEnPedido(
+    //     self,
+    //     organizador,
+    //     self.contadorOmisionProcesos,
+    //     self.pedido.procesos.length,
+    //     2,
+    //     4
+    //   )
+    // }
 
     // Agrega el proceso de laser, que debe de ser
     // ordenable pero no eliminable.
 
-    self.agregarLaserOrdenable(self, organizador)
+    // self.agregarLaserOrdenable(self, organizador)
 
     // Actualizamos el drop success por que es el que
     // guarda la estructura de los procesos dentro
@@ -409,14 +415,14 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
     // Debe existir por lo menos un laser.
 
     let laserPedido = self.pedido.procesos.find(
-      (proc) => proc.proceso._id === self.procesosBasicos.LASER._id
+      proc => proc.proceso._id === self.procesosBasicos.LASER._id
     )
 
     if (laserPedido) {
       // Busca el proceso de laserado (el primero que se encuentre si hay
       // varios) y lo convierte en no eliminable, solo arrastrable.
       organizador.hijos.ordenables
-        .find((hijo) => hijo.objeto._id === self.procesosBasicos.LASER._id)
+        .find(hijo => hijo.objeto._id === self.procesosBasicos.LASER._id)
         .setEliminable(false)
     } else {
       // No existe el prceso laser, entonces es necesario que lo creemos.
@@ -446,9 +452,9 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
       }
     }
 
-    this._procesoService
+    this.procesoService
       .findById_multiple(arregloDeBusqueda)
-      .subscribe((procesos) => {
+      .subscribe(procesos => {
         this.procesosBasicos.CONTROL_DE_PRODUCCION = this.buscarProceso(
           procesos,
           this.defaultModelData.PROCESOS.CONTROL_DE_PRODUCCION
@@ -489,9 +495,9 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   }
 
   private buscarProceso(procesos: Proceso[], id: string): Proceso {
-    if (!id) throw "No"
+    if (!id) throw 'No'
 
-    return procesos.find((proceso) => proceso._id == id)
+    return procesos.find(proceso => proceso._id == id)
   }
 
   /**
@@ -507,24 +513,22 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
      */
     let contador = 0
     //Limpiamos la lista de objetos.
-    self._dndService.limpiarListaDeObjetosSeleccionados_Destruir()
+    // self.dndService.limpiarListaDeObjetosSeleccionados_Destruir()
 
     // Agregamos todos los pedidos que va
     let organizador: OrganizadorDragAndDrop<Proceso> = null
-    self.pedido.modeloCompleto.familiaDeProcesos.procesos.forEach(
-      (procesos) => {
-        organizador = self.crearAreaDnd(
-          procesos.proceso._id,
-          procesos.proceso.nombre,
-          contador,
-          procesos.proceso.departamento.nombre
-        )
+    self.pedido.modeloCompleto.familiaDeProcesos.procesos.forEach(procesos => {
+      // organizador = self.crearAreaDnd(
+      //   procesos.proceso._id,
+      //   procesos.proceso.nombre,
+      //   contador,
+      //   procesos.proceso.departamento.nombre
+      // )
 
-        self._dndService.actualizarPropiedadOrden()
+      // self.dndService.actualizarPropiedadOrden()
 
-        contador++
-      }
-    )
+      contador++
+    })
 
     self.noSeSurteDeAlmacenYVaLaserado_pedidosExistentes(self)
     self.noSeSurteDeAlmacenYVaLaserado_cargarLaser(self)
@@ -534,7 +538,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
   private noSeSurteDeAlmacenYVaLaserado_pedidosExistentes(self: this) {
     // Revisamos si el pedido ya tiene procesos especiales agregados.
-    
+
     let yaHayUnLaserNoEliminable: boolean = false
     if (self.pedido.procesos.length > 0) {
       // Si hay pedidos tenemos que cargarlos en donde corresponde.
@@ -548,8 +552,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
         self.pedido.modeloCompleto.familiaDeProcesos.procesos
       //Itineramos sobre cada proceso para obtener padre ( en el dnd )
       // y asignar los hijos que le correspondan.
-      procesosDesdeFamilia.forEach((procesos_Padre) => {
-
+      procesosDesdeFamilia.forEach(procesos_Padre => {
         /**
          * Los datos de este padre.
          */
@@ -563,44 +566,43 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
            * que estamos itinerando.
            *
            */
-          orden: procesos_Padre.orden,
-          
+          orden: procesos_Padre.orden
         }
 
         // Recorremos los pedidos que estan almacenados en los
         // procesos especiales para filtrar solo los que
         // perteneces al padre de los procesos
         self.pedido.procesos
-          .filter((objetoProcesos) => {
+          .filter(objetoProcesos => {
             // Obtenemos el orden del proceso para saber
             // si a este padre se lo vamos a asignar.
-            let padreInt = objetoProcesos.orden.split(".")[0]
-           
+            let padreInt = objetoProcesos.orden.split('.')[0]
+
             return estePadre.orden == padreInt
           })
-          .forEach((procsPedidosEspeciales) => {
-
+          .forEach(procsPedidosEspeciales => {
             // Debe de haber un laser que no sea eliminable
-            // y solo una vez. Asi que lo comprobamos una 
+            // y solo una vez. Asi que lo comprobamos una
             // unica ocasion
             let eliminable = true
-            if( !yaHayUnLaserNoEliminable ){
-              eliminable =
-             !( procsPedidosEspeciales.proceso._id ===
-              this.procesosBasicos.LASER._id)
-              if( !eliminable ) yaHayUnLaserNoEliminable = true
+            if (!yaHayUnLaserNoEliminable) {
+              eliminable = !(
+                procsPedidosEspeciales.proceso._id ===
+                this.procesosBasicos.LASER._id
+              )
+              if (!eliminable) yaHayUnLaserNoEliminable = true
             }
 
-            this._dndService
-              .obtenerObjetoPadre(estePadre._id)
-              .hijos.addOrdenable()
-              .setEliminable(eliminable)
-              .setLeyenda(procsPedidosEspeciales.proceso.nombre)
-              .setLeyendaOptativa(
-                procsPedidosEspeciales.proceso.departamento.nombre
-              )
-              .setObjeto(procsPedidosEspeciales.proceso)
-              .setOrden(procsPedidosEspeciales.orden)
+            // this.dndService
+            // .obtenerObjetoPadre(estePadre._id)
+            // .hijos.addOrdenable()
+            // .setEliminable(eliminable)
+            // .setLeyenda(procsPedidosEspeciales.proceso.nombre)
+            // // .setLeyendaOptativa(
+            // //   procsPedidosEspeciales.proceso.departamento.nombre
+            // // )
+            // .setObjeto(procsPedidosEspeciales.proceso)
+            // .setOrden(procsPedidosEspeciales.orden)
           })
       })
     }
@@ -617,62 +619,53 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
   private noSeSurteDeAlmacenYVaLaserado_cargarLaser(self: this) {
     // Existe laser en algun momento? Debemos revisar si existe
     // en los padres o en los hijos.
-
     // Lo mas comun es que exista en los padres
-
-    let existeEnPadre = self._dndService
-      .keys()
-      .find((k) => self.procesosBasicos.LASER._id === k)
-
+    // let existeEnPadre = self.dndService
+    //   .keys()
+    //   .find((k) => self.procesosBasicos.LASER._id === k)
     // Si existe en el padre pues ya no ocupamos hacer nada, pero si no
     // existe entonces tenemos que asegurarnos que no existe en los hijos.
-    if (!existeEnPadre) {
-      //No existe. hay que buscar en los hijos.
-      let existeEnHijo = self._dndService.existeObjectoPorCampo(
-        self.procesosBasicos.LASER._id
-      )
-      
-      if (!existeEnHijo) {
-        // No existe en hijo. Hay que agregarlo.
-        // Si no existe tenemos que agregarlo y de preferencia despues
-        // del primer paso.
-
-        //Hay transformacion primer paso? Siempre que se fabrica un boton
-        // debe de haber primer paso.
-
-        // Si hay transformacion. Obtenemos el padre para agregarle un hijo
-        self._dndService
-          .obtenerObjetoPadre(self.procesosBasicos.TRANSFORMACION_1ER_PASO._id)
-          .hijos.addOrdenable()
-          .setEliminable(false)
-          .setLeyenda(self.procesosBasicos.LASER.nombre)
-          .setLeyendaOptativa(self.procesosBasicos.LASER.departamento.nombre)
-          .setObjeto(self.procesosBasicos.LASER)
-
-        self._dndService.actualizarPropiedadOrden()
-      }
-    } 
-
-
+    // if (!existeEnPadre) {
+    // //No existe. hay que buscar en los hijos.
+    // let existeEnHijo = self.dndService.existeObjectoPorCampo(
+    //   self.procesosBasicos.LASER._id
+    // )
+    // if (!existeEnHijo) {
+    //   // No existe en hijo. Hay que agregarlo.
+    //   // Si no existe tenemos que agregarlo y de preferencia despues
+    //   // del primer paso.
+    //   //Hay transformacion primer paso? Siempre que se fabrica un boton
+    //   // debe de haber primer paso.
+    //   // Si hay transformacion. Obtenemos el padre para agregarle un hijo
+    //   self.dndService
+    //     .obtenerObjetoPadre(self.procesosBasicos.TRANSFORMACION_1ER_PASO._id)
+    //     .hijos.addOrdenable()
+    //     .setEliminable(false)
+    //     .setLeyenda(self.procesosBasicos.LASER.nombre)
+    //     .setLeyendaOptativa(self.procesosBasicos.LASER.departamento.nombre)
+    //     .setObjeto(self.procesosBasicos.LASER)
+    //   self.dndService.actualizarPropiedadOrden()
+    // }
+    // }
   }
 
-  private crearAreaDnd(
-    nombreDeArea: string,
-    leyenda: string,
-    orden: number,
-    optativa: string = "",
-    eliminable: boolean = false
-  ): OrganizadorDragAndDrop<Proceso> {
-    let organizador = this._dndService
-      .nuevaArea(nombreDeArea)
-      .setPadre()
-      .setEliminable(eliminable)
-      .setLeyenda(leyenda)
-      .setLeyendaOptativa(optativa)
-      .setOrden(orden + "").dnd
+  // private crearAreaDnd(
+  //   nombreDeArea: string,
+  //   leyenda: string,
+  //   orden: number,
+  //   optativa: string = "",
+  //   eliminable: boolean = false
+  // ): OrganizadorDragAndDrop<Proceso> {
+  //   // let organizador = this.dndService
+  //   //   .nuevaArea(nombreDeArea)
+  //   //   .setPadre()
+  //   //   .setEliminable(eliminable)
+  //   //   .setLeyenda(leyenda)
+  //   //   .setLeyendaOptativa(optativa)
+  //   //   .setOrden(orden + "").dnd
 
-    return organizador
-  }
+  //   // return organizador
+  // }
 
   /**
    *Genera los datos del paginador para el modelo seleccionado.
@@ -682,42 +675,41 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
    */
   cargarLosProcesosPorDefault(mc: ModeloCompleto) {
     // Este es con fines de debugueo
-
-    // this.mctemp = mc
-    // ---------------------------
-    this._dndService.leyendaListaSeleccionable =
-      "Arrastra procesos de la lista para agregarlos."
-    mc.familiaDeProcesos.procesos.forEach((procesos) => {
-      let keyArea = procesos.orden.toString().split(".")[0]
-      this._dndService
-        .nuevaArea(keyArea)
-        .setPadre()
-        .setEliminable(false)
-        .setLeyenda(procesos.proceso.nombre + " " + keyArea)
-        .setLeyendaOptativa(procesos.proceso.departamento.nombre)
-        .setOrden(procesos.orden)
-        .setObjeto(procesos.proceso)
-    })
-    this._dndService.actualizarPropiedadOrden()
+    // // this.mctemp = mc
+    // // ---------------------------
+    // this.dndService.leyendaListaSeleccionable =
+    //   "Arrastra procesos de la lista para agregarlos."
+    // mc.familiaDeProcesos.procesos.forEach((procesos) => {
+    //   let keyArea = procesos.orden.toString().split(".")[0]
+    //   this.dndService
+    //     .nuevaArea(keyArea)
+    //     .setPadre()
+    //     .setEliminable(false)
+    //     .setLeyenda(procesos.proceso.nombre + " " + keyArea)
+    //     .setLeyendaOptativa(procesos.proceso.departamento.nombre)
+    //     .setOrden(procesos.orden)
+    //     .setObjeto(procesos.proceso)
+    // })
+    // this.dndService.actualizarPropiedadOrden()
   }
 
-  /**
-   *Genera la lista del paginador para seleccionar.
-   *
-   * @param {Proceso[]} procesos
-   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
-   */
-  cargarProcesos(procesos: Proceso[]) {
-    this._dndService.limpiarListaDeElementos()
-    procesos.forEach((proceso) => {
-      let a = new DndObject<Proceso>()
-      a.setEliminable(true)
-        .setLeyenda(proceso.nombre)
-        .setLeyendaOptativa(proceso.departamento.nombre)
-        .setObjeto(proceso)
-      this._dndService.listaDeElementos.push(a)
-    })
-  }
+  // /**
+  //  *Genera la lista del paginador para seleccionar.
+  //  *
+  //  * @param {Proceso[]} procesos
+  //  * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+  //  */
+  // cargarProcesos(procesos: Proceso[]) {
+  //   this._dndService.limpiarListaDeElementos()
+  //   procesos.forEach((proceso) => {
+  //     let a = new DndObject<Proceso>()
+  //     a.setEliminable(true)
+  //       .setLeyenda(proceso.nombre)
+  //       .setLeyendaOptativa(proceso.departamento.nombre)
+  //       .setObjeto(proceso)
+  //     this._dndService.listaDeElementos.push(a)
+  //   })
+  // }
 
   /**
    *Carga los dato de la lista a procesosEspecialesSeleccionados.
@@ -741,52 +733,49 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
    */
   private dropSuccess_noVieneDeAlmacen() {
     // aqui estamos trabajando necesitamos
-    // obtener los pedidos que no vienen desde
-    // almacen!!! y guardar sus pedidos!
-
-    this.pedido.procesos = []
-
-    this._dndService.obtenerHijosOrdenables().forEach((dnd) => {
-      let prcs = new Procesos()
-      prcs.orden = dnd.orden
-      prcs.proceso = dnd.objeto
-      this.pedido.procesos.push(prcs)
-    })
+    // // obtener los pedidos que no vienen desde
+    // // almacen!!! y guardar sus pedidos!
+    // this.pedido.procesos = []
+    // this.dndService.obtenerHijosOrdenables().forEach((dnd) => {
+    //   let prcs = new Procesos()
+    //   prcs.orden = dnd.orden
+    //   prcs.proceso = dnd.objeto
+    //   this.pedido.procesos.push(prcs)
+    // })
   }
 
   private dropSuccess_vieneDeAlmacen() {
-    this._dndService.actualizarPropiedadOrden()
+    // this.dndService.actualizarPropiedadOrden()
     let procesosEspecialesDePedido: Procesos[] = []
 
     // Cargamos los procesos de inicializacion al pedido
     let contador = 0
-    this.procesosIniciales.forEach((proceso) => {
+    this.procesosIniciales.forEach(proceso => {
       procesosEspecialesDePedido.push(
-        this.generarProcesos("0" + contador + "", proceso)
+        this.generarProcesos('0' + contador + '', proceso)
       )
 
       contador++
     })
 
     // Cargamos los procesos seleccionables al pedido.
-    this._dndService.obtenerHijosOrdenables().forEach((dnd) => {
-      procesosEspecialesDePedido.push(
-        this.generarProcesos("1" + contador + "", dnd.objeto)
-      )
-    })
+    // this.dndService.obtenerHijosOrdenables().forEach((dnd) => {
+    //   procesosEspecialesDePedido.push(
+    //     this.generarProcesos("1" + contador + "", dnd.objeto)
+    //   )
+    // })
 
     // Cargamos los procesos finales al pedido.
     let contador2 = 0
-    this.procesosFinales.forEach((proceso) => {
+    this.procesosFinales.forEach(proceso => {
       procesosEspecialesDePedido.push(
-        this.generarProcesos("2" + contador2 + "", proceso)
+        this.generarProcesos('2' + contador2 + '', proceso)
       )
 
       contador2++
     })
 
     this.pedido.procesos = procesosEspecialesDePedido
-
   }
 
   private generarProcesos(orden: string, objeto: Proceso): Procesos {
@@ -796,26 +785,60 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
     return procesos
   }
-  /**
-   *Ejecuta los procesos necesario y consultas para hacer el cambio de pagina
-   en la lista de elementos del dnd.
-   *
-   * @param {{ ["limite"]: number; ["desde"]: number }} e
-   * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
-   */
-  cambiarPagina(e: { ["limite"]: number; ["desde"]: number }) {
-    this._procesoService
-      .todoAbstracto(e.desde, e.limite, Proceso)
-      .subscribe((datos) => {
-        this.procesos = datos
-        this._dndService.limpiarListaDeElementos()
-        this.cargarProcesos(datos)
-        this.paginador.totalDeElementos = this._procesoService.total
-        this.paginador.cargaDePaginador(false)
-      })
-  }
+  // /**
+  //  *Ejecuta los procesos necesario y consultas para hacer el cambio de pagina
+  //  en la lista de elementos del dnd.
+  //  *
+  //  * @param {{ ["limite"]: number; ["desde"]: number }} e
+  //  * @memberof ModeloCompletoGestorDeProcesosEspecialesComponent
+  //  */
+  // cambiarPagina(e: { ["limite"]: number; ["desde"]: number }) {
+  //   this._procesoService
+  //     .todoAbstracto(e.desde, e.limite, Proceso)
+  //     .subscribe((datos) => {
+  //       this.procesos = datos
+  //       this._dndService.limpiarListaDeElementos()
+  //       // this.cargarProcesos(datos)
+  //       this.paginador.totalDeElementos = this._procesoService.total
+  //       this.paginador.cargaDePaginador(false)
+  //     })
+  // }
 
   revisarPedido(pedido: FolioLinea) {
     pedido.requiereRevisionExtraordinaria = !pedido.requiereRevisionExtraordinaria
+  }
+
+  drop(event: CdkDragDrop<Proceso[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      )
+    } else {
+      copyArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      )
+    }
+  }
+
+  filtrar(termino: string) {
+    if (!termino.trim()) {
+      this.mostrarProcesos = this.procesos.map(x => x._id)
+      return
+    }
+
+    this.mostrarProcesos = this.procesos
+      .filter(x => {
+        const buscar = `${x.nombre} ${x.departamento.nombre}`
+        console.log(buscar)
+        return buscar.includes(termino.trim())
+      })
+      .map(x => x._id)
+
+      console.log(`this.mostrarProcesos`,this.mostrarProcesos)
   }
 }
