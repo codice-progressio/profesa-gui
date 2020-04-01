@@ -26,6 +26,8 @@ import {
   ToastNoAnimationModule
 } from 'ngx-toastr';
 
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -42,8 +44,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     APP_ROUTES,
     BrowserAnimationsModule, // required animations module
+    NgxMaskModule.forRoot(),
     SharedModule.forRoot(),
-
+    
 
   ],
   providers: [
