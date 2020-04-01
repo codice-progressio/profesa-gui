@@ -130,12 +130,7 @@
                       <th title="Piezas producidas" class="text-right">
                         PZ PRO
                       </th>
-                      <th
-                        class=" text-center fit"
-                        title="Prioridad del pedido. Si hay ordenes con niveles de prioridad diferente se toma el de mayor importancia siempre cuando supere la prioridad del pedido."
-                      >
-                        PRI
-                      </th>
+                      
                       <th
                         title="Tiempo que lleva en produccion el folio"
                         class="text-right"
@@ -179,11 +174,7 @@
                           {{ ordenesSegunEstandar(pedido) | number: '0.0-3' }}
                         </td>
                         <td class="text-right"></td>
-                        <td>
-                          <app-nivel-urgencia
-                            [nivel]="pedido.nivelDeUrgencia"
-                          ></app-nivel-urgencia>
-                        </td>
+                       
                         <td></td>
                         <td class="text-right">
                           <app-progress-bar
