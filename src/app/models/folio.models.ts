@@ -7,7 +7,7 @@ export class Folio implements Deserializable {
   constructor(
     public _id?: string,
     public numeroDeFolio?: string,
-    public cliente?: Cliente,
+    public cliente: Cliente = new Cliente(),
     public fechaFolio: Date = new Date(),
     public fechaEntrega: Date = new Date(),
     public vendedor?: Usuario,

@@ -54,7 +54,6 @@ export class FolioNewService {
     return this.http.get<PedidosConsulta[]>(url).pipe(
       map(
         (resp: any) => {
-          console.log(resp.total)
           return resp.pedidos as PedidosConsulta[]
         },
         catchError(err => this.errFun(err))
@@ -247,9 +246,9 @@ export class FolioNewService {
     )
   }
 
-  revision_iniciarProduccion(id: string): Observable<null> {
-    const url = this.base.concat('/iniciarProduccion').concat(`/${id}`)
-    return this.http.get(url).pipe(
+  revision_iniciarProduccion(_id: string): Observable<null> {
+    const url = this.base.concat('/iniciarProduccion')
+    return this.http.post(url, {_id}).pipe(
       map(this.mapInicioYRetorno),
       catchError(err => this.errFun(err))
     )

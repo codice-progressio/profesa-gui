@@ -1,31 +1,24 @@
 <div id="print" *ngIf="pedido">
-  <h3>
-    <b>DETALLE DE PEDIDO</b>
-    <small class="ml-3">
-      <app-nivel-urgencia [nivel]="pedido.nivelDeUrgencia"></app-nivel-urgencia>
-    </small>
-    <span class="pull-right">#{{ pedido.pedido }}</span>
-  </h3>
-  <hr />
   <div class="row">
-    <div class="col-md-12">
-      <div class="pull-right w-50 b-l text-right">
-        <h1>
-          <strong>{{ pedido.modeloCompleto | modeloCompleto }}</strong>
-        </h1>
-        <h6>
-          Piezas solicitadas <strong>{{ pedido.cantidad | number }}</strong>
-        </h6>
-        <h6>
-          Piezas producidas al dia de hoy
-          <strong>{{ pedido.cantidadProducida | number }}</strong>
-        </h6>
-      </div>
-
+    <div class="col-12 col-sm-6">
+      <h3 class="font-bold"><span class="text-muted">Pedido: </span>#{{ pedido.pedido }}</h3>
       <h6 title="Fecha estimada de entrega">Fecha estimada de entrega:</h6>
       <span title="Fecha sin definir">
         <i class="fas fa-clock-o" aria-hidden="true"></i> Sin definir
       </span>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <h1>
+        <strong>{{ pedido.modeloCompleto | modeloCompleto }}</strong>
+      </h1>
+      <h6>
+        Piezas solicitadas <strong>{{ pedido.cantidad | number }}</strong>
+      </h6>
+      <h6>
+        Piezas producidas al dia de hoy
+        <strong>{{ pedido.cantidadProducida | number }}</strong>
+      </h6>
     </div>
 
     <div class="col-12">
@@ -40,10 +33,7 @@
     <div class="col-md-12">
       <hr />
       <div class="table-responsive m-t-40" style="clear: both;">
-        <table
-          class="table table-bordered"
-          *ngIf="pedido.ordenesGeneradas"
-        >
+        <table class="table table-bordered" *ngIf="pedido.ordenesGeneradas">
           <thead class="100">
             <tr>
               <th></th>

@@ -1,401 +1,444 @@
-<app-general
-  [mostrarBuscador]="false"
-  [cbCrear]="cbCrear()"
-  [cbBuscar]="cbBuscar()"
-  [mostrarLista]="mostrarLista"
-  [crearModificar]="crearModificar"
-  [paginador]="_paginadorService"
->
-  <div class="row">
-    <div class="col-12 col-sm-6 col-lg-5 col-xl-4">
-      <button
-        [disabled]="!this.activarBotonFoliosDeProduccion"
-        type="button"
-        (click)="
-          this.cargarFoliosEntregadosAProduccion = !this
-            .cargarFoliosEntregadosAProduccion;
-          this.mostrarFoliosConOrdenes = foliosSinOrdenes(
-            !this.mostrarFoliosConOrdenes
-          )
-        "
-        class="btn btn-primary btn-block "
-      >
-        <ng-container *ngIf="mostrarFoliosConOrdenes; else elseTemplate">
-          <i class="fas fa-file-alt    "></i> Ir a folios por confirmar
-        </ng-container>
-        <ng-template #elseTemplate>
-          <i class="fas fa-cogs    "></i>
-          Ir a folios en proceso
-        </ng-template>
-      </button>
-    </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="home-tab"
+              data-toggle="tab"
+              href="#enProceso"
+              role="tab"
+              aria-controls="home"
+              aria-selected="true"
+              (click)="cargarPedidosEnProceso()"
+              >En proceso</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="profile-tab"
+              data-toggle="tab"
+              href="#porEnviarAProduccion"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+              (click)="cargarFoliosPorEnviarAProduccion()"
+              >Por enviar a produccion</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="contact-tab"
+              data-toggle="tab"
+              href="#terminados"
+              role="tab"
+              aria-controls="contact"
+              aria-selected="false"
+              >Terminados</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div *ngIf="keys(cargando).length > 0" class="row mt-5">
+            <div class="col-12">
+              <h1 class="display-1 w-100 text-center">
+                <i class="fas fa-sync fa-spin   "></i>
+              </h1>
+              <h3
+                class="w-100 text-center"
+                *ngFor="let key of cargando | keyvalue"
+              >
+                {{ key.value }}
+              </h3>
+            </div>
+          </div>
 
-    <div
-      class="col-12 col-sm-6 col-lg-3 col-xl-2"
-      *ngIf="this.mostrarFoliosConOrdenes"
-      (click)="filtrosMostrarParaFolios(this.enlistarComoPedidos)"
-    >
-      <button
-        class="btn btn-warning"
-        type="button"
-        data-toggle="collapse"
-        data-target="#filtros"
-        aria-expanded="false"
-        aria-controls="filtros"
-      >
-        Filtros
-      </button>
-    </div>
-    <div
-      class="col-12 col-sm-6 col-lg-5 col-xl-4"
-      *ngIf="this.mostrarFoliosConOrdenes"
-    >
-      <button
-        class="btn btn-warning"
-        type="button"
-        (click)="verComoFolios(this.componenteFiltrador)"
-      >
-        <span *ngIf="!this.enlistarComoPedidos">Ver como pedidos</span>
-        <span *ngIf="this.enlistarComoPedidos">Ver como folios</span>
-      </button>
+          <div
+            class="tab-pane fade show active "
+            id="enProceso"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <ng-container *ngTemplateOutlet="enProceso"></ng-container>
+          </div>
+          <div
+            class="tab-pane fade "
+            id="porEnviarAProduccion"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+          >
+            <ng-container
+              *ngTemplateOutlet="porEnviarAProduccion"
+            ></ng-container>
+          </div>
+          <div
+            class="tab-pane fade "
+            id="terminados"
+            role="tabpanel"
+            aria-labelledby="contact-tab"
+          >
+            <ng-container *ngTemplateOutlet="terminados"></ng-container>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <hr />
-
-  <div *ngIf="this.mostrarFoliosConOrdenes" class="collapse mt-5" id="filtros">
-    <app-grupo-de-filtro
-      (obtenerEsteComponente)="this.componenteFiltrador = $event"
-      (obtenerFiltros)="aplicarFiltros($event)"
-    ></app-grupo-de-filtro>
-  </div>
-
-  <ng-container *ngIf="mostrarLista">
-    <!-- 
-    =====================================
-     BODY
-    =====================================
-    -->
-
-    <ng-container *ngIf="elementos">
-      <table
-        *ngIf="elementos.length > 0"
-        class="table table-responsive table-hover mt-5"
+  <!-- 
+  =====================================
+   Tabla en proceso
+  =====================================
+  -->
+  <ng-template #enProceso>
+    <div class="row mt-3">
+      <div
+        class="
+        col-12 
+        col-sm-5
+        offset-sm-7
+        col-md-4
+        offset-md-8
+        
+       "
       >
+        <div class="form-group ">
+          <input
+            #inputTerminados
+            (keyup)="filtrar(inputTerminados.value, pedidosEnProceso)"
+            type="text"
+            class="form-control"
+            placeholder="Buscar"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive-md">
+      <table class="table  table-hover">
         <thead>
-          <tr>
-            <th class="fit"></th>
-            <th>Folio</th>
-
-            <th
-              *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes"
-            >
-              Ped
+          <tr [appOrdenadorDeColumnas]="pedidosEnProceso">
+            <th data-ordenar="pedido">PED</th>
+            <th data-ordenar="cliente">CLIENTE</th>
+            <th data-ordenar="sku">SKU</th>
+            <th data-ordenar="laserCliente">Laser</th>
+            <th data-ordenar="cantidadSolicitadaPedido">Piezas Solicitadas</th>
+            <th data-ordenar="cantidadProducidaPedido">Piezas producidas</th>
+            <th data-ordenar="fechaDeEntregaAProduccion">Entrada produccion</th>
+            <th>
+              Tiempo de produccion
             </th>
-
-            <th>Cliente</th>
-            <th
-              *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes"
-            >
-              MOD
-            </th>
-            <th>Inicio</th>
-            <th *ngIf="this.mostrarFoliosConOrdenes">Termino</th>
-            <th *ngIf="this.mostrarFoliosConOrdenes">Tiempo</th>
-            <th>Pzs. Sol.</th>
-            <th *ngIf="this.mostrarFoliosConOrdenes">Pzs. Prod.</th>
-            <!-- <th>Fecha de Entrega</th> -->
-            <th *ngIf="this.mostrarFoliosConOrdenes">%Progreso</th>
-            <th *ngIf="!this.mostrarFoliosConOrdenes"></th>
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let elemento of elementos">
+          <ng-container *ngFor="let ped of pedidosEnProceso; let i = index">
             <tr
-              *ngFor="
-                let pedido of this.enlistarComoPedidos
-                  ? elemento.folioLineas
-                  : [0]
-              "
-              [ngClass]="{ 'bg-light-part  text-muted': elemento.terminado }"
+              *ngIf="i % 10 === 0 && i > 0 && filtros.length >= 10"
+              class="repetir-encabezado "
             >
-              <td class="fit ">
-                <button
-                  (click)="this.folioParaDetalle = elemento"
-                  class="btn btn-primary btn-xs mr-1 "
+              <td>PED</td>
+              <td>CLIENTE</td>
+              <td>SKU</td>
+              <td>Laser</td>
+              <td>Solicitado</td>
+              <td>Producido</td>
+              <td>Entrada produccion</td>
+              <td>
+                Tiempo de produccion
+              </td>
+            </tr>
+
+            <tr [style.display]="filtros.includes(ped.idPedido) ? '' : 'none'">
+              <td class="nowrap">
+                <a
                   data-toggle="modal"
-                  data-target="#detalleFolio "
-                  role="button "
+                  data-target="#detalleFolio"
+                  (click)="cargarFolioDetalle(ped.idFolio)"
+                  title="Ver detalle de folio"
+                  href="javascript:void(0)"
+                  >{{ ped.pedido }}</a
                 >
-                  <i class="fas fa-eye " aria-hidden="true "></i>
-                </button>
-
-                <a
-                  *ngIf="!this.mostrarFoliosConOrdenes"
-                  (click)="editar(elemento._id, componenteCrearModificar)"
-                  class="btn btn-success btn-xs mr-1 "
-                  ><i class="fas fa-edit text-white "></i
-                ></a>
-                <a
-                  *ngIf="!this.mostrarFoliosConOrdenes"
-                  (click)="eliminar(elemento._id)"
-                  class="btn btn-danger btn-xs mr-1 "
-                  ><i class="fas fa-times text-white "></i
-                ></a>
               </td>
-
-              <td class="fit">{{ elemento.numeroDeFolio }}</td>
-              <td
-                *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes"
-              >
-                {{ pedido.pedido }}
+              <td>{{ ped.cliente }}</td>
+              <td>{{ ped.sku }}</td>
+              <td>{{ ped.laserCliente }}</td>
+              <td class="text-right">
+                {{ ped.cantidadSolicitadaPedido | number }}
               </td>
-              <td>{{ elemento.cliente.nombre }}</td>
-              <td
-                *ngIf="this.enlistarComoPedidos && this.mostrarFoliosConOrdenes"
-              >
-                <span *ngIf="this.mostrarFoliosConOrdenes">{{
-                  pedido.modeloCompleto | modeloCompleto
-                }}</span>
+              <td class="text-right">
+                {{ ped.cantidadProducidaPedido | number }}
               </td>
-              <td>
-                <span title="{{ elemento.fechaFolio | fecha: 'LLLL' }}">
-                  <i class="fas fa-clock-o" aria-hidden="true "></i>
-                  {{ elemento.fechaFolio | date: 'dd/MM/y' }}
-                </span>
+              <td title="{{ ped.fechaDeEntregaAProduccion | fecha: 'LLLL' }}">
+                {{ ped.fechaDeEntregaAProduccion | date: 'dd/MM/yyyy' }}
               </td>
-              <td *ngIf="this.mostrarFoliosConOrdenes">
-                <ng-container
-                  *ngIf="
-                    !this.enlistarComoPedidos;
-                    else enlistarComoPedidosTemplate
-                  "
+              <td style="font-size: 12px;">
+                <app-tiempo-transcurrido
+                  [inicio]="ped.fechaDeEntregaAProduccion"
                 >
-                  <ng-container
-                    *ngIf="elemento.fechaTerminado; else folioTerminadoTemplate"
-                  >
-                    <span title="{{ elemento.fechaTerminado | fecha: 'LLLL' }}">
-                      <i class="fas fa-clock-o" aria-hidden="true "> </i>
-                      {{ elemento.fechaTerminado | date: 'dd/MM/yy' }}
-                    </span>
-                  </ng-container>
+                </app-tiempo-transcurrido>
 
-                  <ng-template #folioTerminadoTemplate>
-                    <ng-container
-                      *ngIf="elemento.ordenesGeneradas; else ordenesNoGeneradas"
-                    >
-                      <i class="fas fa-users-cog    "></i> En proceso
-                    </ng-container>
-                    <ng-template #ordenesNoGeneradas>
-                      <i class="fas fa-edit"></i> Pendiente def.
-                    </ng-template>
-                  </ng-template>
-                </ng-container>
-
-                <ng-template #enlistarComoPedidosTemplate>
-                  <ng-container
-                    *ngIf="pedido.fechaTerminado; else pedidoTerminadoTemplate"
-                  >
-                    <span title="{{ pedido.fechaTerminado | fecha: 'LLLL' }}">
-                      <i class="fas fa-clock-o" aria-hidden="true "></i>
-                      {{ pedido.fechaTerminado | date:'dd/MM/yy' }
-                    </span>
-                  </ng-container>
-                  <ng-template #pedidoTerminadoTemplate>
-                    <i class="fas fa-users-cog    "></i> Pedido en proceso
-                  </ng-template>
-                </ng-template>
-              </td>
-
-              <td *ngIf="this.mostrarFoliosConOrdenes">
-                <ng-container *ngIf="!this.enlistarComoPedidos"
-                  >{{
-                    this.contenedorDeTemporizadores[elemento._id]?.transcurrido
-                  }}
-                </ng-container>
-                <ng-container *ngIf="this.enlistarComoPedidos">{{
-                  this.contenedorDeTemporizadores[pedido._id]?.transcurrido
-                }}</ng-container>
-              </td>
-              <td>
-                <ng-container *ngIf="!this.enlistarComoPedidos"
-                  >{{ sumarPiezasSolicitadas(elemento) | number }}
-                </ng-container>
-                <ng-container *ngIf="this.enlistarComoPedidos">{{
-                  pedido.cantidad | number
-                }}</ng-container>
-              </td>
-              <td *ngIf="this.mostrarFoliosConOrdenes">
-                <ng-container *ngIf="!this.enlistarComoPedidos"
-                  >{{ elemento.cantidadProducida | number }}
-                </ng-container>
-                <ng-container *ngIf="this.enlistarComoPedidos">{{
-                  pedido.cantidadProducida | number
-                }}</ng-container>
-              </td>
-              <td *ngIf="this.mostrarFoliosConOrdenes">
-                <app-progress-bar
-                  *ngIf="!this.enlistarComoPedidos"
-                  [nivel]="elemento.nivelDeUrgencia"
-                  [porcentaje]="elemento.porcentajeAvance"
-                >
+                <app-progress-bar [porcentaje]="ped.porcentajeAvancePedido">
                 </app-progress-bar>
-                <app-progress-bar
-                  *ngIf="this.enlistarComoPedidos"
-                  [nivel]="pedido.nivelDeUrgencia"
-                  [porcentaje]="pedido.porcentajeAvance"
-                >
-                </app-progress-bar>
-              </td>
-
-              <td
-                *ngIf="!this.mostrarFoliosConOrdenes"
-                title="Enviar a produccion este folio"
-              >
-                <button
-                  (click)="enviarAProduccion(elemento._id)"
-                  type="button"
-                  class="btn btn-outline-warning"
-                >
-                  <i class="fas fa-industry"></i>
-                </button>
               </td>
             </tr>
           </ng-container>
+
+          <tr *ngIf="pedidosEnProceso?.length === 0">
+            <td colspan="4">
+              No tienes pedidos pendientes
+            </td>
+          </tr>
         </tbody>
       </table>
-    </ng-container>
+    </div>
+  </ng-template>
+  <!-- 
+  =====================================
+   END Tabla en proceso
+  =====================================
+  -->
 
-    <ng-container *ngIf="elementos">
-      <div class="row animated fadeIn faster" *ngIf="elementos.length === 0">
-        <div class="col-12">
-          <h1 class="display-1">No hubo coincidencias.</h1>
+  <!-- 
+  =====================================
+   Tabla por enviar a produccion
+  =====================================
+  -->
+
+  <ng-template #porEnviarAProduccion>
+    <div class="row mt-3 mb-3">
+      <div
+        class="
+        col-12 
+        col-sm-5
+        offset-sm-7
+        col-md-4
+        offset-md-8
+        text-right
+       "
+      >
+        <a
+          class="btn btn-success"
+          [routerLink]="['/ventas/misFolios/crear']"
+          role="button"
+        >
+          <i class="fas fa-plus-circle    "></i> Crear folio
+        </a>
+      </div>
+    </div>
+
+    <div class="table-responsive-md">
+      <table class="table  table-hover">
+        <thead>
+          <tr [appOrdenadorDeColumnas]="foliosPorEnviarAProduccion">
+            <th></th>
+            <th data-ordenar="folio">Folio</th>
+            <th data-ordenar="cliente">Cliente</th>
+            <th data-ordenar="fecha de creacion">Fecha de creacion</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            *ngFor="let fol of foliosPorEnviarAProduccion; let i = index"
+          >
+            <tr
+              *ngIf="i % 10 === 0 && i > 0 && filtros.length >= 10"
+              class="repetir-encabezado "
+            >
+              <td></td>
+              <td data-ordenar="folio">Folio</td>
+              <td data-ordenar="cliente">Cliente</td>
+              <td data-ordenar="fecha de creacion">Fecha de creacion</td>
+              <td></td>
+            </tr>
+
+            <tr [style.display]="filtros.includes(fol._id) ? '' : 'none'">
+              <td class="nowrap">
+                <a
+                  (click)="eliminar(fol._id)"
+                  href="javascript:void(0)"
+                  class="btn btn-danger btn-xs mr-1"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-times-circle    "></i
+                ></a>
+                <a
+                  (click)="editar(fol._id)"
+                  class="btn btn-success btn-xs"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-edit   "></i
+                ></a>
+              </td>
+              <td>
+                <a
+                  data-toggle="modal"
+                  data-target="#detalleFolio"
+                  (click)="cargarFolioDetalle(fol._id)"
+                  href="javascript:void(0)"
+                >
+                  {{ fol.folio }}
+                </a>
+              </td>
+              <td>{{ fol.cliente }}</td>
+              <td>{{ fol.fechaDeCreacion | date: 'dd/MM/yy' }}</td>
+              <td>
+                <a
+                  class="btn btn-outline-warning btn-xs"
+                  href="javascript:void(0)"
+                  role="button"
+                  (click)="enviarAProduccion(fol._id)"
+                  ><i class="fas fa-industry   "></i
+                ></a>
+              </td>
+            </tr>
+          </ng-container>
+
+          <tr *ngIf="foliosPorEnviarAProduccion?.length === 0">
+            <td colspan="4">
+              No tienes pedidos pendientes
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+
+  <!-- 
+  =====================================
+   END Tabla por enviar a produccion
+  =====================================
+  -->
+  <!-- 
+=====================================
+ tabla terminados
+=====================================
+-->
+
+  <ng-template #terminados>
+    <div class="row mt-3">
+      <div
+        class="
+      col-12 
+      col-sm-5
+      offset-sm-7
+      col-md-4
+      offset-md-8
+      
+     "
+      >
+        <div class="form-group ">
+          <input
+            #inputTerminados
+            (keyup)="filtrar(inputTerminados.value, pedidosEnProceso)"
+            type="text"
+            class="form-control"
+            placeholder="Buscar"
+          />
         </div>
       </div>
-    </ng-container>
+    </div>
 
-    <!-- 
-    =====================================
-     END BODY
-    =====================================
-    -->
-  </ng-container>
-</app-general>
+    <div class="table-responsive-sm">
+      <table class="table  table-hover">
+        <thead>
+          <tr [appOrdenadorDeColumnas]="pedidosEnProceso">
+            <th data-ordenar="pedido">PED</th>
+            <th data-ordenar="cliente">CLIENTE</th>
+            <th data-ordenar="sku">SKU</th>
+            <th data-ordenar="laserCliente">Laser</th>
+            <th data-ordenar="cantidadSolicitadaPedido">Piezas Solicitadas</th>
+            <th data-ordenar="cantidadProducidaPedido">Piezas producidas</th>
+            <th data-ordenar="fechaDeEntregaAProduccion">Entrada produccion</th>
+            <th>
+              Tiempo de produccion
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let ped of pedidosEnProceso; let i = index">
+            <tr
+              *ngIf="i % 10 === 0 && i > 0 && filtros.length >= 10"
+              class="repetir-encabezado "
+            >
+              <td>PED</td>
+              <td>CLIENTE</td>
+              <td>SKU</td>
+              <td>Laser</td>
+              <td>Solicitado</td>
+              <td>Producido</td>
+              <td>Entrada produccion</td>
+              <td>
+                Tiempo de produccion
+              </td>
+            </tr>
+  
+            <tr [style.display]="filtros.includes(ped.idPedido) ? '' : 'none'">
+              <td class="nowrap">
+                <a
+                  data-toggle="modal"
+                  data-target="#detalleFolio"
+                  (click)="cargarFolioDetalle(ped.idFolio)"
+                  title="Ver detalle de folio"
+                  href="javascript:void(0)"
+                  >{{ ped.pedido }}</a
+                >
+              </td>
+              <td>{{ ped.cliente }}</td>
+              <td>{{ ped.sku }}</td>
+              <td>{{ ped.laserCliente }}</td>
+              <td class="text-right">
+                {{ ped.cantidadSolicitadaPedido | number }}
+              </td>
+              <td class="text-right">
+                {{ ped.cantidadProducidaPedido | number }}
+              </td>
+              <td title="{{ ped.fechaDeEntregaAProduccion | fecha: 'LLLL' }}">
+                {{ ped.fechaDeEntregaAProduccion | date: 'dd/MM/yyyy' }}
+              </td>
+              <td style="font-size: 12px;">
+                <app-tiempo-transcurrido [inicio]="ped.fechaDeEntregaAProduccion">
+                </app-tiempo-transcurrido>
+  
+                <app-progress-bar [porcentaje]="ped.porcentajeAvancePedido">
+                </app-progress-bar>
+              </td>
+            </tr>
+          </ng-container>
+  
+          <tr *ngIf="pedidosEnProceso?.length === 0">
+            <td colspan="4">
+              No tienes pedidos pendientes
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-<!-- 
+    </div>
+  </ng-template>
 
+  <!-- 
 =====================================
-Importante fuera de app-general
+ END tabla terminados
 =====================================
 -->
 
-<app-folios-crear-modificar
-  #componenteCrearModificar
-  [cbAnimar]="this.cbAnimar"
-  [cbCargarElementos]="this.cbCargarElementos"
-  [idModificar]="this.idModificar"
-  [mostrarCrearModificar]="this.mostrarCrearModificar"
-  [crearModificar]="this.crearModificar"
-></app-folios-crear-modificar>
-<app-folios-detalle [detalleElemento]="elementoDetalle"> </app-folios-detalle>
-<!-- 
-=====================================
-END Importante fuera de app-general
-=====================================
--->
-
-<!-- 
+  <!-- 
 =====================================
  MODAL FOLIO DETALLE
 =====================================
 -->
 
-<div
-  id="no_print"
-  class="modal fade"
-  id="detalleFolio"
-  tabindex="-1"
-  role="dialog"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-folios-detalle-abstracto
-          (pedido)="pedidoParaDetalle = $event"
-          [folio]="folioParaDetalle"
-         
-        ></app-folios-detalle-abstracto>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 
+  <app-folios-detalle-abstracto
+    (pedido)="pedidoParaDetalle = $event"
+    [folio]="folioParaDetalle"
+  ></app-folios-detalle-abstracto>
+
+  <!-- 
 =====================================
  END MODAL FOLIO DETALLE
 =====================================
--->
-
-<!-- 
-=====================================
- MODAL PEDIDO DETALLE
-=====================================
--->
-<div
-  id="no_print"
-  class="modal   fade "
-  id="detalleDePedido"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-pedidos-detalle
-          (orden)="ordenParaDetalle = $event"
-          [pedido]="pedidoParaDetalle"
-          [folio]="folioParaDetalle._id"
-        ></app-pedidos-detalle>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 
-=====================================
- END MODAL PEDIDO DETALLE
-=====================================
--->
-
-<!-- 
-=====================================
- MODAL ORDEN DETALLE
-=====================================
--->
-<div
-  id="no_print"
-  class="modal   fade "
-  id="detalleDeLaOrden"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-ordenes-detalle
-          [orden]="ordenParaDetalle"
-          [linea]="pedidoParaDetalle"
-          [folio]="folioParaDetalle"
-        ></app-ordenes-detalle>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================
- END MODAL ORDEN DETALLE
-=====================================
--->
+--></div>

@@ -67,4 +67,23 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
     this.pedidoParaDetalle = pedido
     this.idFolio.emit(this.folio._id)
   }
+
+  /**
+   *Retorna la cantidad de ordenes segun el estandar. 
+   Esta cantidad varia contra el contedo de ordenes del
+   pedido por que las medias ordenes se contemplan como 
+   una. Cuando se hace el calculo contra el estandar lo 
+   que retorna enrealidad es la cantidad de ordenes 
+   en laminas. Si son 
+   *
+   * @returns {number}
+   * @memberof FolioLinea
+   */
+  ordenesSegunEstandar(pedido: FolioLinea): number {
+    if( pedido.modeloCompleto ){
+    let estandar = pedido.modeloCompleto.tamano.estandar
+    let totalDePedido = pedido.cantidad
+
+    return totalDePedido / estandar}
+  }
 }
