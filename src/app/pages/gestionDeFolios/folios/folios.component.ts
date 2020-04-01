@@ -168,8 +168,8 @@ export class FoliosComponent implements OnInit {
     this.msjService.confirmarAccion(mensajeDeConfirmacion, () => {
       this.cargando['mandarAProduccion'] = 'Enviando folio a produccion'
       this.foliosService.revision_iniciarProduccion(id).subscribe(() => {
-        this.cargarPedidosTerminados()
-       delete this.cargando['mandarAProduccion']
+        delete this.cargando['mandarAProduccion']
+        this.cargarFoliosPorEnviarAProduccion()
       }, err=> delete this.cargando['mandarAProduccion']),
         mensajeDeCancelacion
     })
