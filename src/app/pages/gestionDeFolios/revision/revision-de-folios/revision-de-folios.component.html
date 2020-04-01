@@ -74,30 +74,25 @@
           <tbody>
             <tr *ngFor="let fol of folios">
               <td>
-                <button
-                  title="Ver detalle del folio"
-                  type="button"
-                  class="btn btn-primary btn-sm mr-1"
-                  data-toggle="modal"
-                  data-target="#detalleFolio"
-
-                  (click)='cargarDetalle(fol.idFolio)'
-                >
-                  <i class="fas fa-eye    "></i>
-                </button>
                 <a
-
-                  (click)='retornarAVendedor(fol.idFolio)'
+                  (click)="retornarAVendedor(fol.idFolio)"
                   title="Retornar control al vendedor. Esto elimina la fecha de entrega a produccion y hace que el vendedor pueda modificar el folio de nuevo"
                   type="button"
                   class="btn btn-warning btn-sm"
-                  
-
                 >
                   <i class="fas fa-arrow-circle-left "></i>
-              </a>
+                </a>
               </td>
-              <td>{{ fol.folio }}</td>
+              <td>
+                <a
+                  data-toggle="modal"
+                  data-target="#detalleFolio"
+                  (click)="cargarDetalle(fol.idFolio)"
+                  href="javascrip:void(0)"
+                >
+                  {{ fol.folio }}
+                </a>
+              </td>
               <td>{{ fol.cliente }}</td>
               <td>{{ fol.vendedor }}</td>
               <td
@@ -107,13 +102,13 @@
               >
                 {{ fol.fechaDeEntregaAProduccion | date: 'dd/MM/yyyy' }}
               </td>
-              <td class="text-right">{{ fol.totalDePiezas | number}}</td>
+              <td class="text-right">{{ fol.totalDePiezas | number }}</td>
               <td>
                 <button
                   title="Generar las ordenes de este folio"
                   type="button"
                   class="btn btn-primary btn-sm"
-                  [routerLink]="['/folios/revision/'+fol.idFolio]"
+                  [routerLink]="['/folios/revision/' + fol.idFolio]"
                 >
                   <i class="fas fa-file-contract     "></i>
                 </button>
