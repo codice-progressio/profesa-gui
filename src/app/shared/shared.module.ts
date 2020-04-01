@@ -76,10 +76,8 @@ import { FechaPipe } from '../pipes/fecha.pipe'
 import { QRCodeModule } from 'angularx-qrcode'
 import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component'
 import { ProgramacionTransformacionImprimirComponent } from '../pages/programacion/programacion-transformacion/programacion-transformacion-imprimir/programacion-transformacion-imprimir.component'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  ToastrModule,
-} from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule } from 'ngx-toastr'
 import { OrdenDetalleAlmacenDeBotonComponent } from '../pages/orden-detalles/orden-detalle-almacen-de-boton/orden-detalle-almacen-de-boton.component'
 import { OrdenDetalleBarnizadoComponent } from '../pages/orden-detalles/orden-detalle-barnizado/orden-detalle-barnizado.component'
 import { OrdenDetalleBuratoComponent } from '../pages/orden-detalles/orden-detalle-burato/orden-detalle-burato.component'
@@ -114,8 +112,8 @@ import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordene
     ToastrModule.forRoot({
       timeOut: 20000,
       positionClass: 'toast-top-right',
-      enableHtml:true
-    }),
+      enableHtml: true
+    })
   ],
   declarations: [
     HeaderComponent,
