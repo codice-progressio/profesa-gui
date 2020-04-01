@@ -4,7 +4,7 @@
   "description": "GUI Descktop CARRDUCIsys",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o --ssl true --ssl-key C:\\CARRDUCIsys\\certificados\\gui.localhost.key --ssl-cert C:\\CARRDUCIsys\\certificados\\gui.localhost.crt --host 0.0.0.0 --aot" ,
+    "start": "ng serve -o --ssl true --ssl-key C:\\CARRDUCIsys\\certificados\\angular.key --ssl-cert C:\\CARRDUCIsys\\certificados\\angular.crt --host 0.0.0.0 --aot",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
