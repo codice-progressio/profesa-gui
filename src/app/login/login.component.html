@@ -1,13 +1,10 @@
-<form class="form-signin text-center shadow animated fadeIn delay-1s ">
-  <img
-    class="mb-4 mt-4"
-    src="assets/images/logo-text.png"
-    alt=""
-  />
+<form class="form-signin text-center shadow animated fadeIn delay-1s">
+  <img class="mb-4 mt-4" src="assets/images/logo-text.png" alt="" />
   <h1 class="h3 mb-3 font-weight-normal">Iniciar sesion</h1>
+
   <label for="inputEmail" class="sr-only">Usuario</label>
   <input
-  [(ngModel)]="email"
+    [(ngModel)]="email"
     type="email"
     name="email"
     id="inputEmail"
@@ -19,8 +16,8 @@
   />
   <label for="inputPassword" class="sr-only">Contrasena</label>
   <input
-  class="mt-2"
-   [(ngModel)]="password"
+    class="mt-2"
+    [(ngModel)]="password"
     type="password"
     name="password"
     id="inputPassword"
@@ -29,13 +26,21 @@
     required=""
     autocomplete="current-password"
   />
+  <span class="w-100">
+    <h1>
+      <i
+        [style.visibility]="loading ? 'visible' : 'hidden'"
+        class="fas fa-sync fa-spin-fast"
+      ></i>
+    </h1>
+  </span>
 
   <button
-  
-  (click)="ingresar()"
-  
-  class="btn btn-lg btn-primary btn-block" type="submit">
+    (click)="ingresar()"
+    class="btn btn-lg btn-primary btn-block"
+    type="submit"
+  >
     Iniciar sesion
   </button>
-  <p class="mt-5 mb-3 text-muted text-center">© R.R. {{copyRight}}</p>
+  <p class="mt-5 mb-3 text-muted text-center">© R.R. {{ copyRight }}</p>
 </form>

@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.render.setStyle(document.body, 'align-items', 'center')
     this.render.setStyle(document.body, 'padding-top', '40px')
     this.render.setStyle(document.body, 'padding-bottom', '40px')
+
     this.render.setStyle(
       document.body,
       'background',
@@ -72,8 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.loading = true
 
-    const usuario = new Usuario(null, this.email, this.password)
-    this._usuarioService.login(usuario, true).subscribe(
+    this._usuarioService.login(this.email, this.password, true).subscribe(
       () => this.router.navigate(['/dashboard']),
       err => {
         this.loading = false

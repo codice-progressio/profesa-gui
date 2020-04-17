@@ -350,3 +350,9 @@ video {
   background-color: red;
   transition: all 2000ms;
 }
+
+
+.fa-spin-fast {
+  -webkit-animation: fa-spin 1s infinite linear;
+  animation: fa-spin 1s infinite linear;
+}
