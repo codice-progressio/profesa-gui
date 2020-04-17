@@ -27,7 +27,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config'
 
 export function tokenGetter() {
-  console.log(`entro por aqui`)
   return localStorage.getItem('token')
 }
 
@@ -51,7 +50,7 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
         whitelistedDomains: [URL_DOMINIO],
-        blacklistedRoutes: [ URL_DOMINIO+'/login']
+        blacklistedRoutes: [URL_DOMINIO + '/login']
       }
     })
   ],
