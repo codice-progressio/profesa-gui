@@ -66,7 +66,6 @@ import { TerminadoService } from '../services/modelo/terminado.service'
 import { SortService } from '../directives/sortableComponent/sort.service'
 import { FolioNewService } from '../services/folio/folio-new.service'
 import { AlmacenProductoTerminadoService } from '../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
-import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
@@ -105,8 +104,6 @@ import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordene
     NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    // Para el httpcliente necesitamos importar este modulo.
-    HttpClientModule,
     DragDropModule,
     QRCodeModule,
     ToastrModule.forRoot({
