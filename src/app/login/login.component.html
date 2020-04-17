@@ -26,6 +26,12 @@
     required=""
     autocomplete="current-password"
   />
+
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="recordar" [checked]='emailGuardado()' />
+    <label class="form-check-label" for="recordar" (click)="recordar = !recordar" >Recordar correo</label>
+  </div>
+
   <span class="w-100">
     <h1>
       <i

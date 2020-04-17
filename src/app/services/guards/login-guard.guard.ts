@@ -16,7 +16,6 @@ export class LoginGuardGuard implements CanActivate {
       if (token.length > 5) return true
     }
     // Si el usuario ya no esta logueado nos manda al login.
-    localStorage.clear()
     this.router.navigate(['/login'])
     return false
   }

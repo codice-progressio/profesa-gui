@@ -245,3 +245,5 @@ export default {
   'rol:cargadorMaterial': NO_DEFINIDO,
   'administrador:usuario:leer:termino': NO_DEFINIDO
 }
+
+

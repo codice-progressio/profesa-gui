@@ -28,6 +28,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     init_plugins()
+
+    if (localStorage.getItem('token')) {
+      this.router.navigate(['/dashboard'])
+    }
+
     this.email = localStorage.getItem('email') || ''
     if (this.email.length > 1) {
       this.recuerdame = true
@@ -66,18 +71,28 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   loading = false
+  invalido = false
+  recordar = true
   ingresar() {
     if (!this.password || !this.email) {
+      this.invalido = true
       return
     }
 
     this.loading = true
+    this.invalido = false
+    this._usuarioService
+      .login(this.email, this.password, this.recordar)
+      .subscribe(
+        () => this.router.navigate(['/dashboard']),
+        err => {
+          this.loading = false
+          this.invalido = true
+        }
+      )
+  }
 
-    this._usuarioService.login(this.email, this.password, true).subscribe(
-      () => this.router.navigate(['/dashboard']),
-      err => {
-        this.loading = false
-      }
-    )
+  emailGuardado(): boolean {
+    return !!localStorage.getItem('email') || this.recordar
   }
 }

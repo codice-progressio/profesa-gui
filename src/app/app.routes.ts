@@ -21,7 +21,7 @@ const appRoutes: Routes = [
     {
         path: '',
         component: PagesComponent,
-        canActivate: [LoginGuardGuard, VerificaTokenGuard],
+        canActivate: [LoginGuardGuard],
         loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
     },
     
