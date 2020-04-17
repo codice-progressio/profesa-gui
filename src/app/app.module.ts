@@ -46,8 +46,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule, // required animations module
     NgxMaskModule.forRoot(),
     SharedModule.forRoot(),
-    
-
   ],
   providers: [
     // Configuraciones de idioma.

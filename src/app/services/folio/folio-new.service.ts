@@ -157,11 +157,12 @@ export class FolioNewService {
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.msjService.ok_(resp, null, a)
-        return new FolioLinea().deserialize(resp.pedido)
+        return resp.pedido as FolioLinea
       }),
       catchError(err => this.errFun(err))
     )
   }
+
   detalleFolio(folio: string): Observable<Folio> {
     const a = this._preLoaderService.loading('Buscando detalles de orden')
     const url = this.base.concat('/detalle/folio').concat(`/${folio}`)
@@ -169,7 +170,7 @@ export class FolioNewService {
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.msjService.ok_(resp, null, a)
-        return new Folio().deserialize(resp.folio)
+        return resp.folio as Folio
       }),
       catchError(err => this.errFun(err))
     )
@@ -212,7 +213,7 @@ export class FolioNewService {
   foliosPendientesDeEntregarAProduccion(
     idVendedor: string
   ): Observable<FoliosPendientesDeEntregarAProduccion[]> {
-    const url = this.base.concat('/porEntregarAProduccion/' + idVendedor)
+    const url = this.base.concat('/porEntregarAProduccion/').concat(idVendedor)
     return this.http.get(url).pipe(
       map((resp: any) => {
         return resp.folios as FoliosPendientesDeEntregarAProduccion[]
@@ -239,17 +240,28 @@ export class FolioNewService {
   }
 
   revision_retornarAlVendedor(id: string): Observable<null> {
-    const url = this.base.concat('/retornarAlVendedor').concat(`/${id}`)
-    return this.http.get(url).pipe(
+    const url = this.base.concat('/retornarAlVendedor')
+    return this.http.put(url, { id }).pipe(
       map(this.mapInicioYRetorno),
       catchError(err => this.errFun(err))
     )
   }
 
-  revision_iniciarProduccion(_id: string): Observable<null> {
-    const url = this.base.concat('/iniciarProduccion')
-    return this.http.post(url, {_id}).pipe(
+  revision_entregarARevision(_id: string): Observable<null> {
+    const url = this.base.concat('/entregarARevision')
+    return this.http.put(url, { _id }).pipe(
       map(this.mapInicioYRetorno),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  revision_liberarParaProduccion(folio: Folio): Observable<Folio> {
+    const url = this.base.concat('/liberarParaProduccion')
+    return this.http.put(url, folio).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.folio as Folio
+      }),
       catchError(err => this.errFun(err))
     )
   }

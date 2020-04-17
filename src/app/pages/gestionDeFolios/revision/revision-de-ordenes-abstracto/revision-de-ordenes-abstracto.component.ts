@@ -26,7 +26,7 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
   constructor(
     public _defaultService: DefaultsService,
     private activatedRoute: ActivatedRoute,
-    private folioService: FolioNewService, 
+    private folioService: FolioNewService,
     public location: Location
   ) {}
 
@@ -63,11 +63,11 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
    * @memberof RevisionDeOrdenesAbstractoComponent
    */
   guardarCambios() {
-    
-
-    this.folioService.save(this.folio).subscribe(()=> this.location.back() )
-
-
+    this.cargando['liberando'] = 'Procesando folio para produccion'
+    this.folioService.revision_liberarParaProduccion(this.folio).subscribe(
+      folio => this.location.back(),
+      err => delete this.cargando['liberando']
+    )
   }
 
   surtirOLaserar(pedido: FolioLinea) {

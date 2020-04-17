@@ -61,14 +61,14 @@
               <td>{{ usuario.email }}</td>
               <td>{{ usuario.nombre }}</td>
               <td>
-                <ng-container *ngFor="let role of usuario.role; let i = index">
+                <ng-container *ngFor="let role of usuario.permissions; let i = index">
                   <span
                     ><i class="fas fa-check text-success"></i> {{ role }}</span
                   >
                   <hr
                     *ngIf="
-                      (usuario.role.length + 1) % 2 &&
-                      usuario.role.length - 1 !== i
+                      (usuario.permissions.length + 1) % 2 &&
+                      usuario.permissions.length - 1 !== i
                     "
                   />
                 </ng-container>

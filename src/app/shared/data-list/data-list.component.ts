@@ -99,16 +99,15 @@ export class DataListComponent implements OnInit {
    * @memberof DataListComponent
    */
 
-  set datosParaLista(datos:Dato[]){
+  set datosParaLista(datos: Dato[]) {
     this.cargando = false
     this._datosParaLista = datos
   }
   _datosParaLista: Dato[] = []
 
-  get datosParaLista():Dato[]{
+  get datosParaLista(): Dato[] {
     return this._datosParaLista
   }
-
 
   /**
    *El tiempo que se retrasara la busqueda mientras que el
@@ -274,8 +273,7 @@ export class DataListComponent implements OnInit {
     }
   }
 
-
-  cargando =  false
+  cargando = false
   /**
    * Toma las acciones neceasrias para ejecutar la busqueda. La busqueda no
    * se hace desde este componentee. Solo se emite el evento para
@@ -349,7 +347,7 @@ export class DataListComponent implements OnInit {
   }
 
   seleccionarElemento(dato: Dato) {
-    if( !dato) return
+    if (!dato) return
     this.leyendaInputDeshabilitado = dato.leyendaPrincipal
     this.elementoSeleccionado.emit(dato)
     this.terminarBusquedaDespuesDeSeleccionarElemento()

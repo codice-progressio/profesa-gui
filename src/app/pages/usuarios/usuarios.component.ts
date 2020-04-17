@@ -164,7 +164,7 @@ export class UsuariosComponent implements OnInit {
     
     let msj = 'No definiste ningún rol para este usuario. Esto significa que ';
     msj += 'no tendra permisos para acceder.¿Quieres continuar?';
-    if ( usuario.role.length === 0) {
+    if ( usuario.permissions.length === 0) {
       this._msjService.confirmarAccion(msj, a);
     } else {
       a();

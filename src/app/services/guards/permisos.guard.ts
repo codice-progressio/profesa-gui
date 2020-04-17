@@ -25,7 +25,7 @@ export class PermisosGuard implements CanActivate {
       const rolesNecesarios = next.data['roles'] as Array<string>;
 
       // Siendo super admin puede entrar a donde sea. s
-      if ( this._usuarioservice.usuario.role.includes(_ROLES.SUPER_ADMIN)) {
+      if ( this._usuarioservice.usuario.permissions.includes(_ROLES.SUPER_ADMIN)) {
         return true;
       }
       // Si no hay roles entonces solo el super admin puede entrar.
@@ -36,13 +36,13 @@ export class PermisosGuard implements CanActivate {
       // El usuario debe contener todos los roles que se enlistan
       for (let i = 0; i < rolesNecesarios.length; i++) {
         const rol = rolesNecesarios[i];
-        if ( !this._usuarioservice.usuario.role.includes(rol)) {
+        if ( !this._usuarioservice.usuario.permissions.includes(rol)) {
           // Si no incluye uno de los roles entonces lo mandamos a volar. 
           let msj = 'Es necesario que un administrador del sistema te de los permisos que no tienes para poder continuar. <br> <br>';
           msj += 'Los siguientes permisos son necesarios: <br> <hr>';
           for (let a = 0; a < rolesNecesarios.length; a++) {
             const role = rolesNecesarios[a];
-            const fa = this._usuarioservice.usuario.role.includes(role) ? 'fa-check text-success' : 'fa-times text-danger';
+            const fa = this._usuarioservice.usuario.permissions.includes(role) ? 'fa-check text-success' : 'fa-times text-danger';
             msj += `<i class="fa ${fa}"></i> ${role} <hr>`;
           }
           msj += '<h3><strong>Si es un error por favor reportalo al administrador.<strong></h3>';

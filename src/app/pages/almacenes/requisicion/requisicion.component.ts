@@ -178,7 +178,7 @@ export class RequisicionComponent implements OnInit {
 
   mostrarBtnGenerarCompra(req: Requisicion): boolean {
     if (
-      !this._usuarioService.usuario.role.includes(
+      !this._usuarioService.usuario.permissions.includes(
         _ROLES.ALMACEN_REQUISICION_COMPRAR
       )
     )

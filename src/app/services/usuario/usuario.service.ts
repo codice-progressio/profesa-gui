@@ -354,6 +354,6 @@ export class UsuarioService {
    * @memberof UsuarioService
    */
   comprobarRol(rol: string): boolean{
-    return this.usuario.role.includes(rol)
+    return this.usuario.permissions.includes(rol)
   }
 }

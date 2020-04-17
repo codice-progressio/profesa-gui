@@ -167,7 +167,7 @@ export class FoliosComponent implements OnInit {
     let mensajeDeCancelacion = `No se mando a produccion el folio.`
     this.msjService.confirmarAccion(mensajeDeConfirmacion, () => {
       this.cargando['mandarAProduccion'] = 'Enviando folio a produccion'
-      this.foliosService.revision_iniciarProduccion(id).subscribe(() => {
+      this.foliosService.revision_entregarARevision(id).subscribe(() => {
         delete this.cargando['mandarAProduccion']
         this.cargarFoliosPorEnviarAProduccion()
       }, err=> delete this.cargando['mandarAProduccion']),

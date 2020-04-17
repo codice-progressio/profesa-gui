@@ -21,8 +21,8 @@ export class AdminGuard implements CanActivate {
   canActivate() {
 
     if ( 
-      this._usuarioService.usuario.role.includes(_ROLES.ADMIN_ROLE) ||
-      this._usuarioService.usuario.role.includes(_ROLES.SUPER_ADMIN) 
+      this._usuarioService.usuario.permissions.includes(_ROLES.ADMIN_ROLE) ||
+      this._usuarioService.usuario.permissions.includes(_ROLES.SUPER_ADMIN) 
       ) {
       return true;
     }

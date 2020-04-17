@@ -3,7 +3,7 @@ import { Usuario } from "./usuario.model"
 import { FolioLinea } from "./folioLinea.models"
 import { Deserializable } from "./deserealizable.model"
 
-export class Folio implements Deserializable {
+export class Folio {
   constructor(
     public _id?: string,
     public numeroDeFolio?: string,
@@ -35,96 +35,8 @@ export class Folio implements Deserializable {
     public mostrandoInfo: boolean = false
   ) {}
 
-  deserialize(input: this): this {
-    Object.assign(this, input)
-    this.cliente = new Cliente().deserialize(input.cliente)
-    this.vendedor = new Usuario().deserialize(input.vendedor)
-    this.folioLineas = input.folioLineas.map((pedido) =>
-      new FolioLinea().deserialize(pedido)
-    )
-    if (this.folioLineas.length > 0)
-      this.folioLineas = this.ordenarPedidos(this.folioLineas)
-    return this
-  }
 
-  // /**
-  //  *Construye las ordenes para todos los pedidos. Esta funcion 
-  //  no guarda estos cambios, si no que los hace de manera temporal 
-  //  antes de realizar el cambio. Solo hace la construccion en el GUI
-  //  *
-  //  * @memberof Folio
-  //  */
-  // popularOrdenesDeTodosLosPedidos(idLaser: string) {
-  //   this.folioLineas.forEach((ped) => {
-  //     ped.popularOrdenes()
-  //     // Defininomos en true las ordenes generadas para el
-  //     // al backend genera las ordenes al lanzar el pre save.
-  //     ped.ordenesGeneradas = true
 
-  //     // Damos la opcion de revisar laser dentro del folio
-  //     if (idLaser) {
-  //       ped.requiereRevisionExtraordinaria = ped.revisarSiRequiereRevisionExtraordinaria(
-  //         idLaser
-  //       )
-  //     }
-  //   })
-  // }
 
-  limpiarParaOrdenesGeneradas() {
-    this.folioLineas.forEach((pedido) => {
-      // delete pedido.procesos
-      pedido.ordenes.forEach((orden) => {
-        delete orden.trayectoNormal
-        delete orden.trayectoRecorrido
-        delete orden.ubicacionActual
-        delete orden.siguienteDepartamento
-      })
-    })
-  }
 
-  /**
-   *Suma de las piezas de todos los pedidos de este folio.
-   *
-   * @readonly
-   * @type {Number}
-   * @memberof Folio
-   */
-  totalDePiezas(): number {
-    let total = 0
-    this.folioLineas.forEach((ped) => {
-      total += ped.cantidad
-    })
-    return total
-  }
-
-  esValidoParaPedidosEspeciales(): boolean {
-    // Recorremos todos los pedidos y revisamos que
-    // la bandera revisadoComoPedidoExtraordinario este en true.
-    for (let i = 0; i < this.folioLineas.length; i++) {
-      const element = this.folioLineas[i]
-      if (element.requiereRevisionExtraordinaria) return false
-    }
-
-    return true
-  }
-
-  /**
-  }
-   *Obtiene los pedidos que no esten revisadoComoPedidoExtraordinario
-    y los pone en una lista. Esto sirve solo para la gui. 
-   *
-   * @returns {FolioLinea[]}
-   * @memberof Folio
-   */
-  pedidosConValidacionExtraordinariaFallada(): FolioLinea[] {
-    return this.folioLineas.filter((ped) => ped.requiereRevisionExtraordinaria)
-  }
-
-  ordenarPedidos(folioLineas: FolioLinea[]): FolioLinea[] {
-    return folioLineas.sort((a, b) => {
-      let an = Number(a.pedido.split("-")[1])
-      let bn = Number(b.pedido.split("-")[1])
-      return an - bn
-    })
-  }
 }

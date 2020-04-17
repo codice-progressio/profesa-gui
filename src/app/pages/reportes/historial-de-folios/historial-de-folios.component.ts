@@ -254,7 +254,7 @@ export class HistorialDeFoliosComponent implements OnInit {
   }
 
   tienePermiso(): boolean {
-    return this._usuarioService.usuario.role.includes(
+    return this._usuarioService.usuario.permissions.includes(
       _ROLES.ADMINISTRADOR_FOLIOS_ELIMINAR_POR_COMPLETO
     )
   }
