@@ -10,11 +10,13 @@ import {
 import { Usuario } from 'src/app/models/usuario.model'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Routes, Router } from '@angular/router'
 import { Location } from '@angular/common'
 import permisosConfig from 'src/app/config/permisos.config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import permisos from 'src/app/config/permisos.config'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
+import { distinctUntilChanged, skipWhile } from 'rxjs/operators'
 
 @Component({
   selector: 'app-usuario-crear',
@@ -31,13 +33,17 @@ export class UsuarioCrearComponent implements OnInit {
   permisos = permisosConfig
   permisosKey = permisosKeysConfig
   permisosOrdenados = {}
-
+  mostrarPermisos = []
+  inputFiltrador = new FormControl()
+  terminoBuscado = ''
   constructor(
     public usuarioService: UsuarioService,
     public formBuilder: FormBuilder,
     public vs: ValidacionesService,
     public location: Location,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public router: Router,
+    public msjService: ManejoDeMensajesService
   ) {}
 
   validarPassword = false
@@ -56,12 +62,28 @@ export class UsuarioCrearComponent implements OnInit {
           this.usuario = usuario
           delete this.cargando['cargando']
         },
-        () => this.location.back()
+        () => this.router.navigate(['usuarios'])
       )
     } else {
       this.validarPassword = true
       this.crearFormulario()
     }
+
+    this.crearFiltroDePermisos(this.inputFiltrador)
+  }
+
+  crearFiltroDePermisos(input: FormControl) {
+    input.valueChanges.subscribe(termino => {
+      if (!termino) {
+        this.mostrarPermisos = Object.keys(permisos)
+        this.terminoBuscado = ''
+        return
+      }
+      this.mostrarPermisos = this.mostrarPermisos.filter(x =>
+        x.includes(termino)
+      )
+      this.terminoBuscado = termino
+    }, err=> console.log(err))
   }
 
   crearFormulario(usuario: Usuario = new Usuario()) {
@@ -70,16 +92,17 @@ export class UsuarioCrearComponent implements OnInit {
       nombre: [usuario.nombre, [Validators.required]],
       email: [usuario.email, [Validators.required, Validators.email]],
       password: [usuario.password, []],
-      permissions:
-        usuario.permissions.length > 0
-          ? new FormArray([])
-          : new FormArray(usuario.permissions.map(x => new FormControl(x)))
+      permissions: new FormArray(
+        usuario.permissions.map(x => new FormControl(x))
+      )
     })
 
     this.permisosExistentes = this.usuario.permissions
     if (this.validarPassword)
       this.f('password').setValidators([Validators.required])
     this.formulario.updateValueAndValidity()
+
+    this.mostrarPermisos = Object.keys(permisos)
   }
 
   f(c: string): AbstractControl {
@@ -103,7 +126,26 @@ export class UsuarioCrearComponent implements OnInit {
 
     if (this.usuario._id) {
       usuario._id = this.usuario._id
-      this.usuarioService.update(usuario).subscribe(() => this.location.back())
+      this.usuarioService.update(usuario).subscribe(
+        () => {
+          if (
+            usuario._id ===
+            (JSON.parse(localStorage.getItem('usuario')) as Usuario)._id
+          ) {
+            //Si es el mismo usuario cerramos sesion para que se carguen bien los datos de nuevo
+
+            this.msjService.toast.info(
+              'Modificaste tu informacion. Se cerro la sesion para que tus cambios se reflejen'
+            )
+            return this.usuarioService.logout()
+          }
+
+          this.router.navigate(['usuarios'])
+        },
+        err => {
+          delete this.cargando['guardando']
+        }
+      )
     } else {
       this.usuarioService.save(usuario).subscribe(
         () => {
