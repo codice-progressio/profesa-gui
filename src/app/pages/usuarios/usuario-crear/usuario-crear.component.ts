@@ -46,9 +46,6 @@ export class UsuarioCrearComponent implements OnInit {
       this.permisos,
       this.ordenarPermisos
     )
-
-    console.log(`this.permisosOrdenados`, this.permisosOrdenados)
-
     const id = this.activatedRoute.snapshot.paramMap.get('id')
 
     if (id) {

@@ -29,8 +29,6 @@ export class PermisosGuard implements CanActivate {
     // Obtenemos los permissions que son necesarios.
     let permiso = next.data['permissions']
 
-    console.log(`permissionsNecesarios`, permiso)
-
     let jUsuario = localStorage.getItem('usuario')
     //No hay un usuario, mandamos al login
     if (!jUsuario) {
@@ -39,7 +37,6 @@ export class PermisosGuard implements CanActivate {
     }
 
     let usuario = JSON.parse(jUsuario) as Usuario
-    console.log(`usuario.permissions`, usuario.permissions)
     // Siendo super admin puede entrar a donde sea. s
     if (usuario.permissions.includes('SUPER_ADMIN')) {
       return true
