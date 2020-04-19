@@ -12,6 +12,7 @@ import { Observable } from 'rxjs'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { URL_BASE } from '../../config/config'
 import permisosConfig from 'src/app/config/permisos.config'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 @Injectable({
   providedIn: 'root'
@@ -53,8 +54,6 @@ export class UsuarioService {
     return throwError(err)
   }
 
-
-
   login(email: string, password: string, recordar: boolean = false) {
     // Recordamos el email guardandolo en el localStorage. Esto
     // se activa con el input de "Recuerdame" que esta en la
@@ -70,6 +69,13 @@ export class UsuarioService {
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
         this.usuario = resp.usuario as Usuario
+
+        if (!this.usuario.permissions.includes(permisosKeysConfig.login)) {
+          this.msjService.toastErrorMensaje(
+            'El usuario esta inactivo. Si es un error reportalo con el administrador'
+          )
+          throw ''
+        }
 
         this.apiVersion = resp.apiVersion
         this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu)
@@ -178,27 +184,16 @@ export class UsuarioService {
   // Actualiza los datos de un usuario en el local storage
   // y el la BD.
   update(usuario: Usuario) {
-    const a: number = this._preLoaderService.loading(
-      'Actualizando datos del usuario.'
-    )
-
-    let url = URL_SERVICIOS + '/usuario/' + usuario._id
-    url += '?token=' + localStorage.getItem('token')
+    let url = URL_BASE(`usuario`)
 
     return this.http.put(url, usuario).pipe(
       map((resp: any) => {
-        // Si estamos modificando un usuario entonces no
-        // tiene localStorage, pero si esta logueado
-        // hay que modificar el local storage para que pueda
-        // seguir logueado y su información, la que se envía
-        // al serivdor (En algúna otra parte) este sincronizada con la
-        // la de la BD
+        //
         if (usuario._id === this.usuario._id) {
-          const usuarioDB: Usuario = resp.usuario
-          // this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu, this.roles);
-          this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu)
+          //Si es el mismo usuario cerramos sesion para que se carguen bien los datos de nuevo
+
+          return this.logout()
         }
-        this.msjService.ok_(resp, null, a)
         return true
       }),
       catchError(err => {
@@ -244,7 +239,7 @@ export class UsuarioService {
     )
   }
 
-  find(
+  findByTerm(
     termino: string,
     paginacion: Paginacion,
     filtros: string = ''
@@ -263,6 +258,18 @@ export class UsuarioService {
         this.total = resp.total
         return resp.usuarios as Usuario[]
       }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findById(id: string): Observable<Usuario> {
+    let url = this.base.concat('/buscar/id/' + id)
+
+    return this.http.get<Usuario>(url).pipe(
+      map((resp: any) => {
+        return resp.usuario as Usuario
+      }),
+
       catchError(err => this.errFun(err))
     )
   }
