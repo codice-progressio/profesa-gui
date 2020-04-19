@@ -188,12 +188,6 @@ export class UsuarioService {
 
     return this.http.put(url, usuario).pipe(
       map((resp: any) => {
-        //
-        if (usuario._id === this.usuario._id) {
-          //Si es el mismo usuario cerramos sesion para que se carguen bien los datos de nuevo
-
-          return this.logout()
-        }
         return true
       }),
       catchError(err => {
