@@ -94,7 +94,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Dashboard',
-      roles: [permisosKeysConfig.login]
+      permissions: permisosKeysConfig.login
     }
   },
 
@@ -117,8 +117,9 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Reporte de faltantes de producto terminado',
-      roles: [permisosKeysConfig["menu:reportes:productoTerminado:faltantes"]
-      ]}
+      permissions:
+        permisosKeysConfig['menu:reportes:productoTerminado:faltantes']
+    }
   },
   {
     path: 'reportes/almacenDeProduccion/faltantes',
@@ -127,7 +128,8 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Reporte de faltantes - Almacen de produccion',
-      roles: [permisosKeysConfig["menu:reportes:almacenDeProduccion:faltantes"]]
+      permissions:
+        permisosKeysConfig['menu:reportes:almacenDeProduccion:faltantes']
     }
   },
   {
@@ -137,7 +139,8 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Reporte personalizado - Almacen de produccion',
-      roles: [permisosKeysConfig["menu:reportes:almacenDeProduccion:personalizado"]]
+      permissions:
+        permisosKeysConfig['menu:reportes:almacenDeProduccion:personalizado']
     }
   },
   {
@@ -147,7 +150,8 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Reporte personalizado - Almacen de produccion',
-      roles: [permisosKeysConfig["menu:reportes:almacenDeProduccion:personalizado"]]
+      permissions:
+        permisosKeysConfig['menu:reportes:almacenDeProduccion:personalizado']
     }
   },
   {
@@ -157,7 +161,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Reporte de transformacion',
-      roles: [permisosKeysConfig["menu:reportes:transformacion"]]
+      permissions: permisosKeysConfig['menu:reportes:transformacion']
     }
   },
 
@@ -180,7 +184,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Materia prima y herramienta',
-      roles: [permisosKeysConfig["menu:almacen:produccion"]]
+      permissions: permisosKeysConfig['menu:almacen:produccion']
     }
   },
 
@@ -191,7 +195,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Almacen de producto terminado',
-      roles: [permisosKeysConfig["menu:almacen:productoTerminado"]]
+      permissions: permisosKeysConfig['menu:almacen:productoTerminado']
     }
   },
   {
@@ -201,7 +205,8 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Entradas y salidas de almacen',
-      roles: [permisosKeysConfig["menu:almacen:produccion:entradasYSalidas"]]
+      permissions:
+        permisosKeysConfig['menu:almacen:produccion:entradasYSalidas']
     }
   },
   {
@@ -211,7 +216,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Requisiciones de articulos',
-      roles: [permisosKeysConfig["menu:almacen:requisiciones"]]
+      permissions: permisosKeysConfig['menu:almacen:requisiciones']
     }
   },
   {
@@ -221,7 +226,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Gestion de reportes personalizados',
-      roles: [permisosKeysConfig["menu:almacen:reportesPersonalizados"]]
+      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
     }
   },
 
@@ -243,7 +248,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Revision de folios a produccion',
-      roles: [permisosKeysConfig["menu:controlDeProduccion:folios:revision"]]
+      permissions:
+        permisosKeysConfig['menu:controlDeProduccion:folios:revision']
     }
   },
   {
@@ -252,8 +258,9 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Generar ordenes para folio',
-      roles: [permisosKeysConfig["menu:controlDeProduccion:folios:revision"]
-      ]}
+      permissions:
+        permisosKeysConfig['menu:controlDeProduccion:folios:revision']
+    }
   },
   {
     path: 'folios/seguimiento',
@@ -261,7 +268,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Seguimiento de folios.',
-      roles: [permisosKeysConfig["menu:controlDeProduccion:folios:seguimiento"]]
+      permissions:
+        permisosKeysConfig['menu:controlDeProduccion:folios:seguimiento']
     }
   },
   {
@@ -270,7 +278,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Asignar ordenes a maquinas.',
-      roles: [permisosKeysConfig["menu:controlDeProduccion:folios:asignarOrdenes"]]
+      permissions:
+        permisosKeysConfig['menu:controlDeProduccion:folios:asignarOrdenes']
     }
   },
 
@@ -298,7 +307,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Procesos',
-      roles: [permisosKeysConfig["menu:ingenieria:procesos"]]
+      permissions: permisosKeysConfig['menu:ingenieria:procesos']
     }
   },
   {
@@ -307,7 +316,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Proceso',
-      roles: [permisosKeysConfig["proceso:crear"]]
+      permissions: permisosKeysConfig['proceso:crear']
     }
   },
   {
@@ -316,7 +325,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Proceso',
-      roles: [permisosKeysConfig["proceso:modificar"]]
+      permissions: permisosKeysConfig['proceso:modificar']
     }
   },
 
@@ -326,7 +335,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestión de Maquinas',
-      roles: [permisosKeysConfig["menu:ingenieria:maquinas"]]
+      permissions: permisosKeysConfig['menu:ingenieria:maquinas']
     }
   },
 
@@ -336,7 +345,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Modelos',
-      roles: [permisosKeysConfig["menu:ingenieria:modelos"]]
+      permissions: permisosKeysConfig['menu:ingenieria:modelos']
     }
   },
   {
@@ -345,8 +354,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Modelos',
-      roles: [permisosKeysConfig["modelo:crear"]
-      ]}
+      permissions: permisosKeysConfig['modelo:crear']
+    }
   },
   {
     path: 'modelo/modificar/:id',
@@ -354,8 +363,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Modelos',
-      roles: [permisosKeysConfig["modelo:modificar"]
-      ]}
+      permissions: permisosKeysConfig['modelo:modificar']
+    }
   },
 
   {
@@ -364,7 +373,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Tamanos',
-      roles: [permisosKeysConfig["menu:ingenieria:tamanos"]]
+      permissions: permisosKeysConfig['menu:ingenieria:tamanos']
     }
   },
   {
@@ -373,7 +382,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Tamanos',
-      roles: [permisosKeysConfig["tamano:crear"]]
+      permissions: permisosKeysConfig['tamano:crear']
     }
   },
   {
@@ -382,7 +391,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de Tamanos',
-      roles: [permisosKeysConfig["tamano:modificar"]]
+      permissions: permisosKeysConfig['tamano:modificar']
     }
   },
 
@@ -392,7 +401,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de colores',
-      roles: [permisosKeysConfig["menu:ingenieria:colores"]]
+      permissions: permisosKeysConfig['menu:ingenieria:colores']
     }
   },
   {
@@ -401,7 +410,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de colores',
-      roles: [permisosKeysConfig["color:crear"]]
+      permissions: permisosKeysConfig['color:crear']
     }
   },
   {
@@ -410,7 +419,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de colores',
-      roles: [permisosKeysConfig["color:modificar"]]
+      permissions: permisosKeysConfig['color:modificar']
     }
   },
 
@@ -420,7 +429,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de terminados',
-      roles: [permisosKeysConfig["menu:ingenieria:terminados"] ]
+      permissions: permisosKeysConfig['menu:ingenieria:terminados']
     }
   },
   {
@@ -429,7 +438,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de terminados',
-      roles: [permisosKeysConfig["terminado:crear"]]
+      permissions: permisosKeysConfig['terminado:crear']
     }
   },
   {
@@ -438,7 +447,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de terminados',
-      roles: [permisosKeysConfig["terminado:modificar"]]
+      permissions: permisosKeysConfig['terminado:modificar']
     }
   },
 
@@ -448,7 +457,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de SKU - Produccion',
-      roles: [permisosKeysConfig["menu:ingenieria:sku"]]
+      permissions: permisosKeysConfig['menu:ingenieria:sku']
     }
   },
   {
@@ -457,7 +466,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de SKU - Produccion',
-      roles: [permisosKeysConfig["modeloCompleto:crear"]]
+      permissions: permisosKeysConfig['modeloCompleto:crear']
     }
   },
   {
@@ -466,7 +475,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de SKU - Produccion',
-      roles: [permisosKeysConfig["modeloCompleto:modificar"]]
+      permissions: permisosKeysConfig['modeloCompleto:modificar']
     }
   },
   {
@@ -475,8 +484,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestión de Familias de Procesos',
-      roles: [permisosKeysConfig["menu:ingenieria:familiaDeProcesos"]
-      ]}
+      permissions: permisosKeysConfig['menu:ingenieria:familiaDeProcesos']
+    }
   },
   {
     path: 'familiaDeProcesos/crear',
@@ -484,7 +493,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestión de Familias de Procesos',
-      roles: [permisosKeysConfig["familiaDeProcesos:crear"]]
+      permissions: permisosKeysConfig['familiaDeProcesos:crear']
     }
   },
   {
@@ -493,7 +502,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestión de Familias de Procesos',
-      roles: [permisosKeysConfig["familiaDeProcesos:modificar"]]
+      permissions: permisosKeysConfig['familiaDeProcesos:modificar']
     }
   },
   // {
@@ -502,7 +511,7 @@ const pagesRoutes: Routes = [
   //   canActivate: [VerificaTokenGuard, PermisosGuard],
   //   data: {
   //     titulo: "Detalle de Familia de Procesos",
-  //     roles: [permisosKeysConfig.]
+  //    permissions: permisosKeysConfig.
   //   }
   // },
 
@@ -522,19 +531,28 @@ const pagesRoutes: Routes = [
     path: 'ventas/misFolios',
     component: PruebaParaDetallesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Mis folios.', roles: [permisosKeysConfig["menu:ventas"]]}
+    data: {
+      titulo: 'Mis folios.',
+      permissions: permisosKeysConfig['menu:ventas']
+    }
   },
   {
     path: 'ventas/misFolios/crear',
     component: FoliosCrearModificarComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Crear folio', roles: [permisosKeysConfig["menu:ventas:misFolios"]]}
+    data: {
+      titulo: 'Crear folio',
+      permissions: permisosKeysConfig['menu:ventas:misFolios']
+    }
   },
   {
     path: 'ventas/misFolios/editar/:id',
     component: FoliosCrearModificarComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Crear folio', roles: [permisosKeysConfig["folio:modificar"]]}
+    data: {
+      titulo: 'Crear folio',
+      permissions: permisosKeysConfig['folio:modificar']
+    }
   },
   {
     path: 'ventas/stock',
@@ -543,7 +561,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Minimos y maximos de productos en almacen',
-      roles: [permisosKeysConfig["menu:ventas:stock"]]
+      permissions: permisosKeysConfig['menu:ventas:stock']
     }
   },
 
@@ -562,14 +580,17 @@ const pagesRoutes: Routes = [
     path: 'proveedores',
     component: ProveedorComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Proveedores.', roles: [permisosKeysConfig["menu:proveedores"]
-    ]}},
+    data: {
+      titulo: 'Proveedores.',
+      permissions: permisosKeysConfig['menu:proveedores']
+    }
+  },
   {
     path: 'divisas',
     component: DivisaComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Divisas', roles: [permisosKeysConfig["menu:divisas"]
-    ]}},
+    data: { titulo: 'Divisas', permissions: permisosKeysConfig['menu:divisas'] }
+  },
 
   // <!--
   // =====================================
@@ -585,14 +606,13 @@ const pagesRoutes: Routes = [
 
   // Mantenimientos
 
-
   {
     path: 'usuarios',
     component: UsuarioLeerComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Usuarios',
-      roles: [permisosKeysConfig["menu:administrador:usuarios"]]
+      permissions: permisosKeysConfig['menu:administrador:usuarios']
     }
   },
 
@@ -602,8 +622,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Usuarios',
-      roles: [permisosKeysConfig["administrador:usuario:crear"]
-      ]}
+      permissions: permisosKeysConfig['administrador:usuario:crear']
+    }
   },
   {
     path: 'usuario/modificar/:id',
@@ -611,22 +631,18 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Usuario',
-      roles: [permisosKeysConfig["usuario:modificar"]]
+      permissions: permisosKeysConfig['usuario:modificar']
     }
   },
   {
     path: 'usuario/detalle/:id',
-    component:UsuarioDetalleComponent,
+    component: UsuarioDetalleComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Usuario',
-      roles: [permisosKeysConfig["administrador:usuario:leer"]]
+      permissions: permisosKeysConfig['administrador:usuario:leer']
     }
   },
-
-
-
-
 
   {
     path: 'clientes',
@@ -634,7 +650,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Mantenimientos de clientes',
-      roles: [permisosKeysConfig["menu:administrador:clientes"]]
+      permissions: permisosKeysConfig['menu:administrador:clientes']
     }
   },
   {
@@ -643,8 +659,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Mantenimientos de clientes',
-      roles: [permisosKeysConfig["cliente:crear"]
-      ]}
+      permissions: permisosKeysConfig['cliente:crear']
+    }
   },
   {
     path: 'cliente/modificar/:id',
@@ -652,7 +668,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Mantenimientos de clientes',
-      roles: [permisosKeysConfig["cliente:modificar"]]
+      permissions: permisosKeysConfig['cliente:modificar']
     }
   },
 
@@ -662,7 +678,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Almacenes',
-      roles: [permisosKeysConfig["menu:administrador:almacenDescripcion"]]
+      permissions: permisosKeysConfig['menu:administrador:almacenDescripcion']
     }
   },
 
@@ -684,7 +700,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:controlDeProduccion"]]
+      permissions: permisosKeysConfig['menu:produccion:controlDeProduccion']
     }
   },
   {
@@ -693,7 +709,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Almacen de boton',
-      roles: [permisosKeysConfig["menu:produccion:almacenDeBoton"]]
+      permissions: permisosKeysConfig['menu:produccion:almacenDeBoton']
     }
   },
   {
@@ -702,7 +718,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:materiales"]]
+      permissions: permisosKeysConfig['menu:produccion:materiales']
     }
   },
   {
@@ -711,7 +727,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:pastilla"]]
+      permissions: permisosKeysConfig['menu:produccion:pastilla']
     }
   },
   {
@@ -720,8 +736,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:reportes:transformacion"]
-      ]}
+      permissions: permisosKeysConfig['menu:reportes:transformacion']
+    }
   },
   {
     path: 'produccion/laser',
@@ -729,8 +745,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:laser"]
-      ]}
+      permissions: permisosKeysConfig['menu:produccion:laser']
+    }
   },
   {
     path: 'produccion/pulido',
@@ -738,7 +754,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:pulido"]]
+      permissions: permisosKeysConfig['menu:produccion:pulido']
     }
   },
   {
@@ -747,7 +763,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:tenido"]]
+      permissions: permisosKeysConfig['menu:produccion:tenido']
     }
   },
   {
@@ -756,7 +772,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:seleccion"]]
+      permissions: permisosKeysConfig['menu:produccion:seleccion']
     }
   },
   {
@@ -765,7 +781,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:empaque"]]
+      permissions: permisosKeysConfig['menu:produccion:empaque']
     }
   },
   {
@@ -774,8 +790,8 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:metalizado"]
-      ]}
+      permissions: permisosKeysConfig['menu:produccion:metalizado']
+    }
   },
   {
     path: 'produccion/barnizado',
@@ -783,7 +799,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:barnizado"]]
+      permissions: permisosKeysConfig['menu:produccion:barnizado']
     }
   },
   {
@@ -792,7 +808,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:burato"]]
+      permissions: permisosKeysConfig['menu:produccion:burato']
     }
   },
   {
@@ -801,7 +817,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      roles: [permisosKeysConfig["menu:produccion:productoTerminado"]]
+      permissions: permisosKeysConfig['menu:produccion:productoTerminado']
     }
   },
 
@@ -823,7 +839,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de empleados',
-      roles: [permisosKeysConfig["menu:rh:empleados"]]
+      permissions: permisosKeysConfig['menu:rh:empleados']
     }
   },
   {
@@ -832,7 +848,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de cursos',
-      roles: [permisosKeysConfig["menu:rh:cursos"]]
+      permissions: permisosKeysConfig['menu:rh:cursos']
     }
   },
   {
@@ -841,7 +857,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de areas',
-      roles: [permisosKeysConfig["menu:administrador:areas"]]
+      permissions: permisosKeysConfig['menu:administrador:areas']
     }
   },
 
@@ -851,7 +867,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Gestion de puestos',
-      roles: [permisosKeysConfig["menu:rh:puestos"]]
+      permissions: permisosKeysConfig['menu:rh:puestos']
     }
   },
 
@@ -864,15 +880,13 @@ const pagesRoutes: Routes = [
   // =================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // -->
 
-
-
   {
     path: 'departamentos',
     component: DepartamentoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Departamentos',
-      roles: [permisosKeysConfig["menu:administrador:departamentos"]]
+      permissions: permisosKeysConfig['menu:administrador:departamentos']
     }
   },
 
@@ -890,11 +904,11 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Seguimiento de folios',
-      roles: [permisosKeysConfig["menu:controlDeProduccion:folios:seguimiento"]]
+      permissions:
+        permisosKeysConfig['menu:controlDeProduccion:folios:seguimiento']
     }
   },
 
-  
   // Redirige al dashboard cuando no se ha puesto nada en la url.
   {
     path: '',
@@ -909,7 +923,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Informaciónde la cuenta',
-      roles: [permisosKeysConfig.login]
+      permissions: permisosKeysConfig.login
     }
   }
 ]

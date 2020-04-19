@@ -158,7 +158,10 @@ import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personali
 import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 import { CommonModule } from '@angular/common'
-import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
+import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component';
+import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component';
+import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component';
+import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
 
 @NgModule({
   declarations: [
@@ -318,7 +321,10 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
     RPersonalizadoAlmacenProduccionComponent,
     ReportePersonalizadoAlmacenProduccionComponent,
     ProgramacionTransformacionComponent,
-    ProgramacionTransformacionReporteComponent
+    ProgramacionTransformacionReporteComponent,
+    UsuarioCrearComponent,
+    UsuarioDetalleComponent,
+    UsuarioLeerComponent
   ],
   exports: [],
   imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],
