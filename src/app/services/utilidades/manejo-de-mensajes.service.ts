@@ -38,13 +38,16 @@ export class ManejoDeMensajesService {
       type: 'error',
       title: '¡Algo salio mal!'
     }
+    console.log(`err`, err)
 
-    if (!err.error) {
+    if (!err.error && err.status !== 403) {
       // Si el error viene del GUI no tiene la propiedad
       // error y no muestra el mensaje. Si pasa esto
       // lo capturamos aqui
       throw err
     }
+
+    datosSwal.text = err.error
 
     if (err.error.data) {
       datosSwal.text = err.error.data.mensaje
