@@ -70,6 +70,8 @@ import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-deta
 import permisosConfig from 'src/app/config/permisos.config'
 import permisosKeysConfig from '../config/permisosKeys.config'
 import permisos from 'src/app/config/permisos.config'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -679,6 +681,24 @@ const pagesRoutes: Routes = [
     data: {
       titulo: 'Almacenes',
       permissions: permisosKeysConfig['menu:administrador:almacenDescripcion']
+    }
+  },
+  {
+    path: 'almacenDescripcion/crear',
+    component: AlmacenDescripcionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Almacenes',
+      permissions: permisosKeysConfig["almacenDescripcion:crear"]
+    }
+  },
+  {
+    path: 'almacenDescripcion/modificar/:id',
+    component: AlmacenDescripcionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Almacenes',
+      permissions: permisosKeysConfig["almacenDescripcion:modificar"]
     }
   },
 
