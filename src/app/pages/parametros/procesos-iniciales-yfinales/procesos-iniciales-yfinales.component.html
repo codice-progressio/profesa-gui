@@ -1,0 +1,166 @@
+<div class="row" *ngIf="keys(cargando).length === 0">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>Configuracion de procesos iniciales y finales</h1>
+        <h3>Localizacion de ordenes</h3>
+        <p>
+          Estos procesos se agregann al final y al inicio de la generacion de
+          familias de procesos respectivamente
+        </p>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+
+        <div cdkDropListGroup class="row">
+          <div class="col-12 col-md-4">
+            <ul
+              cdkDropList
+              [cdkDropListData]="localizacionDeOrdenes.procesosIniciales"
+              (cdkDropListDropped)="drop($event)"
+              class="list-group"
+            >
+              <li class="list-group-item active">Procesos iniciales</li>
+              <li
+                cdkDrag
+                *ngFor="
+                  let proceso of localizacionDeOrdenes.procesosIniciales;
+                  let i = index
+                "
+                class="list-group-item"
+              >
+                <span class="font-14 text-muted">{{
+                  proceso.departamento.nombre
+                }}</span>
+                <br />
+                <a
+                  (click)="
+                    removerItem(localizacionDeOrdenes.procesosIniciales, i)
+                  "
+                  class="btn btn-danger btn-sm"
+                  href="javscript:void(0)"
+                  role="button"
+                  ><i class="fas fa-times-circle"></i
+                ></a>
+                {{ proceso.nombre }}
+              </li>
+              <li
+                *ngIf="localizacionDeOrdenes.procesosIniciales.length === 0"
+                class="list-group-item disabled"
+              >
+                No has definido procesos iniciales
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <ul cdkDropList [cdkDropListData]="procesos" class="list-group">
+              <li class="list-group-item bg-secondary text-white">
+                Procesos seleccionables
+              </li>
+              <li
+                cdkDrag
+                [cdkDragData]="'true'"
+                *ngFor="let proceso of procesos"
+                class="list-group-item"
+              >
+                <span class="font-14 text-muted">{{
+                  proceso.departamento.nombre
+                }}</span>
+                <br />
+                {{ proceso.nombre }}
+              </li>
+              <li
+                *ngIf="procesos.length === 0"
+                class="list-group-item disabled"
+              >
+                No has definido procesos
+              </li>
+            </ul>
+          </div>
+          <div class="col-12 col-md-4">
+            <ul
+              cdkDropList
+              [cdkDropListData]="localizacionDeOrdenes.procesosFinales"
+              (cdkDropListDropped)="drop($event)"
+              class="list-group"
+            >
+              <li class="list-group-item active">Procesos finales</li>
+              <li
+                cdkDrag
+                *ngFor="
+                  let proceso of localizacionDeOrdenes.procesosFinales;
+                  let i = index
+                "
+                class="list-group-item"
+              >
+                <span class="font-14 text-muted">{{
+                  proceso.departamento.nombre
+                }}</span>
+                <br />
+                <a
+                  (click)="
+                    removerItem(localizacionDeOrdenes.procesosFinales, i)
+                  "
+                  class="btn btn-danger btn-sm"
+                  href="javscript:void(0)"
+                  role="button"
+                  ><i class="fas fa-times-circle"></i></a
+                >{{ proceso.nombre }}
+              </li>
+              <li
+                *ngIf="localizacionDeOrdenes.procesosFinales.length === 0"
+                class="list-group-item disabled"
+              >
+                No has definido procesos finales
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-right">
+            <a
+              (click)="submit()"
+              class="btn btn-success mr-3"
+              href="javascript:void(0)"
+              role="button"
+            >
+              Guardar</a
+            >
+            <a
+              (click)="location.back()"
+              class="btn btn-danger"
+              href="javascript:void(0)"
+              role="button"
+            >
+              Cancelar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="keys(cargando).length > 0">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body text-center">
+        <h1 class="display-1">
+          <i class="fas fa-sync fa-spin-fast"></i>
+        </h1>
+
+        <h3 *ngFor="let par of cargando | keyvalue">{{ par.value }}</h3>
+      </div>
+    </div>
+  </div>
+</div>

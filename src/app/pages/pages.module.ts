@@ -161,7 +161,8 @@ import { CommonModule } from '@angular/common'
 import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component';
 import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component';
 import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component';
-import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
+import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component';
+import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
 
 @NgModule({
   declarations: [
@@ -324,7 +325,8 @@ import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.compo
     ProgramacionTransformacionReporteComponent,
     UsuarioCrearComponent,
     UsuarioDetalleComponent,
-    UsuarioLeerComponent
+    UsuarioLeerComponent,
+    ProcesosInicialesYFinalesComponent
   ],
   exports: [],
   imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],

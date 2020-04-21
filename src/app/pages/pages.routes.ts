@@ -2,8 +2,6 @@ import { RouterModule, Routes } from '@angular/router'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
 import { ProfileComponent } from './profile/profile.component'
-import { UsuariosComponent } from './usuarios/usuarios.component'
-import { BusquedaComponent } from './busqueda/busqueda.component'
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
 import { MaterialesComponent } from './departamentos/materiales/materiales.component'
 import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
@@ -11,8 +9,6 @@ import { PulidoComponent } from './departamentos/pulido/pulido.component'
 import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
 import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
 import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
-import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component'
-import { _ROLES as ROLES } from '../config/roles.const'
 import { ClientesComponent } from './clientes/clientes.component'
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component'
 import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component'
@@ -67,11 +63,9 @@ import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modif
 import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component'
 import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
 import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component'
-import permisosConfig from 'src/app/config/permisos.config'
 import permisosKeysConfig from '../config/permisosKeys.config'
-import permisos from 'src/app/config/permisos.config'
-import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component'
+import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -84,6 +78,16 @@ const pagesRoutes: Routes = [
   //     canActivate: [LoginGuardGuard],
   //     children: [
   // Sección de estudio.
+
+  {
+    path: 'parametros/localizacionDeOrdenes',
+    component: ProcesosInicialesYFinalesComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Dashboard',
+      permissions: permisosKeysConfig["menu:parametros:localizacionDeOrdenes"]
+    }
+  },
 
   //  <!--
   //  =====================================
@@ -584,14 +588,17 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Proveedores.',
-      permissions: permisosKeysConfig['menu:proveedores']
+      permissions: permisosKeysConfig['menu:compras:proveedores']
     }
   },
   {
     path: 'divisas',
     component: DivisaComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: { titulo: 'Divisas', permissions: permisosKeysConfig['menu:divisas'] }
+    data: {
+      titulo: 'Divisas',
+      permissions: permisosKeysConfig['menu:compras:divisas']
+    }
   },
 
   // <!--
@@ -689,7 +696,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Almacenes',
-      permissions: permisosKeysConfig["almacenDescripcion:crear"]
+      permissions: permisosKeysConfig['almacenDescripcion:crear']
     }
   },
   {
@@ -698,7 +705,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Almacenes',
-      permissions: permisosKeysConfig["almacenDescripcion:modificar"]
+      permissions: permisosKeysConfig['almacenDescripcion:modificar']
     }
   },
 
