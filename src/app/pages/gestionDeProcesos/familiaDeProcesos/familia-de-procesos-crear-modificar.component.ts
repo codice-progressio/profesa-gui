@@ -11,6 +11,9 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
 import { Location } from '@angular/common'
 import { ProcesoService } from '../../../services/proceso/proceso.service'
 import { Paginacion } from 'src/app/utils/paginacion.util'
+import { ParametrosService } from '../../../services/parametros.service'
+import { LocalizacionDeOrdenes } from '../../../models/parametros/localizacionDeOrdenes.parametros.model'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-familia-de-procesos-crear-modificar',
@@ -23,6 +26,8 @@ export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
 
   procesos: Proceso[] = null
   procesosAgregados: Proceso[] = null
+  procesosIniciales: Proceso[] = []
+  procesosFinales: Proceso[] = []
 
   formulario: FormGroup
   familia: FamiliaDeProcesos
@@ -33,7 +38,9 @@ export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
     private familiaService: FamiliaDeProcesosService,
     private fb: FormBuilder,
     public vs: ValidacionesService,
-    private procesoService: ProcesoService
+    private procesoService: ProcesoService,
+    private parametrosService: ParametrosService,
+    private msjService: ManejoDeMensajesService
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id')
 
@@ -52,7 +59,18 @@ export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.cargando['procesos'] = 'Cargando parametros'
+    this.parametrosService.localizacionDeOrdenes().subscribe(
+      localizacionDeOrdenes => {
+        this.procesosIniciales = localizacionDeOrdenes.procesosIniciales
+        this.procesosFinales = localizacionDeOrdenes.procesosFinales
+
+        delete this.cargando['procesos']
+      },
+      err => delete this.cargando['procesos']
+    )
+  }
 
   /**
    *Crea el formulario de registro.
@@ -88,24 +106,42 @@ export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
 
   drop(e: CdkDragDrop<Proceso[]>) {
     if (e.container !== e.previousContainer) {
-      this.procesosAgregados.splice(
-        e.currentIndex,
-        0,
-        this.procesos[e.previousIndex]
-      )
+      let r = (a, b) => a.concat(' ' + b._id)
+      let pF: string = this.procesosFinales.reduce(r, '')
+      let pI: string = this.procesosIniciales.reduce(r, '')
+      let pro = this.procesos[e.previousIndex]
 
-      this.f('procesos').clear()
-      let contador = 0
-      this.procesosAgregados.forEach(p => {
-        const procesos = new Procesos()
-        procesos.proceso = p
-        procesos.orden = contador + ''
-        contador++
-        this.f('procesos').push(new FormControl(procesos))
-      })
+      if (pF.includes(pro._id) || pI.includes(pro._id)) {
+        this.msjService.confirmarAccion(
+          'Este proceso esta incluido en los procesos de inicializacion o finalizacion, Aun asi quieres agregarlo?',
+          () => {
+            this.continuarAgregandoProceso(e)
+          }
+        )
+      } else {
+        this.continuarAgregandoProceso(e)
+      }
     } else {
       moveItemInArray(e.container.data, e.previousIndex, e.currentIndex)
     }
+  }
+
+  private continuarAgregandoProceso(e) {
+    this.procesosAgregados.splice(
+      e.currentIndex,
+      0,
+      this.procesos[e.previousIndex]
+    )
+
+    this.f('procesos').clear()
+    let contador = 0
+    this.procesosAgregados.forEach(p => {
+      const procesos = new Procesos()
+      procesos.proceso = p
+      procesos.orden = contador + ''
+      contador++
+      this.f('procesos').push(new FormControl(procesos))
+    })
   }
 
   quitarProceso(i: number): void {

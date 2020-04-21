@@ -7,8 +7,7 @@
             <h1 *ngIf="familia?._id">{{ familia.nombre }}</h1>
             <h1>
               <span class="text-success" *ngIf="!familia?._id">
-                <i class="fas fa-plus-square    "></i> Crear
-                <b>tamano</b> </span
+                <i class="fas fa-plus-square"></i> Crear <b>tamano</b> </span
               ><span class="text-warning" *ngIf="familia?._id">
                 <i class="fas fa-pen-square"></i> Modificar <b>tamano</b>
               </span>
@@ -89,31 +88,61 @@
                         cdkDropList
                         (cdkDropListDropped)="drop($event)"
                         [cdkDropListData]="procesosAgregados"
-                        style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
+                        style="
+                          max-height: 600px;
+                          overflow: scroll;
+                          overflow-x: hidden;
+                          overflow-y: auto;
+                        "
                       >
                         <li
-                          cdkDrag
+                          *ngFor="let pro of procesosIniciales"
+                          class="list-group-item align-items-start list-group-item-secondary"
+                        >
+                          <small class="text-muted pull-right">{{
+                            pro.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">{{ pro.nombre }}</h5>
+                        </li>
+
+                        <li
                           *ngFor="let pro of procesosAgregados; let i = index"
-                          class="list-group-item  align-items-start"
+                          cdkDrag
+                          class="list-group-item align-items-start"
                         >
                           <a
                             (click)="quitarProceso(i)"
                             class="btn btn-danger btn-xs pull-right ml-1"
                             href="javascript:void(0)"
                             role="button"
-                            ><i class="fas fa-times-circle "></i
+                            ><i class="fas fa-times-circle"></i
                           ></a>
                           <small class="text-muted pull-right">{{
                             pro.departamento.nombre
                           }}</small>
-                          <h5 class="mb-1 ">{{ i }}.-{{ pro.nombre }}</h5>
+                          <h5 class="mb-1">{{ pro.nombre }}</h5>
                         </li>
+
                         <li
-                          *ngIf="!f('procesos').length"
-                          class="list-group-item disabled"
+                        *ngIf="!f('procesos').length"
+                        class="list-group-item disabled"
+                      >
+                        No se han asignado procesos
+                      </li>
+
+                        <li
+                          *ngFor="let pro of procesosFinales"
+                          class="list-group-item align-items-start list-group-item-secondary"
                         >
-                          No se han asignado procesos
+                          <small class="text-muted pull-right">{{
+                            pro.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">
+                            {{ pro.nombre }}
+                          </h5>
                         </li>
+
+                      
                       </div>
                     </ul>
 
@@ -133,7 +162,7 @@
                             #input
                             (keyup)="filtrarDisponibles(input.value)"
                             type="text"
-                            class="form-control m-0  form-control-sm"
+                            class="form-control m-0 form-control-sm"
                             placeholder="Buscar"
                           />
                         </div>
@@ -143,20 +172,25 @@
                         cdkDropList
                         [cdkDropListData]="procesos"
                         [cdkDropListConnectedTo]="['procesos-agregados']"
-                        style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
+                        style="
+                          max-height: 600px;
+                          overflow: scroll;
+                          overflow-x: hidden;
+                          overflow-y: auto;
+                        "
                       >
                         <li
                           cdkDrag
                           *ngFor="let proceso of procesos"
-                          class="list-group-item "
+                          class="list-group-item"
                           [style.display]="
-                            mostrar?.includes(proceso._id) ?  'block' :'none'
+                            mostrar?.includes(proceso._id) ? 'block' : 'none'
                           "
                         >
                           <small class="text-muted pull-right">{{
                             proceso.departamento.nombre
                           }}</small>
-                          <h5 class="mb-1 ">{{ proceso.nombre }}</h5>
+                          <h5 class="mb-1">{{ proceso.nombre }}</h5>
                         </li>
                       </div>
                       <li
@@ -186,14 +220,14 @@
                   role="button"
                   [disabled]="keys(cargando).length > 0"
                 >
-                  <i class="fas fa-save    "></i> Guardar
+                  <i class="fas fa-save"></i> Guardar
                 </button>
                 <a
                   (click)="location.back()"
                   class="text-white btn btn-danger active"
                   role="button"
                 >
-                  <i class="fas fa-times    "></i> Cancelar</a
+                  <i class="fas fa-times"></i> Cancelar</a
                 >
               </div>
             </div>
@@ -212,7 +246,7 @@
           class="card-body d-flex justify-content-between align-items-center text-center"
         >
           <h1 class="display-1">
-            <i class="fas fa-sync fa-spin   "></i>
+            <i class="fas fa-sync fa-spin"></i>
             <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
           </h1>
         </div>
