@@ -66,6 +66,9 @@ import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-deta
 import permisosKeysConfig from '../config/permisosKeys.config'
 import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component'
 import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
+import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component'
+import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component'
+import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -85,7 +88,7 @@ const pagesRoutes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Dashboard',
-      permissions: permisosKeysConfig["menu:parametros:localizacionDeOrdenes"]
+      permissions: permisosKeysConfig['menu:parametros:localizacionDeOrdenes']
     }
   },
 
@@ -204,6 +207,42 @@ const pagesRoutes: Routes = [
       permissions: permisosKeysConfig['menu:almacen:productoTerminado']
     }
   },
+
+  {
+    path: 'almacen/productoTerminado/detalle/:id',
+    component: AlmacenDeProductoTerminadoDetalleComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Almacen de producto terminado',
+      permissions: permisosKeysConfig['almacenDeProductoTerminado:leer:todo']
+    }
+  },
+
+  {
+    path: 'almacen/productoTerminado/salida/:id',
+    component: AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Almacen de producto terminado',
+      permissions: permisosKeysConfig['almacenDeProductoTerminado:salida']
+    }
+  },
+
+
+  
+  {
+    path: 'almacen/productoTerminado/entrada/:id',
+    component: AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Almacen de producto terminado',
+      permissions: permisosKeysConfig["almacenDeProductoTerminado:lote:crear"]
+    }
+  },
+
   {
     path: 'almacen/produccion/entradasYSalidas',
     component: AlmacenESComponent,

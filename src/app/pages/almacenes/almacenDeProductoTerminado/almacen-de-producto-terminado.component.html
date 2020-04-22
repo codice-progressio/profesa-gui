@@ -1,16 +1,16 @@
-<div class="row">
+<div class="row" *ngIf="keys(cargando).length === 0">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <h1 class=""><strong>Modelos</strong> existentes</h1>
+          <h1 class=""><strong>SKUs</strong> existentes</h1>
 
-          <div class="d-flex  align-items-center ">
+          <div class="d-flex align-items-center">
             <div class="mr-3">
               <app-buscador-paciente
-                [cbObservable]="cbObserbable"
+                [cbObservable]="cbObservable"
                 [tiempoDeEspera]="1000"
-                (resultado)="busqueda($event)"
+                (resultado)="resultadoDeBusqueda($event)"
                 (cancelado)="cancelado()"
                 (error)="error($event)"
                 (terminoPublico)="termino = $event"
@@ -20,7 +20,19 @@
         </div>
         <hr />
 
-        <app-paginador *ngIf="!buscando"></app-paginador>
+        <div class="row">
+          <div class="col-12">
+            <paginador
+              #paginadorOriginal
+              class="pull-right"
+              [totalDeElementos]="this.totalDeElementos"
+              [campoDeOrdenamiento]="'modelo'"
+              [tipoDeOrden]="1"
+              (actualizarConsulta)="actualizarConsulta($event)"
+              [cargando]="keys(cargando).length > 0"
+            ></paginador>
+          </div>
+        </div>
 
         <table
           *ngIf="modelosCompletos.length > 0"
@@ -46,52 +58,45 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              class="fit"
-              *ngFor="let mc of modelosCompletos"
-              [ngClass]="{
-                'bg-warning': -1 === comprobarExistencias(mc),
-                'bg-danger': 0 === comprobarExistencias(mc),
-                'bg-info': 1 === comprobarExistencias(mc)
-              }"
-              [class.text-white]="comprobarExistencias(mc) !== 2"
-            >
+            <tr class="fit" *ngFor="let mc of modelosCompletos">
               <td class="fit">
                 <a
+                  herf="javascript:void(0)"
                   id="button0"
-                  (click)="asignarDetalle(mc)"
-                  class="btn  text-white btn-primary btn-xs mr-1"
+                  [routerLink]="['detalle', mc._id]"
+                  class="btn text-white btn-primary btn-xs mr-1"
                   role="button"
-                  data-toggle="modal"
-                  data-target="#modeloCompletoDetalle"
                 >
-                  <i class="fas fa-eye    "></i>
+                  <i class="fas fa-eye"></i>
                 </a>
                 <a
+                  herf="javascript:void(0)"
                   id="button1"
-                  class="btn  text-white btn-warning btn-xs mr-1"
+                  [routerLink]="['entrada', mc._id]"
+                  class="btn text-white btn-warning btn-xs mr-1"
                   role="button"
                   title="Entrada de boton"
-                  data-toggle="modal"
-                  data-target="#modalEntradasYSalidas"
-                  (click)="asignarEntradaOSalida(mc, true)"
                 >
-                  <i class="fas fa-plus    "></i>
+                  <i class="fas fa-plus"></i> Entrada
                 </a>
                 <a
+                  herf="javascript:void(0)"
                   id="button2"
-                  class="btn  text-white btn-success btn-xs mr-1"
+                  [routerLink]="['salida', mc._id]"
+                  class="btn text-white btn-success btn-xs mr-1"
                   role="button"
                   title="Salida de boton"
-                  data-toggle="modal"
-                  data-target="#modalEntradasYSalidas"
-                  (click)="asignarEntradaOSalida(mc, false)"
                 >
-                  <i class="fas fa-minus    "></i>
+                  <i class="fas fa-minus"></i> Salida
                 </a>
               </td>
               <td class="no-wrap fit">{{ mc.nombreCompleto }}</td>
-              <td>
+              <td
+                [ngClass]="{
+                  'bg-warning': -1 === comprobarExistencias(mc),
+                  'bg-danger': 0 === comprobarExistencias(mc)
+                }"
+              >
                 <ng-container *ngIf="mc.existencia">
                   {{ mc.existencia | number: '0.0-0' }}
                 </ng-container>
@@ -126,106 +131,29 @@
 
         <h1
           *ngIf="modelosCompletos.length === 0"
-          class=" display-1 animated fadeIn"
+          class="display-1 animated fadeIn"
         >
           No se encontro ningun <b>modelo</b>.
         </h1>
-
-        <app-paginador *ngIf="!buscando"></app-paginador>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 
-=====================================
- Detalles de existencia
-=====================================
--->
-<div
-  class="modal fade"
-  id="modeloCompletoDetalle"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-almacen-de-producto-terminado-detalle
-          [modeloCompleto]="modeloCompletoDetalle"
-          (detalleLote)="detalleLote = $event"
-        ></app-almacen-de-producto-terminado-detalle>
+<div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1 class="display-1 w-100 text-center">
+          <i class="fas fa-sync fa-spin"></i>
+        </h1>
+        <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+          {{ cargando[key] }}
+        </h2>
       </div>
     </div>
   </div>
 </div>
-
-<!-- 
-=====================================
- END Detalles de existencia
-=====================================
--->
-
-<!-- 
-=====================================
- Entradas y salidas
-=====================================
--->
-
-<div
-  class="modal fade"
-  id="modalEntradasYSalidas"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-almacen-de-producto-terminado-crear-modificar
-          [modeloCompleto]="modeloCompletoES"
-          [esEntrada]="esEntrada"
-          (guardado)="cargarModelos()"
-        ></app-almacen-de-producto-terminado-crear-modificar>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================
- END Entradas y salidas
-=====================================
--->
-
-<!-- 
-=====================================
- Detalles de lote
-=====================================
--->
-<div
-  class="modal fade"
-  id="modalDetalleLote"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-lote-detalle [lote]="detalleLote"></app-lote-detalle>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 
-=====================================
- END Detalles de lote
-=====================================
--->
 
 <!-- 
 =====================================
@@ -243,7 +171,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title ">
+        <h5 class="modal-title">
           Opciones adicionales
           <br />
           <b>{{ modeloAConsolidar?.nombreCompleto }}</b>
@@ -266,12 +194,12 @@
                 class="btn btn-secondary"
                 role="button"
                 (click)="consolidarLotes()"
-                [disabled]='!modeloAConsolidar'
+                [disabled]="!modeloAConsolidar"
                 data-dismiss="modal"
               >
                 <i class="fas fa-compress-arrows-alt"></i>
                 Consolidar lotes
-            </button>
+              </button>
             </div>
           </div>
         </div>

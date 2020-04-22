@@ -1,80 +1,176 @@
-<form [formGroup]="formulario">
-    <input formControlName="cliente" type="hidden" />
-    <input formControlName="idLote" type="hidden" />
-    <div class="row">
-        <div class="col-6">
-            <div class="list-group">
-                <ng-container *ngFor="let lote of modeloCompleto.lotes">
-                    <a *ngIf="lote.existencia>0" (click)="seleccionarLote(lote._id)" [ngClass]="{ 'active text-white': lote._id === idLote_FB?.value }" class="list-group-item list-group-item-action">
-                        <span [title]="lote.createAt | fecha: 'LLL'">
-              Lote: {{ lote.createAt | date: "dd/MM/yy" }}
-            </span>
-                        <h3>
-                            Existencia: <strong> {{ lote.existencia | number }}</strong>
-                        </h3>
-                    </a>
-
-                </ng-container>
-
-            </div>
-            <small class="form-text text-muted">Selecciona un lote</small>
-
-            <app-validacion-inputs [campo]="idLote_FB" [directo]="true"></app-validacion-inputs>
-        </div>
-
-        <div class="col-6">
-            <input #inputCliente [(ngModel)]="inputClienteNg" [ngModelOptions]="{ standalone: true }" #inputCliente [ngClass]="{
-          'is-invalid': vs.invalid(cliente_FB),
-          'is-valid': vs.valid(cliente_FB)
-        }" (keyup)="cargarClientes(inputCliente.value)" (keydown.backspace)="limpiarCliente(inputCliente)" (change)="clienteObtenerId(inputCliente.value)" type="text" list="Cliente" class="form-control" />
-            <datalist id="Cliente">
-        <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
-          {{ cliente.sae }}</option
-        >
-        <option
-          disabled
-          *ngIf="clientes.length === 0"
-          value="Empieza a escribir para buscar"
-        >
-        </option>
-      </datalist>
-            <small id="cliente" class="form-text text-muted">Selecciona un cliente</small
-      >
-      <app-validacion-inputs
-        [campo]="cliente_FB"
-        [directo]="true"
-      ></app-validacion-inputs>
-
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(cantidad_FB),
-            'is-valid': vs.valid(cantidad_FB)
-          }"
-          type="number"
-          class="form-control"
-          formControlName="cantidad"
-        />
-        <small id="helpId" class="form-text text-muted">Cantidad a salir</small>
-            <app-validacion-inputs [campo]="cantidad_FB" [directo]="true"></app-validacion-inputs>
-        </div>
-
-        <div class="form-group">
-            <textarea [ngClass]="{
-            'is-invalid': vs.invalid(observaciones_FB),
-            'is-valid': vs.valid(observaciones_FB)
-          }" class="form-control" formControlName="observaciones" row='5'></textarea>
-            <small id="helpId" class="form-text text-muted">Observaciones</small>
-            <app-validacion-inputs [campo]="observaciones_FB" [directo]="true"></app-validacion-inputs>
-        </div>
-    </div>
-    </div>
-</form>
-
-<hr />
-
-<button [disabled]='formulario.invalid' (click)="guardar(formulario.value, formulario.invalid, $event)" class="btn btn-success text-white mr-3" role="button">
-  <i class="fas fa-save    "></i> Guardar</button
+<div
+  *ngIf="keys(cargando).length === 0; else cargandoTemplate"
+  class="row animated fadeIn"
 >
-<a data-toggle="modal" data-target="#modalEntradasYSalidas" (click)="cancelarGuardado()" class="btn btn-danger text-white" role="button">
-    <i class="fas fa-times"></i> Cancelar</a>
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h1 class="font-bold text-success">Registrar salida</h1>
+          </div>
+          <div class="col-12 col-md-6 text-md-right">
+            <h2>{{ modeloCompleto.nombreCompleto }}</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+
+        <form [formGroup]="formulario">
+          <input formControlName="cliente" type="hidden" />
+          <input formControlName="idLote" type="hidden" />
+          <div class="row">
+            <div class="col-6">
+              <div class="list-group">
+                <ng-container *ngFor="let lote of modeloCompleto.lotes">
+                  <a
+                    *ngIf="lote.existencia > 0"
+                    (click)="seleccionarLote(lote._id)"
+                    class="list-group-item list-group-item-action"
+                  >
+                    <span [title]="lote.createAt | fecha: 'LLL'">
+                      Lote: {{ lote.createAt | date: 'dd/MM/yy' }}
+                    </span>
+                    <h3>
+                      <span>
+                        Existencia:
+                        <strong> {{ lote.existencia | number }}</strong>
+                      </span>
+                      <i
+                        *ngIf="lote._id === f('idLote')?.value"
+                        class="fas fa-check text-success fa-2x animated rollIn pull-right"
+                      ></i>
+                    </h3>
+                  </a>
+                </ng-container>
+              </div>
+              <small class="form-text text-muted">Selecciona un lote</small>
+
+              <app-validacion-inputs
+                [campo]="f('idLote')"
+                [directo]="true"
+              ></app-validacion-inputs>
+            </div>
+
+            <div class="col-6">
+              <!-- 
+              =====================================
+               cliente
+              =====================================
+              -->
+
+              <div class="form-group">
+                <input type="hidden" formControlName="cliente" />
+
+                <app-data-list
+                  (ejecutarBusquedaDeItems)="buscar($event)"
+                  (elementoSeleccionado)="seleccionar($event)"
+                  (touched)="f('cliente').markAsTouched()"
+                  [valid]="vs.valid(f('cliente'))"
+                  [invalid]="vs.invalid(f('cliente'))"
+                ></app-data-list>
+
+                <small id="helpId" class="form-text text-muted">Cliente</small>
+                <app-validacion-inputs
+                  [campo]="f('cliente')"
+                ></app-validacion-inputs>
+              </div>
+
+              <!-- 
+              =====================================
+               END cliente
+              =====================================
+              -->
+
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('cantidad')),
+                    'is-valid': vs.valid(f('cantidad'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="cantidad"
+                  mask="separator"
+                  thousandSeparator=","
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Cantidad a salir</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('cantidad')"
+                  [directo]="true"
+                ></app-validacion-inputs>
+              </div>
+
+              <div class="form-group">
+                <textarea
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('observaciones')),
+                    'is-valid': vs.valid(f('observaciones'))
+                  }"
+                  class="form-control"
+                  formControlName="observaciones"
+                  row="5"
+                ></textarea>
+                <small id="helpId" class="form-text text-muted"
+                  >Observaciones</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('observaciones')"
+                  [directo]="true"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <a
+              href="javascript:void(0)"
+              (click)="submit(formulario.value, formulario.invalid, $event)"
+              class="btn btn-success mr-3 active"
+              role="button"
+            >
+              <i class="fas fa-save"></i> Guardar
+          </a>
+            <a
+              href="javascript:void(0)"
+              (click)="location.back()"
+              class="btn btn-danger"
+              role="button"
+            >
+              <i class="fas fa-times"></i> Cancelar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body text-center">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin-fast"></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

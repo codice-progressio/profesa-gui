@@ -8,7 +8,7 @@ export class Lotes implements Deserializable {
   constructor(
     // public orden?: Orden,
     // public numero?: number,
-    public _id: string,
+    public _id?: string,
     public existencia?: number,
     public cantidadEntrada?: number,
     public salidas: SalidasLotes[] = [],

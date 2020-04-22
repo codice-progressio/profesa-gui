@@ -154,6 +154,22 @@ export class ModeloCompletoService {
       catchError(err => this.errFun(err))
     )
   }
+
+   /**
+   *Obtiene la cantidad de lotes que tienen existencia > 0
+   *
+   * @returns {number} El numero de lotes con existencia > 0
+   * @memberof ModeloCompleto
+   */
+  obtenerLotesConExistencia(mc:ModeloCompleto): number {
+    if(!mc.lotes) return 0
+    let contador = 0
+    mc.lotes.forEach((lote) => {
+      if (lote.existencia > 0) contador++
+    })
+
+    return contador
+  }
 }
 
 export interface ModeloCompletoLigero {

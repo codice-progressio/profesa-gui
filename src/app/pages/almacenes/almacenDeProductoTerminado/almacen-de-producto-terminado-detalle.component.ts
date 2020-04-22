@@ -1,6 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo';
+import { Component, OnInit } from '@angular/core'
+import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo'
 import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
+import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import { Location } from '@angular/common'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-almacen-de-producto-terminado-detalle',
@@ -8,29 +11,39 @@ import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
   styles: []
 })
 export class AlmacenDeProductoTerminadoDetalleComponent implements OnInit {
-
-  @Input() modeloCompleto: ModeloCompleto = null 
+  cargando = {}
+  keys = Object.keys
+  modeloCompleto: ModeloCompleto = null
 
   verLotesSinExistencia: boolean = false
 
-  @Output() detalleLote = new EventEmitter<Lotes>()
+  detalleLote: Lotes
+  produccionEnTransito = 0
 
-    constructor() { }
+  constructor(
+    public modComSer: ModeloCompletoService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    this.cargando['cargando'] = 'Obteniendo detalle de SKU'
+
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    this.modComSer.findById(id).subscribe(m => {
+      this.modeloCompleto = m
+      delete this.cargando['cargando']
+      this.cargando['enProceso'] = 'Obteniendo material en transito'
+
+      this.modComSer.obtenerProduccionEnTransito(id).subscribe(x => {
+        this.produccionEnTransito = x
+        delete this.cargando['enProceso']
+      })
+    })
   }
 
-   mostrarDetalleLote( lote:Lotes ) {
-     this.detalleLote.emit( lote )
-   }
-
-
-
-
-
-
-
-
-
-
+  mostrarDetalleLote(lote: Lotes) {
+    this.detalleLote = lote
+  }
 }

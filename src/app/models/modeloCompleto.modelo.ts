@@ -101,29 +101,7 @@ export class ModeloCompleto
     return nombreCompleto
   }
 
-  /**
-   *Obtiene la cantidad de lotes que tienen existencia > 0
-   *
-   * @returns {number} El numero de lotes con existencia > 0
-   * @memberof ModeloCompleto
-   */
-  obtenerLotesConExistencia(): number {
-    let contador = 0
-    this.lotes.forEach((lote) => {
-      if (lote.existencia > 0) contador++
-    })
 
-    return contador
-  }
-
-  /**
-   *Almacena la cantidad de produccion en transito de este modelo. 
-   Se tiene que ejecutar `obtenerProduccionEnTransito()` para obtener elste valor. 
-   *
-   * @type {number}
-   * @memberof ModeloCompleto
-   */
-  produccionEnTransito: number = 0
   /**
    *Bandera que senala si se esta cargando la produccion en transito.
    *
