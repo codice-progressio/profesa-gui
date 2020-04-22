@@ -13,6 +13,7 @@
     required=""
     autofocus=""
     autocomplete="username"
+    [disabled]='loading'
   />
   <label for="inputPassword" class="sr-only">Contrasena</label>
   <input
@@ -25,6 +26,7 @@
     placeholder="Contrasena"
     required=""
     autocomplete="current-password"
+    [disabled]='loading'
   />
 
   <div class="form-check">
