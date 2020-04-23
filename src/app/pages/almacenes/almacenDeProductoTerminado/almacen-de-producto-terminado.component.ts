@@ -8,6 +8,7 @@ import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { Paginacion } from '../../../utils/paginacion.util'
 import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 @Component({
   selector: 'app-almacen-de-producto-terminado',
@@ -36,6 +37,8 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   totalDeElementos = 0
 
   keys = Object.keys
+
+  p=permisosKeysConfig
 
   constructor(
     public almacenProdTerSer: AlmacenProductoTerminadoService,

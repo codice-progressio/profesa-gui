@@ -70,6 +70,10 @@
                   <i class="fas fa-eye"></i>
                 </a>
                 <a
+                  *ngIf="
+                    p['almacenDeProductoTerminado:lote:crear']
+                      | contieneElPermiso
+                  "
                   herf="javascript:void(0)"
                   id="button1"
                   [routerLink]="['entrada', mc._id]"
@@ -80,6 +84,9 @@
                   <i class="fas fa-plus"></i> Entrada
                 </a>
                 <a
+                  *ngIf="
+                    p['almacenDeProductoTerminado:salida'] | contieneElPermiso
+                  "
                   herf="javascript:void(0)"
                   id="button2"
                   [routerLink]="['salida', mc._id]"
@@ -114,6 +121,10 @@
 
               <td class="fit">
                 <a
+                  *ngIf="
+                    p['almacenDeProductoTerminado:consolidar:modelo']
+                      | contieneElPermiso
+                  "
                   href="javascript:void(0)"
                   class="btn btn-secondary btn-xs"
                   role="button"
