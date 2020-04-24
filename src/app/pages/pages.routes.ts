@@ -69,6 +69,9 @@ import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-inicia
 import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component'
 import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component'
 import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component'
+import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component'
+import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -196,6 +199,36 @@ const pagesRoutes: Routes = [
       permissions: permisosKeysConfig['menu:almacen:produccion']
     }
   },
+  {
+    path: 'almacen/produccion/crear',
+    component: ArticuloCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Materia prima y herramienta',
+      permissions: permisosKeysConfig['articulo:crear']
+    }
+  },
+  {
+    path: 'almacen/produccion/modificar/:id',
+    component: ArticuloCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Materia prima y herramienta',
+      permissions: permisosKeysConfig['articulo:modificar']
+    }
+  },
+  {
+    path: 'almacen/produccion/detalle/:id',
+    component: ArticuloDetalleComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Materia prima y herramienta',
+      permissions: permisosKeysConfig["articulo:leer:id"]
+    }
+  },
 
   {
     path: 'almacen/productoTerminado',
@@ -230,8 +263,6 @@ const pagesRoutes: Routes = [
     }
   },
 
-
-  
   {
     path: 'almacen/productoTerminado/entrada/:id',
     component: AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
@@ -239,7 +270,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Almacen de producto terminado',
-      permissions: permisosKeysConfig["almacenDeProductoTerminado:lote:crear"]
+      permissions: permisosKeysConfig['almacenDeProductoTerminado:lote:crear']
     }
   },
 

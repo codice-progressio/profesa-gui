@@ -1,119 +1,153 @@
-<ng-container *ngIf="articulo">
-  <div class="d-flex aling-items-center justify-content-between">
-    <h1>{{ articulo.nombre }}</h1>
-    <h3>Detalle de <b>articulo</b></h3>
+<div
+  *ngIf="keys(cargando).length === 0; else cargandoTemplate"
+  class="row animated fadeIn"
+>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body shadow">
+        <div class="d-flex aling-items-center justify-content-between">
+          <h1>{{ detalle.nombre }}</h1>
+          <h3><b>Detalle</b></h3>
+        </div>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-6">
+            <h6><b>Codigo de localizacion: </b></h6>
+            {{ detalle?.codigoLocalizacion }} <br />
+            <h6><b>Codigo interno: </b></h6>
+            {{ detalle?.codigoInterno }} <br />
+            <h6><b>codigoProveedor: </b></h6>
+            {{ detalle?.codigoProveedor }} <br />
+            <h6><b>Almacen: </b></h6>
+            {{ detalle.almacen.nombre }}
+          </div>
+          <div class="col-6">
+            <h6 title="La forma en que se recibe para ser almacenado">
+              <i class="fas fa-question-circle"></i>
+              <b>
+                Presentacion en que se almacena y/o compra:
+              </b>
+            </h6>
+            {{ detalle.presentacion }} <br />
+            <h6
+              title="La unidad en la que almacen va a estar surtiendo este producto"
+            >
+              <i class="fas fa-question-circle"></i>
+
+              <b>Unidades en las que se surte: </b>
+            </h6>
+            {{ detalle.unidad }} <br />
+            <h6
+              title="Factor de conversion de una unidad a kg. Este valor se utiliza para generar el inventario del almacen  en kg"
+            >
+              <i class="fas fa-question-circle"></i>
+              <b> kg por unidad: </b>
+            </h6>
+            {{ detalle.kgPorUnidad | number }} <br />
+            <h6><b>Descripcion: </b></h6>
+            {{ detalle.descripcion }}
+          </div>
+
+          <div class="col-12">
+            <h6><b>Observaciones: </b></h6>
+            <p>{{ detalle.observaciones }}</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <br />
+
+        <h1 class="display-3">
+          <small>Existencia: </small> <b>{{ detalle.existencia | number }}</b>
+          <small class="text-muted"> {{ detalle.presentacion }}</small>
+        </h1>
+        <h4>
+          Existencia en kg: <b>{{ existenciaEnKg(detalle) | number }}</b>
+        </h4>
+        Minimo {{ detalle.stockMinimo | number }} | Maximo
+        {{ detalle.stockMaximo | number }}
+
+        <hr />
+        <div class="row">
+          <div class="col-6">
+            <h3><b>Entradas</b></h3>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Cantidad</th>
+                  <th>Observaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entrada of detalle.entradas">
+                  <td title="{{ entrada.fecha | fecha: 'LLL' }}">
+                    {{ entrada.fecha | date: 'dd/MM/yy' }}
+                  </td>
+                  <td>{{ entrada.cantidad | number }}</td>
+                  <td>{{ entrada.observaciones }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-6">
+            <h3><b>Salidas</b></h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Departamento</th>
+                  <th>Cantidad</th>
+                  <th>observaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let salida of detalle.salidas">
+                  <td title="{{ salida.fecha | fecha: 'LLL' }}">
+                    {{ salida.fecha | date: 'dd/MM/yy' }}
+                  </td>
+                  <td>{{ salida.departamento.nombre }}</td>
+                  <td>{{ salida.cantidad | number }}</td>
+                  <td>{{ salida.observaciones }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-12">
+            <a
+              *ngIf="mostrarBtnRegresar"
+              (click)="location.back()"
+              class="btn btn-info"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-arrow-left"></i> Regresar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <hr />
-
-  <div class="row">
-    <div class="col-6">
-      <h6><b>Codigo de localizacion: </b></h6>
-      {{ articulo?.codigoLocalizacion }} <br />
-      <h6><b>Codigo interno: </b></h6>
-      {{ articulo?.codigoInterno }} <br />
-      <h6><b>codigoProveedor: </b></h6>
-      {{ articulo?.codigoProveedor }} <br />
-      <h6><b>Almacen: </b></h6>
-      {{ articulo.almacen.nombre }}
-    </div>
-    <div class="col-6">
-      <h6 title="La forma en que se recibe para ser almacenado">
-        <i class="fas fa-question-circle    "></i>
-        <b>
-          Presentacion en que se almacena y/o compra:
-        </b>
-      </h6>
-      {{ articulo.presentacion }} <br />
-      <h6
-        title="La unidad en la que almacen va a estar surtiendo este producto"
-      >
-        <i class="fas fa-question-circle    "></i>
-
-        <b>Unidades en las que se surte: </b>
-      </h6>
-      {{ articulo.unidad }} <br />
-      <h6
-        title="Factor de conversion de una unidad a kg. Este valor se utiliza para generar el inventario del almacen  en kg"
-      >
-        <i class="fas fa-question-circle    "></i>
-        <b> kg por unidad: </b>
-      </h6>
-      {{ articulo.kgPorUnidad | number }} <br />
-      <h6><b>Descripcion: </b></h6>
-      {{ articulo.descripcion }}
-    </div>
-
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
     <div class="col-12">
-      <h6><b>Observaciones: </b></h6>
-      <p>{{ articulo.observaciones }}</p>
+      <div class="card shadow">
+        <div
+          class="card-body d-flex text-center"
+        >
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin-fast"></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
     </div>
   </div>
-
-  <hr />
-
-  <br />
-
-  <h1 class="display-3">
-    <small>Existencia: </small> <b>{{ articulo.existencia | number }}</b>
-    <small class="text-muted"> {{ articulo.presentacion }}</small>
-  </h1>
-  <h4>
-    Existencia en kg: <b>{{ articulo.existenciaEnKg() | number }}</b>
-  </h4>
-  Minimo {{ articulo.stockMinimo | number }} | Maximo
-  {{ articulo.stockMaximo | number }}
-
-  <hr />
-  <div class="row">
-    <div class="col-6">
-      <h3><b>Entradas</b></h3>
-
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Cantidad</th>
-            <th>Observaciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let entrada of articulo.entradas">
-            <td title="{{ entrada.fecha | fecha: 'LLL' }}">
-              {{ entrada.fecha | date: 'dd/MM/yy' }}
-            </td>
-            <td>{{ entrada.cantidad | number }}</td>
-            <td>{{ entrada.observaciones }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-6">
-      <h3><b>Salidas</b></h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Departamento</th>
-            <th>Cantidad</th>
-            <th>observaciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let salida of articulo.salidas">
-            <td title="{{ salida.fecha | fecha: 'LLL' }}">
-              {{ salida.fecha | date: 'dd/MM/yy' }}
-            </td>
-            <td>{{ salida.departamento.nombre }}</td>
-            <td>{{ salida.cantidad | number }}</td>
-            <td>{{ salida.observaciones }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="!articulo">
-  <h1 class="display-1">No has seleccinado ningun <b>articulo</b></h1>
-</ng-container>
+</ng-template>

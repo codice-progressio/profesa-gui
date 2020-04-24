@@ -15,9 +15,12 @@
 
 <div *ngIf="articulo" id="detalles" class="row collapse animated fadeIn">
   <div class="col-12">
-    <div class="card shadow ">
+    <div class="card shadow">
       <div class="card-body">
-        <app-articulo-detalle [articulo]="articulo"></app-articulo-detalle>
+        <app-articulo-detalle
+          [id]="articulo._id"
+          [mostrarBtnRegresar]="false"
+        ></app-articulo-detalle>
       </div>
     </div>
   </div>
@@ -32,7 +35,7 @@
       aria-expanded="false"
       aria-controls="detalles"
     >
-      <i class="fas fa-eye  "></i>
+      <i class="fas fa-eye"></i>
     </a>
     Click para registrar una:
     <a
@@ -46,17 +49,17 @@
       role="button"
     >
       <ng-container *ngIf="!se; else letrero">
-        <i class="fas fa-plus-circle    "></i>
+        <i class="fas fa-plus-circle"></i>
         Entrada
       </ng-container>
       <ng-template #letrero>
-        <i class="fas fa-minus-circle    "></i>
+        <i class="fas fa-minus-circle"></i>
         Salida
       </ng-template>
     </a>
   </p>
 
-  <div class="row  ">
+  <div class="row">
     <div *ngIf="se" class="col-12">
       <div class="card shadow">
         <div class="card-body">
@@ -70,7 +73,7 @@
     </div>
 
     <div *ngIf="!se" class="col-12">
-      <div class="card shadow  ">
+      <div class="card shadow">
         <div class="card-body">
           <app-almacen-de-materia-prima-yherramientas-crear-modificar-salida
             [articulo]="articulo"

@@ -1,260 +1,343 @@
-<div class="justify-content-between d-flex aling-items-center">
-  <h1 *ngIf="articulo?._id">{{ articulo.nombre }}</h1>
-  <h1>
-    <span class="text-success" *ngIf="!articulo?._id">
-      <i class="fas fa-plus-square    "></i> Crear <b>articulo</b> </span
-    ><span class="text-warning" *ngIf="articulo?._id">
-        <i class="fas fa-pen-square"></i> Modificar <b>articulo</b>
-    </span>
-  </h1>
-</div>
+<div *ngIf="keys(cargando).length === 0; else cargandoTemplate" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="justify-content-between d-flex aling-items-center">
+          <h1 *ngIf="articulo?._id">{{ articulo.nombre }}</h1>
+          <h1>
+            <span class="text-success" *ngIf="!articulo?._id">
+              <i class="fas fa-plus-square"></i> Crear <b>articulo</b> </span
+            ><span class="text-warning" *ngIf="articulo?._id">
+              <i class="fas fa-pen-square"></i> Modificar <b>articulo</b>
+            </span>
+          </h1>
+        </div>
 
-<hr />
+        <hr />
 
-<form [formGroup]="formulario">
-  <div class="row">
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(codigoLocalizacion_FB),
-            'is-valid': vs.valid(codigoLocalizacion_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="codigoLocalizacion"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Codigo localizante</small
-        >
-        <app-validacion-inputs
-          [campo]="codigoLocalizacion_FB"
-        ></app-validacion-inputs>
+        <form [formGroup]="formulario">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('codigoLocalizacion')),
+                    'is-valid': vs.valid(f('codigoLocalizacion'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="codigoLocalizacion"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Codigo localizante</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('codigoLocalizacion')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('codigoInterno')),
+                    'is-valid': vs.valid(f('codigoInterno'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="codigoInterno"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Codigo interno</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('codigoInterno')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('codigoProveedor')),
+                    'is-valid': vs.valid(f('codigoProveedor'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="codigoProveedor"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Codigo del proveedor</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('codigoProveedor')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <select
+                  formControlName="almacen"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('almacen')),
+                    'is-valid': vs.valid(f('almacen'))
+                  }"
+                >
+                  <option
+                    *ngFor="let almacen of almacenes"
+                    [value]="almacen._id"
+                    >{{ almacen.nombre }}</option
+                  >
+                </select>
+                <small id="helpId" class="form-text text-muted"
+                  >Almacen al que pertenece</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('almacen')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('nombre')),
+                    'is-valid': vs.valid(f('nombre'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="nombre"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Nombre del articulo</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('nombre')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('presentacion')),
+                    'is-valid': vs.valid(f('presentacion'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="presentacion"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Presentacion en que se almacena</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('presentacion')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div
+              [title]="
+                'Este se refiere a las unidades que van a salir de almacen.' +
+                (f('unidad').value === ''
+                  ? ' Todavia no defines una unidad para surtir'
+                  : ' En este caso se va a descontar de almacen como ' +
+                    f('unidad').value)
+              "
+              class="col-12 col-sm-6 col-lg-4"
+            >
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('unidad')),
+                    'is-valid': vs.valid(f('unidad'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="unidad"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Unidades de medida en que se surte</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('unidad')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div
+              [title]="
+                'El equivalente por unidad de medida en que se manejara en almacen.' +
+                (f('unidad').value === ''
+                  ? ' Aun no defines unidad.'
+                  : ' En este caso la unidad que se debe surtir desde almacen es ' +
+                    f('unidad').value +
+                    ' y es equivalente a ' +
+                    f('kgPorUnidad').value +
+                    ' kg.')
+              "
+              class="col-12 col-sm-6 col-lg-4"
+            >
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('kgPorUnidad')),
+                    'is-valid': vs.valid(f('kgPorUnidad'))
+                  }"
+                  type="text"
+                  mask="separator"
+                  thousandSeparator=","
+                  suffix=" kg"
+                  class="form-control"
+                  formControlName="kgPorUnidad"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Kg por unidad</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('kgPorUnidad')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <textarea
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('descripcion')),
+                    'is-valid': vs.valid(f('descripcion'))
+                  }"
+                  class="form-control"
+                  formControlName="descripcion"
+                ></textarea>
+                <small id="helpId" class="form-text text-muted"
+                  >Descripcion</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('descripcion')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <textarea
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('observaciones')),
+                    'is-valid': vs.valid(f('observaciones'))
+                  }"
+                  class="form-control"
+                  formControlName="observaciones"
+                ></textarea>
+                <small id="helpId" class="form-text text-muted"
+                  >Observaciones</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('observaciones')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('stockMinimo')),
+                    'is-valid': vs.valid(f('stockMinimo'))
+                  }"
+                  type="text"
+                  mask="separator"
+                  thousandSeparator=","
+                  [suffix]="' (' + f('unidad').value + ')'"
+                  class="form-control"
+                  formControlName="stockMinimo"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Stock minimo</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('stockMinimo')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('stockMaximo')),
+                    'is-valid': vs.valid(f('stockMaximo'))
+                  }"
+                  type="text"
+                  mask="separator"
+                  thousandSeparator=","
+                  class="form-control"
+                  formControlName="stockMaximo"
+                  [suffix]="' (' + f('unidad').value + ')'"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Stock maximo</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('stockMaximo')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <br />
+
+            <div class="col-12" *ngIf="this.formulario.invalid">
+              <app-validacion-inputs
+                [campo]="this.formulario"
+              ></app-validacion-inputs>
+            </div>
+          </div>
+
+          <hr />
+
+          <br />
+          <br />
+
+          <a
+            (click)="submit(formulario.value, formulario.invalid, $event)"
+            href="javascript:void(0)"
+            class="text-white btn btn-success mr-3 active"
+            role="button"
+          >
+            <i class="fas fa-save"></i> Guardar
+          </a>
+          <a
+            href="javascript:void(0)"
+            (click)="location.back()"
+            class="text-white btn btn-danger active"
+            role="button"
+          >
+            <i class="fas fa-times"></i> Cancelar</a
+          >
+        </form>
       </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(codigoInterno_FB),
-            'is-valid': vs.valid(codigoInterno_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="codigoInterno"
-        />
-        <small id="helpId" class="form-text text-muted">Codigo interno</small>
-        <app-validacion-inputs
-          [campo]="codigoInterno_FB"
-        ></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(codigoProveedor_FB),
-            'is-valid': vs.valid(codigoProveedor_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="codigoProveedor"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Codigo del proveedor</small
-        >
-        <app-validacion-inputs
-          [campo]="codigoProveedor_FB"
-        ></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <select
-          formControlName="almacen"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid': vs.invalid(almacen_FB),
-            'is-valid': vs.valid(almacen_FB)
-          }"
-        >
-          <option *ngFor="let almacen of almacenes" [value]="almacen._id">{{
-            almacen.nombre
-          }}</option>
-        </select>
-        <small id="helpId" class="form-text text-muted"
-          >Almacen al que pertenece</small
-        >
-        <app-validacion-inputs [campo]="almacen_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(nombre_FB),
-            'is-valid': vs.valid(nombre_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="nombre"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Nombre del articulo</small
-        >
-        <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(presentacion_FB),
-            'is-valid': vs.valid(presentacion_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="presentacion"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Presentacion en que se almacena</small
-        >
-        <app-validacion-inputs
-          [campo]="presentacion_FB"
-        ></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(unidad_FB),
-            'is-valid': vs.valid(unidad_FB)
-          }"
-          type="text"
-          class="form-control"
-          formControlName="unidad"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Unidades de medida en que se maneja</small
-        >
-        <app-validacion-inputs [campo]="unidad_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(kgPorUnidad_FB),
-            'is-valid': vs.valid(kgPorUnidad_FB)
-          }"
-          type="number"
-          class="form-control"
-          formControlName="kgPorUnidad"
-        />
-        <small id="helpId" class="form-text text-muted">Kg por unidad</small>
-        <app-validacion-inputs [campo]="kgPorUnidad_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <textarea
-          [ngClass]="{
-            'is-invalid': vs.invalid(descripcion_FB),
-            'is-valid': vs.valid(descripcion_FB)
-          }"
-          class="form-control"
-          formControlName="descripcion"
-        ></textarea>
-        <small id="helpId" class="form-text text-muted">Descripcion</small>
-        <app-validacion-inputs [campo]="descripcion_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="form-group">
-        <textarea
-          [ngClass]="{
-            'is-invalid': vs.invalid(observaciones_FB),
-            'is-valid': vs.valid(observaciones_FB)
-          }"
-          class="form-control"
-          formControlName="observaciones"
-        ></textarea>
-        <small id="helpId" class="form-text text-muted">Observaciones</small>
-        <app-validacion-inputs
-          [campo]="observaciones_FB"
-        ></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-2">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(stockMinimo_FB),
-            'is-valid': vs.valid(stockMinimo_FB)
-          }"
-          type="number"
-          class="form-control"
-          formControlName="stockMinimo"
-        />
-        <small id="helpId" class="form-text text-muted">Stock minimo</small>
-        <app-validacion-inputs [campo]="stockMinimo_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <div class="col-2">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(stockMaximo_FB),
-            'is-valid': vs.valid(stockMaximo_FB)
-          }"
-          type="number"
-          class="form-control"
-          formControlName="stockMaximo"
-        />
-        <small id="helpId" class="form-text text-muted">Stock maximo</small>
-        <app-validacion-inputs [campo]="stockMaximo_FB"></app-validacion-inputs>
-      </div>
-    </div>
-
-    <br />
-
-    <div class="col-12" *ngIf="this.formulario.invalid">
-      <app-validacion-inputs [campo]="this.formulario"></app-validacion-inputs>
     </div>
   </div>
-
-  <hr />
-
-  <br />
-  <br />
-
-  <button
-    (click)="submit(formulario.value, formulario.valid, $event)"
-    [disabled]="formulario.invalid"
-    class="text-white btn btn-success mr-3"
-    role="button"
-  >
-    <i class="fas fa-save    "></i> Guardar
-  </button>
-  <a
-    data-toggle="modal"
-    data-target="#creaerModificarArticulo"
-    (click)="cancelar()"
-    class="text-white btn btn-danger"
-    role="button"
-  >
-    <i class="fas fa-times    "></i> Cancelar</a
-  >
-</form>
+</div>
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body text-center"
+        >
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin"></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
