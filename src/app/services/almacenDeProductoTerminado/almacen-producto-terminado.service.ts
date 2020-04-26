@@ -57,7 +57,7 @@ export class AlmacenProductoTerminadoService {
     filtros: string = ''
   ): Observable<ModeloCompleto[]> {
     const url = this.base
-      .concat(`/buscar/${termino}`)
+      .concat(`/buscar/termino/${termino}`)
       .concat('?')
       .concat(`&desde=${paginacion.desde}`)
       .concat(`&limite=${paginacion.limite}`)

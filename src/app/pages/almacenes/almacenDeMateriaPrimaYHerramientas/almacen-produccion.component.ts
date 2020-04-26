@@ -15,7 +15,7 @@ export class AlamacenProduccion implements OnInit {
 
   totalDeElementos: number
   articulos: Articulo[] = []
-  paginacion = new Paginacion(5, 0, 1, 'articulo')
+  paginacion = new Paginacion(5, 0, 1, 'nombre')
   termino: string
   detalle: Articulo = null
   reporteModificar: Articulo
@@ -30,6 +30,13 @@ export class AlamacenProduccion implements OnInit {
     this.cargando[
       'termino'
     ] = `Buscando articulos que coincidan con '${termino}'`
+    this.paginacion = new Paginacion(
+      this.paginacion.limite,
+      0,
+
+      this.paginacion.orden,
+      this.paginacion.campoDeOrdenamiento
+    )
     return this.articulosService.findByTerm(termino, this.paginacion)
   }
 
@@ -79,8 +86,6 @@ export class AlamacenProduccion implements OnInit {
       this.articulosService.findAll(data.paginacion).subscribe(cb, cancelado)
     }
   }
-
-
 
   cancelado() {
     this.termino = ''

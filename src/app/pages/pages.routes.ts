@@ -72,6 +72,8 @@ import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './alma
 import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component'
 import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-crear-modificar.component'
+import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -226,7 +228,7 @@ const pagesRoutes: Routes = [
 
     data: {
       titulo: 'Materia prima y herramienta',
-      permissions: permisosKeysConfig["articulo:leer:id"]
+      permissions: permisosKeysConfig['articulo:leer:id']
     }
   },
 
@@ -298,6 +300,36 @@ const pagesRoutes: Routes = [
   {
     path: 'almacen/reportesPersonalizados',
     component: ReportePersonalizadoAlmacenProduccionComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Gestion de reportes personalizados',
+      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
+    }
+  },
+  {
+    path: 'almacen/reportesPersonalizados/crear',
+    component: ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Gestion de reportes personalizados',
+      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
+    }
+  },
+  {
+    path: 'almacen/reportesPersonalizados/modificar/:id',
+    component: ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Gestion de reportes personalizados',
+      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
+    }
+  },
+  {
+    path: 'almacen/reportesPersonalizados/detalle/:id',
+    component: ReportePersonalizadoAlmacenProduccionDetalleComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
 
     data: {

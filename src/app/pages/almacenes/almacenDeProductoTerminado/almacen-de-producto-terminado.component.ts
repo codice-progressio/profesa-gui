@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { ModeloCompleto } from '../../../models/modeloCompleto.modelo'
 import { AlmacenProductoTerminadoService } from '../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
-import { FiltrosModelosCompletos } from '../../../services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos'
-import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import {
+  ModeloCompletoService,
+  ModeloCompletoLigero
+} from '../../../services/modelo/modelo-completo.service'
 import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { Paginacion } from '../../../utils/paginacion.util'
@@ -38,7 +39,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   keys = Object.keys
 
-  p=permisosKeysConfig
+  p = permisosKeysConfig
 
   constructor(
     public almacenProdTerSer: AlmacenProductoTerminadoService,
@@ -50,12 +51,12 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
     this.cargarModelos()
   }
 
-  modelosCompletos: ModeloCompleto[] = []
+  modelosCompletos: ModeloCompletoLigero[] = []
   modeloCompletoDetalle: ModeloCompleto = null
 
   cargarModelos() {
     this.cargando['cargando'] = 'Cargando la lista sku'
-    this.almacenProdTerSer.findAll(this.paginacion).subscribe(
+    this.modComService.findAll(this.paginacion).subscribe(
       mod => {
         this.modelosCompletos = mod
         delete this.cargando['cargando']
@@ -66,12 +67,18 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   cbObservable = termino => {
     this.termino = termino
-    this.cargando['termino'] = `Buscando sku que coincidan con '${termino}'`
-    return this.almacenProdTerSer.findByTerm(termino, this.paginacion)
+    return this.modComService.findByTerm(
+      termino,
+      new Paginacion(
+        this.paginacion.limite,
+        0,
+        this.paginacion.orden,
+        this.paginacion.campoDeOrdenamiento
+      )
+    )
   }
 
   resultadoDeBusqueda(datos) {
-    delete this.cargando['termino']
     this.modelosCompletos = datos
     this.totalDeElementos = this.almacenProdTerSer.total
   }
@@ -87,7 +94,10 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   actualizarConsulta(data: iPaginadorData = null) {
     this.cargando['actualizarConsulta'] = 'Actualizando datos de consulta'
+
     this.paginacion = data ? data.paginacion : this.paginacion
+
+    console.log(`data`,data)
 
     const cb = modelos => {
       this.modelosCompletos = modelos
@@ -131,12 +141,11 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   consolidarLotes() {
     this.almacenProdTerSer
       .consolidar(this.modeloAConsolidar._id)
-      .subscribe(modeloCompleto => {
+      .subscribe(() => {
         this.modeloAConsolidar = null
         if (this.termino) {
-          this.cbObserbable(this.termino).subscribe(modelos => {
+          this.cbObservable(this.termino).subscribe(modelos => {
             this.modelosCompletos = modelos
-            this.modelosCompletos.map(x => (x._servicio = this.modComService))
           })
         } else {
           this.cargarModelos()

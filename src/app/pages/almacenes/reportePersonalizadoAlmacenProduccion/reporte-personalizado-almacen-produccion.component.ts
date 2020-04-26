@@ -42,7 +42,7 @@ export class ReportePersonalizadoAlmacenProduccionComponent implements OnInit {
   }
 
   cbObservable = termino =>
-    this.repoService.find(termino, new Paginacion(5, 0, 1, 'nombre'))
+    this.repoService.findByTerm(termino, new Paginacion(5, 0, 1, 'nombre'))
 
   resultadoDeBusqueda(datos) {
     this.reportes = datos
@@ -76,7 +76,7 @@ export class ReportePersonalizadoAlmacenProduccionComponent implements OnInit {
 
     if (this.termino) {
       this.repoService
-        .find(this.termino, this.paginacion)
+        .findByTerm(this.termino, this.paginacion)
         .subscribe(cb, cancelado)
     } else {
       this.repoService.findAll(data.paginacion).subscribe(cb, cancelado)
@@ -105,7 +105,7 @@ export class ReportePersonalizadoAlmacenProduccionComponent implements OnInit {
 
   articuloDetalle: Articulo = null
   buscarArticulo(id: string) {
-    this.articuloService.buscarPorId(id).subscribe(articulo => {
+    this.articuloService.findById(id).subscribe(articulo => {
       this.articuloDetalle = Object.assign(new Articulo(), articulo)
     })
   }
