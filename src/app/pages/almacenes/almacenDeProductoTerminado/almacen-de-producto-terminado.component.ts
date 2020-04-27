@@ -97,8 +97,6 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
     this.paginacion = data ? data.paginacion : this.paginacion
 
-    console.log(`data`,data)
-
     const cb = modelos => {
       this.modelosCompletos = modelos
       delete this.cargando['actualizarConsulta']
