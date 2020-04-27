@@ -67,6 +67,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   }
 
   cbObservable = termino => {
+    this.cargando['byTerm'] = `Buscando por el termino "${termino}" `
     this.termino = termino
     return this.modComService.findByTerm(
       termino,
@@ -82,6 +83,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   resultadoDeBusqueda(datos) {
     this.modelosCompletos = datos
     this.totalDeElementos = this.almacenProdTerSer.total
+    delete this.cargando['byTerm']
   }
 
   cancelado() {
@@ -96,11 +98,17 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   actualizarConsulta(data: iPaginadorData = null) {
     this.paginacion = data.paginacion
 
+    this.cargando['paginador'] = 'Actualizando consulta'
+
     const cb = modelos => {
       this.modelosCompletos = modelos
       this.totalDeElementos = this.modComService.total
+      delete this.cargando['paginador']
     }
-    const error = () => this.cargarModelos()
+    const error = () => {
+      delete this.cargando['paginador']
+      this.cargarModelos()
+    }
 
     if (this.termino) {
       this.modComService
