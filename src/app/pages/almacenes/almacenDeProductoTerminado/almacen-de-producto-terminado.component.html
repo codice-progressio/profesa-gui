@@ -44,11 +44,11 @@
                 <th class="" title="Modelo">
                   Modelo
                 </th>
-                <th class="fit" title="Existencia actual en el almacen">
-                  Existencia
-                </th>
                 <th class="fit" title="Existencia minima">
                   MIN
+                </th>
+                <th class="fit" title="Existencia actual en el almacen">
+                  Existencia
                 </th>
                 <th class="fit" title="Existencia maxima">
                   MAX
@@ -57,7 +57,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="fit" *ngFor="let mc of modelosCompletos">
+              <tr
+                [ngClass]="{ 'bg-light-extra': 1 > comprobarExistencias(mc) }"
+                class="fit"
+                *ngFor="let mc of modelosCompletos"
+              >
                 <td class="fit">
                   <a
                     herf="javascript:void(0)"
@@ -97,13 +101,23 @@
                   </a>
                 </td>
                 <td class="no-wrap fit">{{ mc.nombreCompleto }}</td>
+
+                <td>
+                  {{ mc.stockMinimo | number: '0.0-0' }}
+                </td>
                 <td
+                  class="font-bold"
                   [ngClass]="{
-                    'bg-warning': -1 === comprobarExistencias(mc),
-                    'bg-danger': 0 === comprobarExistencias(mc)
+                    'text-warning': -1 === comprobarExistencias(mc),
+                    'text-danger': 0 === comprobarExistencias(mc)
                   }"
                 >
                   <ng-container *ngIf="mc.existencia">
+                    <i
+                      *ngIf="1 > comprobarExistencias(mc)"
+                      class="fas fa-exclamation-circle animated fadeIn infinite"
+                    ></i>
+
                     {{ mc.existencia | number: '0.0-0' }}
                   </ng-container>
                   <ng-container *ngIf="!mc.existencia || mc.existencia === 0">
@@ -111,9 +125,6 @@
                   </ng-container>
                 </td>
 
-                <td>
-                  {{ mc.stockMinimo | number: '0.0-0' }}
-                </td>
                 <td>
                   {{ mc.stockMaximo | number: '0.0-0' }}
                 </td>
