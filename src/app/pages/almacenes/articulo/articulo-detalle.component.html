@@ -7,7 +7,7 @@
       <div class="card-body shadow">
         <div class="d-flex aling-items-center justify-content-between">
           <h1>{{ detalle.nombre }}</h1>
-          <h3><b>Detalle</b></h3>
+          <h3>Detalle<b> articulo</b></h3>
         </div>
 
         <hr />
@@ -61,59 +61,76 @@
         <br />
 
         <h1 class="display-3">
-          <small>Existencia: </small> <b>{{ detalle.existencia | number }}</b>
-          <small class="text-muted"> {{ detalle.presentacion }}</small>
+          Existencia: <b>{{ detalle.existencia | number }}</b>
+          <small class="text-muted"> ({{ detalle.unidad }})</small>
         </h1>
         <h4>
           Existencia en kg: <b>{{ existenciaEnKg(detalle) | number }}</b>
         </h4>
-        Minimo {{ detalle.stockMinimo | number }} | Maximo
-        {{ detalle.stockMaximo | number }}
+        Minimo {{ detalle.stockMinimo | number }}( {{ detalle.unidad }}) |
+        Maximo {{ detalle.stockMaximo | number }} ({{ detalle.unidad }})
 
         <hr />
         <div class="row">
-          <div class="col-6">
+          <div class="col-6 table-responsive app-lista-scroll">
             <h3><b>Entradas</b></h3>
 
             <table class="table">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Cantidad</th>
+              <thead class="app-lista-scroll-encabezado">
+                <tr [appOrdenadorDeColumnas]="detalle.entradas">
+                  <th data-ordenar="fecha">Fecha</th>
+                  <th data-ordenar="cantidad">Cantidad</th>
                   <th>Observaciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let entrada of detalle.entradas">
-                  <td title="{{ entrada.fecha | fecha: 'LLL' }}">
-                    {{ entrada.fecha | date: 'dd/MM/yy' }}
-                  </td>
-                  <td>{{ entrada.cantidad | number }}</td>
-                  <td>{{ entrada.observaciones }}</td>
-                </tr>
+                <ng-container
+                  *ngFor="let entrada of detalle.entradas; let i = index"
+                >
+                  <tr *ngIf="i % 10 === 0 && i > 0" class="repetir-encabezado">
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Observaciones</th>
+                  </tr>
+                  <tr>
+                    <td title="{{ entrada.fecha | fecha: 'LLL' }}">
+                      {{ entrada.fecha | date: 'dd/MM/yy' }}
+                    </td>
+                    <td>{{ entrada.cantidad | number }} {{detalle.unidad}}</td>
+                    <td>{{ entrada.observaciones }}</td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
-          <div class="col-6">
+          <div class="col-6 table-responsive app-lista-scroll">
             <h3><b>Salidas</b></h3>
+
             <table class="table">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Departamento</th>
-                  <th>Cantidad</th>
-                  <th>observaciones</th>
+              <thead class="app-lista-scroll-encabezado">
+                <tr [appOrdenadorDeColumnas]="detalle.salidas">
+                  <th data-ordenar="fecha">Fecha</th>
+                  <th data-ordenar="cantidad">Cantidad</th>
+                  <th>Observaciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let salida of detalle.salidas">
-                  <td title="{{ salida.fecha | fecha: 'LLL' }}">
-                    {{ salida.fecha | date: 'dd/MM/yy' }}
-                  </td>
-                  <td>{{ salida.departamento.nombre }}</td>
-                  <td>{{ salida.cantidad | number }}</td>
-                  <td>{{ salida.observaciones }}</td>
-                </tr>
+                <ng-container
+                  *ngFor="let salida of detalle.salidas; let i = index"
+                >
+                  <tr *ngIf="i % 10 === 0 && i > 0" class="repetir-encabezado">
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Observaciones</th>
+                  </tr>
+                  <tr>
+                    <td title="{{ salida.fecha | fecha: 'LLL' }}">
+                      {{ salida.fecha | date: 'dd/MM/yy' }}
+                    </td>
+                    <td>{{ salida.cantidad | number }} {{detalle.unidad}}</td>
+                    <td>{{ salida.observaciones }}</td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
@@ -139,9 +156,7 @@
   <div class="row animated fadeIn">
     <div class="col-12">
       <div class="card shadow">
-        <div
-          class="card-body d-flex text-center"
-        >
+        <div class="card-body d-flex text-center">
           <h1 class="display-1 w-100 text-center">
             <i class="fas fa-sync fa-spin-fast"></i>
             <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
