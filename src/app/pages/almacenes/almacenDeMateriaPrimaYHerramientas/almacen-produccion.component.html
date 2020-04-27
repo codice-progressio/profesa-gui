@@ -35,8 +35,8 @@
       #paginadorOriginal
       class="pull-right"
       [totalDeElementos]="this.totalDeElementos"
-      [campoDeOrdenamiento]="'articulo'"
-      [tipoDeOrden]="1"
+      [campoDeOrdenamiento]="paginacion.campoDeOrdenamiento"
+      [tipoDeOrden]="paginacion.orden"
       (actualizarConsulta)="actualizarConsulta($event)"
       [cargando]="keys(cargando).length > 0"
     ></paginador>
