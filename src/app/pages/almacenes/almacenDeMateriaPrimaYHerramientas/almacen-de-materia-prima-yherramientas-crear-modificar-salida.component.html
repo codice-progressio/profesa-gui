@@ -17,7 +17,7 @@
         title="Las unidades en las cuales se debe de surtir el articulo"
         class="font-weight-bold"
       >
-        <i class="fas fa-question-circle    "></i>
+        <i class="fas fa-question-circle"></i>
 
         Surtir como: </b
       >{{ articulo?.unidad }}
@@ -27,7 +27,7 @@
         title="La manera en que se almacena el material"
         class="font-weight-bold"
       >
-        <i class="fas fa-question-circle    "></i>
+        <i class="fas fa-question-circle"></i>
         Como esta almacenado:</b
       >{{ articulo?.presentacion }}
     </p>
@@ -52,9 +52,12 @@
           type="text"
           class="form-control shadow"
           formControlName="cantidad"
+          mask="separator"
+          thousandSeparator=","
+          [suffix]="cantidad_FB.value === '' ? '' :' ('+ articulo.unidad+')'"
         />
         <small id="helpId" class="form-text text-muted"
-          >Cantidad de salida en {{ articulo?.unidad }}</small
+          >Cantidad de salida</small
         >
         <app-validacion-inputs [campo]="cantidad_FB"></app-validacion-inputs>
       </div>
@@ -114,7 +117,7 @@
         class="btn btn-success mr-3"
         role="button"
       >
-        <i class="fas fa-save    "></i> Guardar
+        <i class="fas fa-save"></i> Guardar
       </button>
 
       <a
@@ -124,7 +127,7 @@
         class="btn btn-danger text-white"
         role="button"
       >
-        <i class="fas fa-times    "></i> Cancelar</a
+        <i class="fas fa-times"></i> Cancelar</a
       >
     </div>
   </form>
