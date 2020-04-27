@@ -18,20 +18,35 @@
             </div>
           </div>
         </div>
-        <hr />
+      </div>
+    </div>
+  </div>
+</div>
 
-        <div class="row">
-          <div class="col-12">
-            <paginador
-              class="pull-right"
-              [totalDeElementos]="modComService.total"
-              [campoDeOrdenamiento]="this.paginacion.campoDeOrdenamiento"
-              [tipoDeOrden]="this.paginacion.orden"
-              (actualizarConsulta)="actualizarConsulta($event)"
-              [cargando]="keys(cargando).length > 0"
-            ></paginador>
-          </div>
-        </div>
+<div class="row mt-0 mb-0 pt-0 pb-0" *ngIf="keys(cargando).length === 0">
+  <div class="col-12 mt-0 mb-0 pt-0 pb-0">
+    <div
+      class="card mt-0 mb-0 pt-0 pb-0"
+      style="background-color: transparent;"
+    >
+      <div class="card-body mt-0 mb-0 pt-0 pb-0">
+        <paginador
+          class="pull-right"
+          [totalDeElementos]="this.totalDeElementos"
+          [campoDeOrdenamiento]="paginacion.campoDeOrdenamiento"
+          [tipoDeOrden]="paginacion.orden"
+          (actualizarConsulta)="actualizarConsulta($event)"
+          [cargando]="keys(cargando).length > 0"
+        ></paginador>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="keys(cargando).length === 0">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
         <div class="col-12 table-responsive">
           <table
             *ngIf="modelosCompletos.length > 0"

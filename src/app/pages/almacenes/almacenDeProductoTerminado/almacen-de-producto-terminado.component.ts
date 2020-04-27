@@ -33,7 +33,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   esEntrada: boolean = null
   detalleLote: Lotes
   termino: string = ''
-  paginacion: Paginacion = new Paginacion(10, 0, 1, 'nombreCompleto')
+  paginacion: Paginacion = new Paginacion(5, 0, 1, 'nombreCompleto')
   cargando = {}
   totalDeElementos = 0
 
@@ -60,6 +60,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
       mod => {
         this.modelosCompletos = mod
         delete this.cargando['cargando']
+        this.totalDeElementos = this.modComService.total
       },
       () => delete this.cargando['cargando']
     )
@@ -93,22 +94,20 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   }
 
   actualizarConsulta(data: iPaginadorData = null) {
-    this.cargando['actualizarConsulta'] = 'Actualizando datos de consulta'
-
-    this.paginacion = data ? data.paginacion : this.paginacion
+    this.paginacion = data.paginacion
 
     const cb = modelos => {
       this.modelosCompletos = modelos
-      delete this.cargando['actualizarConsulta']
+      this.totalDeElementos = this.modComService.total
     }
-    const cancelado = () => delete this.cargando['actualizarConsulta']
+    const error = () => this.cargarModelos()
 
     if (this.termino) {
       this.modComService
         .findByTerm(this.termino, this.paginacion)
-        .subscribe(cb, cancelado)
+        .subscribe(cb, error)
     } else {
-      this.modComService.findAll(data.paginacion).subscribe(cb, cancelado)
+      this.modComService.findAll(data.paginacion).subscribe(cb, error)
     }
   }
 
@@ -127,7 +126,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   comprobarExistencias(mc: ModeloCompleto) {
     let valor: number = 2
 
-    if( mc.existencia === 0) return 2
+    if (mc.existencia === 0) return 2
 
     if (mc.existencia > mc.stockMaximo) valor = 1
     if (mc.existencia < mc.stockMinimo) valor = -1
