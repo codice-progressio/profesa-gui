@@ -5,7 +5,6 @@ import { PAGES_ROUTES } from './pages.routes'
 
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
 import { ProfileComponent } from './profile/profile.component'
-import { UsuariosComponent } from './usuarios/usuarios.component'
 
 // Sistema
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
@@ -171,7 +170,6 @@ import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-inicia
 
     AccountsSettingsComponent,
     ProfileComponent,
-    UsuariosComponent,
     // sistema
     SeguimientoDeFoliosComponent,
     MaterialesComponent,

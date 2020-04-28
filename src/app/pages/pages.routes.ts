@@ -63,7 +63,6 @@ import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modif
 import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component'
 import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
 import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component'
-import permisosKeysConfig from '../config/permisosKeys.config'
 import { AlmacenDescripcionCrearModificarComponent } from './almacenes/almacenDescripcion/almacen-descripcion-crear-modificar.component'
 import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
 import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component'
