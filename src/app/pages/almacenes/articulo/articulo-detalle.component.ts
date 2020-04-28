@@ -22,6 +22,7 @@ export class ArticuloDetalleComponent implements OnInit {
     this.cargando['detalle'] = 'Buscando articulo para detalle'
     this.buscar(id)
     this._id = id
+    this.mostrarBtnRegresar = false
   }
 
   get id() {
