@@ -7,16 +7,23 @@ import {
 } from '@angular/router'
 import { UsuarioService } from '../usuario/usuario.service'
 import { JwtHelperService } from '@auth0/angular-jwt'
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 const jwtHelper = new JwtHelperService()
 
 @Injectable({
   providedIn: 'root'
 })
 export class VerificaTokenGuard implements CanActivate {
-  constructor(public _usuarioService: UsuarioService, public router: Router) {}
+  constructor(
+    public _usuarioService: UsuarioService, 
+    public router: Router,
+    public msjSErvice:ManejoDeMensajesService
+    ) {}
   canActivate(): Promise<boolean> | boolean {
     const token = localStorage.getItem('token')
     if (!token) {
+      
+      this.msjSErvice.toast.info('No hay un token. Necesitas loguearte')
       this.navegarAlLogin()
       return false
     }
@@ -27,7 +34,7 @@ export class VerificaTokenGuard implements CanActivate {
       return false
     }
 
-    // return this.verificaRenueva(jwtHelper.getTokenExpirationDate(token))
+    return this.verificaRenueva(jwtHelper.getTokenExpirationDate(token))
   }
 
   verificaRenueva(fechaExp: Date): Promise<boolean> {
@@ -45,6 +52,7 @@ export class VerificaTokenGuard implements CanActivate {
             resolve(true)
           },
           () => {
+            this.msjSErvice.toast.info('No se pudo renovar la sesión. Inicia de nuevo.')
             this.router.navigate(['/login'])
             reject(false)
           }

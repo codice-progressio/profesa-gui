@@ -9,12 +9,8 @@ export class ContieneElPermisoPipe implements PipeTransform {
   constructor(public usuarioService: UsuarioService) {}
 
   transform(permiso: string): boolean {
+    let usuario = JSON.parse(localStorage.getItem('usuario')) as Usuario
 
-    if(! this.usuarioService.usuario ){
-      this.usuarioService.logout()
-      return false
-    }
-
-    return this.usuarioService.usuario.permissions.includes(permiso)
+    return usuario.permissions.includes(permiso)
   }
 }

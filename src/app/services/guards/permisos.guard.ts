@@ -32,6 +32,7 @@ export class PermisosGuard implements CanActivate {
     let jUsuario = localStorage.getItem('usuario')
     //No hay un usuario, mandamos al login
     if (!jUsuario) {
+      this.msjService.toast.info('Fuiste redirijido al login por que al parecer no has iniciado sesión')
       this.router.navigate['/login']
       return
     }
