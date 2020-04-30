@@ -73,6 +73,8 @@ import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-crear-modificar.component'
 import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component'
+import { RequisicionCrearModificarComponent } from './almacenes/requisicion/requisicion-crear-modificar.component'
+import { RequisicionDetalleComponent } from './almacenes/requisicion/requisicion-detalle.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -294,6 +296,36 @@ const pagesRoutes: Routes = [
     data: {
       titulo: 'Requisiciones de articulos',
       permissions: permisosKeysConfig['menu:almacen:requisiciones']
+    }
+  },
+  {
+    path: 'almacen/requisiciones/crear',
+    component: RequisicionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Requisiciones de articulos',
+      permissions: permisosKeysConfig['requisicion:crear']
+    }
+  },
+  {
+    path: 'almacen/requisiciones/modificar/:id',
+    component: RequisicionCrearModificarComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Requisiciones de articulos',
+      permissions: permisosKeysConfig['requisicion:modificar']
+    }
+  },
+  {
+    path: 'almacen/requisiciones/detalle/:id',
+    component: RequisicionDetalleComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+
+    data: {
+      titulo: 'Requisiciones de articulos',
+      permissions: permisosKeysConfig['requisicion:leer:id']
     }
   },
   {

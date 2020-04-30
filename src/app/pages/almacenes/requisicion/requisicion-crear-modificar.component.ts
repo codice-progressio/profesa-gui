@@ -1,125 +1,141 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { Requisicion } from "src/app/models/requisiciones/requisicion.model"
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Requisicion } from 'src/app/models/requisiciones/requisicion.model'
 import {
   FormGroup,
   FormBuilder,
   Validators,
   AbstractControl
-} from "@angular/forms"
-import { RequisicionService } from "../../../services/requisiciones/requisicion.service"
-import { ValidacionesService } from "src/app/services/utilidades/validaciones.service"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { DataListComponent } from "src/app/shared/data-list/data-list.component"
-import { Articulo } from "src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo"
-import { Dato } from "src/app/shared/data-list/dato.model"
-import { ArticuloService } from "../../../services/articulo/articulo.service"
-import { EstatusRequisicion } from "src/app/models/requisiciones/estatusRequisicion.model"
+} from '@angular/forms'
+import { RequisicionService } from '../../../services/requisiciones/requisicion.service'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { DataListComponent } from 'src/app/shared/data-list/data-list.component'
+import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
+import { Dato } from 'src/app/shared/data-list/dato.model'
+import { ArticuloService } from '../../../services/articulo/articulo.service'
+import { EstatusRequisicion } from 'src/app/models/requisiciones/estatusRequisicion.model'
+import { Location } from '@angular/common'
+import { ActivatedRoute } from '@angular/router'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { setInterval } from 'timers'
 
 @Component({
-  selector: "app-requisicion-crear-modificar",
-  templateUrl: "./requisicion-crear-modificar.component.html",
+  selector: 'app-requisicion-crear-modificar',
+  templateUrl: './requisicion-crear-modificar.component.html',
   styles: []
 })
 export class RequisicionCrearModificarComponent implements OnInit {
-  @Input() requisicion: Requisicion = null
-  @Output() guardar = new EventEmitter<null>()
-  @Output() esteComponente = new EventEmitter<this>()
+  requisicion: Requisicion = null
 
   dataListComponent: DataListComponent
   formulario: FormGroup
   articuloSeleccionadoParaInput: Articulo
+  cargando = {}
+  keys = Object.keys
 
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
-    public _msjService: ManejoDeMensajesService,
-    public _requisicionService: RequisicionService,
-    public _validacionesService: ValidacionesService,
-    public _articuloService: ArticuloService
+    public msjService: ManejoDeMensajesService,
+    public requisicionService: RequisicionService,
+    public validacionesService: ValidacionesService,
+    public articuloService: ArticuloService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.esteComponente.emit(this)
-    this.crearFormulario()
-  }
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (id) {
+      this.cargando['cargando'] = 'Obteniendo requisicion'
 
-  
+      this.requisicionService.findById(id).subscribe(requisicion => {
+        this.crearFormulario(requisicion)
 
-  cargarDatos() {
-    this.crearFormulario()
-    this.asignarValores(this.requisicion)
-  }
-
-  asignarValores(req: Requisicion) {
-    this.f('materiaPrima').setValue(req.materiaPrima)
-    this.f('consumibles').setValue(req.consumibles)
-    this.f('gastosYServicios').setValue(req.gastosYServicios)
-    this.f('cantidad').setValue(req.cantidad)
-    this.f('articulo').setValue(req.articulo)
-  }
-
-  crear() {
-    this.requisicion = null
-    this.crearFormulario()
+        let inter = setInterval(() => {
+          if (this.dataListComponent) {
+            clearInterval(inter)
+            this.dataListComponent.cargarElementoPorModificacion(
+              this.crearDatoParaDataList(requisicion.articulo)
+            )
+          }
+        }, 100)
+        this.articuloSeleccionadoParaInput = requisicion.articulo
+        delete this.cargando['cargando']
+      })
+    } else {
+      this.crearFormulario()
+    }
   }
 
   modificar(requisicion: Requisicion) {
     this.requisicion = requisicion
     this.crearFormulario()
-    this.cargarDatos()
-
-    this.dataListComponent.cargarElementoPorModificacion(
-      this.crearDatoParaDataList(requisicion.articulo)
-    )
   }
 
-  crearFormulario() {
+  crearFormulario(r: Requisicion = new Requisicion()) {
+    this.requisicion = r
+
     this.formulario = this.fb.group({
       // Esta comprobacion de que por lo menos
       // deben estar en false se hace en la operacion
       // de soloUnCheckBox() de manera rudimentaria
-      materiaPrima: [null, [Validators.required]],
-      consumibles: [null, [Validators.required]],
-      gastosYServicios: [null, [Validators.required]],
+      materiaPrima: [r.materiaPrima, [Validators.required]],
+      consumibles: [r.consumibles, [Validators.required]],
+      gastosYServicios: [r.gastosYServicios, [Validators.required]],
       cantidad: [
-        "",
+        r.cantidad,
         [
-          this._validacionesService.numberValidator,
+          this.validacionesService.numberValidator,
           Validators.min(0),
           Validators.required
         ]
       ],
-      articulo: ["", [Validators.required]],
-      observaciones: ['', null]
+      articulo: [r.articulo._id, [Validators.required]],
+      observaciones: [r.observaciones, null]
     })
   }
 
-  public f(campo: string ): AbstractControl{
+  f(campo: string): AbstractControl {
     return this.formulario.get(campo)
   }
 
-  submit(modelo: Requisicion, valid: boolean, e) {
-    e.preventDefault()
-    if (valid) {
-      let cb = () => {
-        this.guardar.emit()
-        this.limpiar()
-      }
-      let requi = <Requisicion>modelo
-      if (this.requisicion) {
-        requi._id = this.requisicion._id
-        this._requisicionService.modificar(requi).subscribe(cb)
-      } else {
-        // Es una nueva requisicion y es necesario definir
-        // su estatus.
-        this.estatusRequisicion(requi)
-        this._requisicionService.guardar(requi).subscribe(cb)
-      }
+  submit(modelo: Requisicion, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+
+    if (invalid) {
+      e.stopPropagation()
+      e.preventDefault()
+      return
+    }
+
+    if (this.requisicion._id) {
+      this.cargando['modificando'] = 'Modificando requisicion'
+      modelo._id = this.requisicion._id
+      this.requisicionService.update(modelo).subscribe(
+        () => {
+          this.location.back()
+        },
+        () => delete this.cargando['modificando']
+      )
+    } else {
+      // Es una nueva requisicion y es necesario definir
+      // su estatus.
+      this.cargando['guardando'] = 'Aplicando cambios'
+      this.estatusRequisicion(modelo)
+      this.requisicionService.save(modelo).subscribe(
+        () => {
+          this.crearFormulario()
+          delete this.cargando['guardando']
+        },
+        () => delete this.cargando['guardando']
+      )
     }
   }
 
   estatusRequisicion(requi: Requisicion) {
-    requi.razonDeCambioTemp = "Se creo la requisicion"
+    requi.razonDeCambioTemp = 'Se creo la requisicion'
     requi.estatus = new EstatusRequisicion()
     requi.estatus.esRequisicion = true
   }
@@ -152,9 +168,9 @@ export class RequisicionCrearModificarComponent implements OnInit {
   ejecutarOperacionesDeBusquedaArticulos(evento) {
     let termino = <string>evento.termino
     this.dataListComponent = <DataListComponent>evento.dataList
-    this._articuloService
-      .search(termino, undefined, undefined, Articulo)
-      .subscribe((articulos) => {
+    this.articuloService
+      .findByTerm(termino, new Paginacion(5, 0, 1, 'nombre'))
+      .subscribe(articulos => {
         let datos: Dato[] = []
         articulos.forEach((art: Articulo) => {
           datos.push(this.crearDatoParaDataList(art))
@@ -169,7 +185,13 @@ export class RequisicionCrearModificarComponent implements OnInit {
     this.articuloSeleccionadoParaInput = art
     this.f('articulo').markAsTouched()
     this.f('articulo').updateValueAndValidity()
+
+    setTimeout(() => {
+      this.suffix = ` (${art.unidad})`
+    }, 100)
   }
+
+  suffix = ''
 
   cancelar() {
     this.limpiar()
@@ -185,9 +207,11 @@ export class RequisicionCrearModificarComponent implements OnInit {
   private crearDatoParaDataList(art: Articulo): Dato {
     let d = new Dato()
     d.leyendaPrincipal = art.nombre
-    d.leyendaSecundaria = `Existencia: ${art.existencia}`
+    d.leyendaSecundaria = `Existencia: ${art.existencia} ${art.unidad}`
     d.descripcionPrincipal = art.descripcion
-    d.descripcionSecundaria = "Unidades de almacenamiento: " + art.presentacion
+    d.descripcionSecundaria =
+      'Unidades en las que el almacen va a recibir el material: ' +
+      art.presentacion
     d.objeto = art
     return d
   }

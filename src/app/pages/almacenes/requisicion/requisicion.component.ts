@@ -1,22 +1,26 @@
-import { Component, OnInit } from "@angular/core"
-import { Requisicion } from "src/app/models/requisiciones/requisicion.model"
-import { RequisicionCrearModificarComponent } from "./requisicion-crear-modificar.component"
-import { PaginadorService } from "src/app/components/paginador/paginador.service"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
-import { RequisicionService } from "src/app/services/requisiciones/requisicion.service"
-import { RequisicionFiltros } from "src/app/services/utilidades/filtrosParaConsultas/requisicion.filtro"
-import { Proveedor } from "src/app/models/proveedores/proveedor.model"
-import { Divisa } from "src/app/models/divisas/divisa.model"
-import { RecibirParcialidadComponent } from "./estatus/requisicion-estatus-es-entrega-parcial/recibirParcialidad/recibir-parcialidad.component"
-import { RecibirTerminacionComponent } from "./estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component"
-import { RecibirCancelacionComponent } from "./estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component"
-import { RequisicionFiltrosComponent } from "./requisicion-filtros/requisicion-filtros.component"
-import { UsuarioService } from "../../../services/usuario/usuario.service"
-import { _ROLES } from "../../../config/roles.const"
-import { EstatusRequisicion } from "../../../models/requisiciones/estatusRequisicion.model"
+import { Component, OnInit } from '@angular/core'
+import { Requisicion } from 'src/app/models/requisiciones/requisicion.model'
+import { RequisicionCrearModificarComponent } from './requisicion-crear-modificar.component'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { RequisicionService } from 'src/app/services/requisiciones/requisicion.service'
+import { RequisicionFiltros } from 'src/app/services/utilidades/filtrosParaConsultas/requisicion.filtro'
+import { Proveedor } from 'src/app/models/proveedores/proveedor.model'
+import { Divisa } from 'src/app/models/divisas/divisa.model'
+import { RecibirParcialidadComponent } from './estatus/requisicion-estatus-es-entrega-parcial/recibirParcialidad/recibir-parcialidad.component'
+import { RecibirTerminacionComponent } from './estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component'
+import { RecibirCancelacionComponent } from './estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component'
+import { RequisicionFiltrosComponent } from './requisicion-filtros/requisicion-filtros.component'
+import { UsuarioService } from '../../../services/usuario/usuario.service'
+import { _ROLES } from '../../../config/roles.const'
+import { EstatusRequisicion } from '../../../models/requisiciones/estatusRequisicion.model'
+import per from 'src/app/config/permisosKeys.config'
+import { Paginacion } from '../../../utils/paginacion.util'
+import { iPaginadorData } from '../../../shared/paginador/paginador.component'
+import { ContieneElPermisoPipe } from '../../../pipes/contiene-el-permiso.pipe'
 @Component({
-  selector: "app-requisicion",
-  templateUrl: "./requisicion.component.html",
+  selector: 'app-requisicion',
+  templateUrl: './requisicion.component.html',
   styles: []
 })
 export class RequisicionComponent implements OnInit {
@@ -35,71 +39,48 @@ export class RequisicionComponent implements OnInit {
   detalleProveedor: Proveedor
   detalleDivisa: Divisa
 
+  permisos = per
+  cargando = {}
+  keys = Object.keys
+  paginacion = new Paginacion(5, 0, -1, 'folio')
+  // Almacena los filtros de manera temporal
+  filtros = ''
+
   constructor(
-    public _paginadorService: PaginadorService,
-    public _requisicionService: RequisicionService,
-    public _msjService: ManejoDeMensajesService,
-    public _usuarioService: UsuarioService
-  ) {
-    this._paginadorService.callback = () =>
-      this.cargarRequisiciones(this.componenteFiltrador)
-  }
+    public requisicionService: RequisicionService,
+    public msjService: ManejoDeMensajesService,
+    public usuarioService: UsuarioService,
+    public cPerPipe: ContieneElPermisoPipe
+  ) {}
 
   ngOnInit() {
     this.cargarRequisiciones()
   }
 
-  cargarRequisiciones(componente: RequisicionFiltrosComponent = null) {
-    this.buscando = true
+  cargarRequisiciones(
+    filtros = '',
+    paginador: iPaginadorData = null,
+    paginadorEspecial = false
+  ) {
+    this.filtros = filtros
 
-    this.aplicarFiltros(
-      this._requisicionService.filtros(
-        new RequisicionFiltros(this._requisicionService)
-      ),
-      componente
-    )
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .setSortCampos([["folio", 1]])
-      .servicio.todo()
-      .subscribe((requisiciones) => {
+    if (paginador) this.paginacion = paginador.paginacion
+    if (paginadorEspecial)
+      this.paginacion = new Paginacion(
+        this.paginacion.limite,
+        0,
+        this.paginacion.orden,
+        this.paginacion.campoDeOrdenamiento
+      )
+
+    this.cargando['filtro'] = 'Aplicando filtros'
+    this.requisicionService.findAll(this.paginacion, filtros).subscribe(
+      requisiciones => {
         this.requisiciones = requisiciones
-        this._paginadorService.activarPaginador(this._requisicionService.total)
-        setTimeout(() => {
-          this.buscando = false
-        }, 500)
-      })
-  }
-
-  private aplicarFiltros(
-    filtros: RequisicionFiltros<RequisicionService>,
-    c: RequisicionFiltrosComponent
-  ): RequisicionFiltros<RequisicionService> {
-    if (!c) return filtros
-
-    return filtros
-      .set_folioDesde(c.folioDesde ? c.folioDesde : null)
-      .set_folioHasta(c.folioHasta ? c.folioHasta : null)
-      .set_usuario(c.usuario ? c.usuario : null)
-      .set_materiaPrima(c.materiaPrima ? c.materiaPrima : null)
-      .set_consumibles(c.consumibles ? c.consumibles : null)
-      .set_gastosYServicios(c.gastosYServicios ? c.gastosYServicios : null)
-      .set_articulo(c.articulo ? c.articulo : null)
-      .set_estatus_esRequisicion(
-        c.estatus_esRequisicion ? c.estatus_esRequisicion : null
-      )
-      .set_estatus_esOrdenDeCompra(
-        c.estatus_esOrdenDeCompra ? c.estatus_esOrdenDeCompra : null
-      )
-      .set_estatus_esEntregaParcial(
-        c.estatus_esEntregaParcial ? c.estatus_esEntregaParcial : null
-      )
-      .set_estatus_esTerminada(
-        c.estatus_esTerminada ? c.estatus_esTerminada : null
-      )
-      .set_estatus_esCancelada(
-        c.estatus_esCancelada ? c.estatus_esCancelada : null
-      )
+        delete this.cargando['filtro']
+      },
+      () => delete this.cargando['filtro']
+    )
   }
 
   resultadoBusqueda(requisiciones: Requisicion[]) {
@@ -114,27 +95,15 @@ export class RequisicionComponent implements OnInit {
 
   error(error) {
     this.buscando = false
-    this._msjService.err(error)
+    this.msjService.err(error)
     throw error
   }
 
-  crear() {
-    this.componenteCrearModificar.crear()
-  }
-
-  asignarDetalle(requisicion: Requisicion) {
-    this.requisicionDetalle = requisicion
-  }
-
-  editar(proveedor: Requisicion) {
-    this.componenteCrearModificar.modificar(proveedor)
-  }
-
   eliminar(requisicion: Requisicion) {
-    let msj = "Esta accion no se puede deshacer."
-
-    this._msjService.confirmacionDeEliminacion(msj, () => {
-      this._requisicionService.eliminar(requisicion._id).subscribe(() => {
+    let msj =
+      'Esta accion no se puede deshacer y solo deberias hacerla si eres el administrador'
+    this.msjService.confirmacionDeEliminacion(msj, () => {
+      this.requisicionService.delete(requisicion._id).subscribe(() => {
         this.limpiar()
         this.cargarRequisiciones()
       })
@@ -163,27 +132,18 @@ export class RequisicionComponent implements OnInit {
   }
 
   mostrarBtnEliminarRequisicion(requisicion: Requisicion): boolean {
-    if (!this._usuarioService.comprobarRol(_ROLES.ALMACEN_REQUISICION_ALMACEN))
-      return false
-
+    if (!this.cPerPipe.transform(per['requisicion:eliminar'])) return false
     return requisicion.estatus.esRequisicion
   }
 
   mostrarBtnEditarRequisicion(requisicion: Requisicion): boolean {
-    if (!this._usuarioService.comprobarRol(_ROLES.ALMACEN_REQUISICION_ALMACEN))
-      return false
-
+    if (!this.cPerPipe.transform(per['requisicion:modificar'])) return false
     return requisicion.estatus.esRequisicion
   }
 
   mostrarBtnGenerarCompra(req: Requisicion): boolean {
-    if (
-      !this._usuarioService.usuario.permissions.includes(
-        _ROLES.ALMACEN_REQUISICION_COMPRAR
-      )
-    )
+    if (!this.cPerPipe.transform(per['requisicion:estatus:generarCompra']))
       return false
-
     return req.estatus.esRequisicion
   }
   mostrarBtnRecibirParcialidad(req: Requisicion): boolean {
@@ -194,7 +154,7 @@ export class RequisicionComponent implements OnInit {
   private comprobarBtnRecibirParcialidadLogica(req: Requisicion) {
     let e = req.estatus
 
-    if (!this._usuarioService.comprobarRol(_ROLES.ALMACEN_REQUISICION_ALMACEN))
+    if (!this.cPerPipe.transform(per['requisicion:estatus:agregarParcialidad']))
       return false
     //Es una orden de compra o parcialidad
     let ordenOParcialidad = this.esOrdenOEsParcialidad(e)
@@ -208,7 +168,7 @@ export class RequisicionComponent implements OnInit {
 
     if (
       this.esRequisicionOEsCancelada(e) ||
-      !this._usuarioService.comprobarRol(_ROLES.ALMACEN_REQUISICION_ALMACEN)
+      !this.cPerPipe.transform(per['requisicion:estatus:finalizar'])
     )
       return false
 
@@ -216,10 +176,7 @@ export class RequisicionComponent implements OnInit {
   }
   mostrarBtnCancelarRequisicion(req: Requisicion): boolean {
     let e = req.estatus
-    if (
-      this.esRequisicionOEsCancelada(e) ||
-      !this._usuarioService.comprobarRol(_ROLES.ALMACEN_REQUISICION_ALMACEN)
-    )
+    if (!this.cPerPipe.transform(per['requisicion:estatus:cancelar']))
       return false
 
     return !e.esTerminada
@@ -238,13 +195,22 @@ export class RequisicionComponent implements OnInit {
 
   generarCompra(req: Requisicion) {
     //Cambiamos el estatus de la requisicion
-    req.razonDeCambioTemp = "Se genero la compra."
-    req.estatus.reiniciar()
+    req.razonDeCambioTemp = 'Se genero la compra.'
+
+    req.estatus.esOrdenDeCompra = false
+    req.estatus.esRequisicion = false
+    req.estatus.esEntregaParcial = false
+    req.estatus.esEntregaParcial = false
+    req.estatus.esCancelada = false
+    req.estatus.esTerminada = false
+
     req.estatus.esOrdenDeCompra = true
     req.estatus.fechaDeGeneracionDeOrdenDeCompra = new Date()
-    this._requisicionService.actualizarEstatus(req).subscribe((reqResp) => {
+    this.cargando['comprar'] = 'Generando la compra'
+    this.requisicionService.actualizarEstatus(req).subscribe(reqResp => {
       // this.cargarRequisiciones()
       // req = reqResp
+      delete this.cargando['comprar']
       this.cargarRequisiciones()
     })
   }

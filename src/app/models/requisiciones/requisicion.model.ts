@@ -13,7 +13,7 @@ export class Requisicion implements Deserializable {
     public consumibles?: boolean,
     public gastosYServicios?: boolean,
     public cantidad?: number,
-    public articulo?: Articulo,
+    public articulo: Articulo = new Articulo(),
     public estatus: EstatusRequisicion = new EstatusRequisicion(),
     //Una copia del status con fecha.
     public historialDeEstatus: HistorialDeEstatusRequisicion[] = [],
@@ -25,14 +25,14 @@ export class Requisicion implements Deserializable {
   deserialize(input: this): this {
     if (!input) return this
     Object.assign(this, input)
-    this.usuario = new Usuario().deserialize(input.usuario)
+    this.usuario = input.usuario as Usuario
 
     this.articulo = new Articulo().deserialize(input.articulo)
     if (input.estatus) {
       this.estatus = new EstatusRequisicion().deserialize(input.estatus)
     }
     this.historialDeEstatus = input.historialDeEstatus.map(x =>
-      new HistorialDeEstatusRequisicion().deserialize(x)
+      x as HistorialDeEstatusRequisicion
     )
 
     this.createdAt = input.createdAt ? new Date(input.createdAt) : null
