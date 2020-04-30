@@ -94,6 +94,7 @@ import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detal
 import { PedidosDetalleComponent } from '../pages/gestionDeFolios/pedidos/pedidos-detalle.component'
 import { FoliosDetalleAbstractoComponent } from '../pages/gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component'
 import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordenes-detalle.component'
+import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
 
 @NgModule({
   imports: [
@@ -257,7 +258,8 @@ export class SharedModule {
         ImagenPipe,
         FechaPipe,
         ModeloCompletoPipe,
-        DecimalPipe
+        DecimalPipe, 
+        ContieneElPermisoPipe
       ]
     }
   }
