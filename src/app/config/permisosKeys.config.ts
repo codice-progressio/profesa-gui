@@ -195,6 +195,11 @@ export default {
   'requisicion:leer:id': 'requisicion:leer:id',
   'requisicion:leer:todo': 'requisicion:leer:todo',
   'requisicion:modificar': 'requisicion:modificar',
+  'requisicion:estatus:cancelar': 'requisicion:estatus:cancelar',
+  'requisicion:estatus:generarCompra': 'requisicion:estatus:generarCompra',
+  'requisicion:estatus:agregarParcialidad':
+    'requisicion:estatus:agregarParcialidad',
+  'requisicion:estatus:finalizar': 'requisicion:estatus:finalizar',
   'tamano:crear': 'tamano:crear',
   'tamano:eliminar': 'tamano:eliminar',
   'tamano:leer:id': 'tamano:leer:id',
