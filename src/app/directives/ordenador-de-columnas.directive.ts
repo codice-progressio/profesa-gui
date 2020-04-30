@@ -87,12 +87,13 @@ export class OrdenadorDeColumnasDirective implements AfterViewInit {
   }
 
   private genericos(el, i) {
+    this.renderer.addClass(i, 'no-print')
     this.renderer.addClass(i, 'fas')
     this.renderer.addClass(i, 'ml-1')
     this.renderer.appendChild(el, i)
     this.renderer.addClass(el, 'pointer')
   }
-
+  
   down(el) {
     const i = this.renderer.createElement('i')
     this.renderer.addClass(i, 'fa-caret-down')
