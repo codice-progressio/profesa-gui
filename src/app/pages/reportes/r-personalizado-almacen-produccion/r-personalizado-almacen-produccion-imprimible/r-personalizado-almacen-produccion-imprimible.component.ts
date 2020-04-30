@@ -24,13 +24,13 @@ export class RPersonalizadoAlmacenProduccionImprimibleComponent implements OnIni
 
   ngOnInit() {}
 
-  orden = -1
-  sort(val) {
-    this.orden = this.orden * -1
-    this.articulos.sort((a, b) =>
-      a[val] > b[val] ? 1 * this.orden : -1 * this.orden
-    )
-  }
+  // orden = -1
+  // sort(val) {
+  //   this.orden = this.orden * -1
+  //   this.articulos.sort((a, b) =>
+  //     a[val] > b[val] ? 1 * this.orden : -1 * this.orden
+  //   )
+  // }
 
   sumSalida(salidas: iSalidasUltimosDias[]) {
     return salidas.reduce((a, b) => a + b.cantidad, 0)
