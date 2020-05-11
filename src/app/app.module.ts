@@ -24,7 +24,7 @@ import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http'
-import { URL_DOMINIO } from './config/config'
+import { URL_DOMINIO } from './config/config';
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -35,7 +35,7 @@ export function tokenGetter() {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    PagesComponent
+    PagesComponent,
   ],
 
   imports: [
