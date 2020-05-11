@@ -50,4 +50,21 @@ export class ParametrosService {
         })
       )
   }
+
+
+  actualizarPermisos() {
+    let url = this.base.concat('/configurar-super-admin/permisos/reiniciar')
+    return this.httpClient.put(url, {}).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return null
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+}
+
 }

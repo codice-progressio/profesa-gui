@@ -161,7 +161,9 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
 import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component'
 import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component'
 import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
-import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
+import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component';
+import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component';
+import { AdministradorComponent } from './parametros/administrador/administrador.component'
 
 @NgModule({
   declarations: [
@@ -324,7 +326,9 @@ import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-inicia
     UsuarioCrearComponent,
     UsuarioDetalleComponent,
     UsuarioLeerComponent,
-    ProcesosInicialesYFinalesComponent
+    ProcesosInicialesYFinalesComponent,
+    ProcesosEspecialesComponent,
+    AdministradorComponent
   ],
   exports: [],
   imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],

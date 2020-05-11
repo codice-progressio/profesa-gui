@@ -75,6 +75,8 @@ import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './
 import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component'
 import { RequisicionCrearModificarComponent } from './almacenes/requisicion/requisicion-crear-modificar.component'
 import { RequisicionDetalleComponent } from './almacenes/requisicion/requisicion-detalle.component'
+import { ProcesosEspecialesComponent } from '../pages/parametros/procesos-especiales/procesos-especiales.component'
+import { AdministradorComponent } from './parametros/administrador/administrador.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -95,6 +97,24 @@ const pagesRoutes: Routes = [
     data: {
       titulo: 'Dashboard',
       permissions: permisosKeysConfig['menu:parametros:localizacionDeOrdenes']
+    }
+  },
+  {
+    path: 'parametros/procesosEspeciales',
+    component: ProcesosEspecialesComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Dashboard',
+      permissions: permisosKeysConfig['menu:parametros:procesosEspeciales']
+    }
+  },
+  {
+    path: 'parametros/administrador',
+    component: AdministradorComponent,
+    canActivate: [VerificaTokenGuard, PermisosGuard],
+    data: {
+      titulo: 'Dashboard',
+      permissions: permisosKeysConfig.SUPER_ADMIN
     }
   },
 
