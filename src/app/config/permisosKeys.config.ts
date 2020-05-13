@@ -278,5 +278,6 @@ export default {
   'menu:ventas:stock': 'menu:ventas:stock',
   'menu:parametros': 'menu:parametros',
   'menu:parametros:localizacionDeOrdenes':
-    'menu:parametros:localizacionDeOrdenes'
+    'menu:parametros:localizacionDeOrdenes',
+  'menu:parametros:procesosEspeciales': 'menu:parametros:procesosEspeciales'
 }

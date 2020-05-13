@@ -1,0 +1,121 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>Procesos especiales</h1>
+        <p>
+          Los procesos especiales senalan todos aquellos que se deben de revisar
+          antes de generar una orden de produccion.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="keys(cargando).length === 0" class="row animated fadeIn">
+  <div class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <ul
+          cdkDropList
+          #procesosSeleccionadosList="cdkDropList"
+          [cdkDropListData]="procesosSeleccionados"
+          [cdkDropListConnectedTo]="[procesosList]"
+          (cdkDropListDropped)="drop($event)"
+          class="list-group app-lista-scroll"
+        >
+          <li class="list-group-item active app-lista-scroll-encabezado">
+            Procesos seleccionados
+          </li>
+          <li
+            cdkDrag
+            [cdkDragData]="'eliminar'"
+            class="list-group-item"
+            *ngFor="let item of procesosSeleccionados"
+          >
+            <small class="text-muted pull-right">{{
+              item.departamento.nombre
+            }}</small>
+            <h5 class="mb-1">{{ item.nombre }}</h5>
+          </li>
+          <li
+            *ngIf="procesosSeleccionados.length === 0"
+            class="list-group-item disabled"
+          >
+            No has seleccianado procesos
+          </li>
+        </ul>
+
+        <hr />
+
+        <a
+          (click)="guardar()"
+          class="btn btn-success"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-save"> </i> Guardar</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <ul
+          cdkDropList
+          #procesosList="cdkDropList"
+          [cdkDropListData]="procesos"
+          [cdkDropListConnectedTo]="[procesosSeleccionadosList]"
+          (cdkDropListDropped)="drop($event)"
+          cdkDropListSortingDisabled
+          class="list-group app-lista-scroll"
+        >
+          <li class="list-group-item active app-lista-scroll-encabezado">
+            <span class="pull-left">Procesos disponibles</span>
+            <div class="form-group pull-right m-0 p-0">
+              <input
+                #input
+                (keyup)="filtrarDisponibles(input.value)"
+                type="text"
+                class="form-control m-0 form-control-sm"
+                placeholder="Buscar"
+              />
+            </div>
+          </li>
+          <li
+            cdkDrag
+            [cdkDragData]="'copiar'"
+            class="list-group-item"
+            *ngFor="let item of procesos"
+            [ngStyle]="{ display: mostrar.includes(item._id) ? '' : 'none' }"
+          >
+            <small class="text-muted pull-right">{{
+              item.departamento.nombre
+            }}</small>
+            <h5 class="mb-1">{{ item.nombre }}</h5>
+          </li>
+          <li *ngIf="procesos.length === 0" class="list-group-item disabled">
+            No hay procesos para seleccionar
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="keys(cargando).length > 0">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1 class="display-1">
+          <i class="fas fa-sync fa-spin-fast w-100 text-center"></i>
+        </h1>
+        <h2 *ngFor="let k of cargando | keyvalue" class="w-100 text-center">
+          {{ k.value }}
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>

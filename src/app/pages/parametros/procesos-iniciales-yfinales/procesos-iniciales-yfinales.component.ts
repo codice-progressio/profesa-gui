@@ -40,7 +40,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   ngOnInit(): void {
     this.cargando['parametros'] = 'Cargando procesos iniciales y finales'
 
-    this.parametrosService.localizacionDeOrdenes().subscribe(
+    this.parametrosService.findAllLocalizacionDeOrdenes().subscribe(
       loca => {
         this.localizacionDeOrdenes = loca
         delete this.cargando['parametros']
@@ -85,7 +85,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
       'Aplicando cambios a procesos iniciales y finales'
 
     this.parametrosService
-      .localizacionDeOrdenesSave(this.localizacionDeOrdenes)
+      .saveLocalizacionDeOrdenes(this.localizacionDeOrdenes)
       .subscribe(
         () => {
           delete this.cargando['guardando']
