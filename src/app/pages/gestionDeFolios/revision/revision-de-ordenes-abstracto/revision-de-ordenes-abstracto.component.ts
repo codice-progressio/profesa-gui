@@ -8,6 +8,8 @@ import { ActivatedRoute } from '@angular/router'
 import { FolioNewService } from '../../../../services/folio/folio-new.service'
 import { ModeloCompletoGestorDeProcesosEspecialesComponent } from '../../../../shared/modelo-completo-gestor-de-procesos-especiales/modelo-completo-gestor-de-procesos-especiales.component'
 import { Location } from '@angular/common'
+import { ParametrosService } from '../../../../services/parametros.service'
+import { Proceso } from 'src/app/models/proceso.model'
 
 declare var $: any
 @Component({
@@ -22,36 +24,47 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
   pedidoParaSurtirOLaserar: FolioLinea
   modeloCompletoGestor: ModeloCompletoGestorDeProcesosEspecialesComponent
 
-  defaultData: DefaultModelData
+  procesosEspeciales: Proceso[] = []
+
   constructor(
-    public _defaultService: DefaultsService,
+    private parametrosServices: ParametrosService,
     private activatedRoute: ActivatedRoute,
-    private folioService: FolioNewService,
+    public folioService: FolioNewService,
     public location: Location
   ) {}
 
   ngOnInit() {
-    this.cargando['default'] = 'Cargando datos por defualt'
-    this._defaultService.cargarDefaults().subscribe(d => {
-      this.defaultData = d
-      delete this.cargando['default']
-      this.cargando['folio'] = 'Cargando datos del folio'
-      const id = this.activatedRoute.snapshot.paramMap.get('id')
-      this.folioService.findById(id).subscribe(folio => {
-        this.folio = folio
+    this.cargando['especiales'] = 'Cargando procesos especiales'
+    this.parametrosServices.findAllProcesosEspeciales().subscribe(
+      procesos => {
+        this.procesosEspeciales = procesos
+        delete this.cargando['especiales']
+        this.cargarFolio()
+      },
+      _ => delete this.cargando['especiales']
+    )
+  }
 
-        this.folio.folioLineas.forEach(pedido => {
-          this.listaDeMuestra[pedido.pedido] = false
+  cargarFolio() {
+    this.cargando['folio'] = 'Cargando datos del folio'
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+    this.folioService.findById(id).subscribe(folio => {
+      this.folio = folio
 
-          this.popularOrdenes(pedido.gui_generarComoMedias, pedido)
-          pedido.requiereRevisionExtraordinaria = this.revisarSiRequiereRevisionExtraordinaria(
-            this.defaultData.DEPARTAMENTOS.LASER,
-            pedido
-          )
-        })
+      let contador = 0
+      this.folio.folioLineas.forEach(pedido => {
+        this.listaDeMuestra[pedido.pedido] = false
+        pedido.pedido = this.folio.numeroDeFolio + '-' + contador
+        this.popularOrdenes(pedido.gui_generarComoMedias, pedido)
+        pedido.requiereRevisionExtraordinaria = this.revisarSiRequiereRevisionExtraordinaria(
+          this.procesosEspeciales.map(x => x._id),
+          pedido
+        )
 
-        delete this.cargando['folio']
+        contador++
       })
+
+      delete this.cargando['folio']
     })
   }
 
@@ -77,7 +90,7 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
 
   permitirEdicionDeProcesos(pedido: FolioLinea): boolean {
     return this.revisarSiRequiereRevisionExtraordinaria(
-      this.defaultData.PROCESOS.LASER,
+      this.procesosEspeciales.map(x => x._id),
       pedido
     )
   }
@@ -86,46 +99,51 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
    *Chequeca si requiere una revision extraordinaria a la hora de generar las 
    ordenes. Las cosas que revisa son: 
    * * 1.- Viene de almacen.
-   * * 2.- Viene de almacen y se lasera.
-   * * 3.- Se va a producir y a laserar pero no tiene el departamento laser en *la familia de procesos.
+   * * 2.- Viene de almacen y contiene un proceso "especial".
    * 
    * Esta funcion modifica la propiedad ```this.requiereRevisionExtraordinara```
    * que es la que se debe de usar para comprobar si el pedido requiere la revison. Esta revision se debe de llamar cuando se generan las ordenes del 
    * folio de manera temporal para revisarlas. 
    *
-   * @private
-   * @param {string} idProcesoLaser El id del proceso laser
+   * @private1
+   * @param {string} procesosEspeciales Un arreglo con los ids de los procesos especiales. 
    * @returns
    * @memberof FolioLinea
    */
   revisarSiRequiereRevisionExtraordinaria(
-    idProcesoLaser: string,
+    procesosEspeciales: string[],
     pedido: FolioLinea
   ) {
     // Solo se puede editar procesos en alguno de estos casos.
     // 1- Viene de almacen.
-    // 2- Viene de almacen y se lasera.
+    // 2- Viene de almacen y contiene procesos especiales.
     if (pedido.almacen) {
       return pedido.almacen
     }
     // 3- Se va a producir y a laserar pero no tiene el departamento laser en la familia de procesos.
-    return this.comprobarLaserEnFamiliaDeProcesos(pedido, idProcesoLaser)
+    return this.comprobarProcesosEspeciales(pedido, procesosEspeciales)
   }
 
-  private comprobarLaserEnFamiliaDeProcesos(
+  private comprobarProcesosEspeciales(
     pedido: FolioLinea,
-    idProcesoLaser: string
+    procesosEspeciales: string[]
   ): boolean {
     // Tiene marca laser
-    if (pedido.laserCliente.laser) {
-      // No incluye el proceso de laser dentro de sus procesos en la familia.
-      let l = pedido.modeloCompleto.familiaDeProcesos.procesos.find(
-        p => idProcesoLaser == p.proceso._id
-      )
+    if (pedido.laserCliente) {
+      // No incluye ninguno de los procesos especiales dentro de sus procesos en la familia.
+      let incluyeProcesosEspeciales = false
+
+      pedido.procesos.forEach(x => {
+        if (procesosEspeciales.includes(x.proceso._id))
+          //Si incluye un proceso especial, entonces no necesita modificarse.
+          incluyeProcesosEspeciales = true
+      })
 
       // Solo si no tiene el departamento de laser agregado se puede modificar.
-      return !l
+      return !incluyeProcesosEspeciales
     }
+
+    return false
   }
 
   popularOrdenes(forzarMedias: boolean = false, pedido: FolioLinea) {
@@ -292,7 +310,8 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
   listaDeMuestra = []
   collapse(id: string) {
     this.listaDeMuestra[id] = !this.listaDeMuestra[id]
-    $(`.${id}`).collapse('toggle')
+
+    $('.' + id).collapse('toggle')
   }
 
   collapsado: boolean = false

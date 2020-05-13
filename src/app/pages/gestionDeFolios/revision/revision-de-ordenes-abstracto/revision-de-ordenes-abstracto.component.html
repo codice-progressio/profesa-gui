@@ -17,7 +17,11 @@
 =====================================
 -->
 
-<div class="row fadeIn animated colapse show procesosEspeciales">
+
+<div
+  *ngIf="keys(cargando).length === 0"
+  class="row fadeIn animated colapse show procesosEspeciales"
+>
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
@@ -29,7 +33,7 @@
                     -->
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center justify-content-between">
-              <h1 class="display-6 ">
+              <h1 class="display-6">
                 FOL:<b># {{ folio.numeroDeFolio }}</b>
               </h1>
               <a
@@ -38,7 +42,7 @@
                 data-dismiss="modal"
                 role="button"
               >
-                <i class="fas fa-times-circle "> </i> Cancelar</a
+                <i class="fas fa-times-circle"> </i> Cancelar</a
               >
               <a
                 (click)="guardarCambios()"
@@ -47,7 +51,7 @@
                 data-dismiss="modal"
                 role="button"
               >
-                <i class="fas fa-check-circle    "></i>
+                <i class="fas fa-check-circle"></i>
                 Generar ordenes</a
               >
 
@@ -57,11 +61,10 @@
                 role="button"
               >
                 <span *ngIf="!collapsado">
-                  <i class="fas fa-chevron-down    "></i> Collapsar
-                  pedidos</span
+                  <i class="fas fa-chevron-down"></i> Collapsar pedidos</span
                 >
                 <span *ngIf="collapsado">
-                  <i class="fas fa-chevron-right    "></i> Mostrar pedidos</span
+                  <i class="fas fa-chevron-right"></i> Mostrar pedidos</span
                 >
               </a>
             </div>
@@ -80,7 +83,7 @@
                    Observaciones del folio
                   =====================================
                   -->
-          <div class="row ">
+          <div class="row">
             <div class="col-6">
               <div class="form-group">
                 <label for="obserProduccionVendedor"
@@ -181,10 +184,10 @@
                           role="button"
                         >
                           <span *ngIf="pedido.gui_generarComoMedias">
-                            <i class="fas fa-star    "></i> Convertir a ordenes
+                            <i class="fas fa-star"></i> Convertir a ordenes
                           </span>
                           <span *ngIf="!pedido.gui_generarComoMedias">
-                            <i class="fas fa-star-half    "></i> Convertir a
+                            <i class="fas fa-star-half"></i> Convertir a
                             medias</span
                           >
                         </a>
@@ -196,7 +199,7 @@
                           role="button"
                         >
                           <span>
-                            <i class="fas fa-star-half    "></i> Convertir a
+                            <i class="fas fa-star-half"></i> Convertir a
                             medias</span
                           >
                         </a>
@@ -213,7 +216,7 @@
               </div>
             </div>
 
-            <div class="row pt-3" style="min-height: 100px">
+            <div class="row pt-3" style="min-height: 100px;">
               <div class="col-12 d-flex justify-content-start">
                 <span>
                   <a
@@ -223,16 +226,16 @@
                     aria-expanded="false"
                   >
                     <ng-container *ngIf="listaDeMuestra[pedido.pedido]">
-                      <i class="fas fa-chevron-right    "></i>
+                      <i class="fas fa-chevron-right"></i>
                       Mostrar
                     </ng-container>
                     <ng-container *ngIf="!listaDeMuestra[pedido.pedido]">
-                      <i class="fas fa-chevron-down    "></i>
+                      <i class="fas fa-chevron-down"></i>
                       Ocultar
                     </ng-container>
                   </a>
                 </span>
-                <h1 class=" ml-3 dispal-1">
+                <h1 class="ml-3 dispal-1">
                   {{ pedido.modeloCompleto.nombreCompleto }}
                 </h1>
               </div>
@@ -240,7 +243,9 @@
                 <h6><b>Laser del cliente :</b></h6>
 
                 <h1 class="display-6">
-                  <b> {{ pedido.laserCliente.laser }}</b>
+                  <b>
+                    {{ folioService.laserEnModeloOPedido(pedido) }}
+                  </b>
                 </h1>
               </div>
               <div
@@ -262,7 +267,7 @@
                     (click)="surtirOLaserar(pedido)"
                     class="btn btn-warning text-dark ml-5 btn-sm"
                   >
-                    <i class="fas fa-edit    "></i> Editar procesos</a
+                    <i class="fas fa-edit"></i> Editar procesos</a
                   >
                 </ng-container>
               </div>
@@ -270,7 +275,7 @@
 
             <hr class="thin" />
 
-            <div class="row collapse show {{ pedido.pedido }} revisionDeFolios">
+            <div class="row collapse show {{ pedido.pedido}} revisionDeFolios">
               <div class="col-6">
                 <div class="form-group">
                   <label> <b>Observaciones de vendedor</b> </label>
@@ -319,7 +324,7 @@
                     <td>{{ i }}</td>
                     <td>{{ orden.unidad }}</td>
                     <td>{{ orden.piezasTeoricas | number }}</td>
-                    <td>{{ pedido.laserCliente.laser }}</td>
+                    <td>{{ folioService.laserEnModeloOPedido(pedido) }}</td>
                     <td>{{ orden.nivelDeUrgencia }}</td>
 
                     <td>
@@ -352,11 +357,11 @@
             href="javascript:void(0)"
             role="button"
           >
-            <i class="fas fa-times-circle "> </i> Cancelar</a
+            <i class="fas fa-times-circle"> </i> Cancelar</a
           >
           <a
             (click)="guardarCambios()"
-            class="btn btn-success btn-sm  pull-right"
+            class="btn btn-success btn-sm pull-right"
             title="Genera las ordenes para produccion."
             href="javascript:void(0)"
             role="button"
@@ -370,13 +375,21 @@
             No has seleccionado un folio <b>para ver su informacion</b>.
           </h1>
         </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <ng-container *ngIf="keys(cargando).length > 0">
-          <h1 class="display-1 w-100 text-center">
-            <i class="fas fa-sync fa-spin"></i>
-          </h1>
-          <h2 *ngFor="let key of keys(cargando)">{{ cargando[key] }}</h2>
-        </ng-container>
+<div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body text-center">
+        <h1 class="display-1 w-100 text-center">
+          <i class="fas fa-sync fa-spin-fast"></i>
+        </h1>
+        <h2 class="w-100 text-center" *ngFor="let key of keys(cargando)">
+          {{ cargando[key] }}
+        </h2>
       </div>
     </div>
   </div>
