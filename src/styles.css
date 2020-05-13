@@ -280,11 +280,11 @@ video {
 /* Encabezado de lista fijo para cdkDrag lista */
 
 .app-lista-scroll {
-  max-height: 300px ;
-  overflow-y: auto ;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.app-lista-scroll-encabezado{
+.app-lista-scroll-encabezado {
   position: -webkit-sticky;
   position: sticky;
   top: 0px;
@@ -320,12 +320,12 @@ video {
 }
 
 .cdk-drag {
+  cursor: grab;
 }
 
 .cdk-drag-placeholder {
   opacity: 0;
-  border-style: groove;
-  border-color: red;
+  z-index: 1000;
 }
 
 .cdk-drag-animating {
@@ -333,8 +333,6 @@ video {
 }
 
 .cdk-drag-disabled {
-}
-.cdk-drag-handle {
 }
 
 .cdk-drop-list {
@@ -350,7 +348,6 @@ video {
   background-color: red;
   transition: all 2000ms;
 }
-
 
 .fa-spin-fast {
   -webkit-animation: fa-spin 1s infinite linear;
