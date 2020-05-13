@@ -3,6 +3,7 @@ import { Folio } from 'src/app/models/folio.models'
 import { ColoresTenidos } from 'src/app/models/ColoresTenidos'
 import { FolioLinea } from 'src/app/models/folioLinea.models'
 import { Orden } from 'src/app/models/orden.models'
+import { FolioService } from '../../../../services/folio/folio.service'
 
 @Component({
   selector: 'app-folios-detalle-abstracto',
@@ -33,7 +34,7 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
   @Output() idFolio = new EventEmitter<string>()
   pedidoParaDetalle: FolioLinea = null
   ordenParaDetalle: Orden = null
-  constructor() {}
+  constructor( public folioService:FolioService) {}
 
   ngOnInit() {}
 
@@ -86,14 +87,5 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
 
       return totalDePedido / estandar
     }
-  }
-
-  laserEnModeloOPedido(pedido: FolioLinea): string {
-    if (pedido.laserCliente) return pedido.laserCliente.laser
-
-    if (pedido.modeloCompleto.laserAlmacen)
-      return pedido.modeloCompleto.laserAlmacen.laser
-
-    return ''
   }
 }
