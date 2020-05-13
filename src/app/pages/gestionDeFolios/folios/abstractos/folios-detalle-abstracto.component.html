@@ -168,7 +168,9 @@
                           {{ pedido.cantidad | number }}
                         </td>
                         <td>
-                          <span class="font-weight-bold">{{pedido.laserCliente.laser }}</span>
+                          <span class="font-weight-bold">
+                            {{laserEnModeloOPedido(pedido)}}
+                          </span>
                         </td>
                         <td class="text-right">
                           {{ ordenesSegunEstandar(pedido) | number: '0.0-3' }}

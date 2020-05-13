@@ -80,10 +80,20 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
    * @memberof FolioLinea
    */
   ordenesSegunEstandar(pedido: FolioLinea): number {
-    if( pedido.modeloCompleto ){
-    let estandar = pedido.modeloCompleto.tamano.estandar
-    let totalDePedido = pedido.cantidad
+    if (pedido.modeloCompleto) {
+      let estandar = pedido.modeloCompleto.tamano.estandar
+      let totalDePedido = pedido.cantidad
 
-    return totalDePedido / estandar}
+      return totalDePedido / estandar
+    }
+  }
+
+  laserEnModeloOPedido(pedido: FolioLinea): string {
+    if (pedido.laserCliente) return pedido.laserCliente.laser
+
+    if (pedido.modeloCompleto.laserAlmacen)
+      return pedido.modeloCompleto.laserAlmacen.laser
+
+    return ''
   }
 }
