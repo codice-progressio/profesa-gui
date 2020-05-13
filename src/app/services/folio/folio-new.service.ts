@@ -265,6 +265,15 @@ export class FolioNewService {
       catchError(err => this.errFun(err))
     )
   }
+
+  laserEnModeloOPedido(pedido: FolioLinea): string {
+    if (pedido.laserCliente) return pedido.laserCliente.laser
+
+    if (pedido.modeloCompleto.laserAlmacen)
+      return pedido.modeloCompleto.laserAlmacen.laser
+
+    return ''
+  }
 }
 // <!--
 // =====================================

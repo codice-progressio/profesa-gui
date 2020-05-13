@@ -4,6 +4,7 @@ import { ColoresTenidos } from 'src/app/models/ColoresTenidos'
 import { FolioLinea } from 'src/app/models/folioLinea.models'
 import { Orden } from 'src/app/models/orden.models'
 import { FolioService } from '../../../../services/folio/folio.service'
+import { FolioNewService } from '../../../../services/folio/folio-new.service'
 
 @Component({
   selector: 'app-folios-detalle-abstracto',
@@ -34,7 +35,7 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
   @Output() idFolio = new EventEmitter<string>()
   pedidoParaDetalle: FolioLinea = null
   ordenParaDetalle: Orden = null
-  constructor( public folioService:FolioService) {}
+  constructor( public folioService:FolioNewService) {}
 
   ngOnInit() {}
 

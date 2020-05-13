@@ -489,14 +489,4 @@ export class FolioService {
     this._paginadorService.desde = 0
     this._paginadorService.activarPaginador(this.totalFolios)
   }
-
-
-  laserEnModeloOPedido(pedido: FolioLinea): string {
-    if (pedido.laserCliente) return pedido.laserCliente.laser
-
-    if (pedido.modeloCompleto.laserAlmacen)
-      return pedido.modeloCompleto.laserAlmacen.laser
-
-    return ''
-  }
 }
