@@ -61,7 +61,7 @@ export class FamiliaDeProcesosCrearModificarComponent implements OnInit {
 
   ngOnInit() {
     this.cargando['procesos'] = 'Cargando parametros'
-    this.parametrosService.localizacionDeOrdenes().subscribe(
+    this.parametrosService.findAllLocalizacionDeOrdenes().subscribe(
       localizacionDeOrdenes => {
         this.procesosIniciales = localizacionDeOrdenes.procesosIniciales
         this.procesosFinales = localizacionDeOrdenes.procesosFinales
