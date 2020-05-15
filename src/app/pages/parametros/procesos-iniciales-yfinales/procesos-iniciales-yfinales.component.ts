@@ -33,6 +33,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
       .findAll(new Paginacion(100, 0, 1, 'nombre'))
       .subscribe(procesos => {
         this.procesos = procesos
+        this.limpiarBusqueda()
         delete this.cargando['procesos']
       })
   }
@@ -94,5 +95,29 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
           delete this.cargando['guardando']
         }
       )
+  }
+
+  mostrar = []
+  termino = ''
+  filtrarDisponibles() {
+  
+    if (this.termino) {
+      this.mostrar = this.procesos
+        .map(x => {
+          return x.nombre
+            .toLowerCase()
+            .concat(' ')
+            .concat(x.departamento.nombre.toLowerCase())
+            .concat(' ')
+            .concat('@@@' + x._id)
+        })
+        .filter(x => x.includes(this.termino.trim().toLowerCase()))
+        .map(x => x.split('@@@')[1])
+    } 
+  }
+
+  limpiarBusqueda() {
+    this.mostrar = this.procesos.map(x => x._id)
+    this.termino = ''
   }
 }

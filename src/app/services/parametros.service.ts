@@ -38,6 +38,7 @@ export class ParametrosService {
     return this.httpClient
       .put(url, {
         procesosIniciales: l.procesosIniciales.map(x => x._id),
+        procesosInicialesAlmacen: l.procesosInicialesAlmacen.map(x => x._id),
         procesosFinales: l.procesosFinales.map(x => x._id)
       })
       .pipe(
