@@ -51,7 +51,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Proceso[]>) {
-    console.log(event.item.data)
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

@@ -9,6 +9,7 @@ import { BasicosGUI } from "./basicosGUI.model"
 import { Lotes } from "./almacenProductoTerminado/lotes.model"
 import { ModeloCompletoService } from "../services/modelo/modelo-completo.service"
 import { IBasicosModel } from "./interfaces/iBasicosModel"
+import { Proceso } from './proceso.model'
 
 export class ModeloCompleto
   implements BasicosGUI, IBasicosModel<ModeloCompletoService> {
@@ -33,14 +34,13 @@ export class ModeloCompleto
     public lotes: Lotes[] = [],
     public stockMinimo: number = 0,
     public stockMaximo: number = 0,
-    // Cualquier proceso fuera de los de la familia de
-    // procesos.
+    
     public procesosEspeciales: Procesos[] = [],
     // Posiblemente es para los costos.
     public espesor?: number,
     public porcentajeDeMerma?: number,
     // Este es solo para modificaciones de las órdenes.
-    public mediasGeneradas: boolean = false // Para ordenamiento
+    public mediasGeneradas: boolean = false, // Para ordenamiento
   ) {}
 
   deserialize(input: this): this {

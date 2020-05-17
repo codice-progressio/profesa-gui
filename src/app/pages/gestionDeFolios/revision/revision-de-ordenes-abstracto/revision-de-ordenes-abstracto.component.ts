@@ -85,7 +85,6 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
 
   surtirOLaserar(pedido: FolioLinea) {
     this.pedidoParaSurtirOLaserar = pedido
-    this.modeloCompletoGestor.inicializar()
   }
 
   permitirEdicionDeProcesos(pedido: FolioLinea): boolean {
