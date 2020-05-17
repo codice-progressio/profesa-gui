@@ -140,7 +140,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
 
     //La excepcion es que no este laserado y que sea de almacen
-    if (!this.pedido.laserCliente.laser && this.pedido.almacen) {
+    if (!this.pedido.laserCliente?.laser && this.pedido.almacen) {
       // En este caso solo invertimos requiereRevisionExtraordinaria
       // para acpetar y rechar el pedido sin hacer ninguna otra
       // comprobacion extra.
