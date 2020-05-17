@@ -128,7 +128,7 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
     procesosEspeciales: string[]
   ): boolean {
     // Tiene marca laser
-    if (pedido.laserCliente) {
+    if (pedido.laserCliente.laser) {
       // No incluye ninguno de los procesos especiales dentro de sus procesos en la familia.
       let incluyeProcesosEspeciales = false
 
