@@ -5,7 +5,6 @@
 -->
 
 <app-modelo-completo-gestor-de-procesos-especiales
-  [debug]="true"
   [pedido]="pedidoParaSurtirOLaserar"
   (esteComponente)="modeloCompletoGestor = $event"
 >
@@ -16,7 +15,6 @@
  END  surtir desde almacen o laserar
 =====================================
 -->
-
 
 <div
   *ngIf="keys(cargando).length === 0"
@@ -36,37 +34,41 @@
               <h1 class="display-6">
                 FOL:<b># {{ folio.numeroDeFolio }}</b>
               </h1>
-              <a
-                (click)="location.back()"
-                class="btn btn-danger btn-sm text-white ml-3 mb-1"
-                data-dismiss="modal"
-                role="button"
-              >
-                <i class="fas fa-times-circle"> </i> Cancelar</a
-              >
-              <a
-                (click)="guardarCambios()"
-                class="btn btn-success btn-sm text-white ml-3 mb-1"
-                title="Genera las ordenes para produccion."
-                data-dismiss="modal"
-                role="button"
-              >
-                <i class="fas fa-check-circle"></i>
-                Generar ordenes</a
-              >
+              <ng-template #botonesDeAccion>
+                <a
+                  (click)="location.back()"
+                  class="btn btn-danger btn-sm text-white ml-3 mb-1"
+                  data-dismiss="modal"
+                  role="button"
+                >
+                  <i class="fas fa-times-circle"> </i> Cancelar</a
+                >
+                <a
+                  (click)="guardarCambios()"
+                  class="btn btn-success btn-sm text-white ml-3 mb-1"
+                  title="Genera las ordenes para produccion."
+                  data-dismiss="modal"
+                  role="button"
+                >
+                  <i class="fas fa-check-circle"></i>
+                  Generar ordenes</a
+                >
 
-              <a
-                (click)="collapseAll()"
-                class="btn btn-info btn-sm text-white ml-3 mb-1"
-                role="button"
-              >
-                <span *ngIf="!collapsado">
-                  <i class="fas fa-chevron-down"></i> Collapsar pedidos</span
+                <a
+                  (click)="collapseAll()"
+                  class="btn btn-info btn-sm text-white ml-3 mb-1"
+                  role="button"
                 >
-                <span *ngIf="collapsado">
-                  <i class="fas fa-chevron-right"></i> Mostrar pedidos</span
-                >
-              </a>
+                  <span *ngIf="!collapsado">
+                    <i class="fas fa-chevron-down"></i> Collapsar pedidos</span
+                  >
+                  <span *ngIf="collapsado">
+                    <i class="fas fa-chevron-right"></i> Mostrar pedidos</span
+                  >
+                </a>
+              </ng-template>
+
+              <ng-container *ngTemplateOutlet="botonesDeAccion"></ng-container>
             </div>
             <h3>Revision de <b>ordenes</b></h3>
           </div>
@@ -84,7 +86,7 @@
                   =====================================
                   -->
           <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="obserProduccionVendedor"
                   ><h6><b>Observaciones del vendedor</b></h6></label
@@ -99,7 +101,7 @@
                 ></textarea>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="obserProduccionFol"
                   ><h6><b>Observaciones de produccion</b></h6></label
@@ -148,8 +150,11 @@
                     >
                       <i class="fas fa-check"></i
                     ></small>
-                    PEDIDO # <b>{{ pedido.pedido }}</b>
-                    <span class="pl-5"
+                    <span>PEDIDO #</span>
+                    <br class="d-sm-none d-lg-none">
+                    <b>{{ pedido.pedido }}</b>
+                    <br class="d-sm-none d-lg-none">
+                    <span class="pl-lg-5"
                       >{{ pedido.cantidad | number }} <b>pz</b></span
                     >
                   </h3>
@@ -239,7 +244,7 @@
                   {{ pedido.modeloCompleto.nombreCompleto }}
                 </h1>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <h6><b>Laser del cliente :</b></h6>
 
                 <h1 class="display-6">
@@ -249,7 +254,7 @@
                 </h1>
               </div>
               <div
-                class="col-6 d-flex justify-content-between align-items-center"
+                class="col-12 col-md-6 d-flex justify-content-between align-items-center"
               >
                 <h6>
                   <b>Surtir de almacen: </b>
@@ -275,8 +280,8 @@
 
             <hr class="thin" />
 
-            <div class="row collapse show {{ pedido.pedido}} revisionDeFolios">
-              <div class="col-6">
+            <div class="row collapse show {{ pedido.pedido }} revisionDeFolios">
+              <div class="col-12 col-md-6">
                 <div class="form-group">
                   <label> <b>Observaciones de vendedor</b> </label>
                   <textarea
@@ -287,7 +292,7 @@
                   ></textarea>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <div class="form-group">
                   <label for=""> <b>Observaciones de produccion</b> </label>
                   <textarea
@@ -340,34 +345,12 @@
                 </tbody>
               </table>
             </div>
-
-            <div class="row mt-3">
-              <div
-                class="col-12 d-flex bg-light align-items-center w-100"
-                style="height: 10px;"
-              >
-                <hr class="dashed" />
-              </div>
-            </div>
           </ng-container>
-
-          <a
-            (click)="location.back()"
-            class="btn btn-danger btn-sm mr-3 pull-right"
-            href="javascript:void(0)"
-            role="button"
-          >
-            <i class="fas fa-times-circle"> </i> Cancelar</a
-          >
-          <a
-            (click)="guardarCambios()"
-            class="btn btn-success btn-sm pull-right"
-            title="Genera las ordenes para produccion."
-            href="javascript:void(0)"
-            role="button"
-          >
-            Generar ordenes</a
-          >
+          <div class="row">
+            <div class="col-12 text-right">
+              <ng-container *ngTemplateOutlet="botonesDeAccion"></ng-container>
+            </div>
+          </div>
         </ng-container>
 
         <ng-container *ngIf="keys(cargando).length === 0 && !folio">
