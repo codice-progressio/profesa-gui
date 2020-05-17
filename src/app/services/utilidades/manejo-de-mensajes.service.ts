@@ -193,7 +193,7 @@ export class ManejoDeMensajesService {
       position: 'center',
       type: 'error',
       title: titulo,
-      text: msj,
+      html: msj,
       showConfirmButton: true,
       timer: timer,
       animation: false,
