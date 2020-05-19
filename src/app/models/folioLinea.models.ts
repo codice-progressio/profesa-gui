@@ -65,6 +65,9 @@ export class FolioLinea {
     //Este public funciona
     public requiereRevisionExtraordinaria: boolean = false,
 
-    public procesosExraordinarios: Proceso[] = []
+    public procesosExraordinarios: Proceso[] = [],
+    //Senala que para este pedido debemos utilizar la lista
+    // de procesosExtraordinarios
+    public usarProcesosExtraordinarios = false
   ) {}
 }
