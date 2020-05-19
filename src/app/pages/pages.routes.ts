@@ -95,7 +95,7 @@ const pagesRoutes: Routes = [
     component: ProcesosInicialesYFinalesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Dashboard',
+      titulo: '',
       permissions: permisosKeysConfig['menu:parametros:localizacionDeOrdenes']
     }
   },
@@ -104,7 +104,7 @@ const pagesRoutes: Routes = [
     component: ProcesosEspecialesComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Dashboard',
+      titulo: '',
       permissions: permisosKeysConfig['menu:parametros:procesosEspeciales']
     }
   },
@@ -113,7 +113,7 @@ const pagesRoutes: Routes = [
     component: AdministradorComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
-      titulo: 'Dashboard',
+      titulo: '',
       permissions: permisosKeysConfig.SUPER_ADMIN
     }
   },
