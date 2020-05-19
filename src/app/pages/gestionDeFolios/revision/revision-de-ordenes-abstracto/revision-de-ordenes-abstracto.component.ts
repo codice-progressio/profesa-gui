@@ -10,6 +10,7 @@ import { ModeloCompletoGestorDeProcesosEspecialesComponent } from '../../../../s
 import { Location } from '@angular/common'
 import { ParametrosService } from '../../../../services/parametros.service'
 import { Proceso } from 'src/app/models/proceso.model'
+import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 
 declare var $: any
 @Component({
@@ -30,7 +31,8 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
     private parametrosServices: ParametrosService,
     private activatedRoute: ActivatedRoute,
     public folioService: FolioNewService,
-    public location: Location
+    public location: Location,
+    private msjService: ManejoDeMensajesService
   ) {}
 
   ngOnInit() {
@@ -61,6 +63,8 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
           pedido
         )
 
+        pedido.usarProcesosExtraordinarios =
+          pedido.requiereRevisionExtraordinaria
         contador++
       })
 
@@ -76,6 +80,26 @@ export class RevisionDeOrdenesAbstractoComponent implements OnInit {
    * @memberof RevisionDeOrdenesAbstractoComponent
    */
   guardarCambios() {
+    //Solo foliso completamente revisados pueden enviarse a produccion
+
+    if (
+      this.folio.folioLineas.some(
+        pedido => pedido.requiereRevisionExtraordinaria
+      )
+    ) {
+      let pedidosFaltantes = this.folio.folioLineas
+        .filter(p => p.requiereRevisionExtraordinaria)
+        .map(x => x.pedido)
+        .join('<br> ')
+
+      this.msjService.invalido(
+        `Los siguientes pedidos no han sido revisados: <hr>: <p class='text-left ml-5 font-weight-bolder'>${pedidosFaltantes}</p>`,
+        `Pedidos sin revision`,
+        15000
+      )
+      return
+    }
+
     this.cargando['liberando'] = 'Procesando folio para produccion'
     this.folioService.revision_liberarParaProduccion(this.folio).subscribe(
       folio => this.location.back(),
