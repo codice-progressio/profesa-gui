@@ -24,7 +24,7 @@ export class FolioNewService {
   base = URL_BASE('folios')
   constructor(
     public http: HttpClient,
-    public msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService, 
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
@@ -33,15 +33,17 @@ export class FolioNewService {
     this.base = URL_SERVICIOS + `/folios`
   }
 
+  total
+
   errFun(err) {
     this.msjService.err(err)
     return throwError(err)
   }
 
-  find(
+  findAll(
     paginacion: Paginacion,
     filtros: string = null
-  ): Observable<PedidosConsulta[]> {
+  ): Observable<iPedidosConsulta[]> {
     const url = this.base
       .concat('/filtrar')
       .concat('?')
@@ -51,10 +53,11 @@ export class FolioNewService {
       .concat(`&sort=${paginacion.orden}`)
       .concat(`&${filtros}`)
 
-    return this.http.get<PedidosConsulta[]>(url).pipe(
+    return this.http.get<iPedidosConsulta[]>(url).pipe(
       map(
         (resp: any) => {
-          return resp.pedidos as PedidosConsulta[]
+          this.total = resp.total
+          return resp.pedidos as iPedidosConsulta[]
         },
         catchError(err => this.errFun(err))
       )
@@ -292,7 +295,7 @@ export interface FolioEnRevision {
   totalDePiezas: string
 }
 
-export interface PedidosConsulta {
+export interface iPedidosConsulta {
   folio: number
   idFolio: string
   cliente: string
@@ -330,3 +333,4 @@ export interface FoliosPendientesDeEntregarAProduccion {
   fechaDeCreacion: string
   idCliente: string
 }
+
