@@ -108,16 +108,17 @@
                   title="{{ pedido.fechaDeEntregaAProduccion | fecha: 'LLL' }}"
                 >
                   {{ pedido.fechaDeEntregaAProduccion | date: 'dd/MM/yy' }}
-                  <app-tiempo-transcurrido
-                    [inicio]="pedido.fechaDeEntregaAProduccion"
-                  ></app-tiempo-transcurrido>
+                
                 </td>
                 <td>{{ pedido.cantidadSolicitadaPedido | number }}</td>
 
-                <td>
-                  <app-progress-bar
-                    [porcentaje]="pedido.porcentajeAvancePedido"
+                <td style="font-size: 12px;">
+                  <app-tiempo-transcurrido
+                    [inicio]="pedido.fechaDeEntregaAProduccion"
                   >
+                  </app-tiempo-transcurrido>
+  
+                  <app-progress-bar [porcentaje]="pedido.porcentajeAvancePedido">
                   </app-progress-bar>
                 </td>
               </tr>
