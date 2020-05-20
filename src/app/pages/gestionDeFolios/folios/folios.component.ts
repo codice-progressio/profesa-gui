@@ -6,7 +6,7 @@ import { FolioNewService } from 'src/app/services/folio/folio-new.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import {
-  PedidosConsulta,
+  iPedidosConsulta,
   FoliosPendientesDeEntregarAProduccion
 } from '../../../services/folio/folio-new.service'
 import { forkJoin } from 'rxjs'
@@ -21,8 +21,8 @@ import { Router } from '@angular/router'
   styleUrls: ['./folios.component.css']
 })
 export class FoliosComponent implements OnInit {
-  pedidosEnProceso: PedidosConsulta[] = []
-  pedidosTerminados: PedidosConsulta[] = []
+  pedidosEnProceso: iPedidosConsulta[] = []
+  pedidosTerminados: iPedidosConsulta[] = []
   foliosPorEnviarAProduccion: FoliosPendientesDeEntregarAProduccion[] = []
 
   filtros: string[] = []
@@ -106,7 +106,7 @@ export class FoliosComponent implements OnInit {
       })
   }
 
-  filtrar(termino: string, arreglo: PedidosConsulta[]) {
+  filtrar(termino: string, arreglo: iPedidosConsulta[]) {
     this.filtros = []
     termino = termino.trim()
 
