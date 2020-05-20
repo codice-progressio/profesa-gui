@@ -66,7 +66,7 @@ export class FoliosComponent implements OnInit {
       .concat(`&entregarAProduccion=true`)
 
     this.foliosService
-      .find(this.paginadorEnProceso, filtro)
+      .findAll(this.paginadorEnProceso, filtro)
       .subscribe(pedidos => {
         this.pedidosEnProceso = pedidos
         if (pedidos) this.filtros = this.pedidosEnProceso.map(x => x.idPedido)
@@ -98,7 +98,7 @@ export class FoliosComponent implements OnInit {
       .concat(`&entregarAProduccion=true`)
 
     this.foliosService
-      .find(this.paginadorTerminados, filtro)
+      .findAll(this.paginadorTerminados, filtro)
       .subscribe(pedidos => {
         this.pedidosTerminados = pedidos
         if (pedidos) this.filtros = this.pedidosTerminados.map(x => x.idPedido)
