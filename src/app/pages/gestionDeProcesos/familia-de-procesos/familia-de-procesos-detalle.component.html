@@ -8,10 +8,13 @@
 >
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-      <div class="modal-body">
+      <div
+        *ngIf="keys(cargando).length === 0"
+        class="modal-body animated fadeIn"
+      >
         <ng-container *ngIf="!detalle">
           <h1 class="display-1 w-100 text-center">
-            <i class="fas fa-sync    "></i>
+            <i class="fas fa-sync"></i>
           </h1>
         </ng-container>
 
@@ -26,19 +29,55 @@
           <hr />
 
           <div class="row">
-            <div class="col-12 text-center">
-              <ul class="list-group" style="max-width: 600px;">
+            <div class="col-12">
+              <ul class="list-group shadow mx-auto" style="max-width: 600px;">
                 <li class="list-group-item active">Procesos</li>
+                <li
+                  *ngFor="
+                    let proceso of localizacionDeOrdenes.procesosIniciales
+                  "
+                  class="list-group-item w-100 list-group-item-secondary"
+                >
+                  <span class="text-left float-left" style="width: 60%;">
+                    {{ proceso.nombre }}
+                  </span>
+
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
+                    {{ proceso.departamento.nombre }}
+                  </small>
+                </li>
                 <li
                   *ngFor="let proceso of detalle.procesos"
                   class="list-group-item w-100"
                 >
                   <span class="text-left float-left" style="width: 60%;">
-                    {{ proceso.orden }} - {{ proceso.proceso.nombre }}
+                    {{ proceso.proceso.nombre }}
                   </span>
 
-                  <small class="text-right text-muted float-right font-weight-bold " style="width: 40%;">
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
                     {{ proceso.proceso.departamento.nombre }}
+                  </small>
+                </li>
+
+                <li
+                  *ngFor="let proceso of localizacionDeOrdenes.procesosFinales"
+                  class="list-group-item w-100 list-group-item-secondary"
+                >
+                  <span class="text-left float-left" style="width: 60%;">
+                    {{ proceso.nombre }}
+                  </span>
+
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
+                    {{ proceso.departamento.nombre }}
                   </small>
                 </li>
               </ul>
@@ -57,6 +96,17 @@
         =====================================
         -->
         </ng-container>
+      </div>
+
+      <div *ngIf="keys(cargando).length > 0" class="modal-body animated fadeIn">
+        <div class="card shadow">
+          <div class="card-body text-center">
+            <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
+            <h2 *ngFor="let keyvalue of cargando | keyvalue">
+              {{ keyvalue.value }}
+            </h2>
+          </div>
+        </div>
       </div>
     </div>
   </div>
