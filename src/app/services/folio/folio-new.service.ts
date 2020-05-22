@@ -316,6 +316,7 @@ export interface iPedidosConsulta {
   porcentajeAvancePedido: number
 
   laserCliente: string
+  laserSKU: string
 
   cantidadSolicitadaPedido: number
 }

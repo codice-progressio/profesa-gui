@@ -35,8 +35,8 @@ export class FoliosSeguimientoComponent implements OnInit {
 
     let filtros = [
       'folioLineas.ordenesGeneradas=true',
-      'folioLineas.terminado=false',
-      'terminado=false'
+      'folioLineas.terminado=false'
+      // 'terminado=false'
     ]
 
     this.folioService.findAll(this.paginacion, filtros.join('&')).subscribe(
@@ -44,6 +44,10 @@ export class FoliosSeguimientoComponent implements OnInit {
         this.pedidos = pedidos
 
         this.mostrar = pedidos.map(x => x.pedido)
+        this.pedidos = this.pedidos.map(x => {
+          x.laserCliente = x.laserCliente ? x.laserCliente : x.laserSKU
+          return x
+        })
 
         delete this.cargando['cargando']
       },
