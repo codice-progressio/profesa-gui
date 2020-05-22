@@ -6,6 +6,7 @@ import { LocalizacionDeOrdenes } from '../models/parametros/localizacionDeOrdene
 import { URL_BASE } from '../config/config'
 import { map, catchError } from 'rxjs/operators'
 import { Proceso } from '../models/proceso.model'
+import { Departamento } from '../models/departamento.models'
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,34 @@ export class ParametrosService {
     return this.httpClient.put(url, {}).pipe(
       map((resp: any) => {
         this.msjService.toastCorrecto(resp.mensaje)
+        return null
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  findDepartamentoTransformacion(): Observable<Departamento> {
+    let url = this.base.concat('/departamentoTransformacion')
+
+    return this.httpClient.get<Departamento>(url).pipe(
+      map((resp: any) => {
+        return resp as Departamento
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  saveDepartamentoTransformarcion(id: string): Observable<null> {
+    let url = this.base.concat('/departamentoTransformacion')
+    return this.httpClient.put(url, { id }).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mesaje)
         return null
       }),
       catchError(err => {

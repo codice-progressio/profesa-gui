@@ -10,6 +10,8 @@ import {
   transferArrayItem,
   copyArrayItem
 } from '@angular/cdk/drag-drop'
+import { DepartamentoService } from 'src/app/services/departamento/departamento.service'
+import { Departamento } from 'src/app/models/departamento.models'
 
 @Component({
   selector: 'app-procesos-especiales',
@@ -19,13 +21,15 @@ import {
 export class ProcesosEspecialesComponent implements OnInit {
   procesosSeleccionados: Proceso[] = []
   procesos: Proceso[] = []
+  departamentoTransformacion: string
 
   cargando = {}
   keys = Object.keys
 
   constructor(
     private parametrosServices: ParametrosService,
-    private procesoService: ProcesoService
+    private procesoService: ProcesoService,
+    public departamentoService: DepartamentoService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +43,18 @@ export class ProcesosEspecialesComponent implements OnInit {
       _ => delete this.cargando['especiales']
     )
     this.cargarProcesos()
+
+    this.departamentoService.findAllPool()
+
+    this.cargando['transformacion'] = 'Buscando departamento transformacion'
+
+    this.parametrosServices.findDepartamentoTransformacion().subscribe(
+      dep => {
+        this.departamentoTransformacion = dep?dep._id:''
+        delete this.cargando['transformacion']
+      },
+      _ => delete this.cargando['transformacion']
+    )
   }
 
   cargarProcesos() {
@@ -121,6 +137,19 @@ export class ProcesosEspecialesComponent implements OnInit {
           this.cargarProcesos()
         },
         _ => delete this.cargando['guardar']
+      )
+  }
+
+  guardarDepartamentoTransformacioni() {
+    this.cargando['saveTrans']='Guardando cambios'
+    
+    this.parametrosServices
+      .saveDepartamentoTransformarcion(this.departamentoTransformacion)
+      .subscribe(
+        () => {
+          delete this.cargando['saveTrans']
+        },
+        _ => delete this.cargando['saveTrans']
       )
   }
 }

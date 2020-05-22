@@ -105,6 +105,34 @@
   </div>
 </div>
 
+<div *ngIf="keys(cargando).length === 0" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>Proceso de transformacion</h1>
+        <div class="form-group">
+          <label for="">Proceso</label>
+          <select [(ngModel)]="departamentoTransformacion" class="form-control">
+            <option
+              *ngFor="let dep of this.departamentoService.pool"
+              [ngValue]="dep._id"
+              >{{ dep.nombre }}</option
+            >
+          </select>
+        </div>
+
+        <a
+          (click)="guardarDepartamentoTransformacioni()"
+          class="btn btn-success"
+          href="javascript:void(0)"
+          role="button"
+          ><i class="fas fa-save"> </i> Guardar</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row animated fadeIn" *ngIf="keys(cargando).length > 0">
   <div class="col-12">
     <div class="card shadow">
