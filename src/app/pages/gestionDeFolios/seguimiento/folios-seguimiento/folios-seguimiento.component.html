@@ -77,7 +77,6 @@
                 <td>%PRO</td>
               </tr>
 
-              
               <tr
                 [ngStyle]="{
                   display: this.mostrar.includes(pedido.pedido) ? '' : 'none'
@@ -103,12 +102,13 @@
                 <td>{{ pedido.cliente }}</td>
                 <td>{{ pedido.vendedor }}</td>
                 <td>{{ pedido.sku }}</td>
-                <td>{{ pedido.laserCliente }}</td>
+                <td class="font-weight-bolder">
+                  <b>{{ pedido.laserCliente }}</b>
+                </td>
                 <td
                   title="{{ pedido.fechaDeEntregaAProduccion | fecha: 'LLL' }}"
                 >
                   {{ pedido.fechaDeEntregaAProduccion | date: 'dd/MM/yy' }}
-                
                 </td>
                 <td>{{ pedido.cantidadSolicitadaPedido | number }}</td>
 
@@ -117,8 +117,10 @@
                     [inicio]="pedido.fechaDeEntregaAProduccion"
                   >
                   </app-tiempo-transcurrido>
-  
-                  <app-progress-bar [porcentaje]="pedido.porcentajeAvancePedido">
+
+                  <app-progress-bar
+                    [porcentaje]="pedido.porcentajeAvancePedido"
+                  >
                   </app-progress-bar>
                 </td>
               </tr>
