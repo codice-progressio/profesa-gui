@@ -6,339 +6,420 @@
     <i class="fas fa-sync fa-spin"></i>
   </h1>
 </div>
-
-<ul
-  [id]="ordenConsultada._id"
-  *ngIf="ordenConsultada"
-  class="timeline"
-  id="timeline"
->
-  <!-- 
-  =====================================
-   Trabajado
-  =====================================
-  -->
-  <ng-container
-    *ngFor="
-      let dep of ordenConsultada?.trayectoRecorrido | keyvalue;
-      let i = index
-    "
-  >
-    <li [id]="'listo' + i" class="li complete">
-      <div class="timestamp">
-        <span class="author esconde-sobrante">
-          {{ dep.value.departamento.nombre | titlecase }}
-          <hr />
-
-          {{
-            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre
-          }}
-        </span>
-        <span
-          title="Orden iniciada el {{
-            (dep.value.entrada ? dep.value.entrada : dep.value.recepcion)
-              | fecha: 'LLLL'
-          }}"
-          class="date"
-        >
-          <i class="fas fa-arrow-right"></i>
-          {{
-            (dep.value.entrada ? dep.value.entrada : dep.value.recepcion)
-              | fecha: 'L'
-          }}
-        </span>
-      </div>
-
-      <a
-        (click)="
-          cargarDetalle(
-            dep.value,
-            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre
-          )
-        "
-        href="javascript:void(0)"
-      >
-        <div class="status">
-          <h4
-            class="esconde-sobrante"
-            title="Orden terminada el {{
-              (dep.value.salida ? dep.value.salida : dep.value.recepcion)
-                | fecha: 'LLLL'
-            }}"
-          >
-            <i class="fas fa-clock    "></i>
-            <!-- Aqui comparamos contra la salida -->
-            {{
-              (dep.value.entrada ? dep.value.entrada : dep.value.recepcion)
-                | fechaDiferencia: dep.value.salida
-            }}
-
-            <br />
-
-            {{ dep.value.salida | fecha: 'L' }}
-            <i class="fas fa-arrow-right "></i>
-          </h4>
-        </div>
-      </a>
-    </li>
-  </ng-container>
-
-  <!-- 
-  =====================================
-   END Trabajado
-  =====================================
-  -->
-
-  <!-- 
-  =====================================
-   Ubicacion actual
-  =====================================
-  -->
-  <li *ngIf="ordenConsultada.ubicacionActual" class="li">
-    <div class="timestamp">
-      <span class="author esconde-sobrante"
-        >{{ ordenConsultada?.ubicacionActual?.departamento.nombre | titlecase }}
-        <hr />
-
-        {{
-          (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[
-            ordenConsultada?.ubicacionActual?.orden
-          ].proceso.nombre
-        }}
-      </span>
-      <span
-        title="Orden recibida el {{
-          ordenConsultada?.ubicacionActual?.entrada | fecha: 'LLLL'
-        }}"
-        class="date esconde-sobrante"
-      >
-        <i class="fas fa-arrow-right"></i>
-        {{
-          (ordenConsultada?.ubicacionActual?.entrada
-            ? ordenConsultada?.ubicacionActual?.entrada
-            : ordenConsultada?.ubicacionActual?.recepcion
-          ) | fecha: 'L'
-        }}
-      </span>
-    </div>
-
-    <a
-      (click)="
-        cargarDetalle(
-          ordenConsultada.ubicacionActual,
-          (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[
-            ordenConsultada?.ubicacionActual?.orden
-          ].proceso.nombre
-        )
-      "
-      href="javascript:void(0)"
-    >
-      <div class="status working">
-        <h4
-          class="esconde-sobrante"
-          title="En proceso {{
-            ordenConsultada?.fechaFolio | tiempoTranscurridoInformal
-          }}
-          "
-        >
-          <i class="fas fa-clock    "></i>
-
-          {{ ordenConsultada?.fechaFolio | tiempoTranscurridoInformal }}
-
-          <br />
-
-          <app-tiempo-transcurrido
-            [inicio]="ordenConsultada?.fechaFolio"
-          ></app-tiempo-transcurrido>
-          <i class="fas fa-arrow-right "></i>
-        </h4>
-      </div>
-    </a>
-  </li>
-
-  <!-- 
-  =====================================
-   Ubicacion actual
-  =====================================
-  -->
-
-  <!-- 
-  =====================================
-   Trayectos que faltan
-  =====================================
-  -->
-  <ng-container
-    *ngFor="let dep of ordenConsultada?.trayectoNormal; let i = index"
-  >
-    <li [id]="'pendiente' + i" *ngIf="i >= ignorarHasta" class="li">
-      <div class="timestamp">
-        <span class="author esconde-sobrante">
-          {{ dep.departamento.nombre | titlecase }}
-
-          <hr />
-
-          {{
-            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre
-          }}
-        </span>
-        <span title="Sin procesar en este departamento" class="date">
-          <i class="fas fa-arrow-right"></i>
-        </span>
-      </div>
-
-      <a
-        (click)="
-          cargarDetalle(
-            dep,
-            (ordenConsultada?.modeloCompleto.familiaDeProcesos.procesos)[i]
-              .proceso.nombre
-          )
-        "
-        href="javascript:void(0)"
-      >
-        <div class="status">
-          <h4 class="esconde-sobrante">
-            <i class="fas fa-time    "></i>
-
-            <br />
-
-            <i class="fas fa-arrow-right animated"></i>
-          </h4>
-        </div>
-      </a>
-    </li>
-  </ng-container>
-
-  <!-- 
-  =====================================
-   END Trayectos que faltan
-  =====================================
-  -->
-</ul>
+<!-- 
+=====================================
+ anterior
+=====================================
+-->
 
 <div class="row">
   <div class="col-12"><hr /></div>
 </div>
 
-<div *ngIf="trayectoSeleccionado" class="row animated fadeIn">
-  <div class="col-12 col-sm-6">
-    <h3>
-      <span class="font-weight-bolder">Departamento:</span>
-      {{ trayectoSeleccionado.departamento.nombre }}
-    </h3>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h3>
-      <span class="font-weight-bolder">Proceso:</span>
-      {{ procesoSeleccionado }}
-    </h3>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h5>
-      <span class="font-weight-bolder">Estatus:</span>
-      Recibida
-      <i
-        *ngIf="trayectoSeleccionado.recivida"
-        class="fas fa-check  text-success  "
-      ></i>
+<!-- 
+=====================================
+ END anterior
+=====================================
+-->
 
-      <span *ngIf="!trayectoSeleccionado.recivida">
-        Por recibir:
-        <i class="fas fa-exclamation  tada animated infinite  "></i>
-      </span>
-    </h5>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h5>
-      <span class="font-weight-bolder">Hora de recepcion:</span>
-      {{
-        (trayectoSeleccionado.entrada
-          ? trayectoSeleccionado.entrada
-          : trayectoSeleccionado.recepcion
-        ) | fecha: 'LLL'
-      }}
-    </h5>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h5>
-      <span class="font-weight-bolder">Hora de salida:</span>
-      {{ trayectoSeleccionado.salida | fecha: 'LLL' }}
-    </h5>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h5>
-      <span class="font-weight-bolder">Tiempo de proceso:</span>
-      {{
-        (trayectoSeleccionado.entrada
-          ? trayectoSeleccionado.entrada
-          : trayectoSeleccionado.recepcion
-        ) | fechaDiferencia: trayectoSeleccionado.salida:false
-      }}
-    </h5>
-  </div>
-  <div class="col-12 col-sm-6">
-    <h5>
-      <span class="font-weight-bolder">Piezas solicitadas:</span>
-      {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
-    </h5>
-  </div>
-
+<div class="row">
   <div class="col-12">
-    <hr *ngIf="trayectoSeleccionado" />
-    <app-orden-detalle-almacen-de-boton
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.almacenDeBoton"
-    ></app-orden-detalle-almacen-de-boton>
-    <app-orden-detalle-barnizado
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.barnizado"
-    ></app-orden-detalle-barnizado>
-    <app-orden-detalle-burato
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.burato"
-    ></app-orden-detalle-burato>
-    <app-orden-detalle-empaque
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.empaque"
-    ></app-orden-detalle-empaque>
-    <app-orden-detalle-laser
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.laser"
-    ></app-orden-detalle-laser>
-    <app-orden-detalle-materiales
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.materiales"
-    ></app-orden-detalle-materiales>
-    <app-orden-detalle-metalizado
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.metalizado"
-    ></app-orden-detalle-metalizado>
-    <app-orden-detalle-pastilla
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.pastilla"
-    ></app-orden-detalle-pastilla>
-    <app-orden-detalle-producto-terminado
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.productoTerminado"
-    ></app-orden-detalle-producto-terminado>
-    <app-orden-detalle-pulido
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.pulido"
-    ></app-orden-detalle-pulido>
-    <app-orden-detalle-seleccion
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.seleccion"
-    ></app-orden-detalle-seleccion>
-    <app-orden-detalle-tenido
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.tenido"
-    ></app-orden-detalle-tenido>
-    <app-orden-detalle-transformacion
-      [trayecto]="trayectoSeleccionado"
-      *ngIf="trayectoSeleccionado?.transformacion"
-    ></app-orden-detalle-transformacion>
+    <div class="card shadow">
+      <div class="card-body">
+        <ul
+          [id]="ordenConsultada._id"
+          *ngIf="ordenConsultada"
+          class="timeline"
+          id="timeline"
+        >
+          <!-- 
+        =====================================
+         Trabajado
+        =====================================
+        -->
+          <ng-container
+            *ngFor="
+              let kv of ordenConsultada?.ruta | keyvalue: ordenarRuta;
+              let i = index
+            "
+          >
+            <li
+              *ngIf="
+                !kv.value.ubicacionActual && ignorarHasta > kv.value.consecutivo
+              "
+              [id]="'listo' + i"
+              class="li complete"
+            >
+              <div class="timestamp">
+                <span class="author esconde-sobrante">
+                  {{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  <hr />
+                  {{ encontrarProceso(kv.key)?.nombre }}
+                </span>
+                <span
+                  title="Orden iniciada el {{
+                    (kv.value.entrada ? kv.value.entrada : kv.value.recepcion)
+                      | fecha: 'LLLL'
+                  }}"
+                  class="date"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                  {{
+                    (kv.value.entrada ? kv.value.entrada : kv.value.recepcion)
+                      | fecha: 'L'
+                  }}
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status">
+                  <h4
+                    class="esconde-sobrante"
+                    title="Orden terminada el {{
+                      (kv.value.salida ? kv.value.salida : kv.value.recepcion)
+                        | fecha: 'LLLL'
+                    }}"
+                  >
+                    <i class="fas fa-clock"></i>
+                    <!-- Aqui comparamos contra la salida -->
+                    {{
+                      (kv.value.entrada
+                        ? kv.value.entrada
+                        : kv.value.recepcion
+                      ) | fechaDiferencia: kv.value.salida
+                    }}
+
+                    <br />
+
+                    {{ kv.value.salida | fecha: 'L' }}
+                    <i class="fas fa-arrow-right"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+
+            <li *ngIf="kv.value.ubicacionActual" class="li">
+              <div class="timestamp">
+                <span class="author esconde-sobrante"
+                  >{{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  <hr />
+
+                  {{ encontrarProceso(kv.key)?.nombre }}
+                </span>
+                <span
+                  title="Orden recibida el {{
+                    kv.value.entrada
+                      ? kv.value.entrada
+                      : (kv.value.recepcion | fecha: 'LLLL')
+                  }}"
+                  class="date esconde-sobrante"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                  {{
+                    (kv.value?.entrada
+                      ? kv.value?.entrada
+                      : kv.value?.recepcion
+                    ) | fecha: 'L'
+                  }}
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status working">
+                  <h4
+                    class="esconde-sobrante"
+                    title="En proceso {{
+                      ordenConsultada.fechaFolio | tiempoTranscurridoInformal
+                    }}
+                  "
+                  >
+                    <i class="fas fa-clock"></i>
+
+                    {{
+                      ordenConsultada.fechaFolio | tiempoTranscurridoInformal
+                    }}
+
+                    <br />
+
+                    <app-tiempo-transcurrido
+                      [inicio]="ordenConsultada.fechaFolio"
+                    ></app-tiempo-transcurrido>
+                    <i class="fas fa-arrow-right"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+
+            <li
+              [id]="'pendiente' + i"
+              *ngIf="kv.value.consecutivo > ignorarHasta"
+              class="li"
+            >
+              <div class="timestamp">
+                <span class="author esconde-sobrante">
+                  {{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  <hr />
+
+                  {{ encontrarProceso(kv.key)?.nombre }}
+                </span>
+                <span title="Sin procesar en este departamento" class="date">
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status">
+                  <h4 class="esconde-sobrante">
+                    <i class="fas fa-time"></i>
+
+                    <br />
+
+                    <i class="fas fa-arrow-right animated"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+
+        <div class="col-12"><hr /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="rutaSeg">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body row">
+        <div class="col-12 col-sm-6">
+          <h3>
+            <span class="font-weight-bolder">Departamento:</span>
+            {{ encontrarDepartamento(rutaSeg?.departamento)?.nombre }}
+          </h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h3>
+            <span class="font-weight-bolder">Proceso:</span>
+            {{ procesoSeleccionado }}
+          </h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Estatus:</span>
+            Recibida
+            <i *ngIf="rutaSeg.recibida" class="fas fa-check text-success"></i>
+
+            <span *ngIf="!rutaSeg.recibida">
+              Por recibir:
+              <i class="fas fa-exclamation tada animated infinite"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Hora de recepcion:</span>
+            {{
+              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+                | fecha: 'LLL'
+            }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Hora de salida:</span>
+            {{ rutaSeg.salida | fecha: 'LLL' }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Tiempo de proceso:</span>
+            {{
+              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+                | fechaDiferencia: rutaSeg.salida:false
+            }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Piezas solicitadas:</span>
+            {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
+          </h5>
+        </div>
+
+        <div *ngIf="rutaSeg.datos" class="col-12">
+          <ng-container *ngIf="rutaSeg.datos.cantidades">
+            <h5>
+              <span class="font-weight-bolder">Contado por: No aplica aun</span>
+            </h5>
+
+            <table class="table table-hover table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>Partida</th>
+                  <th>Espesor</th>
+                  <th>10 botones (gr)</th>
+                  <th>Peso total (kg)</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let cantidad of rutaSeg.datos.cantidades;
+                    let i = index
+                  "
+                >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ cantidad.espesorPastilla }}</td>
+                  <td>{{ cantidad.peso10Botones | number: '0.2' }}</td>
+                  <td>{{ cantidad.pesoTotalBoton | number: '0.2' }}</td>
+                  <td>
+                    {{
+                      calcularTotal(
+                        cantidad.peso10Botones,
+                        cantidad.pesoTotalBoton
+                      ) | number: '0.0-0'
+                    }}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="4" class="text-right">
+                    <span class="font-weight-bolder">Total departamento</span>
+                  </td>
+                  <td>
+                    {{
+                      totalDeBoton(rutaSeg.datos.cantidades) | number: '0.0-0'
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
+          <table *ngIf="rutaSeg.datos.bl" class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th>Espesor de boton</th>
+                <th>BPM</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ rutaSeg.datos.espesorBoton | number: '0.2' }}</td>
+                <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
+                <td>
+                  {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            *ngIf="rutaSeg.datos.peso10Botones"
+            class="table table-hover table-sm"
+          >
+            <thead>
+              <tr>
+                <th>10 botones (gr)</th>
+                <th>Peso total (kg)</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ rutaSeg.datos.peso10Botones | number: '0.2' }}</td>
+                <td>{{ rutaSeg.datos.pesoTotalBoton | number: '0.2' }}</td>
+                <td>
+                  {{
+                    calcularTotal(
+                      rutaSeg.datos.peso10Botones,
+                      rutaSeg.datos.pesoTotalBoton
+                    ) | number: '0.0-0'
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <table *ngIf="rutaSeg.datos.quebrados" class="table">
+          <thead>
+            <tr>
+              <th>Quebrados</th>
+              <th>Reves</th>
+              <th>Despostillado</th>
+              <th>Sin laser</th>
+              <th>Sin hoyos</th>
+              <th>Efecto malo</th>
+              <th>Otros</th>
+              <th>Descripcion de otros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ rutaSeg.datos.quebrados }}</td>
+              <td>{{ rutaSeg.datos.reves }}</td>
+              <td>{{ rutaSeg.datos.despostillado }}</td>
+              <td>{{ rutaSeg.datos.sinLaser }}</td>
+              <td>{{ rutaSeg.datos.sinHoyos }}</td>
+              <td>{{ rutaSeg.datos.efectoMalo }}</td>
+              <td>{{ rutaSeg.datos.otros }}</td>
+              <td>{{ rutaSeg.datos.descripcionDeOtro }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1 *ngIf="rutaSeg.datos.empacadoPor">
+          Piezas empacadas: {{ rutaSeg.datos.cantidadDeBoton | number }}
+        </h1>
+        <h1 *ngIf="rutaSeg.datos.empacadoPor && rutaSeg.datos.cantidadDeBoton">
+          Cantidad surtida: {{ rutaSeg.datos.cantidadDeBoton | number }}
+        </h1>
+
+        <h1 *ngIf="rutaSeg.datos.terminada">
+          Orden terminada:
+
+          <i
+            *ngIf="rutaSeg.datos.terminada"
+            class="fas fa-check text-success fa-2x"
+          ></i>
+        </h1>
+
+        <table *ngIf="rutaSeg.datos.laser" class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>BPM</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
+              <td>
+                {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

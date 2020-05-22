@@ -18,6 +18,7 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 export class ProcesoService {
   total: number = 0
   base = URL_BASE('proceso')
+  pool: iProcesoPool[] = []
 
   constructor(
     public http: HttpClient,
@@ -166,4 +167,30 @@ export class ProcesoService {
 
     return p
   }
+
+  /**
+   *Devuelve todos los procesos
+   *
+   * @returns {Observable<iProcesoPool[]>}
+   * @memberof ProcesoService
+   */
+  findAllPool(): Observable<null> {
+    let url = this.base.concat('/especiales/pool')
+
+    return this.http.get<iProcesoPool[]>(url).pipe(
+      map((resp: any) => {
+        this.pool = resp.procesos as iProcesoPool[]
+        return null
+      }),
+
+      catchError(err => this.errFun(err))
+    )
+  }
+}
+
+export interface iProcesoPool {
+  _id: string
+  departamento: string
+  _idDepartamento: string
+  nombre: string
 }

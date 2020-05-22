@@ -26,6 +26,10 @@ export class Orden implements Deserializable {
     public siguienteDepartamento?: Trayecto,
     public nivelDeUrgencia: string = "PRODUCCIÓN",
     public fechaFolio?: Date,
+
+
+    public ruta:{} = {},
+
     // Esta es solo para facilitarnos la vida.
     public editando: boolean = false,
     public modeloCompleto?: ModeloCompleto
@@ -64,3 +68,4 @@ export class Orden implements Deserializable {
     return data.map(x => (x = Orden.fromJSON(x)))
   }
 }
+
