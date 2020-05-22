@@ -21,10 +21,8 @@ export class DepartamentoComponent implements OnInit {
 
   constructor(
     public departamento: DepartamentoService,
-    public _paginadorService: PaginadorService,
     public _msjService: ManejoDeMensajesService
   ) {
-    this._paginadorService.callback = this.cbBuscar
   }
 
   ngOnInit() {
