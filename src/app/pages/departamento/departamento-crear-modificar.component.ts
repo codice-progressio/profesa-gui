@@ -69,9 +69,9 @@ export class DepartamentoCrearModificarComponent implements OnInit {
     }
 
     if (this.departamento._id) {
-      this._departamentoService.modificar(model).subscribe(cb, cbError)
+      this._departamentoService.update(model).subscribe(cb, cbError)
     } else {
-      this._departamentoService.guardar(model).subscribe(cb, cbError)
+      this._departamentoService.save(model).subscribe(cb, cbError)
     }
   }
 

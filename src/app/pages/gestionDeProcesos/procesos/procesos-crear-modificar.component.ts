@@ -25,6 +25,7 @@ import {
 
 import { Location } from '@angular/common'
 import { forkJoin } from 'rxjs'
+import { Paginacion } from '../../../utils/paginacion.util'
 
 @Component({
   selector: 'app-procesos-crear-modificar',
@@ -56,7 +57,7 @@ export class ProcesosCrearModificarComponent implements OnInit {
 
     forkJoin([
       this.maquinaService.todoAbstracto(0, 500, Maquina),
-      this.departamentoService.todo()
+      this.departamentoService.findAll(new Paginacion(100,0,1,'nombre'))
     ]).subscribe(
       datos => {
         delete this.cargando['ngOnInit']

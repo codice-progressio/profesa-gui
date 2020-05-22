@@ -19,6 +19,7 @@ import { SalidaArticulo } from '../../../models/almacenDeMateriaPrimaYHerramient
 import { ArticuloService } from '../../../services/articulo/articulo.service'
 import { Departamento } from 'src/app/models/departamento.models'
 import { DepartamentoService } from '../../../services/departamento/departamento.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-almacen-de-materia-prima-yherramientas-crear-modificar-salida',
@@ -60,7 +61,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
   ngOnInit() {
     this.esteComponente.emit(this)
     this._departamentoService
-      .todo()
+      .findAll(new Paginacion(100,0, 1, 'nombre'))
       .subscribe(departamentos => (this.departamentos = departamentos))
   }
 

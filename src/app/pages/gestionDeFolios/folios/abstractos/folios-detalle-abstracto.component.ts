@@ -5,6 +5,7 @@ import { FolioLinea } from 'src/app/models/folioLinea.models'
 import { Orden } from 'src/app/models/orden.models'
 import { FolioService } from '../../../../services/folio/folio.service'
 import { FolioNewService } from '../../../../services/folio/folio-new.service'
+import { ProcesoService } from '../../../../services/proceso/proceso.service'
 
 @Component({
   selector: 'app-folios-detalle-abstracto',
@@ -35,9 +36,11 @@ export class FoliosDetalleAbstractoComponent implements OnInit {
   @Output() idFolio = new EventEmitter<string>()
   pedidoParaDetalle: FolioLinea = null
   ordenParaDetalle: Orden = null
-  constructor( public folioService:FolioNewService) {}
+  constructor( public folioService:FolioNewService, private procesoService:ProcesoService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.procesoService.findAllPool().subscribe()
+  }
 
   horaDeConsulta(): Date {
     return new Date()

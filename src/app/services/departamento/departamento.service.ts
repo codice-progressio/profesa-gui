@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { URL_SERVICIOS, URL_BASE } from 'src/app/config/config';
+import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+import { URL_SERVICIOS, URL_BASE } from 'src/app/config/config'
 
-import { Departamento } from 'src/app/models/departamento.models';
-import { CRUD } from '../crud';
-import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
-import { UtilidadesService } from '../utilidades/utilidades.service';
-import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { PaginadorService } from 'src/app/components/paginador/paginador.service';
-import { UsuarioService } from '../usuario/usuario.service';
+import { Departamento } from 'src/app/models/departamento.models'
+import { CRUD } from '../crud'
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
+import { UtilidadesService } from '../utilidades/utilidades.service'
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { UsuarioService } from '../usuario/usuario.service'
 import { throwError, Observable } from 'rxjs'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { map, catchError } from 'rxjs/operators'
@@ -16,10 +16,10 @@ import { map, catchError } from 'rxjs/operators'
 @Injectable({
   providedIn: 'root'
 })
-export class DepartamentoService   {
+export class DepartamentoService {
   total: number = 0
   base = URL_BASE('departamento')
-  pool: iDepartamentoPool[] = []
+  pool: Departamento[] = []
 
   constructor(
     public http: HttpClient,
@@ -34,7 +34,10 @@ export class DepartamentoService   {
     return throwError(err)
   }
 
-  findAll(paginacion: Paginacion, filtros: string = ''): Observable<Departamento[]> {
+  findAll(
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<Departamento[]> {
     const a = this.preLoaderService.loading('Cargando departamento')
     const url = this.base
       .concat('?')
@@ -148,5 +151,10 @@ export class DepartamentoService   {
       catchError(err => this.errFun(err))
     )
   }
-  
+
+  findAllPool() {
+    this.findAll(new Paginacion(100, 0, 1, 'nombre')).subscribe(
+      depa => (this.pool = depa)
+    )
+  }
 }
