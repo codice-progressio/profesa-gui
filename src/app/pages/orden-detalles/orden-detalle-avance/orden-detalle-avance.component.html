@@ -7,10 +7,9 @@
   </h1>
 </div>
 
-
 <div class="row">
   <div class="col-12">
-    <div class="card ">
+    <div class="card">
       <div class="card-body">
         <ul
           [id]="ordenConsultada._id"
@@ -24,42 +23,38 @@
         =====================================
         -->
           <ng-container
-            *ngFor="
-              let kv of ordenConsultada?.ruta | keyvalue: ordenarRuta;
-              let i = index
-            "
+            *ngFor="let ruta of ordenConsultada?.ruta; let i = index"
           >
             <li
-              *ngIf="
-                !kv.value.ubicacionActual && ignorarHasta > kv.value.consecutivo
-              "
+              *ngIf="!ruta.ubicacionActual && ignorarHasta > ruta.consecutivo"
               [id]="'listo' + i"
               class="li complete"
             >
               <div class="timestamp">
                 <span class="author esconde-sobrante">
-                  {{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  {{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
                   <hr />
-                  {{ encontrarProceso(kv.key)?.nombre }}
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
                 </span>
                 <span
                   title="Orden iniciada el {{
-                    (kv.value.entrada ? kv.value.entrada : kv.value.recepcion)
+                    (ruta.entrada ? ruta.entrada : ruta.recepcion)
                       | fecha: 'LLLL'
                   }}"
                   class="date"
                 >
                   <i class="fas fa-arrow-right"></i>
                   {{
-                    (kv.value.entrada ? kv.value.entrada : kv.value.recepcion)
-                      | fecha: 'L'
+                    (ruta.entrada ? ruta.entrada : ruta.recepcion) | fecha: 'L'
                   }}
                 </span>
               </div>
 
               <a
                 (click)="
-                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
                 "
                 href="javascript:void(0)"
               >
@@ -67,57 +62,55 @@
                   <h4
                     class="esconde-sobrante"
                     title="Orden terminada el {{
-                      (kv.value.salida ? kv.value.salida : kv.value.recepcion)
+                      (ruta.salida ? ruta.salida : ruta.recepcion)
                         | fecha: 'LLLL'
                     }}"
                   >
                     <i class="fas fa-clock"></i>
                     <!-- Aqui comparamos contra la salida -->
                     {{
-                      (kv.value.entrada
-                        ? kv.value.entrada
-                        : kv.value.recepcion
-                      ) | fechaDiferencia: kv.value.salida
+                      (ruta.entrada ? ruta.entrada : ruta.recepcion)
+                        | fechaDiferencia: ruta.salida
                     }}
 
                     <br />
 
-                    {{ kv.value.salida | fecha: 'L' }}
+                    {{ ruta.salida | fecha: 'L' }}
                     <i class="fas fa-arrow-right"></i>
                   </h4>
                 </div>
               </a>
             </li>
 
-            <li *ngIf="kv.value.ubicacionActual" class="li">
+            <li *ngIf="ruta.ubicacionActual" class="li">
               <div class="timestamp">
                 <span class="author esconde-sobrante"
-                  >{{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  >{{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
                   <hr />
 
-                  {{ encontrarProceso(kv.key)?.nombre }}
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
                 </span>
                 <span
                   title="Orden recibida el {{
-                    kv.value.entrada
-                      ? kv.value.entrada
-                      : (kv.value.recepcion | fecha: 'LLLL')
+                    ruta.entrada
+                      ? ruta.entrada
+                      : (ruta.recepcion | fecha: 'LLLL')
                   }}"
                   class="date esconde-sobrante"
                 >
                   <i class="fas fa-arrow-right"></i>
                   {{
-                    (kv.value?.entrada
-                      ? kv.value?.entrada
-                      : kv.value?.recepcion
-                    ) | fecha: 'L'
+                    (ruta?.entrada ? ruta?.entrada : ruta?.recepcion)
+                      | fecha: 'L'
                   }}
                 </span>
               </div>
 
               <a
                 (click)="
-                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
                 "
                 href="javascript:void(0)"
               >
@@ -148,15 +141,17 @@
 
             <li
               [id]="'pendiente' + i"
-              *ngIf="kv.value.consecutivo > ignorarHasta"
+              *ngIf="ruta.consecutivo > ignorarHasta"
               class="li"
             >
               <div class="timestamp">
                 <span class="author esconde-sobrante">
-                  {{ encontrarProceso(kv.key)?.departamento | titlecase }}
+                  {{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
                   <hr />
 
-                  {{ encontrarProceso(kv.key)?.nombre }}
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
                 </span>
                 <span title="Sin procesar en este departamento" class="date">
                   <i class="fas fa-arrow-right"></i>
@@ -165,7 +160,7 @@
 
               <a
                 (click)="
-                  cargarDetalle(kv.value, encontrarProceso(kv.key).nombre)
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
                 "
                 href="javascript:void(0)"
               >
@@ -191,7 +186,7 @@
 
 <div class="row" *ngIf="rutaSeg">
   <div class="col-12">
-    <div class="card ">
+    <div class="card">
       <div class="card-body row">
         <div class="col-12 col-sm-6">
           <h3>
@@ -208,10 +203,12 @@
         <div class="col-12 col-sm-6">
           <h5>
             <span class="font-weight-bolder">Estatus:</span>
-            Recibida
-            <i *ngIf="rutaSeg.recibida" class="fas fa-check text-success"></i>
+            <ng-container *ngIf="rutaSeg.recibida">
+              Recibida
+              <i class="fas fa-check text-success"></i>
+            </ng-container>
 
-            <span *ngIf="!rutaSeg.recibida">
+            <span *ngIf="!rutaSeg.recibida && rutaSeg.ubicacionActual">
               Por recibir:
               <i class="fas fa-exclamation tada animated infinite"></i>
             </span>
@@ -249,7 +246,7 @@
         </div>
 
         <div *ngIf="rutaSeg.datos" class="col-12">
-          <ng-container *ngIf="rutaSeg.datos.cantidades">
+          <ng-container *ngIf="rutaSeg.datos?.cantidades">
             <h5>
               <span class="font-weight-bolder">Contado por: No aplica aun</span>
             </h5>
@@ -299,7 +296,7 @@
             </table>
           </ng-container>
 
-          <table *ngIf="rutaSeg.datos.bl" class="table table-hover table-sm">
+          <table *ngIf="rutaSeg.datos?.bl" class="table table-hover table-sm">
             <thead>
               <tr>
                 <th>Espesor de boton</th>
@@ -319,7 +316,7 @@
           </table>
 
           <table
-            *ngIf="rutaSeg.datos.peso10Botones"
+            *ngIf="rutaSeg.datos?.peso10Botones"
             class="table table-hover table-sm"
           >
             <thead>
@@ -346,7 +343,7 @@
           </table>
         </div>
 
-        <table *ngIf="rutaSeg.datos.quebrados" class="table">
+        <table *ngIf="rutaSeg.datos?.quebrados" class="table">
           <thead>
             <tr>
               <th>Quebrados</th>
@@ -373,23 +370,23 @@
           </tbody>
         </table>
 
-        <h1 *ngIf="rutaSeg.datos.empacadoPor">
+        <h1 *ngIf="rutaSeg.datos?.empacadoPor">
           Piezas empacadas: {{ rutaSeg.datos.cantidadDeBoton | number }}
         </h1>
-        <h1 *ngIf="rutaSeg.datos.empacadoPor && rutaSeg.datos.cantidadDeBoton">
+        <h1 *ngIf="rutaSeg.datos?.empacadoPor && rutaSeg.datos.cantidadDeBoton">
           Cantidad surtida: {{ rutaSeg.datos.cantidadDeBoton | number }}
         </h1>
 
-        <h1 *ngIf="rutaSeg.datos.terminada">
+        <h1 *ngIf="rutaSeg.datos?.terminada">
           Orden terminada:
 
           <i
-            *ngIf="rutaSeg.datos.terminada"
+            *ngIf="rutaSeg.datos?.terminada"
             class="fas fa-check text-success fa-2x"
           ></i>
         </h1>
 
-        <table *ngIf="rutaSeg.datos.laser" class="table table-hover table-sm">
+        <table *ngIf="rutaSeg.datos?.laser" class="table table-hover table-sm">
           <thead>
             <tr>
               <th>BPM</th>
