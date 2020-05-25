@@ -35,9 +35,7 @@ export class ProgramacionTransformacionService {
   ): Observable<OrdenParaAsignacion[]> {
     const a = this.preLoaderService.loading('Obteniendo ordenes sin asignacion')
 
-    const url = this.base
-      .concat('/ordenesPorAsignar')
-      .concat('/', idTransformacion)
+    const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
       map((res: any) => {
