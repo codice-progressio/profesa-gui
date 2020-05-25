@@ -1,11 +1,11 @@
-import { Materiales } from "./materiales.models"
-import { Transformacion } from "./transformacion.models"
-import { Pulido } from "./pulido.models"
-import { Seleccion } from "./seleccion.models"
-import { Trayecto } from "./trayecto.models"
-import { Deserializable } from "./deserealizable.model"
+import { Materiales } from './materiales.models'
+import { Transformacion } from './transformacion.models'
+import { Pulido } from './pulido.models'
+import { Seleccion } from './seleccion.models'
+import { Trayecto } from './trayecto.models'
+import { Deserializable } from './deserealizable.model'
 import { FamiliaDeProcesos } from './familiaDeProcesos.model'
-import { ModeloCompleto } from "./modeloCompleto.modelo"
+import { ModeloCompleto } from './modeloCompleto.modelo'
 
 export class Orden implements Deserializable {
   constructor(
@@ -24,11 +24,10 @@ export class Orden implements Deserializable {
     public trayectoRecorrido?: Trayecto[],
     public ubicacionActual: Trayecto = new Trayecto(),
     public siguienteDepartamento?: Trayecto,
-    public nivelDeUrgencia: string = "PRODUCCIÓN",
+    public nivelDeUrgencia: string = 'PRODUCCIÓN',
     public fechaFolio?: Date,
 
-
-    public ruta:{} = {},
+    public ruta: Ruta[] = [],
 
     // Esta es solo para facilitarnos la vida.
     public editando: boolean = false,
@@ -36,26 +35,21 @@ export class Orden implements Deserializable {
   ) {}
 
   deserialize(input: this): this {
-    
-
     Object.assign(this, input)
-
-    
 
     this.trayectoNormal = input.trayectoNormal.map(trayecto =>
       new Trayecto().deserialize(trayecto)
     )
-    
+
     this.trayectoRecorrido = input.trayectoRecorrido.map(trayecto =>
       new Trayecto().deserialize(trayecto)
     )
-    
+
     this.ubicacionActual = new Trayecto().deserialize(input.ubicacionActual)
-    
+
     this.siguienteDepartamento = new Trayecto().deserialize(
       input.siguienteDepartamento
     )
-    
 
     return this
   }
@@ -69,3 +63,15 @@ export class Orden implements Deserializable {
   }
 }
 
+interface Ruta {
+  idProceso: string
+  idDepartamento: string
+  entrada: Date
+  salida: Date
+  recibida: boolean
+  ubicacionActual: boolean
+  recepcion: Date
+  consecutivo: number,
+  
+  datos: {} //--> ESte varia entre cada uno
+}
