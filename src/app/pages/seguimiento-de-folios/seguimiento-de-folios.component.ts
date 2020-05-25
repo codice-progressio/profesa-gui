@@ -53,19 +53,19 @@ export class SeguimientoDeFoliosComponent implements OnInit {
     this._buscadorRapidoService.nombreDeElemento = 'cliente';
     this._buscadorRapidoService.promesa =()=>{
       return new Promise( (resolve, reject )=>{
-        this._clienteService.buscar( this._buscadorRapidoService.termino ).subscribe(
-          (folios)=>{
-            const datosBuscados: BuscadorRapido<Cliente>[] = [];
-            folios.forEach((cliente:Cliente) => {
-              const a: BuscadorRapido<Cliente> =  new BuscadorRapido();
-              a.nombre = ` ${cliente.nombre}`;
-              a.setObjeto(cliente)
-              datosBuscados.push(a);
+        // this._clienteService.buscar( this._buscadorRapidoService.termino ).subscribe(
+        //   (folios)=>{
+        //     const datosBuscados: BuscadorRapido<Cliente>[] = [];
+        //     folios.forEach((cliente:Cliente) => {
+        //       const a: BuscadorRapido<Cliente> =  new BuscadorRapido();
+        //       a.nombre = ` ${cliente.nombre}`;
+        //       a.setObjeto(cliente)
+        //       datosBuscados.push(a);
 
-            });
-            resolve(datosBuscados )
+        //     });
+        //     resolve(datosBuscados )
            
-        });
+        // });
       });
     }
 

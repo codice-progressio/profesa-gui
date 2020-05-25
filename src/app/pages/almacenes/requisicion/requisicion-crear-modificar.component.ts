@@ -17,7 +17,6 @@ import { EstatusRequisicion } from 'src/app/models/requisiciones/estatusRequisic
 import { Location } from '@angular/common'
 import { ActivatedRoute } from '@angular/router'
 import { Paginacion } from 'src/app/utils/paginacion.util'
-import { setInterval } from 'timers'
 
 @Component({
   selector: 'app-requisicion-crear-modificar',

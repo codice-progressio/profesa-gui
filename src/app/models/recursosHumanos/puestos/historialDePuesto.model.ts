@@ -10,9 +10,9 @@ export class HistorialDePuesto implements Deserializable {
   ) {}
   deserialize(input: this): this {
     this.fechaDeCambio = new Date(input.fechaDeCambio)
-    this.usuarioQueModifica = new Usuario().deserialize(
-      input.usuarioQueModifica
-    )
+    // this.usuarioQueModifica = new Usuario().deserialize(
+    //   input.usuarioQueModifica
+    // )
     this.cambioAnterior = new Puesto().deserialize(input.cambioAnterior)
     return this
   }

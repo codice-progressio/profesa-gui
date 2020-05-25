@@ -118,68 +118,68 @@ export class HistorialDeFoliosComponent implements OnInit {
       this.reiniciarPaginador()
       this.esNecesarioReinciarPaginador = false
     }
-    this._folioService
-      .filtros(new FiltrosFolio(this._folioService))
-      .setVendedor(
-        componente.vendedorSeleccionado
-          ? componente.vendedorSeleccionado._id
-          : null
-      )
+    // this._folioService
+    //   .filtros(new FiltrosFolio(this._folioService))
+    //   .setVendedor(
+    //     componente.vendedorSeleccionado
+    //       ? componente.vendedorSeleccionado._id
+    //       : null
+    //   )
 
-      .setFolio(componente.folio ? componente.folio : null)
-      .setPedido(componente.pedido ? componente.pedido : null)
-      .setCliente(
-        componente.clienteSeleccionado
-          ? componente.clienteSeleccionado._id
-          : null
-      )
+    //   .setFolio(componente.folio ? componente.folio : null)
+    //   .setPedido(componente.pedido ? componente.pedido : null)
+    //   .setCliente(
+    //     componente.clienteSeleccionado
+    //       ? componente.clienteSeleccionado._id
+    //       : null
+    //   )
 
-      // Estos solo se aplican cuando la opcion de este
-      .setModelo(
-        componente.modeloSeleccionado ? componente.modeloSeleccionado._id : null
-      )
-      .setTamano(
-        componente.tamanoSeleccionado ? componente.tamanoSeleccionado._id : null
-      )
-      .setColor(
-        componente.colorSeleccionado ? componente.colorSeleccionado._id : null
-      )
-      .setTerminado(
-        componente.terminadoSeleccionado
-          ? componente.terminadoSeleccionado._id
-          : null
-      )
+    //   // Estos solo se aplican cuando la opcion de este
+    //   .setModelo(
+    //     componente.modeloSeleccionado ? componente.modeloSeleccionado._id : null
+    //   )
+    //   .setTamano(
+    //     componente.tamanoSeleccionado ? componente.tamanoSeleccionado._id : null
+    //   )
+    //   .setColor(
+    //     componente.colorSeleccionado ? componente.colorSeleccionado._id : null
+    //   )
+    //   .setTerminado(
+    //     componente.terminadoSeleccionado
+    //       ? componente.terminadoSeleccionado._id
+    //       : null
+    //   )
 
-      .setFechaDeCreacionDesdeEl(
-        componente.fechaDeCreacionDesdeEl
-          ? new Date(componente.fechaDeCreacionDesdeEl).toISOString()
-          : null
-      )
-      .setFechaDeCreacionHasta(
-        componente.fechaDeCreacionHasta
-          ? new Date(componente.fechaDeCreacionHasta).toISOString()
-          : null
-      )
-      // Defaults de revisioon de folios.
-      // Debe tener la bandera de entrega a produccion.
+    //   .setFechaDeCreacionDesdeEl(
+    //     componente.fechaDeCreacionDesdeEl
+    //       ? new Date(componente.fechaDeCreacionDesdeEl).toISOString()
+    //       : null
+    //   )
+    //   .setFechaDeCreacionHasta(
+    //     componente.fechaDeCreacionHasta
+    //       ? new Date(componente.fechaDeCreacionHasta).toISOString()
+    //       : null
+    //   )
+    //   // Defaults de revisioon de folios.
+    //   // Debe tener la bandera de entrega a produccion.
 
-      .setEntregarAProduccion(componente.entregarAProduccion || null)
-      //  No debe de tener ordenes generedas.
-      .setOrdenesGeneradas(componente.ordenesGeneradas || null)
+    //   .setEntregarAProduccion(componente.entregarAProduccion || null)
+    //   //  No debe de tener ordenes generedas.
+    //   .setOrdenesGeneradas(componente.ordenesGeneradas || null)
 
-      .setFoliosTerminados(componente.folioTerminado)
+    //   .setFoliosTerminados(componente.folioTerminado)
 
-      // Paginador
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .setSortCampos([["fechaDeEntregaAProduccion", -1]])
-      .servicio.todo()
-      .subscribe((folios) => {
-        this.folios = []
-        this.folios = folios
-        this._paginadorService.activarPaginador(this._folioService.total)
-        this.actualizarVista = false
-      })
+    //   // Paginador
+    //   .setDesde(this._paginadorService.desde)
+    //   .setLimite(this._paginadorService.limite)
+    //   .setSortCampos([["fechaDeEntregaAProduccion", -1]])
+    //   .servicio.todo()
+    //   .subscribe((folios) => {
+    //     this.folios = []
+    //     this.folios = folios
+    //     this._paginadorService.activarPaginador(this._folioService.total)
+    //     this.actualizarVista = false
+    //   })
   }
   /**
    *Filtra por los folios que ya se han mandado a producir. Hace la diferencia con los
@@ -227,22 +227,22 @@ export class HistorialDeFoliosComponent implements OnInit {
   }
   generarOrdenesDelFolio(folio: Folio) {
     this.folioParaGenerarOrdenes = folio
-    folio.popularOrdenesDeTodosLosPedidos(null)
+    // folio.popularOrdenesDeTodosLosPedidos(null)
   }
 
   generarOrdenes(folio: Folio) {
     this.folios = []
     folio.ordenesGeneradas = true
-    folio.limpiarParaOrdenesGeneradas()
+    // folio.limpiarParaOrdenesGeneradas()
 
-    this._folioService
-      .modificar(folio)
-      .toPromise()
-      .then((folio) => {
-        setTimeout(() => {
-          this.cargarFolios()
-        }, 1000)
-      })
+    // this._folioService
+    //   .modificar(folio)
+    //   .toPromise()
+    //   .then((folio) => {
+    //     setTimeout(() => {
+    //       this.cargarFolios()
+    //     }, 1000)
+    //   })
   }
 
   revisionDeOrdenesCargarComponente(com: RevisionDeOrdenesAbstractoComponent) {
@@ -268,9 +268,9 @@ export class HistorialDeFoliosComponent implements OnInit {
 
     this._msjService.confirmacionDeEliminacion(msj, () => {
       this._msjService.confirmacionDeEliminacion(msj1, () => {
-        this._folioService
-          .eliminar(folio._id)
-          .subscribe(() => this.cargarFolios())
+        // this._folioService
+        //   .eliminar(folio._id)
+        //   .subscribe(() => this.cargarFolios())
       })
     })
   }

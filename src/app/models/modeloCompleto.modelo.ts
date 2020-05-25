@@ -120,7 +120,7 @@ export class ModeloCompleto
     this.comprobarServicio(this._servicio)
     this._servicio.obtenerProduccionEnTransito(this._id).subscribe((total) => {
       this.cargandoProduccionEnTransito = false
-      this.produccionEnTransito = total
+      // this.produccionEnTransito = total
     })
   }
 

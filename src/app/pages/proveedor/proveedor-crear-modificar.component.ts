@@ -406,16 +406,16 @@ export class ProveedorCrearModificarComponent implements OnInit {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
 
-    this._articuloService
-      .search(termino, undefined, undefined, Articulo)
-      .subscribe((articulos) => {
-        let datos: Dato[] = []
-        articulos.forEach((art: Articulo) => {
-          datos.push(this.crearDatoParaDataList(art))
-        })
+    // this._articuloService
+    //   .search(termino, undefined, undefined, Articulo)
+    //   .subscribe((articulos) => {
+    //     let datos: Dato[] = []
+    //     articulos.forEach((art: Articulo) => {
+    //       datos.push(this.crearDatoParaDataList(art))
+    //     })
 
-        dataList.terminoBusqueda(datos)
-      })
+    //     dataList.terminoBusqueda(datos)
+    //   })
   }
 
   private crearDatoParaDataList(art: Articulo): Dato {

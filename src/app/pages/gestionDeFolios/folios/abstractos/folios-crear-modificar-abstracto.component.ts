@@ -27,6 +27,7 @@ import { UsuarioService } from "src/app/services/usuario/usuario.service"
 import { DEPARTAMENTOS } from "../../../../config/departamentos"
 import { Subscription } from "rxjs"
 import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
+import { Paginacion } from "src/app/utils/paginacion.util"
 
 @Component({
   selector: "app-folios-crear-modificar-abstracto",
@@ -175,7 +176,7 @@ export class FoliosCrearModificarAbstractoComponent
     if (termino.trim() === "") {
       this.clientes = []
     } else {
-      this._clienteService.buscar(termino).subscribe((clientes) => {
+      this._clienteService.findByTerm(termino).subscribe((clientes) => {
         this.clientes = clientes
         this.inputCliente.nativeElement.focus()
       })
@@ -196,11 +197,11 @@ export class FoliosCrearModificarAbstractoComponent
     if (termino.trim() === "") {
       this.clientes = []
     } else {
-      this._modelosCompletosServiceSubscription = this._modelosCompletosService
-        .buscar(termino)
-        .subscribe((mc) => {
-          this.modelosCompletos = mc
-        })
+      // this._modelosCompletosServiceSubscription = this._modelosCompletosService
+      //   .findByTerm(termino, new Paginacion(20,0,1,'nombreCompleto'))
+      //   .subscribe((mc) => {
+      //     this.modelosCompletos = mc as ModeloCompleto
+      //   })
     }
     this.modeloCompleto_FB(iPed).markAsTouched()
   }
@@ -875,11 +876,11 @@ de modelosCompletos buscada, el input para la escucha del campo.
     // Si es una edicion agregamos el id.
     if (this.idEditando) {
       model["_id"] = this.idEditando
-      this._folioNewService.modificar(model).subscribe(call)
+      this._folioNewService.update(model).subscribe(call)
       return
     }
     // Guardamos los datos.
-    this._folioNewService.guardar(model).subscribe(call)
+    this._folioNewService.save(model).subscribe(call)
   }
 
   @Output() cancelado = new EventEmitter<any>()
@@ -926,7 +927,7 @@ de modelosCompletos buscada, el input para la escucha del campo.
     }
 
     this._modelosCompletosService
-      .findById(id, undefined, undefined, ModeloCompleto)
+      .findById(id)
       .subscribe((mc) => {
         this.comprobandoModeloLaserado[iPed] = false
 

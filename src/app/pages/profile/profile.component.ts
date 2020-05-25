@@ -28,9 +28,9 @@ export class ProfileComponent implements OnInit {
     // a un usuario.
 
     this.usuario.nombre = usuario.nombre;
-    if ( !this.usuario.google) {
-        this.usuario.email = usuario.email;
-    }
+    // if ( !this.usuario.google) {
+    //     this.usuario.email = usuario.email;
+    // }
 
     // Guardamos
 
