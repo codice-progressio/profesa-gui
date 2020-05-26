@@ -77,6 +77,7 @@ import { RequisicionCrearModificarComponent } from './almacenes/requisicion/requ
 import { RequisicionDetalleComponent } from './almacenes/requisicion/requisicion-detalle.component'
 import { ProcesosEspecialesComponent } from '../pages/parametros/procesos-especiales/procesos-especiales.component'
 import { AdministradorComponent } from './parametros/administrador/administrador.component'
+import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
 
 const pagesRoutes: Routes = [
   // Redirecciona a PagesComponent para separar el login
@@ -975,7 +976,7 @@ const pagesRoutes: Routes = [
   },
   {
     path: 'produccion/barnizado',
-    component: BarnizadoComponent,
+    component: ScannerFormularioDinamicoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',

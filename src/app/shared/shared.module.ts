@@ -95,6 +95,9 @@ import { PedidosDetalleComponent } from '../pages/gestionDeFolios/pedidos/pedido
 import { FoliosDetalleAbstractoComponent } from '../pages/gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component'
 import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordenes-detalle.component'
 import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
+import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
+import { DynamicFormComponent } from '../components/formulario-dinamico/dynamic-form/dynamic-form.component'
+import { DynamicFormQuestionComponent } from '../components/formulario-dinamico/dynamic-form-question/dynamic-form-question.component'
 
 @NgModule({
   imports: [
@@ -161,7 +164,10 @@ import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
     OrdenDetalleAvanceComponent,
     PedidosDetalleComponent,
     FoliosDetalleAbstractoComponent,
-    OrdenesDetalleComponent
+    OrdenesDetalleComponent,
+    ScannerFormularioDinamicoComponent,
+    DynamicFormComponent,
+    DynamicFormQuestionComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -216,7 +222,10 @@ import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
     OrdenDetalleAvanceComponent,
     PedidosDetalleComponent,
     FoliosDetalleAbstractoComponent,
-    OrdenesDetalleComponent
+    OrdenesDetalleComponent,
+    ScannerFormularioDinamicoComponent,
+    DynamicFormComponent,
+    DynamicFormQuestionComponent
   ]
 })
 export class SharedModule {

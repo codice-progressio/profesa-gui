@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config';
 
+
 export function tokenGetter() {
   return localStorage.getItem('token')
 }
@@ -36,6 +37,7 @@ export function tokenGetter() {
     LoginComponent,
     RegisterComponent,
     PagesComponent,
+   
   ],
 
   imports: [

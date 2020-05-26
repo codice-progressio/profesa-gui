@@ -1,0 +1,35 @@
+<div
+  *ngIf="question && form"
+  [formGroup]="form"
+  class="form-group"
+  [ngSwitch]="question?.controlType"
+>
+  <input
+    *ngSwitchCase="'textbox'"
+    [ngClass]="objetoValidacion()"
+    [type]="question?.type"
+    class="form-control"
+    [formControlName]="question?.key"
+  />
+
+  <select
+    *ngSwitchCase="'dropdown'"
+    [id]="question?.key"
+    class="form-control"
+    [ngClass]="objetoValidacion()"
+    [formControlName]="question?.key"
+  >
+    <option *ngFor="let opt of question?.options" [value]="opt.key">{{
+      opt.value
+    }}</option>
+  </select>
+  <small class="form-text text-muted">{{ question?.label }}</small>
+
+  <app-validacion-inputs
+    *ngIf="form"
+    [campo]="f(question?.key)"
+    [directo]="true"
+  ></app-validacion-inputs>
+</div>
+
+

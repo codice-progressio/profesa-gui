@@ -1,0 +1,22 @@
+<form (submit)="onSubmit(form, form.invalid, $event)" [formGroup]="form">
+  <div class="row">
+    <div *ngFor="let question of questions" [class]="question.classForGroup">
+      <app-question [question]="question" [form]="form"></app-question>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-right">
+      <button class="btn btn-success mr-3" type="submit">
+        <i class="fas fa-save"></i> Guardar
+      </button>
+      <a class="btn btn-danger" href="javascript:void(0)" role="button">
+        <i class="fas fa-times"></i> Cancelar</a
+      >
+    </div>
+  </div>
+</form>
+
+<div *ngIf="payLoad" class="form-row">
+  <strong>Saved the following values</strong><br />{{ payLoad }}
+</div>

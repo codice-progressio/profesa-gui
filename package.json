@@ -24,6 +24,7 @@
     "@angular/router": "^9.0.2",
     "@auth0/angular-jwt": "^4.0.0",
     "@types/jquery": "^3.3.32",
+    "@zxing/ngx-scanner": "^3.0.0",
     "angularx-qrcode": "^1.6.4",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",
