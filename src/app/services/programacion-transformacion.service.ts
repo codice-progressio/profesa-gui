@@ -33,13 +33,10 @@ export class ProgramacionTransformacionService {
   ordenesPorAsignar(
     idTransformacion: string
   ): Observable<OrdenParaAsignacion[]> {
-    const a = this.preLoaderService.loading('Obteniendo ordenes sin asignacion')
-
     const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
       map((res: any) => {
-        this.msjService.ok_(res, null, a)
         return res.ordenes as OrdenParaAsignacion[]
       }),
       catchError(err => this.errFun(err))
@@ -94,16 +91,12 @@ export class ProgramacionTransformacionService {
   }
 
   actualizarUbicacion(idTransformacion: string): Observable<null> {
-    const a = this.preLoaderService.loading(
-      'Actualizando ubicacion de las ordenes en la pila de trabajo'
-    )
-
     const url = this.base
       .concat('/actualizarUbicacion/')
       .concat(idTransformacion)
     return this.http.put(url, null).pipe(
       map((resp: any) => {
-        this.msjService.ok_(resp, null, a)
+        this.msjService.toastCorrecto('Ubicacion de ordenes actualizada')
         return null
       }),
       catchError(err => this.errFun(err))
@@ -132,18 +125,20 @@ export interface OrdenParaAsignacion {
   modeloCompleto: string
   numeroDeOrden: string
   ubicacionActual: {
-    recivida: boolean
+    recibida: boolean
     _id: string
     departamento: string
     entrada: Date
     orden: number
-    tranformacion: any
+    transformacion: any
+    datos: any
   }
-  trayectos: {
-    recivida: boolean
+  ruta: {
+    recibida: boolean
     _id: string
     orden: number
     departamento: string
+    datos: any
   }
   pasos: number
   numerosDeOrden: number[]
