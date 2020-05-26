@@ -4,6 +4,7 @@ import { DefaultsService } from '../../../../services/configDefualts/defaults.se
 import { Maquina } from 'src/app/models/maquina.model'
 import { ImpresionService } from '../../../../services/impresion.service'
 import { ProgramacionTransformacionService } from '../../../../services/programacion-transformacion.service'
+import { ParametrosService } from 'src/app/services/parametros.service'
 
 @Component({
   selector: 'app-programacion-transformacion-reporte',
@@ -11,16 +12,17 @@ import { ProgramacionTransformacionService } from '../../../../services/programa
   styleUrls: ['./programacion-transformacion-reporte.component.css']
 })
 export class ProgramacionTransformacionReporteComponent implements OnInit {
-  cargando = false
+  cargando = {}
+  keys = Object.keys
   fecha: Date = new Date()
   ultimaActualizacion: Date
 
   maquinas: Maquina[] = []
 
   constructor(
-    private defaulService: DefaultsService,
     private maquinaService: MaquinaService,
     private impresionService: ImpresionService,
+    private parametrosService: ParametrosService,
     private programacionService: ProgramacionTransformacionService
   ) {}
 
@@ -30,23 +32,33 @@ export class ProgramacionTransformacionReporteComponent implements OnInit {
 
   cargarDatos() {
     this.ultimaActualizacion = new Date()
-    this.cargando = true
+    this.cargando['parametros'] = 'Obteniendo parametros'
 
-    this.defaulService.cargarDefaults().subscribe(def => {
-      this.programacionService
-        .actualizarUbicacion(def.DEPARTAMENTOS.TRANSFORMACION)
-        .subscribe(() => {
-          this.maquinaService
-            .buscarMaquinasPorDepartamento(def.DEPARTAMENTOS.TRANSFORMACION)
-            .subscribe(
-              maquinas => {
-                this.maquinas = maquinas
-                this.cargando = false
-              },
-              err => (this.cargando = false)
-            )
-        })
-    })
+    this.parametrosService.findDepartamentoTransformacion().subscribe(
+      def => {
+        delete this.cargando['parametros']
+        this.cargando['ubicacion'] = 'Actualizando ubicacion de las ordenes'
+
+        this.programacionService.actualizarUbicacion(def._id).subscribe(
+          () => {
+            delete this.cargando['ubicacion']
+            this.cargando['maquinas'] = 'Obteniendo maquinas'
+
+            this.maquinaService
+              .buscarMaquinasPorDepartamento(def._id)
+              .subscribe(
+                maquinas => {
+                  delete this.cargando['maquinas']
+                  this.maquinas = maquinas
+                },
+                err => delete this.cargando['maquinas']
+              )
+          },
+          _ => delete this.cargando['ubicacion']
+        )
+      },
+      _ => delete this.cargando['parametros']
+    )
   }
 
   imprimir() {
