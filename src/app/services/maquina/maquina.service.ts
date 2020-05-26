@@ -38,11 +38,9 @@ export class MaquinaService extends CRUD <Maquina> {
   }
   
   buscarMaquinasPorDepartamento(id: string): Observable<Maquina[]> {
-    let a = this._preLoaderService.loading('Buscando maquinas para este departamento')
     const url = URL_SERVICIOS + `/maquina/departamento/${id}`;
     return this.http.get( url ).pipe(
       map( ( resp: any ) => {
-        this.msjService.ok_(resp, null, a)
         let ordenadoPorNombre =  resp.maquinas as Maquina []
 
         ordenadoPorNombre = ordenadoPorNombre.sort((a, b)=>{
