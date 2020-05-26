@@ -72,6 +72,7 @@ interface Ruta {
   ubicacionActual: boolean
   recepcion: Date
   consecutivo: number,
+  trabajando:boolean
   
   datos: {} //--> ESte varia entre cada uno
 }
