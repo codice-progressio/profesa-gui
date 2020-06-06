@@ -1,58 +1,145 @@
-<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
-    <ng-container *ngIf="mostrarLista">
+<ng-container>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class=" card-body d-flex justify-content-between align-items-center"
+        >
+          <h1 class=""><strong>SKU </strong> existentes</h1>
 
-        <!-- 
-        =====================================
-         BODY
-        =====================================
-        -->
-        <table class="table table-responsive table-hover  ">
+          <div class="d-flex  align-items-center ">
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObservable"
+                [tiempoDeEspera]="1000"
+                (resultado)="resultadoDeBusqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error()"
+              ></app-buscador-paciente>
+            </div>
+
+            <a
+              (click)="this.crear()"
+              class="btn btn-success text-white active mr-3"
+            >
+              <i class="fas fa-plus "></i> Crear SKU</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="this.totalDeElementos"
+        [campoDeOrdenamiento]="'nombreCompleto'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+        [cargando]="keys(cargando).length > 0"
+      ></paginador>
+    </div>
+  </div>
+  <div
+    *ngIf="modelosCompletos.length && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table table-hover w-100">
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Modelo</th>
-                    <th>Medias ordenes</th>
-                    <th>Familia de procesos</th>
+              <tr>
+                <th></th>
+                <th>SKU</th>
+                <th>Medias</th>
+                <th>Familia</th>
 
-
-                    <th></th>
-                </tr>
+                <th></th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let modeloCompleto of elementos">
-                    <td><button (click)="mostrarDetalle(modeloCompleto._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
+              <tr *ngFor="let elemento of modelosCompletos">
+                <td class="fit">
+                  <button
+                    (click)="cargarDetalle(elemento._id)"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#detalleModeloCompleto"
+                    role="button"
+                  >
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td>{{ elemento.nombreCompleto }}</td>
+                <td class="text-center">
+                  <i
+                    *ngIf="elemento.medias"
+                    class="fas fa-check text-success    "
+                  ></i>
+                </td>
+                <td>
+                  {{ elemento.familiaDeProcesos }}
+                </td>
 
-                    <td>{{modeloCompleto | modeloCompleto }}</td>
-                    <td><i *ngIf="modeloCompleto.medias" class="fas fa-check text-info"></i></td>
-                    <td>{{modeloCompleto.familiaDeProcesos.nombre}}</td>
-
-
-                    <td><a (click)="editar( modeloCompleto._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
-                    <td><a (click)="eliminar( modeloCompleto._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
-                </tr>
-
+                <td class="fit">
+                  <a
+                    href="javascript:void(0)"
+                    (click)="modificar(elemento._id)"
+                    class="btn btn-success btn-sm"
+                    ><i class="fas fa-edit text-white    "></i
+                  ></a>
+                </td>
+                <td class="fit">
+                  <a
+                    (click)="eliminar(elemento._id)"
+                    class="btn btn-danger btn-sm"
+                    ><i class="fas fa-times  text-white "></i
+                  ></a>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- 
-        =====================================
-         END BODY
-        =====================================
-        -->
+  <div
+    *ngIf="modelosCompletos?.length === 0 && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body shadow">
+          <h1 class="display-1">No hay <b>modeloCompleto</b> para mostrar</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </ng-container>
-</app-general>
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync  fa-spin   "></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+            {{ cargando[key] }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-<!-- 
-=====================================
- Importante fuera de app-general
-=====================================
--->
-
-<app-modelos-completos-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-modelos-completos-crear-modificar>
-<app-modelos-completos-detalle [detalleElemento]='elementoDetalle'> </app-modelos-completos-detalle>
-<!-- 
-=====================================
- END Importante fuera de app-general
-=====================================
--->
+<app-modelos-completos-detalle
+  [detalle]="detalle"
+  [id]="'detalleModeloCompleto'"
+>
+</app-modelos-completos-detalle>

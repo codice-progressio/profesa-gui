@@ -1,105 +1,229 @@
-<span class="d-flex justify-content-between aling-items-center">
-  <h2>
-    FOL-PED: <b>{{ pedido?.pedido }}</b>
+<div class="row collapse procesosEspeciales">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div *ngIf="keys(cargando).length === 0" class="modal-body">
+          <span class="d-flex justify-content-between aling-items-center">
+            <h2>
+              FOL-PED: <b>{{ pedido?.pedido }}</b>
+              <br />
+              {{ pedido?.modeloCompleto.nombreCompleto }}
 
-    <small *ngIf="!pedido?.requiereRevisionExtraordinaria" class='text-muted ml-3'>
-      <i class="fas fa-check animated tada text-success"></i>
-      Pedido aceptado
-    </small>
-  </h2>
-  <h3>
-    <a
-      class="btn text-white mr-3"
-      [ngClass]="{
-        'btn-success btn-sm ': !pedido?.requiereRevisionExtraordinaria,
-        'btn-primary ': pedido?.requiereRevisionExtraordinaria
-      }"
-      (click)="revisarPedido(pedido)"
-    >
-      <span *ngIf="pedido?.requiereRevisionExtraordinaria">Aceptar pedido</span>
-      <span *ngIf="!pedido?.requiereRevisionExtraordinaria"
-        >Rechazar pedido</span
-      >
-    </a>
+              <small
+                *ngIf="!pedido?.requiereRevisionExtraordinaria"
+                class="text-muted ml-3"
+              >
+                <i class="fas fa-check animated tada text-success"></i>
+                Pedido aceptado
+              </small>
+            </h2>
+            <h3>
+              Gestionar <b>procesos</b> especiales
+              <hr class="thin" />
 
-    Gestionar <b>procesos</b>
-  </h3>
-</span>
+              <a
+                class="btn text-white mr-3"
+                [ngClass]="{
+                  'btn-primary btn-sm ': !pedido?.requiereRevisionExtraordinaria,
+                  'btn-success ': pedido?.requiereRevisionExtraordinaria
+                }"
+                (click)="revisarPedido(pedido)"
+              >
+                <span *ngIf="pedido?.requiereRevisionExtraordinaria">
+                  <i class="fas fa-check-circle"></i> Aceptar pedido</span
+                >
+                <span *ngIf="!pedido?.requiereRevisionExtraordinaria">
+                  <i class="fas fa-times-circle"></i> Rechazar pedido</span
+                >
+              </a>
+              <a
+                class="btn btn-outline-secondary btn-sm"
+                data-toggle="collapse"
+                data-target=".procesosEspeciales"
+                href="javascript:void(0)"
+                role="button"
+              >
+                Volver
+              </a>
+            </h3>
+          </span>
 
-<hr />
+          <hr />
 
-<div class="row">
-  <div class="col-6">
-    <div *ngIf="pedido?.almacen" class="list-group mb-2">
-      <a class="list-group-item list-group-item-action active py-0 text-white">
-        <b><small>0.-</small></b>
-        Procesos de inicializacion</a
-      >
-      <a
-        *ngFor="let proceso of procesosIniciales; let i = index"
-        class="list-group-item list-group-item-action disabled d-flex justify-content-between align-items-center py-0
-        "
-      >
-        <span
-          ><small>0.{{ i + 1 }}-</small> {{ proceso.nombre }}</span
-        >
-        <span
-          ><small class="text-muted"
-            ><b>{{ proceso.departamento.nombre }}</b></small
-          ></span
-        >
-      </a>
+          <div cdkDropListGroup class="row">
+            <div class="col-12 col-sm-6">
+              <div class="card shadow">
+                <div class="card-body">
+                  <ul
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event)"
+                    [cdkDropListData]="procesosSeleccionados"
+                    class="list-group"
+                  >
+                    <li
+                      class="list-group-item active app-lista-scroll-encabezado"
+                    >
+                      Procesos seleccionados
+                    </li>
+
+                    <!-- 
+                    =====================================
+                    Procesos iniciales
+                    =====================================
+                    -->
+
+                    <ng-container *ngIf="mostrarIniciales">
+                      <li
+                        *ngFor="let proceso of procesosIniciales"
+                        class="list-group-item bg-light-extra"
+                      >
+                        <small class="pull-right font-bold">{{
+                          proceso.departamento.nombre
+                        }}</small>
+                        <h5 class="mb-1">{{ proceso.nombre }}</h5>
+                      </li>
+                    </ng-container>
+
+                    <!-- 
+                    =====================================
+                    END Procesos iniciales
+                    =====================================
+                    -->
+                    <!-- 
+                    =====================================
+                    Procesos inicialies almacen
+                    =====================================
+                    -->
+
+                    <ng-container *ngIf="mostrarInicialesAlmacen">
+                      <li
+                        *ngFor="let proceso of procesosInicialesAlmacen"
+                        class="list-group-item bg-light-extra"
+                      >
+                        <small class="pull-right font-bold">{{
+                          proceso.departamento.nombre
+                        }}</small>
+                        <h5 class="mb-1">{{ proceso.nombre }}</h5>
+                      </li>
+                    </ng-container>
+
+                    <!-- 
+                    =====================================
+                    END Procesos inicialies almacen
+                    =====================================
+                    -->
+                    <li
+                      class="list-group-item"
+                      cdkDrag
+                      [cdkDragData]="'eliminar-al-transferir'"
+                      [cdkDragDisabled]="iDes.disabled"
+                      *ngFor="let iDes of procesosSeleccionados"
+                    >
+                      <small class="pull-right font-bold">{{
+                        iDes.proceso.departamento.nombre
+                      }}</small>
+                      <h5 class="mb-1">{{ iDes.proceso.nombre }}</h5>
+                    </li>
+
+                    <li
+                      *ngIf="procesosSeleccionados.length === 0"
+                      class="list-group-item disabled"
+                    >
+                      Ningun proceso seleccionado
+                    </li>
+                    <!-- 
+                    =====================================
+                    procesos finales
+                    =====================================
+                    -->
+
+                    <li
+                      *ngFor="let proceso of procesosFinales"
+                      class="list-group-item bg-light-extra"
+                    >
+                      <small class="text-muted pull-right font-bold">{{
+                        proceso.departamento.nombre
+                      }}</small>
+                      <h5 class="mb-1">{{ proceso.nombre }}</h5>
+                    </li>
+
+                    <!-- 
+                    =====================================
+                    END procesos finales
+                    =====================================
+                    -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="card shadow">
+                <div class="card-body">
+                  <ul
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event)"
+                    [cdkDropListSortingDisabled]="true"
+                    [cdkDropListData]="procesos"
+                    class="list-group app-lista-scroll"
+                  >
+                    <li
+                      class="list-group-item active app-lista-scroll-encabezado"
+                    >
+                      <span class="pull-left">Procesos disponibles</span>
+                      <div class="form-group pull-right m-0 p-0">
+                        <input
+                          #input
+                          (keyup)="filtrarDisponibles(input.value)"
+                          type="text"
+                          class="form-control m-0 form-control-sm"
+                          placeholder="Buscar"
+                        />
+                      </div>
+                    </li>
+
+                    <li
+                      cdkDrag
+                      *ngFor="let iDes of procesos"
+                      class="list-group-item"
+                      [style.display]="
+                        mostrarProcesos?.includes(iDes.proceso._id)
+                          ? ''
+                          : 'none'
+                      "
+                    >
+                      <small class="text-muted pull-right">{{
+                        iDes.proceso.departamento.nombre
+                      }}</small>
+                      <h5 class="mb-1">{{ iDes.proceso.nombre }}</h5>
+                    </li>
+
+                    <li
+                      *ngIf="!procesos?.length"
+                      class="list-group-item disabled"
+                    >
+                      No hay procesos
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="keys(cargando).length > 0" class="modal-body w-100">
+            <div class="row">
+              <div
+                class="col-12 d-flex w-100 text-center align-items-center justify-content-between"
+              >
+                <h1 class="display-1">
+                  <i class="fas fa-sync fa-spin"></i>
+                </h1>
+
+                <h2 *ngFor="let key of keys(cargando)">{{ cargando[key] }}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- <app-organizador-drag-and-drop
-      (dropSuccess)="dropSuccess()"
-      [listaOrdenable]="true"
-    ></app-organizador-drag-and-drop> -->
-
-    <div *ngIf="pedido?.almacen" class="list-group">
-      <a class="list-group-item list-group-item-action active text-white py-0">
-        <b><small>2.-</small></b>
-
-        Procesos de finalizacion</a
-      >
-      <a
-        *ngFor="let proceso of procesosFinales; let i = index"
-        class="list-group-item list-group-item-action disabled d-flex justify-content-between align-items-center py-0
-        "
-      >
-        <span
-          ><small>2.{{ i + 1 }}-</small> {{ proceso.nombre }}</span
-        >
-        <span
-          ><small class="text-muted"
-            ><b>{{ proceso.departamento.nombre }}</b></small
-          ></span
-        >
-      </a>
-    </div>
-  </div>
-
-  <div class="col-6">
-    <!-- <app-organizador-drag-and-drop
-      (dropSuccess)="dropSuccess()"
-      [listaDeElementos]="true"
-    ></app-organizador-drag-and-drop> -->
-
-    <span class="mt-3">
-      <br />
-      <app-paginador-abstracto
-        (actualizacion)="cambiarPagina($event)"
-        (esteComponente)="paginador = $event"
-      >
-      </app-paginador-abstracto>
-    </span>
   </div>
 </div>
-
-<pre *ngIf="debug">
-  {{mctemp?.nombreCompleto}} 
-  <hr>
-  Procesos especiales: 
-  {{ pedido?.procesos | json}}
-  
-</pre>

@@ -13,14 +13,9 @@ export class Procesos {
   ) {}
 
   deserialize(input: this): this {
-    
     Object.assign(this, input)
-    
     this.proceso = new Proceso().deserialize(input.proceso)
-    
     // this.procesoPadre = new Proceso().deserialize(input.procesoPadre)
-    
-
     return this
   }
 

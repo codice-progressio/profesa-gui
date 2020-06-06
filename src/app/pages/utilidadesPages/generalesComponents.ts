@@ -178,7 +178,7 @@ export class GeneralesComponents<T> {
                this.defaults = def
                this.ID_DEPTO = def.DEPARTAMENTOS[ this.variablesDepto._v ];
                // Obtenemos el nombre. 
-               return this._departamentoService.buscarPorId( this.ID_DEPTO )
+               return this._departamentoService.findById( this.ID_DEPTO )
                     .toPromise();
            }).then( ( departamento: Departamento ) => {
                 this.NOMBRE_DEPTO = departamento.nombre

@@ -9,6 +9,7 @@ import { DefaultsService } from './configDefualts/defaults.service'
 import { HttpClient } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
 import { Maquina } from '../models/maquina.model'
+import { Departamento } from '../models/departamento.models'
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +33,10 @@ export class ProgramacionTransformacionService {
   ordenesPorAsignar(
     idTransformacion: string
   ): Observable<OrdenParaAsignacion[]> {
-    const a = this.preLoaderService.loading('Obteniendo ordenes sin asignacion')
-
-    const url = this.base
-      .concat('/ordenesPorAsignar')
-      .concat('/', idTransformacion)
+    const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
       map((res: any) => {
-        this.msjService.ok_(res, null, a)
         return res.ordenes as OrdenParaAsignacion[]
       }),
       catchError(err => this.errFun(err))
@@ -53,34 +49,104 @@ export class ProgramacionTransformacionService {
       .post<Maquina>(url, { idMaquina: maquina._id, ordenes: maquina.pila })
       .pipe(
         map((res: any) => {
-          this.msjService.correcto(res.mensaje, maquina.clave)
+          this.msjService.toastCorrecto(res.mensaje, maquina.clave)
           return res.ordenes as Maquina
         }),
         catchError(err => this.errFun(err))
       )
   }
+
+  /**
+   *Verifoca si esta orden esta disponible para transformacion.
+   *
+   * @param {string} idOrden El id de la orde
+   * @param {string} idPedido El id del pedido
+   * @param {string} idFolio El id del folio
+   * @param {string} idTransformacion El id del departamento de transformacion
+   * @returns {Observable<boolean>}
+   * @memberof ProgramacionTransformacionService
+   */
+  estaDisponible(
+    idOrden: string,
+    idPedido: string,
+    idFolio: string,
+    idTransformacion: string
+  ): Observable<iEstaDisponible> {
+    const url = this.base
+      .concat(`/estaDisponible`)
+      .concat(`/${idTransformacion}`)
+      .concat(`/${idFolio}`)
+      .concat(`/${idPedido}`)
+      .concat(`/${idOrden}`)
+
+    return this.http.get(url).pipe(
+      map((x: iEstaDisponible) => {
+        return x
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  actualizarUbicacion(idTransformacion: string): Observable<null> {
+    const url = this.base
+      .concat('/actualizarUbicacion/')
+      .concat(idTransformacion)
+    return this.http.put(url, null).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto('Ubicacion de ordenes actualizada')
+        return null
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+}
+
+export interface iEstaDisponible {
+  disponible: boolean
+  ubicacion: Departamento
+  folio: string
+  pedido: string
+  orden: string
 }
 
 export interface OrdenParaAsignacion {
+  cliente: string
+  idCliente: string
+  fechaPedidoProduccion: Date
+  esBaston: boolean
+  marcaLaser: string
+  disponible: boolean
   folio: string
   pedido: string
   orden: string
   modeloCompleto: string
   numeroDeOrden: string
   ubicacionActual: {
-    recivida: boolean
+    recibida: boolean
     _id: string
     departamento: string
     entrada: Date
     orden: number
+    transformacion: any
+    datos: any
   }
-  trayectos: {
-    recivida: boolean
+  ruta: {
+    recibida: boolean
     _id: string
     orden: number
     departamento: string
+    datos: any
   }
   pasos: number
   numerosDeOrden: number[]
   paso: number
+  // No siempre aparecen estos
+  inicio: Date
+  finalizacion: Date
+  observacionesOrden: string
+  observacionesPedido: string
+  observacionesFolio: string
 }

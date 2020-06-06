@@ -1,109 +1,85 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { Articulo } from "../../../models/almacenDeMateriaPrimaYHerramientas/articulo.modelo"
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Articulo } from '../../../models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
 import {
   FormBuilder,
   FormGroup,
   Validators,
   AbstractControl
-} from "@angular/forms"
-import { ValidacionesService } from "../../../services/utilidades/validaciones.service"
-import { min } from "rxjs/operators"
-import { ArticuloService } from "src/app/services/articulo/articulo.service"
-import { AlmacenDescripcion } from "../../../models/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.model"
-import { AlmacenDescripcionService } from "../../../services/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.service"
+} from '@angular/forms'
+import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
+import { min } from 'rxjs/operators'
+import { ArticuloService } from 'src/app/services/articulo/articulo.service'
+import { AlmacenDescripcion } from '../../../models/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.model'
+import { AlmacenDescripcionService } from '../../../services/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { Location } from '@angular/common'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
-  selector: "app-articulo-crear-modificar",
-  templateUrl: "./articulo-crear-modificar.component.html",
+  selector: 'app-articulo-crear-modificar',
+  templateUrl: './articulo-crear-modificar.component.html',
   styles: []
 })
 export class ArticuloCrearModificarComponent implements OnInit {
   articulo: Articulo = null
-  @Output() guardar = new EventEmitter<null>()
-
-  @Output() esteComponente = new EventEmitter<this>()
-
   formulario: FormGroup
-
   almacenes: AlmacenDescripcion[] = []
+  keys = Object.keys
+  cargando = {}
 
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
-    public _articuloService: ArticuloService,
-    public _almacenDescripcionService: AlmacenDescripcionService
+    public articuloService: ArticuloService,
+    public almacenDescripcionService: AlmacenDescripcionService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.esteComponente.emit(this)
-    this.crearFormulario()
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (id) {
+      this.cargando['loading'] = 'Cargando articulo para modificacion'
+      this.articuloService.findById(id).subscribe(art => {
+        this.articulo = art
+        this.crearFormulario(art)
+        delete this.cargando['loading']
+      })
+    } else {
+      this.crearFormulario()
+    }
 
-    this._almacenDescripcionService
-      .todo()
-      .subscribe((todo) => (this.almacenes = todo))
+    this.cargando['almacen'] = 'Cargando almacenes'
+    this.almacenDescripcionService
+      .findAll(new Paginacion(100, 0, 1, 'nombre'))
+      .subscribe(
+        todo => {
+          this.almacenes = todo
+          delete this.cargando['almacen']
+        },
+        () => delete this.cargando['almacen']
+      )
   }
 
-  cargarDatos() {
-        this.crearFormulario()
-        this.asignarValores(this.articulo)
-  }
-
-  asignarValores(ar: Articulo) {
-    this.codigoLocalizacion_FB.setValue(ar.codigoLocalizacion)
-    this.codigoInterno_FB.setValue(ar.codigoInterno)
-    this.codigoProveedor_FB.setValue(ar.codigoProveedor)
-    this.almacen_FB.setValue(ar.almacen._id)
-    this.nombre_FB.setValue(ar.nombre)
-    this.presentacion_FB.setValue(ar.presentacion)
-    this.unidad_FB.setValue(ar.unidad)
-    this.kgPorUnidad_FB.setValue(ar.kgPorUnidad)
-    this.stockMinimo_FB.setValue(ar.stockMinimo)
-    this.stockMaximo_FB.setValue(ar.stockMaximo)
-    this.descripcion_FB.setValue(ar.descripcion)
-    this.observaciones_FB.setValue(ar.observaciones)
-  }
-
-  /**
-   *Crea un nuevo articulo. 
-   *
-   * @memberof ArticuloCrearModificarComponent
-   */
-  crear(){
-    this.articulo = null
-    this.crearFormulario()
-  }
-
-  /**
-   *Modifica el articulo que se le pase como parametro. 
-   *
-   * @param {Articulo} articulo El articulo a modificar 
-   * @memberof ArticuloCrearModificarComponent
-   */
-  modificar( articulo: Articulo ){
-    this.articulo = articulo
-    this.crearFormulario()
-    this.cargarDatos()
-  }
-
-  crearFormulario() {
+  crearFormulario(a = new Articulo()) {
     this.formulario = this.fb.group(
       {
-        codigoLocalizacion: ["", []],
-        codigoInterno: ["", []],
-        codigoProveedor: ["", []],
-        almacen: ["", [Validators.required]],
-        nombre: ["", [Validators.required]],
-        presentacion: ["", [Validators.required]],
-        unidad: ["", [Validators.required]],
-        kgPorUnidad: ["", [Validators.required, Validators.min(0)]],
-        descripcion: [""], 
-        observaciones: [""], 
+        codigoLocalizacion: [a.codigoLocalizacion, []],
+        codigoInterno: [a.codigoInterno, []],
+        codigoProveedor: [a.codigoProveedor, []],
+        almacen: [a.almacen, [Validators.required]],
+        nombre: [a.nombre, [Validators.required]],
+        presentacion: [a.presentacion, [Validators.required]],
+        unidad: [a.unidad, [Validators.required]],
+        kgPorUnidad: [a.kgPorUnidad, [Validators.required, Validators.min(0)]],
+        descripcion: [a.descripcion],
+        observaciones: [a.observaciones],
         stockMinimo: [
-          "",
+          a.stockMinimo,
           [Validators.required, Validators.max(999999), Validators.min(0)]
         ],
         stockMaximo: [
-          "",
+          a.stockMaximo,
           [Validators.required, Validators.max(999999), Validators.min(0)]
         ]
       },
@@ -112,74 +88,56 @@ export class ArticuloCrearModificarComponent implements OnInit {
   }
 
   validarMinMax(group: FormGroup) {
-    let min: number = group.get("stockMinimo").value
-    let max: number = group.get("stockMaximo").value
+    let min: number = group.get('stockMinimo').value
+    let max: number = group.get('stockMaximo').value
     // let minA: AbstractControl = group.get("stockMinimo")
-    let maxA: AbstractControl = group.get("stockMaximo")
+    let maxA: AbstractControl = group.get('stockMaximo')
 
     let validacion = null
     if (min > max) {
-      maxA.setErrors({ general: { mensaje: "Debe ser mayor que " + min } })
+      maxA.setErrors({ general: { mensaje: 'Debe ser mayor que ' + min } })
 
       validacion = {
-        general: { mensaje: "El maximo no puede ser menor al minimo." }
+        general: { mensaje: 'El maximo no puede ser menor al minimo.' }
       }
     }
 
     return validacion
   }
 
-  get codigoLocalizacion_FB(): AbstractControl {
-    return this.formulario.get("codigoLocalizacion")
-  }
-  get codigoInterno_FB(): AbstractControl {
-    return this.formulario.get("codigoInterno")
-  }
-  get codigoProveedor_FB(): AbstractControl {
-    return this.formulario.get("codigoProveedor")
-  }
-  get almacen_FB(): AbstractControl {
-    return this.formulario.get("almacen")
-  }
-  get nombre_FB(): AbstractControl {
-    return this.formulario.get("nombre")
-  }
-  get presentacion_FB(): AbstractControl {
-    return this.formulario.get("presentacion")
-  }
-  get unidad_FB(): AbstractControl {
-    return this.formulario.get("unidad")
-  }
-  get kgPorUnidad_FB(): AbstractControl {
-    return this.formulario.get("kgPorUnidad")
-  }
-  get stockMinimo_FB(): AbstractControl {
-    return this.formulario.get("stockMinimo")
-  }
-  get stockMaximo_FB(): AbstractControl {
-    return this.formulario.get("stockMaximo")
-  }
-  get descripcion_FB(): AbstractControl {
-    return this.formulario.get("descripcion")
-  }
-  get observaciones_FB(): AbstractControl {
-    return this.formulario.get("observaciones")
+  f(c) {
+    return this.formulario.get(c)
   }
 
-  submit(modelo: Articulo, valid: boolean, e) {
-    e.preventDefault()
-    if (valid) {
-      let cb = () => {
-        this.guardar.emit()
-        this.limpiar()
-      }
+  submit(modelo: Articulo, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
 
-      if (this.articulo) {
-        modelo._id = this.articulo._id
-        this._articuloService.modificar(modelo).subscribe(cb)
-      } else {
-        this._articuloService.guardar(modelo).subscribe(cb)
-      }
+    if (invalid) {
+      e.stopPropagation()
+      e.preventDefault()
+      return
+    }
+
+    if (this.articulo) {
+      this.cargando['modificando'] = 'Modificando articulo'
+      modelo._id = this.articulo._id
+      this.articuloService.update(modelo).subscribe(
+        () => {
+          this.location.back()
+          delete this.cargando['guardando']
+        },
+        () => delete this.cargando['guardando']
+      )
+    } else {
+      this.cargando['guardando'] = 'Creando articulo'
+      this.articuloService.save(modelo).subscribe(
+        () => {
+          delete this.cargando['modificando']
+          this.ngOnInit()
+        },
+        () => delete this.cargando['modificando']
+      )
     }
   }
 

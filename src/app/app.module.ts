@@ -1,25 +1,35 @@
-import { BrowserModule } from "@angular/platform-browser"
+import { BrowserModule } from '@angular/platform-browser'
 
 // FECHAS EN ESPAÑOL
-import { NgModule, LOCALE_ID } from "@angular/core"
-import localePy from "@angular/common/locales/es-MX"
-import { registerLocaleData, APP_BASE_HREF, CommonModule } from '@angular/common'
-registerLocaleData(localePy, "es-MX")
+import { NgModule, LOCALE_ID } from '@angular/core'
+import localePy from '@angular/common/locales/es-MX'
+import {
+  registerLocaleData,
+  APP_BASE_HREF,
+  CommonModule
+} from '@angular/common'
+registerLocaleData(localePy, 'es-MX')
 
 // Rutas
-import { APP_ROUTES } from "./app.routes"
+import { APP_ROUTES } from './app.routes'
 
 // Componentes
-import { AppComponent } from "./app.component"
-import { LoginComponent } from "./login/login.component"
-import { RegisterComponent } from "./login/register.component"
-import { PagesComponent } from "./pages/pages.component"
+import { AppComponent } from './app.component'
+import { LoginComponent } from './login/login.component'
+import { RegisterComponent } from './login/register.component'
+import { PagesComponent } from './pages/pages.component'
+import { SharedModule } from './shared/shared.module'
+import { NgxMaskModule } from 'ngx-mask'
+import { JwtModule } from '@auth0/angular-jwt'
 
-import { SharedModule } from "./shared/shared.module"
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { HttpClientModule } from '@angular/common/http'
+import { URL_DOMINIO } from './config/config';
 
-import { NgxMaskModule } from "ngx-mask";
-import { HTTP_INTERCEPTORS } from "@angular/common/http"
-import { TokenInterceptor } from "./interceptors/token.interceptor"
+
+export function tokenGetter() {
+  return localStorage.getItem('token')
+}
 
 @NgModule({
   declarations: [
@@ -27,20 +37,30 @@ import { TokenInterceptor } from "./interceptors/token.interceptor"
     LoginComponent,
     RegisterComponent,
     PagesComponent,
+   
   ],
-  
+
   imports: [
     CommonModule,
     BrowserModule,
     APP_ROUTES,
+    BrowserAnimationsModule, // required animations module
+    HttpClientModule,
+    NgxMaskModule.forRoot(),
     SharedModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: [URL_DOMINIO],
+        blacklistedRoutes: [URL_DOMINIO + '/login']
+      }
+    })
   ],
   providers: [
     // Configuraciones de idioma.
-    {provide: APP_BASE_HREF, useValue : '/' },
-    { provide: LOCALE_ID, useValue: "es-MX" },
+    { provide: APP_BASE_HREF, useValue: '/' },
+    { provide: LOCALE_ID, useValue: 'es-MX' }
     // Interceptor para agregar Bearer token.
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

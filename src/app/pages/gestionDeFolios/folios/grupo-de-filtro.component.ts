@@ -301,10 +301,10 @@ export class GrupoDeFiltroComponent implements OnInit {
       this.vendedores = vendedores
     })
 
-    this._terminadoService.listarTodo = true
-    this._terminadoService.todo().subscribe((terminados) => {
-      this.terminados = terminados
-    })
+    // this._terminadoService.listarTodo = true
+    // this._terminadoService.todo().subscribe((terminados) => {
+    //   this.terminados = terminados
+    // })
   }
 
   /**
@@ -315,9 +315,9 @@ export class GrupoDeFiltroComponent implements OnInit {
    */
   buscarCliente(termino: string) {
     if (termino.trim()) {
-      this._clienteService.buscar(termino).subscribe((clientes) => {
-        this.clientes = clientes
-      })
+      // this._clienteService.buscar(termino).subscribe((clientes) => {
+      //   this.clientes = clientes
+      // })
     }
   }
 
@@ -329,9 +329,9 @@ export class GrupoDeFiltroComponent implements OnInit {
    */
   buscarModelo(termino: string) {
     if (termino.trim()) {
-      this._modeloService.buscar(termino).subscribe((modelos) => {
-        this.modelos = modelos
-      })
+      // this._modeloService.buscar(termino).subscribe((modelos) => {
+      //   this.modelos = modelos
+      // })
     }
   }
 
@@ -343,9 +343,9 @@ export class GrupoDeFiltroComponent implements OnInit {
    */
   buscarTamano(termino: string) {
     if (termino.trim()) {
-      this._tamanoService.buscar(termino).subscribe((tamanos) => {
-        this.tamanos = tamanos
-      })
+      // this._tamanoService.buscar(termino).subscribe((tamanos) => {
+      //   this.tamanos = tamanos
+      // })
     }
   }
   /**
@@ -356,9 +356,9 @@ export class GrupoDeFiltroComponent implements OnInit {
    */
   buscarColor(termino: string) {
     if (termino.trim()) {
-      this._colorService.buscar(termino).subscribe((colores) => {
-        this.colores = colores
-      })
+      // this._colorService.buscar(termino).subscribe((colores) => {
+      //   this.colores = colores
+      // })
     }
   }
 

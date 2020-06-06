@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { UsuariosComponent } from '../../pages/usuarios/usuarios.component';
 
 @Injectable({
   providedIn: 'root'

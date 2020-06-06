@@ -9,6 +9,7 @@ import { BasicosGUI } from "./basicosGUI.model"
 import { Lotes } from "./almacenProductoTerminado/lotes.model"
 import { ModeloCompletoService } from "../services/modelo/modelo-completo.service"
 import { IBasicosModel } from "./interfaces/iBasicosModel"
+import { Proceso } from './proceso.model'
 
 export class ModeloCompleto
   implements BasicosGUI, IBasicosModel<ModeloCompletoService> {
@@ -18,29 +19,28 @@ export class ModeloCompleto
 
   constructor(
     public _id?: string,
-    public modelo?: Modelo,
-    public tamano?: Tamano,
-    public color?: Color,
-    public terminado?: Terminado,
-    public laserAlmacen?: Laser,
+    public modelo: Modelo = new Modelo(),
+    public tamano: Tamano = new Tamano(),
+    public color: Color = new Color(),
+    public terminado: Terminado = new Terminado(),
+    public laserAlmacen: Laser = new Laser(),
     public versionModelo?: String,
     public medias: boolean = false,
     public nombreCompleto?: string,
-    public familiaDeProcesos?: FamiliaDeProcesos,
+    public familiaDeProcesos: FamiliaDeProcesos = new FamiliaDeProcesos(),
     public esBaston: boolean = false,
 
     public existencia: number = 0,
     public lotes: Lotes[] = [],
     public stockMinimo: number = 0,
     public stockMaximo: number = 0,
-    // Cualquier proceso fuera de los de la familia de
-    // procesos.
+    
     public procesosEspeciales: Procesos[] = [],
     // Posiblemente es para los costos.
     public espesor?: number,
     public porcentajeDeMerma?: number,
     // Este es solo para modificaciones de las órdenes.
-    public mediasGeneradas: boolean = false // Para ordenamiento
+    public mediasGeneradas: boolean = false, // Para ordenamiento
   ) {}
 
   deserialize(input: this): this {
@@ -101,29 +101,7 @@ export class ModeloCompleto
     return nombreCompleto
   }
 
-  /**
-   *Obtiene la cantidad de lotes que tienen existencia > 0
-   *
-   * @returns {number} El numero de lotes con existencia > 0
-   * @memberof ModeloCompleto
-   */
-  obtenerLotesConExistencia(): number {
-    let contador = 0
-    this.lotes.forEach((lote) => {
-      if (lote.existencia > 0) contador++
-    })
 
-    return contador
-  }
-
-  /**
-   *Almacena la cantidad de produccion en transito de este modelo. 
-   Se tiene que ejecutar `obtenerProduccionEnTransito()` para obtener elste valor. 
-   *
-   * @type {number}
-   * @memberof ModeloCompleto
-   */
-  produccionEnTransito: number = 0
   /**
    *Bandera que senala si se esta cargando la produccion en transito.
    *
@@ -142,7 +120,7 @@ export class ModeloCompleto
     this.comprobarServicio(this._servicio)
     this._servicio.obtenerProduccionEnTransito(this._id).subscribe((total) => {
       this.cargandoProduccionEnTransito = false
-      this.produccionEnTransito = total
+      // this.produccionEnTransito = total
     })
   }
 

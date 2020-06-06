@@ -69,7 +69,7 @@ export class ReportesPersonalizadosAlmacenProduccionService {
     )
   }
 
-  find(termino: string, paginacion: Paginacion, filtros: string = '') {
+  findByTerm(termino: string, paginacion: Paginacion, filtros: string = '') {
     const a = this._preLoaderService.loading(
       'Buscando reportes personalizados con el termino ' + termino
     )

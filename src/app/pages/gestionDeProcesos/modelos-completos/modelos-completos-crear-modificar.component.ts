@@ -1,408 +1,282 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service';
-import { ModeloCompleto } from '../../../models/modeloCompleto.modelo';
-import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model';
-import { Proceso } from 'src/app/models/proceso.model';
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
-import { FormBuilder, Validators, FormArray, AbstractControl, FormGroup } from '@angular/forms';
-import { ProcesoService } from '../../../services/proceso/proceso.service';
-import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-procesos.service';
-import { ModeloService } from '../../../services/modelo/modelo.service';
-import { TamanoService } from '../../../services/modelo/tamano.service';
-import { ColorService } from '../../../services/modelo/color.service';
-import { TerminadoService } from '../../../services/modelo/terminado.service';
-import { Color } from '../../../models/color.models';
-import { Terminado } from '../../../models/terminado.models';
-import { Modelo } from 'src/app/models/modelo.models';
-import { Tamano } from 'src/app/models/tamano.models';
-import { OrganizadorDragAndDropService } from '../../../components/organizador-drag-and-drop/organizador-drag-and-drop.service';
-import { DndObject } from 'src/app/components/organizador-drag-and-drop/models/dndObject.model';
-import { Procesos } from 'src/app/models/procesos.model';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { Component, OnInit } from '@angular/core'
+import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import { ModeloCompleto } from '../../../models/modeloCompleto.modelo'
+import { FamiliaDeProcesos } from '../../../models/familiaDeProcesos.model'
+import { FormBuilder, Validators, FormGroup } from '@angular/forms'
+import { FamiliaDeProcesosService } from '../../../services/proceso/familia-de-procesos.service'
+import { ModeloService } from '../../../services/modelo/modelo.service'
+import { TamanoService } from '../../../services/modelo/tamano.service'
+import { ColorService } from '../../../services/modelo/color.service'
+import { TerminadoService } from '../../../services/modelo/terminado.service'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { Location } from '@angular/common'
+import { ActivatedRoute, Data } from '@angular/router'
+import { DataListComponent } from 'src/app/shared/data-list/data-list.component'
+import { Dato } from 'src/app/shared/data-list/dato.model'
+import { Modelo } from 'src/app/models/modelo.models'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { forkJoin } from 'rxjs'
+import { Laser } from 'src/app/models/laser.models'
 
 @Component({
   selector: 'app-modelos-completos-crear-modificar',
   templateUrl: './modelos-completos-crear-modificar.component.html',
   styles: []
 })
-export class ModelosCompletosCrearModificarComponent extends  CrearModificar_GUI_CRUD<ModeloCompleto, ModeloCompletoService > implements OnInit {
+export class ModelosCompletosCrearModificarComponent implements OnInit {
+  keys = Object.keys
+  cargando = {}
 
-  familias: FamiliaDeProcesos[]
-  procesos: Proceso[]
-  modelos: Modelo[]
-  tamanos: Tamano[]
-  colores: Color[]
-  terminados: Terminado[]
+  familiasDeProcesos: FamiliaDeProcesos[]
 
+  formulario: FormGroup
+  mc: ModeloCompleto = null
 
   constructor(
-    public _elementoService: ModeloCompletoService,
-    public formBuilder: FormBuilder,
-    public _validacionesService: ValidacionesService,
-    public _procesosService: ProcesoService,
-    public _familiaService: FamiliaDeProcesosService,
-    public _procesoService: ProcesoService,
-    public _modeloService: ModeloService,
-    public _tamanoService: TamanoService,
-    public _colorService: ColorService,
-    public _terminadoService: TerminadoService,
-    public _dndService: OrganizadorDragAndDropService<Proceso>
+    private formBuilder: FormBuilder,
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute,
+    private modeloCompletoService: ModeloCompletoService,
+
+    private modeloService: ModeloService,
+    private tamanoService: TamanoService,
+    private colorService: ColorService,
+    private terminadoService: TerminadoService,
+    private familiaDeProcesosService: FamiliaDeProcesosService
   ) {
-    super( _elementoService,
-      formBuilder,
-      _validacionesService)
-    
-    this.cbDatosParaEditar = (elemento: ModeloCompleto )=>{
-      this.cargarDatosParaEditar( elemento )
-      this.cargarProcesos()
-    } 
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
 
-    this.cbCrearFormulario = ()=>{
-
+    if (id) {
+      this.cargando['cargando'] = 'Cargando elemento'
+      this.modeloCompletoService.findById(id).subscribe(mod => {
+        this.mc = mod
+        this.crearFormulario(this.mc)
+        delete this.cargando['cargando']
+        this.cargarDatalists(this.mc)
+      })
+    } else {
       this.crearFormulario()
-      this.limpiarModelo()
     }
-
-    this.configurar();
-
-  }
-  
-
-  ngOnInit() {
-    this.cargarProcesos()
-    this.cargarFamilias()
-    this.cargarLoDemas()
   }
 
+  ngOnInit() {}
 
-  cargarFamilias( ) {
-    this._familiaService.listarTodo = true;
-    this._familiaService.todo().subscribe( familias =>{
-      this.familias = familias;
-    })
-  }
-  cargarProcesos( ) {
-    this._procesoService.listarTodo = true;
-    this._procesoService.todo().subscribe( elemento =>{
-      this.procesos = elemento;
-    })
+  f(c) {
+    return this.formulario.get(c)
   }
 
-  cargarLoDemas() {
-
-    this._tamanoService.listarTodo = true
-    this._tamanoService.todo().subscribe( (elementos)=>{
-      this.tamanos = elementos
-    }  )
-    this._colorService.listarTodo = true
-    this._colorService.todo().subscribe( (elementos)=>{
-      this.colores = elementos
-    }  )
-    this._terminadoService.listarTodo = true
-    this._terminadoService.todo().subscribe( (elementos)=>{
-      this.terminados = elementos
-    }  )
-
-  }
-
-  cargarDatosParaEditar( modeloCompleto: ModeloCompleto){
-    
-    this.modelo_FB.setValue(modeloCompleto.modelo._id)
-    this.setearModelo( modeloCompleto.modelo)
-    this.tamano_FB.setValue(modeloCompleto.tamano._id)
-    this.color_FB.setValue(modeloCompleto.color._id)
-    this.terminado_FB.setValue(modeloCompleto.terminado._id)
-    this.laserAlmacen_FB.get('laser').setValue(modeloCompleto.laserAlmacen.laser)
-    this.versionModelo_FB.setValue(modeloCompleto.versionModelo)
-    this.medias_FB.setValue(modeloCompleto.medias)
-    this.esBaston_FB.setValue(modeloCompleto.esBaston)
-    this.familiaDeProcesos_FB.setValue(modeloCompleto.familiaDeProcesos._id)
-    this.cargarProcesos()
-    this.crearListasdnd( modeloCompleto.familiaDeProcesos)
-
-    this.cargarDatosDeFamilia(modeloCompleto)
-    
-
-     
-
-
-  }
-
-
-  /**
-   *Crea el formulario de registro. 
-   *
-   * @memberof ModelosCompletosCrearModificarComponent
-
-   */
-  crearFormulario( ){
+  crearFormulario(mc: ModeloCompleto = new ModeloCompleto()) {
+    this.mc = mc
     this.formulario = this.formBuilder.group({
-      modelo: ['', [
-        Validators.required
-      ]],
-      tamano: ['', [
-        Validators.required
-      ]],
-      color: ['', [
-        Validators.required
-      ]],
-      terminado: ['', [
-        Validators.required
-      ]],
-      laserAlmacen: this.formBuilder.group({
-        laser:['', []]
-      }),
-      versionModelo: ['', [
-      ]],
-      familiaDeProcesos: ['', [
-        Validators.required
-      ]],
-
-      procesosEspeciales: new FormArray([] ),
-      
-           
-      medias: [false, [
-      ]],
-      esBaston: [false, [
-      ]],
-
-
-
-    });
+      modelo: [mc.modelo._id, [Validators.required]],
+      tamano: [mc.tamano._id, [Validators.required]],
+      color: [mc.color._id, [Validators.required]],
+      terminado: [mc.terminado._id, [Validators.required]],
+      laserAlmacen: [mc.laserAlmacen.laser, []],
+      versionModelo: [mc.versionModelo, []],
+      familiaDeProcesos: [mc.familiaDeProcesos._id, [Validators.required]],
+      medias: [mc.medias, []],
+      esBaston: [mc.esBaston, []]
+    })
   }
 
+  datoModelo: Dato = null
+  datoTamano: Dato = null
+  datoColor: Dato = null
+  datoTerminado: Dato = null
+  datoFamilia: Dato = null
 
-  public get modelo_FB(): AbstractControl {
-    return this.formulario.get('modelo')
-  }
-  public get tamano_FB(): AbstractControl {
-    return this.formulario.get('tamano')
-  }
-  public get color_FB(): AbstractControl {
-    return this.formulario.get('color')
-  }
-  public get terminado_FB(): AbstractControl {
-    return this.formulario.get('terminado')
-  }
-  public get laserAlmacen_FB(): AbstractControl {
-    return this.formulario.get('laserAlmacen')
-  }
-  public get versionModelo_FB(): AbstractControl {
-    return this.formulario.get('versionModelo')
-  }
-  public get medias_FB(): AbstractControl {
-    return this.formulario.get('medias')
-  }
-  public get esBaston_FB(): AbstractControl {
-    return this.formulario.get('esBaston')
-  }
-  public get familiaDeProcesos_FB(): AbstractControl {
-    return this.formulario.get('familiaDeProcesos')
+  cargarDatalists(mc: ModeloCompleto) {
+    this.cargando['modelo'] = 'Cargando modelo'
+    this.cargando['tamano'] = 'Cargando tamano'
+    this.cargando['color'] = 'Cargando color'
+    this.cargando['terminado'] = 'Cargando terminado'
+    this.cargando['familiaDeProcesos'] = 'Cargando familia de procesos'
+    forkJoin([
+      this.modeloService.findById(mc.modelo._id),
+      this.tamanoService.findById(mc.tamano._id),
+      this.colorService.findById(mc.color._id),
+      this.terminadoService.findById(mc.terminado._id),
+      this.familiaDeProcesosService.findById(mc.familiaDeProcesos._id)
+    ]).subscribe(datos => {
+      let modelo = datos[0]
+      this.datoModelo = new Dato()
+      this.datoModelo.leyendaPrincipal = modelo.modelo
+      this.datoModelo.objeto = modelo
+
+      let tamano = datos[1]
+      this.datoTamano = new Dato()
+      this.datoTamano.leyendaPrincipal = tamano.tamano
+      this.datoTamano.objeto = tamano
+
+      let color = datos[2]
+      this.datoColor = new Dato()
+      this.datoColor.leyendaPrincipal = color.color
+      this.datoColor.objeto = color
+
+      let terminado = datos[3]
+      this.datoTerminado = new Dato()
+      this.datoTerminado.leyendaPrincipal = terminado.terminado
+      this.datoTerminado.objeto = terminado
+
+      let familiaDeProcesos = datos[4]
+      this.datoFamilia = new Dato()
+      this.datoFamilia.leyendaPrincipal = familiaDeProcesos.nombre
+      this.datoFamilia.descripcionPrincipal = familiaDeProcesos.observaciones
+
+      delete this.cargando['modelo']
+      delete this.cargando['tamano']
+      delete this.cargando['color']
+      delete this.cargando['terminado']
+      delete this.cargando['familiaDeProcesos']
+    })
   }
 
-
-  public get procesosEspeciales_FB(): FormArray {
-    return <FormArray> this.formulario.get('procesosEspeciales')
-  }
-
-  
-
-
-  buscar( termino: string ){
-    if( termino!== '' ){
-      this.limpiarModelo()
-      this._modeloService.listarTodo = true;
-      this._modeloService.buscar( termino ).subscribe( (modelos)=>{
-        this.modelos = modelos;
-      } )
-    }else{
-      this.limpiarModelo()
+  seleccionar(evento: Dato, campo: string) {
+    const modelo = this.f(campo)
+    if (!evento) {
+      modelo.setValue(null)
+      return
     }
 
+    modelo.setValue((evento.objeto as Modelo)._id)
+    modelo.markAsDirty()
+    modelo.updateValueAndValidity()
   }
 
-  /**
-   *El modelo que se selecciona desde la lista. 
-   *
-   * @type {Modelo}
-   * @memberof ModelosCompletosCrearModificarComponent
+  buscarModelo(evento: Data) {
+    this.f('modelo').markAsTouched()
+    this.f('modelo').updateValueAndValidity()
 
-   */
-  modelo: Modelo = null;
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.modeloService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'modelo'))
+      .subscribe(modelo => {
+        let datos: Dato[] = []
+        modelo.forEach(modelo => {
+          let d = new Dato()
+          d.leyendaPrincipal = modelo.modelo
+          d.objeto = modelo
+          datos.push(d)
+        })
 
-
-  setearModelo( modelo: Modelo ) {
-    this.modelo_FB.setValue( modelo._id )
-    this.modelo = modelo;
-    this.modelos = []
-    this.esconderBuscador = true;
-
+        dataList.terminoBusqueda(datos)
+      })
   }
 
-  limpiarModelo( ){
-    this.modelo = null
-    this.modelo_FB.setValue('')
-    this.modelos = []
-    this.esconderBuscador = false;
+  buscarTamano(evento: Data) {
+    this.f('tamano').markAsTouched()
+    this.f('tamano').updateValueAndValidity()
 
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.tamanoService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'tamano'))
+      .subscribe(tamano => {
+        let datos: Dato[] = []
+        tamano.forEach(tamano => {
+          let d = new Dato()
+          d.leyendaPrincipal = tamano.tamano
+          d.objeto = tamano
+          datos.push(d)
+        })
 
+        dataList.terminoBusqueda(datos)
+      })
   }
 
-  /**
-   *Esconde el input de busqueda. 
-   *
-   * @type {string}
-   * @memberof ModelosCompletosCrearModificarComponent
+  buscarColor(evento: Data) {
+    this.f('color').markAsTouched()
+    this.f('color').updateValueAndValidity()
 
-   */
-  esconderBuscador: boolean = false;
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.colorService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'color'))
+      .subscribe(color => {
+        let datos: Dato[] = []
+        color.forEach(color => {
+          let d = new Dato()
+          d.leyendaPrincipal = color.color
+          d.objeto = color
+          datos.push(d)
+        })
 
-  @ViewChild('inputBusqueda') inputBusqueda: ElementRef
+        dataList.terminoBusqueda(datos)
+      })
+  }
+  buscarTerminado(evento: Data) {
+    this.f('terminado').markAsTouched()
+    this.f('terminado').updateValueAndValidity()
 
-  reiniciarBusqueda( ){
-    this.esconderBuscador = false;
-    this.inputBusqueda.nativeElement.focus();
-    this.inputBusqueda.nativeElement.value = this.modelo.modelo;
-    this.modelo = null;
-    
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.terminadoService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'terminado'))
+      .subscribe(terminado => {
+        let datos: Dato[] = []
+        terminado.forEach(terminado => {
+          let d = new Dato()
+          d.leyendaPrincipal = terminado.terminado
+          d.objeto = terminado
+          datos.push(d)
+        })
+
+        dataList.terminoBusqueda(datos)
+      })
+  }
+  buscarFamilia(evento: Data) {
+    this.f('familiaDeProcesos').markAsTouched()
+    this.f('familiaDeProcesos').updateValueAndValidity()
+
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.familiaDeProcesosService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'nombre'))
+      .subscribe(familiaDeProcesos => {
+        let datos: Dato[] = []
+        familiaDeProcesos.forEach(familiaDeProcesos => {
+          let d = new Dato()
+          ;(d.leyendaPrincipal = familiaDeProcesos.nombre),
+            (d.descripcionPrincipal = familiaDeProcesos.observaciones)
+          d.objeto = familiaDeProcesos
+          datos.push(d)
+        })
+
+        dataList.terminoBusqueda(datos)
+      })
   }
 
+  submit(modelo: any, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+    if (invalid) {
+      e.stopPropagation()
+      e.preventDefault()
+      return
+    }
 
-cargarDatosDeFamilia( modeloCompleto: ModeloCompleto = null ) {
-  this._dndService.limpiar();
-  this._dndService.limpiarListaDeElementos();
+    const l = modelo.laserAlmacen
+    modelo.laserAlmacen = new Laser()
+    modelo.laserAlmacen.laser = l
 
-  console.log( 'cargando datos ')
-    this.procesos.forEach(proceso => {
-      let dnd: DndObject<Proceso> = new DndObject();
-      dnd.setEliminable(true);
-      dnd.setLeyenda(proceso.nombre);
-      dnd.setLeyendaOptativa(proceso.departamento.nombre);
-      dnd.setObjeto(proceso);
-      this._dndService.listaDeElementos.push(dnd);
-  } )
-
-  this._familiaService.buscarPorId( this.familiaDeProcesos_FB.value )
-  .subscribe((familia)=>{
-    this.crearListasdnd(familia)
-   
-    this.cargarProcesosEspecialesDeEdicion( modeloCompleto );
-
-  } )
-
-}
-
-/**
- *Carga los proceos especiales para editarse a sus respectivos
- padres despues de que la familia se termina de cargar. 
- *
- * @param {ModeloCompleto} modeloCompleto
- * @memberof ModelosCompletosCrearModificarComponent
- */
-cargarProcesosEspecialesDeEdicion( modeloCompleto: ModeloCompleto ){
-  if( modeloCompleto ){
-     
-    modeloCompleto.procesosEspeciales.forEach((procesos: Procesos) => {
-      this._dndService
-      .obtenerObjetoPadre(procesos.orden.toString().split('.')[0])
-      .hijos
-        .addOrdenable()
-          .setEliminable( true )
-          .setLeyenda( procesos.proceso.nombre )
-          .setLeyendaOptativa( procesos.proceso.departamento.nombre )
-          .setObjeto( procesos.proceso )
-          .setOrden(procesos.orden)
-
-    });
-  }
-}
-
-crearListasdnd(familia: FamiliaDeProcesos = null) {
-
-  this._dndService.leyendaListaSeleccionable =
-  "Arrastra procesos de la lista para agregarlos.";
-  familia.procesos.forEach(procesos => {
-    let keyArea = procesos.orden.toString().split('.')[0]
-    let dndOBjecto: DndObject<Proceso> = this._dndService
-      .nuevaArea(keyArea)
-      .setPadre()
-        .setEliminable(false)
-        .setLeyenda(procesos.proceso.nombre + ' '+ keyArea) 
-        .setLeyendaOptativa(procesos.proceso.departamento.nombre)
-        .setOrden(procesos.orden)
-        .setObjeto(procesos.proceso);
-    });
-    this._dndService.actualizarPropiedadOrden();
-    // this.actualizarIds(true);
-  }
-
-   /**
-   *Crea y agrega un nuevo formGroup al control departamentos_FB
-   *
-   * @param {string} id El id del departamento que se va a gregar.
-   * @memberof ModelosCompletosCrearModificarComponent
-
-   */
-  agregarElemento(orden: string, proceso: Proceso, procesoPadre: Proceso) {
-    let a: FormGroup = this.crearNuevoFormGroupElemento();
-    a.controls["orden"].setValue(orden);
-    a.controls["proceso"].setValue(proceso);
-    a.controls["procesoPadre"].setValue(procesoPadre);
-    this.procesosEspeciales_FB.push(a);
-  }
-
-  /**
-   *Retorna un nuevo grupo para agregar un id.
-   *
-   * @returns {FormGroup}
-   * @memberof ModelosCompletosCrearModificarComponent
-
-   */
-  crearNuevoFormGroupElemento(): FormGroup {
-    return this.formBuilder.group({
-      orden: [""],
-      proceso: [""],
-      procesoPadre: [""],
-    });
-  }
-
-
-
-  ejecutarActualizadonIds: boolean = true;
-   /**
-   *Actualiza la lista de objetos id. Se ejecuta con el emiter.
-   *
-   * @memberof ModelosCompletosCrearModificarComponent
-
-   */
-  actualizarIds() {
-    if (this.ejecutarActualizadonIds) {
-      this.ejecutarActualizadonIds = false;
-      setTimeout(() => {
-        this.clearFormArray(this.procesosEspeciales_FB);
-        console.log('actualizando ids')
-        this._dndService.obtenerHijosOrdenables().forEach(dndProceso => {
-          this.agregarElemento(dndProceso.orden, dndProceso.objeto, dndProceso.objetoPadre);
-        });
-        this.ejecutarActualizadonIds = true ;
-
-      }, 400);
+    this.cargando['aplicando'] = 'Guardando elemento'
+    if (this.mc._id) {
+      modelo._id = this.mc._id
+      this.modeloCompletoService.update(modelo).subscribe(
+        () => this.location.back(),
+        err => delete this.cargando['aplicando']
+      )
+    } else {
+      this.modeloCompletoService.save(modelo).subscribe(
+        () => {
+          this.crearFormulario()
+          delete this.cargando['aplicando']
+        },
+        () => delete this.cargando['aplicando']
+      )
     }
   }
-
-   /**
-   *Elimina los elementos dentro del formArray de manera
-   recursiva. No se puede hacer de otra manera sin que pierda
-   la relacion. 
-   *
-   * @memberof FamiliaDeProcesosCrearModificarComponent
-   */
-  clearFormArray = (formArray: FormArray) => {
-    while (formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
-  };
-
-
-  
 }

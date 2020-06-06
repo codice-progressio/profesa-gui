@@ -1,0 +1,68 @@
+<ng-container>
+  <div class="row" *ngIf="keys(cargando).length === 0">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center"
+        >
+          <h1 class="">Detalle de <strong>usuario</strong></h1>
+          <h1>{{ detalle.nombre }}</h1>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row animated fadeIn" *ngIf="keys(cargando).length === 0">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="col-12 col-sm-6">
+            <img
+              class="w-50"
+              [src]="detalle.img | imagen"
+              alt="Foto de usuario"
+            />
+          </div>
+
+          <div class="col-12 col-sm-6 col lg-3">
+            <b>email:</b>{{ detalle.email }}
+          </div>
+          <div class="col-12 col-sm-6 col lg-3">
+            <b>permissions:</b>
+            <pre>
+                {{ detalle.permissions | json }}
+
+            </pre>
+          </div>
+
+          <div class="col-12">
+            <a
+              (click)="location.back()"
+              class="btn btn-info"
+              href="javascipt:void(0)"
+              role="button"
+            >
+              <i class="fas fa-arrow-left"></i> Regresar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin-fast"></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+            {{ cargando[key] }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

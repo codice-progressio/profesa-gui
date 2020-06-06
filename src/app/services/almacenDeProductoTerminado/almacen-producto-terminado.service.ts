@@ -11,56 +11,76 @@ import { Observable, throwError } from 'rxjs'
 import { FiltrosModelosCompletos } from '../utilidades/filtrosParaConsultas/FiltrosModelosCompletos'
 import { catchError, map } from 'rxjs/operators'
 import { URL_BASE } from '../../config/config'
+import { Paginacion } from '../../utils/paginacion.util'
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlmacenProductoTerminadoService extends CRUD<
-  ModeloCompleto,
-  AlmacenProductoTerminadoService,
-  FiltrosModelosCompletos<AlmacenProductoTerminadoService>
-> {
-  // base: string = `${URL_SERVICIOS}/modeloCompleto`;
-  // total: number;
-  constructor(
-    public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
-    public _utiliadesService: UtilidadesService,
-    public _preLoaderService: PreLoaderService,
-    public _paginadorService: PaginadorService
-  ) {
-    super(
-      http,
-      _msjService,
-      _utiliadesService,
-      _preLoaderService,
-      _paginadorService
-    )
-    this.base = URL_SERVICIOS + `/modeloCompleto`
-    this.nombreDeDatos.plural = 'modelosCompletos'
-    this.nombreDeDatos.singular = 'modeloCompleto'
-    this.urlBusqueda = '/buscar'
-  }
+export class AlmacenProductoTerminadoService {
+  base: string = `${URL_SERVICIOS}/modeloCompleto`
+  total: number
 
-  todo(): Observable<ModeloCompleto[]> {
-    return this.getAll(
-      undefined,
-      undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
-      ModeloCompleto
-    )
-  }
+  constructor(
+    public msjService: ManejoDeMensajesService,
+    public httpClient: HttpClient
+  ) {}
 
   errFun(err) {
-    this._msjService.err(err)
+    this.msjService.err(err)
     return throwError(err)
   }
-  consolidar(id: string): Observable<ModeloCompleto> {
-    const a = this._preLoaderService.loading('Consolidando lotes')
-    const url = URL_BASE('almacenDeProductoTerminado').concat(`/consolidar/${id}`)
-    return this.http.get<ModeloCompleto>(url).pipe(
+
+  findAll(
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<ModeloCompleto[]> {
+    const url = this.base
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.httpClient.get(url).pipe(
+      map((respuesta: any) => {
+        this.total = respuesta.total
+        return respuesta.modelosCompletos as ModeloCompleto[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findByTerm(
+    termino: string,
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<ModeloCompleto[]> {
+    const url = this.base
+      .concat(`/buscar/termino/${termino}`)
+      .concat('?')
+      .concat(`&desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.httpClient.get(url).pipe(
       map((res: any) => {
-        this._msjService.ok_(res, null, a)
+        this.total = res.total
+        return res.modelosCompletos as ModeloCompleto[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  consolidar(id: string): Observable<ModeloCompleto> {
+    const url = URL_BASE('almacenDeProductoTerminado').concat(
+      `/consolidar/${id}`
+    )
+    return this.httpClient.get<ModeloCompleto>(url).pipe(
+      map((res: any) => {
+        this.msjService.toastCorrecto(res.msj)
         return new ModeloCompleto().deserialize(res.modeloCompleto)
       }),
       catchError(err => this.errFun(err))

@@ -22,14 +22,14 @@ export class ProveedorService extends CRUD<
 > {
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService
   ) {
     super(
       http,
-      _msjService,
+      msjService,
       _utiliadesService,
       _preLoaderService,
       _paginadorService
@@ -57,7 +57,7 @@ export class ProveedorService extends CRUD<
     )
     return this.http.get(url).pipe(
       map((resp: any) => {
-        this._msjService.ok_(resp, null, a)
+        this.msjService.ok_(resp, null, a)
 
         let proveedores: Proveedor[] = resp["proveedores"].map((x) => {
           return new Proveedor().deserialize(x)
@@ -66,7 +66,7 @@ export class ProveedorService extends CRUD<
         return proveedores
       }),
       catchError((err) => {
-        this._msjService.err(err)
+        this.msjService.err(err)
         return throwError(err)
       })
     )

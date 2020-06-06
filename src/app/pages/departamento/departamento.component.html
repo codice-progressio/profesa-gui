@@ -25,7 +25,6 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <app-paginador [paginador]="_paginadorService"></app-paginador>
 
         <table *ngIf="departamentos.length > 0" class="table table-hover ">
           <thead>
@@ -90,11 +89,6 @@
             </tr>
           </tbody>
         </table>
-
-        <app-paginador
-          [paginador]="_paginadorService"
-          *ngIf="!buscando"
-        ></app-paginador>
       </div>
     </div>
   </div>

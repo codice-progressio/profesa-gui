@@ -1,0 +1,97 @@
+tbody {
+  font-size: 12px;
+}
+
+@media print {
+  @page {size: landscape}
+
+  table {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  h3 {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    margin-right: 200px;
+    display: inline;
+  }
+
+  h3 + span  {
+    margin-right: 200px ;
+  }
+
+  th {
+    font-size: 8px;
+  }
+
+  tbody {
+    font-size: 8px;
+  }
+
+  thead {
+    color: black;
+    padding: 0;
+    margin: 0;
+  }
+
+  table.tabla-delgada {
+    font-size: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .table.tabla-delgada tbody tr,
+  .table.tabla-delgada tbody td {
+    height: 8px;
+  }
+
+  .table.tabla-delgada > tbody > tr > td,
+  .table.tabla-delgada > tbody > tr > th,
+  .table.tabla-delgada > tfoot > tr > td,
+  .table.tabla-delgada > tfoot > tr > th,
+  .table.tabla-delgada > thead > tr > td,
+  .table.tabla-delgada > thead > tr > th {
+    padding: 0;
+    vertical-align: 'center';
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  .sin-trabajo-leyenda {
+    color: black !important;
+  }
+
+  .cliente  {
+    width: 150px;
+  }
+  .fecha-pedido {
+    width: 30px;
+  }
+  .paso {
+    width: 15px;
+  }
+  .numero-de-orden {
+    width: 50px;
+  }
+  .modelo-completo {
+    width: 300;
+  }
+  .es-baston {
+    width: 20px;
+  }
+  .marca-laser {
+    width: 150px;
+  }
+  .disponible {
+    width: 150px;
+  }
+
+  .observaciones{
+    width: 300px;
+  }
+}
+

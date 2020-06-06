@@ -1,18 +1,23 @@
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="articulos">
   <table
     id="myTable2"
-    class="table table-bordered tabla-delgada table-hover fixed_header "
+    class="table table-bordered tabla-delgada table-hover fixed_header"
   >
-    <thead class=" font-weight-bold text-center">
-      <tr>
-        <td title="Nombre" (click)="sort('nombre')">Nombre</td>
-        <td title="Presentacion del producto" (click)="sort('presentacion')">
+    <thead class="font-weight-bold text-center">
+      <tr [appOrdenadorDeColumnas]="articulos">
+        <td title="Nombre" data-ordenar="nombre">Nombre</td>
+        <td
+          title="Presententacion del producto como se espera recibir en el almacen"
+          data-ordenar="presentacion"
+        >
           Presentacion
         </td>
-        <td title="Stock minimo" (click)="sort('stockMinimo')">Min</td>
-        <td title="Stock maximo" (click)="sort('stockMaximo')">Max</td>
-        <td title="Existencia" (click)="sort('existencia')">Exi</td>
-        <td title="Material en camino" (click)="sort('enCamino')">EnC</td>
+        <td title="Stock minimo" data-ordenar="stockMinimo">Min</td>
+        <td title="Stock maximo" data-ordenar="stockMaximo">Max</td>
+        <td title="Existencia" data-ordenar="existencia">Exi</td>
+        <td title="Existencia" data-ordenar="existencia">Exi KG</td>
+
+        <td title="Material en camino" data-ordenar="enCamino">EnC</td>
         <td>7</td>
         <td>30</td>
         <td>365</td>
@@ -22,6 +27,24 @@
     </thead>
     <tbody class="">
       <ng-container *ngFor="let reporte of articulos; let i = index">
+        <tr class="encabezado no-print" *ngIf="i > 0 && i % 10 === 0">
+          <td title="Nombre">Nombre</td>
+          <td
+            title="Presententacion del producto como se espera recibir en el almacen"
+          >
+            Presentacion
+          </td>
+          <td title="Stock minimo">Min</td>
+          <td title="Stock maximo">Max</td>
+          <td title="Existencia">Exi</td>
+          <td title="Existencia">Exi KG</td>
+          <td title="Material en camino">EnC</td>
+          <td>7</td>
+          <td>30</td>
+          <td>365</td>
+          <td class="no-print"></td>
+        </tr>
+
         <tr>
           <td
             class="text-center align-items-center text-wrap"
@@ -40,18 +63,33 @@
             title="Stock minimo {{ reporte.stockMinimo }}"
           >
             {{ reporte.stockMinimo | number: '0.0-3' }}
+            <span class="font-10 font-weight-lighter"
+              >({{ reporte.unidad }})</span
+            >
           </td>
           <td
             class="text-center align-items-center fit"
             title="Stock maximo {{ reporte.stockMaximo }}"
           >
             {{ reporte.stockMaximo | number: '0.0-3' }}
+            <span class="font-10 font-weight-lighter"
+              >({{ reporte.unidad }})</span
+            >
           </td>
           <td
             class="text-center align-items-center fit"
             title="Existencia {{ reporte.existencia }}"
           >
             {{ reporte.existencia | number: '0.0-3' }}
+            <span class="font-10 font-weight-lighter"
+              >({{ reporte.unidad }})</span
+            >
+          </td>
+          <td
+            class="text-center align-items-center fit"
+            title="Existencia {{ reporte.existencia }} kg"
+          >
+            {{ reporte.existencia * reporte.kgPorUnidad | number: '0.0-3' }} kg
           </td>
           <td
             class="text-center align-items-center fit"
@@ -114,18 +152,18 @@
               data-toggle="collapse"
               [attr.data-target]="'#a' + i"
             >
-              <i class="fas fa-eye    "></i>
+              <i class="fas fa-eye"></i>
 
               En transito
             </a>
           </td>
         </tr>
 
-        <tr [id]="'a' + i" class=" collapse">
+        <tr [id]="'a' + i" class="collapse">
           <td colspan="20">
             <div class="row">
               <div class="col-12 bg-white">
-                <table class="table  shadow">
+                <table class="table shadow">
                   <thead>
                     <tr>
                       <th>
@@ -135,7 +173,7 @@
                           data-toggle="collapse"
                           [attr.data-target]="'#a' + i"
                         >
-                          <i class="fas fa-eye-slash    "></i>
+                          <i class="fas fa-eye-slash"></i>
 
                           Ocultar
                         </a>
@@ -151,9 +189,14 @@
                     <tr *ngFor="let req of reporte.enTransito">
                       <td></td>
                       <td>{{ req.folio }}</td>
-                      <td>{{ req.cantidad | number: '0.0-3' }}</td>
+                      <td>
+                        {{ req.cantidad | number: '0.0-3' }} ({{
+                          reporte.unidad
+                        }})
+                      </td>
                       <td>
                         {{ req.cantidadEntregadaALaFecha | number: '0.0-3' }}
+                        ({{ reporte.unidad }})
                       </td>
                       <td>{{ req.usuario }}</td>
                       <td>{{ req.createdAt | fecha: 'LLLL' }}</td>

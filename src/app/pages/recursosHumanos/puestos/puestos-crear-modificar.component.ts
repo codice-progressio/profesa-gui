@@ -69,7 +69,7 @@ export class PuestosCrearModificarComponent implements OnInit {
   ngOnInit() {
     this.esteComponente.emit(this)
     this._departamentoService
-      .todoAbstracto(0, 100, Departamento, 'Obteniendo departamentos')
+      .findAll(new Paginacion(100,0,1,'nombre'))
       .subscribe(departamentos => (this.departamentos = departamentos))
     this.crearFormulario()
   }

@@ -14,7 +14,7 @@
         ></app-nivel-urgencia>
       </span>
       <span class=" mr-3">
-        {{ folio.fechaFolio | fecha: "D/MM/Y" }}
+        {{ orden.fechaFolio | fecha: "D/MM/Y" }}
       </span>
       <span class=" mr-3"
         ># {{ orden.numeroDeOrden + 1 }}/{{ linea.ordenes.length }}</span
@@ -54,9 +54,9 @@
             <br />
           </ng-container>
 
-          <span *ngIf="folio.observaciones">{{ folio.observaciones }}</span>
-          <span *ngIf="linea.observaciones">{{ linea.observaciones }}</span>
-          <span *ngIf="orden.observaciones">{{ orden.observaciones }}</span>
+          <span *ngIf="folio?.observaciones">{{ folio.observaciones }}</span>
+          <span *ngIf="linea?.observaciones">{{ linea.observaciones }}</span>
+          <span *ngIf="orden?.observaciones">{{ orden.observaciones }}</span>
         </div>
         <div class="col" style='min-width: 100px;'>
           <qrcode [qrdata]="orden._id" size="100"></qrcode>

@@ -12,7 +12,7 @@ export class Articulo implements Deserializable {
     public almacen?: AlmacenDescripcion,
     public nombre?: string,
     public presentacion?: string,
-    public unidad?: string,
+    public unidad: string = '',
     public kgPorUnidad: number = 0,
     public existencia: number = 0,
     public stockMinimo: number = 0,

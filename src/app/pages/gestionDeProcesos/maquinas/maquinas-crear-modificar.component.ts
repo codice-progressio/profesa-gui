@@ -7,6 +7,7 @@ import { Departamento } from 'src/app/models/departamento.models';
 import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
 import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
 import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-maquinas-crear-modificar',
@@ -50,8 +51,7 @@ export class MaquinasCrearModificarComponent extends CrearModificar_GUI_CRUD<Maq
   }
 
   cargarDepartamentos( ) {
-    this._departamentoService.listarTodo = true;
-    this._departamentoService.todo().subscribe( departamentos =>{
+    this._departamentoService.findAll(new Paginacion(100,0,1,'nombre')).subscribe( departamentos =>{
       this.departamentos = departamentos;
     })
   }

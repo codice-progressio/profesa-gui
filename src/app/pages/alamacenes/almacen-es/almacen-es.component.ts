@@ -5,6 +5,7 @@ import { ArticuloService } from '../../../services/articulo/articulo.service'
 import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
 import { Dato } from 'src/app/shared/data-list/dato.model'
 import * as $ from 'jquery'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 @Component({
   selector: 'app-almacen-es',
   templateUrl: './almacen-es.component.html',
@@ -24,7 +25,7 @@ export class AlmacenESComponent implements OnInit {
     let termino = <string>evento.termino
     this.dataList = <DataListComponent>evento.dataList
     this.articulosService
-      .search(termino, undefined, undefined, Articulo)
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'nombre'))
       .subscribe(articulos => {
         let datos: Dato[] = []
         articulos.forEach((art: Articulo) => {

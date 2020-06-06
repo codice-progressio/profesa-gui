@@ -1,5 +1,9 @@
 {
-    "editor.foldingStrategy": "indentation",
-    "prettier.semi": false,
-    "typescriptHero.imports.insertSemicolons": false
+  "editor.foldingStrategy": "indentation",
+  "prettier.semi": false,
+  "typescriptHero.imports.insertSemicolons": false,
+
+  "workbench.colorCustomizations": {
+    "minimap.background": "#00000055"
+  }
 }

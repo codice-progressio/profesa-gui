@@ -1,19 +1,20 @@
 <div class="table-responsive">
   <table
+    [appOrdenadorDeColumnas]="reportes"
     id="myTable2"
-    class="table table-bordered tabla-delgada table-hover fixed_header "
+    class="table table-bordered tabla-delgada table-hover fixed_header"
   >
-    <thead class=" font-weight-bold text-center">
+    <thead class="font-weight-bold text-center">
       <tr>
-        <td title="Nombre" (click)="sort('nombre')">Nombre</td>
-        <td title="Presentacion del producto" (click)="sort('presentacion')">
+        <td title="Nombre" data-ordenar="nombre">Nombre</td>
+        <td title="Presentacion del producto" data-ordenar="presentacion">
           Presentacion
         </td>
-        <td title="Stock minimo" (click)="sort('stockMinimo')">Min</td>
-        <td title="Stock maximo" (click)="sort('stockMaximo')">Max</td>
-        <td title="Existencia" (click)="sort('existencia')">Exi</td>
-        <td title="Pedido" (click)="sort('pedir')">Ped</td>
-        <td title="Material en camino" (click)="sort('enCamino')">EnC</td>
+        <td title="Stock minimo" data-ordenar="stockMinimo">Min</td>
+        <td title="Stock maximo" data-ordenar="stockMaximo">Max</td>
+        <td title="Existencia" data-ordenar="existencia">Exi</td>
+        <td title="Pedido" data-ordenar="pedir">Ped</td>
+        <td title="Material en camino" data-ordenar="enCamino">EnC</td>
         <td>7</td>
         <td>30</td>
         <td>365</td>
@@ -119,18 +120,18 @@
               data-toggle="collapse"
               [attr.data-target]="'#a' + i"
             >
-              <i class="fas fa-eye    "></i>
+              <i class="fas fa-eye"></i>
 
               En camino
             </a>
           </td>
         </tr>
 
-        <tr [id]="'a' + i" class=" collapse">
+        <tr [id]="'a' + i" class="collapse">
           <td colspan="20">
             <div class="row">
               <div class="col-12 bg-white">
-                <table class="table  shadow">
+                <table class="table shadow">
                   <thead>
                     <tr>
                       <th>
@@ -140,7 +141,7 @@
                           data-toggle="collapse"
                           [attr.data-target]="'#a' + i"
                         >
-                          <i class="fas fa-eye-slash    "></i>
+                          <i class="fas fa-eye-slash"></i>
 
                           Ocultar
                         </a>

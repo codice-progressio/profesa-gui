@@ -28,3 +28,8 @@
   [articulos]="s.reportesAlmacenPrdouccionPersonalizado"
 ></app-r-personalizado-almacen-produccion-imprimible
   >
+
+  <app-programacion-transformacion-imprimir
+    [maquinas]="s.reportesProgramacionTransformacion"
+    *ngIf="s.reportesProgramacionTransformacion"
+  ></app-programacion-transformacion-imprimir>

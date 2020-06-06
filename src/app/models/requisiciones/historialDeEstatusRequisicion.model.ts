@@ -17,9 +17,9 @@ export class HistorialDeEstatusRequisicion implements Deserializable {
       ? new Date(input.fechaModificacion)
       : null
 
-    this.usuarioQueModifica = new Usuario().deserialize(
-      input.usuarioQueModifica
-    )
+    // this.usuarioQueModifica = new Usuario().deserialize(
+    //   input.usuarioQueModifica
+    // )
 
     return this
   }

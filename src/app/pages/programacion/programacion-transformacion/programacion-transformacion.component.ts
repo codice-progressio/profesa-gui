@@ -18,58 +18,76 @@ import {
 } from '@angular/cdk/drag-drop'
 import { forkJoin } from 'rxjs'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
+import { OnDestroy } from '@angular/core'
+import { ParametrosService } from '../../../services/parametros.service'
+import { Departamento } from '../../../models/departamento.models'
 
 @Component({
   selector: 'app-programacion-transformacion',
   templateUrl: './programacion-transformacion.component.html',
   styleUrls: ['./programacion-transformacion.component.css']
 })
-export class ProgramacionTransformacionComponent implements OnInit {
-  ordenes: OrdenParaAsignacion[] =[]
+export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
+  ordenes: OrdenParaAsignacion[] = []
 
   maquinas: Maquina[] = []
 
-  cargandoOrdenes = false
-  cargandoMaquinas = false
+  cargando = {}
+  keys = Object.keys
+
+  // cargandoOrdenes = false
+  // cargandoMaquinas = false
   totalOrdenesAsignadas: number = 0
+
+  ultimaActualizacion: Date
+  intervalo = null
+
+  departamentoTransformacion: Departamento
 
   constructor(
     private msjService: ManejoDeMensajesService,
-    private defaultService: DefaultsService,
     private programacionSerivce: ProgramacionTransformacionService,
-    private maquinaService: MaquinaService
+    private maquinaService: MaquinaService,
+    public parametrosService: ParametrosService
   ) {}
 
   ngOnInit() {
-    this.cargarOrdenes()
-    this.cargarMaquinas()
+    this.actualizarTodo()
+  }
+
+  ngOnDestroy() {}
+
+  actualizarTodo() {
+    this.cargando['parametros'] = 'Obteniendo parametros'
+
+    this.parametrosService.findDepartamentoTransformacion().subscribe(
+      depa => {
+        this.departamentoTransformacion = depa
+        this.cargarOrdenes()
+        this.cargarMaquinas()
+        delete this.cargando['parametros']
+      },
+      _ => delete this.cargando['parametros']
+    )
   }
 
   cargarMaquinas() {
-    this.cargandoMaquinas = true
-    this.defaultService.cargarDefaults().subscribe(
-      d => {
-        this.maquinaService
-          .buscarMaquinasPorDepartamento(d.DEPARTAMENTOS.TRANSFORMACION)
-          .subscribe(
-            maquinas => {
-              this.maquinas = maquinas.sort((a, b) =>
-                a.clave > b.clave ? 1 : -1
-              )
+    this.cargando['maquinas'] = 'Obteniendo maquinas'
+    this.maquinaService
+      .buscarMaquinasPorDepartamento(this.departamentoTransformacion._id)
+      .subscribe(
+        maquinas => {
+          this.maquinas = maquinas.sort((a, b) => (a.clave > b.clave ? 1 : -1))
 
-              this.totalOrdenesAsignadas = this.calcularOrdenesAsignadas(
-                this.maquinas
-              )
-              this.cargandoMaquinas = false
-            },
-            err => (this.cargandoMaquinas = false)
+          this.totalOrdenesAsignadas = this.calcularOrdenesAsignadas(
+            this.maquinas
           )
-      },
-      err => {
-        console.log(err)
-        this.cargandoMaquinas = false
-      }
-    )
+
+          delete this.cargando['maquinas']
+          this.ultimaActualizacion = new Date()
+        },
+        _ => delete this.cargando['maquinas']
+      )
   }
 
   calcularOrdenesAsignadas(maquinas: Maquina[]): number {
@@ -79,18 +97,18 @@ export class ProgramacionTransformacionComponent implements OnInit {
   }
 
   cargarOrdenes() {
-    this.cargandoOrdenes = true
-    this.defaultService.cargarDefaults().subscribe(def => {
-      this.programacionSerivce
-        .ordenesPorAsignar(def.DEPARTAMENTOS.TRANSFORMACION)
-        .subscribe(
-          ordenes => {
-            this.ordenes = ordenes
-            this.cargandoOrdenes = false
-          },
-          err => (this.cargandoOrdenes = false)
-        )
-    })
+    this.cargando['ordenes'] = 'Obteniendo ordenes'
+
+    this.programacionSerivce
+      .ordenesPorAsignar(this.departamentoTransformacion._id)
+      .subscribe(
+        ordenes => {
+          this.ordenes = ordenes
+          delete this.cargando['ordenes']
+          this.ultimaActualizacion = new Date()
+        },
+        _ => delete this.cargando['ordenes']
+      )
   }
 
   orden = 1

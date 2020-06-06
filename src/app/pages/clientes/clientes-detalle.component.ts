@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Cliente } from 'src/app/models/cliente.models';
+import { Component, OnInit, Input } from '@angular/core'
+import { Cliente } from 'src/app/models/cliente.models'
 
 @Component({
   selector: 'app-clientes-detalle',
@@ -7,14 +7,9 @@ import { Cliente } from 'src/app/models/cliente.models';
   styles: []
 })
 export class ClientesDetalleComponent implements OnInit {
+  @Input() detalle: Cliente = null
 
-  constructor() { }
+  @Input() id: string = 'detalleModal'
 
-
-  @Input() cliente: Cliente = null
-
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -1,120 +1,340 @@
-<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"modelo completo"' [esMasculino]='true'>
-    <ng-container *ngIf="mostrarCrearModificar">
+<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="justify-content-between d-flex aling-items-center">
+            <h1 *ngIf="mc?._id">{{ mc.nombreCompleto }}</h1>
+            <h1>
+              <span class="text-success" *ngIf="!mc?._id">
+                <i class="fas fa-plus-square"></i> Crear <b>SKU</b> </span
+              ><span class="text-warning" *ngIf="mc?._id">
+                <i class="fas fa-pen-square"></i> Modificar <b>SKU</b>
+              </span>
+            </h1>
+          </div>
 
-        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+          <hr />
 
-
+          <form [formGroup]="formulario">
             <div class="row">
+              <!-- 
+            =====================================
+             modelo
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input type="hidden" formControlName="modelo" />
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarModelo($event)"
+                    (elementoSeleccionado)="seleccionar($event, 'modelo')"
+                    (touched)="f('modelo').markAsTouched()"
+                    [valid]="vs.valid(f('modelo'))"
+                    [invalid]="vs.invalid(f('modelo'))"
+                    [cargarModifcacion]="datoModelo"
+                  ></app-data-list>
 
-
-                    <div class="form-group " [ngClass]="{'oculto': esconderBuscador}">
-                        <input #inputBusqueda (keyup)='buscar(inputBusqueda.value)' class="form-control" name="" id="" aria-describedby="helpId">
-                        <small id="helpId" class="form-text text-muted">Empieza a escribir para buscar un modelo</small>
-                    </div>
-
-                    <div class="list-group ">
-                        <a (click)="setearModelo(modelo)" *ngFor="let modelo of modelos" class="list-group-item list-group-item-action">{{modelo.modelo}}</a>
-                    </div>
-
-                    <div class="list-group ">
-                        <a (click)="reiniciarBusqueda( inputBusqueda )" *ngIf="modelo" class="list-group-item border-success ">
-                           {{modelo.modelo}}
-                        </a>
-                    </div>
-
-                    <input formControlName="modelo" type="hidden">
-                    <app-validacion-inputs [campo]='modelo_FB' [directo]='true'></app-validacion-inputs>
+                  <small id="helpId" class="form-text text-muted">Modelo</small>
+                  <app-validacion-inputs
+                    [campo]="f('modelo')"
+                  ></app-validacion-inputs>
                 </div>
+              </div>
+              <!-- 
+            =====================================
+             END modelo
+            =====================================
+            -->
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <select formControlName="tamano" class="form-control form-control-lg" name="tamano" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(tamano_FB), 'is-valid':_validacionesService.valid(tamano_FB)}">
-                  <option value="-" disabled selected >Selecciona un tamano de la lista</option>
-                  <option *ngFor="let tamano of tamanos" [value]="tamano._id">{{tamano.tamano}}</option>
-                </select>
-                    <small class="form-text text-muted">Tamano</small>
-                    <app-validacion-inputs [campo]="tamano_FB"></app-validacion-inputs>
+              <!-- 
+            =====================================
+             tamano
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input type="hidden" formControlName="tamano" />
+
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarTamano($event)"
+                    (elementoSeleccionado)="seleccionar($event, 'tamano')"
+                    (touched)="f('tamano').markAsTouched()"
+                    [valid]="vs.valid(f('tamano'))"
+                    [invalid]="vs.invalid(f('tamano'))"
+                    [cargarModifcacion]="datoTamano"
+                  ></app-data-list>
+
+                  <small id="helpId" class="form-text text-muted">Tamano</small>
+                  <app-validacion-inputs
+                    [campo]="f('tamano')"
+                  ></app-validacion-inputs>
                 </div>
+              </div>
+              <!-- 
+            =====================================
+             END tamano
+            =====================================
+            -->
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <select formControlName="color" class="form-control form-control-lg" name="color" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(color_FB), 'is-valid':_validacionesService.valid(color_FB)}">
-                  <option value="-" disabled selected >Selecciona un color de la lista</option>
-                  <option *ngFor="let color of colores" [value]="color._id">{{color.color}}</option>
-                </select>
-                    <small class="form-text text-muted">Color</small>
-                    <app-validacion-inputs [campo]="color_FB"></app-validacion-inputs>
+              <!-- 
+            =====================================
+             color
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input type="hidden" formControlName="color" />
+
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarColor($event)"
+                    (elementoSeleccionado)="seleccionar($event, 'color')"
+                    (touched)="f('color').markAsTouched()"
+                    [valid]="vs.valid(f('color'))"
+                    [invalid]="vs.invalid(f('color'))"
+                    [cargarModifcacion]="datoColor"
+                  ></app-data-list>
+
+                  <small id="helpId" class="form-text text-muted">Color</small>
+                  <app-validacion-inputs
+                    [campo]="f('color')"
+                  ></app-validacion-inputs>
                 </div>
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <select formControlName="terminado" class="form-control form-control-lg" name="terminado" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(terminado_FB), 'is-valid':_validacionesService.valid(terminado_FB)}">
-                  <option value="-" disabled selected >Selecciona un terminado de la lista</option>
-                  <option *ngFor="let terminado of terminados" [value]="terminado._id">{{terminado.terminado}}</option>
-                </select>
-                    <small class="form-text text-muted">Terminado</small>
-                    <app-validacion-inputs [campo]="terminado_FB"></app-validacion-inputs>
+              </div>
+              <!-- 
+            =====================================
+             END color
+            =====================================
+            -->
+              <!-- 
+            =====================================
+             terminado
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input type="hidden" formControlName="terminado" />
+
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarTerminado($event)"
+                    (elementoSeleccionado)="seleccionar($event, 'terminado')"
+                    (touched)="f('terminado').markAsTouched()"
+                    [valid]="vs.valid(f('terminado'))"
+                    [invalid]="vs.invalid(f('terminado'))"
+                    [cargarModifcacion]="datoTerminado"
+                  ></app-data-list>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Terminado</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('terminado')"
+                  ></app-validacion-inputs>
                 </div>
+              </div>
+              <!-- 
+            =====================================
+             END terminado
+            =====================================
+            -->
 
+              <!-- 
+            =====================================
+             laserAlmacen
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('laserAlmacen')),
+                      'is-valid': vs.valid(f('laserAlmacen'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="laserAlmacen"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Marca laser</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('laserAlmacen')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+            =====================================
+             END laserAlmacen
+            =====================================
+            -->
 
+              <!-- 
+            =====================================
+             versionModelo
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('versionModelo')),
+                      'is-valid': vs.valid(f('versionModelo'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="versionModelo"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Version modelo</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('versionModelo')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
 
+              <!-- 
+            =====================================
+             END versionModelo
+            =====================================
+            -->
+
+              <!-- 
+            =====================================
+             medias
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="medias"
+                    formControlName="medias"
+                    [checked]='f("medias").value'
+                  />
+                  <label class="form-check-label" for="medias">
+                    Generar medias ordenes
+                  </label>
+                </div>
+                <app-validacion-inputs
+                  [directo]="true"
+                  [campo]="f('medias')"
+                ></app-validacion-inputs>
+              </div>
+              <!-- 
+            =====================================
+             END medias
+            =====================================
+            -->
+              <!-- 
+            =====================================
+             esBaston
+            =====================================
+            -->
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="esBaston"
+                    formControlName="esBaston"
+                    [checked]='f("esBaston").value'
+                  />
+                  <label class="form-check-label" for="esBaston">
+                    Es material de baston
+                  </label>
+                </div>
+                <app-validacion-inputs
+                  [directo]="true"
+                  [campo]="f('esBaston')"
+                ></app-validacion-inputs>
+              </div>
+              <!-- 
+            =====================================
+             END esBaston
+            =====================================
+            -->
+
+              <!-- 
+            =====================================
+             familiaDeProcesos
+            =====================================
+            -->
+              <div class="col-12 col-lg-6 mt-sm-3 mt-sm-3 mt-md-3 mt-lg-auto">
+                <div class="form-group">
+                  <input type="hidden" formControlName="familiaDeProcesos" />
+
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="buscarFamilia($event)"
+                    (elementoSeleccionado)="
+                      seleccionar($event, 'familiaDeProcesos')
+                    "
+                    (touched)="f('familiaDeProcesos').markAsTouched()"
+                    [valid]="vs.valid(f('familiaDeProcesos'))"
+                    [invalid]="vs.invalid(f('familiaDeProcesos'))"
+                    [cargarModifcacion]="datoModelo"
+                    [cargarModifcacion]="datoFamilia"
+                  ></app-data-list>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Familia de procesos</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('familiaDeProcesos')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+          =====================================
+           END modelo
+          =====================================
+          -->
             </div>
 
             <div class="row">
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <ng-container formGroupName='laserAlmacen'>
-                        <input formControlName="laser" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(laserAlmacen_FB), 'is-valid':_validacionesService.valid(laserAlmacen_FB)}" name="laserAlmacen" id="laserAlmacen" placeholder="Laser">
-                        <small class="form-text text-muted">Ingresa la marca laser</small>
-                        <app-validacion-inputs [campo]="laserAlmacen_FB"></app-validacion-inputs>
-                    </ng-container>
-                </div>
+              <div class="col-12">
+                <br />
+                <br />
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
-                    <input formControlName="versionModelo" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(versionModelo_FB), 'is-valid':_validacionesService.valid(versionModelo_FB)}" name="versionModelo" id="versionModelo" placeholder="Version">
-                    <small class="form-text text-muted">Ingresa la version del modelo</small>
-                    <app-validacion-inputs [campo]="versionModelo_FB"></app-validacion-inputs>
-                </div>
-
-                <div class="custom-control custom-checkbox col-12 col-md-4 col-lg-3">
-                    <input formControlName="medias" type="checkbox" class="custom-control-input" id='medias'>
-                    <label class="custom-control-label" for="medias">Generar como medias ordenes</label>
-                </div>
-                <div class="custom-control custom-checkbox col-12 col-md-4 col-lg-3">
-                    <input formControlName="esBaston" type="checkbox" class="custom-control-input" id='esBaston'>
-                    <label class="custom-control-label" for="esBaston">Es modelo de baston.</label>
-                </div>
-
+                <button
+                  (click)="submit(formulario.value, formulario.invalid, $event)"
+                  class="text-white btn btn-success mr-3 active"
+                  role="button"
+                  [disabled]="keys(cargando).length > 0"
+                >
+                  <i class="fas fa-save    "></i> Guardar
+                </button>
+                <a
+                  (click)="location.back()"
+                  class="text-white btn btn-danger active"
+                  role="button"
+                >
+                  <i class="fas fa-times    "></i> Cancelar</a
+                >
+              </div>
             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-
-            <hr>
-            <div class="row">
-                <div class="col-12">
-                    <h2> Familia de procesos </h2>
-
-                </div>
-
-                <div class="form-group col-12 col-md-4 col-lg-3 ">
-                    <select (change)='cargarDatosDeFamilia()' formControlName="familiaDeProcesos" class="form-control form-control-lg" name="familiaDeProcesos" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(familiaDeProcesos_FB), 'is-valid':_validacionesService.valid(familiaDeProcesos_FB)}">
-                    <option value="-" disabled selected >Selecciona un familiaDeProcesos de la lista</option>
-                    <option  *ngFor="let familiaDeProcesos of familias" [value]="familiaDeProcesos._id">{{familiaDeProcesos.nombre}}</option>
-                  </select>
-                    <small class="form-text text-muted">Familia de procesos</small>
-                    <app-validacion-inputs [campo]="familiaDeProcesos_FB"></app-validacion-inputs>
-                </div>
-
-            </div>
-
-            <br>
-
-
-
-            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
-            <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
-            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
-        </button>
-
-        </form>
-
-    </ng-container>
-</app-crear-modificar>
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center text-center"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin-fast   "></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -8,7 +8,7 @@ export class Puesto_MotivoDeCambio implements Deserializable {
   ) {}
   deserialize(input: this): this {
     Object.assign(this, input)
-    this.usuario = new Usuario().deserialize(input.usuario)
+    this.usuario = input.usuario as Usuario
     this.fecha = new Date(input.fecha)
     return this
   }

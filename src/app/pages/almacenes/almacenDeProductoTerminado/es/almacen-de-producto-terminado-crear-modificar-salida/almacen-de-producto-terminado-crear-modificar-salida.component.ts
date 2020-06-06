@@ -1,36 +1,39 @@
-import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core"
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import {
   FormGroup,
   FormBuilder,
   Validators,
   AbstractControl
-} from "@angular/forms"
-import { SalidasLotes } from "../../../../../models/almacenProductoTerminado/salidasLote.model"
-import { Cliente } from "src/app/models/cliente.models"
-import { ValidacionesService } from "../../../../../services/utilidades/validaciones.service"
-import { ClienteService } from "../../../../../services/cliente/cliente.service"
-import { ModeloCompleto } from "src/app/models/modeloCompleto.modelo"
+} from '@angular/forms'
+import { SalidasLotes } from '../../../../../models/almacenProductoTerminado/salidasLote.model'
+import { Cliente } from 'src/app/models/cliente.models'
+import { ValidacionesService } from '../../../../../services/utilidades/validaciones.service'
+import { ClienteService } from '../../../../../services/cliente/cliente.service'
+import { ModeloCompleto } from 'src/app/models/modeloCompleto.modelo'
+import { ModeloCompletoService } from '../../../../../services/modelo/modelo-completo.service'
+import { Location } from '@angular/common'
+import { ActivatedRoute, Data } from '@angular/router'
+import { DataListComponent } from 'src/app/shared/data-list/data-list.component'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { Dato } from 'src/app/shared/data-list/dato.model'
+import { LoteService } from '../../../../../services/almacenDeProductoTerminado/lote.service'
+import { Lotes } from 'src/app/models/almacenProductoTerminado/lotes.model'
 
 @Component({
-  selector: "app-almacen-de-producto-terminado-crear-modificar-salida",
+  selector: 'app-almacen-de-producto-terminado-crear-modificar-salida',
   templateUrl:
-    "./almacen-de-producto-terminado-crear-modificar-salida.component.html",
+    './almacen-de-producto-terminado-crear-modificar-salida.component.html',
   styles: []
 })
 export class AlmacenDeProductoTerminadoCrearModificarSalidaComponent
   implements OnInit {
-  formulario: FormGroup
+  keys = Object.keys
+  cargando = {}
 
+  formulario: FormGroup
   inputClienteNg: Cliente
   clientes: Cliente[] = []
-
   clienteSeleccionado: Cliente
-
-  @Output() loteGuardado = new EventEmitter<{
-    idLote: string
-    salida: SalidasLotes
-  }>()
-  @Output() cancelar = new EventEmitter<null>()
 
   /**
    *Para obtener el modelo completo.
@@ -38,24 +41,37 @@ export class AlmacenDeProductoTerminadoCrearModificarSalidaComponent
    * @type {ModeloCompleto}
    * @memberof AlmacenDeProductoTerminadoCrearModificarSalidaComponent
    */
-  @Input() modeloCompleto: ModeloCompleto
+  modeloCompleto: ModeloCompleto
 
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
-    public _clienteService: ClienteService
-  ) {
+    public clienteService: ClienteService,
+    public modComSer: ModeloCompletoService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute,
+    public loteService: LoteService
+  ) {}
+
+  ngOnInit() {
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    this.cargando['cargando'] = 'Cargando sku para salida'
+    this.modComSer.findById(id).subscribe(mc => {
+      this.modeloCompleto = mc
+
+      delete this.cargando['cargando']
+    })
+
     this.crearFormulario()
   }
 
-  ngOnInit() {}
-
   crearFormulario() {
     this.formulario = this.fb.group({
-      idLote: ["", [Validators.required]],
-      cliente: ["", [Validators.required]],
+      idLote: ['', [Validators.required]],
+      cliente: ['', [Validators.required]],
       cantidad: [
-        "",
+        '',
         [
           this.vs.onlyIntegers,
           this.vs.numberValidator,
@@ -63,98 +79,43 @@ export class AlmacenDeProductoTerminadoCrearModificarSalidaComponent
           Validators.min(1)
         ]
       ],
-      observaciones: ["", []]
+      observaciones: ['', []]
     })
   }
 
-  guardar(salidaLote: SalidasLotes, invalid: boolean, e) {
+  submit(salidaLote: SalidasLotes, invalid: boolean, e) {
     e.preventDefault()
 
     if (invalid) return
-
-    let idLote = this.idLote_FB.value
-    this.limpiar()
-    this.loteGuardado.emit({
-      idLote: idLote,
-      salida: salidaLote
-    })
-  }
-
-  cancelarGuardado() {
-    this.cancelar.emit(null)
-    this.limpiar()
-  }
-
-  limpiar() {
-    this.crearFormulario()
-    this.inputClienteNg = null
+    this.cargando['guardar'] = 'Registrando salida'
+    this.loteService
+      .registrarSalida(
+        salidaLote,
+        this.f('idLote').value,
+        this.modeloCompleto._id
+      )
+      .subscribe(
+        () => {
+          delete this.cargando['guardar']
+          this.ngOnInit()
+        },
+        err => delete this['guardar']
+      )
   }
 
   esperando = false
   intervaloDeBusqueda: any = null
-  terminoDeBusqueda: string = ""
-  cargarClientes(termino: string) {
-    let terminoLimpio = termino.trim()
-    if (!terminoLimpio) return
-
-    this.esperando = true
-    this.terminoDeBusqueda = termino
-    if (!this.intervaloDeBusqueda) {
-      this.crearIntervalo()
-    }
-  }
-
-  crearIntervalo() {
-    this.intervaloDeBusqueda = setInterval(() => {
-      if (!this.esperando) {
-        clearInterval(this.intervaloDeBusqueda)
-        this.buscarTermino(this.terminoDeBusqueda)
-      }
-
-      this.esperando = false
-    }, 200)
-  }
+  terminoDeBusqueda: string = ''
 
   buscarTermino(termino: string) {
-    this._clienteService.buscar(termino).subscribe((clientes) => {
+    this.clienteService.findByTerm(termino).subscribe(clientes => {
       this.clientes = clientes
       this.intervaloDeBusqueda = null
     })
   }
 
-  limpiarCliente(inputCliente) {
-    this.cliente_FB.setValue(null)
-    this.clientes = []
-    inputCliente.value = ""
-    this.clienteSeleccionado = null
-  }
-
-  clienteObtenerId(nombre: string) {
-    if (nombre.trim() !== "") {
-      let clienteSeleccionado: Cliente = this.clientes.filter((x) => {
-        return x.nombre === nombre.trim()
-      })[0]
-
-      if (clienteSeleccionado) {
-        this.clienteSeleccionado = clienteSeleccionado
-        this.cliente_FB.setValue(clienteSeleccionado._id)
-      }
-    }
-  }
-
-  get cliente_FB(): AbstractControl {
-    return this.formulario.get("cliente")
-  }
-
-  get cantidad_FB(): AbstractControl {
-    return this.formulario.get("cantidad")
-  }
-  get observaciones_FB(): AbstractControl {
-    return this.formulario.get("observaciones")
-  }
-
-  get idLote_FB(): AbstractControl {
-    return this.formulario.get("idLote")
+  f(c): AbstractControl {
+    return this.formulario.get(c)
   }
 
   /**
@@ -164,6 +125,39 @@ export class AlmacenDeProductoTerminadoCrearModificarSalidaComponent
    * @memberof AlmacenDeProductoTerminadoCrearModificarSalidaComponent
    */
   seleccionarLote(id: string) {
-    this.idLote_FB.setValue(id)
+    this.f('idLote').setValue(id)
+  }
+
+  buscar(evento: Data) {
+    this.f('cliente').markAsTouched()
+    this.f('cliente').updateValueAndValidity()
+
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.clienteService
+      .findByTerm(termino, new Paginacion(30, 0, 1, 'modelo'))
+      .subscribe(modelo => {
+        let datos: Dato[] = []
+        modelo.forEach(cliente => {
+          let d = new Dato()
+          d.leyendaPrincipal = cliente.nombre
+          d.objeto = cliente
+          datos.push(d)
+        })
+
+        dataList.terminoBusqueda(datos)
+      })
+  }
+
+  seleccionar(evento: Dato) {
+    const clienteF = this.f('cliente')
+    if (!evento) {
+      clienteF.setValue(null)
+      return
+    }
+
+    clienteF.setValue((evento.objeto as Cliente)._id)
+    clienteF.markAsDirty()
+    clienteF.updateValueAndValidity()
   }
 }

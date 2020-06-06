@@ -11,10 +11,10 @@
       <i class="fas fa-arrow-circle-left "></i>
     </a>
   </li>
-  <li class="page-item disabled text-center" style="width: 100px;">
+  <li class="page-item disabled text-center" style="min-width: 100px;">
     <span class="page-link " aria-label="Next ">
       <ng-container *ngIf="cargando; else cargaTemplate">
-        <i class="fas fa-spinner  fa-spin  "></i>
+        <i class="fas fa-sync  fa-spin  "></i>
       </ng-container>
       <ng-template #cargaTemplate>
         {{ actual }}
@@ -43,7 +43,7 @@
     title="Ver {{ x }} elementos por pagina"
     class="page-item pointer"
     [ngClass]="{ active: elementosPorPagina === x }"
-    (click)="cambiarElementosPorPagina(x)"
+    (click)="cambiarElementosPorPagina(x, true)"
   >
     <a href="javascript:void(0)" class="page-link ">{{ x }}</a>
   </li>

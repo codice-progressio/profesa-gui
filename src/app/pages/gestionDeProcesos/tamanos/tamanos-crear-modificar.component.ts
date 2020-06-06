@@ -1,70 +1,84 @@
-import { Component, OnInit } from '@angular/core';
-import { TamanoService } from '../../../services/modelo/tamano.service';
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
-import { Tamano } from 'src/app/models/tamano.models';
-import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { Component, OnInit } from '@angular/core'
+import { Tamano } from 'src/app/models/tamano.models'
+import {
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  FormGroup
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
+import { TamanoService } from 'src/app/services/modelo/tamano.service'
 
 @Component({
   selector: 'app-tamanos-crear-modificar',
   templateUrl: './tamanos-crear-modificar.component.html',
   styles: []
 })
-export class TamanosCrearModificarComponent  extends CrearModificar_GUI_CRUD<Tamano, TamanoService > implements OnInit {
+export class TamanosCrearModificarComponent implements OnInit {
+  formulario: FormGroup
+
+  cargando = {}
+  tamano: Tamano
+  keys = Object.keys
 
   constructor(
-    public _elementoService: TamanoService,
+    public skuService: TamanoService,
     public formBuilder: FormBuilder,
-    public _validacionesService: ValidacionesService,) { 
-      super( _elementoService,
-        formBuilder,
-        _validacionesService)
-      
-      this.cbDatosParaEditar = (tamano: Tamano)=>{
-        this.cargarDatosParaEditar( tamano )
-      } 
-  
-      this.cbCrearFormulario = ()=>{
-        this.crearFormulario()
-      }
-  
-      this.configurar();
-  
-    }
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    if (id) {
+      this.cargando['cargando'] = 'Buscando tamano'
+      this.skuService.findById(id).subscribe(
+        tamano => {
+          this.crearFormulario(tamano)
+          this.tamano = tamano
+          delete this.cargando['cargando']
+        },
+        () => this.location.back()
+      )
+    } else {
+      this.crearFormulario()
+    }
   }
 
-  cargarDatosParaEditar( tamano: Tamano) {
-    this.tamano_FB.setValue( tamano.tamano )
-    this.estandar_FB.setValue( tamano.estandar )
-  }
-
-  /**
-   *Crea el formulario de registro. 
-   *
-   * @memberof MaquinasCrearModificarComponent
-   */
-  crearFormulario( ){
+  crearFormulario(tamano: Tamano = new Tamano()) {
     this.formulario = this.formBuilder.group({
-      tamano: ['', [
-        Validators.required
-      ]],
-      estandar: ['', [
-        Validators.required,
-        this._validacionesService.onlyIntegers,
-        Validators.min(1)
-      ]],
-
-    });
+      tamano: [tamano.tamano, [Validators.required]]
+    })
   }
 
-  public get tamano_FB(): AbstractControl {
-    return this.formulario.get('tamano')
-  }
-  public get estandar_FB(): AbstractControl {
-    return this.formulario.get('estandar')
+  f(c: string): AbstractControl {
+    return this.formulario.get(c)
   }
 
+  submit(tamano: Tamano, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
 
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
+    this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
+
+    if (this.tamano) {
+      tamano._id = this.tamano._id
+      this.skuService.update(tamano).subscribe(() => this.location.back())
+    } else {
+      this.skuService.save(tamano).subscribe(() => {
+        this.crearFormulario()
+        delete this.cargando['guardando']
+      })
+    }
+  }
 }

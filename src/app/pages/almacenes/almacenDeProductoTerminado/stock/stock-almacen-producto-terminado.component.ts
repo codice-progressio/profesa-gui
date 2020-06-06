@@ -46,22 +46,22 @@ export class StockAlmacenProductoTerminadoComponent implements OnInit {
   }
 
   cargarModelos() {
-    this._almacenDeProductoTerminadoService
-      .filtros(
-        new FiltrosModelosCompletos(this._almacenDeProductoTerminadoService)
-      )
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .servicio.todo()
-      .subscribe((mcs) => {
-        mcs.map((mc) => {
-          mc._servicio = this._modeloCompletoService
-        })
-        this.modelosCompletos = mcs
-        this._paginadorService.activarPaginador(
-          this._almacenDeProductoTerminadoService.total
-        )
-      })
+    // this._almacenDeProductoTerminadoService
+    //   .filtros(
+    //     new FiltrosModelosCompletos(this._almacenDeProductoTerminadoService)
+    //   )
+    //   .setDesde(this._paginadorService.desde)
+    //   .setLimite(this._paginadorService.limite)
+    //   .servicio.todo()
+    //   .subscribe((mcs) => {
+    //     mcs.map((mc) => {
+    //       mc._servicio = this._modeloCompletoService
+    //     })
+    //     this.modelosCompletos = mcs
+    //     this._paginadorService.activarPaginador(
+    //       this._almacenDeProductoTerminadoService.total
+    //     )
+    //   })
   }
 
   modelosCompletos: ModeloCompleto[] = []
@@ -83,14 +83,14 @@ export class StockAlmacenProductoTerminadoComponent implements OnInit {
     }
 
     this.buscando = true
-    this._almacenDeProductoTerminadoService
-      .search(termino, undefined, undefined, ModeloCompleto)
-      .subscribe((mcs) => {
-        mcs.map((mc) => {
-          mc._servicio = this._modeloCompletoService
-        })
-        this.modelosCompletos = mcs
-      })
+    // this._almacenDeProductoTerminadoService
+    //   .search(termino, undefined, undefined, ModeloCompleto)
+    //   .subscribe((mcs) => {
+    //     mcs.map((mc) => {
+    //       mc._servicio = this._modeloCompletoService
+    //     })
+    //     this.modelosCompletos = mcs
+    //   })
   }
 
   /**

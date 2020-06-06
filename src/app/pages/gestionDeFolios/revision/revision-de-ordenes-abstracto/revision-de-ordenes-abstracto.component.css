@@ -1,0 +1,5 @@
+textarea:disabled {
+  background-color: rgb(235, 235, 235);
+  color: #555;
+  border: none;
+}

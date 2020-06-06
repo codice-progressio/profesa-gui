@@ -1,73 +1,118 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { Cliente } from "src/app/models/cliente.models"
-import { ClienteService } from "src/app/services/cliente/cliente.service"
-import { Laser } from "../../models/laser.models"
-import { ManejoDeMensajesService } from "src/app/services/utilidades/manejo-de-mensajes.service"
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Cliente } from 'src/app/models/cliente.models'
+import { ClienteService } from 'src/app/services/cliente/cliente.service'
+import { Laser } from '../../models/laser.models'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 import {
   FormGroup,
   Validators,
   FormBuilder,
   AbstractControl,
   FormArray
-} from "@angular/forms"
-import { ValidacionesService } from "src/app/services/utilidades/validaciones.service"
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
+import { FormControl } from '@angular/forms'
 
 @Component({
-  selector: "app-clientes-crear-modificar",
-  templateUrl: "./clientes-crear-modificar.component.html",
+  selector: 'app-clientes-crear-modificar',
+  templateUrl: './clientes-crear-modificar.component.html',
   styles: []
 })
 export class ClientesCrearModificarComponent implements OnInit {
-  cliente: Cliente
-
-  @Output() esteComponente = new EventEmitter<this>()
-  @Output() cancelado = new EventEmitter<any>()
-  @Output() guardado = new EventEmitter<any>()
-
   formulario: FormGroup
-  animando: boolean = false
+
+  cargando = {}
+  cliente: Cliente
+  keys = Object.keys
 
   constructor(
-    public _clienteService: ClienteService,
-    public _msjService: ManejoDeMensajesService,
+    public skuService: ClienteService,
     public fb: FormBuilder,
-    public vs: ValidacionesService
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute,
+    public msjService: ManejoDeMensajesService
   ) {}
 
   ngOnInit() {
-    this.crearFormulario()
-    this.esteComponente.emit(this)
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    if (id) {
+      this.cargando['cargando'] = 'Buscando cliente'
+      this.skuService.findById(id).subscribe(
+        cliente => {
+          this.crearFormulario(cliente)
+          this.cliente = cliente
+          delete this.cargando['cargando']
+        },
+        () => this.location.back()
+      )
+    } else {
+      this.crearFormulario()
+    }
   }
 
-  crearOModificar(cliente: Cliente = new Cliente()) {
-    this.cliente = cliente
+  crearFormulario(cliente: Cliente = new Cliente()) {
+    this.formulario = this.fb.group({
+      nombre: [cliente.nombre, [Validators.required]],
+      sae: [cliente.sae, [Validators.required]],
+      laserados: this.fb.array(
+        cliente.laserados.map(x => new FormControl(x.laser))
+      )
+    })
+  }
 
-    this.crearFormulario()
+  f(c: string): AbstractControl {
+    return this.formulario.get(c)
+  }
 
-    this.nombre_FB().setValue(cliente.nombre)
-    this.sae_FB().setValue(cliente.sae)
+  fa(c: string): FormArray {
+    return this.formulario.get(c) as FormArray
+  }
 
-    if (cliente.laserados) {
-      cliente.laserados.forEach((laser) => {
-        let laserFB: FormGroup = this.crearGrupoDeLaserados()
-        laserFB.get("laser").setValue(laser.laser)
-        this.laserados_FB.push(laserFB)
+  submit(cliente: any, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
+    this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
+    let clienteBueno = new Cliente()
+
+    clienteBueno.sae = cliente.sae
+    clienteBueno.nombre = cliente.nombre
+    clienteBueno.laserados = cliente.laserados.map(x => new Laser(null, x))
+
+    if (this.cliente) {
+      clienteBueno._id = this.cliente._id
+      this.skuService.update(clienteBueno).subscribe(() => this.location.back())
+    } else {
+      this.skuService.save(clienteBueno).subscribe(() => {
+        this.crearFormulario()
+        delete this.cargando['guardando']
       })
     }
   }
 
-  crearNuevaMarcaLaser(nombre: string) {
-    if (nombre.trim().length === 0) return
+  crearNuevaMarcaLaser(n: string) {
+    let nombre = n.trim()
+    if (!n) {
+      this.msjService.toastErrorMensaje('Marca laser no puede estar vacio')
+      return
+    }
 
-    let nl = this.crearGrupoDeLaserados()
-    nl.get("laser").setValue(nombre)
-    this.laserados_FB.push(nl)
+    this.fa('laserados').push(new FormControl(nombre))
   }
 
   eliminarMarcaLaser(i: number) {
     let cb = () => {
-      this.laserados_FB.removeAt(i)
-      this._msjService.correcto("Se elimino la marca laser.")
+      this.fa('laserados').removeAt(i)
     }
 
     if (this.cliente) {
@@ -76,72 +121,9 @@ export class ClientesCrearModificarComponent implements OnInit {
        informacion dependiente de el. Estos datos ya no se podran recuperar y
        tendras que registrarlos de nuevo.`
 
-      this._msjService.confirmacionDeEliminacion(msj, cb)
+      this.msjService.confirmacionDeEliminacion(msj, cb)
     } else {
       cb()
     }
-  }
-
-  guardar() {
-    if (this.formulario.invalid) return
-
-    let c: Cliente = <Cliente>this.formulario.value
-
-    // Si hay un id lo agregamos.
-    if (this.cliente._id) c._id = this.cliente._id
-
-    let cb = (cliente) => {
-      this.animando = true
-      setTimeout(() => {
-        this.animando = false
-        this.guardado.emit()
-        this.cliente = null
-      }, 500)
-    }
-
-    if (this.cliente._id) this._clienteService.modificar(c).subscribe(cb)
-    else this._clienteService.guardar(c).subscribe(cb)
-  }
-
-  cancelar() {
-    this.animando = true
-    setTimeout(() => {
-      this.cliente = null
-      this.animando = false
-      this.cancelado.emit()
-    }, 500)
-  }
-
-  crearFormulario() {
-    this.formulario = this.fb.group({
-      nombre: ["", [Validators.required]],
-      sae: ["", [Validators.required]],
-      laserados: this.fb.array([])
-    })
-  }
-
-  crearGrupoDeLaserados() {
-    return this.fb.group({
-      laser: [],
-      imagenes: this.fb.array([])
-    })
-  }
-
-  public nombre_FB(): AbstractControl {
-    return this.formulario.get("nombre")
-  }
-  public sae_FB(): AbstractControl {
-    return this.formulario.get("sae")
-  }
-  public get laserados_FB(): FormArray {
-    return <FormArray>this.formulario.get("laserados")
-  }
-
-  public laser_FB(i: number): AbstractControl {
-    return this.laserados_FB.at(i).get("laser")
-  }
-
-  public imagenes_FB(i: number): FormArray {
-    return <FormArray>this.laserados_FB.at(i).get("imagenes")
   }
 }

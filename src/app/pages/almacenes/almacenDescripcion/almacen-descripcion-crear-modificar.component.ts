@@ -1,92 +1,91 @@
-import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core"
-import { AlmacenDescripcion } from "../../../models/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.model"
-import { ValidacionesService } from "../../../services/utilidades/validaciones.service"
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import { AlmacenDescripcion } from '../../../models/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.model'
+import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
 import {
   FormGroup,
   FormBuilder,
   Validators,
   AbstractControl
-} from "@angular/forms"
+} from '@angular/forms'
+import { AlmacenDescripcionService } from 'src/app/services/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.service'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 
 @Component({
-  selector: "app-almacen-descripcion-crear-modificar",
-  templateUrl: "./almacen-descripcion-crear-modificar.component.html",
+  selector: 'app-almacen-descripcion-crear-modificar',
+  templateUrl: './almacen-descripcion-crear-modificar.component.html',
   styles: []
 })
 export class AlmacenDescripcionCrearModificarComponent implements OnInit {
-  @Output() guardar = new EventEmitter<AlmacenDescripcion>()
-  @Output() modificar = new EventEmitter<AlmacenDescripcion>()
-  @Output() esteComponente = new EventEmitter<
-    AlmacenDescripcionCrearModificarComponent
-  >()
-  @Input() almacenDescripcion: AlmacenDescripcion = null
-
   formulario: FormGroup
 
-  constructor(public fb: FormBuilder, public _vs: ValidacionesService) {
-  }
-  
+  cargando = {}
+  almacenDescripcion: AlmacenDescripcion
+  keys = Object.keys
+
+  constructor(
+    public almacenDescripcionService: AlmacenDescripcionService,
+    public formBuilder: FormBuilder,
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
+  ) {}
+
   ngOnInit() {
-    this.esteComponente.emit(this)
-    this.crearFormulario()
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    if (id) {
+      this.cargando['cargando'] = 'Buscando almacendescripcion'
+      this.almacenDescripcionService.findById(id).subscribe(
+        almacendescripcion => {
+          this.crearFormulario(almacendescripcion)
+          delete this.cargando['cargando']
+        },
+        () => this.location.back()
+      )
+    } else {
+      this.crearFormulario()
+    }
   }
 
-  cargarDatos() {
-
-    let interval = setInterval( ()=>{
-      
-      if( this.almacenDescripcion ){
-        this.nombre_FB.setValue(this.almacenDescripcion.nombre)
-        this.descripcion_FB.setValue(this.almacenDescripcion.descripcion)
-        this.ubicacion_FB.setValue(this.almacenDescripcion.ubicacion)
-
-        clearInterval(interval)
-
-      }
-    } , 100 )
-    
-
-  }
-
-  crearFormulario() {
-    this.formulario = this.fb.group({
-      nombre: ["", [Validators.required]],
-      descripcion: ["", []],
-      ubicacion: ["", []]
+  crearFormulario(almaDes: AlmacenDescripcion = new AlmacenDescripcion()) {
+    this.almacenDescripcion = almaDes
+    this.formulario = this.formBuilder.group({
+      nombre: [almaDes.nombre, [Validators.required]],
+      descripcion: almaDes.descripcion,
+      ubicacion: almaDes.ubicacion
     })
   }
 
-  get nombre_FB(): AbstractControl {
-    return this.formulario.get("nombre")
-  }
-  get descripcion_FB(): AbstractControl {
-    return this.formulario.get("descripcion")
-  }
-  get ubicacion_FB(): AbstractControl {
-    return this.formulario.get("ubicacion")
+  f(c: string): AbstractControl {
+    return this.formulario.get(c)
   }
 
-  submit(ad: AlmacenDescripcion, invalid: boolean, e) {
-    e.preventDefault()
-    if (invalid) return
+  submit(almacendescripcion: AlmacenDescripcion, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
 
-    if (this.almacenDescripcion._id) {
-      
-      ad._id = this.almacenDescripcion._id
-      this.modificar.emit(ad)
-    }else{
-
-      this.guardar.emit(ad)
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
     }
 
-    this.limpiar()
-  }
+    this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
 
-  limpiar() {
-    this.crearFormulario()
-  }
-
-  cancelar() {
-    this.limpiar()
+    if (this.almacenDescripcion._id) {
+      almacendescripcion._id = this.almacenDescripcion._id
+      this.almacenDescripcionService.update(almacendescripcion).subscribe(
+        () => this.location.back(),
+        err => delete this.cargando['guardando']
+      )
+    } else {
+      this.almacenDescripcionService.save(almacendescripcion).subscribe(() => {
+        this.crearFormulario()
+        delete this.cargando['guardando']
+      }, 
+      err=> delete this.cargando['guardando']
+      )
+    }
   }
 }

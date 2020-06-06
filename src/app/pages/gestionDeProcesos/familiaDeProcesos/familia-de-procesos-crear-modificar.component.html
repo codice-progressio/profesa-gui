@@ -1,174 +1,256 @@
-<app-crear-modificar
-  [mostrarCrearModificar]="mostrarCrearModificar"
-  [crearModificar]="crearModificar"
-  [esModificacion]="this.idModificar"
-  [nombreElemento]="'familia de procesos'"
-  [esMasculino]="false"
->
-  <ng-container *ngIf="mostrarCrearModificar">
-    <form
-      (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)"
-      [formGroup]="formulario"
-    >
-      <div class="row">
-        <div class="form-group col-12 col-md-6 col-lg-4">
-          <input
-            formControlName="nombre"
-            type="text"
-            class="form-control"
-            [ngClass]="{
-              'is-invalid': _validacionesService.invalid(nombre_FB),
-              'is-valid': _validacionesService.valid(nombre_FB)
-            }"
-            name="nombre"
-            id="nombre"
-            aria-describedby="El nombre del equipo"
-            placeholder="Nombre de la familia"
-          />
-          <small id="El nombre del equipo" class="form-text text-muted"
-            >Ingresa el nombre de la familia</small
-          >
-          <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
-        </div>
-
-        <div class="form-group col-12 col-md-6 col-lg-8">
-          <textarea
-            formControlName="observaciones"
-            class="form-control"
-            [ngClass]="{
-              'is-invalid': _validacionesService.invalid(observaciones_FB),
-              'is-valid': _validacionesService.valid(observaciones_FB)
-            }"
-            name="observaciones"
-            id="observaciones"
-            rows="3"
-          ></textarea>
-          <small id="observaciones" class="form-text text-muted"
-            >Observaciones</small
-          >
-          <app-validacion-inputs
-            [campo]="observaciones_FB"
-          ></app-validacion-inputs>
-        </div>
-      </div>
-
-      <hr />
-
-      <div class="row mb-5">
-        <div class="col-12">
-          <h3>Agregar procesos</h3>
-        </div>
-        <!-- <div class="col-12 col-lg-6">
-          <app-organizador-drag-and-drop
-            (dropSuccess)="actualizarIds($event)"
-            [listaOrdenable]="true"
-          ></app-organizador-drag-and-drop>
-        </div>
-        <div class="col-12 col-lg-6">
-          <app-organizador-drag-and-drop
-            [listaDeElementos]="true"
-          ></app-organizador-drag-and-drop>
-        </div> -->
-
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12 col-sm-6">
-              <ul class="list-group">
-                <li class="list-group-item active">Procesos agregados</li>
-                <div
-                  id="procesos-agregados"
-                  cdkDropList
-                  (cdkDropListDropped)="drop($event)"
-                  [cdkDropListData]="procesosAgregados"
-                  style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
-                >
-                  <li
-                    cdkDrag
-                    *ngFor="let pro of procesosAgregados; let i = index"
-                    class="list-group-item  flex-column align-items-start"
-                  >
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">
-                        <i
-                          (click)="quitarProceso(i)"
-                          class="fas fa-times-circle text-danger   "
-                        ></i>
-
-                        {{ i }}.-{{ pro.nombre }}
-                      </h5>
-                      <small class="text-muted">{{
-                        pro.departamento.nombre
-                      }}</small>
-                    </div>
-                  </li>
-                  <li
-                    *ngIf="!f('procesos').length"
-                    class="list-group-item disabled"
-                  >
-                    No se han asignado procesos
-                  </li>
-                </div>
-              </ul>
-            </div>
-            <div class="col-12 col-sm-6">
-              <ul class="list-group">
-                <li class="list-group-item active">Procesos disponibles</li>
-                <div
-                  id="procesos-disponibles"
-                  cdkDropList
-                  [cdkDropListData]="procesos"
-                  [cdkDropListConnectedTo]="['procesos-agregados']"
-                  style="max-height: 600px; overflow: scroll; overflow-x: hidden; overflow-y: auto;"
-                >
-                  <li
-                    cdkDrag
-                    *ngFor="let proceso of procesos"
-                    class="list-group-item  flex-column align-items-start"
-                  >
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">
-                        <i class="fas fa-bars    "></i>
-                        {{ proceso.nombre }}
-                      </h5>
-                      <small class="text-muted">{{
-                        proceso.departamento.nombre
-                      }}</small>
-                    </div>
-                  </li>
-                </div>
-                <li *ngIf="!procesos.length" class="list-group-item disabled">
-                  No hay procesos
-                </li>
-              </ul>
-            </div>
+<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="justify-content-between d-flex aling-items-center">
+            <h1 *ngIf="familia?._id">{{ familia.nombre }}</h1>
+            <h1>
+              <span class="text-success" *ngIf="!familia?._id">
+                <i class="fas fa-plus-square"></i> Crear <b>tamano</b> </span
+              ><span class="text-warning" *ngIf="familia?._id">
+                <i class="fas fa-pen-square"></i> Modificar <b>tamano</b>
+              </span>
+            </h1>
           </div>
+
+          <hr />
+          <form
+            (ngSubmit)="submit(formulario.value, formulario.invalid, $event)"
+            [formGroup]="formulario"
+          >
+            <div class="row">
+              <div class="form-group col-12 col-md-6 col-lg-4">
+                <input
+                  formControlName="nombre"
+                  type="text"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('nombre')),
+                    'is-valid': vs.valid(f('nombre'))
+                  }"
+                  name="nombre"
+                  id="nombre"
+                  aria-describedby="El nombre del equipo"
+                  placeholder="Nombre de la familia"
+                />
+                <small id="El nombre del equipo" class="form-text text-muted"
+                  >Ingresa el nombre de la familia</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('nombre')"
+                ></app-validacion-inputs>
+              </div>
+
+              <div class="form-group col-12 col-md-6 col-lg-8">
+                <textarea
+                  formControlName="observaciones"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('observaciones')),
+                    'is-valid': vs.valid(f('observaciones'))
+                  }"
+                  name="observaciones"
+                  id="observaciones"
+                  rows="3"
+                ></textarea>
+                <small id="observaciones" class="form-text text-muted"
+                  >Observaciones</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('observaciones')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row mb-5">
+              <div class="col-12">
+                <h3>Agregar procesos</h3>
+              </div>
+
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <ul class="list-group">
+                      <li
+                        [ngClass]="{
+                          'bg-danger text-white': f('procesos').invalid,
+                          active: f('procesos').valid
+                        }"
+                        class="list-group-item"
+                      >
+                        Procesos agregados
+                      </li>
+                      <div
+                        id="procesos-agregados"
+                        cdkDropList
+                        (cdkDropListDropped)="drop($event)"
+                        [cdkDropListData]="procesosAgregados"
+                        style="
+                          max-height: 600px;
+                          overflow: scroll;
+                          overflow-x: hidden;
+                          overflow-y: auto;
+                        "
+                      >
+                        <li
+                          *ngFor="let pro of procesosIniciales"
+                          class="list-group-item align-items-start list-group-item-secondary"
+                        >
+                          <small class="text-muted pull-right">{{
+                            pro.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">{{ pro.nombre }}</h5>
+                        </li>
+
+                        <li
+                          *ngFor="let pro of procesosAgregados; let i = index"
+                          cdkDrag
+                          class="list-group-item align-items-start"
+                        >
+                          <a
+                            (click)="quitarProceso(i)"
+                            class="btn btn-danger btn-xs pull-right ml-1"
+                            href="javascript:void(0)"
+                            role="button"
+                            ><i class="fas fa-times-circle"></i
+                          ></a>
+                          <small class="text-muted pull-right">{{
+                            pro.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">{{ pro.nombre }}</h5>
+                        </li>
+
+                        <li
+                        *ngIf="!f('procesos').length"
+                        class="list-group-item disabled"
+                      >
+                        No se han asignado procesos
+                      </li>
+
+                        <li
+                          *ngFor="let pro of procesosFinales"
+                          class="list-group-item align-items-start list-group-item-secondary"
+                        >
+                          <small class="text-muted pull-right">{{
+                            pro.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">
+                            {{ pro.nombre }}
+                          </h5>
+                        </li>
+
+                      
+                      </div>
+                    </ul>
+
+                    <div class="mt-3">
+                      <app-validacion-inputs
+                        [campo]="f('procesos')"
+                        [directo]="true"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <ul class="list-group">
+                      <li class="list-group-item active">
+                        <span class="pull-left">Procesos disponibles</span>
+                        <div class="form-group pull-right m-0 p-0">
+                          <input
+                            #input
+                            (keyup)="filtrarDisponibles(input.value)"
+                            type="text"
+                            class="form-control m-0 form-control-sm"
+                            placeholder="Buscar"
+                          />
+                        </div>
+                      </li>
+                      <div
+                        id="procesos-disponibles"
+                        cdkDropList
+                        [cdkDropListData]="procesos"
+                        [cdkDropListConnectedTo]="['procesos-agregados']"
+                        style="
+                          max-height: 600px;
+                          overflow: scroll;
+                          overflow-x: hidden;
+                          overflow-y: auto;
+                        "
+                      >
+                        <li
+                          cdkDrag
+                          *ngFor="let proceso of procesos"
+                          class="list-group-item"
+                          [style.display]="
+                            mostrar?.includes(proceso._id) ? 'block' : 'none'
+                          "
+                        >
+                          <small class="text-muted pull-right">{{
+                            proceso.departamento.nombre
+                          }}</small>
+                          <h5 class="mb-1">{{ proceso.nombre }}</h5>
+                        </li>
+                      </div>
+                      <li
+                        *ngIf="!procesos?.length"
+                        class="list-group-item disabled"
+                      >
+                        No hay procesos
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <app-validacion-inputs
+                  [campo]="formulario"
+                ></app-validacion-inputs>
+
+                <br />
+                <br />
+
+                <button
+                  (click)="submit(formulario.value, formulario.invalid, $event)"
+                  class="text-white btn btn-success mr-3 active"
+                  role="button"
+                  [disabled]="keys(cargando).length > 0"
+                >
+                  <i class="fas fa-save"></i> Guardar
+                </button>
+                <a
+                  (click)="location.back()"
+                  class="text-white btn btn-danger active"
+                  role="button"
+                >
+                  <i class="fas fa-times"></i> Cancelar</a
+                >
+              </div>
+            </div>
+          </form>
         </div>
-
-        <app-validacion-inputs
-          [campo]="procesos_FB"
-          [directo]="true"
-        ></app-validacion-inputs>
       </div>
+    </div>
+  </div>
+</ng-container>
 
-      <a
-        (click)="cancelar()"
-        class="btn btn-danger mr-3 text-white"
-        role="button"
-        >Cancelar</a
-      >
-      <!-- <button [disabled]='formulario.inv0alid' class="btn btn-success mr-3 text-white" role="button"> -->
-      <button
-        [disabled]="formulario.invalid || desactivarBotonEnGuardado"
-        class="btn btn-success mr-3 text-white"
-        role="button"
-      >
-        <span *ngIf="this.idModificar">
-          <i class="fas fa-edit "></i> Guardar cambios</span
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center text-center"
         >
-        <span *ngIf="!this.idModificar">
-          <i class="fas fa-save "></i> Guardar</span
-        >
-      </button>
-    </form>
-  </ng-container>
-</app-crear-modificar>
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin"></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
