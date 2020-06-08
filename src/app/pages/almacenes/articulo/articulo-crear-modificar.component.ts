@@ -126,9 +126,9 @@ export class ArticuloCrearModificarComponent implements OnInit {
       this.articuloService.update(modelo).subscribe(
         () => {
           this.location.back()
-          delete this.cargando['guardando']
+          delete this.cargando['modificando']
         },
-        () => delete this.cargando['guardando']
+        () => delete this.cargando['modificando']
       )
     } else {
       this.cargando['guardando'] = 'Creando articulo'
