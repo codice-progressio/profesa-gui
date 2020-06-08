@@ -1,0 +1,68 @@
+<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Username"
+      aria-label="Username"
+      aria-describedby="basic-addon1"
+    />
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr [appOrdenadorDeColumnas]="ordenes">
+        <ng-container *ngTemplateOutlet="encabezado"></ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let orden of ordenes">
+        <td>
+          {{ orden.estatusDeLaOrden }}
+        </td>
+        <td>{{ orden.consecutivo }}</td>
+        <td>{{ orden.procesoActual }}</td>
+        <td>{{ orden.numeroDeOrden }}</td>
+        <td [title]="orden.fechaDeEntregaAProduccion | fecha: 'LLLL'">
+          {{ orden.fechaDeEntregaAProduccion | date: 'dd/MM' }}
+        </td>
+        <td>{{ orden.sku }}</td>
+        <td>{{ orden.laser ? orden.laser : orden.laserAlmacen }}</td>
+        <td>{{ orden.unidad }}</td>
+        <td>{{ orden.piezas }}</td>
+        <td>{{ orden.observaciones }}</td>
+      </tr>
+      <tr>
+        <td colspan="20"><h1>No hay ordenes para mostrar</h1></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #encabezado>
+    <th title="Estatus de la orden">E</th>
+    <th title="Consecutivo de la orden">CON</th>
+    <th title="Proceso al que se dirije" data-ordenar="procesoActual">PRO</th>
+    <th title="Numero de orden" data-ordenar="orden">#</th>
+    <th
+      title="Fecha de entrega a produccion"
+      data-ordenar="fechaEntregaProduccion"
+    >
+      FEP
+    </th>
+    <th title="SKU" data-ordenar="sku">SKU</th>
+    <th title="Laser que lleva la orden" data-ordenar="marcaLaser">LASER</th>
+    <th title="Unidad equivalente contra estandar de produccion">U</th>
+    <th title="Piezas teoricas de produccion">Pz</th>
+    <th>OBS</th>
+  </ng-template>
+</ng-container>
+
+<ng-template #cargandoTemplate>
+  <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
+  <h2 *ngFor="let kv of cargando | keyvalue">{{ kv.value }}</h2>
+</ng-template>

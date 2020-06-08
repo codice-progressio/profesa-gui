@@ -1,0 +1,211 @@
+<ng-container cdkDropListGroup>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center"
+        >
+          <h1>
+            <i class="fas fa-qrcode"></i>
+            Gestion de estaciones de escaneo
+          </h1>
+
+          <a
+            (click)="submit()"
+            class="btn btn-success"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i class="fas fa-save fa-sm"></i> Guardar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <ul class="list-group">
+            <li
+              class="list-group-item active app-lista-scroll-encabezado d-flex align-items-start"
+            >
+              <div
+                class="w-100 d-flex justify-content-between align-items-center"
+              >
+                <span>
+                  <i class="fas fa-qrcode"></i> Escaners habilitados ({{
+                    departamentosSeleccionados.length
+                  }})</span
+                >
+                <input
+                  [formControl]="inputDepartamentosSeleccionados"
+                  type="text"
+                  class="form-control w-50"
+                />
+              </div>
+            </li>
+            <li
+              *ngFor="let g of mostrarDepartamentosSeleccionados"
+              class="list-group-item"
+            >
+              <i class="fas fa-qrcode text-success"></i>
+              {{ g.departamento.nombre }}
+
+              <ul
+                cdkDropList
+                [id]="g.departamento._id"
+                [cdkDropListData]="g.usuarios"
+                (cdkDropListDropped)="drop($event)"
+                class="list-group"
+              >
+                <li class="list-group-item bg-danger text-white py-0">
+                  Usuarios con permiso
+                </li>
+                <li
+                  cdkDrag
+                  *ngFor="let u of g.usuarios; let i = index"
+                  class="list-group-item justify-content-md-between d-md-flex align-items-md-center"
+                >
+                  <span>
+                    <i class="fas fa-user-check text-success"></i>
+                    {{ u.nombre }}
+                  </span>
+                  <a
+                    (click)="g.usuarios.splice(i, 1)"
+                    class="btn btn-danger btn-xs"
+                    href="javascript:void(0)"
+                    role="button"
+                    ><i class="fas fa-trash"></i
+                  ></a>
+                </li>
+                <li
+                  *ngIf="g.usuarios.length === 0"
+                  class="list-group-item disabled"
+                >
+                  Sin permisos
+                </li>
+              </ul>
+            </li>
+            <li
+              *ngIf="departamentosSeleccionados.length === 0"
+              class="list-group-item disabled"
+            >
+              No hay departamentos
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <ul class="list-group app-lista-scroll">
+            <li
+              class="list-group-item active app-lista-scroll-encabezado d-flex align-items-start"
+            >
+              <div
+                class="w-100 d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="fas fa-cogs"></i> Departamentos ({{
+                    departamentos.length
+                  }})</span
+                >
+                <input
+                  [formControl]="inputDepartamento"
+                  type="text"
+                  class="form-control w-50"
+                />
+              </div>
+            </li>
+            <li
+              [ngStyle]="{
+                display: mostrarDepartamentos.includes(g.departamento._id)
+                  ? ''
+                  : 'none'
+              }"
+              *ngFor="let g of departamentos"
+              class="list-group-item d-flex justify-content-md-between align-items-md-center"
+            >
+              {{ g.departamento.nombre }}
+
+              <a
+                (click)="agregarOQuitarDepartamento(g)"
+                class="btn btn-xs btn-success"
+                href="javascript:void(0)"
+                role="button"
+                [ngClass]="{
+                  'btn-danger': contieneElDepartamento(g.departamento._id)
+                }"
+              >
+                <i
+                  *ngIf="contieneElDepartamento(g.departamento._id)"
+                  class="fas fa-times-circle"
+                ></i>
+                <i
+                  *ngIf="!contieneElDepartamento(g.departamento._id)"
+                  class="fas fa-check-circle"
+                ></i>
+              </a>
+            </li>
+            <li
+              *ngIf="departamentos.length === 0"
+              class="list-group-item disabled"
+            >
+              No hay departamentos
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card shadow">
+        <div class="card-body">
+          <ul
+            cdkDropList
+            #usuariosList="cdkDropList"
+            [cdkDropListData]="usuarios"
+            [cdkDropListConnectedTo]="relacionesParaUsuarios"
+            (cdkDropListDropped)="drop($event)"
+            cdkDropListSortingDisabled
+            class="list-group mt-3 app-lista-scroll"
+          >
+            <li
+              class="list-group-item active app-lista-scroll-encabezado d-flex align-items-start"
+            >
+              <div
+                class="w-100 d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="fas fa-users"></i> Usuarios ({{
+                    usuarios.length
+                  }})</span
+                >
+                <input
+                  [formControl]="inputUsuarios"
+                  type="text"
+                  class="form-control w-50"
+                />
+              </div>
+            </li>
+            <li
+              [ngStyle]="{
+                display: mostrarUsuarios.includes(u._id) ? '' : 'none'
+              }"
+              cdkDrag
+              [cdkDragData]="'copiar'"
+              *ngFor="let u of usuarios"
+              class="list-group-item"
+            >
+              <i class="fas fa-user-slash"></i> {{ u.nombre }}
+            </li>
+            <li *ngIf="usuarios.length === 0" class="list-group-item disabled">
+              No hay usuarios
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

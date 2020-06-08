@@ -7,6 +7,7 @@ import { URL_BASE } from '../config/config'
 import { map, catchError } from 'rxjs/operators'
 import { Proceso } from '../models/proceso.model'
 import { Departamento } from '../models/departamento.models'
+import { Usuario } from '../models/usuario.model'
 
 @Injectable({
   providedIn: 'root'
@@ -122,4 +123,39 @@ export class ParametrosService {
       })
     )
   }
+
+  findAllEstacionesDeEscaneo(): Observable<ScannerDepartamentoGestion[]> {
+    let url = this.base.concat('/estacionesDeEscaneo')
+    return this.httpClient.get(url).pipe(
+      map((resp: any) => resp as ScannerDepartamentoGestion[]),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  saveEstacionesDeEscaneo(
+    estaciones: ScannerDepartamentoGestion[]
+  ): Observable<null> {
+    let url = this.base.concat('/estacionesDeEscaneo')
+
+    return this.httpClient.put(url, estaciones ).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(
+          'Se modificaron las estaciones de escaneo'
+        )
+        return null
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+}
+
+export interface ScannerDepartamentoGestion {
+  departamento: Departamento
+  usuarios: Usuario[]
 }

@@ -163,7 +163,8 @@ import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-deta
 import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
 import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component';
 import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component';
-import { AdministradorComponent } from './parametros/administrador/administrador.component'
+import { AdministradorComponent } from './parametros/administrador/administrador.component';
+import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component'
 
 @NgModule({
   declarations: [
@@ -328,7 +329,8 @@ import { AdministradorComponent } from './parametros/administrador/administrador
     UsuarioLeerComponent,
     ProcesosInicialesYFinalesComponent,
     ProcesosEspecialesComponent,
-    AdministradorComponent
+    AdministradorComponent,
+    EstacionesDeEscaneoComponent
   ],
   exports: [],
   imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],
