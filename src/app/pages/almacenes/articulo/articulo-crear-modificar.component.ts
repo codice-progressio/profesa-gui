@@ -68,6 +68,7 @@ export class ArticuloCrearModificarComponent implements OnInit {
         codigoInterno: [a.codigoInterno, []],
         codigoProveedor: [a.codigoProveedor, []],
         almacen: [a.almacen, [Validators.required]],
+        tipoDeProducto: [a.tipoDeProducto, [Validators.required]],
         nombre: [a.nombre, [Validators.required]],
         presentacion: [a.presentacion, [Validators.required]],
         unidad: [a.unidad, [Validators.required]],
@@ -125,9 +126,9 @@ export class ArticuloCrearModificarComponent implements OnInit {
       this.articuloService.update(modelo).subscribe(
         () => {
           this.location.back()
-          delete this.cargando['guardando']
+          delete this.cargando['modificando']
         },
-        () => delete this.cargando['guardando']
+        () => delete this.cargando['modificando']
       )
     } else {
       this.cargando['guardando'] = 'Creando articulo'
