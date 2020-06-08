@@ -88,10 +88,20 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
   crearFormulario(empleado: Empleado) {
     this.formulario = this.fb.group({
-      idChecador: [empleado.idChecador, null],
+      idChecador: [
+        empleado.idChecador,
+        [
+          this.vs.numberValidator,
+          Validators.min(1)
+        ]
+      ],
       idNomina: [
         empleado.idNomina,
-        [Validators.required, this.vs.numberValidator]
+        [
+          Validators.required,
+          this.vs.numberValidator,
+          Validators.min(1)
+        ]
       ],
       nombres: [empleado.nombres, [Validators.required]],
       apellidos: [empleado.apellidos, [Validators.required]],
