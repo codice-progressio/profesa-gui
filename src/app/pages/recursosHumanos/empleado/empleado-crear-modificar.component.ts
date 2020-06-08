@@ -240,7 +240,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
       this.guardar.emit()
     }
 
-    modelo.hijos = modelo.hijos.map(x => x * 1)
+    modelo.hijos = modelo.hijos.map(x => x)
     if (this.empleado._id) modelo._id = this.empleado._id
     this._empleadoService.guardarOModificar(modelo).subscribe(operacion)
   }
