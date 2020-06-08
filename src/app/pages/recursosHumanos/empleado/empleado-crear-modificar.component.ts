@@ -129,9 +129,16 @@ export class EmpleadoCrearModificarComponent implements OnInit {
           Validators.minLength(11)
         ]
       ],
-      puestoActual: [
-        this.hayPuestoActual(empleado.puestoActual),
-        [Validators.required]
+      // puestoActual: [
+      //   this.hayPuestoActual(empleado.puestoActual),
+      //   [Validators.required]
+      // ],
+      puestoActualTexto: [
+        this.empleado.puestoActualTexto,
+        [
+          Validators.required,
+          Validators.minLength(5)
+        ]
       ],
       fotografia: [empleado.fotografia, [Validators.required]],
       email: [empleado.email, [Validators.email]],
@@ -291,5 +298,16 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
   cambiarFoto() {
     this.f('fotografia').setValue(null)
+  }
+
+
+  calcularEdad(fechaString:Date):string{
+    let fecha = new Date(fechaString)
+    let hoy = new Date()
+    let diaEnMs = 1000 * 60 * 60 * 24 * 365
+    console.log(hoy, diaEnMs)
+    let resta = (hoy.getTime() - fecha.getTime()) / diaEnMs
+    let edad = Math.floor(resta)
+   return edad>1? edad + " años" : edad + " año"
   }
 }
