@@ -68,6 +68,7 @@ export class ArticuloCrearModificarComponent implements OnInit {
         codigoInterno: [a.codigoInterno, []],
         codigoProveedor: [a.codigoProveedor, []],
         almacen: [a.almacen, [Validators.required]],
+        tipoDeProducto: [a.tipoDeProducto, [Validators.required]],
         nombre: [a.nombre, [Validators.required]],
         presentacion: [a.presentacion, [Validators.required]],
         unidad: [a.unidad, [Validators.required]],
