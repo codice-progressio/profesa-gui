@@ -128,10 +128,8 @@
                   : 'none'
               }"
               *ngFor="let g of departamentos"
-              class="list-group-item d-flex justify-content-md-between align-items-md-center"
+              class="list-group-item"
             >
-              {{ g.departamento.nombre }}
-
               <a
                 (click)="agregarOQuitarDepartamento(g)"
                 class="btn btn-xs btn-success"
@@ -150,6 +148,7 @@
                   class="fas fa-check-circle"
                 ></i>
               </a>
+              {{ g.departamento.nombre }}
             </li>
             <li
               *ngIf="departamentos.length === 0"
