@@ -7,7 +7,7 @@
         >
           <h1 class="">Detalle de <strong>usuario</strong></h1>
           <h1>{{ detalle.nombre }}</h1>
-          
+
         </div>
       </div>
     </div>
@@ -24,28 +24,35 @@
               alt="Foto de usuario"
             />
           </div>
-
+          <ng-template #boton>
+            <div class="col-12 text-right">
+              <a
+                (click)="location.back()"
+                class="btn btn-info "
+                href="javascipt:void(0)"
+                role="button"
+              >
+                <i class="fas fa-arrow-left"></i> Regresar</a
+              >
+            </div>
+          </ng-template>
+          <ng-template [ngTemplateOutlet]="boton"></ng-template>
           <div class="col-12 col-sm-6 col lg-3">
-            <b>email:</b>{{ detalle.email }}
+            <b>Email: </b>{{ detalle.email }}
           </div>
           <div class="col-12 col-sm-6 col lg-3">
-            <b>permissions:</b>
-            <pre>
-                {{ detalle.permissions | json }}
-
-            </pre>
+            <b>Permisos:
+              <span *ngIf="detalle.permissions.length === 0">
+                Ninguno
+              </span>
+            </b>
+            <ul *ngFor="let per of detalle.permissions">
+              <p></p>
+              {{per}}
+            </ul>
           </div>
+          <ng-template *ngIf="detalle.permissions.length > 15" [ngTemplateOutlet]="boton"></ng-template>
 
-          <div class="col-12">
-            <a
-              (click)="location.back()"
-              class="btn btn-info"
-              href="javascipt:void(0)"
-              role="button"
-            >
-              <i class="fas fa-arrow-left"></i> Regresar</a
-            >
-          </div>
         </div>
       </div>
     </div>
