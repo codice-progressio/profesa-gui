@@ -154,7 +154,6 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   inputDepartamentosSeleccionados = new FormControl()
 
   subscribirBusquedas() {
-    console.log(`entro`)
     this.inputDepartamento.valueChanges.subscribe(termino =>
       this.filtrarDepartamentos(termino)
     )
@@ -231,6 +230,10 @@ export class EstacionesDeEscaneoComponent implements OnInit {
         return
       }
     }
+
+    this.departamentosSeleccionados = JSON.parse(
+      JSON.stringify(this.mostrarDepartamentosSeleccionados)
+    )
 
     this.cargando['submit'] = 'Guardando cambios'
 
