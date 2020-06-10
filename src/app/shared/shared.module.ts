@@ -98,6 +98,7 @@ import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
 import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
 import { DynamicFormComponent } from '../components/formulario-dinamico/dynamic-form/dynamic-form.component'
 import { DynamicFormQuestionComponent } from '../components/formulario-dinamico/dynamic-form-question/dynamic-form-question.component'
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { OrdenesPorDepartamentoEnProcesosComponent } from '../components/ordenes-por-departamento-en-procesos/ordenes-por-departamento-en-procesos.component'
 
 
@@ -117,7 +118,8 @@ import { OrdenesPorDepartamentoEnProcesosComponent } from '../components/ordenes
       timeOut: 20000,
       positionClass: 'toast-top-right',
       enableHtml: true
-    })
+    }),
+    ZXingScannerModule
   ],
   declarations: [
     HeaderComponent,
