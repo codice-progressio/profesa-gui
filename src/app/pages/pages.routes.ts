@@ -886,131 +886,141 @@ const pagesRoutes: Routes = [
   // -->
 
   {
-    path: 'produccion/controlDeProduccion',
-    component: ControlDeProduccionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:controlDeProduccion']
-    }
-  },
-  {
-    path: 'produccion/almacenDeBoton',
-    component: AlmacenDeBotonComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Almacen de boton',
-      permissions: permisosKeysConfig['menu:produccion:almacenDeBoton']
-    }
-  },
-  {
-    path: 'produccion/materiales',
-    component: MaterialesComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:materiales']
-    }
-  },
-  {
-    path: 'produccion/pastilla',
-    component: PastillaComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:pastilla']
-    }
-  },
-  {
-    path: 'produccion/transformacion',
-    component: TransformacionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:reportes:transformacion']
-    }
-  },
-  {
-    path: 'produccion/laser',
-    component: LaserComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:laser']
-    }
-  },
-  {
-    path: 'produccion/pulido',
-    component: PulidoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:pulido']
-    }
-  },
-  {
-    path: 'produccion/tenido',
-    component: TenidoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:tenido']
-    }
-  },
-  {
-    path: 'produccion/seleccion',
-    component: SeleccionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:seleccion']
-    }
-  },
-  {
-    path: 'produccion/empaque',
-    component: EmpaqueComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:empaque']
-    }
-  },
-  {
-    path: 'produccion/metalizado',
-    component: MetalizadoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:metalizado']
-    }
-  },
-  {
-    path: 'produccion/barnizado',
+    path: 'escaner/:departamento/:id',
     component: ScannerFormularioDinamicoComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:barnizado']
+      permissions: permisosKeysConfig['menu:scanner']
     }
   },
-  {
-    path: 'produccion/burato',
-    component: BuratoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:burato']
-    }
-  },
-  {
-    path: 'produccion/productoTerminado',
-    component: ProductoTerminadoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Registro de órdenes',
-      permissions: permisosKeysConfig['menu:produccion:productoTerminado']
-    }
-  },
+  
+  // {
+  //   path: 'produccion/controlDeProduccion',
+  //   component: ControlDeProduccionComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:controlDeProduccion']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/almacenDeBoton',
+  //   component: AlmacenDeBotonComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Almacen de boton',
+  //     permissions: permisosKeysConfig['menu:produccion:almacenDeBoton']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/materiales',
+  //   component: MaterialesComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:materiales']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/pastilla',
+  //   component: PastillaComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:pastilla']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/transformacion',
+  //   component: TransformacionComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:reportes:transformacion']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/laser',
+  //   component: LaserComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:laser']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/pulido',
+  //   component: PulidoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:pulido']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/tenido',
+  //   component: TenidoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:tenido']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/seleccion',
+  //   component: SeleccionComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:seleccion']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/empaque',
+  //   component: EmpaqueComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:empaque']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/metalizado',
+  //   component: MetalizadoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:metalizado']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/barnizado',
+  //   component: ScannerFormularioDinamicoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:barnizado']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/burato',
+  //   component: BuratoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:burato']
+  //   }
+  // },
+  // {
+  //   path: 'produccion/productoTerminado',
+  //   component: ProductoTerminadoComponent,
+  //   canActivate: [VerificaTokenGuard, PermisosGuard],
+  //   data: {
+  //     titulo: 'Registro de órdenes',
+  //     permissions: permisosKeysConfig['menu:produccion:productoTerminado']
+  //   }
+  // },
 
   // <!--
   // =====================================
