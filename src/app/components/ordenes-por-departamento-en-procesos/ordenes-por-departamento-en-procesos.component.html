@@ -1,53 +1,104 @@
-<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="basic-addon1">
-        <i class="fas fa-search"></i>
-      </span>
+<div class="row animated fadeIn">
+  <div class="col-12 col-md-6">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar ordenes"
+        [formControl]="inputBuscador"
+      />
     </div>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Username"
-      aria-label="Username"
-      aria-describedby="basic-addon1"
-    />
   </div>
-
-  <table class="table">
-    <thead>
-      <tr [appOrdenadorDeColumnas]="ordenes">
-        <ng-container *ngTemplateOutlet="encabezado"></ng-container>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let orden of ordenes">
-        <td>
-          {{ orden.estatusDeLaOrden }}
-        </td>
-        <td>{{ orden.consecutivo }}</td>
-        <td>{{ orden.procesoActual }}</td>
-        <td>{{ orden.numeroDeOrden }}</td>
-        <td [title]="orden.fechaDeEntregaAProduccion | fecha: 'LLLL'">
-          {{ orden.fechaDeEntregaAProduccion | date: 'dd/MM' }}
-        </td>
-        <td>{{ orden.sku }}</td>
-        <td>{{ orden.laser ? orden.laser : orden.laserAlmacen }}</td>
-        <td>{{ orden.unidad }}</td>
-        <td>{{ orden.piezas }}</td>
-        <td>{{ orden.observaciones }}</td>
-      </tr>
-      <tr>
-        <td colspan="20"><h1>No hay ordenes para mostrar</h1></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="col-12 col-md-6 text-right">
+    <span>
+      <span class="font-bold"> {{ ordenes.length }} </span>
+      ordenes en el departamento
+    </span>
+    <a
+      (click)="cargarDatos(idDep)"
+      class="btn btn-outline-secondary btn-sm"
+      href="javascript:void(0)"
+      role="button"
+      ><i
+        class="fas fa-sync"
+        [ngClass]="{ 'fa-spin-fast': keys(cargando).length > 0 }"
+      ></i>
+      Actualizar</a
+    >
+    <br />
+    <span class="font-10 font-weight-bold">
+      Actualizado {{ ultimaActualizacion | fecha: 'HH:MM:ss' }}
+    </span>
+  </div>
+</div>
+<ng-container *ngIf="keys(cargando).length === 0; else cargandoTemplate">
+  <div class="row">
+    <div class="col-12 table-responsive">
+      <table class="table animated table-hover fadeIn font-14">
+        <thead>
+          <tr [appOrdenadorDeColumnas]="ordenes">
+            <ng-container *ngTemplateOutlet="encabezado"></ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let orden of mostrar">
+            <td>
+              <i
+                *ngIf="!orden.recibida"
+                class="fas fa-exclamation animated zoomIn infinite"
+              ></i>
+              <i
+                *ngIf="orden.recibida"
+                class="fas fa-check-circle text-success"
+              ></i>
+            </td>
+            <td>
+              {{ orden.consecutivoOrden + 1 }} / {{ orden.totalDeOrdenes }}
+            </td>
+            <td>{{ orden.procesoActual }}</td>
+            <td class="text-nowrap">
+              <a
+                title="Ver detalle de folio"
+                href="javascript:void(0)"
+                data-toggle="modal"
+                data-target="#detalleFolio"
+                (click)="cargarFolio(orden.folio)"
+                >{{ orden.numeroDeOrden }}</a
+              >
+            </td>
+            <td [title]="orden.fechaDeEntregaAProduccion | fecha: 'LLLL'">
+              {{ orden.fechaDeEntregaAProduccion | date: 'dd/MM' }}
+            </td>
+            <td class="text-nowrap">{{ orden.sku }}</td>
+            <td>{{ orden.laser ? orden.laser : orden.laserAlmacen }}</td>
+            <td>{{ orden.unidad }}</td>
+            <td>{{ orden.piezas | number }}</td>
+            <td>
+              {{ orden.observacionesFolio }}
+              {{ orden.observacionesPedido }}
+              {{ orden.observacionesOrden }}
+            </td>
+          </tr>
+          <tr *ngIf="ordenes.length === 0">
+            <td colspan="20">
+              <h1 class="text-center w-100">No hay ordenes para mostrar</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <ng-template #encabezado>
     <th title="Estatus de la orden">E</th>
     <th title="Consecutivo de la orden">CON</th>
     <th title="Proceso al que se dirije" data-ordenar="procesoActual">PRO</th>
-    <th title="Numero de orden" data-ordenar="orden">#</th>
+    <th title="Numero de orden">#</th>
     <th
       title="Fecha de entrega a produccion"
       data-ordenar="fechaEntregaProduccion"
@@ -63,6 +114,24 @@
 </ng-container>
 
 <ng-template #cargandoTemplate>
-  <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
-  <h2 *ngFor="let kv of cargando | keyvalue">{{ kv.value }}</h2>
+  <div class="col-12 text-center w-100 animated fadeIn">
+    <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
+    <h2 *ngFor="let kv of cargando | keyvalue">{{ kv.value }}</h2>
+  </div>
 </ng-template>
+
+<!-- 
+=====================================
+ Detalle de folio
+=====================================
+-->
+
+<app-folios-detalle-abstracto
+  [folio]="folioDetalle"
+></app-folios-detalle-abstracto>
+
+<!-- 
+=====================================  
+ END Detalle de folio
+===================================== 
+-->
