@@ -63,7 +63,7 @@ export class Orden implements Deserializable {
   }
 }
 
-interface Ruta {
+export interface Ruta {
   idProceso: string
   idDepartamento: string
   entrada: Date
