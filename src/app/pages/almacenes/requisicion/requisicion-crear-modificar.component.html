@@ -23,103 +23,21 @@
               <div
                 class="mb-5 d-flex justify-content-start align-content-center"
               >
-                <!-- 
-            =====================================
-            materiaPrima
-            =====================================
-            -->
-                <div class="form-check">
-                  <input
-                    (click)="soloUnCheckBox('materiaPrima')"
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('materiaPrima')),
-                      'is-valid': vs.valid(f('materiaPrima'))
-                    }"
-                    class="form-check-input"
-                    type="checkbox"
-                    id="materiaPrima"
-                    formControlName="materiaPrima"
-                  />
-                  <label class="form-check-label" for="materiaPrima">
-                    Materia prima
-                  </label>
-                  <br />
-                  <app-validacion-inputs
-                    [campo]="f('materiaPrima')"
-                  ></app-validacion-inputs>
-                </div>
-                <!-- 
-                =====================================
-                END materiaPrima
-                =====================================
-                -->
 
-                <!-- 
-                =====================================
-                consumibles
-                =====================================
-                -->
-                <div class="form-check">
-                  <input
-                    (click)="soloUnCheckBox('consumibles')"
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('consumibles')),
-                      'is-valid': vs.valid(f('consumibles'))
-                    }"
-                    class="form-check-input"
-                    type="checkbox"
-                    id="consumibles"
-                    formControlName="consumibles"
-                  />
-                  <label class="form-check-label" for="consumibles">
-                    Consumibles
-                  </label>
-                  <br />
-                  <app-validacion-inputs
-                    [campo]="f('consumibles')"
-                  ></app-validacion-inputs>
-                </div>
-                <!-- 
-                =====================================
-                END consumibles
-                =====================================
-                -->
+                <input type="hidden" [formControlName]="'materiaPrima'">
+                <input type="hidden" [formControlName]="'consumibles'">
+                <input type="hidden" [formControlName]="'gastosYServicios'">
 
-                <!-- 
-                =====================================
-                gastosYServicios
-                =====================================
-                -->
-                <div class="form-check">
-                  <input
-                    (click)="soloUnCheckBox('gastosYServicios')"
-                    [ngClass]="{
-                      'is-invalid': vs.invalid(f('gastosYServicios')),
-                      'is-valid': vs.valid(f('gastosYServicios'))
-                    }"
-                    class="form-check-input"
-                    type="checkbox"
-                    id="gastosYServicios"
-                    formControlName="gastosYServicios"
-                  />
-                  <label class="form-check-label" for="gastosYServicios">
-                    Gastos y servicios
-                  </label>
-                  <br />
-                  <app-validacion-inputs
-                    [campo]="f('gastosYServicios')"
-                  ></app-validacion-inputs>
-                </div>
+                <h1>
+                  <span *ngIf="f('materiaPrima').value">Materia prima</span>
+                  <span *ngIf="f('consumibles').value">Consumible</span>
+                  <span *ngIf="f('gastosYServicios').value">Gastos y servicios</span>
+                </h1>
 
-                <!-- 
-                  =====================================
-                  END gastosYServicios
-                  =====================================
-                  -->
               </div>
             </div>
 
-            <!-- 
+            <!--
                   =====================================
                   articulo
                   =====================================
@@ -144,13 +62,13 @@
                 ></app-validacion-inputs>
               </div>
             </div>
-            <!-- 
+            <!--
                   =====================================
                   END articulo
                   =====================================
                   -->
 
-            <!-- 
+            <!--
                   =====================================
                    cantidad
                   =====================================
@@ -193,13 +111,13 @@
                 ></app-validacion-inputs>
               </div>
             </div>
-            <!-- 
+            <!--
                   =====================================
                    END cantidad
                   =====================================
                   -->
 
-            <!-- 
+            <!--
                   =====================================
                    observaciones
                   =====================================
@@ -225,7 +143,7 @@
                 ></app-validacion-inputs>
               </div>
             </div>
-            <!-- 
+            <!--
                   =====================================
                    END observaciones
                   =====================================

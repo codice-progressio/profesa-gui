@@ -10,6 +10,7 @@ export class Articulo implements Deserializable {
     public codigoInterno?: string,
     public codigoProveedor?: string,
     public almacen?: AlmacenDescripcion,
+    public tipoDeProducto: "MATERIA PRIMA" | "CONSUMIBLE" = "MATERIA PRIMA",
     public nombre?: string,
     public presentacion?: string,
     public unidad: string = '',
