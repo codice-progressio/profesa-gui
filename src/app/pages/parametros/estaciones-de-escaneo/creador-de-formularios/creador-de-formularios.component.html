@@ -1,0 +1,59 @@
+<div class="row animated fadeInUp">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>
+          Crear formulario para <b>{{ scanner?.departamento.nombre }}</b>
+
+          <a
+            (click)="volver.emit(scanner)"
+            class="btn btn-outline-info"
+            href="javascript:void(0)"
+            role="button"
+            >Volver</a
+          >
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeInUp">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+
+        <app-dynamic-form
+        [modoCreador]='true'
+        [datos]="datos"> </app-dynamic-form>
+
+        <a
+          (click)="agregarTextBox()"
+          class="btn btn-outline-secondary btn-sm mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          Input texto</a
+        >
+
+        <a
+          (click)="agregarDropDown()"
+          class="btn btn-outline-secondary btn-sm mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          Dropdown</a
+        >
+        <a
+          (click)="ordenarYActualizar()"
+          class="btn btn-outline-secondary btn-sm mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-sync"></i>
+          Actualizar formulario
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

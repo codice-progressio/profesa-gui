@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, Renderer2 } from '@angular/core'
-import { OrdenParaAsignacion } from '../../../services/programacion-transformacion.service'
-import { FolioNewService } from '../../../services/folio/folio-new.service'
+import { FolioNewService, OrdenLigera } from '../../../services/folio/folio-new.service'
 import { Orden } from '../../../models/orden.models'
 import { Departamento } from '../../../models/departamento.models'
 import { Trayecto } from '../../../models/trayecto.models'
@@ -17,7 +16,7 @@ import { DepartamentoService } from '../../../services/departamento/departamento
   styleUrls: ['./orden-detalle-avance.component.css']
 })
 export class OrdenDetalleAvanceComponent implements OnInit {
-  _orden: OrdenParaAsignacion
+  _orden: OrdenLigera
   ordenConsultada: Orden
   // trayectoSeleccionado: Trayecto = null
 
@@ -26,7 +25,7 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   procesoSeleccionado: string = null
 
   ignorarHasta = 0
-  @Input() set orden(orden: OrdenParaAsignacion) {
+  @Input() set orden(orden: OrdenLigera) {
     this.rutaSeg = null
     if (!orden) return
     this.ordenConsultada = null
@@ -34,11 +33,11 @@ export class OrdenDetalleAvanceComponent implements OnInit {
       .detalleOrden(orden.folio, orden.pedido, orden.orden)
       .subscribe(ordenRes => {
         this.ordenConsultada = ordenRes
-        this._orden = orden
+        this._orden = orden as OrdenLigera
       })
   }
 
-  get orden(): OrdenParaAsignacion {
+  get orden(): OrdenLigera {
     return this._orden
   }
   @Input() set datos({ folio, pedido, orden }) {

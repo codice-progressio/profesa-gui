@@ -4,5 +4,6 @@ export class LocalizacionDeOrdenes {
     public procesosIniciales: Proceso[] = [],
     public procesosInicialesAlmacen: Proceso[] = [],
     public procesosFinales: Proceso[] = [],
+    public campoFinal?: string
   ) {}
 }
