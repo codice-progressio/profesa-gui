@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
 import { Maquina } from '../models/maquina.model'
 import { Departamento } from '../models/departamento.models'
+import { OrdenLigera } from './folio/folio-new.service'
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,7 @@ export class ProgramacionTransformacionService {
   base = URL_BASE('programacionTransformacion')
   constructor(
     private http: HttpClient,
-    private msjService: ManejoDeMensajesService,
-    private utiliadesService: UtilidadesService,
-    private preLoaderService: PreLoaderService,
-    private paginadorService: PaginadorService,
-    private defaultService: DefaultsService
+    private msjService: ManejoDeMensajesService
   ) {}
 
   errFun(err) {
@@ -30,14 +27,12 @@ export class ProgramacionTransformacionService {
     return throwError(err)
   }
 
-  ordenesPorAsignar(
-    idTransformacion: string
-  ): Observable<OrdenParaAsignacion[]> {
+  ordenesPorAsignar(idTransformacion: string): Observable<OrdenLigera[]> {
     const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
       map((res: any) => {
-        return res.ordenes as OrdenParaAsignacion[]
+        return res.ordenes as OrdenLigera[]
       }),
       catchError(err => this.errFun(err))
     )
@@ -111,4 +106,3 @@ export interface iEstaDisponible {
   pedido: string
   orden: string
 }
-
