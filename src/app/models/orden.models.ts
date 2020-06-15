@@ -73,6 +73,7 @@ export interface Ruta {
   recepcion: Date
   consecutivo: number,
   trabajando:boolean
+  trabajandoDesde:Date
   
   datos: {} //--> ESte varia entre cada uno
 }

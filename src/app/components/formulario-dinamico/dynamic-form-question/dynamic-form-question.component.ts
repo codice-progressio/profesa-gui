@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output } from '@angular/core'
 import { QuestionBase } from '../question-base'
 import { FormGroup, AbstractControl } from '@angular/forms'
 import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
+import { Subject } from 'rxjs'
 
 @Component({
   selector: 'app-question',
@@ -13,6 +14,9 @@ export class DynamicFormQuestionComponent {
 
   @Input() question: QuestionBase<string>
   @Input() form: FormGroup
+  @Output() actualizarKey = new Subject<null>()
+  @Input() modoCreador = false
+
   get isValid() {
     return this.form.controls[this.question.key].valid
   }
@@ -25,4 +29,11 @@ export class DynamicFormQuestionComponent {
     'is-invalid': this.vs.invalid(this.f(this.question.key)),
     'is-valid': this.vs.valid(this.f(this.question.key))
   })
+
+  editandoKey = false
+  editarKey(valor) {
+    this.question.key = valor
+    this.actualizarKey.next()
+    this.editandoKey = false
+  }
 }

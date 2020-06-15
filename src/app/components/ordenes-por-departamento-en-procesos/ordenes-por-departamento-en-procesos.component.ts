@@ -1,11 +1,18 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  EventEmitter,
+  Output
+} from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { Folio } from '../../models/folio.models'
-import { OrdenLigera } from '../../services/folio/folio-new.service'
 import {
   OrdenLigera,
   FolioNewService
 } from '../../services/folio/folio-new.service'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-ordenes-por-departamento-en-procesos',
@@ -24,6 +31,8 @@ export class OrdenesPorDepartamentoEnProcesosComponent
     this.idDep = id
     this.cargarDatos(id)
   }
+
+  @Input() actualizar: Observable<void>
 
   constructor(public folioService: FolioNewService) {}
 
@@ -69,6 +78,10 @@ export class OrdenesPorDepartamentoEnProcesosComponent
         })
         .filter(x => x.busqueda.includes(termino.toLowerCase()))
         .map(x => x.objeto)
+    })
+
+    this.actualizar.subscribe(_ => {
+      this.cargarDatos(this.idDep)
     })
   }
 

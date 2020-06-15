@@ -8,6 +8,9 @@ export class QuestionBase<T> {
   type: string
   options: { key: string; value: string }[]
   classForGroup: string
+  mask: string
+  thousandSeparator: string
+  suffix: string
 
   constructor(
     options: {
@@ -19,6 +22,9 @@ export class QuestionBase<T> {
       controlType?: string
       type?: string
       classForGroup?: string
+      mask?: string
+      thousandSeparator?: string
+      suffix?: string
     } = {}
   ) {
     this.value = options.value
@@ -27,8 +33,10 @@ export class QuestionBase<T> {
     this.required = !!options.required
     this.order = options.order === undefined ? 1 : options.order
     this.controlType = options.controlType || ''
-    this.type = options.type || ''
-    this.classForGroup = options.classForGroup || 'col-12'
+    this.type = options.type ? options.type : 'text'
+    this.classForGroup = options.classForGroup || 'col-12 col-md-6 col-lg-4'
+    this.mask = options.mask
+    this.thousandSeparator = options.thousandSeparator
+    this.suffix = options.suffix
   }
 }
-

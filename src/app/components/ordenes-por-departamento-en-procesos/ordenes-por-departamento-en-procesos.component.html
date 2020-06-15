@@ -52,10 +52,17 @@
                 *ngIf="!orden.recibida"
                 class="fas fa-exclamation animated zoomIn infinite"
               ></i>
-              <i
-                *ngIf="orden.recibida"
-                class="fas fa-check-circle text-success"
-              ></i>
+
+              <ng-container *ngIf="orden.recibida">
+                <i
+                  *ngIf="!orden.ubicacionActual.trabajando"
+                  class="fas fa-check-circle text-success"
+                ></i>
+                <i
+                  *ngIf="orden.ubicacionActual.trabajando"
+                  class="fas fa-cog fa-spin text-warning"
+                ></i>
+              </ng-container>
             </td>
             <td>
               {{ orden.consecutivoOrden + 1 }} / {{ orden.totalDeOrdenes }}

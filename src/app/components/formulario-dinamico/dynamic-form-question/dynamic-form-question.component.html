@@ -1,35 +1,217 @@
-<div
-  *ngIf="question && form"
-  [formGroup]="form"
-  class="form-group"
-  [ngSwitch]="question?.controlType"
->
-  <input
-    *ngSwitchCase="'textbox'"
-    [ngClass]="objetoValidacion()"
-    [type]="question?.type"
-    class="form-control"
-    [formControlName]="question?.key"
-  />
+<ng-container *ngIf="this.f(this.question.key)">
+  <div [class]="question.classForGroup">
+    <div
+      *ngIf="question && form"
+      [formGroup]="form"
+      class="form-group"
+      [ngSwitch]="question?.controlType"
+    >
+      <ng-container *ngSwitchCase="'textbox'">
+        <input
+          *ngIf="question.type === 'text'"
+          [ngClass]="objetoValidacion()"
+          type="text"
+          class="form-control"
+          [formControlName]="question?.key"
+        />
+        <input
+          *ngIf="question.type === 'number'"
+          [ngClass]="objetoValidacion()"
+          type="text"
+          class="form-control"
+          [formControlName]="question?.key"
+          mask="{{ question.mask }}"
+          thousandSeparator="{{ question.thousandSeparator }}"
+          suffix="{{ question.suffix }}"
+        />
+      </ng-container>
 
-  <select
-    *ngSwitchCase="'dropdown'"
-    [id]="question?.key"
-    class="form-control"
-    [ngClass]="objetoValidacion()"
-    [formControlName]="question?.key"
-  >
-    <option *ngFor="let opt of question?.options" [value]="opt.key">{{
-      opt.value
-    }}</option>
-  </select>
-  <small class="form-text text-muted">{{ question?.label }}</small>
+      <select
+        *ngSwitchCase="'dropdown'"
+        [id]="question?.key"
+        class="form-control"
+        [ngClass]="objetoValidacion()"
+        [formControlName]="question?.key"
+      >
+        <option *ngFor="let opt of question?.options" [value]="opt.key">{{
+          opt.value
+        }}</option>
+      </select>
+      <small class="form-text text-muted">{{ question?.label }}</small>
 
-  <app-validacion-inputs
-    *ngIf="form"
-    [campo]="f(question?.key)"
-    [directo]="true"
-  ></app-validacion-inputs>
-</div>
+      <app-validacion-inputs
+        *ngIf="form"
+        [campo]="f(question?.key)"
+        [directo]="true"
+      ></app-validacion-inputs>
+    </div>
+  </div>
 
+  <div *ngIf="modoCreador" class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <p>Configuraciones Generales</p>
+          <hr />
+          <div class="row">
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <ng-container *ngIf="!editandoKey">
+                <input
+                  disabled
+                  [value]="question.key"
+                  type="text"
+                  class="form-control"
+                />
 
+                <a
+                  (click)="editandoKey = true"
+                  class="btn btn-success btn-xs"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-edit"></i
+                ></a>
+                <small id="helpId" class="form-text text-muted">key</small>
+              </ng-container>
+
+              <ng-container *ngIf="editandoKey">
+                <input
+                  #inputKey
+                  type="text"
+                  class="form-control"
+                  [value]="question?.key"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Editar la llave</small
+                >
+                <button
+                  (click)="editarKey(inputKey.value)"
+                  type="button"
+                  class="btn btn-success btn-sm"
+                >
+                  Guardar
+                </button>
+                <button
+                  (click)="editandoKey = false"
+                  type="button"
+                  class="btn btn-success btn-sm"
+                >
+                  Cancelar
+                </button>
+              </ng-container>
+            </div>
+
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.value"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">value</small>
+            </div>
+
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.label"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">label</small>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.required"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">required</small>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.order"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">order</small>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.controlType"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >controlType</small
+              >
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.type"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">type</small>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.options"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">options</small>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.classForGroup"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >classForGroup</small
+              >
+            </div>
+
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.mask"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">mask</small>
+            </div>
+
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.thousandSeparator"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >thousandSeparator</small
+              >
+            </div>
+
+            <div class="form-group col-12 col-sm-6 col-md-3 col-lg-2">
+              <input
+                [(ngModel)]="question.suffix"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted">suffix</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

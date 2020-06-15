@@ -288,6 +288,66 @@ export class FolioNewService {
       catchError(err => this.errFun(err))
     )
   }
+
+  recibirOrden(escaneada, idDepartamento): Observable<null> {
+    let url = this.base.concat(`/recibirOrden`)
+
+    return this.http.put(url, { ...escaneada, idDepartamento }).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return null
+      }),
+      catchError(err => {
+        //Este es para que el escaneo sea mas rapido
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  ponerATrabajarORegistrar(escaneada, idDepartamento, datos): Observable<null> {
+    let url = this.base.concat('/ponerATrabajarORegistrar')
+    console.log('servicio', datos)
+    return this.http
+      .put<OrdenLigera>(url, { ...escaneada, idDepartamento, datos })
+      .pipe(
+        map((resp: any) => {
+          this.msjService.toastCorrecto(resp.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
+  }
+
+  estatusDeLaOrdenParaRegistro(
+    escaneada,
+    idDepartamento
+  ): Observable<{ ponerATrabajar: boolean; yaEstaTrabajando: boolean }> {
+    let url = this.base
+      .concat('/estatusDeLaOrdenParaRegistro')
+      .concat(`/${escaneada.idFolio}`)
+      .concat(`/${escaneada.idPedido}`)
+      .concat(`/${escaneada.idOrden}`)
+      .concat(`/${idDepartamento}`)
+
+    return this.http.get<boolean>(url).pipe(
+      map((r: any) => {
+        return {
+          ponerATrabajar: r.ponerATrabajar,
+          yaEstaTrabajando: r.yaEstaTrabajando
+        }
+      }),
+      catchError(err => {
+        //Este es para que el escaneo sea mas rapido
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
 }
 // <!--
 // =====================================

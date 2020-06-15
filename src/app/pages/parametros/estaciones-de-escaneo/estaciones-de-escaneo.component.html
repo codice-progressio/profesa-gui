@@ -1,5 +1,5 @@
-<ng-container cdkDropListGroup>
-  <div class="row">
+<ng-container *ngIf="!editandoFormulario" cdkDropListGroup>
+  <div class="row fadeIn animated">
     <div class="col-12">
       <div class="card shadow">
         <div
@@ -47,18 +47,102 @@
               </div>
             </li>
             <li
-              *ngFor="let g of mostrarDepartamentosSeleccionados"
+              *ngFor="let g of mostrarDepartamentosSeleccionados; let i = index"
               class="list-group-item"
             >
               <i class="fas fa-qrcode text-success"></i>
-              {{ g.departamento.nombre }}
+
+              <span class="font-bold font-20">
+                {{ g.departamento.nombre }}
+              </span>
+
+              <hr class="thin" />
+
+              <a
+                (click)="departamentoParaFormulario(g)"
+                class="btn btn-xs mr-1"
+                href="javascript:void(0)"
+                role="button"
+                [ngClass]="{
+                  'btn-outline-secondary': g.inputsFormulario.length === 0,
+                  'btn-success': g.inputsFormulario.length > 0
+                }"
+              >
+                <i
+                  *ngIf="g.inputsFormulario.length === 0"
+                  class="fas fa-square"
+                ></i>
+                <i
+                  *ngIf="g.inputsFormulario.length > 0"
+                  class="fas fa-check-square"
+                ></i>
+                Formulario
+              </a>
+              <a
+                (click)="g.ponerATrabajar = !g.ponerATrabajar"
+                class="btn btn-xs mr-3"
+                [ngClass]="{
+                  'btn-outline-secondary': !g.ponerATrabajar,
+                  'btn-success': g.ponerATrabajar
+                }"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i *ngIf="!g.ponerATrabajar" class="fas fa-square"></i>
+                <i *ngIf="g.ponerATrabajar" class="fas fa-check-square"></i>
+                Poner a trabajar
+              </a>
+              <a
+                (click)="g.recibirTodo = !g.recibirTodo"
+                class="btn btn-xs mr-3"
+                [ngClass]="{
+                  'btn-outline-secondary': !g.recibirTodo,
+                  'btn-success': g.recibirTodo
+                }"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i *ngIf="!g.recibirTodo" class="fas fa-square"></i>
+                <i *ngIf="g.recibirTodo" class="fas fa-check-square"></i>
+               Recibir todo
+              </a>
+              <a
+                (click)="g.registrarTodo = !g.registrarTodo"
+                class="btn btn-xs mr-3"
+                [ngClass]="{
+                  'btn-outline-secondary': !g.registrarTodo,
+                  'btn-success': g.registrarTodo
+                }"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i *ngIf="!g.registrarTodo" class="fas fa-square"></i>
+                <i *ngIf="g.registrarTodo" class="fas fa-check-square"></i>
+               Registrar todo
+              </a>
+              <a
+                (click)="definirUltimoDepartamento(g)"
+                class="btn btn-xs mr-3"
+                [ngClass]="{
+                  'btn-outline-secondary': !g.ultimoDepartamento,
+                  'btn-success': g.ultimoDepartamento
+                }"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i *ngIf="!g.ultimoDepartamento" class="fas fa-square"></i>
+                <i *ngIf="g.ultimoDepartamento" class="fas fa-check-square"></i>
+               Ultimo departamento
+              </a>
+
+              <br />
 
               <ul
                 cdkDropList
                 [id]="g.departamento._id"
                 [cdkDropListData]="g.usuarios"
                 (cdkDropListDropped)="drop($event)"
-                class="list-group"
+                class="list-group mt-3"
               >
                 <li class="list-group-item bg-danger text-white py-0">
                   Usuarios con permiso
@@ -208,3 +292,10 @@
     </div>
   </div>
 </ng-container>
+
+<app-creador-de-formularios
+  *ngIf="editandoFormulario"
+  [departamento]="depaSeleccinadoParaCrearFormulario"
+  (volver)="volver()"
+>
+</app-creador-de-formularios>

@@ -8,6 +8,8 @@ import { map, catchError } from 'rxjs/operators'
 import { Proceso } from '../models/proceso.model'
 import { Departamento } from '../models/departamento.models'
 import { Usuario } from '../models/usuario.model'
+import { QuestionBase } from '../components/formulario-dinamico/question-base'
+import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +43,8 @@ export class ParametrosService {
       .put(url, {
         procesosIniciales: l.procesosIniciales.map(x => x._id),
         procesosInicialesAlmacen: l.procesosInicialesAlmacen.map(x => x._id),
-        procesosFinales: l.procesosFinales.map(x => x._id)
+        procesosFinales: l.procesosFinales.map(x => x._id),
+        campoFinal: l.campoFinal
       })
       .pipe(
         map(resp => {
@@ -140,7 +143,15 @@ export class ParametrosService {
   ): Observable<null> {
     let url = this.base.concat('/estacionesDeEscaneo')
 
-    return this.httpClient.put(url, estaciones ).pipe(
+    let dta = JSON.parse(JSON.stringify(estaciones))
+
+    let datos: any = dta.map(estacion => {
+      estacion.usuarios = estacion.usuarios.map(x => x._id)
+      estacion.departamento = estacion.departamento._id
+      return estacion
+    })
+
+    return this.httpClient.put(url, datos).pipe(
       map((resp: any) => {
         this.msjService.toastCorrecto(
           'Se modificaron las estaciones de escaneo'
@@ -156,6 +167,12 @@ export class ParametrosService {
 }
 
 export interface ScannerDepartamentoGestion {
+  _id: string
   departamento: Departamento
   usuarios: Usuario[]
+  ponerATrabajar: boolean
+  recibirTodo: boolean
+  registrarTodo: boolean
+  ultimoDepartamento: boolean
+  inputsFormulario: QuestionBase<string>[]
 }

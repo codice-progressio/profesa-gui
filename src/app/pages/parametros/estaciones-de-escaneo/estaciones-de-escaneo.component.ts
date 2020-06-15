@@ -30,6 +30,9 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   departamentosSeleccionados: ScannerDepartamentoGestion[] = []
   usuariosAutorizadoDepartamento = {}
 
+  depaSeleccinadoParaCrearFormulario: ScannerDepartamentoGestion = null
+  editandoFormulario = false
+
   constructor(
     public departamentoService: DepartamentoService,
     public usuarioService: UsuarioService,
@@ -49,7 +52,6 @@ export class EstacionesDeEscaneoComponent implements OnInit {
 
     this.parametrosService.findAllEstacionesDeEscaneo().subscribe(
       estaciones => {
-        console.log(estaciones)
         this.departamentosSeleccionados = JSON.parse(JSON.stringify(estaciones))
         this.mostrarDepartamentosSeleccionados = JSON.parse(
           JSON.stringify(estaciones)
@@ -82,8 +84,14 @@ export class EstacionesDeEscaneoComponent implements OnInit {
       .subscribe(
         d => {
           this.departamentos = d.map(x => ({
+            _id: x._id,
             departamento: x,
-            usuarios: []
+            usuarios: [],
+            inputsFormulario: [],
+            ponerATrabajar: false,
+            recibirTodo: false,
+            registrarTodo: false,
+            ultimoDepartamento: false
           }))
           this.mostrarDepartamentos = d.map(x => x._id)
           delete this.cargando['departamento']
@@ -266,5 +274,24 @@ export class EstacionesDeEscaneoComponent implements OnInit {
     this.mostrarDepartamentosSeleccionados = JSON.parse(
       JSON.stringify(this.departamentosSeleccionados)
     )
+  }
+
+  departamentoParaFormulario(g: ScannerDepartamentoGestion) {
+    this.depaSeleccinadoParaCrearFormulario = g
+    this.editandoFormulario = true
+  }
+
+  volver() {
+    this.editandoFormulario = false
+  }
+
+  definirUltimoDepartamento(g: ScannerDepartamentoGestion) {
+    //Solo puede estar definido uno
+
+    this.mostrarDepartamentosSeleccionados
+      .filter(x => x._id !== g._id)
+      .forEach(x => (x.ultimoDepartamento = false))
+
+    g.ultimoDepartamento = true
   }
 }
