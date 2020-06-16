@@ -5,7 +5,6 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core'
-import { OrdenParaAsignacion } from 'src/app/services/programacion-transformacion.service'
 import { DefaultsService } from '../../../services/configDefualts/defaults.service'
 import { ProgramacionTransformacionService } from '../../../services/programacion-transformacion.service'
 import { DefaultModelData } from '../../../config/defaultModelData'
@@ -21,6 +20,7 @@ import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-
 import { OnDestroy } from '@angular/core'
 import { ParametrosService } from '../../../services/parametros.service'
 import { Departamento } from '../../../models/departamento.models'
+import { OrdenLigera } from '../../../services/folio/folio-new.service'
 
 @Component({
   selector: 'app-programacion-transformacion',
@@ -28,7 +28,7 @@ import { Departamento } from '../../../models/departamento.models'
   styleUrls: ['./programacion-transformacion.component.css']
 })
 export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
-  ordenes: OrdenParaAsignacion[] = []
+  ordenes: OrdenLigera[] = []
 
   maquinas: Maquina[] = []
 
@@ -125,7 +125,7 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
   }
 
   filtroActivo = false
-  ordenesFiltradas: OrdenParaAsignacion[]
+  ordenesFiltradas: OrdenLigera[]
 
   ordenesAMostrar: string[] = []
   filtrar(termino: string) {
@@ -139,7 +139,7 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
       .filter(x => {
         return (
           x.numeroDeOrden.toLowerCase().includes(termino) ||
-          x.modeloCompleto.toLowerCase().includes(termino)
+          x.sku.toLowerCase().includes(termino)
         )
       })
       .map(x => x.numeroDeOrden)
@@ -159,7 +159,7 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
   }
 
   drop(
-    event: CdkDragDrop<OrdenParaAsignacion[]>,
+    event: CdkDragDrop<OrdenLigera[]>,
     maquinaALaQueLlega: Maquina = null
   ) {
     const maquinaDeLaQueViene = event.item.data
