@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core'
 import { ModeloCompleto } from '../../../models/modeloCompleto.modelo'
 import { AlmacenProductoTerminadoService } from '../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
-import { FiltrosModelosCompletos } from '../../../services/utilidades/filtrosParaConsultas/FiltrosModelosCompletos'
-import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import {
+  ModeloCompletoService,
+  ModeloCompletoLigero
+} from '../../../services/modelo/modelo-completo.service'
 import { Lotes } from '../../../models/almacenProductoTerminado/lotes.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
+import { Paginacion } from '../../../utils/paginacion.util'
+import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 @Component({
   selector: 'app-almacen-de-producto-terminado',
@@ -27,99 +31,92 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
    * @memberof AlmacenDeProductoTerminadoComponent
    */
   esEntrada: boolean = null
-
   detalleLote: Lotes
-
   termino: string = ''
+  paginacion: Paginacion = new Paginacion(5, 0, 1, 'nombreCompleto')
+  cargando = {}
+  totalDeElementos = 0
 
-  cbObserbable = termino => {
-    this.buscando = true
-    return this._almacenDeProductoTerminadoService.search(
-      termino,
-      undefined,
-      undefined,
-      ModeloCompleto
-    )
-  }
+  keys = Object.keys
 
-  busqueda(modelosCompletos: ModeloCompleto[]) {
-    modelosCompletos.map(mc => {
-      mc._servicio = this._modeloCompletoService
-    })
-    this.modelosCompletos = modelosCompletos
-  }
-
-  cancelado() {
-    this.buscando = false
-    this.cargarModelos()
-  }
-
-  error(error: string) {
-    this._msjService.err(error)
-    throw error
-  }
+  p = permisosKeysConfig
 
   constructor(
-    public _almacenDeProductoTerminadoService: AlmacenProductoTerminadoService,
-    public _modeloCompletoService: ModeloCompletoService,
-    public _paginadorService: PaginadorService,
+    public almacenProdTerSer: AlmacenProductoTerminadoService,
+    public modComService: ModeloCompletoService,
     public _msjService: ManejoDeMensajesService
-  ) {
-    this._paginadorService.callback = () => {
-      this.cargarModelos()
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.cargarModelos()
   }
 
-  cargarModelos() {
-    this._almacenDeProductoTerminadoService
-      .filtros(
-        new FiltrosModelosCompletos(this._almacenDeProductoTerminadoService)
-      )
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .servicio.todo()
-      .subscribe(mcs => {
-        mcs.map(mc => {
-          mc._servicio = this._modeloCompletoService
-        })
-        this.modelosCompletos = mcs
-        this._paginadorService.activarPaginador(
-          this._almacenDeProductoTerminadoService.total
-        )
-      })
-  }
-
-  modelosCompletos: ModeloCompleto[] = []
+  modelosCompletos: ModeloCompletoLigero[] = []
   modeloCompletoDetalle: ModeloCompleto = null
-  /**
-   *Bandera que senala si se esta utilizando la busqueda. Sirve 
-   para ocultar y mostrar el paginador component.
-   *
-   * @type {boolean}
-   * @memberof AlmacenDeProductoTerminadoComponent
-   */
-  buscando: boolean = false
 
-  /**
-   *Asigna el modeloCompleto al detalla y ejecuta varias operaciones
-   de informacion. 
-   *
-   * @param {ModeloCompleto} mc
-   * @memberof AlmacenDeProductoTerminadoComponent
-   */
-  asignarDetalle(mc: ModeloCompleto) {
-    this.modeloCompletoDetalle = mc
-    this.modeloCompletoDetalle.obtenerProduccionEnTransito()
+  cargarModelos() {
+    this.cargando['cargando'] = 'Cargando la lista sku'
+    this.modComService.findAll(this.paginacion).subscribe(
+      mod => {
+        this.modelosCompletos = mod
+        delete this.cargando['cargando']
+        this.totalDeElementos = this.modComService.total
+      },
+      () => delete this.cargando['cargando']
+    )
   }
 
-  asignarEntradaOSalida(mc: ModeloCompleto, esEntrada: boolean) {
-    this.esEntrada = esEntrada
-    this.modeloCompletoES = mc
-    this.modeloCompletoES.obtenerProduccionEnTransito()
+  cbObservable = termino => {
+    this.cargando['byTerm'] = `Buscando por el termino "${termino}" `
+    this.termino = termino
+    return this.modComService.findByTerm(
+      termino,
+      new Paginacion(
+        this.paginacion.limite,
+        0,
+        this.paginacion.orden,
+        this.paginacion.campoDeOrdenamiento
+      )
+    )
+  }
+
+  resultadoDeBusqueda(datos) {
+    this.modelosCompletos = datos
+    this.totalDeElementos = this.almacenProdTerSer.total
+    delete this.cargando['byTerm']
+  }
+
+  cancelado() {
+    this.termino = ''
+    this.cargarModelos()
+  }
+  error() {
+    this.termino = ''
+    this.cargarModelos
+  }
+
+  actualizarConsulta(data: iPaginadorData = null) {
+    this.paginacion = data.paginacion
+
+    this.cargando['paginador'] = 'Actualizando consulta'
+
+    const cb = modelos => {
+      this.modelosCompletos = modelos
+      this.totalDeElementos = this.modComService.total
+      delete this.cargando['paginador']
+    }
+    const error = () => {
+      delete this.cargando['paginador']
+      this.cargarModelos()
+    }
+
+    if (this.termino) {
+      this.modComService
+        .findByTerm(this.termino, this.paginacion)
+        .subscribe(cb, error)
+    } else {
+      this.modComService.findAll(data.paginacion).subscribe(cb, error)
+    }
   }
 
   /**
@@ -137,6 +134,8 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   comprobarExistencias(mc: ModeloCompleto) {
     let valor: number = 2
 
+    if (mc.existencia === 0) return 2
+
     if (mc.existencia > mc.stockMaximo) valor = 1
     if (mc.existencia < mc.stockMinimo) valor = -1
     if (mc.existencia == 0) valor = 0
@@ -147,17 +146,15 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   modeloAConsolidar: ModeloCompleto = null
 
   consolidarLotes() {
-    this._almacenDeProductoTerminadoService
+    this.almacenProdTerSer
       .consolidar(this.modeloAConsolidar._id)
-      .subscribe(modeloCompleto => {
+      .subscribe(() => {
         this.modeloAConsolidar = null
-        if(this.termino){
-        this.cbObserbable(this.termino).subscribe(modelos => {
-          this.modelosCompletos = modelos
-          this.modelosCompletos.map(
-            x => (x._servicio = this._modeloCompletoService)
-          )
-        })} else {
+        if (this.termino) {
+          this.cbObservable(this.termino).subscribe(modelos => {
+            this.modelosCompletos = modelos
+          })
+        } else {
           this.cargarModelos()
         }
       })

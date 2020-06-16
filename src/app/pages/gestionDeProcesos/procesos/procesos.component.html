@@ -1,63 +1,159 @@
-<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
-    <ng-container *ngIf="mostrarLista">
+<ng-container>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class=" card-body d-flex justify-content-between align-items-center"
+        >
+          <h1 class=""><strong>Procesos</strong> existentes</h1>
 
-        <!-- 
-      =====================================
-       BODY
-      =====================================
-      -->
-        <table class="table table-responsive table-hover">
+          <div class="d-flex  align-items-center ">
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObservable"
+                [tiempoDeEspera]="1000"
+                (resultado)="resultadoDeBusqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error($event)"
+              ></app-buscador-paciente>
+            </div>
+
+            <a
+              (click)="this.crear()"
+              class="btn btn-success text-white active mr-3"
+            >
+              <i class="fas fa-plus "></i> Crear proceso</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="totalDeElementos"
+        [campoDeOrdenamiento]="'nombres'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+      ></paginador>
+    </div>
+  </div>
+
+  <div
+    *ngIf="procesos.length && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table table-responsive table-hover">
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th>Departamento</th>
-                    <th class='text-center'>Requiere produccion</th>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Departamento</th>
+                <th class="text-center">Requiere produccion</th>
 
-                    <th>Observaciones</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+                <th>Observaciones</th>
+                <th></th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let elemento of elementos">
-                    <td><button (click)="mostrarDetalle(elemento._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
-                    <td>{{elemento.nombre}}</td>
-                    <td>{{elemento.departamento.nombre}}</td>
-                    <td class="text-center">
+              <tr *ngFor="let elemento of procesos">
+                <td>
+                  <button
+                    (click)="procesoDetalle = elemento"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#detalle"
+                    role="button"
+                  >
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td>{{ elemento.nombre }}</td>
+                <td>{{ elemento.departamento.nombre }}</td>
+                <td class="text-center">
+                  <i
+                    *ngIf="elemento.requiereProduccion"
+                    class="fas fa-check text-info fa-2x"
+                  ></i>
+                  <i
+                    *ngIf="!elemento.requiereProduccion"
+                    class="fas fa-times text-danger  fa-2x"
+                  ></i>
+                </td>
+                <td>{{ elemento.observaciones }}</td>
 
-                        <i *ngIf="elemento.requiereProduccion" class="fas fa-check text-info fa-2x"></i>
-                        <i *ngIf="!elemento.requiereProduccion" class="fas fa-times text-danger  fa-2x"></i>
-
-                    </td>
-                    <td>{{elemento.observaciones}}</td>
-
-                    <td><a (click)="editar( elemento._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
-                    <td><a (click)="eliminar( elemento._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
-                </tr>
-
+                <td>
+                  <a
+                    href="javascript:void(0)"
+                    (click)="modificar(elemento._id)"
+                    class="btn btn-success btn-sm"
+                    ><i class="fas fa-edit text-white    "></i
+                  ></a>
+                </td>
+                <td>
+                  <a
+                    (click)="eliminar(elemento._id)"
+                    class="btn btn-danger btn-sm"
+                    ><i class="fas fa-times  text-white "></i
+                  ></a>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- 
-      =====================================
-       END BODY
-      =====================================
-      -->
+  <div
+    *ngIf="procesos?.length === 0 && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body shadow">
+          <h1 class="display-1">No hay <b>procesos</b> para mostrar</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </ng-container>
-</app-general>
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1">
+            <i class="fas fa-sync  fa-spin   "></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)">{{ cargando[key] }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-<!-- 
-=====================================
-Importante fuera de app-general
-=====================================
--->
-
-<app-procesos-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-procesos-crear-modificar>
-<app-procesos-detalle [detalleElemento]='elementoDetalle'> </app-procesos-detalle>
-<!-- 
-=====================================
-END Importante fuera de app-general
-=====================================
--->
+<div
+  class="modal fade"
+  id="detalle"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-procesos-detalle [detalle]="procesoDetalle">
+        </app-procesos-detalle>
+      </div>
+    </div>
+  </div>
+</div>

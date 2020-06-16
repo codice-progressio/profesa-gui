@@ -91,7 +91,6 @@ export class TransformacionComponent extends GeneralesComponents<Transformacion>
     })
 
     let interval = setInterval(() => {
-      console.log('Intervalo')
       if (this.defaults) {
         clearInterval(interval)
         this._maquinaService

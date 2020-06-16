@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { AlmacenDescripcion } from '../../../models/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.model'
 import { AlmacenDescripcionService } from '../../../services/almacenDeMateriaPrimaYHerramientas/almacen-descripcion.service'
-import { PaginadorService } from '../../../components/paginador/paginador.service'
-import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
-import { AlmacenDescripcionCrearModificarComponent } from './almacen-descripcion-crear-modificar.component'
-import { AlmacenDescripcionFiltros } from '../../../services/utilidades/filtrosParaConsultas/almacenDescripcion.filtros'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { Router } from '@angular/router'
+import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
 
 @Component({
   selector: 'app-almacen-descripcion',
@@ -12,83 +11,98 @@ import { AlmacenDescripcionFiltros } from '../../../services/utilidades/filtrosP
   styles: []
 })
 export class AlmacenDescripcionComponent implements OnInit {
+  cargando: {} = {}
+
+  totalDeElementos: number
   almacenesDescripcion: AlmacenDescripcion[] = []
-  almacenDescripcionDetalle: AlmacenDescripcion = null
-  almacenDescripcionEditar: AlmacenDescripcion = null
-  componenteCrearModificar: AlmacenDescripcionCrearModificarComponent
+  paginacion = new Paginacion(5, 0, 1, 'nombre')
+  termino: string
+  detalle: AlmacenDescripcion = null
+  reporteModificar: AlmacenDescripcion
+
+  almacenDescripcionDetalle: AlmacenDescripcion
+  mostrarCrear = false
+
+  keys = Object.keys
+
+  cbObservable = termino => {
+    this.termino = termino
+    this.cargando[
+      'termino'
+    ] = `Buscando almacenes que coincidan con '${termino}'`
+    return this.almacenDescripcionService.findByTerm(termino, this.paginacion)
+  }
 
   constructor(
-    public _almacenDescripcionServices: AlmacenDescripcionService,
-    public _paginadorService: PaginadorService,
-    public _msjService: ManejoDeMensajesService
-  ) {
-    this._paginadorService.callback = () => this.cargarAlmacenes()
-  }
+    public almacenDescripcionService: AlmacenDescripcionService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.cargarAlmacenes()
+    this.cargar()
   }
 
-  cargarAlmacenes() {
-    this._almacenDescripcionServices
-      .filtros(new AlmacenDescripcionFiltros(this._almacenDescripcionServices))
-      .setDesde(this._paginadorService.desde)
-      .setLimite(this._paginadorService.limite)
-      .setSortCampos([['nombre', 1]])
-      .servicio.todo()
-      .subscribe(almacenes => {
-        this.almacenesDescripcion = almacenes
-        this._paginadorService.activarPaginador(
-          this._almacenDescripcionServices.total
-        )
-      })
+  resultadoDeBusqueda(datos) {
+    delete this.cargando['termino']
+    this.almacenesDescripcion = datos
+    this.totalDeElementos = this.almacenDescripcionService.total
   }
 
-  guardar(ad: AlmacenDescripcion) {
-    this._almacenDescripcionServices
-      .guardar(ad)
-      .subscribe(() => this.cargarAlmacenes())
+  cargar() {
+    this.cargando['cargar'] = 'Cargando elementos'
+    this.almacenDescripcionService.findAll(this.paginacion).subscribe(p => {
+      this.almacenesDescripcion = p
+      this.totalDeElementos = this.almacenDescripcionService.total
+      delete this.cargando['cargar']
+    })
   }
 
-  modificar(ad: AlmacenDescripcion) {
-    this._almacenDescripcionServices
-      .modificar(ad)
-      .subscribe(() => this.cargarAlmacenes())
+  error() {
+    this.cargar()
   }
 
-  eliminarAlmacen(ad: AlmacenDescripcion) {
-    let msj = `Si eliminas el almacen ${ad.nombre} tambien se borraran los articulos que esten relacionados a el. Aun asi quieres continuar?`
+  actualizarConsulta(data: iPaginadorData = null) {
+    this.cargando['actualizarConsulta'] = 'Actualizando datos de consulta'
+    this.paginacion = data ? data.paginacion : this.paginacion
 
-    let msj2 = `Que pena, pero esto es muy serio.  Si eliminas ${ad.nombre} no podras recuperar esta informacion y se afectara el costo del inventario, las estadisticas de uso, etc, etc, etc. Piensalo bien antes de continuar.`
+    const cb = almacendescripcions => {
+      this.almacenesDescripcion = almacendescripcions
+      delete this.cargando['actualizarConsulta']
+    }
+    const cancelado = () => delete this.cargando['actualizarConsulta']
 
-    let msj3 = `ULTIMA OPORTUNIDAD!! Si haces esto podrias desestabilizar el sistema completamente. ... Quieres continuar?`
-
-    this._msjService.confirmacionDeEliminacion(msj, () =>
-      this._msjService.confirmacionDeEliminacion(msj2, () =>
-        this._msjService.confirmacionDeEliminacion(msj3, () => {
-          this._almacenDescripcionServices
-            .eliminar(ad._id)
-            .subscribe(() => this.cargarAlmacenes())
-        })
-      )
-    )
+    if (this.termino) {
+      this.almacenDescripcionService
+        .findByTerm(this.termino, this.paginacion)
+        .subscribe(cb, cancelado)
+    } else {
+      this.almacenDescripcionService
+        .findAll(data.paginacion)
+        .subscribe(cb, cancelado)
+    }
   }
 
   crear() {
-    this.asignarEdicion(new AlmacenDescripcion())
+    this.router.navigate(['almacenDescripcion', 'crear'])
   }
 
-  asignarDetalle(a: AlmacenDescripcion) {
-    this.almacenDescripcionDetalle = a
+  modificar(id) {
+    this.router.navigate(['almacenDescripcion', 'modificar', id])
   }
 
-  asignarEdicion(ad: AlmacenDescripcion) {
-    this.almacenDescripcionEditar = ad
-    // Necesita que este cargado el almacendescripcionEditar
-    this.componenteCrearModificar.cargarDatos()
+  cancelado() {
+    this.termino = ''
+    this.cargar()
   }
 
-  asignarComponente(evento) {
-    this.componenteCrearModificar = evento
+  eliminar(id: string) {
+    this.cargando['eliminar'] = 'Eliminando el elemento'
+    this.almacenDescripcionService.delete(id).subscribe(
+      () => {
+        delete this.cargando['eliminar']
+        this.cargar()
+      },
+      () => delete this.cargando['eliminar']
+    )
   }
 }

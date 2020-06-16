@@ -1,4 +1,4 @@
-import { Input, EventEmitter, Output } from '@angular/core';
+import { Input, EventEmitter, Output, Directive } from '@angular/core';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { CRUD } from "src/app/services/crud";
 import { FiltrosDeConsultas } from "src/app/services/utilidades/filtrosParaConsultas/FiltrosDeConsultas";
@@ -16,6 +16,7 @@ import { ValidacionesService } from 'src/app/services/utilidades/validaciones.se
  * no sea necesario agregar los filtros de consulta obligatoriamente. Por eso lo inicializamos
  * con un valor any.
  */
+@Directive()
 export class CrearModificar_GUI_CRUD<
   T_Elemento,
   S_Servicio extends CRUD<T_Elemento, S_Servicio, F_FiltrosDeConsulta >,

@@ -1,50 +1,42 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <base href="/">
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <base href="/" />
     <title>CARRDUCIsys</title>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon.png"
+    />
 
-    <link rel="stylesheet" href="assets/css/fontawesome/css/all.css" >
-
-
-
+    <link rel="stylesheet" href="assets/css/fontawesome/css/all.css" />
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" >
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link id="tema" id="theme" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link id="tema" id="theme" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
 
-
-
-
-</head>
-
-<body class="fix-header card-no-border fix-sidebar">
-
+  <body class="fix-header card-no-border fix-sidebar">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div class="preloader">
+
+    <app-root id="no_print" class="w-100">
+      <div class="preloader">
         <div class="loader">
-            <div class="loader__figure"></div>
-            <p class="loader__label"><img src="assets/images/logo-text.png" alt="homepage" /></p>
+          <div class="loader__figure"></div>
+          <p class="loader__label">
+            <img src="assets/images/logo-text.png" alt="homepage" />
+          </p>
         </div>
-    </div>
-
-
-
-
-    <div id="no_print">
-        <app-root></app-root>
-    </div>
-            
-
+      </div>
+    </app-root>
 
     <!-- All Jquery -->
     <!-- ============================================================== -->
@@ -64,182 +56,29 @@
     <!--Custom JavaScript -->
     <script src="assets/js/custom.js"></script>
 
-
-    <!-- QR CODE -->
-
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/grid.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/version.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/detector.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/formatinf.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/errorlevel.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/bitmat.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/datablock.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/bmparser.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/datamask.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/rsdecoder.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/gf256poly.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/gf256.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/decoder.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/qrcode.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/findpat.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/alignpat.js"></script>
-    <script type="text/javascript" src="assets/js/jsqrcode-master/src/databr.js"></script>
-
-    <script src="assets/js/html5-qrcode-master/lib/jsqrcode-combined.min.js"></script>
-    <script src="assets/js/html5-qrcode-master/lib/html5-qrcode.min.js"></script>
-
     <script>
-        $(document).ready(function() {
+      $(document).ready(function () {
+        // Este codigo ayuda que se puedan abrir mas de un modal
+        // de manera conjunta. Se apilan y se van cerrando de uno
+        // en uno. La condicion es que no se llame a un modal desde el
+        // mismo modal por que no funciona.
+        // https://stackoverflow.com/questions/19305821/multiple-modals-overlay
+        $(document).on('show.bs.modal', '.modal', function (event) {
+          var zIndex = 1040 + 10 * $('.modal:visible').length
+          $(this).css('z-index', zIndex)
+          setTimeout(function () {
+            $('.modal-backdrop')
+              .not('.modal-stack')
+              .css('z-index', zIndex - 1)
+              .addClass('modal-stack')
+          }, 0)
+        })
 
-            // Este codigo ayuda que se puedan abrir mas de un modal
-            // de manera conjunta. Se apilan y se van cerrando de uno 
-            // en uno. La condicion es que no se llame a un modal desde el 
-            // mismo modal por que no funciona. 
-            // https://stackoverflow.com/questions/19305821/multiple-modals-overlay
-            $(document).on('show.bs.modal', '.modal', function(event) {
-                var zIndex = 1040 + (10 * $('.modal:visible').length);
-                $(this).css('z-index', zIndex);
-                setTimeout(function() {
-                    $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-                }, 0);
-            });
-
-            // Fix recomendado para el scroll
-            $(document).on('hidden.bs.modal', '.modal', function() {
-                $('.modal:visible').length && $(document.body).addClass('modal-open');
-            });
-
-
-        });
-        (function($) {
-
-            jQuery.fn.extend({
-                html5_qrcode: function(qrcodeSuccess, qrcodeError, videoError) {
-                    return this.each(function() {
-                        var currentElem = $(this);
-
-                        var height = currentElem.height();
-                        var width = currentElem.width();
-
-                        if (height == null) {
-                            height = 250;
-                        }
-
-                        if (width == null) {
-                            width = 300;
-                        }
-
-                        var vidElem = $('<video width="' + width + 'px" height="' + height + 'px"></video>').appendTo(currentElem);
-                        var canvasElem = $('<canvas id="qr-canvas" width="' + (width - 2) + 'px" height="' + (height - 2) + 'px" style="display:none;"></canvas>').appendTo(currentElem);
-
-                        var video = vidElem[0];
-                        var canvas = canvasElem[0];
-                        var context = canvas.getContext('2d');
-                        var localMediaStream;
-
-                        var scan = function() {
-                            if (localMediaStream) {
-                                context.drawImage(video, 0, 0, 307, 250);
-
-                                try {
-                                    qrcode.decode();
-                                } catch (e) {
-                                    qrcodeError(e, localMediaStream);
-                                }
-
-                                $.data(currentElem[0], "timeout", setTimeout(scan, 500));
-
-                            } else {
-                                $.data(currentElem[0], "timeout", setTimeout(scan, 500));
-                            }
-                        }; //end snapshot function
-
-                        window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-                        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-                        var successCallback = function(stream) {
-                            try {
-                                video.srcObject = stream;
-                            } catch (error) {
-                                video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
-                            }
-                            localMediaStream = stream;
-                            $.data(currentElem[0], "stream", stream);
-
-                            video.play();
-                            $.data(currentElem[0], "timeout", setTimeout(scan, 1000));
-                        };
-
-                        // Call the getUserMedia method with our callback functions
-                        if (navigator.getUserMedia) {
-                            navigator.getUserMedia({
-                                video: true
-                            }, successCallback, function(error) {
-                                videoError(error, localMediaStream);
-                            });
-                        } else {
-                            console.log('Native web camera streaming (getUserMedia) not supported in this browser.');
-                            // Display a friendly "sorry" message to the user
-                        }
-
-                        qrcode.callback = function(result) {
-                            qrcodeSuccess(result, localMediaStream);
-                        };
-                    }); // end of html5_qrcode
-                },
-                html5_qrcode_stop: function() {
-                    return this.each(function() {
-                        //stop the stream and cancel timeouts
-                        $(this).data('stream').getVideoTracks().forEach(function(videoTrack) {
-                            videoTrack.stop();
-                        });
-
-                        clearTimeout($(this).data('timeout'));
-                    });
-                }
-            });
-        })(jQuery);
-
-
-        var qrLeyendo = false;
-        var qrData = null;
-        var errorFatal = false;
-
-        function qrLeyendo() {
-            return qrLeyendo;
-        }
-
-        function qrDetener() {
-            $('#reader').html5_qrcode_stop();
-        }
-
-
-        function qrCode() {
-            qrLeyendo = false;
-            $('#reader').html5_qrcode(function(data) {
-                    qrLeyendo = true;
-                    qrData = data;
-                    // Dejamos de leer códigos
-                    // $('#reader').html5_qrcode_stop()
-                },
-                function(error) {
-                    // show read errors 
-                    qrData = null;
-                },
-                function(videoError) {
-                    // the video stream could be opened
-                    qrData = null;
-                    errorFatal = true;
-                }
-            );
-
-        };
+        // Fix recomendado para el scroll
+        $(document).on('hidden.bs.modal', '.modal', function () {
+          $('.modal:visible').length && $(document.body).addClass('modal-open')
+        })
+      })
     </script>
-
-
-
-
-</body>
-
-
+  </body>
 </html>

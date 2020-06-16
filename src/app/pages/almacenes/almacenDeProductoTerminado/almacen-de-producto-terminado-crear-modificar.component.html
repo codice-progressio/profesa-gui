@@ -23,10 +23,10 @@
     <small>EXISTENCIA DISPONIBLE: </small
     ><strong>{{ modeloCompleto.existencia | number }} </strong> pz
     <small>
-      en <strong>{{ modeloCompleto.obtenerLotesConExistencia() }}</strong>
+      en <strong>{{ modComSer.obtenerLotesConExistencia(modeloCompleto) }}</strong>
       <ng-container
         *ngIf="
-          modeloCompleto.obtenerLotesConExistencia() > 1;
+        modComSer.obtenerLotesConExistencia(modeloCompleto) > 1;
           else loteTemplate
         "
       >

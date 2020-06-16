@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Departamento } from 'src/app/models/departamento.models';
 import { DepartamentoService } from 'src/app/services/departamento/departamento.service';
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-gestion-departamento',
@@ -15,7 +16,7 @@ export class GestionDepartamentoComponent implements OnInit {
   constructor(
     private _departamentoService: DepartamentoService
   ) { 
-    this._departamentoService.todo().subscribe( 
+    this._departamentoService.findAll(new Paginacion(100,0,1,'nombre')).subscribe( 
       (departamentos: Departamento[]) => {
         this.departamentos = departamentos;
       }
@@ -28,7 +29,7 @@ export class GestionDepartamentoComponent implements OnInit {
   }
 
   onSubmit() {
-    this._departamentoService.guardar( this.depto )
+    this._departamentoService.save( this.depto )
     .subscribe( (departamento: Departamento) => {
       this.departamentos.push( departamento);
       this.limpiar();

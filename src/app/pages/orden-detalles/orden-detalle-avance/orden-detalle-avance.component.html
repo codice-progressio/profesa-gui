@@ -1,0 +1,408 @@
+<div
+  *ngIf="!ordenConsultada"
+  class="d-flex justify-content-center align-items-center fadeIn animated w-100"
+>
+  <h1 class="display-1">
+    <i class="fas fa-sync fa-spin"></i>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <ul
+          [id]="ordenConsultada._id"
+          *ngIf="ordenConsultada"
+          class="timeline"
+          id="timeline"
+        >
+          <!-- 
+        =====================================
+         Trabajado
+        =====================================
+        -->
+          <ng-container
+            *ngFor="let ruta of ordenConsultada?.ruta; let i = index"
+          >
+            <li
+              *ngIf="!ruta.ubicacionActual && ignorarHasta > ruta.consecutivo"
+              [id]="'listo' + i"
+              class="li complete"
+            >
+              <div class="timestamp">
+                <span class="author esconde-sobrante">
+                  {{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
+                  <hr />
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
+                </span>
+                <span
+                  title="Orden iniciada el {{
+                    (ruta.entrada ? ruta.entrada : ruta.recepcion)
+                      | fecha: 'LLLL'
+                  }}"
+                  class="date"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                  {{
+                    (ruta.entrada ? ruta.entrada : ruta.recepcion) | fecha: 'L'
+                  }}
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status">
+                  <h4
+                    class="esconde-sobrante"
+                    title="Orden terminada el {{
+                      (ruta.salida ? ruta.salida : ruta.recepcion)
+                        | fecha: 'LLLL'
+                    }}"
+                  >
+                    <i class="fas fa-clock"></i>
+                    <!-- Aqui comparamos contra la salida -->
+                    {{
+                      (ruta.entrada ? ruta.entrada : ruta.recepcion)
+                        | fechaDiferencia: ruta.salida
+                    }}
+
+                    <br />
+
+                    {{ ruta.salida | fecha: 'L' }}
+                    <i class="fas fa-arrow-right"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+
+            <li *ngIf="ruta.ubicacionActual" class="li">
+              <div class="timestamp">
+                <span class="author esconde-sobrante"
+                  >{{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
+                  <hr />
+
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
+                </span>
+                <span
+                  title="Orden recibida el {{
+                    ruta.entrada
+                      ? ruta.entrada
+                      : (ruta.recepcion | fecha: 'LLLL')
+                  }}"
+                  class="date esconde-sobrante"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                  {{
+                    (ruta?.entrada ? ruta?.entrada : ruta?.recepcion)
+                      | fecha: 'L'
+                  }}
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status working">
+                  <h4
+                    class="esconde-sobrante"
+                    title="En proceso {{
+                      ordenConsultada.fechaFolio | tiempoTranscurridoInformal
+                    }}
+                  "
+                  >
+                    <i class="fas fa-clock"></i>
+
+                    {{
+                      ordenConsultada.fechaFolio | tiempoTranscurridoInformal
+                    }}
+
+                    <br />
+
+                    <app-tiempo-transcurrido
+                      [inicio]="ordenConsultada.fechaFolio"
+                    ></app-tiempo-transcurrido>
+                    <i class="fas fa-arrow-right"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+
+            <li
+              [id]="'pendiente' + i"
+              *ngIf="ruta.consecutivo > ignorarHasta"
+              class="li"
+            >
+              <div class="timestamp">
+                <span class="author esconde-sobrante">
+                  {{
+                    encontrarProceso(ruta.idProceso)?.departamento | titlecase
+                  }}
+                  <hr />
+
+                  {{ encontrarProceso(ruta.idProceso)?.nombre }}
+                </span>
+                <span title="Sin procesar en este departamento" class="date">
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
+
+              <a
+                (click)="
+                  cargarDetalle(ruta, encontrarProceso(ruta.idProceso).nombre)
+                "
+                href="javascript:void(0)"
+              >
+                <div class="status">
+                  <h4 class="esconde-sobrante">
+                    <i class="fas fa-time"></i>
+
+                    <br />
+
+                    <i class="fas fa-arrow-right animated"></i>
+                  </h4>
+                </div>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+
+        <div class="col-12"><hr /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="rutaSeg">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-12 col-sm-6">
+          <h3>
+            <span class="font-weight-bolder">Departamento:</span>
+            {{ encontrarDepartamento(rutaSeg?.departamento)?.nombre }}
+          </h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h3>
+            <span class="font-weight-bolder">Proceso:</span>
+            {{ procesoSeleccionado }}
+          </h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Estatus:</span>
+            <ng-container *ngIf="rutaSeg.recibida">
+              Recibida
+              <i class="fas fa-check text-success"></i>
+            </ng-container>
+
+            <span *ngIf="!rutaSeg.recibida && rutaSeg.ubicacionActual">
+              Por recibir:
+              <i class="fas fa-exclamation tada animated infinite"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Hora de recepcion:</span>
+            {{
+              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+                | fecha: 'LLL'
+            }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Hora de salida:</span>
+            {{ rutaSeg.salida | fecha: 'LLL' }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Tiempo de proceso:</span>
+            {{
+              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+                | fechaDiferencia: rutaSeg.salida:false
+            }}
+          </h5>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h5>
+            <span class="font-weight-bolder">Piezas solicitadas:</span>
+            {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
+          </h5>
+        </div>
+
+        <div *ngIf="rutaSeg.datos" class="col-12">
+          <ng-container *ngIf="rutaSeg.datos?.cantidades">
+            <h5>
+              <span class="font-weight-bolder">Contado por: No aplica aun</span>
+            </h5>
+
+            <table class="table table-hover table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>Partida</th>
+                  <th>Espesor</th>
+                  <th>10 botones (gr)</th>
+                  <th>Peso total (kg)</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let cantidad of rutaSeg.datos.cantidades;
+                    let i = index
+                  "
+                >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ cantidad.espesorPastilla }}</td>
+                  <td>{{ cantidad.peso10Botones | number: '0.2' }}</td>
+                  <td>{{ cantidad.pesoTotalBoton | number: '0.2' }}</td>
+                  <td>
+                    {{
+                      calcularTotal(
+                        cantidad.peso10Botones,
+                        cantidad.pesoTotalBoton
+                      ) | number: '0.0-0'
+                    }}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="4" class="text-right">
+                    <span class="font-weight-bolder">Total departamento</span>
+                  </td>
+                  <td>
+                    {{
+                      totalDeBoton(rutaSeg.datos.cantidades) | number: '0.0-0'
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
+          <table *ngIf="rutaSeg.datos?.bl" class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th>Espesor de boton</th>
+                <th>BPM</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ rutaSeg.datos.espesorBoton | number: '0.2' }}</td>
+                <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
+                <td>
+                  {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            *ngIf="rutaSeg.datos?.peso10Botones"
+            class="table table-hover table-sm"
+          >
+            <thead>
+              <tr>
+                <th>10 botones (gr)</th>
+                <th>Peso total (kg)</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ rutaSeg.datos.peso10Botones | number: '0.2' }}</td>
+                <td>{{ rutaSeg.datos.pesoTotalBoton | number: '0.2' }}</td>
+                <td>
+                  {{
+                    calcularTotal(
+                      rutaSeg.datos.peso10Botones,
+                      rutaSeg.datos.pesoTotalBoton
+                    ) | number: '0.0-0'
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <table *ngIf="rutaSeg.datos?.quebrados" class="table">
+          <thead>
+            <tr>
+              <th>Quebrados</th>
+              <th>Reves</th>
+              <th>Despostillado</th>
+              <th>Sin laser</th>
+              <th>Sin hoyos</th>
+              <th>Efecto malo</th>
+              <th>Otros</th>
+              <th>Descripcion de otros</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ rutaSeg.datos.quebrados }}</td>
+              <td>{{ rutaSeg.datos.reves }}</td>
+              <td>{{ rutaSeg.datos.despostillado }}</td>
+              <td>{{ rutaSeg.datos.sinLaser }}</td>
+              <td>{{ rutaSeg.datos.sinHoyos }}</td>
+              <td>{{ rutaSeg.datos.efectoMalo }}</td>
+              <td>{{ rutaSeg.datos.otros }}</td>
+              <td>{{ rutaSeg.datos.descripcionDeOtro }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h1 *ngIf="rutaSeg.datos?.empacadoPor">
+          Piezas empacadas: {{ rutaSeg.datos.cantidadDeBoton | number }}
+        </h1>
+        <h1 *ngIf="rutaSeg.datos?.empacadoPor && rutaSeg.datos.cantidadDeBoton">
+          Cantidad surtida: {{ rutaSeg.datos.cantidadDeBoton | number }}
+        </h1>
+
+        <h1 *ngIf="rutaSeg.datos?.terminada">
+          Orden terminada:
+
+          <i
+            *ngIf="rutaSeg.datos?.terminada"
+            class="fas fa-check text-success fa-2x"
+          ></i>
+        </h1>
+
+        <table *ngIf="rutaSeg.datos?.laser" class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th>BPM</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
+              <td>
+                {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

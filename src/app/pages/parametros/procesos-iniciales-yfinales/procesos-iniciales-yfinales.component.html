@@ -1,0 +1,276 @@
+<div class="row animated fadeIn" *ngIf="keys(cargando).length === 0">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>Configuracion de procesos iniciales y finales</h1>
+        <h3>Localizacion de ordenes</h3>
+        <p>
+          Estos procesos se agregann al final y al inicio de la generacion de
+          familias de procesos respectivamente
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="keys(cargando).length === 0"
+  cdkDropListGroup
+  class="row animated fadeIn"
+>
+  <div class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <ul
+            cdkDropList
+            [cdkDropListData]="localizacionDeOrdenes.procesosInicialesAlmacen"
+            (cdkDropListDropped)="drop($event)"
+            class="list-group app-lista-scroll"
+          >
+            <li class="list-group-item active app-lista-scroll-encabezado">
+              Procesos iniciales almacen
+            </li>
+            <li
+              cdkDrag
+              *ngFor="
+                let proceso of localizacionDeOrdenes.procesosInicialesAlmacen;
+                let i = index
+              "
+              class="list-group-item"
+            >
+              <span class="font-14 text-muted">{{
+                proceso.departamento.nombre
+              }}</span>
+              <br />
+              <a
+                (click)="
+                  removerItem(localizacionDeOrdenes.procesosInicialesAlmacen, i)
+                "
+                class="btn btn-danger btn-sm"
+                href="javscript:void(0)"
+                role="button"
+                ><i class="fas fa-times-circle"></i
+              ></a>
+              {{ proceso.nombre }}
+            </li>
+            <li
+              *ngIf="
+                localizacionDeOrdenes.procesosInicialesAlmacen.length === 0
+              "
+              class="list-group-item disabled"
+            >
+              No has definido procesos iniciales de almacen
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <ul
+            cdkDropList
+            [cdkDropListData]="localizacionDeOrdenes.procesosIniciales"
+            (cdkDropListDropped)="drop($event)"
+            class="list-group app-lista-scroll"
+          >
+            <li class="list-group-item active app-lista-scroll-encabezado">
+              Procesos iniciales
+            </li>
+            <li
+              cdkDrag
+              *ngFor="
+                let proceso of localizacionDeOrdenes.procesosIniciales;
+                let i = index
+              "
+              class="list-group-item"
+            >
+              <span class="font-14 text-muted">{{
+                proceso.departamento.nombre
+              }}</span>
+              <br />
+              <a
+                (click)="
+                  removerItem(localizacionDeOrdenes.procesosIniciales, i)
+                "
+                class="btn btn-danger btn-sm"
+                href="javscript:void(0)"
+                role="button"
+                ><i class="fas fa-times-circle"></i
+              ></a>
+              {{ proceso.nombre }}
+            </li>
+            <li
+              *ngIf="localizacionDeOrdenes.procesosIniciales.length === 0"
+              class="list-group-item disabled"
+            >
+              No has definido procesos iniciales
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <ul
+            cdkDropList
+            [cdkDropListData]="localizacionDeOrdenes.procesosFinales"
+            (cdkDropListDropped)="drop($event)"
+            class="list-group app-lista-scroll"
+          >
+            <li class="list-group-item active app-lista-scroll">
+              Procesos finales
+            </li>
+            <li
+              cdkDrag
+              *ngFor="
+                let proceso of localizacionDeOrdenes.procesosFinales;
+                let i = index
+              "
+              class="list-group-item"
+            >
+              <span class="font-14 text-muted">{{
+                proceso.departamento.nombre
+              }}</span>
+              <br />
+              <a
+                (click)="removerItem(localizacionDeOrdenes.procesosFinales, i)"
+                class="btn btn-danger btn-sm"
+                href="javscript:void(0)"
+                role="button"
+                ><i class="fas fa-times-circle"></i></a
+              >{{ proceso.nombre }}
+            </li>
+            <li
+              *ngIf="localizacionDeOrdenes.procesosFinales.length === 0"
+              class="list-group-item disabled"
+            >
+              No has definido procesos finales
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <ul
+            cdkDropList
+            [cdkDropListData]="procesos"
+            class="list-group app-lista-scroll"
+          >
+            <li
+              class="list-group-item bg-secondary text-white app-lista-scroll-encabezado"
+            >
+              <span class="pull-left">Procesos disponibles</span>
+              <a
+                *ngIf="this.termino"
+                class="btn btn-danger ml-3 btn-sm"
+                href="javascript:void(0)"
+                (click)="limpiarBusqueda()"
+              >
+                <i class="fas fa-trash"></i>
+              </a>
+              <div class="form-group pull-right m-0 p-0">
+                <input
+                  [(ngModel)]="termino"
+                  (keyup)="filtrarDisponibles(termino)"
+                  type="text"
+                  class="form-control m-0 form-control-sm"
+                  placeholder="Buscar"
+                />
+              </div>
+            </li>
+            <li
+              cdkDrag
+              [cdkDragData]="'true'"
+              *ngFor="let proceso of procesos"
+              class="list-group-item"
+              [ngStyle]="{
+                display: mostrar.includes(proceso._id) ? '' : 'none'
+              }"
+            >
+              <span class="font-14 text-muted">{{
+                proceso.departamento.nombre
+              }}</span>
+              <br />
+              {{ proceso.nombre }}
+            </li>
+            <li *ngIf="procesos.length === 0" class="list-group-item disabled">
+              No has definido procesos
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow">
+      <div class="card-body bg-danger text-white">
+        <h1 class="text-white">Nombre de campo final</h1>
+        <p>
+          Este es el campo que debe existir en el penultimo proceso para ser
+          copiado al ultimo. Debe ser el total real de piezas contadas.
+        </p>
+
+        <div class="form-group">
+          <label for="">Este campo es importante </label>
+          <input
+            type="text"
+            class="form-control font-20 no-border"
+            [(ngModel)]="localizacionDeOrdenes.campoFinal"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Este valor debe existir en el formulario dinamico del penultimo y
+            ultimo departamento definidos como procesos finales.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="keys(cargando).length === 0">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-right">
+            <a
+              (click)="submit()"
+              class="btn btn-success mr-3"
+              href="javascript:void(0)"
+              role="button"
+            >
+              Guardar</a
+            >
+            <a
+              (click)="location.back()"
+              class="btn btn-danger"
+              href="javascript:void(0)"
+              role="button"
+            >
+              Cancelar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="keys(cargando).length > 0">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body text-center">
+        <h1 class="display-1">
+          <i class="fas fa-sync fa-spin-fast"></i>
+        </h1>
+
+        <h3 *ngFor="let par of cargando | keyvalue">{{ par.value }}</h3>
+      </div>
+    </div>
+  </div>
+</div>

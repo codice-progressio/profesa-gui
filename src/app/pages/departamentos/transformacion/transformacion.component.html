@@ -1,136 +1,230 @@
-<app-qr-scanner>
-</app-qr-scanner>
+<app-qr-scanner> </app-qr-scanner>
 
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta 
-                                        && orden.ubicacionActual.recivida 
-                                        && orden.ubicacionActual.transformacion.trabajando">
-    <div class="col-12">
-        <div class="card border-dark">
-            <div class="card-header bg-success">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
-                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
+<div
+  class="row animated tada"
+  *ngIf="
+    _qrScannerService.lecturaCorrecta &&
+    orden.ubicacionActual.recivida &&
+    orden.ubicacionActual.transformacion.trabajando
+  "
+>
+  <div class="col-12">
+    <div class="card border-dark">
+      <div class="card-header bg-success">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
+            <p class="text-white m-b-30 font-13">
+              Registra los datos de la órden {{orden.orden}}
+            </p>
+          </div>
+          <div class="col-6">
+            <h2>
+              <strong>
+                {{ linea.modeloCompleto | modeloCompleto }}
+              </strong>
+              <app-nivel-urgencia
+                [nivel]="orden?.nivelDeUrgencia"
+              ></app-nivel-urgencia>
+            </h2>
+          </div>
+        </div>
+      </div>
 
-                    </div>
-                    <div class="col-6">
-                        <h2>
-                            <strong>
-                                {{ linea.modeloCompleto | modeloCompleto }}
-                            </strong>
-                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12 ">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-
-
-                                        <form #f (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
-                                            <div class="row">
-                                                <div class="form-group col-4">
-                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(cantidad), 'is-valid':_validacionesService.valid(cantidad)}" type="number" formControlName="cantidadDeBoton" placeholder="Cantidad de botón">
-                                                    <app-validacion-inputs [campo]="cantidad"></app-validacion-inputs>
-                                                </div>
-
-                                                <div class="form-group col-4">
-                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(espesor), 'is-valid':_validacionesService.valid(espesor)}" type="number" formControlName="espesorBoton" placeholder="Espesor botón">
-                                                    <app-validacion-inputs [campo]="espesor"></app-validacion-inputs>
-                                                </div>
-
-                                                <div class="form-group col-4">
-                                                    <input class="form-control form-control-lg" [ngClass]="{'is-invalid': _validacionesService.invalid(bl), 'is-valid':_validacionesService.valid(bl)}" type="number" formControlName="bl" placeholder="BPM"
-                                                    title='Botones por minuto'
-                                                    >
-                                                    <!-- HAY UN ERROR AQUI, BL DEBE SER BPM EL BL ES LA CANTIDAD DE BOTON. -->
-                                                    <app-validacion-inputs [campo]="bl"></app-validacion-inputs>
-                                                </div>
-
-                                            </div>
-
-                                            <h3>Máquina que trabajó:</h3>
-                                            <h1>{{orden.ubicacionActual.transformacion.maquinaActual.clave}}</h1>
-
-
-                                            <br>
-
-                                            <button type="submit" [ngClass]="{'btn-success': formulario.valid, 'btn-outline-dark': formulario.invalid}" [disabled]="formulario.invalid" class="btn  btn-lg mr-3 "><i class="fas fa-save "></i> Guardar</button>
-                                            <button (click)="limpiar() " class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
-
-                                            <br>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 ">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <form
+                      #f
+                      (ngSubmit)="
+                        onSubmit(formulario.value, formulario.valid, $event)
+                      "
+                      [formGroup]="formulario"
+                    >
+                      <div class="row">
+                        <div class="form-group col-4">
+                          <input
+                            class="form-control form-control-lg"
+                            [ngClass]="{
+                              'is-invalid': _validacionesService.invalid(
+                                cantidad
+                              ),
+                              'is-valid': _validacionesService.valid(cantidad)
+                            }"
+                            type="number"
+                            formControlName="cantidadDeBoton"
+                            placeholder="Cantidad de botón"
+                          />
+                          <app-validacion-inputs
+                            [campo]="cantidad"
+                          ></app-validacion-inputs>
                         </div>
-                    </div>
+
+                        <div class="form-group col-4">
+                          <input
+                            class="form-control form-control-lg"
+                            [ngClass]="{
+                              'is-invalid': _validacionesService.invalid(
+                                espesor
+                              ),
+                              'is-valid': _validacionesService.valid(espesor)
+                            }"
+                            type="number"
+                            formControlName="espesorBoton"
+                            placeholder="Espesor botón"
+                          />
+                          <app-validacion-inputs
+                            [campo]="espesor"
+                          ></app-validacion-inputs>
+                        </div>
+
+                        <div class="form-group col-4">
+                          <input
+                            class="form-control form-control-lg"
+                            [ngClass]="{
+                              'is-invalid': _validacionesService.invalid(bl),
+                              'is-valid': _validacionesService.valid(bl)
+                            }"
+                            type="number"
+                            formControlName="bl"
+                            placeholder="BPM"
+                            title="Botones por minuto"
+                          />
+                          <!-- HAY UN ERROR AQUI, BL DEBE SER BPM EL BL ES LA CANTIDAD DE BOTON. -->
+                          <app-validacion-inputs
+                            [campo]="bl"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+
+                      <h3>Máquina que trabajó:</h3>
+                      <h1>
+                        {{
+                          orden.ubicacionActual.transformacion.maquinaActual
+                            .clave
+                        }}
+                      </h1>
+
+                      <br />
+
+                      <button
+                        type="submit"
+                        [ngClass]="{
+                          'btn-success': formulario.valid,
+                          'btn-outline-dark': formulario.invalid
+                        }"
+                        [disabled]="formulario.invalid"
+                        class="btn  btn-lg mr-3 "
+                      >
+                        <i class="fas fa-save "></i> Guardar
+                      </button>
+                      <button
+                        (click)="limpiar()"
+                        class="btn btn-danger btn-lg mr-3 "
+                      >
+                        <i class="fas fa-times "></i> Escannear de nuevo
+                      </button>
+
+                      <br />
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
-<div class="row animated tada" *ngIf="_qrScannerService.lecturaCorrecta 
-                                && orden.ubicacionActual.recivida 
-                                && !orden.ubicacionActual.transformacion.trabajando">
-    <div class="col-12">
-        <div class="card border-dark">
-            <div class="card-header bg-success">
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
-                        <p class="text-white m-b-30 font-13"> Registra los datos de la órden </p>
-
-                    </div>
-                    <div class="col-6">
-                        <h2>
-                            <strong>
-                                {{ linea.modeloCompleto | modeloCompleto }}
-                            </strong>
-                            <app-nivel-urgencia [nivel]="orden?.nivelDeUrgencia"></app-nivel-urgencia>
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-body bg-inverse text-white">
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <h5 class="text-white">Esta órden no se esta trabajando.</h5>
-                        <h1 class="text-white">Selecciona la máquina en que se trabajara:</h1>
-                        <br>
-                        <br>
-                        <ng-container *ngFor="let maquina of maquinas; let i = index">
-
-                            <a (click)="orden.ubicacionActual.transformacion.maquinaActual = maquina" class="btn btn-outline-success btn-lg m-2">
-                                <i *ngIf="orden.ubicacionActual?.transformacion?.maquinaActual?._id === maquina._id" class="fas fa-check animated tada text-warning">
-                                </i> {{maquina.clave}}</a>
-                        </ng-container>
-
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <a *ngIf="orden.ubicacionActual.transformacion.maquinaActual" (click)="iniciarTrabajoDeOrden()" class="btn btn-success btn-lg mr-3 fadeIn animated "><i class="fas fa-save"></i> Guardar</a>
-                        <button (click)="limpiar(); orden.ubicacionActual.transformacion.maquinaActual = null " class="btn btn-danger btn-lg mr-3 "><i class="fas fa-times "></i> Escannear de nuevo</button>
-
-                    </div>
-                </div>
-            </div>
+<div
+  class="row animated tada"
+  *ngIf="
+    _qrScannerService.lecturaCorrecta &&
+    orden.ubicacionActual.recivida &&
+    !orden.ubicacionActual.transformacion.trabajando
+  "
+>
+  <div class="col-12">
+    <div class="card border-dark">
+      <div class="card-header bg-success">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="box-title m-b-0"><strong>Tranformación</strong></h3>
+            <p class="text-white m-b-30 font-13">
+              Registra los datos de la órden
+            </p>
+          </div>
+          <div class="col-6">
+            <h2>
+              <strong>
+                {{ linea.modeloCompleto | modeloCompleto }}
+              </strong>
+              <app-nivel-urgencia
+                [nivel]="orden?.nivelDeUrgencia"
+              ></app-nivel-urgencia>
+            </h2>
+          </div>
         </div>
+      </div>
+
+      <div class="card-body bg-inverse text-white">
+        <div class="row">
+          <div class="col-sm-12 ">
+            <h5 class="text-white">Esta órden no se esta trabajando.</h5>
+            <h1 class="text-white">
+              Selecciona la máquina en que se trabajara:
+            </h1>
+            <br />
+            <br />
+            <ng-container *ngFor="let maquina of maquinas; let i = index">
+              <a
+                (click)="
+                  orden.ubicacionActual.transformacion.maquinaActual = maquina
+                "
+                class="btn btn-outline-success btn-lg m-2"
+              >
+                <i
+                  *ngIf="
+                    orden.ubicacionActual?.transformacion?.maquinaActual
+                      ?._id === maquina._id
+                  "
+                  class="fas fa-check animated tada text-warning"
+                >
+                </i>
+                {{ maquina.clave }}</a
+              >
+            </ng-container>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <a
+              *ngIf="orden.ubicacionActual.transformacion.maquinaActual"
+              (click)="iniciarTrabajoDeOrden()"
+              class="btn btn-success btn-lg mr-3 fadeIn animated "
+              ><i class="fas fa-save"></i> Guardar</a
+            >
+            <button
+              (click)="
+                limpiar();
+                orden.ubicacionActual.transformacion.maquinaActual = null
+              "
+              class="btn btn-danger btn-lg mr-3 "
+            >
+              <i class="fas fa-times "></i> Escannear de nuevo
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
-
-<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo "> </app-lista-de-ordenes>
+<app-lista-de-ordenes *ngIf="_qrScannerService.leyendo"> </app-lista-de-ordenes>

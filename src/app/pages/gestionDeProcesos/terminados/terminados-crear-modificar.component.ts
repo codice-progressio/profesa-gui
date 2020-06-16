@@ -1,61 +1,84 @@
-import { Component, OnInit } from '@angular/core';
-import { Terminado } from '../../../models/terminado.models';
-import { CrearModificar_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/CrearModificar_GUI_CRUD';
-import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { TerminadoService } from 'src/app/services/modelo/terminado.service';
-import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service';
+import { Component, OnInit } from '@angular/core'
+import { Terminado } from 'src/app/models/terminado.models'
+import {
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  FormGroup
+} from '@angular/forms'
+import { ValidacionesService } from 'src/app/services/utilidades/validaciones.service'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
+import { TerminadoService } from 'src/app/services/modelo/terminado.service'
 
 @Component({
   selector: 'app-terminados-crear-modificar',
   templateUrl: './terminados-crear-modificar.component.html',
   styles: []
 })
-export class TerminadosCrearModificarComponent  extends CrearModificar_GUI_CRUD<Terminado, TerminadoService > implements OnInit {
+export class TerminadosCrearModificarComponent implements OnInit {
+  formulario: FormGroup
+
+  cargando = {}
+  terminado: Terminado
+  keys = Object.keys
 
   constructor(
-    public _elementoService: TerminadoService,
+    public skuService: TerminadoService,
     public formBuilder: FormBuilder,
-    public _validacionesService: ValidacionesService,) { 
-      super( _elementoService,
-        formBuilder,
-        _validacionesService)
-      
-      this.cbDatosParaEditar = (terminado: Terminado )=>{
-        this.cargarDatosParaEditar( terminado )
-      } 
-  
-      this.cbCrearFormulario = ()=>{
-        this.crearFormulario()
-      }
-  
-      this.configurar();
-  
-    }
+    public vs: ValidacionesService,
+    public location: Location,
+    public activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id')
+
+    if (id) {
+      this.cargando['cargando'] = 'Buscando terminado'
+      this.skuService.findById(id).subscribe(
+        terminado => {
+          this.crearFormulario(terminado)
+          this.terminado = terminado
+          delete this.cargando['cargando']
+        },
+        () => this.location.back()
+      )
+    } else {
+      this.crearFormulario()
+    }
   }
 
-  cargarDatosParaEditar( terminado: Terminado){
-    this.terminado_FB.setValue( terminado.terminado )
-  }
-
-  /**
-   *Crea el formulario de registro. 
-   *
-   * @memberof MaquinasCrearModificarComponent
-   */
-  crearFormulario( ){
+  crearFormulario(terminado: Terminado = new Terminado()) {
     this.formulario = this.formBuilder.group({
-      terminado: ['', [
-        Validators.required
-      ]],
-
-    });
+      terminado: [terminado.terminado, [Validators.required]]
+    })
   }
 
-  public get terminado_FB(): AbstractControl {
-    return this.formulario.get('terminado')
+  f(c: string): AbstractControl {
+    return this.formulario.get(c)
   }
 
+  submit(terminado: Terminado, invalid: boolean, e) {
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
 
+    if (invalid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
+    this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
+
+    if (this.terminado) {
+      terminado._id = this.terminado._id
+      this.skuService.update(terminado).subscribe(() => this.location.back())
+    } else {
+      this.skuService.save(terminado).subscribe(() => {
+        this.crearFormulario()
+        delete this.cargando['guardando']
+      })
+    }
+  }
 }

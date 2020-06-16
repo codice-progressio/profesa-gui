@@ -13,6 +13,7 @@ import { Burato } from "./burato.model"
 import { AlmacenDeBoton } from "./almacenDeBoton.model"
 import { Laser } from "./laser.model"
 import { Deserializable } from "./deserealizable.model"
+import { Tenido } from './tenido.model'
 export class Trayecto implements Deserializable {
   constructor(
     public orden?: string,
@@ -30,11 +31,13 @@ export class Trayecto implements Deserializable {
     public burato: Burato = new Burato(),
     public laser: Laser = new Laser(),
     public almacenDeBoton: AlmacenDeBoton = new AlmacenDeBoton(),
+    public tenido: Tenido = new Tenido(),
     // public siguiente?: Departamento,
     // public anterior?: Departamento,
     public entrada?: Date,
     public salida?: Date,
-    public recivida: boolean = false
+    public recivida: boolean = false,
+    public recepcion?:Date
   ) {}
 
   deserialize(input: this): this {

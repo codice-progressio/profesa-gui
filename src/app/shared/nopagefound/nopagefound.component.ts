@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Location} from '@angular/common'
 
 // Esto es importante por que si no la pagina se queda cargando!!.
 declare function init_plugins();
@@ -29,7 +29,7 @@ declare function init_plugins();
 export class NopagefoundComponent implements OnInit {
 
   anio: number = new Date().getFullYear();
-  constructor() { }
+  constructor( public location: Location) { }
 
   ngOnInit() {
     init_plugins();

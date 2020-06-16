@@ -24,7 +24,7 @@ export class Seleccion implements Deserializable {
       return this
     }
     Object.assign(this, input)
-    this.seleccionadoPor = new Usuario().deserialize(input.seleccionadoPor)
+    this.seleccionadoPor = input.seleccionadoPor as Usuario
     return this
   }
 }

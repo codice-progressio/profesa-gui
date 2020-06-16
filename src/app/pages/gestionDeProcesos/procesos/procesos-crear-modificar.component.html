@@ -1,103 +1,308 @@
-<app-crear-modificar [mostrarCrearModificar]='mostrarCrearModificar' [crearModificar]='crearModificar' [esModificacion]='this.idModificar' [nombreElemento]='"proceso"' [esMasculino]='true'>
-    <ng-container *ngIf="mostrarCrearModificar">
+<ng-container *ngIf="cargado(); else cargandoTemplate">
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="justify-content-between d-flex aling-items-center">
+            <h1 *ngIf="proceso?._id">{{ proceso.nombre }}</h1>
+            <h1>
+              <span class="text-success" *ngIf="!proceso?._id">
+                <i class="fas fa-plus-square    "></i> Crear
+                <b>proceso</b> </span
+              ><span class="text-warning" *ngIf="proceso?._id">
+                <i class="fas fa-pen-square"></i> Modificar <b>proceso</b>
+              </span>
+            </h1>
+          </div>
 
-        <form (ngSubmit)="onSubmit(formulario.value, formulario.valid, $event)" [formGroup]="formulario">
+          <hr />
 
+          <form [formGroup]="formulario">
             <div class="row">
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <input formControlName="nombre" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(nombre_FB), 'is-valid':_validacionesService.valid(nombre_FB)}" name="nombre" id="nombre" placeholder="Nombre">
-                    <small class="form-text text-muted">Ingresa el nombre del proceso</small>
-                    <app-validacion-inputs [campo]="nombre_FB"></app-validacion-inputs>
+              <!-- 
+                      =====================================
+                       nombre
+                      =====================================
+                      -->
+              <div class="col-6">
+                <div class="form-group">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('nombre')),
+                      'is-valid': vs.valid(f('nombre'))
+                    }"
+                    type="text"
+                    class="form-control"
+                    formControlName="nombre"
+                  />
+                  <small id="helpId" class="form-text text-muted"
+                    >Nombre del proceso</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('nombre')"
+                  ></app-validacion-inputs>
                 </div>
+              </div>
+              <!-- 
+                      =====================================
+                       END nombre
+                      =====================================
+                      -->
 
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <select formControlName="departamento" class="form-control form-control-lg" name="departamento" id="departmanento" [ngClass]="{'is-invalid': _validacionesService.invalid(departamento_FB), 'is-valid':_validacionesService.valid(departamento_FB)}">
-                    <option value="-" disabled selected >Selecciona un departamento de la lista</option>
-                    <option *ngFor="let departamento of departamentos" [value]="departamento._id">{{departamento.nombre}}</option>
+              <!-- 
+                      =====================================
+                       departamento
+                      =====================================
+                      -->
+              <div class="col-6">
+                <div class="form-group">
+                  <select
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('departamento')),
+                      'is-valid': vs.valid(f('departamento'))
+                    }"
+                    class="form-control"
+                    formControlName="departamento"
+                    class="form-control"
+                  >
+                    <option *ngFor="let dep of departamentos" [ngValue]="dep._id">{{
+                      dep.nombre
+                    }}</option>
                   </select>
-                    <small class="form-text text-muted">Departamento</small>
-                    <app-validacion-inputs [campo]="departamento_FB"></app-validacion-inputs>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Departamento</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('departamento')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                      =====================================
+                       END departamento
+                      =====================================
+                      -->
+
+              <!-- 
+                      =====================================
+                       observaciones
+                      =====================================
+                      -->
+              <div class="col-6">
+                <div class="form-group">
+                  <textarea
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('observaciones')),
+                      'is-valid': vs.valid(f('observaciones'))
+                    }"
+                    class="form-control"
+                    formControlName="observaciones"
+                    cols="10"
+                    rows="10"
+                  ></textarea>
+                  <small id="helpId" class="form-text text-muted"
+                    >Observaciones</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('observaciones')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+                      =====================================
+                       END observaciones
+                      =====================================
+                      -->
+              <!-- 
+                      =====================================
+                       requiereProduccion
+                      =====================================
+                      -->
+              <div class="col-6">
+                <div class="form-check">
+                  <input
+                    [ngClass]="{
+                      'is-invalid': vs.invalid(f('requiereProduccion')),
+                      'is-valid': vs.valid(f('requiereProduccion'))
+                    }"
+                    type="checkbox"
+                    formControlName="requiereProduccion"
+                    type="checkbox"
+                    class="form-check-input"
+                    id="exampleCheck1"
+                  />
+                  <label class="form-check-label" for="exampleCheck1"
+                    >Requiere produccion</label
+                  >
                 </div>
 
-                <div class="custom-control custom-checkbox mt-3 col-auto">
-                    <input formControlName="requiereProduccion" type="checkbox" class="custom-control-input" id='requiereProduccion'>
-                    <label class="custom-control-label" for="requiereProduccion">Requiere produccion</label>
-                </div>
-
+                <app-validacion-inputs
+                  [campo]="f('requiereProduccion')"
+                ></app-validacion-inputs>
+              </div>
+              <!-- 
+                      =====================================
+                       END requiereProduccion
+                      =====================================
+                      -->
             </div>
 
-            <hr>
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="mb-3">Maquinas que se pueden utilizar en este proceso</h3>
+            <div cdkDropListGroup class="row">
+              <!-- 
+            =====================================
+             Maquinas disponibles
+            =====================================
+            -->
+              <div class="col-6">
+                <ul class="list-group">
+                  <li
+                    class="list-group-item  active d-flex justify-content-between align-items-center"
+                  >
+                    Maquinas
 
-                </div>
-                <!-- 
-                =====================================
-                 El grupo de array para validar las maquinas
-                =====================================
-                -->
-                <ng-container *ngFor="let maquina of maquinas">
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="custom-control custom-checkbox mt-3">
-                            <input (change)="agregarQuitarId(maquina._id, $event)" [checked]='estaAgregado( maquina._id )' type="checkbox" class="custom-control-input" [id]="maquina._id">
-                            <label class="custom-control-label" [for]="maquina._id">{{maquina.nombre}}</label>
-                        </div>
-
+                    <div class="form-group d-flex align-items-center">
+                      <input
+                        type="text"
+                        class="form-control"
+                        #inputB
+                        (keyup)="filtrar(inputB.value)"
+                        placeholder="Filtrar maquinas"
+                      />
                     </div>
 
-                </ng-container>
+                    <i
+                      *ngIf="filtroActivo"
+                      class="fas fa-search  animated zoomIn infinite  "
+                    ></i>
+                  </li>
 
-                <span formArrayName='maquinas'>
-                  <!-- El cp solo es para que entregue un valor. Solo ocupamos itinerar sobre el array.  -->
-                  <ng-container *ngFor="let cp of formulario.controls['maquinas'].controls; let i = index">
-    
-                    <div class="row" [formGroupName]="i">
-                      <input formControlName="_id"  type="hidden"  [id]="i+'depto'" >
-    
-                    </div>
-                  </ng-container> 
-          
-                </span>
-                <br>
+                  <div
+                    id="maquinas"
+                    cdkDropList
+                    [cdkDropListData]="maquinas"
+                    (cdkDropListDropped)="drop($event)"
+                    style="overflow-y: auto; max-height: 400px ;"
+                  >
+                    <ng-container *ngFor="let maquina of maquinas">
+                      <li
+                        cdkDrag
+                        href="javascript:void(0)"
+                        class="list-group-item "
+                        [ngClass]="{
+                          'no-mostrar': filtroActivo
+                            ? !mostrar.includes(maquina._id)
+                            : false
+                        }"
+                      >
+                        {{ maquina.nombre }} -
+                        {{ maquina.clave }}
+                      </li>
+                    </ng-container>
+                    <li
+                      *ngIf="maquinas.length === 0"
+                      href="javascript:void(0)"
+                      class="list-group-item "
+                    >
+                      Sin maquinas para seleccionar
+                    </li>
+                  </div>
+                </ul>
+              </div>
 
+              <!-- 
+            =====================================
+             END Maquinas disponibles
+            =====================================
+            -->
+              <!-- 
+            =====================================
+             Maquinas seleccionadas
+            =====================================
+            -->
 
-                <!-- 
-                  =====================================
-                  END El grupo de array para validar los departamentos
-                  =====================================
-                -->
-            </div>
-            <br>
-            <app-validacion-inputs [campo]="maquinas_FB" [directo]='true'></app-validacion-inputs>
+              <div class="col-6">
+                <ul class="list-group">
+                  <li class="list-group-item active">Maquinas seleccionadas</li>
 
-            <hr>
+                  <div
+                    id="maquinasSeleccionadas"
+                    cdkDropList
+                    [cdkDropListData]="maquinasSeleccionadas"
+                    (cdkDropListDropped)="drop($event)"
+                    style="overflow-y: auto; max-height: 400px;"
+                  >
+                    <li
+                      cdkDrag
+                      *ngFor="let maquina of maquinasSeleccionadas"
+                      class="list-group-item"
+                    >
+                      {{ maquina.nombre }} -
+                      {{ maquina.clave }}
+                    </li>
+                    <li
+                      *ngIf="maquinasSeleccionadas.length === 0"
+                      class="list-group-item disabled"
+                    >
+                      No has seleccionado maquinas
+                    </li>
+                  </div>
+                </ul>
+              </div>
+
+              <!-- 
+            =====================================
+             END Maquinas seleccionadas
+            =====================================
+            --></div>
+
             <div class="row">
-                <!-- <div class="form-group col-12 col-lg-6">
-                    <input formControlName="numeroDeSerie" type="text" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(numeroDeSerie_FB), 'is-valid':_validacionesService.valid(numeroDeSerie_FB)}" name="numeroDeSerie" id="numeroDeSerie" aria-describedby="numeroDeSerie"
-                        placeholder="Numero de serie">
-                    <small id="numeroDeSerie" class="form-text text-muted">Numero de serie</small>
-                    <app-validacion-inputs [campo]="numeroDeSerie_FB"></app-validacion-inputs>
-                </div> -->
+              <div class="col-12">
+                <app-validacion-inputs
+                  [campo]="formulario"
+                ></app-validacion-inputs>
 
-                <div class="form-group col-12 col-lg-6">
-                    <textarea formControlName="observaciones" class="form-control" [ngClass]="{'is-invalid': _validacionesService.invalid(observaciones_FB), 'is-valid':_validacionesService.valid(observaciones_FB)}" name="observaciones" id="observaciones" rows="3"></textarea>
-                    <small id="observaciones" class="form-text text-muted">Observaciones</small>
-                    <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
-                </div>
+                <br />
+                <br />
 
+                <button
+                  (click)="submit(formulario.value, formulario.invalid, $event)"
+                  class="text-white btn btn-success mr-3 active"
+                  role="button"
+                >
+                  <i class="fas fa-save    "></i> Guardar
+                </button>
+                <a
+                  data-toggle="modal"
+                  data-target="#crearReporteModal"
+                  (click)="cancelar()"
+                  class="text-white btn btn-danger active"
+                  role="button"
+                >
+                  <i class="fas fa-times    "></i> Cancelar</a
+                >
+              </div>
             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-
-
-            <a (click)="cancelar()" class="btn btn-danger mr-3 text-white" role="button">Cancelar</a>
-            <!-- <button [disabled]='formulario.invalid' class="btn btn-success mr-3 text-white" role="button"> -->
-            <button [disabled]='formulario.invalid || desactivarBotonEnGuardado ' class="btn btn-success mr-3 text-white" role="button">
-                    <span *ngIf="this.idModificar"> <i class="fas fa-edit "></i>  Guardar cambios</span>
-                    <span *ngIf="!this.idModificar"> <i class="fas fa-save "></i>  Guardar</span>
-        </button>
-
-        </form>
-
-    </ng-container>
-</app-crear-modificar>
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center text-center"
+        >
+          <h1 class="display-1">
+            <i class="fas fa-sync fa-spin   "></i>
+            <h2 *ngFor="let dato of object(cargando)">{{ cargando[dato] }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

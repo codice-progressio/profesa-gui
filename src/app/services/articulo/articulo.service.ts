@@ -1,85 +1,140 @@
-import { Injectable } from "@angular/core"
-import { CRUD } from "../crud"
-import { Articulo } from "src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo"
-import { AlmacenDeMateriaPrimaYHerramientasService } from "../almacenDeMateriaPrimaYHerramientas/almacen-de-materia-prima-yherramientas.service"
-import { FiltrosArticulos } from "../utilidades/filtrosParaConsultas/FiltrosArticulos"
-import { ManejoDeMensajesService } from "../utilidades/manejo-de-mensajes.service"
-import { UtilidadesService } from "../utilidades/utilidades.service"
-import { PreLoaderService } from "src/app/components/pre-loader/pre-loader.service"
-import { PaginadorService } from "src/app/components/paginador/paginador.service"
-import { URL_SERVICIOS } from "src/app/config/config"
-import { HttpClient } from "@angular/common/http"
-import { Observable, throwError } from "rxjs"
-import { SalidaArticulo } from "../../models/almacenDeMateriaPrimaYHerramientas/salidaArticulo.model"
-import { map, catchError } from "rxjs/operators"
-import { EntradaArticulo } from "../../models/almacenDeMateriaPrimaYHerramientas/entradaArticulo.model"
-import { Deserializable } from "../../models/deserealizable.model"
+import { Injectable } from '@angular/core'
+import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
+import { UtilidadesService } from '../utilidades/utilidades.service'
+import { PaginadorService } from 'src/app/components/paginador/paginador.service'
+import { URL_BASE } from 'src/app/config/config'
+import { HttpClient } from '@angular/common/http'
+import { Observable, throwError } from 'rxjs'
+import { SalidaArticulo } from '../../models/almacenDeMateriaPrimaYHerramientas/salidaArticulo.model'
+import { map, catchError } from 'rxjs/operators'
+import { EntradaArticulo } from '../../models/almacenDeMateriaPrimaYHerramientas/entradaArticulo.model'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
-export class ArticuloService extends CRUD<
-  Articulo,
-  ArticuloService,
-  FiltrosArticulos<ArticuloService>
-> {
+export class ArticuloService {
+  total: number = 0
+  base = URL_BASE('articulo')
+
   constructor(
     public http: HttpClient,
-    public _msjService: ManejoDeMensajesService,
-    public _utiliadesService: UtilidadesService,
-    public _preLoaderService: PreLoaderService,
-    public _paginadorService: PaginadorService
-  ) {
-    super(
-      http,
-      _msjService,
-      _utiliadesService,
-      _preLoaderService,
-      _paginadorService
-    )
-    this.base = URL_SERVICIOS + `/articulo`
-    this.nombreDeDatos.plural = "articulos"
-    this.nombreDeDatos.singular = "articulo"
-    this.urlBusqueda = "/buscar"
+    public msjService: ManejoDeMensajesService,
+    public utiliadesService: UtilidadesService,
+    public paginadorService: PaginadorService
+  ) {}
+
+  errFun(err) {
+    this.msjService.err(err)
+    return throwError(err)
   }
 
-  todo(): Observable<Articulo[]> {
-    return this.getAll(
-      undefined,
-      undefined,
-      this.filtrosDelFolio.obtenerFiltros(),
-      Articulo, 
-      true
-    )
-  }
-
-  buscar(
-    termino: string,
-    urlAlternativa: string = "",
-    msjLoading: string = `Buscando ${this.nombreDeDatos.plural}`
+  findAll(
+    paginacion: Paginacion,
+    filtros: string = ''
   ): Observable<Articulo[]> {
-    return this.search(termino, urlAlternativa, msjLoading, Articulo)
+    const url = this.base
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get(url).pipe(
+      map((respuesta: any) => {
+        this.total = respuesta.total
+        return respuesta.articulos as Articulo[]
+      }),
+      catchError(err => this.errFun(err))
+    )
   }
 
-  respuesta = (resp: any) => {
-    this._msjService.ok_(resp, null, this.aSE)
-    let articulo: Articulo = new Articulo().deserialize(resp.articulo)
-    return articulo
+  findById(id: string): Observable<Articulo> {
+    const url = this.base.concat(`/buscar/id/${id}`)
+    return this.http.get(url).pipe(
+      map((respuesta: any) => {
+        return respuesta.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
+    )
   }
 
-  aSE = null
+  findByTerm(
+    termino: string,
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<Articulo[]> {
+    const url = this.base
+      .concat(`/buscar/termino/${termino}`)
+      .concat('?')
+      .concat(`&desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get(url).pipe(
+      map((res: any) => {
+        this.total = res.total
+        return res.articulos as Articulo[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  delete(id: string): Observable<Articulo> {
+    const url = this.base.concat(`/${id}`)
+
+    return this.http.delete(url).pipe(
+      map((respuesta: any) => {
+        this.msjService.toastCorrecto(respuesta.mensaje)
+        return respuesta.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  update(articulo: Articulo): Observable<Articulo> {
+    let url = this.base
+    return this.http.put<Articulo>(url, articulo).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  save(articulo: Articulo): Observable<Articulo> {
+    let url = this.base
+
+    return this.http.post<Articulo>(url, articulo).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
   salida(id: string, salida: SalidaArticulo): Observable<Articulo> {
-    this.aSE = this._preLoaderService.loading("Almacenando salida")
     return this.http.put(`${this.base}/salida/${id}`, salida).pipe(
-      map(this.respuesta),
-      catchError(this.err)
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
     )
   }
   entrada(id: string, entrada: EntradaArticulo): Observable<Articulo> {
-    this.aSE = this._preLoaderService.loading("Almacenando entrada")
     return this.http.put(`${this.base}/entrada/${id}`, entrada).pipe(
-      map(this.respuesta),
-      catchError(this.err)
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return resp.articulo as Articulo
+      }),
+      catchError(err => this.errFun(err))
     )
   }
 }

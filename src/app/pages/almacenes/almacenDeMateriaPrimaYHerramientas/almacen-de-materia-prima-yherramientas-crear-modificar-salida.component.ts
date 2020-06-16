@@ -19,6 +19,7 @@ import { SalidaArticulo } from '../../../models/almacenDeMateriaPrimaYHerramient
 import { ArticuloService } from '../../../services/articulo/articulo.service'
 import { Departamento } from 'src/app/models/departamento.models'
 import { DepartamentoService } from '../../../services/departamento/departamento.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-almacen-de-materia-prima-yherramientas-crear-modificar-salida',
@@ -35,13 +36,20 @@ import { DepartamentoService } from '../../../services/departamento/departamento
 })
 export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
   implements OnInit {
-  @Input() articulo: Articulo = null
+  _articulo: Articulo
+  @Input() set articulo(articulo: Articulo) {
+    this._articulo = articulo
+    this.crearFormulario()
+  }
+  get articulo(): Articulo {
+    return this._articulo
+  }
   @Output() guardado = new EventEmitter<null>()
   @Output() cancelado = new EventEmitter<null>()
   @Output() esteComponente = new EventEmitter<this>()
   formulario: FormGroup
   departamentos: Departamento[] = []
-  @ViewChild('cantidad', { static: false }) cantidad: ElementRef
+  @ViewChild('cantidad') cantidad: ElementRef
 
   constructor(
     public fb: FormBuilder,
@@ -52,10 +60,8 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
 
   ngOnInit() {
     this.esteComponente.emit(this)
-
-    this.crearFormulario()
     this._departamentoService
-      .todo()
+      .findAll(new Paginacion(100,0, 1, 'nombre'))
       .subscribe(departamentos => (this.departamentos = departamentos))
   }
 
@@ -94,7 +100,14 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
     this.crearFormulario()
   }
   submit(modelo: SalidaArticulo, valid: boolean, e) {
-    e.preventDefault()
+    this.formulario.markAllAsTouched()
+    this.formulario.updateValueAndValidity()
+    if (!valid) {
+      e.preventDefault()
+      e.stopPropagation()
+      return
+    }
+
     if (valid) {
       this._articuloService
         .salida(this.articulo._id, modelo)
@@ -107,6 +120,7 @@ export class AlmacenDeMateriaPrimaYHerramientasCrearModificarSalidaComponent
   }
 
   cancelar() {
+    this.limpiar()
     this.cancelado.emit()
   }
 }

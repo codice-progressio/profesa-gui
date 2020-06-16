@@ -29,7 +29,7 @@ export class RecibirCancelacionComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     public vs: ValidacionesService,
-    public _requisicionService: RequisicionService
+    public requisicionService: RequisicionService
   ) {}
 
   ngOnInit() {
@@ -60,13 +60,13 @@ export class RecibirCancelacionComponent implements OnInit {
     e.preventDefault()
     if (invalid) return
 
-    this.requisicion.estatus.reiniciar()
+    this.requisicionService.reiniciar(this.requisicion.estatus)
     this.requisicion.estatus.esCancelada = true
     this.requisicion.estatus.fechaCancelacion = new Date()
     this.requisicion.estatus.motivoCancelacion = modelo.motivoCancelacion
     this.requisicion.razonDeCambioTemp = "El usuario cancelo la requisicion"
 
-    this._requisicionService
+    this.requisicionService
       .actualizarEstatus(this.requisicion)
       .subscribe((x) => {
         this.guardar.emit()

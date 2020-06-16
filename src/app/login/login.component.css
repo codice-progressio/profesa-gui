@@ -1,112 +1,36 @@
-/*
-Template Name: Admin pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-
-
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-
-
-/*Theme Colors*/
-
-
-/*bootstrap Color*/
-
-
-/*Light colors*/
-
-
-/*Normal Color*/
-
-
-/*Extra Variable*/
-
-
-/*******************
-Login register and recover password Page
-******************/
-
-body,
-html,
-{
-    background-color: black;
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  background-color: #f5f5f5;
+  border-radius: 2%;
 }
 
-.login-register {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 100%;
-    width: 100%;
-    padding: 10% 0;
-    position: fixed;
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
 }
 
-.login-box {
-    width: 400px;
-    margin: 0 auto;
-    /* Personales */
-    /* -webkit-box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
-    -moz-box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63);
-    box-shadow: -7px -1px 33px -1px rgba(0, 0, 0, 0.63); */
-    /* opacity: 0.7; */
-    /* transition: 0.5s; */
+input {
+  text-align: center;
 }
-
-#div-fondo {
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
+.form-signin input[type='email'] {
+  margin-bottom: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-
-#img-fondo {
-    height: 110%;
-    width: auto;
-    filter: blur(7px);
-    -webkit-filter: blur(7px);
-    -moz-filter: blur(7px);
-    -o-filter: blur(7px);
-    -ms-filter: blur(7px);
-    margin: -15px;
-}
-
-
-/* Personales */
-
-
-/* .login-box:hover {
-    opacity: 1;
-} */
-
-.login-box .footer {
-    width: 100%;
-    left: 0px;
-    right: 0px;
-}
-
-.login-box .social {
-    display: block;
-    margin-bottom: 30px;
-}
-
-#recoverform {
-    display: none;
-}
-
-.login-sidebar {
-    padding: 0px;
-    margin-top: 0px;
-}
-
-.login-sidebar .login-box {
-    right: 0px;
-    position: absolute;
-    height: 100%;
+.form-signin input[type='password'] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }

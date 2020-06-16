@@ -1,13 +1,14 @@
-import { Component, OnInit } from "@angular/core"
-import { Departamento } from "../../models/departamento.models"
-import { DepartamentoService } from "../../services/departamento/departamento.service"
-import { PaginadorService } from "../../components/paginador/paginador.service"
-import { ManejoDeMensajesService } from "../../services/utilidades/manejo-de-mensajes.service"
-import { DepartamentoCrearModificarComponent } from "./departamento-crear-modificar.component"
+import { Component, OnInit } from '@angular/core'
+import { Departamento } from '../../models/departamento.models'
+import { DepartamentoService } from '../../services/departamento/departamento.service'
+import { PaginadorService } from '../../components/paginador/paginador.service'
+import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
+import { DepartamentoCrearModificarComponent } from './departamento-crear-modificar.component'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
-  selector: "app-departamento",
-  templateUrl: "./departamento.component.html",
+  selector: 'app-departamento',
+  templateUrl: './departamento.component.html',
   styles: []
 })
 export class DepartamentoComponent implements OnInit {
@@ -19,11 +20,9 @@ export class DepartamentoComponent implements OnInit {
   cbBuscar = () => this.cargarDepartamentos()
 
   constructor(
-    public _departamentoService: DepartamentoService,
-    public _paginadorService: PaginadorService,
+    public departamento: DepartamentoService,
     public _msjService: ManejoDeMensajesService
   ) {
-    this._paginadorService.callback = this.cbBuscar
   }
 
   ngOnInit() {
@@ -43,15 +42,9 @@ export class DepartamentoComponent implements OnInit {
   }
 
   cargarDepartamentos() {
-    this._departamentoService
-      .todoAbstracto(
-        this._paginadorService.desde,
-        this._paginadorService.limite,
-        Departamento,
-        undefined
-      )
-      .subscribe((departamentos) => {
-        this._paginadorService.activarPaginador(this._departamentoService.total)
+    this.departamento
+      .findAll(new Paginacion(100, 0, 1, 'nombre'))
+      .subscribe(departamentos => {
         this.departamentos = departamentos
       })
   }
@@ -59,7 +52,7 @@ export class DepartamentoComponent implements OnInit {
   eliminar() {
     this._msjService.invalido(
       `Por el momento no es posible eliminar departamentos. Para mas informacion refierete con el administrador del sistema.`,
-      "No esta permitido eliminar departamentos",
+      'No esta permitido eliminar departamentos',
       10000
     )
   }

@@ -1,0 +1,37 @@
+<h5><span class="font-weight-bolder">Contado por: No aplica aun</span></h5>
+
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th>Partida</th>
+      <th>Espesor</th>
+      <th>10 botones (gr)</th>
+      <th>Peso total (kg)</th>
+      <th>Cantidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cantidad of trayecto.pastilla.cantidades; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ cantidad.espesorPastilla }}</td>
+      <td>{{ cantidad.peso10Botones | number: '0.2' }}</td>
+      <td>{{ cantidad.pesoTotalBoton | number: '0.2' }}</td>
+      <td>
+        {{
+          calcularTotal(cantidad.peso10Botones, cantidad.pesoTotalBoton)
+            | number: '0.0-0'
+        }}
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><span class="font-weight-bolder">Total</span></td>
+      <td>
+        {{ totalDeBoton(trayecto.pastilla.cantidades) | number: '0.0-0' }}
+      </td>
+    </tr>
+  </tbody>
+</table>

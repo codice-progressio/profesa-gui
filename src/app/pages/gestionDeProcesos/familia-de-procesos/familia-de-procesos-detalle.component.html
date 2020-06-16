@@ -1,66 +1,113 @@
-<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Clave:"' [titulo]='detalleElemento?.nombre' [idModal]='idModal'>
-    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
-    <ng-container *ngIf="detalleElemento">
+<div
+  class="modal fade"
+  [id]="id"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div
+        *ngIf="keys(cargando).length === 0"
+        class="modal-body animated fadeIn"
+      >
+        <ng-container *ngIf="!detalle">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync"></i>
+          </h1>
+        </ng-container>
 
-        <!-- 
-        =====================================
-         Cotenido
-        =====================================
-        -->
-
-        <div class="row">
+        <ng-container *ngIf="detalle">
+          <div class="row">
             <div class="col-12">
-                <strong>Nombre de la familia</strong>
-                <h1> {{detalleElemento.nombre}}</h1>
+              <strong>Nombre de la familia</strong>
+              <h1>{{ detalle.nombre }}</h1>
             </div>
-        </div>
+          </div>
 
+          <hr />
 
-        <hr>
-
-        <div class="row">
+          <div class="row">
             <div class="col-12">
-                <h3>Procesos</h3>
-                <ul class="list-group">
-                    <li *ngFor="let proceso of detalleElemento.procesos" class="list-group-item">
+              <ul class="list-group shadow mx-auto" style="max-width: 600px;">
+                <li class="list-group-item active">Procesos</li>
+                <li
+                  *ngFor="
+                    let proceso of localizacionDeOrdenes.procesosIniciales
+                  "
+                  class="list-group-item w-100 list-group-item-secondary"
+                >
+                  <span class="text-left float-left" style="width: 60%;">
+                    {{ proceso.nombre }}
+                  </span>
 
-                        <span>
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
+                    {{ proceso.departamento.nombre }}
+                  </small>
+                </li>
+                <li
+                  *ngFor="let proceso of detalle.procesos"
+                  class="list-group-item w-100"
+                >
+                  <span class="text-left float-left" style="width: 60%;">
+                    {{ proceso.proceso.nombre }}
+                  </span>
 
-                        {{proceso.orden}} - {{proceso.proceso.nombre}}
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
+                    {{ proceso.proceso.departamento.nombre }}
+                  </small>
+                </li>
 
-                        </span>
+                <li
+                  *ngFor="let proceso of localizacionDeOrdenes.procesosFinales"
+                  class="list-group-item w-100 list-group-item-secondary"
+                >
+                  <span class="text-left float-left" style="width: 60%;">
+                    {{ proceso.nombre }}
+                  </span>
 
-                        <span>
-                        <strong class='text-muted'>
-                            <small>
-                              {{proceso.proceso.departamento.nombre}}
-                          </small>
-                      </strong>
-                      </span>
-
-                    </li>
-                </ul>
+                  <small
+                    class="text-right text-muted float-right font-weight-bold"
+                    style="width: 40%;"
+                  >
+                    {{ proceso.departamento.nombre }}
+                  </small>
+                </li>
+              </ul>
             </div>
-        </div>
+          </div>
 
-
-        <div class="row mt-5">
+          <div class="row mt-5">
             <div class="col-12">
-                <h3>Observaciones</h3>
-                <p>{{detalleElemento.observaciones}}</p>
+              <h3>Observaciones</h3>
+              <p>{{ detalle.observaciones }}</p>
             </div>
-        </div>
-        <!-- 
+          </div>
+          <!-- 
         =====================================
          END Cotenido
         =====================================
         -->
+        </ng-container>
+      </div>
 
-    </ng-container>
-
-</app-modal>
-<!-- 
-=====================================
- END Body
-=====================================
--->
+      <div *ngIf="keys(cargando).length > 0" class="modal-body animated fadeIn">
+        <div class="card shadow">
+          <div class="card-body text-center">
+            <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
+            <h2 *ngFor="let keyvalue of cargando | keyvalue">
+              {{ keyvalue.value }}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

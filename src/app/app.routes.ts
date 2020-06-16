@@ -9,6 +9,7 @@ import { RegisterComponent } from './login/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { LoginGuardGuard } from './services/guards/login-guard.guard';
 import { PermisosGuard } from './services/guards/permisos.guard'
+import { VerificaTokenGuard } from './services/guards/verifica-token.guard'
 
 
 const appRoutes: Routes = [
@@ -21,7 +22,7 @@ const appRoutes: Routes = [
         path: '',
         component: PagesComponent,
         canActivate: [LoginGuardGuard],
-        loadChildren: './pages/pages.module#PagesModule'
+        loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
     },
     
     // Página de error cuando no encuentra una ruta.

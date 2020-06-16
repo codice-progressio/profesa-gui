@@ -1,26 +1,38 @@
-<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Modelo Completo:"' [titulo]='detalleElemento | modeloCompleto' [idModal]='idModal'>
-    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
-    <ng-container *ngIf="detalleElemento">
+<div
+  class="modal fade"
+  [id]="id"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngIf="!detalle">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin    "></i>
+          </h1>
+          <h2 class="w-100 text-center">Cargando detalle de SKU</h2>
+        </ng-container>
 
-        <!-- 
-        =====================================
-         Cotenido
-        =====================================
-        -->
+        <ng-container *ngIf="detalle">
+          <div class="row">
+            <div class="col-12">
+              <strong>SKU</strong>
+              <h1>{{ detalle.nombreCompleto }}</h1>
+            </div>
+          </div>
 
-        <H4>No hay informacion para desplegar. </H4>
+          <hr />
 
-        <!-- 
-        =====================================
-         END Cotenido
-        =====================================
-        -->
-
-    </ng-container>
-
-</app-modal>
-<!-- 
-=====================================
- END Body
-=====================================
--->
+          <div c="row">
+            <div class="col-12">
+              <h3>Familia: {{ detalle.familiaDeProcesos.nombre }}</h3>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Input } from "@angular/core";
+import { Input, Directive } from "@angular/core";
 
 /**
  * Esta clase se encarga de gestionar los generales para 
@@ -7,6 +7,7 @@ import { Input } from "@angular/core";
  * @export
  * @class Detalles_GUI_CRUD
  */
+@Directive()
 export class Detalles_GUI_CRUD <T> {
 
      

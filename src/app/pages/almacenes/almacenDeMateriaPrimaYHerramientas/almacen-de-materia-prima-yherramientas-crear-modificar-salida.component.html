@@ -9,19 +9,33 @@
   <span class="d-flex justify-content-between align-items-center">
     <p>
       <b class="font-weight-bold">Existencia: </b>
-      {{ articulo?.existencia | number }}
+      {{ articulo?.existencia | number }} {{ articulo?.unidad }}
     </p>
 
     <p>
-      <b class="font-weight-bold">Presentacion:</b>{{ articulo?.presentacion }}
-    </p>
-    <p><b class="font-weight-bold">Unidades:</b>{{ articulo?.unidad }}</p>
+      <b
+        title="Las unidades en las cuales se debe de surtir el articulo"
+        class="font-weight-bold"
+      >
+        <i class="fas fa-question-circle"></i>
 
+        Surtir como: </b
+      >{{ articulo?.unidad }}
+    </p>
+    <p>
+      <b
+        title="La manera en que se almacena el material"
+        class="font-weight-bold"
+      >
+        <i class="fas fa-question-circle"></i>
+        Como esta almacenado:</b
+      >{{ articulo?.presentacion }}
+    </p>
     <p>
       <b class="font-weight-bold">Minimo:</b>
-      {{ articulo?.stockMinimo | number }} |
+      {{ articulo?.stockMinimo | number }} {{ articulo?.unidad }} |
       <b class="font-weight-bold">Maximo:</b>
-      {{ articulo?.stockMaximo | number }}
+      {{ articulo?.stockMaximo | number }} {{ articulo?.unidad }}
     </p>
   </span>
 
@@ -38,6 +52,9 @@
           type="text"
           class="form-control shadow"
           formControlName="cantidad"
+          mask="separator"
+          thousandSeparator=","
+          [suffix]="cantidad_FB.value === '' ? '' :' ('+ articulo.unidad+')'"
         />
         <small id="helpId" class="form-text text-muted"
           >Cantidad de salida</small
@@ -100,7 +117,7 @@
         class="btn btn-success mr-3"
         role="button"
       >
-        <i class="fas fa-save    "></i> Guardar
+        <i class="fas fa-save"></i> Guardar
       </button>
 
       <a
@@ -110,7 +127,7 @@
         class="btn btn-danger text-white"
         role="button"
       >
-        <i class="fas fa-times    "></i> Cancelar</a
+        <i class="fas fa-times"></i> Cancelar</a
       >
     </div>
   </form>

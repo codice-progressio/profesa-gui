@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { ModeloCompleto } from "../../../models/modeloCompleto.modelo"
-import { ModeloCompletoService } from "../../../services/modelo/modelo-completo.service"
-import { Lotes } from "src/app/models/almacenProductoTerminado/lotes.model"
-import { AlmacenProductoTerminadoService } from "../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service"
-import { LoteService } from "../../../services/almacenDeProductoTerminado/lote.service"
-import { SalidasLotes } from "../../../models/almacenProductoTerminado/salidasLote.model"
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { ModeloCompleto } from '../../../models/modeloCompleto.modelo'
+import { ModeloCompletoService } from '../../../services/modelo/modelo-completo.service'
+import { Lotes } from 'src/app/models/almacenProductoTerminado/lotes.model'
+import { AlmacenProductoTerminadoService } from '../../../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
+import { LoteService } from '../../../services/almacenDeProductoTerminado/lote.service'
+import { SalidasLotes } from '../../../models/almacenProductoTerminado/salidasLote.model'
 
 @Component({
-  selector: "app-almacen-de-producto-terminado-crear-modificar",
-  templateUrl: "./almacen-de-producto-terminado-crear-modificar.component.html",
+  selector: 'app-almacen-de-producto-terminado-crear-modificar',
+  templateUrl: './almacen-de-producto-terminado-crear-modificar.component.html',
   styles: []
 })
 export class AlmacenDeProductoTerminadoCrearModificarComponent
@@ -40,19 +40,18 @@ export class AlmacenDeProductoTerminadoCrearModificarComponent
 
   constructor(
     public _almacenDeProductoTerminadoService: AlmacenProductoTerminadoService,
-    public _loteService: LoteService
+    public _loteService: LoteService,
+    public modComSer: ModeloCompletoService
   ) {}
 
   ngOnInit() {}
 
   guardarLote(lote: Lotes) {
-    if (!this.modeloCompleto) throw "No has definido el modelo completo."
+    if (!this.modeloCompleto) throw 'No has definido el modelo completo.'
 
-    this._loteService
-      .guardar(this.modeloCompleto._id, lote)
-      .subscribe((resp) => {
-        this.guardado.emit()
-      })
+    this._loteService.guardar(this.modeloCompleto._id, lote).subscribe(resp => {
+      this.guardado.emit()
+    })
   }
 
   guardarSalida(lote: { salida: SalidasLotes; idLote: string }) {

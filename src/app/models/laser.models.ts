@@ -12,7 +12,7 @@ export class Laser extends OperacionesEnGUI implements Deserializable {
     
     constructor(
         public _id?: string,
-        public laser?: string,
+        public laser: string = '',
         public imagenes: string[] = []
     ) {
         super();

@@ -1,0 +1,39 @@
+<form
+  *ngIf="questions.length > 0"
+  (submit)="onSubmit(form, form.invalid, $event)"
+  [formGroup]="form"
+>
+  <ng-container *ngFor="let question of questions; let i = index">
+    <app-question
+      [question]="question"
+      [form]="form"
+      (actualizarKey)="actualizarKey()"
+      [modoCreador]="modoCreador"
+    ></app-question>
+
+    <a
+      *ngIf="modoCreador"
+      (click)="questions.splice(i, 1)"
+      class="btn btn-danger btn-sm"
+      href="javascript:void(0)"
+      role="button"
+      ><i class="fas fa-trash"></i
+    ></a>
+  </ng-container>
+
+  <div *ngIf="!modoCreador" class="row">
+    <div class="col-12 text-right">
+      <button class="btn btn-success mr-3" type="submit">
+        <i class="fas fa-save"></i> Guardar
+      </button>
+      <a
+        (click)="cancelar()"
+        class="btn btn-danger"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-times"></i> Cancelar</a
+      >
+    </div>
+  </div>
+</form>

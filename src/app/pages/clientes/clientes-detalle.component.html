@@ -1,36 +1,49 @@
+<div
+  class="modal fade"
+  [id]="id"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngIf="!detalle">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync    "></i>
+          </h1>
+        </ng-container>
 
-<ng-container *ngIf="cliente">
-  <div class="d-flex justify-content-between align-items-center">
-    <h3>Detalle de <strong>Cliente</strong></h3>
-    <h1><strong>{{cliente.nombre}}</strong> | {{cliente.sae}}</h1>
-  
+        <ng-container *ngIf="detalle">
+          <div class="row">
+            <div class="col-12">
+              <strong>Cliente</strong>
+              <h1>{{ detalle.nombre }}</h1>
+            </div>
+
+            <div class="col-12">
+              <hr />
+            </div>
+
+            <div class="col-12">
+              <h3>Marcas laser del cliente</h3>
+
+              <div *ngIf="detalle.laserados.length === 0">
+                Este cliente no tiene marcas laser asignadas.
+              </div>
+              <ul class="list-group" *ngIf="detalle.laserados.length !== 0">
+                <li
+                  *ngFor="let laser of detalle.laserados"
+                  class="list-group-item"
+                >
+                  {{ laser.laser }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>
-  
-  <hr>
-
-  <ng-container *ngIf="cliente.laserados.length === 0">
-    Este cliente no tiene marcas laser asignadas.
-  </ng-container>
-  
-  <ng-container *ngIf="cliente.laserados.length !== 0">
-
-    <h3>Marcas laser del cliente</h3>
-    <ul class="list-group">
-      <li *ngFor="let laser of cliente.laserados" class="list-group-item">{{laser.laser}}</li>
-    </ul>
-  </ng-container>
-  
-
-</ng-container>
-
-
-<h1 *ngIf="!cliente">No has seleccionado un cliente</h1>
-
-
-
-
-
-
-
-
-
+</div>

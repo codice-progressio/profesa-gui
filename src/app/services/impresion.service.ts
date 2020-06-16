@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
 import { ReporteFaltantesProductoTerminado } from '../models/reportes/productoTerminado/reporte.faltantes.productoTerminado'
 import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
+import { Maquina } from '../models/maquina.model'
+import { Folio } from '../models/folio.models'
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,12 @@ import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenPro
 export class ImpresionService {
   reportesProductoTerminadoFaltante: ReporteFaltantesProductoTerminado[] = null
   reportesAlmacenProduccionFaltante: ReporteFaltantesAlmacenProduccion[] = null
-  reportesAlmacenPrdouccionPersonalizado: any [] = null
+  reportesAlmacenPrdouccionPersonalizado: any[] = null
+  reportesProgramacionTransformacion: Maquina[] = null
+
+  folio: Folio
+  ordenesAImprimir: string[] = []
+  mostrarEncabezado = true
 
   titulo = 'Reporte sin titulo'
   fecha = new Date()
@@ -28,23 +35,43 @@ export class ImpresionService {
     this.reportesProductoTerminadoFaltante = null
     this.reportesAlmacenProduccionFaltante = null
     this.reportesAlmacenPrdouccionPersonalizado = null
+    this.reportesProgramacionTransformacion = null
+    this.folio = null
   }
 
   almacenProduccionFaltantes(
     reportes: ReporteFaltantesAlmacenProduccion[]
   ): this {
+    this.mostrarEncabezado = true
     this.titulo = 'Reporte de faltantes. Almacen de produccion'
     this.reportesAlmacenProduccionFaltante = reportes
     this.operacionDeLimpieza
     return this
   }
- 
-  almacenProduccionPersonalizado(
-    reportes: any[], nombreReporte:string
-  ): this {
+
+  almacenProduccionPersonalizado(reportes: any[], nombreReporte: string): this {
+    this.mostrarEncabezado = true
     this.titulo = nombreReporte + ' Almacen de produccion'
     this.reportesAlmacenPrdouccionPersonalizado = reportes
     this.operacionDeLimpieza
+    return this
+  }
+  programacionTransformacion(reportes: Maquina[], nombreReporte: string): this {
+    this.mostrarEncabezado = true
+    this.titulo = nombreReporte + ' Control de produccion'
+    this.reportesProgramacionTransformacion = reportes
+    this.operacionDeLimpieza
+    return this
+  }
+
+  ordenes(ordenes: string[]): this {
+    this.mostrarEncabezado = false
+    this.ordenesAImprimir = ordenes
+    return this
+  }
+
+  seleccionarFolio(folio: Folio) {
+    this.folio = folio
     return this
   }
 

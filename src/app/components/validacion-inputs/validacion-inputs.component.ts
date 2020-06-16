@@ -47,7 +47,9 @@ export class ValidacionInputsComponent implements OnInit {
         general: this.general.bind(this),
         email: () => {
           return 'Correo no valido'
-        }
+        },
+
+        'Mask error': ()=> 'Hay un error en el formato (mask)'
       }
     }
   }

@@ -1,40 +1,41 @@
-import { Injectable } from '@angular/core';
-import { Usuario } from '../../models/usuario.model';
-import { HttpClient } from '@angular/common/http';
-import { URL_SERVICIOS } from '../../config/config';
-import { map, catchError } from 'rxjs/operators';
-import swal from 'sweetalert2';
-import { Router } from '@angular/router';
-import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service';
-import { Roles } from 'src/app/models/roles.models';
-import { _ROLES } from 'src/app/config/roles.const';
-import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service';
-import { Observable } from 'rxjs';
-
+import { Injectable } from '@angular/core'
+import { Usuario } from '../../models/usuario.model'
+import { HttpClient } from '@angular/common/http'
+import { URL_SERVICIOS } from '../../config/config'
+import { map, catchError } from 'rxjs/operators'
+import { Router } from '@angular/router'
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service'
+import { throwError } from 'rxjs/internal/observable/throwError'
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
+import { Observable } from 'rxjs'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { URL_BASE } from '../../config/config'
+import permisosConfig from 'src/app/config/permisos.config'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-
   /**
    *El usuario que esta actualmente logueado.
    *
    * @type {Usuario}
    * @memberof UsuarioService
    */
-  usuario: Usuario;
+  usuario: Usuario
   // Cuando se recarga la página la tratamos de leer (en el login)
   // y si no la inicializamos (cargando del storage) va a dar error.
-  token: string;
+  token: string
 
   // roles: Roles;
 
-  menu: any[] = [];
+  menu: any[] = []
 
   apiVersion: string
+  base = URL_BASE('usuario')
+  total = 0
 
   constructor(
     // Para que este funcione hay que hacer un "imports"
@@ -42,318 +43,266 @@ export class UsuarioService {
     public http: HttpClient,
     public router: Router,
     public _subirArchivoService: SubirArchivoService,
-    public _msjService: ManejoDeMensajesService,
+    public msjService: ManejoDeMensajesService,
     public _preLoaderService: PreLoaderService
   ) {
-    
-    this.cargarStorage();
+    this.cargarStorage()
   }
 
+  errFun(err) {
+    this.msjService.err(err)
+    return throwError(err)
+  }
 
-  cargarRoles():Observable<string[]> {
+  login(email: string, password: string, recordar: boolean = false) {
+    // Recordamos el email guardandolo en el localStorage. Esto
+    // se activa con el input de "Recuerdame" que esta en la
+    // pagina del login.
+    if (recordar) {
+      localStorage.setItem('email', email)
+    } else {
+      localStorage.removeItem('email')
+    }
+    const url = URL_SERVICIOS + '/login'
+    return this.http.post(url, { email, password }).pipe(
+      // Guardamos la información en el local storage para que quede
+      // disponible si el usuario cierra el navegador.
+      map((resp: any) => {
+        this.usuario = resp.usuario as Usuario
 
-    const url = `${URL_SERVICIOS}/login/roles`
-    return this.http.get( url ).pipe( map((resp:any)=>{
-      return <string[]> Object.values(resp.roles)
-    } ), catchError( (err)=>{
-      return throwError( err )
-    } ))
+        if (!this.usuario.permissions.includes(permisosKeysConfig.login)) {
+          this.msjService.toastErrorMensaje(
+            'El usuario esta inactivo. Si es un error reportalo con el administrador'
+          )
+          throw ''
+        }
+
+        this.apiVersion = resp.apiVersion
+        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu)
+        return { correcto: true }
+      }),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  cargarPermisos(): Observable<string[]> {
+    const url = `${URL_SERVICIOS}/login/permisos`
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        return <string[]>Object.values(resp.permisos)
+      }),
+      catchError(err => {
+        return throwError(err)
+      })
+    )
   }
 
   renuevaToken() {
-    const url = URL_SERVICIOS + `/login/renuevatoken?token=${this.token}`;
-    return this.http.get( url ).pipe(
-      map( (resp: any) => {
-        this.token = resp.token;
-        localStorage.setItem('token', this.token);
+    const url = URL_SERVICIOS + `/login/renuevatoken`
+    return this.http.post(url, { token: this.token }).pipe(
+      map((resp: any) => {
+        this.token = resp.token
+        localStorage.setItem('token', this.token)
         // Si lo hace recive true
-        
-        this._msjService.ok_('Token renovado');
-        return true;
+
+        this.msjService.toastCorrecto(resp.mensaje)
+        return true
       }),
-      catchError( err => {
-        // swal( 'No se pudo renovar token', 'No fue posible renovar token.', 'error');
-        this._msjService.err( err);
-        this.router.navigate(['login']);
-        return throwError(err);
+      catchError(err => {
+        this.msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   logout() {
-
-    
-    this.usuario = null;
-    this.token = '';
-    this.menu = [null];
-    localStorage.removeItem('item');
-    localStorage.removeItem('usuario');
-    localStorage.removeItem('menu');
-    this.router.navigate(['/login']);
-    
-  }
-
-  loginGoogle ( token: string) {
-    const url = URL_SERVICIOS + '/login/google';
-
-    // Aqui hay que mandar el token como un objeto por aquello
-    // de que el servicio necesita recibir un parametro llamado 'token'
-    // En EMC6 no es necesario poner en el objeto {token:token}, lo hace automatico.
-
-    return this.http.post(url, {token}).pipe(
-      map((resp: any) => {
-       
-
-        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
-        // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
-        // Retorna la respuesta de true de autenticación correcta para capturarla en
-        // el subscribe de login.component.ts y hacer algo bonito.
-        return true;
-      }));
+    this.usuario = null
+    this.token = ''
+    this.menu = [null]
+    localStorage.removeItem('usuario')
+    localStorage.removeItem('menu')
+    this.router.navigate(['/login'])
   }
 
   estaLoguedo() {
-    return (this.token.length > 5);
+    return this.token.length > 5
   }
 
   cargarStorage() {
     if (localStorage.getItem('token')) {
-      this.token = localStorage.getItem('token');
-      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.token = localStorage.getItem('token')
+      this.usuario = JSON.parse(localStorage.getItem('usuario'))
       // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
-      this.menu = JSON.parse(localStorage.getItem('menu'));
+      this.menu = JSON.parse(localStorage.getItem('menu'))
       // this.roles = JSON.parse(localStorage.getItem('roles'));
     } else {
-      this.token = '';
-      this.usuario = null;
+      this.token = ''
+      this.usuario = null
       // Si no hay token destruimos el menu.
-      this.menu = [null];
+      this.menu = [null]
     }
   }
 
-  guardarStorage (id: string, token: string, usuario: Usuario, menu: any) {
-  // guardarStorage (id: string, token: string, usuario: Usuario, menu: any, roles: Roles) {
-    localStorage.setItem('id', id);
-    localStorage.setItem('token', token);
+  guardarStorage(id: string, token: string, usuario: Usuario, menu: any) {
+    // guardarStorage (id: string, token: string, usuario: Usuario, menu: any, roles: Roles) {
+    localStorage.setItem('id', id)
+    localStorage.setItem('token', token)
     // En el local storage no se pueden grabar objetos.
     // Hay que convertirlos en string.
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('usuario', JSON.stringify(usuario))
 
-    localStorage.setItem('menu', JSON.stringify(menu));
+    localStorage.setItem('menu', JSON.stringify(menu))
     // localStorage.setItem('roles', JSON.stringify(roles));
 
-    this.usuario = usuario;
-    this.token = token;
-    this.menu = menu;
+    this.usuario = usuario
+    this.token = token
+    this.menu = menu
     // this.roles = roles;
   }
 
+  save(usuario: Usuario) {
+    const a: number = this._preLoaderService.loading('Guardando usuario.')
 
-
-  login (usuario: Usuario, recordar: boolean = false) {
-    const a: number = this._preLoaderService.loading('Iniciando sesion.');
-    
-    // Recordamos el email guardandolo en el localStorage. Esto
-    // se activa con el input de "Recuerdame" que esta en la
-    // pagina del login.
-    if ( recordar) {
-      localStorage.setItem('email', usuario.email);
-    } else {
-      localStorage.removeItem('email');
-    }
-    const url = URL_SERVICIOS + '/login';
-    return this.http.post(url, usuario).pipe(
-      // Guardamos la información en el local storage para que quede
-      // disponible si el usuario cierra el navegador.
-      map( (resp: any) => {
-       
-        // this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu, resp.roles);
-        this.apiVersion = resp.apiVersion
-        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
-        this._msjService.ok_(resp,null, a);
-        return true;
-      }),
-      catchError( err => {
-        
-       this._msjService.err(err);
-        return throwError(err);
-      })
-    );
-  }
-
-  crearUsuario (usuario: Usuario) {
-    const a: number = this._preLoaderService.loading('Guardando usuario.');
-    
-    const url = URL_SERVICIOS + '/usuario';
+    const url = URL_SERVICIOS + '/usuario'
 
     return this.http.post(url, usuario).pipe(
       // Si todo salio bien mandamos un mensaje.
       map((resp: any) => {
-        this._msjService.ok_(resp,null, a);
-        return resp.usuario;
+        this.msjService.ok_(resp, null, a)
+        return resp.usuario
       }),
-      catchError( err => {
-        this._msjService.err( err );
-        return throwError(err);
+      catchError(err => {
+        this.msjService.err(err)
+        return throwError(err)
       })
-    );
+    )
   }
 
   // Actualiza los datos de un usuario en el local storage
   // y el la BD.
-  actualizarUsuario( usuario: Usuario) {
-    const a: number = this._preLoaderService.loading('Actualizando datos del usuario.');
-    
-    let url = URL_SERVICIOS + '/usuario/' + usuario._id;
-    url += '?token=' + localStorage.getItem('token');
+  update(usuario: Usuario) {
+    let url = URL_BASE(`usuario`)
 
-    return this.http.put( url, usuario).pipe(
+    return this.http.put(url, usuario).pipe(
       map((resp: any) => {
-        // Si estamos modificando un usuario entonces no
-        // tiene localStorage, pero si esta logueado
-        // hay que modificar el local storage para que pueda
-        // seguir logueado y su información, la que se envía
-        // al serivdor (En algúna otra parte) este sincronizada con la
-        // la de la BD
-        if ( usuario._id === this.usuario._id) {
-          const usuarioDB: Usuario = resp.usuario;
-          // this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu, this.roles);
-          this.guardarStorage(usuarioDB._id, this.token, usuarioDB, this.menu);
-        }
-        this._msjService.ok_(resp,null, a);
-        return true;
-      }), catchError( err => {
-        this._msjService.err( err );
-        return throwError(err);
-      })
-
-    );
-
-  }
-
-  cambiarImagen( archivo: File, id: string) {
-    const a: number = this._preLoaderService.loading('Subiendo imagen para el usuario.');
-    
-    this._subirArchivoService.subirArchivo( archivo, 'usuarios', id)
-    .then((resp: any) =>  {
-      this.usuario.img = resp.usuario.img;
-      this._msjService.ok_(resp,null, a);
-      this.guardarStorage(id, this.token, this.usuario, this.menu);
-    }).catch( err => {
-      this._msjService.err(err);
-      return throwError( err );
-    });
-  }
-
-  cargarUsuarios ( desde: number = 0) {
-    const a: number = this._preLoaderService.loading('Cargando usuarios.');
-    
-    const url = URL_SERVICIOS + `/usuario?desde=${desde}`;
-    return this.http.get(url).pipe( 
-      map(resp =>{ 
-        this._msjService.ok_(resp,null, a);
-        return resp;
+        return true
       }),
-      catchError( err => {
-        this._msjService.err(err);
-        return throwError(err);
+      catchError(err => {
+        this.msjService.err(err)
+        return throwError(err)
       })
-      );
+    )
   }
 
-  buscarUsuario ( termino: string ) {
-    this._preLoaderService.miniCarga = true;
-    const a: number = this._preLoaderService.loading('Buscando usuario: ' + termino);
-    
-    const url = URL_SERVICIOS + `/busqueda/coleccion/usuarios/${termino}`;
-    return this.http.get(url).pipe(
-      map((resp: any ) =>  {
-        this._msjService.ok_(resp,null, a);
-        return resp.usuarios;
-      } ),
-      catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
+  cambiarImagen(archivo: File, id: string) {
+    const a: number = this._preLoaderService.loading(
+      'Subiendo imagen para el usuario.'
+    )
+
+    this._subirArchivoService
+      .subirArchivo(archivo, 'usuarios', id)
+      .then((resp: any) => {
+        this.usuario.img = resp.usuario.img
+        this.msjService.ok_(resp, null, a)
+        this.guardarStorage(id, this.token, this.usuario, this.menu)
       })
-    );
+      .catch(err => {
+        this.msjService.err(err)
+        return throwError(err)
+      })
   }
 
-  borrarUsuario ( id: string ) {
-    const url = URL_SERVICIOS + `/usuario/${id}?token=${this.token}`;
+  findAll(paginacion: Paginacion, filtros: string = ''): Observable<Usuario[]> {
+    const url = this.base
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get<Usuario[]>(url).pipe(
+      map((resp: any) => {
+        this.total = resp.total
+        return resp.usuarios
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findByTerm(
+    termino: string,
+    paginacion: Paginacion,
+    filtros: string = ''
+  ): Observable<Usuario[]> {
+    const url = this.base
+      .concat(`/buscar/termino/${termino}`)
+      .concat('?')
+      .concat(`desde=${paginacion.desde}`)
+      .concat(`&limite=${paginacion.limite}`)
+      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
+      .concat(`&sort=${paginacion.orden}`)
+      .concat(`&${filtros}`)
+
+    return this.http.get<Usuario[]>(url).pipe(
+      map((resp: any) => {
+        this.total = resp.total
+        return resp.usuarios as Usuario[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findById(id: string): Observable<Usuario> {
+    let url = this.base.concat('/buscar/id/' + id)
+
+    return this.http.get<Usuario>(url).pipe(
+      map((resp: any) => {
+        return resp.usuario as Usuario
+      }),
+
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  delete(id: string): Observable<Usuario> {
+    let url = this.base.concat('/' + id)
 
     return this.http.delete(url).pipe(
-      map( () => {
-        swal('¡Eliminado!', 'El usuario a sido eliminado correctamente.', 'success');
-        return true;
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.msj)
+        return resp.usuario
       }),
-      catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
+      catchError(err => this.errFun(err))
+    )
   }
 
-  buscarUsuarioPorROLE (role: string , a:number ) {
-    
-    const url = URL_SERVICIOS + `/busqueda/coleccion/usuariosRole/${role}`;
-    
-    return this.http.get( url ).pipe(
-      map( ( resp: any ) => {
-        this._msjService.ok_(resp,null, a);
-        
-        return resp.usuariosRole;
+  buscarUsuariosPorPermiso(permiso: string): Observable<Usuario[]> {
+    const url = this.base.concat(`/buscar/permiso/${permiso}`)
+
+    return this.http.get<Usuario[]>(url).pipe(
+      map((resp: any) => {
+        return resp.usuariosRole as Usuario[]
       }),
-      catchError( err => {
-        this._msjService.err( err );
-        return throwError( err );
-      })
-    );
-
-    // return this.http.get( url ).pipe(
-    //   map( (resp: any) =>  {
-    //     return resp.usuariosRole;
-    //   })
-    // );
-
+      catchError(err => this.errFun(err))
+    )
   }
 
-  cargarVendedores ( ):Observable<Usuario[]> {
-    const a: number = this._preLoaderService.loading('Cargando vendedores.');
-    
-    return this.buscarUsuarioPorROLE(_ROLES.VENDEDOR_ROLE, a);
+  cargarVendedores(): Observable<Usuario[]> {
+    return this.buscarUsuariosPorPermiso(permisosConfig['menu:ventas'])
   }
 
-  cargarSeleccionadores():Observable<Usuario[]> {
-    const a: number = this._preLoaderService.loading('Cargando seleccionadores.');
-    
-    return this.buscarUsuarioPorROLE( _ROLES.SELECCION_CONTEO_ROLE , a);
+  cargarSeleccionadores(): Observable<Usuario[]> {
+    return this.buscarUsuariosPorPermiso(permisosConfig['rol:contadorBoton:'])
   }
-  cargarEmpacadores():Observable<Usuario[]> {
-    const a: number = this._preLoaderService.loading('Cargando empacadores.');
-    return this.buscarUsuarioPorROLE( _ROLES.EMPAQUE_EMPACADOR_ROLE, a );
+  cargarEmpacadores(): Observable<Usuario[]> {
+    return this.buscarUsuariosPorPermiso(permisosConfig['rol:empacador:'])
   }
 
-  cargarMateriales( ):Observable<Usuario[]> {
-    const a: number = this._preLoaderService.loading('Cargando empleados de materiales.');
-    return this.buscarUsuarioPorROLE(_ROLES.MATERIALES_CARGA_ROLE, a);
-  }
-
-  // // Concatena a la url URL_SERVICIOS y el token=?
-  // st( url: string ): string {
-  //   const u = URL_SERVICIOS + url;
-  //   const token = `token=${this.token}`;
-  //   return url.includes('?') ? u + `&${token}` : u + `?${token}`;
-  // }
-
-  /**
-   *Comprueba si el usuario logueado contiene el rol que se 
-   le pase como parametro. 
-   *
-   * @param {string} rol
-   * @returns {boolean}
-   * @memberof UsuarioService
-   */
-  comprobarRol(rol: string): boolean{
-    return this.usuario.role.includes(rol)
+  cargarMateriales(): Observable<Usuario[]> {
+    return this.buscarUsuariosPorPermiso(permisosConfig['rol:cargadorMaterial'])
   }
 }

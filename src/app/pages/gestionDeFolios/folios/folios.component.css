@@ -1,0 +1,28 @@
+table{
+  font-size: 12px;
+}
+
+
+tr.repetir-encabezado:hover {
+  background-color: white;
+}
+
+th {
+  background: white;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.4);
+}
+
+
+tr td {
+padding-top: 0.25rem;
+padding-bottom: 0.25rem;
+}
+
+tbody:before {
+  content:"@";
+  display:block;
+  line-height:20px;
+  text-indent:-99999px;
+}

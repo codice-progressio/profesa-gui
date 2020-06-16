@@ -1,51 +1,101 @@
-<form [formGroup]="formulario">
-  <div class="form-group col-4">
-    <input
-      type="number"
-      class="form-control"
-      formControlName="cantidadEntrada"
-      [ngClass]="{
-        'is-invalid': vs.invalid(cantidadEntrada_FB),
-        'is-valid': vs.valid(cantidadEntrada_FB)
-      }"
-    />
-    <small id="helpId" class="form-text text-muted">Cantidad de entrada</small>
-    <app-validacion-inputs [campo]="cantidadEntrada_FB"></app-validacion-inputs>
+<div
+  *ngIf="keys(cargando).length === 0; else cargandoTemplate"
+  class="row animated fadeIn"
+>
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h1 class="font-bold text-warning">Registrar entrada</h1>
+          </div>
+          <div class="col-12 col-md-6 text-md-right">
+            <h2>{{ modeloCompleto.nombreCompleto }}</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+        <form [formGroup]="formulario">
+          <div class="form-group col-4">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="cantidadEntrada"
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('cantidadEntrada')),
+                'is-valid': vs.valid(f('cantidadEntrada'))
+              }"
+
+              mask='separator'
+              thousandSeparator=','
+
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Cantidad de entrada</small
+            >
+            <app-validacion-inputs
+              [campo]="f('cantidadEntrada')"
+            ></app-validacion-inputs>
+          </div>
+          <div class="form-group col-8">
+            <textarea
+              class="form-control"
+              rows="3"
+              formControlName="observaciones"
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('observaciones')),
+                'is-valid': vs.valid(f('observaciones'))
+              }"
+            ></textarea>
+            <small id="helpId" class="form-text text-muted"
+              >Observaciones</small
+            >
+            <app-validacion-inputs
+              [campo]="f('observaciones')"
+            ></app-validacion-inputs>
+          </div>
+
+          <hr />
+
+          <a
+            type="button"
+            href="javascript:void(0)"
+            class="btn btn-success active mr-3"
+            role="button"
+            (click)="guardar(formulario.value, formulario.invalid, $event)"
+          >
+            <i class="fas fa-save"></i> Guardar
+        </a>
+
+          <button
+            type="button"
+            class="btn btn-danger active text-white"
+            role="button"
+            (click)="cancelarGuardado()"
+          >
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="form-group col-8">
-    <textarea
-      class="form-control"
-      rows="3"
-      formControlName="observaciones"
-      [ngClass]="{
-        'is-invalid': vs.invalid(observaciones_FB),
-        'is-valid': vs.valid(observaciones_FB)
-      }"
-    ></textarea>
-    <small id="helpId" class="form-text text-muted">Observaciones</small>
-    <app-validacion-inputs [campo]="observaciones_FB"></app-validacion-inputs>
+</div>
+
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body text-center">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin-fast"></i>
+            <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
+          </h1>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <hr />
-
-  <button
-    type="button"
-    [disabled]="this.formulario.invalid "
-    class="btn btn-success mr-3"
-    role="button"
-    (click)="guardar(formulario.value, formulario.invalid, $event)"
-  >
-    <i class="fas fa-save    "></i> Guardar
-  </button>
-
-  <button
-    type="button"
-    class="btn btn-danger text-white"
-    role="button"
-    (click)="cancelarGuardado()"
-    data-toggle="modal"
-    data-target="#modalEntradasYSalidas"
-  >
-    <i class="fas fa-times"></i> Cancelar
-  </button>
-</form>
+</ng-template>

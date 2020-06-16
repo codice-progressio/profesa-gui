@@ -35,7 +35,7 @@ export class RecibirTerminacionComponent implements OnInit {
     public _divisaService: DivisaService,
     public _msjService: ManejoDeMensajesService,
     public _subirArchivoService: SubirArchivoService,
-    public _requisicionService: RequisicionService
+    public requisicionService: RequisicionService
   ) {}
 
   ngOnInit() {
@@ -142,7 +142,7 @@ export class RecibirTerminacionComponent implements OnInit {
         x => {
           if (!x) return
           if (x['ok']) {
-            this.requisicion.estatus.reiniciar()
+            this.requisicionService.reiniciar(this.requisicion.estatus)
             this.requisicion.razonDeCambioTemp = 'Requisicion completada'
 
             this.requisicion.estatus.cantidadEntregadaALaFecha = this.obtenerMaximo(
@@ -153,7 +153,7 @@ export class RecibirTerminacionComponent implements OnInit {
 
             this.requisicion.estatus.esTerminada = true
 
-            this._requisicionService
+            this.requisicionService
               .actualizarEstatus(this.requisicion)
               .subscribe(
                 req => {

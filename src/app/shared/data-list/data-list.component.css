@@ -2,15 +2,24 @@
   position: absolute;
   z-index: 9999;
 
-  height: 400px;
+  max-height: 400px;
   width: auto;
   max-width: 400px;
   overflow: hidden;
   overflow-y: auto;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .input-busqueda {
   padding-bottom: 2px;
   margin-bottom: 2px;
+}
+
+input:disabled {
+  background-color: #ddd;
+  font-weight: 600 !important;
+  color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
 /* width */

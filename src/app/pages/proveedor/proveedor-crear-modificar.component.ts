@@ -406,16 +406,16 @@ export class ProveedorCrearModificarComponent implements OnInit {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
 
-    this._articuloService
-      .search(termino, undefined, undefined, Articulo)
-      .subscribe((articulos) => {
-        let datos: Dato[] = []
-        articulos.forEach((art: Articulo) => {
-          datos.push(this.crearDatoParaDataList(art))
-        })
+    // this._articuloService
+    //   .search(termino, undefined, undefined, Articulo)
+    //   .subscribe((articulos) => {
+    //     let datos: Dato[] = []
+    //     articulos.forEach((art: Articulo) => {
+    //       datos.push(this.crearDatoParaDataList(art))
+    //     })
 
-        dataList.terminoBusqueda(datos)
-      })
+    //     dataList.terminoBusqueda(datos)
+    //   })
   }
 
   private crearDatoParaDataList(art: Articulo): Dato {
@@ -436,7 +436,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     this.relacionArticulo_FB_item(i).updateValueAndValidity()
   }
 
-  @ViewChild("inputMetodoDePago", { static: false })
+  @ViewChild("inputMetodoDePago")
   inputMetodoDePago: ElementRef
 
   agregarMetodoDePago(txt: string) {
@@ -455,7 +455,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     )
   }
 
-  @ViewChild("inputCondicionesDePago", { static: false })
+  @ViewChild("inputCondicionesDePago")
   inputCondicionesDePago: ElementRef
 
   agregarCondicionesDePago(txt: string) {
@@ -474,7 +474,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
     )
   }
 
-  @ViewChild("inputFormasDePago", { static: false })
+  @ViewChild("inputFormasDePago")
   inputFormasDePago: ElementRef
 
   agregarFormasDePago(txt: string) {

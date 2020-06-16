@@ -1,52 +1,131 @@
-<app-general [cbCrear]='cbCrear()' [cbBuscar]='cbBuscar()' [mostrarLista]='mostrarLista' [crearModificar]='crearModificar' [paginador]='_paginadorService'>
-    <ng-container *ngIf="mostrarLista">
+<ng-container>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class=" card-body d-flex justify-content-between align-items-center"
+        >
+          <h1 class=""><strong>Tamanos</strong> existentes</h1>
 
-        <!-- 
-        =====================================
-         BODY
-        =====================================
-        -->
-        <table class="table table-responsive table-hover  ">
+          <div class="d-flex  align-items-center ">
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObservable"
+                [tiempoDeEspera]="1000"
+                (resultado)="resultadoDeBusqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error()"
+              ></app-buscador-paciente>
+            </div>
+
+            <a
+              (click)="this.crear()"
+              class="btn btn-success text-white active mr-3"
+            >
+              <i class="fas fa-plus "></i> Crear tamano</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="this.totalDeElementos"
+        [campoDeOrdenamiento]="'tamano'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+        [cargando]="keys(cargando).length > 0"
+      ></paginador>
+    </div>
+  </div>
+  <div
+    *ngIf="tamanos.length && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table table-hover w-100">
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th>Estandar</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+
+                <th></th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let tamano of elementos">
-                    <td><button (click)="mostrarDetalle(tamano._id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDetalle" role="button"><i class="fas fa-eye" aria-hidden="true"></i></button></td>
-                    <td>{{tamano.tamano}}</td>
-                    <td>{{tamano.estandar | number}}</td>
-                    <td><a (click)="editar( tamano._id, componenteCrearModificar )" class="btn btn-success btn-sm"><i class="fas fa-edit text-white    "></i></a></td>
-                    <td><a (click)="eliminar( tamano._id)" class="btn btn-danger btn-sm"><i class="fas fa-times  text-white "></i></a></td>
-                </tr>
+              <tr *ngFor="let elemento of tamanos">
+                <td class="fit">
+                  <button
+                    (click)="tamanoDetalle = elemento"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#detalleTamano"
+                    role="button"
+                  >
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td>{{ elemento.tamano }}</td>
 
+                <td class="fit">
+                  <a
+                    href="javascript:void(0)"
+                    (click)="modificar(elemento._id)"
+                    class="btn btn-success btn-sm"
+                    ><i class="fas fa-edit text-white    "></i
+                  ></a>
+                </td>
+                <td class="fit">
+                  <a
+                    (click)="eliminar(elemento._id)"
+                    class="btn btn-danger btn-sm"
+                    ><i class="fas fa-times  text-white "></i
+                  ></a>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- 
-        =====================================
-         END BODY
-        =====================================
-        -->
+  <div
+    *ngIf="tamanos?.length === 0 && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body shadow">
+          <h1 class="display-1">No hay <b>tamanos</b> para mostrar</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </ng-container>
-</app-general>
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync  fa-spin   "></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+            {{ cargando[key] }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-<!-- 
-=====================================
- Importante fuera de app-general
-=====================================
--->
-
-<app-tamanos-crear-modificar #componenteCrearModificar [cbAnimar]='this.cbAnimar' [cbCargarElementos]='this.cbCargarElementos' [idModificar]='this.idModificar' [mostrarCrearModificar]='this.mostrarCrearModificar' [crearModificar]='this.crearModificar'></app-tamanos-crear-modificar>
-<app-tamanos-detalle [detalleElemento]='elementoDetalle'> </app-tamanos-detalle>
-<!-- 
-=====================================
- END Importante fuera de app-general
-=====================================
--->
+<app-tamanos-detalle [detalle]="tamanoDetalle" [id]="'detalleTamano'">
+</app-tamanos-detalle>

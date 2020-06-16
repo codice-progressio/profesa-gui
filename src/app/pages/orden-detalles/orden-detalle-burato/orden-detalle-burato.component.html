@@ -1,0 +1,23 @@
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th>10 botones (gr)</th>
+        <th>Peso total (kg)</th>
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ trayecto.burato.peso10Botones | number: '0.2' }}</td>
+        <td>{{ trayecto.burato.pesoTotalBoton | number: '0.2' }}</td>
+        <td>
+          {{
+            calcularTotal(
+              trayecto.burato.peso10Botones,
+              trayecto.burato.pesoTotalBoton
+            ) | number: '0.0-0'
+          }}
+        </td>
+      </tr>
+    </tbody>
+  </table>

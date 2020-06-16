@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Detalles_GUI_CRUD } from '../../utilidadesPages/utilidades-tipo-crud-para-GUI/Detalles_GUI_CRUD';
-import { Modelo } from 'src/app/models/modelo.models';
+import { Component, OnInit, Input } from '@angular/core'
+import { Modelo } from 'src/app/models/modelo.models'
 
 @Component({
   selector: 'app-modelos-detalle',
   templateUrl: './modelos-detalle.component.html',
   styles: []
 })
-export class ModelosDetalleComponent extends Detalles_GUI_CRUD<Modelo> implements OnInit {
+export class ModelosDetalleComponent implements OnInit {
+  @Input() detalle: Modelo = null
 
-  constructor() {
-    super()
-  }
+  @Input() id: string = 'detalleModal'
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }

@@ -34,7 +34,7 @@ export class RecibirParcialidadComponent implements OnInit {
     public _proveedorService: ProveedorService,
     public _msjService: ManejoDeMensajesService,
     public _subirArchivoService: SubirArchivoService,
-    public _requisicionService: RequisicionService
+    public requisicionService: RequisicionService
   ) {}
 
   ngOnInit() {
@@ -140,14 +140,14 @@ export class RecibirParcialidadComponent implements OnInit {
         x => {
           if (!x) return
           if (x['ok']) {
-            this.requisicion.estatus.reiniciar()
+            this.requisicionService.reiniciar(this.requisicion.estatus)
             this.requisicion.razonDeCambioTemp = 'Se agregaron parcialidades.'
             this.requisicion.estatus.cantidadEntregadaALaFecha =
               modelo.cantidadEntregadaALaFecha
             this.requisicion.estatus.esEntregaParcial = true
             this.requisicion.estatus.fechaEntregaParcialidad = new Date()
 
-            this._requisicionService
+            this.requisicionService
               .actualizarEstatus(this.requisicion)
               .subscribe(
                 req => {

@@ -1,0 +1,359 @@
+<ng-container *ngIf="maquinas">
+  <table
+    *ngFor="let maquina of maquinas"
+    class="table table-hover table-bordered tabla-delgada"
+  >
+    <thead>
+      <tr class="border-0 bg-light">
+        <td colspan="100" class="border-0">
+          <div class="w-100 d-flex justify-content-between align-items-center">
+            <h3 class="font-bold">{{ maquina.clave }}</h3>
+
+            <span>Por trabajar: {{ maquina.pila.length }}</span>
+
+            <span style="width: 400px;" class="text-right">
+              <!-- Lo ponemos asi para que conserve el tamano -->
+              <span *ngIf="maquina.trabajando">
+                Tiempo trabajando:
+                <app-tiempo-transcurrido
+                  [inicio]="maquina.trabajo?.inicio"
+                ></app-tiempo-transcurrido>
+              </span>
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="cliente" title="Nombre del cliente">CLIENTE</th>
+        <th
+          class="fecha-pedido"
+          title="Fecha en que el folio entro a produccion"
+        >
+          F.PED
+        </th>
+        <th
+          class="paso"
+          title="Define si es primer paso, segundo, etc., segun correspond"
+        >
+          P
+        </th>
+        <th class="numero-de-orden" title="El numero de la orden ">#ORD</th>
+        <th
+          class="modelo-completo"
+          title="El modelo ahora se llama sku (stock keeping unit - Unidad de mantenimiento de stock "
+        >
+          SKU
+        </th>
+        <th
+          class="es-baston"
+          title="Si el material viene de baston se muestra una letra B"
+        >
+          B
+        </th>
+        <th
+          class="marca-laser"
+          title="Marca laser que debe de llevar este boton"
+        >
+          ML
+        </th>
+        <th
+          class="disponible"
+          title="Disponibilidad de la orden. Si esta disponble para transformarse se muetra una palomita verde, de lo contrario se muestra la ubicacion. "
+        >
+          DIS
+        </th>
+        <th
+          class="observaciones"
+          title="Las observaciones de produccion en el folio, pedido y orden."
+        >
+          OBSERVACIONES
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngIf="!maquina.trabajando">
+        <td colspan="100" class="bg-danger text-white font-bold">
+          <span class="sin-trabajo-leyenda">
+            <i class="fa fa-exclamation-triangle text-warning"></i>
+            Maquina parada</span
+          >
+        </td>
+      </tr>
+      <tr *ngIf="maquina.trabajando" class="bg-light-inverse  font-bold">
+        <td
+          class="text-right"
+          title="Este folio pertenece al cliente {{ maquina.trabajo.cliente }}"
+        >
+          {{ maquina.trabajo.cliente }}
+        </td>
+        <td
+          class="text-right fit"
+          title="Este folio entro a produccion el {{
+            maquina.trabajo.fechaPedidoProduccion | fecha: 'LLLL'
+          }}"
+        >
+          {{ maquina.trabajo.fechaPedidoProduccion | fecha: 'DD/MMM' }}
+        </td>
+        <td
+          class="text-right fit"
+          title="Esta orden esta en el {{ maquina.trabajo.paso }}{{
+            termino[maquina.trabajo.paso]
+          }} paso"
+        >
+          {{ maquina.trabajo.paso }}
+        </td>
+        <td
+          class="text-right nowrap"
+          title="Esta es la orden numero {{ maquina.trabajo.numeroDeOrden }}"
+        >
+          <a
+            data-toggle="modal"
+            data-target="#detalleOrden"
+            href="javascript:void(0)"
+            (click)="ordenDetalle = maquina.trabajo"
+          >
+            {{ maquina.trabajo.numeroDeOrden }}
+          </a>
+        </td>
+        <td
+          class="text-right"
+          title="El modelo de esta orden es  {{
+            maquina.trabajo.modeloCompleto
+          }}"
+        >
+          {{ maquina.trabajo.modeloCompleto }}
+        </td>
+        <td
+          class="text-right"
+          title="Este boton {{
+            maquina.trabajo.esBaston ? '' : 'no'
+          }} es baston"
+        >
+          <i
+            *ngIf="maquina.trabajo.esBaston"
+            class="fas fa-check-circle    "
+          ></i>
+        </td>
+        <td
+          class="text-right"
+          title="{{
+            maquina.trabajo.marcaLaser
+              ? 'La marca laser es ' + maquina.trabajo.marcaLaser
+              : 'Esta orden no lleva marca laser'
+          }}"
+        >
+          {{ maquina.trabajo.marcaLaser }}
+        </td>
+
+        <td
+          class="text-center"
+          [title]="
+            maquina.trabajo.disponible
+              ? ' Orden disponible para empezar a transformarse'
+              : 'Esta orden se encuentra en ' +
+                maquina.trabajo.ubicacionActual?.departamento
+          "
+        >
+          <i class="fas fa-cog fa-2x fa-spin text-warning  "></i>
+        </td>
+
+        <td
+          class="text-right"
+          title="
+      Folio:  {{ maquina.trabajo.observacionesFolio }}
+      Pedido: {{ maquina.trabajo.observacionesPedido }}
+      Orden: {{ maquina.trabajo.observacionesOrden }}
+    
+      "
+        >
+          <span title="Esta observacion pertenece al grupo folio">
+            {{ maquina.trabajo.observacionesFolio }} -
+          </span>
+          <span title="Esta obseracion pertenece al grupo pedido">
+            {{ maquina.trabajo.observacionesPedido }} -
+          </span>
+          <span title="Esta observacion pertenece al grupo orden">
+            {{ maquina.trabajo.observacionesOrden }}
+          </span>
+        </td>
+      </tr>
+      <tr *ngFor="let pila of maquina.pila">
+        <td
+          class="text-right"
+          title="Este folio pertenece al cliente {{ pila.cliente }}"
+        >
+          {{ pila.cliente }}
+        </td>
+        <td
+          class="text-right"
+          title="Este folio entro a produccion el {{
+            pila.fechaPedidoProduccion | fecha: 'LLLL'
+          }}"
+        >
+          {{ pila.fechaPedidoProduccion | fecha: 'DD/MMM' }}
+        </td>
+        <td
+          class="text-right"
+          title="Esta orden esta en el {{ pila.paso }}{{
+            termino[pila.paso]
+          }} paso"
+        >
+          {{ pila.paso }}
+        </td>
+        <td
+          class="text-right nowrap"
+          title="Esta es la orden numero {{ pila.numeroDeOrden }}"
+        >
+          <a
+            data-toggle="modal"
+            data-target="#detalleOrden"
+            href="javascript:void(0)"
+            (click)="ordenDetalle = pila"
+          >
+            {{ pila.numeroDeOrden }}
+          </a>
+        </td>
+        <td
+          class="text-right"
+          title="El modelo de esta orden es  {{ pila.modeloCompleto }}"
+        >
+          {{ pila.modeloCompleto }}
+        </td>
+        <td
+          class="text-right fit"
+          title="Este boton {{ pila.esBaston ? '' : 'no' }} es baston"
+        >
+          <i *ngIf="pila.esBaston" class="fas fa-check-circle    "></i>
+        </td>
+        <td
+          class="text-right"
+          title="{{
+            pila.marcaLaser
+              ? 'La marca laser es ' + pila.marcaLaser
+              : 'Esta orden no lleva marca laser'
+          }}"
+        >
+          {{ pila.marcaLaser }}
+        </td>
+
+        <td
+          class="text-right"
+          [title]="
+            pila.disponible
+              ? ' Orden disponible para empezar a transformarse'
+              : 'Esta orden se encuentra en ' +
+                pila.ubicacionActual?.departamento
+          "
+        >
+          <ng-container *ngIf="!pila.disponible">
+            <div class="div d-flex justify-content-between align-items-center">
+              <i
+                *ngIf="!pila.ubicacionActual?.recibida"
+                class="fas fa-exclamation animated tada infinite"
+              ></i>
+              {{ pila.ubicacionActual?.departamento }}
+            </div>
+          </ng-container>
+          <i
+            *ngIf="pila.disponible"
+            class="fas fa-check fa-2x text-success  "
+          ></i>
+        </td>
+
+        <td
+          class="text-right"
+          title="
+      Folio:  {{ pila.observacionesFolio }}
+      Pedido: {{ pila.observacionesPedido }}
+      Orden: {{ pila.observacionesOrden }}
+    
+      "
+        >
+          <span title="Esta observacion pertenece al grupo folio">
+            {{ pila.observacionesFolio }} -
+          </span>
+          <span title="Esta obseracion pertenece al grupo pedido">
+            {{ pila.observacionesPedido }} -
+          </span>
+          <span title="Esta observacion pertenece al grupo orden">
+            {{ pila.observacionesOrden }}
+          </span>
+        </td>
+      </tr>
+
+      <tr *ngIf="maquina.pila.length === 0">
+        <td colspan="100">
+          No hay ordenes en la pila de trabajo de esta maquina
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="detalleOrden"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div
+          class="modal-title d-flex justify-content-between align-items-center w-100"
+        >
+          <h5>
+            Avance de orden:
+            <span class="font-weight-bolder"
+              >{{ ordenDetalle?.numeroDeOrden }}
+            </span>
+          </h5>
+
+          <a
+            class="btn btn-outline-primary btn-sm"
+            href="javascript:void(0)"
+            role="button"
+            data-toggle="modal"
+            data-target="#detalleFolio"
+            (click)="cargarFolio(ordenDetalle.folio)"
+          >
+            <i class="fas fa-eye    "></i>
+            Folio {{ (ordenDetalle?.numeroDeOrden.split('-'))[0] }}</a
+          >
+
+          <h5>
+            SKU:
+            <span class="font-weight-bolder"
+              >{{ ordenDetalle?.modeloCompleto }}
+            </span>
+          </h5>
+        </div>
+      </div>
+      <div class="modal-body">
+        <app-orden-detalle-avance [orden]="ordenDetalle">
+        </app-orden-detalle-avance>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+=====================================
+ Detalle de folio
+=====================================
+-->
+
+<app-folios-detalle-abstracto
+  [folio]="folioDetalle"
+  (pedido)="pedidoDetalle = $event"
+></app-folios-detalle-abstracto>
+
+<!-- 
+=====================================  
+ END Detalle de folio
+===================================== 
+-->

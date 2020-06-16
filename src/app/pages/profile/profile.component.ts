@@ -28,13 +28,13 @@ export class ProfileComponent implements OnInit {
     // a un usuario.
 
     this.usuario.nombre = usuario.nombre;
-    if ( !this.usuario.google) {
-        this.usuario.email = usuario.email;
-    }
+    // if ( !this.usuario.google) {
+    //     this.usuario.email = usuario.email;
+    // }
 
     // Guardamos
 
-    this._usuarioService.actualizarUsuario(this.usuario)
+    this._usuarioService.update(this.usuario)
     .subscribe( resp => {
 
      });

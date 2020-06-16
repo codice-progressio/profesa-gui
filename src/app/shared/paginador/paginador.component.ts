@@ -49,10 +49,8 @@ import { Paginacion } from '../../utils/paginacion.util'
  * ```
  *    NOTA: En la primera ejecucion del paginador
  *    `paginador.totalDeElemento:EventEmmiter` por de defecto no se ejecuta
- *    el evento para prevenir dobles carga al iniciar `component.ts`. Si se
- *    quiere evitar esto se puede poner la propiedad
- *    `evitarPrimeraEjecucion = true` y este comportamiento se evitara.
- *    Notese que se habla del componente no clonado.
+ *    el evento para prevenir dobles carga al iniciar `component.ts`. Este 
+ *    evento solo se ejecuta al seleccionar una nueva cantidad por pagina. 
  *
  * 3 - Dentro del `component.html` agregamos las etiquetas correspondientes
  * a este paginador de esta manera:
@@ -72,34 +70,10 @@ import { Paginacion } from '../../utils/paginacion.util'
  *       [campoDeOrdenamiento]='nombre'
  *       [tipoDeOrden]='des'
  *
- *       //El paginador es capaz de trabajar en espejo si se le
- *       // pasa la referencia de otro paginador.
- *       [clonar]='paginadorSecundario'
- *       //La emision del evento.
- *       (actualizarConsulta)='actualizarConsulta($event)'
- *       //La opcion de muestra de spinner a travez de la
- *       // variable global.
- *       [cargando]='cargando'
- *       ></paginador>
- *
+ *       
  * ```
  *
- * 3.1 - Opcionalmente se puede agregar un clon de este paginador:
- *
- *
- *
- * ```
- *   <paginador
- *       class="pull-right"
- *       //La referecia de este paginador.
- *       #paginadorSecundario
- *       // El paginador que queremos clonar.
- *       [clonar]='paginadorOriginal'
- *       // Es neceario hacer referencia a la misma operacion
- *       // que su clon
- *       (actualizarConsulta)='actualizarConsulta($event)'
- *       ></paginador>
- * ```
+ 
  *
  * 4 - Creamos una operacion para ejecutar al emitir `actualizarConsulta()`:
  *
@@ -141,29 +115,20 @@ import { Paginacion } from '../../utils/paginacion.util'
  * @class PaginadorComponent
  * @implements {OnInit}
  */
+/**
+ *Paginador independiete. Para que este funcione correctamente reiniciamos 
+ los contadores de paginas y cantidades de pagina cada vez que el total de elementos se modifica. De esta manera 
+ *
+ * @export
+ * @class PaginadorComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'paginador',
   templateUrl: './paginador.component.html',
   styleUrls: ['./paginador.component.css']
 })
 export class PaginadorComponent implements OnInit {
-  private usuarioQuierePrimeraEjecucion = false
-  _epe: boolean = false
-
-  /**
-   *
-   *
-   * @memberof PaginadorComponent
-   */
-  @Input() set evitarPrimeraEjecucion(a: boolean) {
-    this._epe = a
-    this.usuarioQuierePrimeraEjecucion = !a
-  }
-
-  get evitarPrimeraEjecucion(): boolean {
-    return this._epe
-  }
-
   /**
    *La pagina actual donde se encuentra el paginador.
    *
@@ -203,11 +168,15 @@ export class PaginadorComponent implements OnInit {
   @Input() set totalDeElementos(x: number) {
     this._totalDeElementos = x ? x : 0
 
-    if (!this.evitarPrimeraEjecucion) {
-      this.usuarioQuierePrimeraEjecucion = false
+    if (x) {
+      this.actual = 1
+      this.cambiarElementosPorPagina(this.elementosPorPagina)
+    } else {
+      //Si el total de elementos de la BD es 0 entonces
+      // todo debe estar en 0
+      this.actual = 0
+      this.totalDePaginas = 0
     }
-
-    if (x) this.cambiarElementosPorPagina(this.elementosPorPagina)
   }
 
   private _totalDeElementos: number
@@ -263,20 +232,23 @@ export class PaginadorComponent implements OnInit {
   /**
    *Designa una nueva cantidad a mostrar de elementos por pagina y hace los calculos necesarios para actualizar la consulta. Emite actualizarConsulta.emit()
    *
-   * @param {number} x
+   *
+   * @param {number} x Cantidad de elementos por pagina a mostrar.
+   * @param {boolean} [cambioCantidadPorPagina=false] Si se pone en false esta operacion emite
+   * el evento `actualizarConsulta` que por diseno deberia lanzar de nuevo
+   * la operacion de busqueda en la bd.
    * @memberof PaginadorComponent
    */
-  cambiarElementosPorPagina(x: number) {
+  cambiarElementosPorPagina(x: number, cambioCantidadPorPagina = false) {
     this.elementosPorPagina = x
     this.totalDePaginas = Math.ceil(this.totalDeElementos / x)
     //La pagina actual no puede ser mayor que el calculo
     // que acabamos de realizar. Si ese fuera el caso
     // tenemos que reiniciar
     if (this.actual > this.totalDePaginas) this.actual = this.totalDePaginas
-    if (this.usuarioQuierePrimeraEjecucion) {
+    //Si cambiamos la cantidad por pagina entonces se debe solicitar una actualizacion de la operacion.
+    if (cambioCantidadPorPagina)
       this.actualizarConsulta.emit(this.crearPaginacion())
-    }
-    this.usuarioQuierePrimeraEjecucion = true
   }
 
   /**
@@ -317,6 +289,7 @@ export class PaginadorComponent implements OnInit {
 
     let desde =
       this.actual <= 1 ? 0 : (this.actual - 1) * this.elementosPorPagina
+
     return {
       paginacion: new Paginacion(
         limite,
@@ -328,10 +301,9 @@ export class PaginadorComponent implements OnInit {
     }
   }
 
-
   //Esta seccion es para crear el boton de scroll top
 
-  @ViewChild('btnScroll', { static: false }) btnScroll: ElementRef
+  @ViewChild('btnScroll') btnScroll: ElementRef
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
   onScroll(event) {
@@ -345,15 +317,15 @@ export class PaginadorComponent implements OnInit {
     }
   }
 
-  scrollTop(){
+  scrollTop() {
     let scrollToTop = window.setInterval(() => {
-      let pos = window.pageYOffset;
+      let pos = window.pageYOffset
       if (pos > 0) {
-          window.scrollTo(0, pos - 20); // how far to scroll on each step
+        window.scrollTo(0, pos - 20) // how far to scroll on each step
       } else {
-          window.clearInterval(scrollToTop);
+        window.clearInterval(scrollToTop)
       }
-  }, 10);
+    }, 10)
   }
 }
 

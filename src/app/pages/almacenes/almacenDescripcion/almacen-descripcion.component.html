@@ -1,166 +1,140 @@
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
+<ng-container>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div
+          class="card-body d-flex justify-content-between align-items-center"
+        >
           <h1 class=""><strong>Almacenes</strong> existentes</h1>
 
-          <a
-            class="btn btn-success text-white"
-            (click)="crear()"
-            role="button"
-            data-toggle="modal"
-            data-target="#editarAlmacen"
-          >
-            <i class="fas fa-plus"></i>
-            Crear almacen
-          </a>
+          <div class="d-flex align-items-center">
+            <div class="mr-3">
+              <app-buscador-paciente
+                [cbObservable]="cbObservable"
+                [tiempoDeEspera]="1000"
+                (resultado)="resultadoDeBusqueda($event)"
+                (cancelado)="cancelado()"
+                (error)="error()"
+              ></app-buscador-paciente>
+            </div>
+
+            <a
+              (click)="this.crear()"
+              class="btn btn-success text-white active mr-3"
+            >
+              <i class="fas fa-plus"></i> Crear almacen</a
+            >
+          </div>
         </div>
-
-        <hr />
-
-        <app-paginador *ngIf="almacenesDescripcion.length >= 5"></app-paginador>
-
-        <table
-          *ngIf="almacenesDescripcion.length > 0"
-          class="table table-hover table-borderless animated fadeIn"
-        >
-          <thead class="">
-            <tr>
-              <th class="fit"></th>
-
-              <th class="" title="Nombre del almacen">
-                Nombre
-              </th>
-              <th
-                class="fit"
-                title="Tipos de elementos que se deben guardar, indicaciones, etc."
-              >
-                Descripcion
-              </th>
-              <th class="fit" title="Ubicacion fisico del almacen.">
-                Ubicacion
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="fit" *ngFor="let ad of almacenesDescripcion">
-              <td class="fit">
-                <a
-                  id="button0"
-                  (click)="asignarDetalle(ad)"
-                  class="btn  text-white btn-primary btn-xs mr-1"
-                  role="button"
-                  data-toggle="modal"
-                  data-target="#detalleAlmacen"
-                >
-                  <i class="fas fa-eye    "></i>
-                </a>
-
-                <a
-                  id="button2"
-                  class="btn  text-white btn-success btn-xs mr-1"
-                  role="button"
-                  title="Editar almacen."
-                  (click)="asignarEdicion(ad)"
-                  data-toggle="modal"
-                  data-target="#editarAlmacen"
-                >
-                  <i class="fas fa-edit    "></i>
-                </a>
-                <a
-                  id="button3"
-                  class="btn  text-white btn-danger btn-xs mr-1"
-                  role="button"
-                  title="Eliminar el almacen."
-                  (click)="eliminarAlmacen(ad)"
-                >
-                  <i class="fas fa-times"></i>
-                </a>
-              </td>
-              <td class="no-wrap fit">{{ ad.nombre }}</td>
-              <td>{{ ad.descripcion }}</td>
-              <td>{{ ad.ubicacion }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h1
-          *ngIf="almacenesDescripcion.length === 0"
-          class=" display-1 animated fadeIn"
-        >
-          No se encontro ningun <b>almacen</b>.
-        </h1>
-
-        <app-paginador *ngIf="almacenesDescripcion.length >= 5"></app-paginador>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 
-=====================================
- Detalle de Almacen
-=====================================
--->
+  <div class="row">
+    <div class="col-12">
+      <paginador
+        #paginadorOriginal
+        class="pull-right"
+        [totalDeElementos]="this.totalDeElementos"
+        [campoDeOrdenamiento]="'nombre'"
+        [tipoDeOrden]="1"
+        (actualizarConsulta)="actualizarConsulta($event)"
+        [cargando]="keys(cargando).length > 0"
+      ></paginador>
+    </div>
+  </div>
+  <div
+    *ngIf="almacenesDescripcion.length && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table table-hover w-100">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Ubicacion</th>
 
-<div
-  class="modal fade"
-  id="detalleAlmacen"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let elemento of almacenesDescripcion">
+                <td class="fit">
+                  <button
+                    (click)="almacenDescripcionDetalle = elemento"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#detalleAlmacenDescripcion"
+                    role="button"
+                  >
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td>{{ elemento.nombre }}</td>
+                <td>{{ elemento.descripcion }}</td>
+                <td>{{ elemento.ubicacion }}</td>
+
+                <td class="fit">
+                  <a
+                    href="javascript:void(0)"
+                    (click)="modificar(elemento._id)"
+                    class="btn btn-success btn-sm"
+                    ><i class="fas fa-edit text-white"></i
+                  ></a>
+                </td>
+                <td class="fit">
+                  <a
+                    (click)="eliminar(elemento._id)"
+                    class="btn btn-danger btn-sm"
+                    ><i class="fas fa-times text-white"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="almacenesDescripcion?.length === 0 && keys(cargando).length === 0"
+    class="row animated fadeIn"
+  >
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body shadow">
+          <h1 class="display-1">
+            No hay <b>almacenesdescripcion</b> para mostrar
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="keys(cargando).length > 0" class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin"></i>
+          </h1>
+          <h2 *ngFor="let key of keys(cargando)" class="w-100 text-center">
+            {{ cargando[key] }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<app-almacen-descripcion-detalle
+  [detalle]="almacenDescripcionDetalle"
+  [id]="'detalleAlmacenDescripcion'"
 >
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-almacen-descripcion-detalle
-          [detalle]="almacenDescripcionDetalle"
-        ></app-almacen-descripcion-detalle>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================  
- END Detalle de Almacen
-===================================== 
--->
-
-<!-- 
-=====================================
- Edicio de almacen.
-=====================================
--->
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="editarAlmacen"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <app-almacen-descripcion-crear-modificar
-          [almacenDescripcion]="almacenDescripcionEditar"
-          (guardar)="guardar($event)"
-          (modificar)="modificar($event)"
-
-          (esteComponente)='asignarComponente($event)'
-        ></app-almacen-descripcion-crear-modificar>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================
- END Edicio de almacen.
-=====================================
--->
+</app-almacen-descripcion-detalle>

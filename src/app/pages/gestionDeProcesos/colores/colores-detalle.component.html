@@ -1,26 +1,31 @@
-<app-modal [mostrar]='detalleElemento' [leyendaTitulo]='"Color:"' [titulo]='detalleElemento?.color' [idModal]='idModal'>
-    <!-- Esa linea sirve para que no nos marque con error de nulo a detalleElemento.X -->
-    <ng-container *ngIf="detalleElemento">
+<div
+  class="modal fade"
+  [id]="id"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngIf="!detalle">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync    "></i>
+          </h1>
+        </ng-container>
 
-        <!-- 
-        =====================================
-         Cotenido
-        =====================================
-        -->
+        <ng-container *ngIf="detalle">
+          <div class="row">
+            <div class="col-12">
+              <strong>Nombre del color</strong>
+              <h1>{{ detalle.color }}</h1>
+            </div>
 
-        <H4>No hay informacion para desplegar. </H4>
-
-        <!-- 
-        =====================================
-         END Cotenido
-        =====================================
-        -->
-
-    </ng-container>
-
-</app-modal>
-<!-- 
-=====================================
- END Body
-=====================================
--->
+            
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

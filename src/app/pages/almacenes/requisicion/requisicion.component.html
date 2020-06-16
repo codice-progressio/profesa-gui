@@ -1,28 +1,27 @@
 <div class="row fadeIn animated">
   <div class="col-12">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body shadow">
         <div class="d-flex justify-content-between align-items-center">
           <h1 class=""><strong>Requisiciones</strong> en proceso</h1>
 
-          <div class="d-flex  align-items-center ">
+          <div class="d-flex align-items-center">
             <a
               (click)="recargar()"
               title="Recargar pagina"
-              class="btn btn-outline-dark  btn-sm mr-3"
+              class="btn btn-outline-dark btn-sm mr-3"
             >
               <i
                 [ngClass]="{ 'fa-spin': buscando }"
-                class="fas fa-sync-alt  fa-sm"
+                class="fas fa-sync-alt fa-sm"
               ></i>
             </a>
             <a
-              (click)="crear()"
-              data-toggle="modal"
-              data-target="#crearModificarRequisicion"
+              [routerLink]="['crear']"
+              href="javascript:void(0)"
               class="btn btn-success text-white"
             >
-              <i class="fas fa-plus "></i> Crear requisicion</a
+              <i class="fas fa-plus"></i> Crear requisicion</a
             >
 
             <a
@@ -30,7 +29,7 @@
               data-toggle="collapse"
               href="#collapsarFiltros"
             >
-              <i class="fas fa-filter "></i> Filtros</a
+              <i class="fas fa-filter"></i> Filtros</a
             >
           </div>
         </div>
@@ -42,26 +41,43 @@
 <div id="collapsarFiltros" class="row collapse">
   <div class="col-12">
     <div class="card">
-      <div class="card-body">
-        <app-requisicion-filtros (obtenerFiltros)="cargarRequisiciones($event)">
+      <div class="card-body shadow">
+        <app-requisicion-filtros
+          (obtenerFiltros)="cargarRequisiciones($event, undefined, true)"
+        >
         </app-requisicion-filtros>
       </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="requisiciones.length > 0" class="row fadeIn animated">
+<div class="row m-0 p-0">
+  <div class="col-12 m-0 t-0">
+    <div class="card m-0 t-0" style="background-color: transparent;">
+      <div class="card-body m-0 t-0">
+        <paginador
+          class="pull-right"
+          [totalDeElementos]="requisicionService.total"
+          [campoDeOrdenamiento]="paginacion.campoDeOrdenamiento"
+          [tipoDeOrden]="paginacion.orden"
+          [cargando]="keys(cargando).length > 0"
+          (actualizarConsulta)="cargarRequisiciones(this.filtros, $event)"
+        ></paginador>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="keys(cargando).length === 0; else cargandoTemplate"
+  class="row fadeIn animated"
+>
   <div class="col-12">
     <div class="card">
-      <div class="card-body">
-        <app-paginador
-          [paginador]="_paginadorService"
-          *ngIf="!buscando"
-        ></app-paginador>
-
+      <div class="card-body shadow">
         <table
           *ngIf="requisiciones.length > 0"
-          class="table table-hover table-responsive "
+          class="table table-hover table-responsive"
         >
           <thead>
             <tr>
@@ -75,11 +91,13 @@
               <th title="Nombre del articulo">
                 Articulo
               </th>
-              <th title="La cantidad pendiente por recibir en el almacen.">
+              <th
+                title="La cantidad pendiente por recibir en el almacen con respecto a las unidades"
+              >
                 Por recibir
               </th>
               <th title="Presentancion en que se solicita el producto">
-                Presentacion
+                Presentacion que el proveedor surte:
               </th>
               <th title="Fecha en la que se hizo la requisicion">
                 Tipo
@@ -93,7 +111,7 @@
               </th>
 
               <th title="Eliminar requisicion">
-                <i class="fas fa-times    "></i>
+                <i class="fas fa-times"></i>
               </th>
             </tr>
           </thead>
@@ -107,97 +125,92 @@
             >
               <td class="fit">
                 <a
-                  id="button0"
-                  (click)="asignarDetalle(requisicion)"
-                  class="btn  text-white btn-primary btn-xs mr-1"
+                  href="javascript:void(0)"
+                  [routerLink]="['detalle', requisicion._id]"
+                  routerLinkActive="router-link-active"
+                  class="btn text-white btn-primary btn-xs mr-1"
                   role="button"
-                  data-toggle="modal"
-                  data-target="#detalleRequisicion"
                 >
-                  <i class="fas fa-eye    "></i>
+                  <i class="fas fa-eye"></i>
                 </a>
 
                 <a
                   *ngIf="mostrarBtnEditarRequisicion(requisicion)"
                   id="button2"
-                  class="btn  text-white btn-success btn-xs mr-1"
+                  class="btn text-white btn-success btn-xs mr-1"
                   role="button"
                   title="Editar requisicion"
-                  data-toggle="modal"
-                  data-target="#crearModificarRequisicion"
-                  (click)="editar(requisicion)"
+                  [routerLink]="['modificar', requisicion._id]"
                 >
-                  <i class="fas fa-edit    "></i>
+                  <i class="fas fa-edit"></i>
                 </a>
 
-                <a 
+                <a
                   *ngIf="mostrarBtnGenerarCompra(requisicion)"
-                  class="btn  text-white btn-info btn-xs mr-1"
+                  class="btn text-white btn-info btn-xs mr-1"
                   role="button"
                   title="Generar compra"
                   (click)="generarCompra(requisicion)"
                 >
-                  <i class="fas fa-dollar-sign    "></i>
-                  Generar compra
+                  <i class="fas fa-dollar-sign"></i>
                 </a>
                 <a
                   *ngIf="mostrarBtnRecibirParcialidad(requisicion)"
-                  class="btn  btn-secondary btn-xs mr-1"
+                  class="btn btn-secondary btn-xs mr-1"
                   role="button"
                   title="Recibir una parcialidad de esta requisicion"
                   data-toggle="modal"
                   data-target="#recibirParcialidad"
                   (click)="recibirParcialidad(requisicion)"
                 >
-                  <i class="fas fa-star-half    "></i>
-                  Parcialidad
+                  <i class="fas fa-star-half"></i>
                 </a>
                 <a
                   *ngIf="mostrarBtnTerminarRequisicion(requisicion)"
-                  class="btn  text-white btn-success btn-xs mr-1"
+                  class="btn text-white btn-success btn-xs mr-1"
                   role="button"
                   title="Dar por terminado esta orden"
                   data-toggle="modal"
                   data-target="#recibirTerminacion"
                   (click)="recibirTerminacion(requisicion)"
                 >
-                  <i class="fas fa-check-circle    "></i>
-                  Terminar
+                  <i class="fas fa-check-circle"></i>
                 </a>
                 <a
                   *ngIf="mostrarBtnCancelarRequisicion(requisicion)"
-                  class="btn  text-white btn-danger btn-xs mr-1"
+                  class="btn text-white btn-danger btn-xs mr-1"
                   role="button"
                   title="Cancelar requisicion"
                   data-toggle="modal"
                   data-target="#recibirCancelacion"
                   (click)="recibirCancelacion(requisicion)"
                 >
-                  <i class="fas fa-times-circle    "></i>
-                  Cancelar
+                  <i class="fas fa-times-circle"></i>
                 </a>
               </td>
               <td
-                class=" no-wrap"
+                class="no-wrap"
                 title="{{ requisicion.createdAt | fecha: 'LLL' }}"
               >
-                {{ requisicion.createdAt | date: "dd/MM/yy" }}
+                {{ requisicion.createdAt | date: 'dd/MM/yy' }}
               </td>
-              <td class=" no-wrap fit ">{{ requisicion.folio }}</td>
-              <td class=" text-right">
+              <td class="no-wrap fit">{{ requisicion.folio }}</td>
+              <td class="text-right">
                 {{ requisicion.articulo.nombre }}
               </td>
-              <td class=" no-wrap">
+              <td class="no-wrap">
                 {{
                   requisicion.cantidad -
-                    requisicion.estatus.cantidadEntregadaALaFecha | number: "0.0-2"
+                    requisicion.estatus.cantidadEntregadaALaFecha
+                    | number: '0.0-2'
                 }}
+                ({{ requisicion.articulo.unidad }})
               </td>
-              <td >
+              <td>
                 {{ requisicion.articulo.presentacion }}
               </td>
 
-              <td >
+              <td>
                 <span *ngIf="requisicion.gastosYServicios"
                   >Gastos/Servicios</span
                 >
@@ -205,226 +218,71 @@
                 <span *ngIf="requisicion.materiaPrima">Materia prima</span>
               </td>
 
-              <td >
+              <td>
                 {{ requisicion.usuario.nombre }}
               </td>
 
               <td>
                 <i
-                  [class]="'fas ' + requisicion.estatus.estatusActual().fa"
+                  [class]="
+                    'fas ' +
+                    requisicionService.estatusActual(requisicion.estatus).fa
+                  "
                 ></i>
-                {{ requisicion?.estatus?.estatusActual().msj }}
+                {{ requisicionService.estatusActual(requisicion.estatus).msj }}
               </td>
 
               <td class="fit">
                 <a
-                  *ngIf="mostrarBtnEliminarRequisicion(requisicion)"
+                  *ngIf="permisos['requisicion:eliminar'] | contieneElPermiso"
                   id="buttonX"
-                  class="btn  text-white btn-danger btn-xs"
+                  class="btn text-white btn-danger btn-xs"
                   role="button"
                   title="Eliminar requisicion"
                   (click)="eliminar(requisicion)"
                 >
-                  <i class="fas fa-times "></i>
+                  <i class="fas fa-trash"></i>
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
-
-        <app-paginador
-          [paginador]="_paginadorService"
-          *ngIf="!buscando"
-        ></app-paginador>
       </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="requisiciones.length === 0" class="row">
+<div
+  *ngIf="requisiciones.length === 0 && keys(cargando).length === 0"
+  class="row"
+>
   <div class="col-12">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body shadow">
         <h1 class="display-1">No hay <b>requisiciones</b> para mostrar</h1>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 
-  =====================================
-   Modal detalle requisicion
-  =====================================
-  -->
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="detalleRequisicion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <app-requisicion-detalle
-            [requisicion]="requisicionDetalle"
-            (detalleProveedor)="asignarDetalleProveedor($event)"
-            (detalleDivisa)="asignarDetalleDivisa($event)"
-          ></app-requisicion-detalle>
+<ng-template #cargandoTemplate>
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body text-center">
+          <h1 class="display-1 w-100 text-center">
+            <i class="fas fa-sync fa-spin-fast"></i>
+          </h1>
+          <h2 *ngFor="let dato of cargando | keyvalue">{{ dato.value }}</h2>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- 
-  =====================================
-   END Modal detalle requisicion
-  =====================================
-  -->
-
-<!-- 
-=====================================
- Modal crear-modificar
-=====================================
--->
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="crearModificarRequisicion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-requisicion-crear-modificar
-          (esteComponente)="componenteCrearModificar = $event"
-          (guardar)="guardar()"
-          [requisicion]="requisicionModificar"
-        >
-        </app-requisicion-crear-modificar>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 
-=====================================
- END Modal crear-modificar
-=====================================
--->
+</ng-template>
 
 <!-- 
 =====================================
  Modal detalle proveedor
-=====================================
--->
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="modalDetalleProveedor"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-proveedor-detalle
-          [proveedor]="detalleProveedor"
-        ></app-proveedor-detalle>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 
-=====================================
- END Modal detalle proveedor
-=====================================
--->
-
-<!-- 
-=====================================
- Modal detalle divisa
-=====================================
--->
-<div
-  class="modal fade"
-  id="modalDetalleDivisa"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <app-divisa-detalle [divisa]="detalleDivisa"></app-divisa-detalle>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 
-=====================================
- END Modal detalle divisa
 =====================================
 -->
 
@@ -442,7 +300,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content ">
+    <div class="modal-content">
       <div class="modal-header">
         <button
           type="button"
@@ -484,7 +342,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content ">
+    <div class="modal-content">
       <div class="modal-header">
         <button
           type="button"

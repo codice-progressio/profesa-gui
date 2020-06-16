@@ -8,7 +8,8 @@ import { AlmacenDescripcion } from '../../../models/almacenDeMateriaPrimaYHerram
 })
 export class AlmacenDescripcionDetalleComponent implements OnInit {
 
-  @Input() detalle: AlmacenDescripcion
+  @Input() detalle: AlmacenDescripcion = null
+  @Input() id: string = 'detalleModal'
   
   constructor() { }
 

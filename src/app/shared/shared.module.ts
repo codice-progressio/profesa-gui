@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, ModuleWithProviders } from '@angular/core'
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
@@ -17,12 +17,10 @@ import { PaginadorComponent } from '../components/paginador/paginador.component'
 import { ListaDeOrdenesComponent } from '../components/lista-de-ordenes/lista-de-ordenes.component'
 import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component'
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component'
-import { DndModule } from 'ng2-dnd'
-import { OrdenadorVisualComponent } from '../components/ordenador-visual/ordenador-visual.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe'
 import { NgxMaskModule } from 'ngx-mask'
-import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component'
+// import { OrganizadorDragAndDropComponent } from '../components/organizador-drag-and-drop/organizador-drag-and-drop.component'
 import { Paginador2Component } from '../components/paginador2/paginador2.component'
 import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -46,8 +44,7 @@ import { AdminGuard } from '../services/guards/admin.guard'
 import { SubirArchivoService } from '../services/subir-archivo/subir-archivo.service'
 import { PreLoaderService } from '../components/pre-loader/pre-loader.service'
 import { ModalUploadService } from '../components/modal-upload/modal-upload.service'
-import { HospitalService } from '../services/hospital/hospital.service'
-import { MedicoService } from '../services/medico/medico.service'
+
 import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
 import { ClienteService } from '../services/cliente/cliente.service'
 import { ModeloCompletoService } from '../services/modelo/modelo-completo.service'
@@ -60,7 +57,6 @@ import { DepartamentoService } from '../services/departamento/departamento.servi
 import { ProcesoService } from '../services/proceso/proceso.service'
 import { GastoService } from '../services/gastos/gasto.service'
 import { CalculosDeCostosService } from '../services/gastos/calculos-de-costos.service'
-import { OrdenadorVisualService } from '../components/ordenador-visual/ordenador-visual.service'
 import { PermisosGuard } from '../services/guards/permisos.guard'
 import { FamiliaDeProcesosService } from '../services/proceso/familia-de-procesos.service'
 import { ModeloService } from '../services/modelo/modelo.service'
@@ -70,11 +66,41 @@ import { TerminadoService } from '../services/modelo/terminado.service'
 import { SortService } from '../directives/sortableComponent/sort.service'
 import { FolioNewService } from '../services/folio/folio-new.service'
 import { AlmacenProductoTerminadoService } from '../services/almacenDeProductoTerminado/almacen-producto-terminado.service'
-import { HttpClientModule } from '@angular/common/http'
 import { ImagenPipe } from '../pipes/imagen.pipe'
 import { ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent } from '../pages/reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-alamcen-de-produccion-base-imprimible/reporte-de-faltantes-alamcen-de-produccion-base-imprimible.component'
 import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion-imprimible/r-personalizado-almacen-produccion-imprimible.component'
-
+import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columnas.directive'
+import { DragDropModule } from '@angular/cdk/drag-drop'
+import { FechaPipe } from '../pipes/fecha.pipe'
+import { QRCodeModule } from 'angularx-qrcode'
+import { TiempoTranscurridoComponent } from './tiempo-transcurrido/tiempo-transcurrido.component'
+import { ProgramacionTransformacionImprimirComponent } from '../pages/programacion/programacion-transformacion/programacion-transformacion-imprimir/programacion-transformacion-imprimir.component'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule } from 'ngx-toastr'
+import { OrdenDetalleAlmacenDeBotonComponent } from '../pages/orden-detalles/orden-detalle-almacen-de-boton/orden-detalle-almacen-de-boton.component'
+import { OrdenDetalleBarnizadoComponent } from '../pages/orden-detalles/orden-detalle-barnizado/orden-detalle-barnizado.component'
+import { OrdenDetalleBuratoComponent } from '../pages/orden-detalles/orden-detalle-burato/orden-detalle-burato.component'
+import { OrdenDetalleEmpaqueComponent } from '../pages/orden-detalles/orden-detalle-empaque/orden-detalle-empaque.component'
+import { OrdenDetalleLaserComponent } from '../pages/orden-detalles/orden-detalle-laser/orden-detalle-laser.component'
+import { OrdenDetalleMaterialesComponent } from '../pages/orden-detalles/orden-detalle-materiales/orden-detalle-materiales.component'
+import { OrdenDetalleMetalizadoComponent } from '../pages/orden-detalles/orden-detalle-metalizado/orden-detalle-metalizado.component'
+import { OrdenDetallePastillaComponent } from '../pages/orden-detalles/orden-detalle-pastilla/orden-detalle-pastilla.component'
+import { OrdenDetalleProductoTerminadoComponent } from '../pages/orden-detalles/orden-detalle-producto-terminado/orden-detalle-producto-terminado.component'
+import { OrdenDetallePulidoComponent } from '../pages/orden-detalles/orden-detalle-pulido/orden-detalle-pulido.component'
+import { OrdenDetalleSeleccionComponent } from '../pages/orden-detalles/orden-detalle-seleccion/orden-detalle-seleccion.component'
+import { OrdenDetalleTenidoComponent } from '../pages/orden-detalles/orden-detalle-tenido/orden-detalle-tenido.component'
+import { OrdenDetalleTransformacionComponent } from '../pages/orden-detalles/orden-detalle-transformacion/orden-detalle-transformacion.component'
+import { OrdenDetalleAvanceComponent } from '../pages/orden-detalles/orden-detalle-avance/orden-detalle-avance.component'
+import { PedidosDetalleComponent } from '../pages/gestionDeFolios/pedidos/pedidos-detalle.component'
+import { FoliosDetalleAbstractoComponent } from '../pages/gestionDeFolios/folios/abstractos/folios-detalle-abstracto.component'
+import { OrdenesDetalleComponent } from '../pages/gestionDeFolios/ordenes/ordenes-detalle.component'
+import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
+import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
+import { DynamicFormComponent } from '../components/formulario-dinamico/dynamic-form/dynamic-form.component'
+import { DynamicFormQuestionComponent } from '../components/formulario-dinamico/dynamic-form-question/dynamic-form-question.component'
+import { ZXingScannerModule } from '@zxing/ngx-scanner'
+import { OrdenesPorDepartamentoEnProcesosComponent } from '../components/ordenes-por-departamento-en-procesos/ordenes-por-departamento-en-procesos.component'
+import { ScannerFormularioDinamicoMaquinasComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico-maquinas/scanner-formulario-dinamico-maquinas.component'
 
 @NgModule({
   imports: [
@@ -82,13 +108,17 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     // CommonModule trae el *ng-for
     CommonModule,
     PipesModule,
-    DndModule,
-    NgxMaskModule,
+    NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
-    // Para el httpcliente necesitamos importar este modulo.
-    HttpClientModule
+    DragDropModule,
+    QRCodeModule,
+    ToastrModule.forRoot({
+      timeOut: 20000,
+      positionClass: 'toast-top-right',
+      enableHtml: true
+    }),
+    ZXingScannerModule
   ],
   declarations: [
     HeaderComponent,
@@ -103,8 +133,7 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ListaDeOrdenesComponent,
     QrScannerComponent,
     ValidacionInputsComponent,
-    OrdenadorVisualComponent,
-    OrganizadorDragAndDropComponent,
+    // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
     BotonParaImprecionComponent,
@@ -119,7 +148,32 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective,
+    TiempoTranscurridoComponent,
+    ProgramacionTransformacionImprimirComponent,
+    OrdenDetalleAlmacenDeBotonComponent,
+    OrdenDetalleBarnizadoComponent,
+    OrdenDetalleBuratoComponent,
+    OrdenDetalleEmpaqueComponent,
+    OrdenDetalleLaserComponent,
+    OrdenDetalleMaterialesComponent,
+    OrdenDetalleMetalizadoComponent,
+    OrdenDetallePastillaComponent,
+    OrdenDetalleProductoTerminadoComponent,
+    OrdenDetallePulidoComponent,
+    OrdenDetalleSeleccionComponent,
+    OrdenDetalleTenidoComponent,
+    OrdenDetalleTransformacionComponent,
+    OrdenDetalleAvanceComponent,
+    PedidosDetalleComponent,
+    FoliosDetalleAbstractoComponent,
+    OrdenesDetalleComponent,
+    ScannerFormularioDinamicoComponent,
+    DynamicFormComponent,
+    DynamicFormQuestionComponent,
+    OrdenesPorDepartamentoEnProcesosComponent,
+    ScannerFormularioDinamicoMaquinasComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -134,11 +188,8 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ListaDeOrdenesComponent,
     QrScannerComponent,
     ValidacionInputsComponent,
-    DndModule,
-    OrdenadorVisualComponent,
-    OrganizadorDragAndDropComponent,
+    // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
-    NgxMaskModule,
     Paginador2Component,
     BotonParaImprecionComponent,
     BuscadorPacienteComponent,
@@ -151,15 +202,45 @@ import { RPersonalizadoAlmacenProduccionImprimibleComponent } from '../pages/rep
     ReporteDeFaltantesProductoTerminadoBaseImprimibleComponent,
     GestorDeImpresionesComponent,
     ReporteDeFaltantesAlamcenDeProduccionBaseImprimibleComponent,
-    RPersonalizadoAlmacenProduccionImprimibleComponent
+    RPersonalizadoAlmacenProduccionImprimibleComponent,
+    OrdenadorDeColumnasDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxMaskModule,
+    PipesModule,
+    DragDropModule,
+    QRCodeModule,
+    TiempoTranscurridoComponent,
+    ProgramacionTransformacionImprimirComponent,
+    OrdenDetalleAlmacenDeBotonComponent,
+    OrdenDetalleBarnizadoComponent,
+    OrdenDetalleBuratoComponent,
+    OrdenDetalleEmpaqueComponent,
+    OrdenDetalleLaserComponent,
+    OrdenDetalleMaterialesComponent,
+    OrdenDetalleMetalizadoComponent,
+    OrdenDetallePastillaComponent,
+    OrdenDetalleProductoTerminadoComponent,
+    OrdenDetallePulidoComponent,
+    OrdenDetalleSeleccionComponent,
+    OrdenDetalleTenidoComponent,
+    OrdenDetalleTransformacionComponent,
+    OrdenDetalleAvanceComponent,
+    PedidosDetalleComponent,
+    FoliosDetalleAbstractoComponent,
+    OrdenesDetalleComponent,
+    ScannerFormularioDinamicoComponent,
+    DynamicFormComponent,
+    DynamicFormQuestionComponent,
+    OrdenesPorDepartamentoEnProcesosComponent,
+    ScannerFormularioDinamicoMaquinasComponent
   ]
 })
 export class SharedModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [
-        ModeloCompletoPipe,
         SettingsService,
         SidebarService,
         SharedService,
@@ -169,8 +250,6 @@ export class SharedModule {
         SubirArchivoService,
         PreLoaderService,
         ModalUploadService,
-        HospitalService,
-        MedicoService,
         VerificaTokenGuard,
         // Sistema Carrduci
         ClienteService,
@@ -184,7 +263,6 @@ export class SharedModule {
         ProcesoService,
         GastoService,
         CalculosDeCostosService,
-        OrdenadorVisualService,
         PermisosGuard,
         FamiliaDeProcesosService,
         ModeloService,
@@ -195,7 +273,10 @@ export class SharedModule {
         FolioNewService,
         AlmacenProductoTerminadoService,
         ImagenPipe,
-        DecimalPipe
+        FechaPipe,
+        ModeloCompletoPipe,
+        DecimalPipe,
+        ContieneElPermisoPipe
       ]
     }
   }

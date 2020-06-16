@@ -13,7 +13,7 @@ import { DataListComponent } from 'src/app/shared/data-list/data-list.component'
 import { ArticuloService } from '../../../services/articulo/articulo.service'
 import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
 import { Dato } from 'src/app/shared/data-list/dato.model'
-import { Data } from '@angular/router'
+import { Paginacion } from 'src/app/utils/paginacion.util'
 
 @Component({
   selector: 'app-reporte-personalizado-almacen-produccion-crear-modificar',
@@ -38,9 +38,8 @@ export class ReportePersonalizadoAlmacenProduccionCrearModificarComponent
     private repoService: ReportesPersonalizadosAlmacenProduccionService,
     public vs: ValidacionesService,
     private articuloService: ArticuloService
-  ) {
-  }
-  
+  ) {}
+
   ngOnInit() {
     this.crearFormulario()
     this.esteComponente.emit(this)
@@ -55,7 +54,7 @@ export class ReportePersonalizadoAlmacenProduccionCrearModificarComponent
         _id: [r._id, null],
         nombre: [r.nombre, [Validators.required, Validators.minLength(10)]],
         descripcion: [r.descripcion, null],
-        articulos: this.fb.array(r.articulos.map(x=> new FormControl(x)))
+        articulos: this.fb.array(r.articulos.map(x => new FormControl(x)))
       },
       {
         validators: f => {
@@ -113,7 +112,7 @@ export class ReportePersonalizadoAlmacenProduccionCrearModificarComponent
     let termino = <string>evento.termino
     this.dataList = <DataListComponent>evento.dataList
     this.articuloService
-      .search(termino, undefined, undefined, Articulo)
+      .findByTerm(termino, new Paginacion(20, 0, 1, 'nombre'))
       .subscribe(articulos => {
         let datos: Dato[] = []
         articulos.forEach((art: Articulo) => {
