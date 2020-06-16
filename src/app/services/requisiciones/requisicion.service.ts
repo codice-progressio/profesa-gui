@@ -43,7 +43,6 @@ export class RequisicionService {
 
     return this.http.get(url).pipe(
       map((respuesta: any) => {
-        console.log(`respuesta`, respuesta)
         this.total = respuesta.total
         return respuesta.requisiciones as Requisicion[]
       }),

@@ -1,4 +1,7 @@
-<ng-container *ngIf="!editandoFormulario" cdkDropListGroup>
+a<ng-container
+  *ngIf="!editandoFormulario && !seleccionandoMaquinas"
+  cdkDropListGroup
+>
   <div class="row fadeIn animated">
     <div class="col-12">
       <div class="card shadow">
@@ -93,6 +96,28 @@
                 Poner a trabajar
               </a>
               <a
+                (click)="seleccionarMaquinas(g)"
+                data-toggle="modal"
+                data-target="#selectorMaquinas"
+                class="btn btn-xs mr-3"
+                [ngClass]="{
+                  'btn-outline-secondary': g.maquinas.length === 0,
+                  'btn-success': g.maquinas.length > 0
+                }"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i
+                  *ngIf="!g.ponerATrabajarConMaquina"
+                  class="fas fa-square"
+                ></i>
+                <i
+                  *ngIf="g.ponerATrabajarConMaquina"
+                  class="fas fa-check-square"
+                ></i>
+                Poner a trabajar con maquina
+              </a>
+              <a
                 (click)="g.recibirTodo = !g.recibirTodo"
                 class="btn btn-xs mr-3"
                 [ngClass]="{
@@ -104,7 +129,7 @@
               >
                 <i *ngIf="!g.recibirTodo" class="fas fa-square"></i>
                 <i *ngIf="g.recibirTodo" class="fas fa-check-square"></i>
-               Recibir todo
+                Recibir todo
               </a>
               <a
                 (click)="g.registrarTodo = !g.registrarTodo"
@@ -118,7 +143,7 @@
               >
                 <i *ngIf="!g.registrarTodo" class="fas fa-square"></i>
                 <i *ngIf="g.registrarTodo" class="fas fa-check-square"></i>
-               Registrar todo
+                Registrar todo
               </a>
               <a
                 (click)="definirUltimoDepartamento(g)"
@@ -132,7 +157,7 @@
               >
                 <i *ngIf="!g.ultimoDepartamento" class="fas fa-square"></i>
                 <i *ngIf="g.ultimoDepartamento" class="fas fa-check-square"></i>
-               Ultimo departamento
+                Ultimo departamento
               </a>
 
               <br />
@@ -299,3 +324,114 @@
   (volver)="volver()"
 >
 </app-creador-de-formularios>
+
+<div *ngIf="seleccionandoMaquinas" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h1>
+          {{ scannerParaSeleccionarMaquinas.departamento.nombre }}
+          <a
+            (click)="cerrarSeleccionandoMaquina()"
+            class="btn btn-outline-info"
+            href="javascript:void(0)"
+            role="button"
+          >
+            Volver</a
+          >
+        </h1>
+
+        <div class="col-12"><hr /></div>
+
+        <div cdkDropListGroup class="row">
+          <div class="col-12 col-md-6">
+            <ul
+              cdkDropList
+              [cdkDropListData]="scannerParaSeleccionarMaquinas.maquinas"
+              (cdkDropListDropped)="
+                dropMaquinas($event, scannerParaSeleccionarMaquinas)
+              "
+              class="list-group app-lista-scroll"
+            >
+              <li class="list-group-item active app-lista-scroll-encabezado">
+                <div
+                  class="w-100 d-flex justify-content-between align-items-center"
+                >
+                  <span> Maquinas Seleccionadas</span>
+                  <input type="text" class="form-control w-50" />
+                </div>
+              </li>
+              <li
+                cdkDragDisabled
+                cdkDrag
+                *ngFor="
+                  let maquina of scannerParaSeleccionarMaquinas.maquinas;
+                  let i = index
+                "
+                class="list-group-item"
+              >
+                <span class="d-flex justify-content-between align-items-center">
+                  <span>
+                    <a
+                      (click)="
+                        scannerParaSeleccionarMaquinas.maquinas.splice(i, 1)
+                      "
+                      class="btn btn-danger btn-xs mr-3"
+                      href="javascript:void(0)"
+                      ><i class="fa fa-trash"></i></a
+                    >{{ maquina.nombre }}</span
+                  >
+                  <b>{{ maquina.clave }}</b>
+                </span>
+              </li>
+              <li
+                *ngIf="scannerParaSeleccionarMaquinas.maquinas.length === 0"
+                class="list-group-item disabled"
+              >
+                No hay maquinas seleccionadas
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <ul
+              cdkDropList
+              [cdkDropListData]="maquinas"
+              (cdkDropListDropped)="
+                dropMaquinas($event, scannerParaSeleccionarMaquinas)
+              "
+              cdkDropListSortingDisabled
+              class="list-group app-lista-scroll"
+            >
+              <li class="list-group-item active app-lista-scroll-encabezado">
+                <div
+                  class="w-100 d-flex justify-content-between align-items-center"
+                >
+                  <span> Maquinas disponibles</span>
+                  <input type="text" class="form-control w-50" />
+                </div>
+              </li>
+              <li
+                cdkDrag
+                *ngFor="let maquina of maquinas"
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>
+                  {{ maquina.nombre }}
+                </span>
+
+                <span>{{ maquina.clave }}</span>
+              </li>
+              <li
+                *ngIf="maquinas.length === 0"
+                class="list-group-item disabled"
+              >
+                No hay maquinas disponibles
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

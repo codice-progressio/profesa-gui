@@ -130,7 +130,7 @@ export class ModeloCompletoGestorDeProcesosEspecialesComponent
 
     //Por defecto copiamos todos los procesos seleccionados al campo de procesos
     // extraordinarios. Este campo nos va a permitir generar de manera mas facil las ordenes. 
-    this.pedido.procesosExraordinarios = this.procesosSeleccionados.map(
+    this.pedido.procesosExtraordinarios = this.procesosSeleccionados.map(
       x => x.proceso
     )
     //Que los pedidos no aceptados tengan por lo menos un

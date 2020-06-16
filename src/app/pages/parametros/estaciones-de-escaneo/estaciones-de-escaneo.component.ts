@@ -8,6 +8,9 @@ import { FormControl } from '@angular/forms'
 import { ScannerDepartamentoGestion } from '../../../services/parametros.service'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { ParametrosService } from '../../../services/parametros.service'
+import { Maquina } from '../../../models/maquina.model'
+import { MaquinaLigera } from '../../../services/maquina/maquina.service'
+import { MaquinaService } from '../../../services/maquina/maquina.service'
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -33,11 +36,17 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   depaSeleccinadoParaCrearFormulario: ScannerDepartamentoGestion = null
   editandoFormulario = false
 
+  scannerParaSeleccionarMaquinas: ScannerDepartamentoGestion = null
+  maquinas: MaquinaLigera[] = []
+
+  seleccionandoMaquinas = false
+
   constructor(
     public departamentoService: DepartamentoService,
     public usuarioService: UsuarioService,
     private parametrosService: ParametrosService,
-    private msjService: ManejoDeMensajesService
+    private msjService: ManejoDeMensajesService,
+    private maquinaService: MaquinaService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +54,19 @@ export class EstacionesDeEscaneoComponent implements OnInit {
     this.cargarUsuarios()
     this.subscribirBusquedas()
     this.cargarEstaciones()
+    this.cargarMaquinas()
+  }
+
+  cargarMaquinas() {
+    this.cargando['Maquinas'] = ''
+
+    this.maquinaService.findAllLigero().subscribe(
+      maquinas => {
+        delete this.cargando['maquinas']
+        this.maquinas = maquinas
+      },
+      _ => delete this.cargando['maquinas']
+    )
   }
 
   cargarEstaciones() {
@@ -293,5 +315,42 @@ export class EstacionesDeEscaneoComponent implements OnInit {
       .forEach(x => (x.ultimoDepartamento = false))
 
     g.ultimoDepartamento = true
+  }
+
+  dropMaquinas(
+    event: CdkDragDrop<MaquinaLigera[]>,
+    g: ScannerDepartamentoGestion
+  ) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      )
+    } else {
+      //No repetidos por favor
+
+      let copia = event.previousContainer.data[event.previousIndex]
+      let existe = event.container.data.map(x => x._id).includes(copia._id)
+
+      if (!existe)
+        copyArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        )
+    }
+
+    g.ponerATrabajarConMaquina = g.maquinas.length > 0
+  }
+
+  cerrarSeleccionandoMaquina() {
+    this.seleccionandoMaquinas = false
+  }
+
+  seleccionarMaquinas(g: ScannerDepartamentoGestion) {
+    this.scannerParaSeleccionarMaquinas = g
+    this.seleccionandoMaquinas = true
   }
 }
