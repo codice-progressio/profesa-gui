@@ -66,14 +66,15 @@ export class Orden implements Deserializable {
 export interface Ruta {
   idProceso: string
   idDepartamento: string
+  departamento: string //Varia
   entrada: Date
   salida: Date
   recibida: boolean
   ubicacionActual: boolean
   recepcion: Date
-  consecutivo: number,
-  trabajando:boolean
-  trabajandoDesde:Date
-  
+  consecutivo: number
+  trabajando: boolean
+  trabajandoDesde: Date
+
   datos: {} //--> ESte varia entre cada uno
 }
