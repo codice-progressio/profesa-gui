@@ -1,4 +1,4 @@
-<div [id]="orden._id" *ngIf="orden" class="w-100 salto-de-pagina">
+<div [id]="orden._id" *ngIf="orden" class="w-100">
   <div class="orden">
     <hr class="thin no-margin-bottom " />
 
@@ -62,10 +62,11 @@
           <qrcode [qrdata]="obtenerDatosParaOrden()" size="100"></qrcode>
 
           <div class="mt-2">
-            <app-boton-para-imprecion
-              [id]="orden._id"
-              [mostrarTexto]="false"
-            ></app-boton-para-imprecion>
+            <a 
+
+            
+            (click)="imprimir()"
+            class="btn btn-outline-warning" href="javascript:void(0)"  role="button"> <i class="fas fa-print    "></i></a>
           </div>
       </div>
     </div>
