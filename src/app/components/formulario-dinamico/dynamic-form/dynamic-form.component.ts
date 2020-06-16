@@ -1,7 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core'
 import { QuestionControlService } from '../question-control.service'
 import { QuestionBase } from '../question-base'
 import { FormGroup } from '@angular/forms'
+import { BehaviorSubject, Observable } from 'rxjs'
 
 @Component({
   selector: 'app-dynamic-form',
@@ -9,30 +17,50 @@ import { FormGroup } from '@angular/forms'
   styleUrls: ['./dynamic-form.component.css'],
   providers: [QuestionControlService]
 })
-export class DynamicFormComponent implements OnInit {
-  @Input() questions: QuestionBase<string>[] = []
+export class DynamicFormComponent implements OnInit, OnDestroy {
+  @Input() datos: Observable<QuestionBase<string>[]>
+  subscription
+  @Input() cancelarCB: Function
   form: FormGroup
   payLoad = ''
 
-  @Output() submit = new EventEmitter<any>()
+  questions: QuestionBase<string>[] = []
+
+  @Output() guardar = new EventEmitter<any>()
+  @Input() modoCreador = false
 
   constructor(private qcs: QuestionControlService) {}
 
   ngOnInit() {
-    this.form = this.qcs.toFormGroup(this.questions)
+    this.subscription = this.datos.subscribe(datos => {
+      this.actualizarKey(datos)
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
 
   onSubmit(model, invalid: boolean, e) {
     this.form.markAllAsTouched()
     this.form.updateValueAndValidity()
+    e.preventDefault()
+    e.stopPropagation()
     if (invalid) {
-      e.preventDefault()
-      e.stopPropagation()
-
       return
     }
 
     this.payLoad = JSON.stringify(this.form.getRawValue())
-    this.submit.emit(model)
+    this.guardar.emit(model)
+  }
+
+  cancelar() {
+    this.cancelarCB()
+  }
+
+  //Creacioni de formularios
+  actualizarKey(datos = this.questions) {
+    this.form = this.qcs.toFormGroup(datos)
+    this.questions = datos
   }
 }
