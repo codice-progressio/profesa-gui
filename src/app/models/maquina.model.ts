@@ -3,7 +3,7 @@ import { Departamento } from './departamento.models'
 import { ModeloCompleto } from './modeloCompleto.modelo'
 import { GastoConsumo } from './gastoConsumo.model'
 import { Deserializable } from './deserealizable.model'
-import { OrdenParaAsignacion } from '../services/programacion-transformacion.service'
+import { OrdenLigera } from '../services/folio/folio-new.service'
 
 export class Maquina implements Deserializable {
   constructor(
@@ -33,11 +33,11 @@ export class Maquina implements Deserializable {
 
     //Debemos aplicar el PEPS. Estas ordenes no necesariamente
     //deben estar en transformacion
-    public pila: OrdenParaAsignacion[] = [],
+    public pila: OrdenLigera[] = [],
 
     public trabajando?: boolean,
-    public trabajo?: OrdenParaAsignacion,
-    public trabajado?: OrdenParaAsignacion[],
+    public trabajo?: OrdenLigera,
+    public trabajado?: OrdenLigera[],
     public parada?: boolean,
     public paro?: {
       tipo: string

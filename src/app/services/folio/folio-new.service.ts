@@ -10,7 +10,7 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { UsuarioService } from '../usuario/usuario.service'
 import { Usuario } from 'src/app/models/usuario.model'
 import { FiltrosFolio } from '../utilidades/filtrosParaConsultas/FiltrosFolio'
-import { Observable, throwError, pipe } from 'rxjs'
+import { Observable, throwError, pipe, concat } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
 import { Orden } from 'src/app/models/orden.models'
 import { URL_BASE } from '../../config/config'
@@ -326,7 +326,11 @@ export class FolioNewService {
   estatusDeLaOrdenParaRegistro(
     escaneada,
     idDepartamento
-  ): Observable<{ ponerATrabajar: boolean; yaEstaTrabajando: boolean }> {
+  ): Observable<{
+    ponerATrabajar: boolean
+    ponerATrabajarConMaquina: boolean
+    yaEstaTrabajando: boolean
+  }> {
     let url = this.base
       .concat('/estatusDeLaOrdenParaRegistro')
       .concat(`/${escaneada.idFolio}`)
@@ -338,6 +342,7 @@ export class FolioNewService {
       map((r: any) => {
         return {
           ponerATrabajar: r.ponerATrabajar,
+          ponerATrabajarConMaquina: r.ponerATrabajarConMaquina,
           yaEstaTrabajando: r.yaEstaTrabajando
         }
       }),
@@ -347,6 +352,30 @@ export class FolioNewService {
         return throwError(err)
       })
     )
+  }
+
+  ponerOrdenATrabajarEnMaquina(
+    idOrden: string,
+    idPedido: string,
+    idFolio: string,
+    idMaquina: string,
+    idDepartamento
+  ) {
+    let url = this.base.concat('/ponerOrdenATrabajarEnMaquina')
+
+    return this.http
+      .put(url, { idOrden, idPedido, idFolio, idMaquina, idDepartamento })
+      .pipe(
+        map((x: any) => {
+          this.msjService.toastCorrecto(x.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
   }
 }
 // <!--
