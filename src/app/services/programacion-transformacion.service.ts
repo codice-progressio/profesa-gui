@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http'
 import { catchError, map } from 'rxjs/operators'
 import { Maquina } from '../models/maquina.model'
 import { Departamento } from '../models/departamento.models'
+import { OrdenLigera } from './folio/folio-new.service'
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,12 @@ export class ProgramacionTransformacionService {
 
   ordenesPorAsignar(
     idTransformacion: string
-  ): Observable<OrdenParaAsignacion[]> {
+  ): Observable<OrdenLigera[]> {
     const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
       map((res: any) => {
-        return res.ordenes as OrdenParaAsignacion[]
+        return res.ordenes as OrdenLigera[]
       }),
       catchError(err => this.errFun(err))
     )
