@@ -1,4 +1,4 @@
-w<div class="row">
+<div class="row">
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
@@ -31,7 +31,10 @@ w<div class="row">
   </div>
 </div>
 
-<div *ngIf="!mostrandoFormulario" class="row animated fadeIn">
+<div
+  *ngIf="!mostrandoFormulario && !mostrarFormularioMaquinas"
+  class="row animated fadeIn"
+>
   <div class="col-12">
     <div class="card shadow" [ngClass]="{ 'bg-dark': modoRecibir }">
       <div class="card-body text-center">
@@ -129,6 +132,23 @@ w<div class="row">
           (guardar)="submit($event)"
         >
         </app-dynamic-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="mostrarFormularioMaquinas">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-scanner-formulario-dinamico-maquinas
+          [estacion]="this?.estaEstacion"
+          [orden]="this.ordenEscaneada"
+          (cancelar)="
+            this.mostrarFormularioMaquinas = false; this.actualizarLista.next()
+          "
+        >
+        </app-scanner-formulario-dinamico-maquinas>
       </div>
     </div>
   </div>
