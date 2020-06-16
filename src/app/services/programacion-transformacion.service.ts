@@ -27,7 +27,10 @@ export class ProgramacionTransformacionService {
     return throwError(err)
   }
 
-  ordenesPorAsignar(idTransformacion: string): Observable<OrdenLigera[]> {
+
+  ordenesPorAsignar(
+    idTransformacion: string
+  ): Observable<OrdenLigera[]> {
     const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
