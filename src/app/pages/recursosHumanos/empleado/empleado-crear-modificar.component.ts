@@ -88,10 +88,20 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
   crearFormulario(empleado: Empleado) {
     this.formulario = this.fb.group({
-      idChecador: [empleado.idChecador, null],
+      idChecador: [
+        empleado.idChecador,
+        [
+          this.vs.numberValidator,
+          Validators.min(1)
+        ]
+      ],
       idNomina: [
         empleado.idNomina,
-        [Validators.required, this.vs.numberValidator]
+        [
+          Validators.required,
+          this.vs.numberValidator,
+          Validators.min(1)
+        ]
       ],
       nombres: [empleado.nombres, [Validators.required]],
       apellidos: [empleado.apellidos, [Validators.required]],
@@ -129,9 +139,16 @@ export class EmpleadoCrearModificarComponent implements OnInit {
           Validators.minLength(11)
         ]
       ],
-      puestoActual: [
-        this.hayPuestoActual(empleado.puestoActual),
-        [Validators.required]
+      // puestoActual: [
+      //   this.hayPuestoActual(empleado.puestoActual),
+      //   [Validators.required]
+      // ],
+      puestoActualTexto: [
+        this.empleado.puestoActualTexto,
+        [
+          Validators.required,
+          Validators.minLength(5)
+        ]
       ],
       fotografia: [empleado.fotografia, [Validators.required]],
       email: [empleado.email, [Validators.email]],
@@ -233,7 +250,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
       this.guardar.emit()
     }
 
-    modelo.hijos = modelo.hijos.map(x => x * 1)
+    modelo.hijos = modelo.hijos.map(x => x)
     if (this.empleado._id) modelo._id = this.empleado._id
     this._empleadoService.guardarOModificar(modelo).subscribe(operacion)
   }
@@ -291,5 +308,16 @@ export class EmpleadoCrearModificarComponent implements OnInit {
 
   cambiarFoto() {
     this.f('fotografia').setValue(null)
+  }
+
+
+  calcularEdad(fechaString:Date):string{
+    let fecha = new Date(fechaString)
+    let hoy = new Date()
+    let diaEnMs = 1000 * 60 * 60 * 24 * 365
+    console.log(hoy, diaEnMs)
+    let resta = (hoy.getTime() - fecha.getTime()) / diaEnMs
+    let edad = Math.floor(resta)
+   return edad>1? edad + " años" : edad + " año"
   }
 }

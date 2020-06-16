@@ -10,12 +10,13 @@ import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.servi
 import { UsuarioService } from '../usuario/usuario.service'
 import { Usuario } from 'src/app/models/usuario.model'
 import { FiltrosFolio } from '../utilidades/filtrosParaConsultas/FiltrosFolio'
-import { Observable, throwError, pipe } from 'rxjs'
+import { Observable, throwError, pipe, concat } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
 import { Orden } from 'src/app/models/orden.models'
 import { URL_BASE } from '../../config/config'
 import { FolioLinea } from '../../models/folioLinea.models'
 import { Paginacion } from '../../utils/paginacion.util'
+import { Ruta } from '../../models/orden.models'
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class FolioNewService {
   base = URL_BASE('folios')
   constructor(
     public http: HttpClient,
-    public msjService: ManejoDeMensajesService, 
+    public msjService: ManejoDeMensajesService,
     public _utiliadesService: UtilidadesService,
     public _preLoaderService: PreLoaderService,
     public _paginadorService: PaginadorService,
@@ -277,6 +278,105 @@ export class FolioNewService {
 
     return ''
   }
+
+  findAllOrdenesPorDeparatmento(idDepartamento): Observable<OrdenLigera[]> {
+    let url = this.base.concat('/ordenes/' + idDepartamento)
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        return resp.ordenes as OrdenLigera[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  recibirOrden(escaneada, idDepartamento): Observable<null> {
+    let url = this.base.concat(`/recibirOrden`)
+
+    return this.http.put(url, { ...escaneada, idDepartamento }).pipe(
+      map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
+        return null
+      }),
+      catchError(err => {
+        //Este es para que el escaneo sea mas rapido
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  ponerATrabajarORegistrar(escaneada, idDepartamento, datos): Observable<null> {
+    let url = this.base.concat('/ponerATrabajarORegistrar')
+    console.log('servicio', datos)
+    return this.http
+      .put<OrdenLigera>(url, { ...escaneada, idDepartamento, datos })
+      .pipe(
+        map((resp: any) => {
+          this.msjService.toastCorrecto(resp.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
+  }
+
+  estatusDeLaOrdenParaRegistro(
+    escaneada,
+    idDepartamento
+  ): Observable<{
+    ponerATrabajar: boolean
+    ponerATrabajarConMaquina: boolean
+    yaEstaTrabajando: boolean
+  }> {
+    let url = this.base
+      .concat('/estatusDeLaOrdenParaRegistro')
+      .concat(`/${escaneada.idFolio}`)
+      .concat(`/${escaneada.idPedido}`)
+      .concat(`/${escaneada.idOrden}`)
+      .concat(`/${idDepartamento}`)
+
+    return this.http.get<boolean>(url).pipe(
+      map((r: any) => {
+        return {
+          ponerATrabajar: r.ponerATrabajar,
+          ponerATrabajarConMaquina: r.ponerATrabajarConMaquina,
+          yaEstaTrabajando: r.yaEstaTrabajando
+        }
+      }),
+      catchError(err => {
+        //Este es para que el escaneo sea mas rapido
+        this.msjService.toastError(err)
+        return throwError(err)
+      })
+    )
+  }
+
+  ponerOrdenATrabajarEnMaquina(
+    idOrden: string,
+    idPedido: string,
+    idFolio: string,
+    idMaquina: string,
+    idDepartamento
+  ) {
+    let url = this.base.concat('/ponerOrdenATrabajarEnMaquina')
+
+    return this.http
+      .put(url, { idOrden, idPedido, idFolio, idMaquina, idDepartamento })
+      .pipe(
+        map((x: any) => {
+          this.msjService.toastCorrecto(x.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
+  }
 }
 // <!--
 // =====================================
@@ -335,3 +435,46 @@ export interface FoliosPendientesDeEntregarAProduccion {
   idCliente: string
 }
 
+//Esto tiene que ir en el servicio
+
+export interface OrdenLigera {
+  recibida: boolean
+  consecutivoRuta: number
+  consecutivoOrden: number
+  totalDeOrdenes: number
+  procesoActual: string
+  idProcesoActual: string
+
+  numeroDeOrden: string
+  sku: string //era modeloCompleto
+  idSKU: string
+  fechaDeEntregaAProduccion: Date //era fechaPedidoProduccion
+
+  laser: string
+  laserAlmacen: string
+  marcaLaser: string ///Revisar esto!!!
+
+  cliente: string
+  idCliente: string
+  esBaston: boolean
+
+  unidad: number
+  piezas: number
+
+  disponible: boolean
+  folio: string
+  pedido: string
+  orden: string
+
+  ubicacionActual: Ruta
+  ruta: Ruta[]
+  pasos: number
+  numerosDeOrden: number[]
+  paso: number
+  // No siempre aparecen estos
+  inicio: Date
+  finalizacion: Date
+  observacionesOrden: string
+  observacionesPedido: string
+  observacionesFolio: string
+}

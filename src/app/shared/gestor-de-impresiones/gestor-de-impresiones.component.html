@@ -1,4 +1,6 @@
-<div class="row">
+<div
+*ngIf="s.mostrarEncabezado"
+class="row">
   <div class="col-12">
     <h3 class="text-dark pull-left font-weight-bolder">{{ s.titulo }}</h3>
     <div class="pull-right font-weight-bold">
@@ -22,14 +24,24 @@
   [reportes]="s.reportesAlmacenProduccionFaltante"
 ></app-reporte-de-faltantes-alamcen-de-produccion-base-imprimible>
 
-
 <app-r-personalizado-almacen-produccion-imprimible
   *ngIf="s.reportesAlmacenPrdouccionPersonalizado"
   [articulos]="s.reportesAlmacenPrdouccionPersonalizado"
-></app-r-personalizado-almacen-produccion-imprimible
-  >
+></app-r-personalizado-almacen-produccion-imprimible>
 
-  <app-programacion-transformacion-imprimir
-    [maquinas]="s.reportesProgramacionTransformacion"
-    *ngIf="s.reportesProgramacionTransformacion"
-  ></app-programacion-transformacion-imprimir>
+<app-programacion-transformacion-imprimir
+  [maquinas]="s.reportesProgramacionTransformacion"
+  *ngIf="s.reportesProgramacionTransformacion"
+></app-programacion-transformacion-imprimir>
+
+<ng-container *ngFor="let pedido of s?.folio?.folioLineas">
+  <ng-container *ngFor="let orden of pedido.ordenes">
+    <app-ordenes-detalle
+      [folio]="s.folio"
+      [linea]="pedido"
+      [orden]="orden"
+      *ngIf="s.ordenesAImprimir.includes(orden._id)"
+    >
+    </app-ordenes-detalle>
+  </ng-container>
+</ng-container>

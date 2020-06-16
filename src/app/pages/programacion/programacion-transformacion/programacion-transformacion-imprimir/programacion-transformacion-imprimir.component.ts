@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Maquina } from 'src/app/models/maquina.model'
-import {
-  ProgramacionTransformacionService,
-  OrdenParaAsignacion
-} from '../../../../services/programacion-transformacion.service'
+import { ProgramacionTransformacionService } from '../../../../services/programacion-transformacion.service'
 import { DefaultsService } from '../../../../services/configDefualts/defaults.service'
 import { FolioService } from '../../../../services/folio/folio.service'
 import { Folio } from '../../../../models/folio.models'
 import { FolioLinea } from 'src/app/models/folioLinea.models'
-import { FolioNewService } from '../../../../services/folio/folio-new.service'
+import {
+  FolioNewService,
+  OrdenLigera
+} from '../../../../services/folio/folio-new.service'
 import { Orden } from '../../../../models/orden.models'
 import { forkJoin } from 'rxjs'
 
@@ -22,7 +22,7 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
 
   @Input() maquinas: Maquina[] = []
 
-  ordenDetalle: OrdenParaAsignacion = null
+  ordenDetalle: OrdenLigera = null
   folioDetalle: Folio = null
   pedidoDetalle: FolioLinea = null
   ordenDetalleGeneral: Orden = null

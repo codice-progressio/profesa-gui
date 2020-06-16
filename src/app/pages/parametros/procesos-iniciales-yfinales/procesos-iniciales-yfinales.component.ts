@@ -6,6 +6,7 @@ import { ProcesoService } from '../../../services/proceso/proceso.service'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { Procesos } from '../../../models/procesos.model'
 import { Location } from '@angular/common'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -26,7 +27,8 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   constructor(
     public parametrosService: ParametrosService,
     public procesoService: ProcesoService,
-    public location: Location
+    public location: Location,
+    private msjService: ManejoDeMensajesService
   ) {
     this.cargando['procesos'] = 'Cargando procesos'
     this.procesoService
@@ -44,6 +46,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
     this.parametrosService.findAllLocalizacionDeOrdenes().subscribe(
       loca => {
         this.localizacionDeOrdenes = loca
+      
         delete this.cargando['parametros']
       },
       err => delete this.cargando['parametros']
@@ -51,7 +54,6 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Proceso[]>) {
-
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -82,6 +84,16 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   }
 
   submit() {
+    
+    if (!this.localizacionDeOrdenes.campoFinal) {
+      this.msjService.invalido(
+        'El campo final no puede estar vacio',
+        '"Nombre de campo final" vacio',
+        15000
+      )
+      return
+    }
+
     this.cargando['guardando'] =
       'Aplicando cambios a procesos iniciales y finales'
 
@@ -100,7 +112,6 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
   mostrar = []
   termino = ''
   filtrarDisponibles() {
-  
     if (this.termino) {
       this.mostrar = this.procesos
         .map(x => {
@@ -113,7 +124,7 @@ export class ProcesosInicialesYFinalesComponent implements OnInit {
         })
         .filter(x => x.includes(this.termino.trim().toLowerCase()))
         .map(x => x.split('@@@')[1])
-    } 
+    }
   }
 
   limpiarBusqueda() {

@@ -21,6 +21,7 @@ export class Empleado implements Deserializable {
     public fotografia?: string,
     public sueldoActual?: number,
     public puestoActual: Puesto = null,
+    public puestoActualTexto?: string,
     //Relacionado a eventosRH. estatusLaboral.
     public activo?: boolean,
     //El puesto esta dentro de los eventos.
@@ -37,7 +38,7 @@ export class Empleado implements Deserializable {
     public parentescoEmergencia: string = '',
 
     public estadoCivil?: boolean,
-    public hijos: number[] = [],
+    public hijos: Date[] = [],
     public nivelDeEstudios?: string,
     public domicilio?: string
   ) {}

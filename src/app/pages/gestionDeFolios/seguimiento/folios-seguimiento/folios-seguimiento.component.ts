@@ -4,6 +4,7 @@ import { PaginadorService } from 'src/app/components/paginador/paginador.service
 import { FolioNewService } from 'src/app/services/folio/folio-new.service'
 import { iPedidosConsulta } from '../../../../services/folio/folio-new.service'
 import { Paginacion } from '../../../../utils/paginacion.util'
+import { ImpresionService } from '../../../../services/impresion.service'
 
 @Component({
   selector: 'app-folios-seguimiento',
@@ -18,7 +19,10 @@ export class FoliosSeguimientoComponent implements OnInit {
   paginacion = new Paginacion(5000, 0, 1, 'fechaDeEntregaAProduccion')
   folioDetalle: Folio
 
-  constructor(public folioService: FolioNewService) {}
+  constructor(
+    public folioService: FolioNewService,
+    private impresionService: ImpresionService
+  ) {}
 
   ngOnInit() {
     this.cargarPedidos()
@@ -29,7 +33,7 @@ export class FoliosSeguimientoComponent implements OnInit {
 
     let filtros = [
       'folioLineas.ordenesGeneradas=true',
-      'folioLineas.terminado=false',
+      'folioLineas.terminado=false'
       // 'terminado=false'
     ]
 
@@ -87,6 +91,16 @@ export class FoliosSeguimientoComponent implements OnInit {
     this.folioDetalle = null
     this.folioService.findById(id).subscribe(folio => {
       this.folioDetalle = folio
+    })
+  }
+
+  imprimirFolio(idFolio: string, idPedido: string) {
+    this.folioService.findById(idFolio).subscribe(folio => {
+      let ordenes = folio.folioLineas
+        .find(x => x._id === idPedido)
+        .ordenes.map(x => x._id)
+
+      this.impresionService.ordenes(ordenes).seleccionarFolio(folio).imprimir()
     })
   }
 }

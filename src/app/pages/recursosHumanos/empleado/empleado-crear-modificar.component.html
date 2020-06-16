@@ -16,7 +16,7 @@
       <div class="col-md-12  col-lg-4">
         <div class="card">
           <div class="card-body">
-            <!-- 
+            <!--
             =====================================
              fotografia
             =====================================
@@ -68,7 +68,7 @@
                 ></app-validacion-inputs>
               </div>
             </div>
-            <!-- 
+            <!--
             =====================================
              END fotografia
             =====================================
@@ -80,12 +80,12 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <!-- 
+              <!--
                 =====================================
                 idChecador
                 =====================================
                 -->
-              <div class="col-12 col-sm-6 col-md-2">
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
                 <div class="form-group">
                   <input
                     [ngClass]="{
@@ -104,17 +104,17 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
                 END idChecador
               =====================================
               -->
-              <!-- 
+              <!--
               =====================================
                 idNomina
               =====================================
               -->
-              <div class="col-12 col-sm-6 col-md-2">
+              <div class="col-12 col-sm-6 col-md-3 col-lg-2">
                 <div class="form-group">
                   <input
                     [ngClass]="{
@@ -133,18 +133,18 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                   =====================================
                     END idNomina
                   =====================================
                   -->
 
-              <!-- 
+              <!--
                 =====================================
                  puestoActual
                 =====================================
                 -->
-              <div class="col-12 col-md-8">
+              <!-- <div class="col-12 col-md-8">
                 <div class="form-group">
                   <input type="hidden" formControlName="puestoActual" />
 
@@ -178,13 +178,43 @@
                     [campo]="f('puestoActual')"
                   ></app-validacion-inputs>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- 
+              <!--
                   =====================================
                    END puestoActual
                   =====================================
                   -->
+
+            <!--
+            =====================================
+             puestoActualTexto
+            =====================================
+            -->
+            <div class="col-12 col-md-8">
+              <div class="form-group">
+              <input
+                [ngClass]="{
+                  'is-invalid': vs.invalid(f('puestoActualTexto')),
+                  'is-valid': vs.valid(f('puestoActualTexto'))
+                }"
+                type="text"
+                class="form-control"
+                formControlName="puestoActualTexto"
+              />
+              <small id="helpId" class="form-text text-muted">Puesto actual</small>
+              <app-validacion-inputs
+                [campo]="f('puestoActualTexto')"
+
+              ></app-validacion-inputs>
+            </div>
+            </div>
+            <!--
+            =====================================
+             END puestoActualTexto
+            =====================================
+            -->
+
             </div>
             <div class="row">
               <div class="col-12">
@@ -199,7 +229,7 @@
             </div>
 
             <div class="row">
-              <!-- 
+              <!--
                 =====================================
                   nombres
                 =====================================
@@ -223,13 +253,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                 =====================================
                   END nombres
                 =====================================
                 -->
 
-              <!-- 
+              <!--
                 =====================================
                   apellidos
                 =====================================
@@ -251,12 +281,12 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
               END apellidos
               =====================================
               -->
-              <!-- 
+              <!--
               =====================================
               fechaDeNacimiento
               =====================================
@@ -281,13 +311,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                 =====================================
                   END fechaDeNacimiento
                 =====================================
                 -->
 
-              <!-- 
+              <!--
                 =====================================
                   sexo
                 =====================================
@@ -315,13 +345,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
             =====================================
               END sexo
             =====================================
             -->
 
-              <!-- 
+              <!--
             =====================================
               estadoCivil
             =====================================
@@ -348,13 +378,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
                 END estadoCivil
               =====================================
               -->
 
-              <!-- 
+              <!--
               =====================================
               nivelDeEstudios
               =====================================
@@ -378,25 +408,30 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
               END nivelDeEstudios
               =====================================
               -->
 
+              <!--
+              =====================================
+              agregarHijos
+              =====================================
+              -->
               <div class="col-12 col-sm-6 ">
                 <div class="form-group" d-flex align-items-center>
                   <input
                     (keyup.enter)="agregarHijo(inputHijo.value)"
                     #inputHijo
-                    type="number"
+                    type="date"
                     class="form-control"
                     aria-describedby="helpId"
                     placeholder="Ingresa edad de hijo"
                   />
 
                   <small id="helpId" class="form-text text-muted"
-                    >Ingresa edad de hijo y presiona enter</small
+                    >Ingresa la fecha de nacimiento del hijo y presione enter</small
                   >
                 </div>
               </div>
@@ -419,13 +454,7 @@
                     >
                       <i class="fas fa-times-circle    "></i>
                     </a>
-                    Edad de hijo: {{ hijo.value }}
-                    <ng-container *ngIf="hijo.value > 1; else singular">
-                      años
-                    </ng-container>
-                    <ng-template #singular>
-                      año
-                    </ng-template>
+                    Edad de hijo: {{ calcularEdad(hijo.value) }}
                   </li>
                   <li
                     *ngIf="!fa('hijos').controls?.length"
@@ -450,7 +479,14 @@
             </div>
 
             <div class="row">
-              <!-- 
+
+                        <!--
+            =====================================
+            END agregarHijos
+            =====================================
+            -->
+
+              <!--
               =====================================
                celular
               =====================================
@@ -474,13 +510,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                 =====================================
                  END celular
                 =====================================
                 -->
 
-              <!-- 
+              <!--
             =====================================
              telCasa
             =====================================
@@ -504,13 +540,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
                END telCasa
               =====================================
               -->
 
-              <!-- 
+              <!--
               =====================================
                email
               =====================================
@@ -534,13 +570,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                   =====================================
                    END email
                   =====================================
                   -->
 
-              <!-- 
+              <!--
                   =====================================
                    domicilio
                   =====================================
@@ -564,7 +600,7 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                   =====================================
                    END domicilio
                   =====================================
@@ -584,7 +620,7 @@
             </div>
 
             <div class="row">
-              <!-- 
+              <!--
               =====================================
                 rfc
               =====================================
@@ -606,13 +642,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
               =====================================
                 END rfc
               =====================================
               -->
 
-              <!-- 
+              <!--
               =====================================
                 curp
               =====================================
@@ -634,13 +670,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                 =====================================
                   END curp
                 =====================================
                 -->
 
-              <!-- 
+              <!--
                 =====================================
                   numeroDeCuenta
                 =====================================
@@ -664,13 +700,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                             =====================================
                              END numeroDeCuenta
                             =====================================
                             -->
 
-              <!-- 
+              <!--
                             =====================================
                              numeroDeSeguridadSocial
                             =====================================
@@ -692,7 +728,7 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
                 =====================================
                     END numeroDeSeguridadSocial
                 =====================================
@@ -712,7 +748,7 @@
             </div>
 
             <div class="row">
-              <!-- 
+              <!--
             =====================================
              nombreEmergencia
             =====================================
@@ -736,13 +772,13 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
             =====================================
              END nombreEmergencia
             =====================================
             -->
 
-              <!-- 
+              <!--
             =====================================
              telEmergencia
             =====================================
@@ -766,12 +802,12 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
             =====================================
              END telEmergencia
             =====================================
           -->
-              <!-- 
+              <!--
           =====================================
            parentescoEmergencia
           =====================================
@@ -795,7 +831,7 @@
                   ></app-validacion-inputs>
                 </div>
               </div>
-              <!-- 
+              <!--
           =====================================
            END parentescoEmergencia
           =====================================

@@ -81,7 +81,7 @@ export class RequisicionCrearModificarComponent implements OnInit {
       // de soloUnCheckBox() de manera rudimentaria
       materiaPrima: [r.materiaPrima, [Validators.required]],
       consumibles: [r.consumibles, [Validators.required]],
-      gastosYServicios: [r.gastosYServicios, [Validators.required]],
+      gastosYServicios: [r.gastosYServicios],
       cantidad: [
         r.cantidad,
         [
@@ -179,8 +179,27 @@ export class RequisicionCrearModificarComponent implements OnInit {
   }
   articuloSeleccionado(dato: Dato) {
     let art: Articulo = <Articulo>dato ? dato.objeto : null
-    this.f('articulo').patchValue(art ? art._id : null)
+    this.f('articulo').setValue(null)
 
+    this.f('materiaPrima').setValue(false)
+    this.f('consumibles').setValue(false)
+
+    if (!art.tipoDeProducto) {
+
+      return this.msjService.invalido(
+        `Este articulo aún no tiene definido un tipo de material. Es necesario que Almacén de Materiales lo defina para poder continuar.`,
+        'Tipo de material no definido',
+        15000
+        )
+    }
+
+    if (art.tipoDeProducto === 'MATERIA PRIMA')
+    this.f('materiaPrima').setValue(true)
+
+    if (art.tipoDeProducto === 'CONSUMIBLE')
+    this.f('consumibles').setValue(true)
+
+    this.f('articulo').patchValue(art ? art._id : null)
     this.articuloSeleccionadoParaInput = art
     this.f('articulo').markAsTouched()
     this.f('articulo').updateValueAndValidity()

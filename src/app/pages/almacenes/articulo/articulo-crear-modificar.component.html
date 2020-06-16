@@ -104,6 +104,28 @@
 
             <div class="col-12 col-sm-6 col-lg-4">
               <div class="form-group">
+                <select
+                  formControlName="tipoDeProducto"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('tipoDeProducto')),
+                    'is-valid': vs.valid(f('tipoDeProducto'))
+                  }"
+                >
+                  <option value="MATERIA PRIMA">Materia prima</option>
+                  <option value="CONSUMIBLE">Consumible</option>
+                </select>
+                <small id="helpId" class="form-text text-muted"
+                  >Tipo de artículo</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('tipoDeProducto')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
                 <input
                   [ngClass]="{
                     'is-invalid': vs.invalid(f('nombre')),
