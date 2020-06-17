@@ -1,6 +1,6 @@
 {
   "name": "carrduci-sys-gui",
-  "version": "1.10.0",
+  "version": "2.0.1",
   "description": "GUI Descktop CARRDUCIsys",
   "scripts": {
     "ng": "ng",
@@ -16,7 +16,7 @@
     "@angular/cdk": "^8.2.3",
     "@angular/common": "^9.0.2",
     "@angular/compiler": "^9.0.2",
-  "@angular/core": "^9.0.2",
+    "@angular/core": "^9.0.2",
     "@angular/forms": "^9.0.2",
     "@angular/http": "^7.2.16",
     "@angular/platform-browser": "^9.0.2",

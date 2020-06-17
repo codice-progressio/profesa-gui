@@ -80,7 +80,7 @@
           >
         </td>
       </tr>
-      <tr *ngIf="maquina.trabajando" class="bg-light-inverse  font-bold">
+      <tr *ngIf="maquina.trabajando" class="bg-light-inverse font-bold">
         <td
           class="text-right"
           title="Este folio pertenece al cliente {{ maquina.trabajo.cliente }}"
@@ -90,10 +90,10 @@
         <td
           class="text-right fit"
           title="Este folio entro a produccion el {{
-            maquina.trabajo.fechaPedidoProduccion | fecha: 'LLLL'
+            maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'LLLL'
           }}"
         >
-          {{ maquina.trabajo.fechaPedidoProduccion | fecha: 'DD/MMM' }}
+          {{ maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'DD/MMM' }}
         </td>
         <td
           class="text-right fit"
@@ -118,11 +118,9 @@
         </td>
         <td
           class="text-right"
-          title="El modelo de esta orden es  {{
-            maquina.trabajo.modeloCompleto
-          }}"
+          title="El modelo de esta orden es  {{ maquina.trabajo.sku }}"
         >
-          {{ maquina.trabajo.modeloCompleto }}
+          {{ maquina.trabajo.sku }}
         </td>
         <td
           class="text-right"
@@ -130,10 +128,7 @@
             maquina.trabajo.esBaston ? '' : 'no'
           }} es baston"
         >
-          <i
-            *ngIf="maquina.trabajo.esBaston"
-            class="fas fa-check-circle    "
-          ></i>
+          <i *ngIf="maquina.trabajo.esBaston" class="fas fa-check-circle"></i>
         </td>
         <td
           class="text-right"
@@ -146,16 +141,8 @@
           {{ maquina.trabajo.marcaLaser }}
         </td>
 
-        <td
-          class="text-center"
-          [title]="
-            maquina.trabajo.disponible
-              ? ' Orden disponible para empezar a transformarse'
-              : 'Esta orden se encuentra en ' +
-                maquina.trabajo.ubicacionActual?.departamento
-          "
-        >
-          <i class="fas fa-cog fa-2x fa-spin text-warning  "></i>
+        <td class="text-center">
+          <i class="fas fa-cog fa-2x fa-spin text-warning"></i>
         </td>
 
         <td
@@ -188,10 +175,10 @@
         <td
           class="text-right"
           title="Este folio entro a produccion el {{
-            pila.fechaPedidoProduccion | fecha: 'LLLL'
+            pila.fechaDeEntregaAProduccion | fecha: 'LLLL'
           }}"
         >
-          {{ pila.fechaPedidoProduccion | fecha: 'DD/MMM' }}
+          {{ pila.fechaDeEntregaAProduccion | fecha: 'DD/MMM' }}
         </td>
         <td
           class="text-right"
@@ -216,15 +203,15 @@
         </td>
         <td
           class="text-right"
-          title="El modelo de esta orden es  {{ pila.modeloCompleto }}"
+          title="El modelo de esta orden es  {{ pila.sku }}"
         >
-          {{ pila.modeloCompleto }}
+          {{ pila.sku }}
         </td>
         <td
           class="text-right fit"
           title="Este boton {{ pila.esBaston ? '' : 'no' }} es baston"
         >
-          <i *ngIf="pila.esBaston" class="fas fa-check-circle    "></i>
+          <i *ngIf="pila.esBaston" class="fas fa-check-circle"></i>
         </td>
         <td
           class="text-right"
@@ -257,7 +244,7 @@
           </ng-container>
           <i
             *ngIf="pila.disponible"
-            class="fas fa-check fa-2x text-success  "
+            class="fas fa-check fa-2x text-success"
           ></i>
         </td>
 
@@ -321,14 +308,14 @@
             data-target="#detalleFolio"
             (click)="cargarFolio(ordenDetalle.folio)"
           >
-            <i class="fas fa-eye    "></i>
+            <i class="fas fa-eye"></i>
             Folio {{ (ordenDetalle?.numeroDeOrden.split('-'))[0] }}</a
           >
 
           <h5>
             SKU:
             <span class="font-weight-bolder"
-              >{{ ordenDetalle?.modeloCompleto }}
+              >{{ ordenDetalle?.sku }}
             </span>
           </h5>
         </div>
