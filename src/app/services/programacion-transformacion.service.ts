@@ -19,17 +19,14 @@ export class ProgramacionTransformacionService {
   base = URL_BASE('programacionTransformacion')
   constructor(
     private http: HttpClient,
-    private msjService: ManejoDeMensajesService,
-    private utiliadesService: UtilidadesService,
-    private preLoaderService: PreLoaderService,
-    private paginadorService: PaginadorService,
-    private defaultService: DefaultsService
+    private msjService: ManejoDeMensajesService
   ) {}
 
   errFun(err) {
     this.msjService.err(err)
     return throwError(err)
   }
+
 
   ordenesPorAsignar(
     idTransformacion: string
@@ -112,4 +109,3 @@ export interface iEstaDisponible {
   pedido: string
   orden: string
 }
-

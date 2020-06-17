@@ -10,6 +10,8 @@ import { Departamento } from '../models/departamento.models'
 import { Usuario } from '../models/usuario.model'
 import { QuestionBase } from '../components/formulario-dinamico/question-base'
 import { ScannerFormularioDinamicoComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico.component'
+import { Maquina } from '../models/maquina.model'
+import { MaquinaLigera } from './maquina/maquina.service'
 
 @Injectable({
   providedIn: 'root'
@@ -148,6 +150,8 @@ export class ParametrosService {
     let datos: any = dta.map(estacion => {
       estacion.usuarios = estacion.usuarios.map(x => x._id)
       estacion.departamento = estacion.departamento._id
+      estacion.maquinas = estacion.maquinas.map(x => x._id)
+
       return estacion
     })
 
@@ -171,6 +175,8 @@ export interface ScannerDepartamentoGestion {
   departamento: Departamento
   usuarios: Usuario[]
   ponerATrabajar: boolean
+  ponerATrabajarConMaquina?: boolean
+  maquinas?: MaquinaLigera[]
   recibirTodo: boolean
   registrarTodo: boolean
   ultimoDepartamento: boolean

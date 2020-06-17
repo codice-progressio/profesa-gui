@@ -32,7 +32,7 @@ export class FolioLinea {
    * @param {boolean} [mostrandoInfo=false] No se que sea esto
    * @param {boolean} [gui_generarComoMedias]
    * @param {boolean} [requiereRevisionExtraordinaria=false]  Define si el pedido se debe revisar de manera extraoirdinaria
-   * @param {Proceso[]} [procesosExraordinarios=[]] Deposito temporal para los proceoss extraordinarios.
+   * @param {Proceso[]} [procesosExtraordinarios=[]] Deposito temporal para los proceoss extraordinarios.
    * @memberof FolioLinea
    */
   constructor(
@@ -65,7 +65,7 @@ export class FolioLinea {
     //Este public funciona
     public requiereRevisionExtraordinaria: boolean = false,
 
-    public procesosExraordinarios: Proceso[] = [],
+    public procesosExtraordinarios: Proceso[] = [],
     //Senala que para este pedido debemos utilizar la lista
     // de procesosExtraordinarios
     public usarProcesosExtraordinarios = false

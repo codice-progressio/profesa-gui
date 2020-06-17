@@ -38,6 +38,8 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
   ordenEscaneada: OrdenEscaneada
   estaEstacion: ScannerDepartamentoGestion
 
+  mostrarFormularioMaquinas = false
+
   constructor(
     public msjService: ManejoDeMensajesService,
     private activatedRoute: ActivatedRoute,
@@ -47,7 +49,6 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(this.cbRuta)
-   
   }
 
   obtenerEstacion() {
@@ -127,19 +128,16 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
       .estatusDeLaOrdenParaRegistro(e, this.idDepartamento)
       .subscribe(
         estatus => {
-          //El departamento requiere poner a trabajar
-          //Esta trabajando
-          //registrar
-          // No esta trabajando
-          //poner a trabajar.
-          //El departamento no requiere poner a trabajar.
-          //Registrar
           this.ordenEscaneada = e
-          if (estatus.ponerATrabajar) {
+          if (estatus.ponerATrabajar || estatus.ponerATrabajarConMaquina) {
             if (estatus.yaEstaTrabajando) {
               this.cargarFormulario()
             } else {
-              this.ponerATrabajar(e, null)
+              if (estatus.ponerATrabajarConMaquina) {
+                this.mostrarFormularioMaquinas = true
+              } else {
+                this.ponerATrabajar(e, null)
+              }
             }
           } else {
             this.cargarFormulario()
