@@ -184,6 +184,8 @@ export class RequisicionCrearModificarComponent implements OnInit {
     this.f('materiaPrima').setValue(false)
     this.f('consumibles').setValue(false)
 
+    // si el artículo es null, no realiza ninguna operación sobre el mismo
+    if (!art) return
     if (!art.tipoDeProducto) {
 
       return this.msjService.invalido(
