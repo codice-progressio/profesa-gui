@@ -219,6 +219,7 @@ export default {
   'menu:ingenieria:tamanos': NO_DEFINIDO,
   'menu:ingenieria:terminados': NO_DEFINIDO,
   'menu:produccion': NO_DEFINIDO,
+  'menu:scanner': NO_DEFINIDO,
   'menu:produccion:almacenDeBoton': NO_DEFINIDO,
   'menu:produccion:barnizado': NO_DEFINIDO,
   'menu:produccion:burato': NO_DEFINIDO,
@@ -247,5 +248,10 @@ export default {
   'menu:ventas:stock': NO_DEFINIDO,
   'menu:parametros': NO_DEFINIDO,
   'menu:parametros:localizacionDeOrdenes': NO_DEFINIDO,
-  'menu:parametros:procesosEspeciales': NO_DEFINIDO
+  'menu:parametros:procesosEspeciales': NO_DEFINIDO,
+  'folio:seguimientos': NO_DEFINIDO,
+  'parametros:departamentoTransformacion': NO_DEFINIDO,
+  'parametros:estacionesDeEscaneo': NO_DEFINIDO,
+  'parametros:localizacionDeOrdenes': NO_DEFINIDO,
+  'parametros:procesosEspeciales': NO_DEFINIDO
 }
