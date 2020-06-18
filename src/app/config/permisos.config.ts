@@ -248,5 +248,10 @@ export default {
   'menu:ventas:stock': NO_DEFINIDO,
   'menu:parametros': NO_DEFINIDO,
   'menu:parametros:localizacionDeOrdenes': NO_DEFINIDO,
-  'menu:parametros:procesosEspeciales': NO_DEFINIDO
+  'menu:parametros:procesosEspeciales': NO_DEFINIDO,
+  'folio:seguimientos': NO_DEFINIDO,
+  'parametros:departamentoTransformacion': NO_DEFINIDO,
+  'parametros:estacionesDeEscaneo': NO_DEFINIDO,
+  'parametros:localizacionDeOrdenes': NO_DEFINIDO,
+  'parametros:procesosEspeciales': NO_DEFINIDO
 }
