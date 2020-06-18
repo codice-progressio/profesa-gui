@@ -219,6 +219,7 @@ export default {
   'menu:ingenieria:tamanos': NO_DEFINIDO,
   'menu:ingenieria:terminados': NO_DEFINIDO,
   'menu:produccion': NO_DEFINIDO,
+  'menu:scanner': NO_DEFINIDO,
   'menu:produccion:almacenDeBoton': NO_DEFINIDO,
   'menu:produccion:barnizado': NO_DEFINIDO,
   'menu:produccion:burato': NO_DEFINIDO,
