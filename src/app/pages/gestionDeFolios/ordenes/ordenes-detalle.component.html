@@ -1,6 +1,6 @@
 <div [id]="orden._id" *ngIf="orden" class="w-100">
   <div class="orden">
-    <hr class="thin no-margin-bottom " />
+    <hr class="thin no-margin-bottom" />
 
     <!-- 
            =====================================
@@ -8,26 +8,26 @@
            =====================================
            -->
     <div class="d-flex justify-content-between align-items-center">
-      <span class=" mr-3 ">
+      <span class="mr-3">
         <app-nivel-urgencia
           [nivel]="orden.nivelDeUrgencia"
         ></app-nivel-urgencia>
       </span>
-      <span class=" mr-3">
-        {{ orden.fechaFolio | fecha: "D/MM/Y" }}
+      <span class="mr-3">
+        {{ orden.fechaFolio | fecha: 'D/MM/Y' }}
       </span>
-      <span class=" mr-3"
+      <span class="mr-3"
         ># {{ orden.numeroDeOrden + 1 }}/{{ linea.ordenes.length }}</span
       >
-      <span class=" mr-3"
-        >PZ TEO: {{ orden.piezasTeoricas | number: "1.0-2" }}</span
+      <span class="mr-3"
+        >PZ TEO: {{ orden.piezasTeoricas | number: '1.0-2' }}</span
       >
-      <span class=" mr-3">Unidad: {{ orden.unidad }}</span>
-      <span class="badge badge-dark text-white badge-pill pull-right ">
+      <span class="mr-3">Unidad: {{ orden.unidad }}</span>
+      <span class="badge badge-dark text-white badge-pill pull-right">
         <b class="mr-3"> Orden </b> {{ orden.orden }}</span
       >
     </div>
-    <hr class="thin " />
+    <hr class="thin" />
 
     <!-- 
            =====================================
@@ -42,32 +42,37 @@
            -->
 
     <div class="row">
-        <div class="col-10">
-          <h3 class="mt-0">
-            <strong>{{ linea.modeloCompleto | modeloCompleto }}</strong>
-          </h3>
-          <ng-container *ngIf="linea.laserCliente?.laser">
-            <b class="font-weight-bold">MARCA LASER: </b>
-            <span class="label label-inverse">{{
-              linea.laserCliente.laser
-            }}</span>
-            <br />
-          </ng-container>
+      <div class="col-8">
+        <h3 class="mt-0">
+          <strong>{{ linea.modeloCompleto | modeloCompleto }}</strong>
+        </h3>
+        <ng-container *ngIf="linea.laserCliente?.laser">
+          <b class="font-weight-bold">MARCA LASER: </b>
+          <span class="label label-inverse">{{
+            linea.laserCliente.laser
+          }}</span>
+          <br />
+        </ng-container>
 
-          <span *ngIf="folio?.observaciones">{{ folio.observaciones }}</span>
-          <span *ngIf="linea?.observaciones">{{ linea.observaciones }}</span>
-          <span *ngIf="orden?.observaciones">{{ orden.observaciones }}</span>
-        </div>
-        <div class="col" style='min-width: 100px;'>
-          <qrcode [qrdata]="obtenerDatosParaOrden()" size="100"></qrcode>
+        <span *ngIf="folio?.observaciones">{{ folio.observaciones }}</span>
+        <span *ngIf="linea?.observaciones">{{ linea.observaciones }}</span>
+        <span *ngIf="orden?.observaciones">{{ orden.observaciones }}</span>
 
-          <div class="mt-2">
-            <a 
-
-            
-            (click)="imprimir()"
-            class="btn btn-outline-warning" href="javascript:void(0)"  role="button"> <i class="fas fa-print    "></i></a>
-          </div>
+        <a
+          (click)="imprimir()"
+          class="btn btn-outline-warning no-print"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-print"></i
+        ></a>
+      </div>
+      <div class="col-4 text-right" style="min-width: 190px;">
+        <qrcode
+          class="pull-right"
+          [qrdata]="obtenerDatosParaOrden()"
+          size="190"
+        ></qrcode>
       </div>
     </div>
     <!-- 
@@ -84,7 +89,7 @@
 
     <div class="orden-footer">
       <hr class="thin" />
-      <div class=" font-weight-bold" style=" font-size: 6pt;">
+      <div class="font-weight-bold" style="font-size: 6pt;">
         <ng-container
           *ngFor="let trayecto of orden.trayectoNormal; let i = index"
         >
