@@ -1,6 +1,6 @@
 {
   "name": "carrduci-sys-gui",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "GUI Descktop CARRDUCIsys",
   "scripts": {
     "ng": "ng",
