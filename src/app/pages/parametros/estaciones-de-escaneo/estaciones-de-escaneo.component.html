@@ -101,8 +101,8 @@ a<ng-container
                 data-target="#selectorMaquinas"
                 class="btn btn-xs mr-3"
                 [ngClass]="{
-                  'btn-outline-secondary': g.maquinas.length === 0,
-                  'btn-success': g.maquinas.length > 0
+                  'btn-outline-secondary': g.maquinas?.length === 0,
+                  'btn-success': g.maquinas?.length > 0
                 }"
                 href="javascript:void(0)"
                 role="button"

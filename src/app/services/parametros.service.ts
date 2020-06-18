@@ -150,7 +150,9 @@ export class ParametrosService {
     let datos: any = dta.map(estacion => {
       estacion.usuarios = estacion.usuarios.map(x => x._id)
       estacion.departamento = estacion.departamento._id
-      estacion.maquinas = estacion.maquinas.map(x => x._id)
+      if (estacion.maquinas) {
+        estacion.maquinas = estacion.maquinas.map(x => x._id)
+      }
 
       return estacion
     })
