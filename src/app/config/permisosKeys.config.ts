@@ -266,5 +266,10 @@ export default {
   'menu:parametros': 'menu:parametros',
   'menu:parametros:localizacionDeOrdenes':
     'menu:parametros:localizacionDeOrdenes',
-  'menu:parametros:procesosEspeciales': 'menu:parametros:procesosEspeciales'
+  'menu:parametros:procesosEspeciales': 'menu:parametros:procesosEspeciales',
+  'parametros:departamentoTransformacion':
+    'parametros:departamentoTransformacion',
+  'parametros:estacionesDeEscaneo': 'parametros:estacionesDeEscaneo',
+  'parametros:localizacionDeOrdenes': 'parametros:localizacionDeOrdenes',
+  'parametros:procesosEspeciales': 'parametros:procesosEspeciales'
 }
