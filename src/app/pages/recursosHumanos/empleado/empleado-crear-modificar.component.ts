@@ -232,11 +232,11 @@ export class EmpleadoCrearModificarComponent implements OnInit {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
 
-    for (const key in this.formulario.controls) {
-      if (this.formulario.controls.hasOwnProperty(key)) {
-        const element = this.formulario.controls[key]
-      }
-    }
+    // for (const key in this.formulario.controls) {
+    //   if (this.formulario.controls.hasOwnProperty(key)) {
+    //     const element = this.formulario.controls[key]
+    //   }
+    // }
 
     if (invalid) {
       e.preventDefault()
