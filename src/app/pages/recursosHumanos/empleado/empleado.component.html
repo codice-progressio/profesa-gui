@@ -172,21 +172,21 @@
                 title="Puesto en el que se desempena este empleado"
                 class="fit align-middle"
               >
-                <ng-container *ngIf="empleado.puestoActual">
-                  <a
-                    (click)="asiganarDetalleDePuesto(empleado.puestoActual)"
+                <ng-container *ngIf="empleado.puestoActualTexto">
+                  <!-- <a
+                    (click)="asiganarDetalleDePuesto(empleado.puestoActualTexto)"
                     href="javascript:void(0)"
                     data-toggle="modal"
                     data-target="#puestoDetalleModal"
                     class="btn btn-primary btn-xs "
                   >
                     <i class="fas fa-eye    "></i>
-                  </a>
+                  </a> -->
 
-                  {{ empleado.puestoActual.puesto }}
+                  {{ empleado.puestoActualTexto }}
                 </ng-container>
 
-                <span *ngIf="!empleado.puestoActual">
+                <span *ngIf="!empleado.puestoActualTexto">
                   Sin puesto definido
                 </span>
               </td>
@@ -373,7 +373,7 @@
 >
 </app-empleado-eventos-crear-modal>
 
-<!-- 
+<!--
   =====================================
    END Contenedor de modales para crear eventos de empleado
   =====================================
@@ -405,7 +405,7 @@
             *ngFor="let dato of botonesEventos"
             class="col-12 col-sm-4  mt-3"
           >
-            <!-- 
+            <!--
                 =====================================
                  Generacion de botonera para eventos
                 =====================================
@@ -422,7 +422,7 @@
               {{ dato.text }}
             </a>
 
-            <!-- 
+            <!--
                 =====================================
                  END Generacion de botonera para eventos
                 =====================================

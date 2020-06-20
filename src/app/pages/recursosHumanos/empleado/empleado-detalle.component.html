@@ -60,7 +60,7 @@
             <span>
               <small class="text-muted">Puesto actual </small>
               <h6>
-                <a
+                <!-- <a
                   (click)="asignarDetallePuesto(empleado.puestoActual)"
                   data-toggle="modal"
                   data-target="#puestoDetalleModal"
@@ -69,9 +69,9 @@
                   role="button"
                 >
                   <i class="fas fa-eye    "></i>
-                </a>
+                </a> -->
 
-                {{ empleado.puestoActual.puesto }}
+                {{ empleado.puestoActualTexto }}
               </h6>
             </span>
           </div>
@@ -118,7 +118,7 @@
                     </span>
                   </span>
 
-                  {{ x }}
+                  {{ edad(x) }}
                 </span>
                 años
               </h6>
