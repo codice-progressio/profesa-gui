@@ -64,6 +64,11 @@
           href="javascript:void(0)"
           role="button"
         >
+          <i
+            *ngIf="keys('cargando').includes('pool')"
+            class="fas fa-sync fa-spin-fast"
+          ></i>
+
           <i class="fas fa-print"></i
         ></a>
       </div>
@@ -90,10 +95,8 @@
     <div class="orden-footer">
       <hr class="thin" />
       <div class="font-weight-bold" style="font-size: 6pt;">
-        <ng-container
-          *ngFor="let trayecto of orden.trayectoNormal; let i = index"
-        >
-          {{ trayecto.departamento.nombre }}
+        <ng-container *ngFor="let ruta of orden.ruta; let i = index">
+          {{ ruta.departamento }}
           <span *ngIf="i + 1 != orden.trayectoNormal.length">
             >
           </span>

@@ -3,16 +3,23 @@ import { Folio } from 'src/app/models/folio.models'
 import { FolioLinea } from '../../../models/folioLinea.models'
 import { Orden } from 'src/app/models/orden.models'
 import { ImpresionService } from '../../../services/impresion.service'
+import { DepartamentoService } from '../../../services/departamento/departamento.service'
 
 declare var $: any
 
 @Component({
   selector: 'app-ordenes-detalle',
   templateUrl: './ordenes-detalle.component.html',
-  styles: []
+  styleUrls: ['./ordenes-detalle.component.css']
 })
 export class OrdenesDetalleComponent implements OnInit {
-  constructor(public impresionService: ImpresionService) {}
+  constructor(
+    public impresionService: ImpresionService,
+    public departamentoService: DepartamentoService
+  ) {}
+
+  cargando = {}
+  keys = Object.keys
 
   @Input() folio: Folio
   @Input() linea: FolioLinea
@@ -40,8 +47,24 @@ export class OrdenesDetalleComponent implements OnInit {
   }
 
   imprimir() {
-    $('.modal').modal('hide')
+    if (this.departamentoService.pool.length === 0) {
+      this.departamentoService.findAllPoolObservable().subscribe(() => {
+        this.orden.ruta.forEach(
+          r =>
+            (r.departamento = this.departamentoService.pool.find(
+              d => d._id === r.idDepartamento
+            ).nombre)
+        )
 
+        this.print()
+      })
+    } else {
+      this.print()
+    }
+  }
+
+  private print() {
+    $('.modal').modal('hide')
     setTimeout(() => {
       this.impresionService
         .ordenes([this.orden._id])

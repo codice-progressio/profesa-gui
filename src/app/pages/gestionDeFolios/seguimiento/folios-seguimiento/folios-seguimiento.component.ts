@@ -5,6 +5,7 @@ import { FolioNewService } from 'src/app/services/folio/folio-new.service'
 import { iPedidosConsulta } from '../../../../services/folio/folio-new.service'
 import { Paginacion } from '../../../../utils/paginacion.util'
 import { ImpresionService } from '../../../../services/impresion.service'
+import { DepartamentoService } from '../../../../services/departamento/departamento.service'
 
 @Component({
   selector: 'app-folios-seguimiento',
@@ -21,7 +22,8 @@ export class FoliosSeguimientoComponent implements OnInit {
 
   constructor(
     public folioService: FolioNewService,
-    private impresionService: ImpresionService
+    private impresionService: ImpresionService,
+    private departamentoService: DepartamentoService
   ) {}
 
   ngOnInit() {
@@ -94,8 +96,19 @@ export class FoliosSeguimientoComponent implements OnInit {
     })
   }
 
-  imprimirFolio(idFolio: string, idPedido: string) {
+  async imprimirFolio(idFolio: string, idPedido: string) {
+    if (this.departamentoService.pool.length === 0)
+      await this.departamentoService.findAllPoolObservable().toPromise()
+
     this.folioService.findById(idFolio).subscribe(folio => {
+      folio.folioLineas
+        .find(x => x._id === idPedido)
+        .ordenes.forEach(x => {
+          x.ruta.forEach(r =>
+            this.departamentoService.popularRutaConDepartamento(r)
+          )
+        })
+
       let ordenes = folio.folioLineas
         .find(x => x._id === idPedido)
         .ordenes.map(x => x._id)

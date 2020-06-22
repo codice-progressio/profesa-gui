@@ -12,6 +12,7 @@ import { UsuarioService } from '../usuario/usuario.service'
 import { throwError, Observable } from 'rxjs'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { map, catchError } from 'rxjs/operators'
+import { Ruta } from '../../models/orden.models'
 
 @Injectable({
   providedIn: 'root'
@@ -156,5 +157,19 @@ export class DepartamentoService {
     this.findAll(new Paginacion(100, 0, 1, 'nombre')).subscribe(
       depa => (this.pool = depa)
     )
+  }
+
+  findAllPoolObservable(): Observable<Departamento[]> {
+    return this.findAll(new Paginacion(100, 0, 1, 'nombre')).pipe(
+      map(x => {
+        this.pool = x
+        return x
+      })
+    )
+  }
+
+  popularRutaConDepartamento(ruta: Ruta) {
+    let departamento = this.pool.find(x => x._id === ruta.idDepartamento)
+    ruta.departamento = departamento.nombre
   }
 }
