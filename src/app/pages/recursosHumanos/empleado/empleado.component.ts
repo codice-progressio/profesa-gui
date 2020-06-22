@@ -197,7 +197,7 @@ export class EmpleadoComponent implements OnInit {
     throw err
   }
   asiganarDetalleDePuesto(puesto: Puesto) {
-    this.puestoDetalle = puesto
+    // this.puestoDetalle = puesto
   }
 
   eliminar(empleado: Empleado) {
