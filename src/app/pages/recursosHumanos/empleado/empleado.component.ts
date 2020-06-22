@@ -9,6 +9,7 @@ import { PuestoService } from '../../../services/recursosHumanos/puesto.service'
 import { EmpleadoEventosCrearModalComponent } from './empleado-eventos-crear/empleado-eventos-crear-modal/empleado-eventos-crear-modal.component'
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { iPaginadorData } from '../../../shared/paginador/paginador.component'
+import { EmpleadoEventoEstatusLaboralComponent } from './empleado-eventos/empleado-evento-estatus-laboral.component'
 
 @Component({
   selector: 'app-empleado',
@@ -17,7 +18,7 @@ import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 })
 export class EmpleadoComponent implements OnInit {
   empleadoDetalle: Empleado
-  puestoDetalle: Puesto
+  puestoDetalle: Empleado["puestoActualTexto"]
   empleados: Empleado[] = []
   empleadoModificar: Empleado = null
   buscando: boolean = false
@@ -60,12 +61,13 @@ export class EmpleadoComponent implements OnInit {
     text: string
     cb: () => any
   }[] = [
-    {
-      title: 'Agregar curso',
-      class: 'btn-outline-info',
-      text: 'CURSO',
-      cb: () => this.mec.curso()
-    },
+    // xxTEMPORALMENTE EN DESUSOxx
+    // {
+    //   title: 'Agregar curso',
+    //   class: 'btn-outline-info',
+    //   text: 'CURSO',
+    //   cb: () => this.mec.curso()
+    // },
     {
       title: 'Agregar temporada de vacaciones',
       class: 'btn-warning',

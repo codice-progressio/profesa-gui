@@ -105,6 +105,6 @@ export class EmpleadoAgregarPuestoComponent
   }
 
   limpiar() {
-    this.dataList.limpiarParaNuevo()
+    // this.dataList.limpiarParaNuevo()
   }
 }
