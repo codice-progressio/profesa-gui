@@ -315,7 +315,6 @@ export class EmpleadoCrearModificarComponent implements OnInit {
     let fecha = new Date(fechaString)
     let hoy = new Date()
     let diaEnMs = 1000 * 60 * 60 * 24 * 365
-    console.log(hoy, diaEnMs)
     let resta = (hoy.getTime() - fecha.getTime()) / diaEnMs
     let edad = Math.floor(resta)
    return edad>1? edad + " años" : edad + " año"

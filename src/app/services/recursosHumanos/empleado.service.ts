@@ -240,12 +240,13 @@ export class EmpleadoService {
     })
   }
 
-  registrarPuesto(_id: string, _idPuestoNuevo: number, observaciones: string) {
+  registrarPuesto(_id: string, puestoNuevoTexto: string, observaciones: string) {
     const a = this.preloaderEvento('Aplicando cambio de puesto')
     const url = this.urlEvento('puesto')
     return this.registroDeEventoGenerico(url, a, {
       _id,
-      _idPuestoNuevo,
+      // _idPuestoNuevo,
+      puestoNuevoTexto,
       observaciones
     })
   }

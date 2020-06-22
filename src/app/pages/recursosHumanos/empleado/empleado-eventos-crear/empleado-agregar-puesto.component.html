@@ -7,34 +7,45 @@
 
   <form [formGroup]="formulario" class="col-12">
     <div class="row">
-      <!-- 
+      <!--
         =====================================
          nuevo
         =====================================
         -->
       <div class="col-12 col-md-6">
         <div class="form-group">
-          <app-data-list
+          <!-- <app-data-list
             (ejecutarBusquedaDeItems)="buscar($event)"
             (elementoSeleccionado)="seleccionado($event)"
             [valid]="vs.valid(f('nuevo'))"
             [invalid]="vs.invalid(f('nuevo'))"
             (touched)="f('nuevo').markAsTouched()"
             (esteComponente)="dataList = $event"
-          ></app-data-list>
+          ></app-data-list> -->
 
-          <input type="hidden" formControlName="nuevo" />
+
+
+          <input
+          formControlName="nuevo"
+          type="text" class="form-control"
+          [ngClass]="{'is-invalid': vs.invalid(f('nuevo')),
+          'is-valid':vs.valid(f('nuevo'))}"
+          name="nombre" id="nombre">
+
+
+
+          <!-- <input type="hidden" formControlName="nuevo" /> -->
           <small id="helpId" class="form-text text-muted">Nuevo puesto</small>
           <app-validacion-inputs [campo]="f('nuevo')"></app-validacion-inputs>
         </div>
       </div>
-      <!-- 
+      <!--
         =====================================
          END nuevo
         =====================================
         -->
 
-      <!-- 
+      <!--
         =====================================
          observaciones
         =====================================
@@ -58,7 +69,7 @@
           ></app-validacion-inputs>
         </div>
       </div>
-      <!-- 
+      <!--
         =====================================
          END observaciones
         =====================================

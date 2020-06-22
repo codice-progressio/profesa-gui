@@ -36,8 +36,9 @@ export class EmpleadoAgregarCambiosDeSueldoComponent
       aumento: [
         this.empleado.sueldoActual,
         [
+
           Validators.min(this.empleado.sueldoActual),
-          Validators.max(this.empleado.puestoActual.sueldoMaximo),
+          // Validators.max(this.empleado.puestoActual.sueldoMaximo),
           this.vs.numberValidator
         ]
       ],
@@ -72,5 +73,5 @@ export class EmpleadoAgregarCambiosDeSueldoComponent
 
 
 
-  
+
 }
