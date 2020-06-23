@@ -30,14 +30,14 @@ export class Empleado implements Deserializable {
 
     public asistencia?: EmpleadoAsistencia,
 
-    public email: string ='',
-    public celular: string ='',
-    public telCasa: string ='',
-    public telEmergencia: string ='',
-    public nombreEmergencia: string ='',
+    public email: string = '',
+    public celular: string = '',
+    public telCasa: string = '',
+    public telEmergencia: string = '',
+    public nombreEmergencia: string = '',
     public parentescoEmergencia: string = '',
 
-    public estadoCivil?: boolean,
+    public estadoCivil?: string,
     public hijos: Date[] = [],
     public nivelDeEstudios?: string,
     public domicilio?: string
