@@ -46,6 +46,8 @@ export class RequisicionComponent implements OnInit {
   // Almacena los filtros de manera temporal
   filtros = ''
 
+  mostrarObservaciones: string[] = []
+
   constructor(
     public requisicionService: RequisicionService,
     public msjService: ManejoDeMensajesService,
@@ -242,5 +244,13 @@ export class RequisicionComponent implements OnInit {
   recibirCancelacion(req: Requisicion) {
     this.requsicionRecibirCancelacion = req
     this.componenteRecibirCancelacion.crearFormulario(req)
+  }
+
+  agregarOQuitarDeObservaciones(id: string) {
+    if (this.mostrarObservaciones.includes(id))
+      this.mostrarObservaciones = this.mostrarObservaciones.filter(
+        x => x !== id
+      )
+    else this.mostrarObservaciones.push(id)
   }
 }
