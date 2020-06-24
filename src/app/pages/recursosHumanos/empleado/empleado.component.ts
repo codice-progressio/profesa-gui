@@ -27,6 +27,8 @@ export class EmpleadoComponent implements OnInit {
   componenteCrearModificar: EmpleadoCrearModificarComponent
 
   empleadoSeleccionado: Empleado
+  nuevaFechaIngresoEmpleado: Date
+  empleadoSeleccionadoParaModificar: string
   totalDeElementos: number
   cargando: boolean = false
   paginacion = new Paginacion(5, 0, 1, 'nombres')
@@ -174,6 +176,27 @@ export class EmpleadoComponent implements OnInit {
 
   modificar(empleado: Empleado) {
     this.componenteCrearModificar.crear(empleado)
+  }
+
+  modificandoIngreso = false
+  modificarIngreso() {
+    if (!this.nuevaFechaIngresoEmpleado){
+      this._msjService.invalido('Selecciona una fecha')
+      return
+    }
+    this.modificandoIngreso = true
+    this._empleadoService.updateIngresoEmpleado(
+      this.empleadoSeleccionadoParaModificar,
+      this.nuevaFechaIngresoEmpleado
+      ).subscribe(
+        x => {
+          this.cargarEmpleados()
+          this.modificandoIngreso = false
+        },
+        err => {
+          this.modificandoIngreso = false
+        }
+      )
   }
 
   termino: string = null

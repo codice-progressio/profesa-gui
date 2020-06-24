@@ -1,4 +1,4 @@
-<!-- 
+<!--
 =====================================
  Encabezado
 =====================================
@@ -42,13 +42,13 @@
     </div>
   </div>
 </div>
-<!-- 
+<!--
 =====================================
  END Encabezado
 =====================================
 -->
 
-<!-- 
+<!--
 =====================================
  Filtros
 =====================================
@@ -67,13 +67,13 @@
   </div>
 </div> -->
 
-<!-- 
+<!--
 =====================================
  END Filtros
 =====================================
 -->
 
-<!-- 
+<!--
 =====================================
  tabla
 =====================================
@@ -156,8 +156,21 @@
                   (click)="empleadoSeleccionado = empleado"
                 >
                   <i class="fas fa-calendar    "></i>
-                  Agregar evento
                 </a>
+
+                <a
+                  title="Editar fecha ingreso"
+                  class="btn btn-secondary btn-xs mr-1"
+                  href="javascript:void(0)"
+                  role="button"
+                  data-toggle="modal"
+                  data-target="#editarFechaIngreso"
+                  (click)="empleadoSeleccionadoParaModificar = empleado._id"
+                >
+                  <i class="fas fa-calendar "></i>
+                  Ingreso
+                </a>
+
               </td>
               <td title="Numero de nomina" class="fit align-middle">
                 {{ empleado.idNomina }}
@@ -211,13 +224,13 @@
   </div>
 
 
-  <!-- 
+  <!--
   =====================================
    END tabla
   =====================================
   -->
 </div>
-<!-- 
+<!--
   =====================================
    No empleados
   =====================================
@@ -231,13 +244,13 @@
     </div>
   </div>
 </div>
-<!-- 
+<!--
 =====================================
  END No empleados
 =====================================
 -->
 
-<!-- 
+<!--
 =====================================
   Detalle empleado
 =====================================
@@ -273,13 +286,13 @@
   </div>
 </div>
 
-<!-- 
+<!--
   =====================================
    END Detalle
   =====================================
   -->
 
-<!-- 
+<!--
   =====================================
    Crear editar
   =====================================
@@ -315,13 +328,13 @@
   </div>
 </div>
 
-<!-- 
+<!--
   =====================================
    END Crear editar
   =====================================
   -->
 
-<!-- 
+<!--
   =====================================
    Detalle puesto
   =====================================
@@ -354,13 +367,13 @@
   </div>
 </div>
 
-<!-- 
+<!--
   =====================================
    END Detalle puesto
   =====================================
   -->
 
-<!-- 
+<!--
   =====================================
    Contenedor de modales para crear eventos de empleado
   =====================================
@@ -438,3 +451,69 @@
     </div>
   </div>
 </div>
+
+
+<!--
+=====================================
+Modificar Ingreso
+=====================================
+-->
+
+<div
+  class="modal fade"
+  id="editarFechaIngreso"
+  tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+  let eml
+  >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" >Modificar fecha de ingreso</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="modificandoIngreso" class="row">
+          <div class="col-12 text-center">
+            <h1 class="display-1"><i class="fas fa-sync fa-spin-fast" ></i></h1>
+          </div>
+        </div>
+        <div
+        *ngIf="!modificandoIngreso"
+        class="col-18 col-sm-12 col-md-16 "
+        >
+          <input
+            type="date"
+            class="input"
+            [(ngModel)]="nuevaFechaIngresoEmpleado"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Nueva fecha</small
+          >
+        </div>
+
+      </div>
+
+      <!--
+      =====================================
+      END Modificar Ingreso
+      =====================================
+      -->
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-success"
+          (click) = "modificarIngreso()"
+          >Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
