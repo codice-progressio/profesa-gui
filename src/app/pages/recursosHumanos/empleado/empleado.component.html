@@ -165,7 +165,8 @@
                   role="button"
                   data-toggle="modal"
                   data-target="#editarFechaIngreso"
-                  (click)="empleadoSeleccionadoParaModificar = empleado._id"
+                  *ngIf="permisos['empleado:ingreso:modificar'] | contieneElPermiso"
+                  (click)="empleadoSeleccionadoParaModificar = empleado"
                 >
                   <i class="fas fa-calendar "></i>
                   Ingreso
@@ -470,7 +471,7 @@ Modificar Ingreso
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" >Modificar fecha de ingreso</h3>
+        <h1 class="modal-title" >Modificar fecha de ingreso de {{empleadoSeleccionadoParaModificar?.nombres}}</h1>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

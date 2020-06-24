@@ -449,13 +449,13 @@ export class EmpleadoService {
   }
 
   updateIngresoEmpleado(empleado: string, fechaNueva: Date) :Observable<null>{
-    let url = this.base.concat('ingreso-empleado')
+    let url = this.base.concat('/ingreso-empleado')
     return this.http.put(
       url,
       {
         idEmpleado: empleado,
         fecha: fechaNueva
-      }
+      },
       ).pipe(
         map((x: any) => {
           this._msjService.toastCorrecto(x.mensaje)
