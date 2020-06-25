@@ -10,6 +10,8 @@ import { EmpleadoEventosCrearModalComponent } from './empleado-eventos-crear/emp
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 import { EmpleadoEventoEstatusLaboralComponent } from './empleado-eventos/empleado-evento-estatus-laboral.component'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+
 
 @Component({
   selector: 'app-empleado',
@@ -23,10 +25,14 @@ export class EmpleadoComponent implements OnInit {
   empleadoModificar: Empleado = null
   buscando: boolean = false
 
+  permisos = permisosKeysConfig
+
   empleadoFiltrosComponent: EmpleadoFiltrosComponent
   componenteCrearModificar: EmpleadoCrearModificarComponent
 
   empleadoSeleccionado: Empleado
+  nuevaFechaIngresoEmpleado: Date
+  empleadoSeleccionadoParaModificar: Empleado
   totalDeElementos: number
   cargando: boolean = false
   paginacion = new Paginacion(5, 0, 1, 'nombres')
@@ -174,6 +180,27 @@ export class EmpleadoComponent implements OnInit {
 
   modificar(empleado: Empleado) {
     this.componenteCrearModificar.crear(empleado)
+  }
+
+  modificandoIngreso = false
+  modificarIngreso() {
+    if (!this.nuevaFechaIngresoEmpleado){
+      this._msjService.invalido('Selecciona una fecha')
+      return
+    }
+    this.modificandoIngreso = true
+    this._empleadoService.updateIngresoEmpleado(
+      this.empleadoSeleccionadoParaModificar._id,
+      this.nuevaFechaIngresoEmpleado
+      ).subscribe(
+        x => {
+          this.cargarEmpleados()
+          this.modificandoIngreso = false
+        },
+        err => {
+          this.modificandoIngreso = false
+        }
+      )
   }
 
   termino: string = null
