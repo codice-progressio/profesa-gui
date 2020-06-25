@@ -116,135 +116,159 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let requisicion of requisiciones"
-              [ngClass]="{
-                'bg-light-success active': requisicion.estatus.esTerminada,
-                ' active text-muted': requisicion.estatus.esCancelada
-              }"
-            >
-              <td class="fit">
-                <a
-                  href="javascript:void(0)"
-                  [routerLink]="['detalle', requisicion._id]"
-                  routerLinkActive="router-link-active"
-                  class="btn text-white btn-primary btn-xs mr-1"
-                  role="button"
-                >
-                  <i class="fas fa-eye"></i>
-                </a>
-
-                <a
-                  *ngIf="mostrarBtnEditarRequisicion(requisicion)"
-                  id="button2"
-                  class="btn text-white btn-success btn-xs mr-1"
-                  role="button"
-                  title="Editar requisicion"
-                  [routerLink]="['modificar', requisicion._id]"
-                >
-                  <i class="fas fa-edit"></i>
-                </a>
-
-                <a
-                  *ngIf="mostrarBtnGenerarCompra(requisicion)"
-                  class="btn text-white btn-info btn-xs mr-1"
-                  role="button"
-                  title="Generar compra"
-                  (click)="generarCompra(requisicion)"
-                >
-                  <i class="fas fa-dollar-sign"></i>
-                </a>
-                <a
-                  *ngIf="mostrarBtnRecibirParcialidad(requisicion)"
-                  class="btn btn-secondary btn-xs mr-1"
-                  role="button"
-                  title="Recibir una parcialidad de esta requisicion"
-                  data-toggle="modal"
-                  data-target="#recibirParcialidad"
-                  (click)="recibirParcialidad(requisicion)"
-                >
-                  <i class="fas fa-star-half"></i>
-                </a>
-                <a
-                  *ngIf="mostrarBtnTerminarRequisicion(requisicion)"
-                  class="btn text-white btn-success btn-xs mr-1"
-                  role="button"
-                  title="Dar por terminado esta orden"
-                  data-toggle="modal"
-                  data-target="#recibirTerminacion"
-                  (click)="recibirTerminacion(requisicion)"
-                >
-                  <i class="fas fa-check-circle"></i>
-                </a>
-                <a
-                  *ngIf="mostrarBtnCancelarRequisicion(requisicion)"
-                  class="btn text-white btn-danger btn-xs mr-1"
-                  role="button"
-                  title="Cancelar requisicion"
-                  data-toggle="modal"
-                  data-target="#recibirCancelacion"
-                  (click)="recibirCancelacion(requisicion)"
-                >
-                  <i class="fas fa-times-circle"></i>
-                </a>
-              </td>
-              <td
-                class="no-wrap"
-                title="{{ requisicion.createdAt | fecha: 'LLL' }}"
+            <ng-container *ngFor="let requisicion of requisiciones">
+              <tr
+                [ngClass]="{
+                  'bg-light-success active': requisicion.estatus.esTerminada,
+                  ' active text-muted': requisicion.estatus.esCancelada
+                }"
               >
-                {{ requisicion.createdAt | date: 'dd/MM/yy' }}
-              </td>
-              <td class="no-wrap fit">{{ requisicion.folio }}</td>
-              <td class="text-right">
-                {{ requisicion.articulo.nombre }}
-              </td>
-              <td class="no-wrap">
-                {{
-                  requisicion.cantidad -
-                    requisicion.estatus.cantidadEntregadaALaFecha
-                    | number: '0.0-2'
-                }}
-                ({{ requisicion.articulo.unidad }})
-              </td>
-              <td>
-                {{ requisicion.articulo.presentacion }}
-              </td>
+                <td class="fit">
+                  <button
+                    (click)="agregarOQuitarDeObservaciones(requisicion._id)"
+                    type="button"
+                    class="btn btn-xs btn-outline-secondary mr-3"
+                  >
+                    <i
+                      class="fas fa-chevron-right"
+                      [ngClass]="{
+                        'fa-rotate-90 animated fadeIn': mostrarObservaciones.includes(
+                          requisicion._id
+                        )
+                      }"
+                    ></i>
+                  </button>
 
-              <td>
-                <span *ngIf="requisicion.gastosYServicios"
-                  >Gastos/Servicios</span
+                  <a
+                    href="javascript:void(0)"
+                    [routerLink]="['detalle', requisicion._id]"
+                    routerLinkActive="router-link-active"
+                    class="btn text-white btn-primary btn-xs mr-1"
+                    role="button"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </a>
+
+                  <a
+                    *ngIf="mostrarBtnEditarRequisicion(requisicion)"
+                    id="button2"
+                    class="btn text-white btn-success btn-xs mr-1"
+                    role="button"
+                    title="Editar requisicion"
+                    [routerLink]="['modificar', requisicion._id]"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </a>
+
+                  <a
+                    *ngIf="mostrarBtnGenerarCompra(requisicion)"
+                    class="btn text-white btn-info btn-xs mr-1"
+                    role="button"
+                    title="Generar compra"
+                    (click)="generarCompra(requisicion)"
+                  >
+                    <i class="fas fa-dollar-sign"></i>
+                  </a>
+                  <a
+                    *ngIf="mostrarBtnRecibirParcialidad(requisicion)"
+                    class="btn btn-secondary btn-xs mr-1"
+                    role="button"
+                    title="Recibir una parcialidad de esta requisicion"
+                    data-toggle="modal"
+                    data-target="#recibirParcialidad"
+                    (click)="recibirParcialidad(requisicion)"
+                  >
+                    <i class="fas fa-star-half"></i>
+                  </a>
+                  <a
+                    *ngIf="mostrarBtnTerminarRequisicion(requisicion)"
+                    class="btn text-white btn-success btn-xs mr-1"
+                    role="button"
+                    title="Dar por terminado esta orden"
+                    data-toggle="modal"
+                    data-target="#recibirTerminacion"
+                    (click)="recibirTerminacion(requisicion)"
+                  >
+                    <i class="fas fa-check-circle"></i>
+                  </a>
+                  <a
+                    *ngIf="mostrarBtnCancelarRequisicion(requisicion)"
+                    class="btn text-white btn-danger btn-xs mr-1"
+                    role="button"
+                    title="Cancelar requisicion"
+                    data-toggle="modal"
+                    data-target="#recibirCancelacion"
+                    (click)="recibirCancelacion(requisicion)"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </a>
+                </td>
+                <td
+                  class="no-wrap"
+                  title="{{ requisicion.createdAt | fecha: 'LLL' }}"
                 >
-                <span *ngIf="requisicion.consumibles">Consumible</span>
-                <span *ngIf="requisicion.materiaPrima">Materia prima</span>
-              </td>
+                  {{ requisicion.createdAt | date: 'dd/MM/yy' }}
+                </td>
+                <td class="no-wrap fit">{{ requisicion.folio }}</td>
+                <td class="text-right">
+                  {{ requisicion.articulo.nombre }}
+                </td>
+                <td class="no-wrap">
+                  {{
+                    requisicion.cantidad -
+                      requisicion.estatus.cantidadEntregadaALaFecha
+                      | number: '0.0-2'
+                  }}
+                  ({{ requisicion.articulo.unidad }})
+                </td>
+                <td>
+                  {{ requisicion.articulo.presentacion }}
+                </td>
 
-              <td>
-                {{ requisicion.usuario.nombre }}
-              </td>
+                <td>
+                  <span *ngIf="requisicion.gastosYServicios"
+                    >Gastos/Servicios</span
+                  >
+                  <span *ngIf="requisicion.consumibles">Consumible</span>
+                  <span *ngIf="requisicion.materiaPrima">Materia prima</span>
+                </td>
 
-              <td>
-                <i
-                  [class]="
-                    'fas ' +
-                    requisicionService.estatusActual(requisicion.estatus).fa
-                  "
-                ></i>
-                {{ requisicionService.estatusActual(requisicion.estatus).msj }}
-              </td>
+                <td>
+                  {{ requisicion.usuario.nombre }}
+                </td>
 
-              <td class="fit">
-                <a
-                  *ngIf="permisos['requisicion:eliminar'] | contieneElPermiso"
-                  id="buttonX"
-                  class="btn text-white btn-danger btn-xs"
-                  role="button"
-                  title="Eliminar requisicion"
-                  (click)="eliminar(requisicion)"
-                >
-                  <i class="fas fa-trash"></i>
-                </a>
-              </td>
-            </tr>
+                <td>
+                  <i
+                    [class]="
+                      'fas ' +
+                      requisicionService.estatusActual(requisicion.estatus).fa
+                    "
+                  ></i>
+                  {{
+                    requisicionService.estatusActual(requisicion.estatus).msj
+                  }}
+                </td>
+
+                <td class="fit">
+                  <a
+                    *ngIf="permisos['requisicion:eliminar'] | contieneElPermiso"
+                    id="buttonX"
+                    class="btn text-white btn-danger btn-xs"
+                    role="button"
+                    title="Eliminar requisicion"
+                    (click)="eliminar(requisicion)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+
+              <tr *ngIf="mostrarObservaciones.includes(requisicion._id)">
+                <td colspan="10" class="shadow animated fadeIn faster">
+                  <p>{{ requisicion.observaciones }}</p>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
