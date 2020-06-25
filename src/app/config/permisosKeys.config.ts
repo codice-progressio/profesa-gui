@@ -271,5 +271,6 @@ export default {
     'parametros:departamentoTransformacion',
   'parametros:estacionesDeEscaneo': 'parametros:estacionesDeEscaneo',
   'parametros:localizacionDeOrdenes': 'parametros:localizacionDeOrdenes',
-  'parametros:procesosEspeciales': 'parametros:procesosEspeciales'
+  'parametros:procesosEspeciales': 'parametros:procesosEspeciales',
+  'empleado:ingreso:modificar' : 'empleado:ingreso:modificar'
 }

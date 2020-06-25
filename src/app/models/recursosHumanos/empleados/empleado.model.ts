@@ -7,6 +7,7 @@ import { Puesto } from '../puestos/puesto.model'
 export class Empleado implements Deserializable {
   constructor(
     public _id?: string,
+    public fechaIngreso?: Date,
     public idChecador?: number,
     public idNomina?: number,
     public nombres: string = null,
