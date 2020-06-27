@@ -209,11 +209,16 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
     this.ordenesAMostrar = this.ordenes
 
       .map(x => {
-        let cadena = `${x.numeroDeOrden.toLowerCase()} ${x.sku.toLowerCase()} ${
-          x.ubicacionActual.departamento
-        }`
+        let cadena = ''
+          .concat(x.numeroDeOrden)
+          .concat(x.sku)
+          .concat(x.ubicacionActual.departamento)
+          .concat(x.laser)
+          .concat(x.laserAlmacen)
+          .toLowerCase()
+
         return {
-          cadena: cadena.toLowerCase(),
+          cadena: cadena,
           numeroDeOrden: x.numeroDeOrden
         }
       })
