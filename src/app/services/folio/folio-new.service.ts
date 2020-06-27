@@ -452,7 +452,7 @@ export interface OrdenLigera {
 
   laser: string
   laserAlmacen: string
-  marcaLaser: string ///Revisar esto!!!
+  // marcaLaser: string ///Revisar esto!!!
 
   cliente: string
   idCliente: string
