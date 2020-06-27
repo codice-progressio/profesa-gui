@@ -27,10 +27,7 @@ export class ProgramacionTransformacionService {
     return throwError(err)
   }
 
-
-  ordenesPorAsignar(
-    idTransformacion: string
-  ): Observable<OrdenLigera[]> {
+  ordenesPorAsignar(idTransformacion: string): Observable<OrdenLigera[]> {
     const url = this.base.concat('/ordenesPorAsignar')
 
     return this.http.get(url).pipe(
@@ -88,14 +85,22 @@ export class ProgramacionTransformacionService {
     )
   }
 
-  actualizarUbicacion(idTransformacion: string): Observable<null> {
-    const url = this.base
-      .concat('/actualizarUbicacion/')
-      .concat(idTransformacion)
+  actualizarUbicacion(): Observable<null> {
+    const url = this.base.concat('/actualizarUbicacion/')
     return this.http.put(url, null).pipe(
       map((resp: any) => {
         this.msjService.toastCorrecto('Ubicacion de ordenes actualizada')
         return null
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
+  findAllMaquinas(): Observable<Maquina[]> {
+    let url = this.base.concat('/maquinas')
+    return this.http.get<Maquina[]>(url).pipe(
+      map((resp: any) => {
+        return resp.maquinas as Maquina[]
       }),
       catchError(err => this.errFun(err))
     )
