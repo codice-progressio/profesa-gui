@@ -83,63 +83,74 @@
       <tr *ngIf="maquina.trabajando" class="bg-light-inverse font-bold">
         <td
           class="text-right"
-          title="Este folio pertenece al cliente {{ maquina.trabajo.cliente }}"
+          title="Este folio pertenece al cliente {{
+            maquina.trabajo.datos.cliente
+          }}"
         >
-          {{ maquina.trabajo.cliente }}
+          {{ maquina.trabajo.datos.cliente }}
         </td>
         <td
           class="text-right fit"
           title="Este folio entro a produccion el {{
-            maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'LLLL'
+            maquina.trabajo.datos.fechaDeEntregaAProduccion | fecha: 'LLLL'
           }}"
         >
-          {{ maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'DD/MMM' }}
+          {{
+            maquina.trabajo.datos.fechaDeEntregaAProduccion | fecha: 'DD/MMM'
+          }}
         </td>
         <td
           class="text-right fit"
-          title="Esta orden esta en el {{ maquina.trabajo.paso }}{{
-            termino[maquina.trabajo.paso]
+          title="Esta orden esta en el {{ maquina.trabajo.datos.paso }}{{
+            termino[maquina.trabajo.datos.paso]
           }} paso"
         >
-          {{ maquina.trabajo.paso }}
+          {{ maquina.trabajo.datos.paso }}
         </td>
         <td
           class="text-right nowrap"
-          title="Esta es la orden numero {{ maquina.trabajo.numeroDeOrden }}"
+          title="Esta es la orden numero {{
+            maquina.trabajo.datos.numeroDeOrden
+          }}"
         >
           <a
             data-toggle="modal"
             data-target="#detalleOrden"
             href="javascript:void(0)"
-            (click)="ordenDetalle = maquina.trabajo"
+            (click)="ordenDetalle = maquina.trabajo.datos"
           >
-            {{ maquina.trabajo.numeroDeOrden }}
+            {{ maquina.trabajo.datos.numeroDeOrden }}
           </a>
         </td>
         <td
           class="text-right"
-          title="El modelo de esta orden es  {{ maquina.trabajo.sku }}"
+          title="El modelo de esta orden es  {{ maquina.trabajo.datos.sku }}"
         >
-          {{ maquina.trabajo.sku }}
+          {{ maquina.trabajo.datos.sku }}
         </td>
         <td
           class="text-right"
           title="Este boton {{
-            maquina.trabajo.esBaston ? '' : 'no'
+            maquina.trabajo.datos.esBaston ? '' : 'no'
           }} es baston"
         >
-          <i *ngIf="maquina.trabajo.esBaston" class="fas fa-check-circle"></i>
+          <i
+            *ngIf="maquina.trabajo.datos.esBaston"
+            class="fas fa-check-circle"
+          ></i>
         </td>
         <td
           class="text-right"
           title="{{
-            maquina.trabajo.laser || maquina.trabajo.laserAlmacen
-              ? 'La marca laser es ' + maquina.trabajo.laser ||
-                maquina.trabajo.laserAlmacen
+            maquina.trabajo.datos.laser || maquina.trabajo.datos.laserAlmacen
+              ? 'La marca laser es ' + maquina.trabajo.datos.laser ||
+                maquina.trabajo.datos.laserAlmacen
               : 'Esta orden no lleva marca laser'
           }}"
         >
-          {{ maquina.trabajo.laser || maquina.trabajo.laserAlmacen }}
+          {{
+            maquina.trabajo.datos.laser || maquina.trabajo.datos.laserAlmacen
+          }}
         </td>
 
         <td class="text-center">
@@ -149,20 +160,20 @@
         <td
           class="text-right"
           title="
-      Folio:  {{ maquina.trabajo.observacionesFolio }}
-      Pedido: {{ maquina.trabajo.observacionesPedido }}
-      Orden: {{ maquina.trabajo.observacionesOrden }}
+      Folio:  {{ maquina.trabajo.datos.observacionesFolio }}
+      Pedido: {{ maquina.trabajo.datos.observacionesPedido }}
+      Orden: {{ maquina.trabajo.datos.observacionesOrden }}
     
       "
         >
           <span title="Esta observacion pertenece al grupo folio">
-            {{ maquina.trabajo.observacionesFolio }} -
+            {{ maquina.trabajo.datos.observacionesFolio }} -
           </span>
           <span title="Esta obseracion pertenece al grupo pedido">
-            {{ maquina.trabajo.observacionesPedido }} -
+            {{ maquina.trabajo.datos.observacionesPedido }} -
           </span>
           <span title="Esta observacion pertenece al grupo orden">
-            {{ maquina.trabajo.observacionesOrden }}
+            {{ maquina.trabajo.datos.observacionesOrden }}
           </span>
         </td>
       </tr>
