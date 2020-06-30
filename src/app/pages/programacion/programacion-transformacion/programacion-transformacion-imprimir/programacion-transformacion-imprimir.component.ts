@@ -22,7 +22,7 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
 
   @Input() maquinas: Maquina[] = []
 
-  ordenDetalle: OrdenLigera = null
+  ordenDetalle: Orden = null
   folioDetalle: Folio = null
   pedidoDetalle: FolioLinea = null
   ordenDetalleGeneral: Orden = null
@@ -52,5 +52,11 @@ export class ProgramacionTransformacionImprimirComponent implements OnInit {
         throw err
       }
     )
+  }
+
+  obtenerDetalleDeFolio(idFolio: string) {
+    this.folioService.findById(idFolio).subscribe(folio => {
+      this.folioDetalle = folio
+    })
   }
 }

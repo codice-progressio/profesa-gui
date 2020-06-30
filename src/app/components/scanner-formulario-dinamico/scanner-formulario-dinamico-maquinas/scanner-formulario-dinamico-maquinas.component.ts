@@ -8,6 +8,7 @@ import { ProgramacionTransformacionService } from '../../../services/programacio
 import { FolioService } from '../../../services/folio/folio.service'
 import { FolioNewService } from '../../../services/folio/folio-new.service'
 import { OrdenEscaneada } from '../scanner-formulario-dinamico.component'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-scanner-formulario-dinamico-maquinas',
@@ -32,24 +33,32 @@ export class ScannerFormularioDinamicoMaquinasComponent implements OnInit {
 
   @Output() cancelar = new EventEmitter<null>()
 
-  constructor(private folioService: FolioNewService) {}
+  constructor(
+    private folioService: FolioNewService,
+    private msjservice: ManejoDeMensajesService
+  ) {}
 
   ngOnInit(): void {}
 
   guardar() {
-    this.cargando['guardando'] = 'Aplicando cambios a maquinas'
+    if (!this.maquinaSeleccionada) {
+      this.msjservice.invalido('No has seleccionado una maquina')
 
+      return
+    }
+
+    this.cargando['guardando'] = 'Aplicando cambios a maquinas'
     this.folioService
-      .ponerOrdenATrabajarEnMaquina(
-        this.orden.idOrden,
-        this.orden.idPedido,
-        this.orden.idFolio,
-        this.maquinaSeleccionada._id,
-        this._escaner.departamento._id
+      .ponerATrabajarEnMaquinaA(
+        this.orden,
+        this._escaner.departamento._id,
+        this.maquinaSeleccionada._id
       )
       .subscribe(
         () => {
           delete this.cargando['guardando']
+          this.maquinaSeleccionada = null
+          this.cancelar.emit()
         },
         _ => delete this.cargando['guardando']
       )

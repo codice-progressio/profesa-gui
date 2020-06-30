@@ -32,32 +32,27 @@ export class ProgramacionTransformacionReporteComponent implements OnInit {
 
   cargarDatos() {
     this.ultimaActualizacion = new Date()
-    this.cargando['parametros'] = 'Obteniendo parametros'
 
-    this.parametrosService.findDepartamentoTransformacion().subscribe(
-      def => {
-        delete this.cargando['parametros']
-        this.cargando['ubicacion'] = 'Actualizando ubicacion de las ordenes'
+    this.cargando['ubicacion'] = 'Actualizando ubicacion de las ordenes'
 
-        this.programacionService.actualizarUbicacion(def._id).subscribe(
-          () => {
-            delete this.cargando['ubicacion']
-            this.cargando['maquinas'] = 'Obteniendo maquinas'
-
-            this.maquinaService
-              .buscarMaquinasPorDepartamento(def._id)
-              .subscribe(
-                maquinas => {
-                  delete this.cargando['maquinas']
-                  this.maquinas = maquinas
-                },
-                err => delete this.cargando['maquinas']
-              )
-          },
-          _ => delete this.cargando['ubicacion']
-        )
+    this.programacionService.actualizarUbicacion().subscribe(
+      () => {
+        delete this.cargando['ubicacion']
+        this.cargarMaquinas()
       },
-      _ => delete this.cargando['parametros']
+      _ => delete this.cargando['ubicacion']
+    )
+  }
+
+  cargarMaquinas() {
+    this.cargando['maquinas'] = 'Obteniendo maquinas'
+
+    this.programacionService.findAllMaquinas().subscribe(
+      maquinas => {
+        delete this.cargando['maquinas']
+        this.maquinas = maquinas
+      },
+      err => delete this.cargando['maquinas']
     )
   }
 

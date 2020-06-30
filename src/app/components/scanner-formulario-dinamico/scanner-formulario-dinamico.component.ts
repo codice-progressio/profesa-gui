@@ -136,7 +136,7 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
               if (estatus.ponerATrabajarConMaquina) {
                 this.mostrarFormularioMaquinas = true
               } else {
-                this.ponerATrabajar(e, null)
+                this.ponerATrabajar(e)
               }
             }
           } else {
@@ -175,28 +175,22 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
     console.error('scanFailureHandler', e)
   }
 
-  private ponerATrabajar(e: OrdenEscaneada, datos) {
+  private ponerATrabajar(e: OrdenEscaneada) {
     this.cargando['trabajar'] = 'Asignando trabajo de orden'
 
-    return this.folioService
-      .ponerATrabajarORegistrar(e, this.idDepartamento, datos)
-      .subscribe(
-        _ => {
-          this.actualizarLista.next()
-          delete this.cargando['trabajar']
-        },
-        _ => delete this.cargando['trabajar']
-      )
+    return this.folioService.ponerATrabajar(e, this.idDepartamento).subscribe(
+      _ => {
+        this.actualizarLista.next()
+        delete this.cargando['trabajar']
+      },
+      _ => delete this.cargando['trabajar']
+    )
   }
 
   submit(datos: FormGroup) {
     this.cargando['registrando'] = 'Registrando datos de proceso.'
     this.folioService
-      .ponerATrabajarORegistrar(
-        this.ordenEscaneada,
-        this.idDepartamento,
-        datos.value
-      )
+      .registrar(this.ordenEscaneada, this.idDepartamento, datos.value)
       .subscribe(
         _ => {
           this.actualizarLista.next()
@@ -257,7 +251,7 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
                 cliente: null
               }
 
-              return this.folioService.ponerATrabajarORegistrar(
+              return this.folioService.registrar(
                 escaneada,
                 this.idDepartamento,
                 {}
