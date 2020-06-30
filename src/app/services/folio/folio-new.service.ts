@@ -135,7 +135,7 @@ export class FolioNewService {
     pedido: string,
     orden: string
   ): Observable<Orden> {
-    const a = this._preLoaderService.loading('Buscando detalles de orden')
+   
     const url = this.base
       .concat('/detalle/orden')
       .concat(`/${folio}`)
@@ -144,7 +144,6 @@ export class FolioNewService {
 
     return this.http.get(url).pipe(
       map((resp: any) => {
-        this.msjService.ok_(resp, null, a)
         return resp.orden as Orden
       }),
       catchError(err => this.errFun(err))

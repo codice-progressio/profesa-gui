@@ -115,9 +115,9 @@
         >
           <a
             data-toggle="modal"
-            data-target="#detalleOrden"
+            data-target="#detalleFolio"
             href="javascript:void(0)"
-            (click)="ordenDetalle = maquina.trabajo.datos"
+            (click)="obtenerDetalleDeFolio(maquina.trabajo.datos.folio)"
           >
             {{ maquina.trabajo.datos.numeroDeOrden }}
           </a>
@@ -206,9 +206,9 @@
         >
           <a
             data-toggle="modal"
-            data-target="#detalleOrden"
+            data-target="#detalleFolio"
             href="javascript:void(0)"
-            (click)="ordenDetalle = pila"
+            (click)="obtenerDetalleDeFolio(pila.folio)"
           >
             {{ pila.numeroDeOrden }}
           </a>
@@ -290,54 +290,6 @@
     </tbody>
   </table>
 </ng-container>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="detalleOrden"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div
-          class="modal-title d-flex justify-content-between align-items-center w-100"
-        >
-          <h5>
-            Avance de orden:
-            <span class="font-weight-bolder"
-              >{{ ordenDetalle?.numeroDeOrden }}
-            </span>
-          </h5>
-
-          <a
-            class="btn btn-outline-primary btn-sm"
-            href="javascript:void(0)"
-            role="button"
-            data-toggle="modal"
-            data-target="#detalleFolio"
-            (click)="cargarFolio(ordenDetalle.folio)"
-          >
-            <i class="fas fa-eye"></i>
-            Folio {{ (ordenDetalle?.numeroDeOrden.split('-'))[0] }}</a
-          >
-
-          <h5>
-            SKU:
-            <span class="font-weight-bolder">{{ ordenDetalle?.sku }} </span>
-          </h5>
-        </div>
-      </div>
-      <div class="modal-body">
-        <app-orden-detalle-avance [orden]="ordenDetalle">
-        </app-orden-detalle-avance>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- 
 =====================================
