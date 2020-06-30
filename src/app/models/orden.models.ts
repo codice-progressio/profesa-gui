@@ -74,6 +74,7 @@ export interface Ruta {
   recepcion: Date
   consecutivo: number
   trabajando: boolean
+  idMaquina: string
   trabajandoDesde: Date
 
   datos: {} //--> ESte varia entre cada uno

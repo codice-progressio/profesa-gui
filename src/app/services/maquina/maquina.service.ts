@@ -35,7 +35,7 @@ export class MaquinaService extends CRUD<Maquina> {
     this.base = URL_SERVICIOS + `/maquina`
     this.nombreDeDatos.plural = 'maquinas'
     this.nombreDeDatos.singular = 'maquina'
-    this.urlBusqueda = '/buscar'
+    this.urlBusqueda = '/buscar/termino'
   }
 
   buscarMaquinasPorDepartamento(id: string): Observable<Maquina[]> {

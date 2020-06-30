@@ -135,7 +135,7 @@ export class FolioNewService {
     pedido: string,
     orden: string
   ): Observable<Orden> {
-    const a = this._preLoaderService.loading('Buscando detalles de orden')
+   
     const url = this.base
       .concat('/detalle/orden')
       .concat(`/${folio}`)
@@ -144,7 +144,6 @@ export class FolioNewService {
 
     return this.http.get(url).pipe(
       map((resp: any) => {
-        this.msjService.ok_(resp, null, a)
         return resp.orden as Orden
       }),
       catchError(err => this.errFun(err))
@@ -305,8 +304,47 @@ export class FolioNewService {
     )
   }
 
-  ponerATrabajarORegistrar(escaneada, idDepartamento, datos): Observable<null> {
-    let url = this.base.concat('/ponerATrabajarORegistrar')
+  ponerATrabajar(escaneada, idDepartamento): Observable<null> {
+    let url = this.base.concat('/ponerATrabajar')
+    return this.http
+      .put<OrdenLigera>(url, { ...escaneada, idDepartamento })
+      .pipe(
+        map((resp: any) => {
+          this.msjService.toastCorrecto(resp.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
+  }
+
+
+  ponerATrabajarEnMaquinaA(
+    escaneada,
+    idDepartamento,
+    idMaquina
+  ): Observable<null> {
+    let url = this.base.concat('/ponerATrabajarEnMaquina')
+    return this.http
+      .put<OrdenLigera>(url, { ...escaneada, idDepartamento, idMaquina })
+      .pipe(
+        map((resp: any) => {
+          this.msjService.toastCorrecto(resp.mensaje)
+          return null
+        }),
+        catchError(err => {
+          //Este es para que el escaneo sea mas rapido
+          this.msjService.toastError(err)
+          return throwError(err)
+        })
+      )
+  }
+
+  registrar(escaneada, idDepartamento, datos): Observable<null> {
+    let url = this.base.concat('/registrar')
     console.log('servicio', datos)
     return this.http
       .put<OrdenLigera>(url, { ...escaneada, idDepartamento, datos })
@@ -352,30 +390,6 @@ export class FolioNewService {
         return throwError(err)
       })
     )
-  }
-
-  ponerOrdenATrabajarEnMaquina(
-    idOrden: string,
-    idPedido: string,
-    idFolio: string,
-    idMaquina: string,
-    idDepartamento
-  ) {
-    let url = this.base.concat('/ponerOrdenATrabajarEnMaquina')
-
-    return this.http
-      .put(url, { idOrden, idPedido, idFolio, idMaquina, idDepartamento })
-      .pipe(
-        map((x: any) => {
-          this.msjService.toastCorrecto(x.mensaje)
-          return null
-        }),
-        catchError(err => {
-          //Este es para que el escaneo sea mas rapido
-          this.msjService.toastError(err)
-          return throwError(err)
-        })
-      )
   }
 }
 // <!--
@@ -452,7 +466,7 @@ export interface OrdenLigera {
 
   laser: string
   laserAlmacen: string
-  marcaLaser: string ///Revisar esto!!!
+  // marcaLaser: string ///Revisar esto!!!
 
   cliente: string
   idCliente: string

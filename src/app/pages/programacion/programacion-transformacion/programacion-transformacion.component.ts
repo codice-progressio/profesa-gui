@@ -21,6 +21,7 @@ import { OnDestroy } from '@angular/core'
 import { ParametrosService } from '../../../services/parametros.service'
 import { Departamento } from '../../../models/departamento.models'
 import { OrdenLigera } from '../../../services/folio/folio-new.service'
+import { FormControl } from '@angular/forms'
 
 @Component({
   selector: 'app-programacion-transformacion',
@@ -31,6 +32,16 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
   ordenes: OrdenLigera[] = []
 
   maquinas: Maquina[] = []
+  maquinasFiltradas: {
+    maquinaTermino: string
+    idMaquina: string
+    pila: {
+      orden: string
+      termino: string
+    }[]
+  }[] = []
+
+  // maquinasFiltradasHelper: string[] = []
 
   cargando = {}
   keys = Object.keys
@@ -44,6 +55,11 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
 
   departamentoTransformacion: Departamento
 
+  mostrar: string[] = []
+  filtroGeneral: FormControl = new FormControl()
+
+  filtrandoPorMaquinas = false
+
   constructor(
     private msjService: ManejoDeMensajesService,
     private programacionSerivce: ProgramacionTransformacionService,
@@ -53,9 +69,60 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.actualizarTodo()
+    this.subscribirFiltroMaquinas()
   }
 
   ngOnDestroy() {}
+
+  subscribirFiltroMaquinas() {
+    this.filtroGeneral.valueChanges.subscribe(termino => {
+      let terLim = termino.trim().toLowerCase()
+      if (!terLim) {
+        this.mostrarTodoFiltroMaquinas()
+        return
+      }
+
+      this.mostrarTodoFiltroMaquinas()
+
+      this.filtrandoPorMaquinas = true
+      this.maquinasFiltradas = this.maquinasFiltradas.filter(x => {
+        let incluyeElTermino = x.maquinaTermino.includes(terLim)
+
+        if (incluyeElTermino) return true
+
+        x.pila = x.pila.filter(y => y.termino.includes(terLim))
+
+        return x.pila.length > 0
+      })
+    })
+  }
+
+  mostrarTodoFiltroMaquinas() {
+    this.maquinasFiltradas = (JSON.parse(
+      JSON.stringify(this.maquinas)
+    ) as Maquina[]).map(x => {
+      this.filtrandoPorMaquinas = false
+      return {
+        maquinaTermino: (x.clave + x.nombre + x._id).toLowerCase(),
+        idMaquina: x._id,
+        pila: this.convertirPila(x.pila)
+      }
+    })
+  }
+
+  convertirPila(
+    pila: OrdenLigera[]
+  ): {
+    orden: string
+    termino: string
+  }[] {
+    return pila.map(x => {
+      return {
+        orden: x.orden,
+        termino: (x.sku + ' ' + x.numeroDeOrden + ' ' + x.cliente).toLowerCase()
+      }
+    })
+  }
 
   actualizarTodo() {
     this.cargando['parametros'] = 'Obteniendo parametros'
@@ -82,6 +149,8 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
           this.totalOrdenesAsignadas = this.calcularOrdenesAsignadas(
             this.maquinas
           )
+
+          this.mostrarTodoFiltroMaquinas()
 
           delete this.cargando['maquinas']
           this.ultimaActualizacion = new Date()
@@ -129,19 +198,31 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
 
   ordenesAMostrar: string[] = []
   filtrar(termino: string) {
+    this.ordenesFiltradas = []
     if (!termino.trim()) {
       this.limpiarFiltro()
+      this.filtroActivo = false
       return
     }
-    this.ordenesFiltradas = []
+
     this.filtroActivo = true
     this.ordenesAMostrar = this.ordenes
-      .filter(x => {
-        return (
-          x.numeroDeOrden.toLowerCase().includes(termino) ||
-          x.sku.toLowerCase().includes(termino)
-        )
+
+      .map(x => {
+        let cadena = ''
+          .concat(x.numeroDeOrden)
+          .concat(x.sku)
+          .concat(x.ubicacionActual.departamento)
+          .concat(x.laser)
+          .concat(x.laserAlmacen)
+          .toLowerCase()
+
+        return {
+          cadena: cadena,
+          numeroDeOrden: x.numeroDeOrden
+        }
       })
+      .filter(x => x.cadena.includes(termino.toLowerCase()))
       .map(x => x.numeroDeOrden)
   }
 
@@ -158,10 +239,7 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
     return this.maquinas.map(x => x._id).concat(['ordenes-por-asignar'])
   }
 
-  drop(
-    event: CdkDragDrop<OrdenLigera[]>,
-    maquinaALaQueLlega: Maquina = null
-  ) {
+  drop(event: CdkDragDrop<OrdenLigera[]>, maquinaALaQueLlega: Maquina = null) {
     const maquinaDeLaQueViene = event.item.data
     if (event.container !== event.previousContainer) {
       transferArrayItem(
@@ -249,5 +327,16 @@ export class ProgramacionTransformacionComponent implements OnInit, OnDestroy {
           .subscribe(m => this.cargarOrdenes())
       }
     )
+  }
+
+  mostrarMaquina(maquina: Maquina) {
+    return this.maquinasFiltradas.map(x => x.idMaquina).includes(maquina._id)
+  }
+
+  mostrarOrdenes(maquina, orden: string) {
+    return this.maquinasFiltradas
+      .find(x => x.idMaquina === maquina._id)
+      ?.pila.map(p => p.orden)
+      .includes(orden)
   }
 }

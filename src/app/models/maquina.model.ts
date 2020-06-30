@@ -36,7 +36,10 @@ export class Maquina implements Deserializable {
     public pila: OrdenLigera[] = [],
 
     public trabajando?: boolean,
-    public trabajo?: OrdenLigera,
+    public trabajo?: {
+      inicio: Date
+      datos: OrdenLigera
+    },
     public trabajado?: OrdenLigera[],
     public parada?: boolean,
     public paro?: {
@@ -105,5 +108,3 @@ export class Maquina implements Deserializable {
   //     }
   // }
 }
-
-

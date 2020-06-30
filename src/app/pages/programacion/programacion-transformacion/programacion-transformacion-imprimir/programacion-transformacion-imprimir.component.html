@@ -9,7 +9,7 @@
           <div class="w-100 d-flex justify-content-between align-items-center">
             <h3 class="font-bold">{{ maquina.clave }}</h3>
 
-            <span>Por trabajar: {{ maquina.pila.length }}</span>
+            <span>Por trabajar: {{ maquina.pila?.length }}</span>
 
             <span style="width: 400px;" class="text-right">
               <!-- Lo ponemos asi para que conserve el tamano -->
@@ -83,62 +83,74 @@
       <tr *ngIf="maquina.trabajando" class="bg-light-inverse font-bold">
         <td
           class="text-right"
-          title="Este folio pertenece al cliente {{ maquina.trabajo.cliente }}"
+          title="Este folio pertenece al cliente {{
+            maquina.trabajo.datos.cliente
+          }}"
         >
-          {{ maquina.trabajo.cliente }}
+          {{ maquina.trabajo.datos.cliente }}
         </td>
         <td
           class="text-right fit"
           title="Este folio entro a produccion el {{
-            maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'LLLL'
+            maquina.trabajo.datos.fechaDeEntregaAProduccion | fecha: 'LLLL'
           }}"
         >
-          {{ maquina.trabajo.fechaDeEntregaAProduccion | fecha: 'DD/MMM' }}
+          {{
+            maquina.trabajo.datos.fechaDeEntregaAProduccion | fecha: 'DD/MMM'
+          }}
         </td>
         <td
           class="text-right fit"
-          title="Esta orden esta en el {{ maquina.trabajo.paso }}{{
-            termino[maquina.trabajo.paso]
+          title="Esta orden esta en el {{ maquina.trabajo.datos.paso }}{{
+            termino[maquina.trabajo.datos.paso]
           }} paso"
         >
-          {{ maquina.trabajo.paso }}
+          {{ maquina.trabajo.datos.paso }}
         </td>
         <td
           class="text-right nowrap"
-          title="Esta es la orden numero {{ maquina.trabajo.numeroDeOrden }}"
+          title="Esta es la orden numero {{
+            maquina.trabajo.datos.numeroDeOrden
+          }}"
         >
           <a
             data-toggle="modal"
-            data-target="#detalleOrden"
+            data-target="#detalleFolio"
             href="javascript:void(0)"
-            (click)="ordenDetalle = maquina.trabajo"
+            (click)="obtenerDetalleDeFolio(maquina.trabajo.datos.folio)"
           >
-            {{ maquina.trabajo.numeroDeOrden }}
+            {{ maquina.trabajo.datos.numeroDeOrden }}
           </a>
         </td>
         <td
           class="text-right"
-          title="El modelo de esta orden es  {{ maquina.trabajo.sku }}"
+          title="El modelo de esta orden es  {{ maquina.trabajo.datos.sku }}"
         >
-          {{ maquina.trabajo.sku }}
+          {{ maquina.trabajo.datos.sku }}
         </td>
         <td
           class="text-right"
           title="Este boton {{
-            maquina.trabajo.esBaston ? '' : 'no'
+            maquina.trabajo.datos.esBaston ? '' : 'no'
           }} es baston"
         >
-          <i *ngIf="maquina.trabajo.esBaston" class="fas fa-check-circle"></i>
+          <i
+            *ngIf="maquina.trabajo.datos.esBaston"
+            class="fas fa-check-circle"
+          ></i>
         </td>
         <td
           class="text-right"
           title="{{
-            maquina.trabajo.marcaLaser
-              ? 'La marca laser es ' + maquina.trabajo.marcaLaser
+            maquina.trabajo.datos.laser || maquina.trabajo.datos.laserAlmacen
+              ? 'La marca laser es ' + maquina.trabajo.datos.laser ||
+                maquina.trabajo.datos.laserAlmacen
               : 'Esta orden no lleva marca laser'
           }}"
         >
-          {{ maquina.trabajo.marcaLaser }}
+          {{
+            maquina.trabajo.datos.laser || maquina.trabajo.datos.laserAlmacen
+          }}
         </td>
 
         <td class="text-center">
@@ -148,20 +160,20 @@
         <td
           class="text-right"
           title="
-      Folio:  {{ maquina.trabajo.observacionesFolio }}
-      Pedido: {{ maquina.trabajo.observacionesPedido }}
-      Orden: {{ maquina.trabajo.observacionesOrden }}
+      Folio:  {{ maquina.trabajo.datos.observacionesFolio }}
+      Pedido: {{ maquina.trabajo.datos.observacionesPedido }}
+      Orden: {{ maquina.trabajo.datos.observacionesOrden }}
     
       "
         >
           <span title="Esta observacion pertenece al grupo folio">
-            {{ maquina.trabajo.observacionesFolio }} -
+            {{ maquina.trabajo.datos.observacionesFolio }} -
           </span>
           <span title="Esta obseracion pertenece al grupo pedido">
-            {{ maquina.trabajo.observacionesPedido }} -
+            {{ maquina.trabajo.datos.observacionesPedido }} -
           </span>
           <span title="Esta observacion pertenece al grupo orden">
-            {{ maquina.trabajo.observacionesOrden }}
+            {{ maquina.trabajo.datos.observacionesOrden }}
           </span>
         </td>
       </tr>
@@ -194,9 +206,9 @@
         >
           <a
             data-toggle="modal"
-            data-target="#detalleOrden"
+            data-target="#detalleFolio"
             href="javascript:void(0)"
-            (click)="ordenDetalle = pila"
+            (click)="obtenerDetalleDeFolio(pila.folio)"
           >
             {{ pila.numeroDeOrden }}
           </a>
@@ -216,12 +228,12 @@
         <td
           class="text-right"
           title="{{
-            pila.marcaLaser
-              ? 'La marca laser es ' + pila.marcaLaser
+            pila.laser || pila.laserAlmacen
+              ? 'La marca laser es ' + pila.laser || pila.laserAlmacen
               : 'Esta orden no lleva marca laser'
           }}"
         >
-          {{ pila.marcaLaser }}
+          {{ pila.laser || pila.laserAlmacen }}
         </td>
 
         <td
@@ -239,13 +251,25 @@
                 *ngIf="!pila.ubicacionActual?.recibida"
                 class="fas fa-exclamation animated tada infinite"
               ></i>
-              {{ pila.ubicacionActual?.departamento }}
+              <i
+                *ngIf="pila.ubicacionActual?.recibida"
+                class="fas fa-check text-success"
+              ></i>
+
+              {{ pila.ubicacionActual.departamento }}
             </div>
           </ng-container>
-          <i
-            *ngIf="pila.disponible"
-            class="fas fa-check fa-2x text-success"
-          ></i>
+
+          <ng-container *ngIf="pila.disponible">
+            <i
+              *ngIf="pila.ubicacionActual.recibida"
+              class="fas fa-check-circle fa-2x text-success"
+            ></i>
+            <i
+              *ngIf="!pila.ubicacionActual.recibida"
+              class="fas fa-exclamation-circle fa-2x"
+            ></i>
+          </ng-container>
         </td>
 
         <td
@@ -269,7 +293,7 @@
         </td>
       </tr>
 
-      <tr *ngIf="maquina.pila.length === 0">
+      <tr *ngIf="maquina.pila?.length === 0">
         <td colspan="100">
           No hay ordenes en la pila de trabajo de esta maquina
         </td>
@@ -277,56 +301,6 @@
     </tbody>
   </table>
 </ng-container>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="detalleOrden"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="modelTitleId"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div
-          class="modal-title d-flex justify-content-between align-items-center w-100"
-        >
-          <h5>
-            Avance de orden:
-            <span class="font-weight-bolder"
-              >{{ ordenDetalle?.numeroDeOrden }}
-            </span>
-          </h5>
-
-          <a
-            class="btn btn-outline-primary btn-sm"
-            href="javascript:void(0)"
-            role="button"
-            data-toggle="modal"
-            data-target="#detalleFolio"
-            (click)="cargarFolio(ordenDetalle.folio)"
-          >
-            <i class="fas fa-eye"></i>
-            Folio {{ (ordenDetalle?.numeroDeOrden.split('-'))[0] }}</a
-          >
-
-          <h5>
-            SKU:
-            <span class="font-weight-bolder"
-              >{{ ordenDetalle?.sku }}
-            </span>
-          </h5>
-        </div>
-      </div>
-      <div class="modal-body">
-        <app-orden-detalle-avance [orden]="ordenDetalle">
-        </app-orden-detalle-avance>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- 
 =====================================

@@ -23,7 +23,24 @@ export class OrdenesDetalleComponent implements OnInit {
 
   @Input() folio: Folio
   @Input() linea: FolioLinea
-  @Input() orden: Orden
+
+  private _orden: Orden
+  @Input() set orden(orden: Orden) {
+    this._orden = orden
+
+    this.departamentoService.findAllPoolObservable().subscribe(() => {
+      this.orden.ruta.forEach(
+        r =>
+          (r.departamento = this.departamentoService.pool.find(
+            d => d._id === r.idDepartamento
+          ).nombre)
+      )
+    })
+  }
+
+  get orden(): Orden {
+    return this._orden
+  }
 
   ordenTexto: string
 
@@ -47,20 +64,7 @@ export class OrdenesDetalleComponent implements OnInit {
   }
 
   imprimir() {
-    if (this.departamentoService.pool.length === 0) {
-      this.departamentoService.findAllPoolObservable().subscribe(() => {
-        this.orden.ruta.forEach(
-          r =>
-            (r.departamento = this.departamentoService.pool.find(
-              d => d._id === r.idDepartamento
-            ).nombre)
-        )
-
-        this.print()
-      })
-    } else {
-      this.print()
-    }
+    this.print()
   }
 
   private print() {
