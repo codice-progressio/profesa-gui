@@ -251,14 +251,25 @@
                 *ngIf="!pila.ubicacionActual?.recibida"
                 class="fas fa-exclamation animated tada infinite"
               ></i>
+              <i
+                *ngIf="pila.ubicacionActual?.recibida"
+                class="fas fa-check text-success"
+              ></i>
 
               {{ pila.ubicacionActual.departamento }}
             </div>
           </ng-container>
-          <i
-            *ngIf="pila.disponible"
-            class="fas fa-check fa-2x text-success"
-          ></i>
+
+          <ng-container *ngIf="pila.disponible">
+            <i
+              *ngIf="pila.ubicacionActual.recibida"
+              class="fas fa-check-circle fa-2x text-success"
+            ></i>
+            <i
+              *ngIf="!pila.ubicacionActual.recibida"
+              class="fas fa-exclamation-circle fa-2x"
+            ></i>
+          </ng-container>
         </td>
 
         <td
