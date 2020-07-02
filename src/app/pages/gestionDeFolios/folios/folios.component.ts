@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Folio } from 'src/app/models/folio.models'
-import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import 'moment-duration-format'
 import { FolioNewService } from 'src/app/services/folio/folio-new.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
@@ -9,12 +8,9 @@ import {
   iPedidosConsulta,
   FoliosPendientesDeEntregarAProduccion
 } from '../../../services/folio/folio-new.service'
-import { forkJoin } from 'rxjs'
 import { Paginacion } from '../../../utils/paginacion.util'
 import { Usuario } from '../../../models/usuario.model'
-import { FolioService } from '../../../services/folio/folio.service'
 import { Router } from '@angular/router'
-import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 
 @Component({
   selector: 'app-folios',
@@ -142,7 +138,7 @@ export class FoliosComponent implements OnInit {
       () => {
         this.cargando['eliminado'] = 'Eliminando folio en proceso'
         this.foliosService.delete(id).subscribe(
-          fol => {
+          () => {
             this.cargarFoliosPorEnviarAProduccion()
             delete this.cargando['eliminado']
           },
