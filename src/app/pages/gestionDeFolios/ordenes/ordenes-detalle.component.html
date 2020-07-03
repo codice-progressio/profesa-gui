@@ -14,7 +14,7 @@
         ></app-nivel-urgencia>
       </span>
       <span class="mr-3">
-        {{ orden.fechaFolio | fecha: 'D/MM/Y' }}
+        {{ folio.fechaDeEntregaAProduccion | fecha: 'D/MM/Y' }}
       </span>
       <span class="mr-3"
         ># {{ orden.numeroDeOrden + 1 }}/{{ linea.ordenes.length }}</span
