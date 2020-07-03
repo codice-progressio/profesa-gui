@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <base href="/" />
+    <title>CARRDUCIsys</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon.png"
+    />
+
+    <link rel="stylesheet" href="assets/css/fontawesome/css/all.css" />
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link id="tema" id="theme" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="styles.f32f380280b67fd58822.css"></head>
+
+  <body class="fix-header card-no-border fix-sidebar">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+
+    <app-root id="no_print" class="w-100">
+      <div class="preloader">
+        <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">
+            <img src="assets/images/logo-text.png" alt="homepage" />
+          </p>
+        </div>
+      </div>
+    </app-root>
+
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="assets/js/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/js/bootstrap/popper.js"></script>
+    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="assets/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="assets/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="assets/js/custom.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Este codigo ayuda que se puedan abrir mas de un modal
+        // de manera conjunta. Se apilan y se van cerrando de uno
+        // en uno. La condicion es que no se llame a un modal desde el
+        // mismo modal por que no funciona.
+        // https://stackoverflow.com/questions/19305821/multiple-modals-overlay
+        $(document).on('show.bs.modal', '.modal', function (event) {
+          var zIndex = 1040 + 10 * $('.modal:visible').length
+          $(this).css('z-index', zIndex)
+          setTimeout(function () {
+            $('.modal-backdrop')
+              .not('.modal-stack')
+              .css('z-index', zIndex - 1)
+              .addClass('modal-stack')
+          }, 0)
+        })
+
+        // Fix recomendado para el scroll
+        $(document).on('hidden.bs.modal', '.modal', function () {
+          $('.modal:visible').length && $(document.body).addClass('modal-open')
+        })
+      })
+    </script>
+  <script src="runtime.7d910ccc0d8b3c45280c.js" defer></script><script src="polyfills-es5.0c35b1634415c0fe9bdd.js" nomodule defer></script><script src="polyfills.5a67d324e80ceef74e4e.js" defer></script><script src="main.e218b1cbea3ca5745d44.js" defer></script></body>
+</html>
