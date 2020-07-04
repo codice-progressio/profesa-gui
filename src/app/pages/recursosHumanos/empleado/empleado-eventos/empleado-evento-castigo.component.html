@@ -3,7 +3,7 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
-  Castigo el dia {{ castigo.fecha | fecha: 'LLL' }}
+  Castigo el dia {{ castigo.fecha | date: 'dd/MM/yyyy':'gmt' }}
   <br />
   <img
     style="width: 100px; height: auto;"

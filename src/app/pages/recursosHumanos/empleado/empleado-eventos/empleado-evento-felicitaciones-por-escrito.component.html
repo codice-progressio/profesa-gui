@@ -3,8 +3,9 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
-  Felicitacion del dia {{ felicitacionPorEscrito.fecha | fecha: 'LL' }}
-  <br>
+  Felicitacion del dia
+  {{ felicitacionPorEscrito.fecha | date: 'dd/MM/yyyy':'gmt' }}
+  <br />
   <img
     style="width: 100px; height: auto;"
     #img
