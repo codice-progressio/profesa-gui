@@ -3,7 +3,8 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
-  Amonestacion el dia {{ amonestacionPorEscrito.fecha | fecha: 'LL' }}
+  Amonestacion el dia
+  {{ amonestacionPorEscrito.fecha | date: 'dd/MM/yyyy':'gmt' }}
   <br />
   <img
     style="width: 100px; height: auto;"

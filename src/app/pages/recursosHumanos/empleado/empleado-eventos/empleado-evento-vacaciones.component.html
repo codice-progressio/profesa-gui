@@ -3,6 +3,6 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
-  Desde el {{ vacaciones.desde | fecha: 'LL' }} hasta el
-  {{ vacaciones.hasta | fecha: 'LL' }}
+  Desde el {{ vacaciones.desde | date: 'dd/MM/yyyy':'gmt' }} hasta el
+  {{ vacaciones.hasta | date: 'dd/MM/yyyy':'gmt' }}
 </app-empleado-evento-plantilla>

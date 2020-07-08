@@ -11,8 +11,8 @@
   </div>
   <br />
 
-  Desde el {{ permiso.fechaDeInicio | fecha: 'LL' }} hasta el
-  {{ permiso.fechaDeFinalizacion | fecha: 'LL' }}
+  Desde el {{ permiso.fechaDeInicio |date: 'dd/MM/yyyy':'gmt' }} hasta el
+  {{ permiso.fechaDeFinalizacion |date: 'dd/MM/yyyy':'gmt' }}
   <br />
 
   <h3 class="text-muted">
@@ -41,7 +41,7 @@
     <hr />
 
     <small class="text-muted font-weight-lighter">
-      Rechazado el {{ permiso.fechaRechazo | fecha: 'LLLL' }}
+      Rechazado el {{ permiso.fechaRechazo | date: 'dd/MM/yyyy':'gmt' }}
     </small>
   </span>
   <br />
