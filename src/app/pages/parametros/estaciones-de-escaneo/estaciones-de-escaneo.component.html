@@ -43,15 +43,20 @@ a<ng-container
                   }})</span
                 >
                 <input
-                  [formControl]="inputDepartamentosSeleccionados"
+                  #depaSelect
+                  (keyup)="filtrarDepartamentosSeleccionados(depaSelect.value)"
                   type="text"
                   class="form-control w-50"
                 />
               </div>
             </li>
+
             <li
-              *ngFor="let g of mostrarDepartamentosSeleccionados; let i = index"
+              *ngFor="let g of departamentosSeleccionados; let i = index"
               class="list-group-item"
+              [ngClass]="{
+                ocultar: !mostrarDepartamentosSeleccionados[i]?.mostrar
+              }"
             >
               <i class="fas fa-qrcode text-success"></i>
 
@@ -170,19 +175,24 @@ a<ng-container
                 class="list-group mt-3"
               >
                 <li class="list-group-item bg-danger text-white py-0">
-                  Usuarios con permiso
+                  Usuarios con permiso ( {{ g.usuarios.length }} )
                 </li>
                 <li
                   cdkDrag
-                  *ngFor="let u of g.usuarios; let i = index"
+                  *ngFor="let u of g.usuarios; let iUsuario = index"
                   class="list-group-item justify-content-md-between d-md-flex align-items-md-center"
+                  [ngClass]="{
+                    ocultar: !(mostrarDepartamentosSeleccionados[i]?.usuarios)[
+                      iUsuario
+                    ]
+                  }"
                 >
                   <span>
                     <i class="fas fa-user-check text-success"></i>
                     {{ u.nombre }}
                   </span>
                   <a
-                    (click)="g.usuarios.splice(i, 1)"
+                    (click)="eliminarUsuario(i, iUsuario)"
                     class="btn btn-danger btn-xs"
                     href="javascript:void(0)"
                     role="button"
