@@ -110,20 +110,16 @@ export class FolioNewService {
     )
   }
 
-  ordenesImpresas(id: string) {
-    let a = this._preLoaderService.loading('Marcando folio como impreso.')
-    return this.http.get(`${this.base}/folioImpreso/${id}`).pipe(
+  marcarPedidosComoImpresos(datos: { folio: string; pedidos: string[] }[]) {
+    let url = this.base.concat('/marcarPedidosComoImpresos')
+
+    return this.http.put(url, datos).pipe(
       map((resp: any) => {
-        this.msjService.ok_(resp, null, a)
-        // return ;
+        return null
       }),
-      catchError(err => {
-        this.msjService.err(err)
-        return throwError(err)
-      })
+      catchError(_ => this.errFun(_))
     )
   }
-
   // <!--
   // =====================================
   //  Estas son las versiones ligeras de los detalles.
@@ -135,7 +131,6 @@ export class FolioNewService {
     pedido: string,
     orden: string
   ): Observable<Orden> {
-   
     const url = this.base
       .concat('/detalle/orden')
       .concat(`/${folio}`)
@@ -321,7 +316,6 @@ export class FolioNewService {
       )
   }
 
-
   ponerATrabajarEnMaquinaA(
     escaneada,
     idDepartamento,
@@ -433,6 +427,7 @@ export interface iPedidosConsulta {
   laserSKU: string
 
   cantidadSolicitadaPedido: number
+  impreso: boolean
 }
 
 export interface FoliosPendientesDeEntregarAProduccion {
