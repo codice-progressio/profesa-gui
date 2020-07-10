@@ -82,7 +82,7 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   resultadoDeBusqueda(datos) {
     this.modelosCompletos = datos
-    this.totalDeElementos = this.almacenProdTerSer.total
+    this.totalDeElementos = this.modComService.total
     delete this.cargando['byTerm']
   }
 

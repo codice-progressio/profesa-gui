@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Folio } from 'src/app/models/folio.models'
-import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import 'moment-duration-format'
 import { FolioNewService } from 'src/app/services/folio/folio-new.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
@@ -9,10 +8,8 @@ import {
   iPedidosConsulta,
   FoliosPendientesDeEntregarAProduccion
 } from '../../../services/folio/folio-new.service'
-import { forkJoin } from 'rxjs'
 import { Paginacion } from '../../../utils/paginacion.util'
 import { Usuario } from '../../../models/usuario.model'
-import { FolioService } from '../../../services/folio/folio.service'
 import { Router } from '@angular/router'
 
 @Component({
@@ -30,7 +27,9 @@ export class FoliosComponent implements OnInit {
   keys = Object.keys
   folioParaDetalle: Folio
 
-  paginadorTerminados = new Paginacion(3000, 0, 1, 'pedido')
+  cantidadDeElementos = 50
+
+  paginadorTerminados = new Paginacion(this.cantidadDeElementos, 0, 1, 'pedido')
   paginadorEnProceso = new Paginacion(3000, 0, 1, 'pedido')
   paginadorPorEnviarProduccion = new Paginacion(3000, 0, 1, 'pedido')
 
@@ -58,8 +57,9 @@ export class FoliosComponent implements OnInit {
 
   cargarPedidosEnProceso() {
     this.limpiarPedidos()
-    this.cargando['enProceso'] = 'Cargando pedidos en proceso'
+    if (!this.usuario) return
 
+    this.cargando['enProceso'] = 'Cargando pedidos en proceso'
     const filtro = `vendedor=${this.usuario._id}`
       .concat(`&folioLineas.terminado=false`)
       .concat(`&ordenesGeneradas=true`)
@@ -138,7 +138,7 @@ export class FoliosComponent implements OnInit {
       () => {
         this.cargando['eliminado'] = 'Eliminando folio en proceso'
         this.foliosService.delete(id).subscribe(
-          fol => {
+          () => {
             this.cargarFoliosPorEnviarAProduccion()
             delete this.cargando['eliminado']
           },
@@ -167,11 +167,33 @@ export class FoliosComponent implements OnInit {
     let mensajeDeCancelacion = `No se mando a produccion el folio.`
     this.msjService.confirmarAccion(mensajeDeConfirmacion, () => {
       this.cargando['mandarAProduccion'] = 'Enviando folio a produccion'
-      this.foliosService.revision_entregarARevision(id).subscribe(() => {
-        delete this.cargando['mandarAProduccion']
-        this.cargarFoliosPorEnviarAProduccion()
-      }, err=> delete this.cargando['mandarAProduccion']),
+      this.foliosService.revision_entregarARevision(id).subscribe(
+        () => {
+          delete this.cargando['mandarAProduccion']
+          this.cargarFoliosPorEnviarAProduccion()
+        },
+        _ => delete this.cargando['mandarAProduccion']
+      ),
         mensajeDeCancelacion
     })
+  }
+
+  cargarMasElementos() {
+    if (!this.usuario) return
+    this.paginadorTerminados.desde += this.cantidadDeElementos
+    this.cargando['mas'] = 'Cargando 50 pedidos mas'
+    const filtro = `vendedor=${this.usuario._id}`
+      .concat(`&folioLineas.terminado=true`)
+      .concat(`&ordenesGeneradas=true`)
+      .concat(`&entregarAProduccion=true`)
+
+    this.foliosService.findAll(this.paginadorTerminados, filtro).subscribe(
+      pedidos => {
+        this.pedidosTerminados = this.pedidosTerminados.concat(pedidos)
+        if (pedidos) this.filtros = this.pedidosTerminados.map(x => x.idPedido)
+        delete this.cargando['mas']
+      },
+      _ => delete this.cargando['mas']
+    )
   }
 }

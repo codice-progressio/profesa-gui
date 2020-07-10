@@ -41,6 +41,19 @@ export class EstacionesDeEscaneoComponent implements OnInit {
 
   seleccionandoMaquinas = false
 
+  mostrarDepartamentos = []
+  mostrarUsuarios = []
+  /**
+   *Lista de valores true y false para mostrar los escaeneres
+   *
+   * @memberof EstacionesDeEscaneoComponent
+   */
+  mostrarDepartamentosSeleccionados: DepartamentoSeleccionado[] = []
+
+  inputDepartamento = new FormControl()
+  inputUsuarios = new FormControl()
+  terminoDepartamentos = ''
+
   constructor(
     public departamentoService: DepartamentoService,
     public usuarioService: UsuarioService,
@@ -74,10 +87,11 @@ export class EstacionesDeEscaneoComponent implements OnInit {
 
     this.parametrosService.findAllEstacionesDeEscaneo().subscribe(
       estaciones => {
-        this.departamentosSeleccionados = JSON.parse(JSON.stringify(estaciones))
-        this.mostrarDepartamentosSeleccionados = JSON.parse(
-          JSON.stringify(estaciones)
-        )
+        this.departamentosSeleccionados = estaciones
+
+        this.mostrarDepartamentosSeleccionados = estaciones.map(e => {
+          return { mostrar: true, usuarios: e.usuarios.map(b => true) }
+        })
 
         delete this.cargando['estaciones']
       },
@@ -159,9 +173,14 @@ export class EstacionesDeEscaneoComponent implements OnInit {
       }
     }
 
-    this.departamentosSeleccionados = JSON.parse(
-      JSON.stringify(this.mostrarDepartamentosSeleccionados)
-    )
+    if (this.terminoDepartamentos)
+      this.msjService.toast.info(
+        'Hay filtros activos y puede que los elementos agregados queden ocultos.',
+        'Atencion!',
+        { timeOut: 2000 }
+      )
+
+    this.filtrarDepartamentosSeleccionados(this.terminoDepartamentos)
   }
 
   listaDeIds() {
@@ -175,20 +194,10 @@ export class EstacionesDeEscaneoComponent implements OnInit {
       x => x.departamento._id
     )
   }
-  mostrarDepartamentos = []
-  mostrarUsuarios = []
-  mostrarDepartamentosSeleccionados: ScannerDepartamentoGestion[] = []
-
-  inputDepartamento = new FormControl()
-  inputUsuarios = new FormControl()
-  inputDepartamentosSeleccionados = new FormControl()
 
   subscribirBusquedas() {
     this.inputDepartamento.valueChanges.subscribe(termino =>
       this.filtrarDepartamentos(termino)
-    )
-    this.inputDepartamentosSeleccionados.valueChanges.subscribe(termino =>
-      this.filtrarDepartamentosSeleccionados(termino)
     )
     this.inputUsuarios.valueChanges.subscribe(termino =>
       this.filtrarUsuarios(termino)
@@ -211,29 +220,40 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   }
 
   filtrarDepartamentosSeleccionados(termino: string) {
-    this.mostrarDepartamentosSeleccionados = JSON.parse(
-      JSON.stringify(this.departamentosSeleccionados)
-    )
-    if (!termino.trim()) {
+    this.terminoDepartamentos = termino
+    if (!this.terminoDepartamentos.trim()) {
+      this.terminoDepartamentos = ''
+      this.mostrarDepartamentosSeleccionados = this.mostrarDepartamentosSeleccionados.map(
+        x => {
+          return { mostrar: true, usuarios: x.usuarios.map(x => true) }
+        }
+      )
       return
     }
 
-    this.mostrarDepartamentosSeleccionados = this.mostrarDepartamentosSeleccionados.filter(
+    this.mostrarDepartamentosSeleccionados = this.departamentosSeleccionados.map(
       x => {
         let depto = x.departamento.nombre
           .toLowerCase()
           .includes(termino.toLowerCase())
 
-        if (depto) return true
+        let obj: DepartamentoSeleccionado = {
+          mostrar: !!depto,
+          usuarios: x.usuarios.map(a => true)
+        }
+        if (obj.mostrar) return obj
 
-        x.usuarios = x.usuarios.filter(user =>
+        obj.usuarios = x.usuarios.map(user =>
           user.nombre.toLowerCase().includes(termino.toLowerCase())
         )
 
-        return x.usuarios.length > 0
+        obj.mostrar = obj.usuarios.includes(true)
+
+        return obj
       }
     )
   }
+
   filtrarUsuarios(termino: string) {
     if (!termino.trim()) {
       this.mostrarUsuarios = this.usuarios.map(x => x._id)
@@ -260,10 +280,6 @@ export class EstacionesDeEscaneoComponent implements OnInit {
         return
       }
     }
-
-    this.departamentosSeleccionados = JSON.parse(
-      JSON.stringify(this.mostrarDepartamentosSeleccionados)
-    )
 
     this.cargando['submit'] = 'Guardando cambios'
 
@@ -292,10 +308,6 @@ export class EstacionesDeEscaneoComponent implements OnInit {
     } else {
       this.departamentosSeleccionados.push(s)
     }
-
-    this.mostrarDepartamentosSeleccionados = JSON.parse(
-      JSON.stringify(this.departamentosSeleccionados)
-    )
   }
 
   departamentoParaFormulario(g: ScannerDepartamentoGestion) {
@@ -310,7 +322,7 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   definirUltimoDepartamento(g: ScannerDepartamentoGestion) {
     //Solo puede estar definido uno
 
-    this.mostrarDepartamentosSeleccionados
+    this.departamentosSeleccionados
       .filter(x => x._id !== g._id)
       .forEach(x => (x.ultimoDepartamento = false))
 
@@ -353,4 +365,14 @@ export class EstacionesDeEscaneoComponent implements OnInit {
     this.scannerParaSeleccionarMaquinas = g
     this.seleccionandoMaquinas = true
   }
+
+  eliminarUsuario(i, iUsuario) {
+    this.departamentosSeleccionados[i].usuarios.splice(iUsuario, 1)
+    this.mostrarDepartamentosSeleccionados[i].usuarios.splice(iUsuario, 1)
+  }
+}
+
+interface DepartamentoSeleccionado {
+  mostrar: boolean
+  usuarios: boolean[]
 }

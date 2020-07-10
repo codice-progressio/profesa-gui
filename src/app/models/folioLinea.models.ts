@@ -54,6 +54,7 @@ export class FolioLinea {
     public observaciones?: string,
     public observacionesVendedor?: string,
     public terminado?: boolean,
+    public impreso?: boolean,
     // Esta es solo para eliminar con animación.
     public eliminar: boolean = false,
     public ordenes: Orden[] = [],

@@ -39,7 +39,6 @@ export class DepartamentoService {
     paginacion: Paginacion,
     filtros: string = ''
   ): Observable<Departamento[]> {
-    const a = this.preLoaderService.loading('Cargando departamento')
     const url = this.base
       .concat('?')
       .concat(`desde=${paginacion.desde}`)
@@ -50,8 +49,6 @@ export class DepartamentoService {
 
     return this.http.get(url).pipe(
       map((respuesta: any) => {
-        this.msjService.ok_(respuesta, null, a)
-
         const departamentos: Departamento[] = []
 
         this.total = respuesta.total

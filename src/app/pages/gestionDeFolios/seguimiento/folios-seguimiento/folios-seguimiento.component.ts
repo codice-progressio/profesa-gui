@@ -96,7 +96,8 @@ export class FoliosSeguimientoComponent implements OnInit {
     })
   }
 
-  async imprimirFolio(idFolio: string, idPedido: string) {
+  async imprimirFolio(idFolio: string, pedido: iPedidosConsulta) {
+    let idPedido = pedido.idPedido
     if (this.departamentoService.pool.length === 0)
       await this.departamentoService.findAllPoolObservable().toPromise()
 
@@ -114,6 +115,19 @@ export class FoliosSeguimientoComponent implements OnInit {
         .ordenes.map(x => x._id)
 
       this.impresionService.ordenes(ordenes).seleccionarFolio(folio).imprimir()
+
+      window.onafterprint = () => {
+        this.folioService
+          .marcarPedidosComoImpresos([
+            {
+              folio: idFolio,
+              pedidos: [idPedido]
+            }
+          ])
+          .subscribe(() => {
+            pedido.impreso = true
+          })
+      }
     })
   }
 }

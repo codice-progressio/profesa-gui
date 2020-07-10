@@ -319,7 +319,7 @@
     <div class="table-responsive-sm">
       <table class="table table-hover">
         <thead>
-          <tr [appOrdenadorDeColumnas]="pedidosEnProceso">
+          <tr [appOrdenadorDeColumnas]="pedidosTerminados">
             <th data-ordenar="pedido">PED</th>
             <th data-ordenar="cliente">CLIENTE</th>
             <th data-ordenar="sku">SKU</th>
@@ -384,6 +384,32 @@
               </td>
             </tr>
           </ng-container>
+
+          <tr>
+            <td colspan="20">
+              <a (click)="cargarMasElementos()" href="javascript:void(0)"
+                ><h1 class="dislpay-1 text-center">
+                  Cargar {{ cantidadDeElementos }} mas
+                  <i
+                    *ngIf="!cargando['mas']; else syncTemplate"
+                    class="fas fa-plus-circle"
+                  ></i>
+                  <ng-template #syncTemplate>
+                    <i class="fas fa-sync fa-spin-fast"></i>
+                  </ng-template>
+                </h1>
+              </a>
+              <div class="row">
+                <div class="col-12">
+                  <hr />
+
+                  <p class="text-muted text-center">
+                    Mostrando {{ pedidosTerminados.length }} items
+                  </p>
+                </div>
+              </div>
+            </td>
+          </tr>
 
           <tr *ngIf="pedidosTerminados?.length === 0">
             <td colspan="4">
