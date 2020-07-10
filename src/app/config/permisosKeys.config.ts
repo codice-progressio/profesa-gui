@@ -115,7 +115,6 @@ export default {
   'folio:filtrar': 'folio:filtrar',
   'folio:leer:id': 'folio:leer:id',
   'folio:liberarParaProduccion': 'folio:liberarParaProduccion',
-  'folio:marcarComoImpreso': 'folio:marcarComoImpreso',
   'folio:modificar': 'folio:modificar',
   'folio:modificar:senalarOrdenesImpresas':
     'folio:modificar:senalarOrdenesImpresas',
