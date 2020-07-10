@@ -106,7 +106,6 @@ export default {
   'folio:filtrar': NO_DEFINIDO,
   'folio:leer:id': NO_DEFINIDO,
   'folio:liberarParaProduccion': NO_DEFINIDO,
-  'folio:marcarComoImpreso': NO_DEFINIDO,
   'folio:modificar': NO_DEFINIDO,
   'folio:modificar:senalarOrdenesImpresas': NO_DEFINIDO,
   'folio:porEntregarAProduccion:vendedor': NO_DEFINIDO,
