@@ -10,6 +10,7 @@ import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-
 import { Paginacion } from '../../../utils/paginacion.util'
 import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { ExcelService } from '../../../services/excel.service'
 
 @Component({
   selector: 'app-almacen-de-producto-terminado',
@@ -44,7 +45,8 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   constructor(
     public almacenProdTerSer: AlmacenProductoTerminadoService,
     public modComService: ModeloCompletoService,
-    public _msjService: ManejoDeMensajesService
+    public _msjService: ManejoDeMensajesService,
+    public excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -158,5 +160,18 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
           this.cargarModelos()
         }
       })
+  }
+
+  exportarTodoAExcel() {
+    this.cargando['excel'] = 'Obteniendo datos para exportar a excel'
+
+    this.modComService.todoParaExcel().subscribe(
+      datos => {
+        delete this.cargando['excel']
+
+        this.excelService.exportAsExcelFile(datos, 'ALMACEN_PRODUCTO_TERMINADO')
+      },
+      _ => delete this.cargando['excel']
+    )
   }
 }

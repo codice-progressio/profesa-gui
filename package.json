@@ -28,6 +28,7 @@
     "angularx-qrcode": "^1.6.4",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",
+    "file-saver": "^2.0.2",
     "jquery": "^3.5.1",
     "jshint": "^2.11.0",
     "moment": "^2.24.0",
@@ -41,6 +42,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^7.33.1",
     "tslib": "^1.10.0",
+    "xlsx": "^0.16.3",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
