@@ -134,10 +134,10 @@ export class ArticuloCrearModificarComponent implements OnInit {
       this.cargando['guardando'] = 'Creando articulo'
       this.articuloService.save(modelo).subscribe(
         () => {
-          delete this.cargando['modificando']
+          delete this.cargando['guardando']
           this.ngOnInit()
         },
-        () => delete this.cargando['modificando']
+        () => delete this.cargando['guardando']
       )
     }
   }
