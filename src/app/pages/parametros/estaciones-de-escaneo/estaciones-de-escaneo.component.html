@@ -207,11 +207,23 @@ a<ng-container
                 </li>
               </ul>
             </li>
+
             <li
-              *ngIf="departamentosSeleccionados.length === 0"
+              *ngIf="cargandoScanners"
+              class="list-group-item disabled text-center"
+            >
+              <h1 class="display-4 text-center">
+                <i class="fas fa-sync fa-spin-fast"></i>
+              </h1>
+              Cargando escaners
+            </li>
+            <li
+              *ngIf="
+                departamentosSeleccionados.length === 0 && !cargandoScanners
+              "
               class="list-group-item disabled"
             >
-              No hay departamentos
+              No hay escaners
             </li>
           </ul>
         </div>
@@ -269,11 +281,21 @@ a<ng-container
               </a>
               {{ g.departamento.nombre }}
             </li>
+
             <li
-              *ngIf="departamentos.length === 0"
+              *ngIf="departamentos.length === 0 && !departamentosCargando"
               class="list-group-item disabled"
             >
               No hay departamentos
+            </li>
+            <li
+              *ngIf="departamentosCargando"
+              class="list-group-item disabled text-center"
+            >
+              <h1 class="display-4 text-center">
+                <i class="fas fa-sync fa-spin-fast"></i>
+              </h1>
+              Cargando departamentos
             </li>
           </ul>
         </div>
@@ -318,8 +340,19 @@ a<ng-container
             >
               <i class="fas fa-user-slash"></i> {{ u.nombre }}
             </li>
-            <li *ngIf="usuarios.length === 0" class="list-group-item disabled">
+            <li
+              *ngIf="usuarios.length === 0 && !usuariosCargando"
+              class="list-group-item disabled"
+            >
               No hay usuarios
+            </li>
+            <li
+              *ngIf="usuariosCargando"
+              class="list-group-item disabled text-center"
+            >
+              <h1 class="display4"><i class="fas fa-sync fa-spin-fast"></i></h1>
+              <br />
+              Cargando usuarios
             </li>
           </ul>
         </div>
