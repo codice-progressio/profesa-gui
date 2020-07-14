@@ -18,6 +18,7 @@ import { MaquinaLigera } from './maquina/maquina.service'
 })
 export class ParametrosService {
   base = URL_BASE('parametros')
+  poolEstacionesDeEscaneo: ScannerDepartamentoGestion[]
   constructor(
     public httpClient: HttpClient,
     public msjService: ManejoDeMensajesService
@@ -132,7 +133,10 @@ export class ParametrosService {
   findAllEstacionesDeEscaneo(): Observable<ScannerDepartamentoGestion[]> {
     let url = this.base.concat('/estacionesDeEscaneo')
     return this.httpClient.get(url).pipe(
-      map((resp: any) => resp as ScannerDepartamentoGestion[]),
+      map((resp: any) => {
+        this.poolEstacionesDeEscaneo = resp as ScannerDepartamentoGestion[]
+        return this.poolEstacionesDeEscaneo
+      }),
       catchError(err => {
         this.msjService.toastError(err)
         return throwError(err)
