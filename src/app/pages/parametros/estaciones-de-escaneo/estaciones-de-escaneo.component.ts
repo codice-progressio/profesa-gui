@@ -54,6 +54,10 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   inputUsuarios = new FormControl()
   terminoDepartamentos = ''
 
+  usuariosCargando = false
+  departamentosCargando = false
+  cargandoScanners = false
+
   constructor(
     public departamentoService: DepartamentoService,
     public usuarioService: UsuarioService,
@@ -85,6 +89,8 @@ export class EstacionesDeEscaneoComponent implements OnInit {
   cargarEstaciones() {
     this.cargando['estaciones'] = 'Obteniendo estaciones registradas'
 
+    this.cargandoScanners = true
+
     this.parametrosService.findAllEstacionesDeEscaneo().subscribe(
       estaciones => {
         this.departamentosSeleccionados = estaciones
@@ -94,27 +100,36 @@ export class EstacionesDeEscaneoComponent implements OnInit {
         })
 
         delete this.cargando['estaciones']
+        this.cargandoScanners = false
       },
-      _ => delete this.cargando['estaciones']
+      _ => {
+        this.cargandoScanners = false
+        delete this.cargando['estaciones']
+      }
     )
   }
 
   cargarUsuarios() {
     this.cargando['usuarios'] = 'Obteniendo lista de usuarios'
-
+    this.usuariosCargando = true
     this.usuarioService.findAll(new Paginacion(100, 0, 1, 'nombre')).subscribe(
       u => {
         this.usuarios = u
         this.mostrarUsuarios = u.map(x => x._id)
         delete this.cargando['usuarios']
+        this.usuariosCargando = false
       },
-      _ => delete this.cargando['usuarios']
+      _ => {
+        delete this.cargando['usuarios']
+        this.usuariosCargando = false
+      }
     )
   }
 
   cargarDepartamentos() {
     this.cargando['departamento'] = 'Obteniendo departamentos'
 
+    this.departamentosCargando = true
     this.departamentoService
       .findAll(new Paginacion(100, 0, 1, 'nombre'))
       .subscribe(
@@ -131,8 +146,12 @@ export class EstacionesDeEscaneoComponent implements OnInit {
           }))
           this.mostrarDepartamentos = d.map(x => x._id)
           delete this.cargando['departamento']
+          this.departamentosCargando = false
         },
-        _ => delete this.cargando['departamento']
+        _ => {
+          this.departamentosCargando = false
+          delete this.cargando['departamento']
+        }
       )
   }
 
