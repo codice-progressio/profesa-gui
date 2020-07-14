@@ -37,6 +37,9 @@ export class UsuarioService {
   base = URL_BASE('usuario')
   total = 0
 
+  poolLight: UsuarioLight[] = []
+  cargandoPool = false
+
   constructor(
     // Para que este funcione hay que hacer un "imports"
     // en service.module.ts
@@ -305,4 +308,26 @@ export class UsuarioService {
   cargarMateriales(): Observable<Usuario[]> {
     return this.buscarUsuariosPorPermiso(permisosConfig['rol:cargadorMaterial'])
   }
+
+  findAllLigthPool(): Observable<UsuarioLight[]> {
+    let url = this.base.concat('/buscar/todo/light')
+    this.cargandoPool = true
+
+    return this.http.get<UsuarioLight[]>(url).pipe(
+      map((x: any) => {
+        this.poolLight = x.usuarios as UsuarioLight[]
+        this.cargandoPool = false
+        return this.poolLight
+      }),
+      catchError(err => {
+        this.cargandoPool = false
+        return this.errFun(err)
+      })
+    )
+  }
+}
+
+export interface UsuarioLight {
+  _id: string
+  nombre: string
 }
