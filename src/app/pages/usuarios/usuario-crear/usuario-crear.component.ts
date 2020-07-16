@@ -106,7 +106,7 @@ export class UsuarioCrearComponent implements OnInit {
       permissions: new FormArray(
         usuario.permissions.map(x => new FormControl(x))
       ),
-      empleado: [usuario.empleado._id]
+      empleado: [usuario.empleado?._id]
     })
 
     this.permisosExistentes = this.usuario.permissions

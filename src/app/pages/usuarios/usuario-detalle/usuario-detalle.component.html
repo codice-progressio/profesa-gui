@@ -20,7 +20,10 @@
           <div class="col-12 col-sm-6">
             <img
               class="w-50"
-              [src]="detalle.img | imagen"
+              [src]="
+                    detalle.img
+                      | imagen: (detalle.empleado ? 'empleados' : '')
+                  "
               alt="Foto de usuario"
             />
           </div>
