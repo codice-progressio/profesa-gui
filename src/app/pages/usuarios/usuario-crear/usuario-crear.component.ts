@@ -141,6 +141,12 @@ export class UsuarioCrearComponent implements OnInit {
       return
     }
 
+
+    //Este se necesita por que ponenos en "disable" el 
+    //  input al seleccionar un empleado. Esto provoca 
+    //  que no se envie el dato. Aqui lo recuperamos 
+    //  cuando sea el caso. 
+    usuario.nombre = this.formulario.get('nombre').value 
     this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
 
     if (this.usuario._id) {

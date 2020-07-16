@@ -191,6 +191,7 @@ export class UsuarioService {
 
     return this.http.put(url, usuario).pipe(
       map((resp: any) => {
+        this.msjService.toastCorrecto(resp.mensaje)
         return true
       }),
       catchError(err => {
