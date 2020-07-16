@@ -51,7 +51,9 @@ export class TamanosCrearModificarComponent implements OnInit {
 
   crearFormulario(tamano: Tamano = new Tamano()) {
     this.formulario = this.formBuilder.group({
-      tamano: [tamano.tamano, [Validators.required]]
+      tamano: [tamano.tamano, [Validators.required]],
+      estandar: [tamano.estandar, [Validators.required]],
+      grTuboBaston: [tamano.grTuboBaston, [Validators.required]]
     })
   }
 
