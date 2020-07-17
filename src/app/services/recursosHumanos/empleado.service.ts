@@ -88,9 +88,7 @@ export class EmpleadoService {
     paginacion: Paginacion,
     filtros: string = ''
   ): Observable<Empleado[]> {
-    const a = this._preLoaderService.loading(
-      'Buscando empleados con el termino: ' + termino
-    )
+    
     const url = this.base
       .concat(`/buscar/${termino}`)
       .concat('?')
@@ -102,8 +100,6 @@ export class EmpleadoService {
 
     return this.http.get(url).pipe(
       map((respuesta: any) => {
-        this._msjService.ok_(respuesta, null, a)
-
         const empleados: Empleado[] = []
 
         respuesta.empleados.forEach(x =>

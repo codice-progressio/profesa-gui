@@ -17,6 +17,11 @@ import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import permisos from 'src/app/config/permisos.config'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { distinctUntilChanged, skipWhile } from 'rxjs/operators'
+import { DataListComponent } from '../../../shared/data-list/data-list.component'
+import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
+import { Paginacion } from 'src/app/utils/paginacion.util'
+import { Dato } from 'src/app/shared/data-list/dato.model'
+import { Empleado } from '../../../models/recursosHumanos/empleados/empleado.model'
 
 @Component({
   selector: 'app-usuario-crear',
@@ -36,6 +41,8 @@ export class UsuarioCrearComponent implements OnInit {
   mostrarPermisos = []
   inputFiltrador = new FormControl()
   terminoBuscado = ''
+
+  empleadoParaModificacion: Dato = new Dato()
   constructor(
     public usuarioService: UsuarioService,
     public formBuilder: FormBuilder,
@@ -43,7 +50,8 @@ export class UsuarioCrearComponent implements OnInit {
     public location: Location,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    public msjService: ManejoDeMensajesService
+    public msjService: ManejoDeMensajesService,
+    private empleadoService: EmpleadoService
   ) {}
 
   validarPassword = false
@@ -73,17 +81,20 @@ export class UsuarioCrearComponent implements OnInit {
   }
 
   crearFiltroDePermisos(input: FormControl) {
-    input.valueChanges.subscribe(termino => {
-      if (!termino) {
-        this.mostrarPermisos = Object.keys(permisos)
-        this.terminoBuscado = ''
-        return
-      }
-      this.mostrarPermisos = this.mostrarPermisos.filter(x =>
-        x.includes(termino)
-      )
-      this.terminoBuscado = termino
-    }, err=> console.log(err))
+    input.valueChanges.subscribe(
+      termino => {
+        if (!termino) {
+          this.mostrarPermisos = Object.keys(permisos)
+          this.terminoBuscado = ''
+          return
+        }
+        this.mostrarPermisos = this.mostrarPermisos.filter(x =>
+          x.includes(termino)
+        )
+        this.terminoBuscado = termino
+      },
+      err => console.log(err)
+    )
   }
 
   crearFormulario(usuario: Usuario = new Usuario()) {
@@ -94,7 +105,8 @@ export class UsuarioCrearComponent implements OnInit {
       password: [usuario.password, []],
       permissions: new FormArray(
         usuario.permissions.map(x => new FormControl(x))
-      )
+      ),
+      empleado: [usuario.empleado?._id]
     })
 
     this.permisosExistentes = this.usuario.permissions
@@ -103,6 +115,13 @@ export class UsuarioCrearComponent implements OnInit {
     this.formulario.updateValueAndValidity()
 
     this.mostrarPermisos = Object.keys(permisos)
+
+    if (usuario.empleado) {
+      this.empleadoParaModificacion.leyendaPrincipal =
+        usuario.empleado.nombres + ' ' + usuario.empleado.apellidos
+
+      this.f('nombre').disable()
+    }
   }
 
   f(c: string): AbstractControl {
@@ -122,6 +141,12 @@ export class UsuarioCrearComponent implements OnInit {
       return
     }
 
+
+    //Este se necesita por que ponenos en "disable" el 
+    //  input al seleccionar un empleado. Esto provoca 
+    //  que no se envie el dato. Aqui lo recuperamos 
+    //  cuando sea el caso. 
+    usuario.nombre = this.formulario.get('nombre').value 
     this.cargando['guardando'] = 'Espera mientras se aplican los cambios'
 
     if (this.usuario._id) {
@@ -197,5 +222,41 @@ export class UsuarioCrearComponent implements OnInit {
     permisos.forEach(x =>
       this.agregarQuitarPermiso(x, this.valoresGlobalesDeBotones[key])
     )
+  }
+
+  ejecutarOperacionesDeBusqueda(evento) {
+    let termino = <string>evento.termino
+    let dataList = <DataListComponent>evento.dataList
+    this.empleadoService
+      .find(termino, new Paginacion(10, 0, 1, 'nombres'))
+      .subscribe(articulos => {
+        let datos: Dato[] = []
+        articulos.forEach((empleado: Empleado) => {
+          let d = new Dato()
+          d.leyendaPrincipal = empleado.nombres + ' ' + empleado.apellidos
+          d.leyendaSecundaria = empleado.activo ? '[ Activo ]' : '[ Inactivo ]'
+          d.descripcionPrincipal = empleado.puestoActualTexto
+
+          d.objeto = empleado
+
+          datos.push(d)
+        })
+
+        dataList.terminoBusqueda(datos)
+      })
+  }
+
+  seleccionado(evento: Dato) {
+    if (!evento) {
+      this.f('empleado').setValue('')
+      this.f('nombre').enable()
+      return
+    }
+
+    let empleado = evento.objeto as Empleado
+
+    this.f('empleado').setValue(empleado._id)
+    this.f('nombre').setValue(empleado.nombres + ' ' + empleado.apellidos)
+    this.f('nombre').disable()
   }
 }

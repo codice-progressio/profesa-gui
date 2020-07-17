@@ -113,6 +113,38 @@
             =====================================
              END usuario
             =====================================
+            -->
+
+              <!-- 
+            =====================================
+             empleado
+            =====================================
+            -->
+              <div class="col-6">
+                <div class="form-group">
+                  <app-data-list
+                    (ejecutarBusquedaDeItems)="
+                      ejecutarOperacionesDeBusqueda($event)
+                    "
+                    (elementoSeleccionado)="seleccionado($event)"
+                    [cargarModifcacion]="empleadoParaModificacion"
+                    [valid]="vs.valid(f('empleado'))"
+                    [invalid]="vs.invalid(f('empleado'))"
+                    (touched)="f('empleado').markAsTouched()"
+                  ></app-data-list>
+
+                  <small id="helpId" class="form-text text-muted"
+                    >Empleado relacionado a usuario</small
+                  >
+                  <app-validacion-inputs
+                    [campo]="f('empleado')"
+                  ></app-validacion-inputs>
+                </div>
+              </div>
+              <!-- 
+            =====================================
+             END empleado
+            =====================================
             --></div>
 
             <div class="row">
@@ -152,7 +184,7 @@
                   (click)="inputFiltrador.setValue('')"
                   name="limpiarBusqueda"
                   id="limpiarBusqueda"
-                  class="btn btn-danger btn-sm "
+                  class="btn btn-danger btn-sm"
                   href="javascript:void(0)"
                   role="button"
                   ><i class="fa fa-times-circle" aria-hidden="true"></i

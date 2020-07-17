@@ -5,6 +5,8 @@ export class Tamano  extends OperacionesEnGUI {
         public _id?: string,
         public tamano?: string,
         public estandar?: number,
+        public grTuboBaston?: number,
+
     ) {
         super();
     }
