@@ -21,7 +21,7 @@ export class ImagenPipe implements PipeTransform {
 
     url += this.rutasValidas[tipo] + img
 
-    return url
+    return `${ url }?${ Math.floor(Math.random() * 1000000) }${ 1 }`
   }
 
   rutasValidas = {

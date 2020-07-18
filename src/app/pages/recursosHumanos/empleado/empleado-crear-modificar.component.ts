@@ -36,7 +36,7 @@ import { FormArray } from '@angular/forms'
 export class EmpleadoCrearModificarComponent implements OnInit {
   @Input() empleado: Empleado = null
   @Output() esteComponente = new EventEmitter<this>()
-  @Output() guardar = new EventEmitter<null>()
+  @Output() guardar = new EventEmitter<Empleado>()
 
   formulario: FormGroup
 
@@ -90,18 +90,11 @@ export class EmpleadoCrearModificarComponent implements OnInit {
     this.formulario = this.fb.group({
       idChecador: [
         empleado.idChecador,
-        [
-          this.vs.numberValidator,
-          Validators.min(1)
-        ]
+        [this.vs.numberValidator, Validators.min(1)]
       ],
       idNomina: [
         empleado.idNomina,
-        [
-          Validators.required,
-          this.vs.numberValidator,
-          Validators.min(1)
-        ]
+        [Validators.required, this.vs.numberValidator, Validators.min(1)]
       ],
       nombres: [empleado.nombres, [Validators.required]],
       apellidos: [empleado.apellidos, [Validators.required]],
@@ -145,10 +138,7 @@ export class EmpleadoCrearModificarComponent implements OnInit {
       // ],
       puestoActualTexto: [
         this.empleado.puestoActualTexto,
-        [
-          Validators.required,
-          Validators.minLength(5)
-        ]
+        [Validators.required, Validators.minLength(5)]
       ],
       fotografia: [empleado.fotografia, [Validators.required]],
       email: [empleado.email, [Validators.email]],
@@ -244,14 +234,17 @@ export class EmpleadoCrearModificarComponent implements OnInit {
       return
     }
 
-    let operacion = () => {
+    let operacion = empleado => {
       this.limpiar()
       this.crear()
-      this.guardar.emit()
+      this.guardar.emit(empleado)
     }
 
     modelo.hijos = modelo.hijos.map(x => x)
-    if (this.empleado._id) modelo._id = this.empleado._id
+    if (this.empleado._id) {
+      modelo._id = this.empleado._id
+      modelo.puestoActualTexto = this.empleado.puestoActualTexto
+    }
     this._empleadoService.guardarOModificar(modelo).subscribe(operacion)
   }
 
@@ -310,13 +303,12 @@ export class EmpleadoCrearModificarComponent implements OnInit {
     this.f('fotografia').setValue(null)
   }
 
-
-  calcularEdad(fechaString:Date):string{
+  calcularEdad(fechaString: Date): string {
     let fecha = new Date(fechaString)
     let hoy = new Date()
     let diaEnMs = 1000 * 60 * 60 * 24 * 365
     let resta = (hoy.getTime() - fecha.getTime()) / diaEnMs
     let edad = Math.floor(resta)
-   return edad>1? edad + " años" : edad + " año"
+    return edad > 1 ? edad + ' años' : edad + ' año'
   }
 }
