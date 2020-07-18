@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <h1 class=""><strong>Empleados</strong> existentes</h1>
 
-          <div class="d-flex  align-items-center ">
+          <div class="d-flex align-items-center">
             <div class="mr-3">
               <app-buscador-paciente
                 [cbObservable]="cbObservable"
@@ -27,7 +27,7 @@
               data-target="#crearModificarEmpleadoModal"
               class="btn btn-success text-white active mr-3"
             >
-              <i class="fas fa-plus "></i> Crear empleado</a
+              <i class="fas fa-plus"></i> Crear empleado</a
             >
             <!-- <a
               data-toggle="collapse"
@@ -93,7 +93,6 @@
   </div>
 </div>
 
-
 <div *ngIf="empleados.length > 0" class="row animated fadeIn">
   <div class="col-12">
     <div class="card">
@@ -113,7 +112,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let empleado of empleados">
-              <td class="fit align-middle  ">
+              <td class="fit align-middle">
                 <a
                   title="Ver detalle"
                   class=" "
@@ -128,7 +127,7 @@
                     style="width: 50px; height: 50px;"
                   >
                     <img
-                      class="profile-pic "
+                      class="profile-pic"
                       [src]="empleado.fotografia | imagen: 'empleados'"
                     />
                   </div>
@@ -144,7 +143,7 @@
                   data-target="#crearModificarEmpleadoModal"
                   (click)="modificar(empleado)"
                 >
-                  <i class="fas fa-edit    "></i>
+                  <i class="fas fa-edit"></i>
                 </a>
                 <a
                   title="Abrir modal de eventos"
@@ -155,7 +154,7 @@
                   data-target="#botonesEventos"
                   (click)="empleadoSeleccionado = empleado"
                 >
-                  <i class="fas fa-calendar    "></i>
+                  <i class="fas fa-calendar"></i>
                 </a>
 
                 <a
@@ -165,13 +164,14 @@
                   role="button"
                   data-toggle="modal"
                   data-target="#editarFechaIngreso"
-                  *ngIf="permisos['empleado:ingreso:modificar'] | contieneElPermiso"
+                  *ngIf="
+                    permisos['empleado:ingreso:modificar'] | contieneElPermiso
+                  "
                   (click)="empleadoSeleccionadoParaModificar = empleado"
                 >
-                  <i class="fas fa-calendar "></i>
+                  <i class="fas fa-calendar"></i>
                   Ingreso
                 </a>
-
               </td>
               <td title="Numero de nomina" class="fit align-middle">
                 {{ empleado.idNomina }}
@@ -179,7 +179,7 @@
               <td title="Numero de checador" class="fit align-middle">
                 {{ empleado.idChecador }}
               </td>
-              <td title="Nombre completo del empleado" class=" align-middle">
+              <td title="Nombre completo del empleado" class="align-middle">
                 {{ empleado.nombreCompleto() }}
               </td>
               <td
@@ -214,7 +214,7 @@
                   role="button"
                   (click)="eliminar(empleado)"
                 >
-                  <i class="fas fa-times    "></i>
+                  <i class="fas fa-times"></i>
                 </a>
               </td>
             </tr>
@@ -223,7 +223,6 @@
       </div>
     </div>
   </div>
-
 
   <!--
   =====================================
@@ -322,7 +321,7 @@
       <div class="modal-body">
         <app-empleado-crear-modificar
           (esteComponente)="componenteCrearModificar = $event"
-          (guardar)="guardar()"
+          (guardar)="guardar($event)"
         ></app-empleado-crear-modificar>
       </div>
     </div>
@@ -415,10 +414,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div
-            *ngFor="let dato of botonesEventos"
-            class="col-12 col-sm-4  mt-3"
-          >
+          <div *ngFor="let dato of botonesEventos" class="col-12 col-sm-4 mt-3">
             <!--
                 =====================================
                  Generacion de botonera para eventos
@@ -453,7 +449,6 @@
   </div>
 </div>
 
-
 <!--
 =====================================
 Modificar Ingreso
@@ -463,40 +458,43 @@ Modificar Ingreso
 <div
   class="modal fade"
   id="editarFechaIngreso"
-  tabindex="-1" role="dialog"
+  tabindex="-1"
+  role="dialog"
   aria-labelledby="exampleModalCenterTitle"
   aria-hidden="true"
-  let eml
-  >
+  let
+  eml
+>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" >Modificar fecha de ingreso de {{empleadoSeleccionadoParaModificar?.nombres}}</h1>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h1 class="modal-title">
+          Modificar fecha de ingreso de
+          {{ empleadoSeleccionadoParaModificar?.nombres }}
+        </h1>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-
         <div *ngIf="modificandoIngreso" class="row">
           <div class="col-12 text-center">
-            <h1 class="display-1"><i class="fas fa-sync fa-spin-fast" ></i></h1>
+            <h1 class="display-1"><i class="fas fa-sync fa-spin-fast"></i></h1>
           </div>
         </div>
-        <div
-        *ngIf="!modificandoIngreso"
-        class="col-18 col-sm-12 col-md-16 "
-        >
+        <div *ngIf="!modificandoIngreso" class="col-18 col-sm-12 col-md-16">
           <input
             type="date"
             class="input"
             [(ngModel)]="nuevaFechaIngresoEmpleado"
           />
-          <small id="helpId" class="form-text text-muted"
-            >Nueva fecha</small
-          >
+          <small id="helpId" class="form-text text-muted">Nueva fecha</small>
         </div>
-
       </div>
 
       <!--
@@ -509,12 +507,14 @@ Modificar Ingreso
         <button
           type="button"
           class="btn btn-success"
-          (click) = "modificarIngreso()"
-          >Guardar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          (click)="modificarIngreso()"
+        >
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancelar
+        </button>
       </div>
     </div>
   </div>
 </div>
-
-

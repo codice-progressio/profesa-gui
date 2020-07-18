@@ -12,7 +12,6 @@ import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 import { EmpleadoEventoEstatusLaboralComponent } from './empleado-eventos/empleado-evento-estatus-laboral.component'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
-
 @Component({
   selector: 'app-empleado',
   templateUrl: './empleado.component.html',
@@ -20,7 +19,7 @@ import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 })
 export class EmpleadoComponent implements OnInit {
   empleadoDetalle: Empleado
-  puestoDetalle: Empleado["puestoActualTexto"]
+  puestoDetalle: Empleado['puestoActualTexto']
   empleados: Empleado[] = []
   empleadoModificar: Empleado = null
   buscando: boolean = false
@@ -133,7 +132,8 @@ export class EmpleadoComponent implements OnInit {
   constructor(
     private _empleadoService: EmpleadoService,
     public _msjService: ManejoDeMensajesService,
-    public _puestoService: PuestoService  ) {}
+    public _puestoService: PuestoService
+  ) {}
 
   ngOnInit() {
     this.cargarEmpleados()
@@ -170,8 +170,12 @@ export class EmpleadoComponent implements OnInit {
     }
   }
 
-  guardar() {
-    this.cargarEmpleados()
+  guardar(empleado: Empleado) {
+    //Buscamos al empleado entre la lista
+    let indice = this.empleados.findIndex(x => x._id === empleado._id)
+    if (indice > -1) {
+      this.empleados[indice] = Object.assign(new Empleado(), empleado)
+    }
   }
 
   crear() {
@@ -184,15 +188,17 @@ export class EmpleadoComponent implements OnInit {
 
   modificandoIngreso = false
   modificarIngreso() {
-    if (!this.nuevaFechaIngresoEmpleado){
+    if (!this.nuevaFechaIngresoEmpleado) {
       this._msjService.invalido('Selecciona una fecha')
       return
     }
     this.modificandoIngreso = true
-    this._empleadoService.updateIngresoEmpleado(
-      this.empleadoSeleccionadoParaModificar._id,
-      this.nuevaFechaIngresoEmpleado
-      ).subscribe(
+    this._empleadoService
+      .updateIngresoEmpleado(
+        this.empleadoSeleccionadoParaModificar._id,
+        this.nuevaFechaIngresoEmpleado
+      )
+      .subscribe(
         x => {
           this.cargarEmpleados()
           this.modificandoIngreso = false

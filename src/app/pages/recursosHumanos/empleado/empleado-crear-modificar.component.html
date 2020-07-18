@@ -191,9 +191,11 @@
              puestoActualTexto
             =====================================
             -->
+
             <div class="col-12 col-md-8">
               <div class="form-group">
               <input
+              *ngIf="!empleado?._id"
                 [ngClass]="{
                   'is-invalid': vs.invalid(f('puestoActualTexto')),
                   'is-valid': vs.valid(f('puestoActualTexto'))
@@ -202,6 +204,15 @@
                 class="form-control"
                 formControlName="puestoActualTexto"
               />
+              <input
+                *ngIf="empleado?._id"
+
+                type="text"z
+                class="form-control"
+                [value]='f("puestoActualTexto")?.value'
+                disabled
+              />
+
               <small id="helpId" class="form-text text-muted">Puesto actual</small>
               <app-validacion-inputs
                 [campo]="f('puestoActualTexto')"

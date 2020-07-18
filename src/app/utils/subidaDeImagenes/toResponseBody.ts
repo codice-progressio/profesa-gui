@@ -6,8 +6,7 @@ export function toResponseBody<T>(cbFinalizar, a) {
   return pipe(
     filter((event: HttpEvent<T>) => event.type === HttpEventType.Response),
     map((res: HttpResponse<T>) => {
-      cbFinalizar(res.body, null, a)
-      res.body
+      return cbFinalizar(res.body, null, a) as T
     })
   )
 }
