@@ -101,40 +101,40 @@ export class FoliosSeguimientoComponent implements OnInit {
     })
   }
 
-  async imprimirFolio(idFolio: string, pedido: iPedidosConsulta) {
-    let idPedido = pedido.idPedido
-    if (this.departamentoService.pool.length === 0)
-      await this.departamentoService.findAllPoolObservable().toPromise()
+  // async imprimirFolio(idFolio: string, pedido: iPedidosConsulta) {
+  //   let idPedido = pedido.idPedido
+  //   if (this.departamentoService.pool.length === 0)
+  //     await this.departamentoService.findAllPoolObservable().toPromise()
 
-    this.folioService.findById(idFolio).subscribe(folio => {
-      folio.folioLineas
-        .find(x => x._id === idPedido)
-        .ordenes.forEach(x => {
-          x.ruta.forEach(r =>
-            this.departamentoService.popularRutaConDepartamento(r)
-          )
-        })
+  //   this.folioService.findById(idFolio).subscribe(folio => {
+  //     folio.folioLineas
+  //       .find(x => x._id === idPedido)
+  //       .ordenes.forEach(x => {
+  //         x.ruta.forEach(r =>
+  //           this.departamentoService.popularRutaConDepartamento(r)
+  //         )
+  //       })
 
-      let ordenes = folio.folioLineas
-        .find(x => x._id === idPedido)
-        .ordenes.map(x => x._id)
+  //     let ordenes = folio.folioLineas
+  //       .find(x => x._id === idPedido)
+  //       .ordenes.map(x => x._id)
 
-      this.impresionService.ordenes(ordenes).seleccionarFolio(folio).imprimir()
+  //     this.impresionService.ordenes(ordenes).seleccionarFolio(folio).imprimir()
 
-      window.onafterprint = () => {
-        this.folioService
-          .marcarPedidosComoImpresos([
-            {
-              folio: idFolio,
-              pedidos: [idPedido]
-            }
-          ])
-          .subscribe(() => {
-            pedido.impreso = true
-          })
-      }
-    })
-  }
+  //     window.onafterprint = () => {
+  //       this.folioService
+  //         .marcarPedidosComoImpresos([
+  //           {
+  //             folio: idFolio,
+  //             pedidos: [idPedido]
+  //           }
+  //         ])
+  //         .subscribe(() => {
+
+  //         })
+  //     }
+  //   })
+  // }
 
   imprimiendoVarios = false
 
@@ -184,19 +184,30 @@ export class FoliosSeguimientoComponent implements OnInit {
         this.datos = ordenes
         this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
 
-        throw ' No se a defindo la marca de impresos'
-        // window.onafterprint = () => {
-        //   this.folioService
-        //     .marcarPedidosComoImpresos([
-        //       {
-        //         folio: idFolio,
-        //         pedidos: [idPedido]
-        //       }
-        //     ])
-        //     .subscribe(() => {
-        //       pedido.impreso = true
-        //     })
-        // }
+        let datosImpresos = ordenes.reduce((a, b) => {
+          if (!a.hasOwnProperty(b.idFolio)) a[b.idFolio] = []
+          a[b.idFolio].push(b.idPedido)
+          return a
+        }, {})
+
+        let datosParaMarcar = Object.keys(datosImpresos).map(k => {
+          return {
+            folio: k,
+            pedidos: datosImpresos[k]
+          }
+        })
+
+        window.onafterprint = () => {
+          this.folioService
+            .marcarPedidosComoImpresos(datosParaMarcar)
+            .subscribe(() => {
+              datosParaMarcar.forEach(x => {
+                this.pedidos
+                  .filter(ped => x.pedidos.includes(ped.idPedido))
+                  .forEach(ped => (ped.impreso = true))
+              })
+            })
+        }
       })
   }
 }
