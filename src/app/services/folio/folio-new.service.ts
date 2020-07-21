@@ -65,6 +65,18 @@ export class FolioNewService {
     )
   }
 
+  findAllOrdenesDePedidos(
+    datos: { folio: string; pedido: string }[]
+  ): Observable<OrdenImpresion[]> {
+    let url = `${this.base}/ordenesParaImpresion`
+    return this.http.post(url, datos).pipe(
+      map((resp: any) => {
+        return resp.ordenes as OrdenImpresion[]
+      }),
+      catchError(err => this.errFun(err))
+    )
+  }
+
   delete(id: string): Observable<Folio> {
     const url = this.base.concat(`/${id}`)
     return this.http.delete<Folio>(url).pipe(
@@ -283,6 +295,8 @@ export class FolioNewService {
     )
   }
 
+  findByIdMultipleParaImprimir()
+
   recibirOrden(escaneada, idDepartamento): Observable<null> {
     let url = this.base.concat(`/recibirOrden`)
 
@@ -483,6 +497,21 @@ export interface OrdenLigera {
   // No siempre aparecen estos
   inicio: Date
   finalizacion: Date
+  observacionesOrden: string
+  observacionesPedido: string
+  observacionesFolio: string
+}
+
+export interface OrdenImpresion {
+  nivelDeUrgencia:string
+  fechaDeEntregaAProduccion:Date
+  numeroDeOrden:string
+  piezasTeoricas:number
+  unidad:string
+  orden:string
+  sku:string
+  ruta:string []
+
   observacionesOrden: string
   observacionesPedido: string
   observacionesFolio: string

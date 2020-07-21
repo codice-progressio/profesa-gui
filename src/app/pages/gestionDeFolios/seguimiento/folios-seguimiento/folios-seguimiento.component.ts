@@ -6,6 +6,7 @@ import { iPedidosConsulta } from '../../../../services/folio/folio-new.service'
 import { Paginacion } from '../../../../utils/paginacion.util'
 import { ImpresionService } from '../../../../services/impresion.service'
 import { DepartamentoService } from '../../../../services/departamento/departamento.service'
+import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-folios-seguimiento',
@@ -23,7 +24,8 @@ export class FoliosSeguimientoComponent implements OnInit {
   constructor(
     public folioService: FolioNewService,
     private impresionService: ImpresionService,
-    private departamentoService: DepartamentoService
+    private departamentoService: DepartamentoService,
+    private msjService: ManejoDeMensajesService
   ) {}
 
   ngOnInit() {
@@ -129,5 +131,69 @@ export class FoliosSeguimientoComponent implements OnInit {
           })
       }
     })
+  }
+
+  imprimiendoVarios = false
+
+  listaPorImprimir: {
+    folio: string
+    pedido: string
+    iPedido: iPedidosConsulta
+  }[] = []
+
+  imprimirVarios() {
+    this.imprimiendoVarios = !this.imprimiendoVarios
+    this.listaPorImprimir = []
+  }
+  existeRegistroImprimir(folio, pedido): boolean {
+    return !!this.listaPorImprimir.find(
+      x => x.folio === folio && x.pedido === pedido
+    )
+  }
+
+  agregarPedido(folio: string, iPedido: iPedidosConsulta) {
+    let pedido = iPedido.idPedido
+    let existeRegistro = this.existeRegistroImprimir(folio, pedido)
+    if (!existeRegistro) {
+      this.listaPorImprimir.push({ pedido, folio, iPedido })
+    } else {
+      this.listaPorImprimir = this.listaPorImprimir.filter(
+        x => !(x.folio === folio && x.pedido === pedido)
+      )
+    }
+  }
+
+  async imprimirSeleccionados() {
+    if (this.listaPorImprimir.length === 0) {
+      this.msjService.invalido('No has seleccionado pedidos para imprimir')
+
+      return
+    }
+    if (this.departamentoService.pool.length === 0)
+      await this.departamentoService.findAllPoolObservable().toPromise()
+
+    this.folioService
+      .findAllOrdenesDePedidos(
+        this.listaPorImprimir.map(x => {
+          return { folio: x.folio, pedido: x.pedido }
+        })
+      )
+      .subscribe(ordenes => {
+        this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
+
+        throw ' No se a defindo la marca de impresos'
+        window.onafterprint = () => {
+          this.folioService
+            .marcarPedidosComoImpresos([
+              {
+                folio: idFolio,
+                pedidos: [idPedido]
+              }
+            ])
+            .subscribe(() => {
+              pedido.impreso = true
+            })
+        }
+      })
   }
 }

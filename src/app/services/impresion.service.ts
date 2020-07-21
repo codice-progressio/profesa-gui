@@ -3,6 +3,8 @@ import { ReporteFaltantesProductoTerminado } from '../models/reportes/productoTe
 import { ReporteFaltantesAlmacenProduccion } from '../models/reportes/almacenProduccion/reporte.faltantes.almacenProduccion'
 import { Maquina } from '../models/maquina.model'
 import { Folio } from '../models/folio.models'
+import { Orden } from '../models/orden.models'
+import { OrdenImpresion } from './folio/folio-new.service'
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +69,14 @@ export class ImpresionService {
   ordenes(ordenes: string[]): this {
     this.mostrarEncabezado = false
     this.ordenesAImprimir = ordenes
+    return this
+  }
+
+
+  ordenesAImprimirIntegras: OrdenImpresion[] = []
+  ordenesVariosPedidos(ordenes: OrdenImpresion[]){
+    this.mostrarEncabezado = false
+    this.ordenesAImprimirIntegras = ordenes
     return this
   }
 
