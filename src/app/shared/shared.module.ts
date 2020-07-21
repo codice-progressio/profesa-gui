@@ -101,6 +101,7 @@ import { DynamicFormQuestionComponent } from '../components/formulario-dinamico/
 import { ZXingScannerModule } from '@zxing/ngx-scanner'
 import { OrdenesPorDepartamentoEnProcesosComponent } from '../components/ordenes-por-departamento-en-procesos/ordenes-por-departamento-en-procesos.component'
 import { ScannerFormularioDinamicoMaquinasComponent } from '../components/scanner-formulario-dinamico/scanner-formulario-dinamico-maquinas/scanner-formulario-dinamico-maquinas.component'
+import { OrdenDetalleImprimirComponent } from '../pages/gestionDeFolios/ordenes/orden-detalle-imprimir/orden-detalle-imprimir.component'
 
 @NgModule({
   imports: [
@@ -173,7 +174,8 @@ import { ScannerFormularioDinamicoMaquinasComponent } from '../components/scanne
     DynamicFormComponent,
     DynamicFormQuestionComponent,
     OrdenesPorDepartamentoEnProcesosComponent,
-    ScannerFormularioDinamicoMaquinasComponent
+    ScannerFormularioDinamicoMaquinasComponent,
+    OrdenDetalleImprimirComponent
   ],
   exports: [
     NopagefoundComponent,
@@ -233,7 +235,8 @@ import { ScannerFormularioDinamicoMaquinasComponent } from '../components/scanne
     DynamicFormComponent,
     DynamicFormQuestionComponent,
     OrdenesPorDepartamentoEnProcesosComponent,
-    ScannerFormularioDinamicoMaquinasComponent
+    ScannerFormularioDinamicoMaquinasComponent,
+    OrdenDetalleImprimirComponent
   ]
 })
 export class SharedModule {

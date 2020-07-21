@@ -517,13 +517,12 @@ export interface OrdenImpresion {
   observacionesFolio: string
 
   laser: string
-  laserCliente: string
+  laserAlmacen: string
 
+  idFolio: string
+  idPedido: string
+  idOrden: string
+  cliente: string
 
-  idFolio:string
-  idPedido:string
-  idOrden:string
-  cliente:string
-
-  totalOrdenes:number
+  totalOrdenes: number
 }

@@ -1,6 +1,6 @@
 <div *ngIf="datos" class="w-100">
   <div class="orden">
-    <hr class="thin no-margin-bottom" class="text-white" />
+    <hr class="thin no-margin-bottom" />
 
     <!-- 
     =====================================
@@ -46,9 +46,11 @@
         <h3 class="mt-0">
           <strong>{{ datos.sku }}</strong>
         </h3>
-        <ng-container *ngIf="datos.laserCliente">
+        <ng-container *ngIf="datos.laserAlmacen.length > 0 || datos.laser">
           <b class="font-weight-bold">MARCA LASER: </b>
-          <span class="label label-inverse">{{ datos.laserCliente }}</span>
+          <span class="label label-inverse">{{
+            datos.laserAlmacen.length > 0 ? datos.laserAlmacen : datos.laser
+          }}</span>
           <br />
         </ng-container>
 

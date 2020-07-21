@@ -164,7 +164,6 @@ import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/pr
 import { AdministradorComponent } from './parametros/administrador/administrador.component';
 import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component';
 import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component';
-import { OrdenDetalleImprimirComponent } from './gestionDeFolios/ordenes/orden-detalle-imprimir/orden-detalle-imprimir.component'
 
 @NgModule({
   declarations: [
@@ -329,8 +328,7 @@ import { OrdenDetalleImprimirComponent } from './gestionDeFolios/ordenes/orden-d
     ProcesosEspecialesComponent,
     AdministradorComponent,
     EstacionesDeEscaneoComponent,
-    CreadorDeFormulariosComponent,
-    OrdenDetalleImprimirComponent
+    CreadorDeFormulariosComponent
   ],
   exports: [],
   imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],

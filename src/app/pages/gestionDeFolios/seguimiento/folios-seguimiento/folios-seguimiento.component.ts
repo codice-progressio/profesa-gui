@@ -182,9 +182,9 @@ export class FoliosSeguimientoComponent implements OnInit {
       )
       .subscribe(ordenes => {
         this.datos = ordenes
-        // this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
+        this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
 
-        // throw ' No se a defindo la marca de impresos'
+        throw ' No se a defindo la marca de impresos'
         // window.onafterprint = () => {
         //   this.folioService
         //     .marcarPedidosComoImpresos([

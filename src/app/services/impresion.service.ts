@@ -66,17 +66,10 @@ export class ImpresionService {
     return this
   }
 
-  ordenes(ordenes: string[]): this {
-    this.mostrarEncabezado = false
-    this.ordenesAImprimir = ordenes
-    return this
-  }
-
-
-  ordenesAImprimirIntegras: OrdenImpresion[] = []
+  ordenesDatos: OrdenImpresion[] = []
   ordenesVariosPedidos(ordenes: OrdenImpresion[]){
     this.mostrarEncabezado = false
-    this.ordenesAImprimirIntegras = ordenes
+    this.ordenesDatos = ordenes
     return this
   }
 
