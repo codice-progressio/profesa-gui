@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core'
 import { Folio } from 'src/app/models/folio.models'
 import { PaginadorService } from 'src/app/components/paginador/paginador.service'
 import { FolioNewService } from 'src/app/services/folio/folio-new.service'
-import { iPedidosConsulta } from '../../../../services/folio/folio-new.service'
+import {
+  iPedidosConsulta,
+  OrdenImpresion
+} from '../../../../services/folio/folio-new.service'
 import { Paginacion } from '../../../../utils/paginacion.util'
 import { ImpresionService } from '../../../../services/impresion.service'
 import { DepartamentoService } from '../../../../services/departamento/departamento.service'
@@ -163,14 +166,13 @@ export class FoliosSeguimientoComponent implements OnInit {
     }
   }
 
+  datos: OrdenImpresion[]
   async imprimirSeleccionados() {
     if (this.listaPorImprimir.length === 0) {
       this.msjService.invalido('No has seleccionado pedidos para imprimir')
 
       return
     }
-    if (this.departamentoService.pool.length === 0)
-      await this.departamentoService.findAllPoolObservable().toPromise()
 
     this.folioService
       .findAllOrdenesDePedidos(
@@ -179,21 +181,22 @@ export class FoliosSeguimientoComponent implements OnInit {
         })
       )
       .subscribe(ordenes => {
-        this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
+        this.datos = ordenes
+        // this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
 
-        throw ' No se a defindo la marca de impresos'
-        window.onafterprint = () => {
-          this.folioService
-            .marcarPedidosComoImpresos([
-              {
-                folio: idFolio,
-                pedidos: [idPedido]
-              }
-            ])
-            .subscribe(() => {
-              pedido.impreso = true
-            })
-        }
+        // throw ' No se a defindo la marca de impresos'
+        // window.onafterprint = () => {
+        //   this.folioService
+        //     .marcarPedidosComoImpresos([
+        //       {
+        //         folio: idFolio,
+        //         pedidos: [idPedido]
+        //       }
+        //     ])
+        //     .subscribe(() => {
+        //       pedido.impreso = true
+        //     })
+        // }
       })
   }
 }

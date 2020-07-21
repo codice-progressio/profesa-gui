@@ -64,7 +64,18 @@
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
-        <pre>{{ listaPorImprimir | json }}</pre>
+        
+        
+          <app-orden-detalle-imprimir 
+          
+          *ngFor="let orden of datos"
+          [datos]='orden'
+          >
+
+          </app-orden-detalle-imprimir>
+
+ 
+
       </div>
     </div>
   </div>

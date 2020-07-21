@@ -70,8 +70,8 @@ export class FolioNewService {
   ): Observable<OrdenImpresion[]> {
     let url = `${this.base}/ordenesParaImpresion`
     return this.http.post(url, datos).pipe(
-      map((resp: any) => {
-        return resp.ordenes as OrdenImpresion[]
+      map(resp => {
+        return resp as OrdenImpresion[]
       }),
       catchError(err => this.errFun(err))
     )
@@ -503,16 +503,27 @@ export interface OrdenLigera {
 }
 
 export interface OrdenImpresion {
-  nivelDeUrgencia:string
-  fechaDeEntregaAProduccion:Date
-  numeroDeOrden:string
-  piezasTeoricas:number
-  unidad:string
-  orden:string
-  sku:string
-  ruta:string []
+  nivelDeUrgencia: string
+  fechaDeEntregaAProduccion: Date
+  numeroDeOrden: string
+  piezasTeoricas: number
+  unidad: string
+  orden: string
+  sku: string
+  ruta: string[]
 
   observacionesOrden: string
   observacionesPedido: string
   observacionesFolio: string
+
+  laser: string
+  laserCliente: string
+
+
+  idFolio:string
+  idPedido:string
+  idOrden:string
+  cliente:string
+
+  totalOrdenes:number
 }
