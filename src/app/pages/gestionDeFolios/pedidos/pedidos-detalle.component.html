@@ -1,7 +1,9 @@
 <div id="print" *ngIf="pedido">
   <div class="row">
     <div class="col-12 col-sm-6">
-      <h3 class="font-bold"><span class="text-muted">Pedido: </span>#{{ pedido.pedido }}</h3>
+      <h3 class="font-bold">
+        <span class="text-muted">Pedido: </span>#{{ pedido.pedido }}
+      </h3>
       <h6 title="Fecha estimada de entrega">Fecha estimada de entrega:</h6>
       <span title="Fecha sin definir">
         <i class="fas fa-clock-o" aria-hidden="true"></i> Sin definir
@@ -65,7 +67,9 @@
                 <td class="fit">
                   <a
                     *ngIf="pedido.ordenesGeneradas"
-                    (click)="mostrarDetalleDeLaOrden(orden)"
+                    (click)="
+                      mostrarDetalleDeLaOrden(folio, pedido._id, orden._id)
+                    "
                     title="Ver detalle rapido de la orden."
                     data-toggle="modal"
                     data-target="#detalleDeLaOrden"
@@ -74,7 +78,7 @@
                     class="btn btn-primary text-white btn-sm mr-2"
                     role="button"
                   >
-                    <i class="fas fa-eye    "></i
+                    <i class="fas fa-eye"></i
                   ></a>
                 </td>
                 <td class="no-wrap">{{ orden.orden }}</td>

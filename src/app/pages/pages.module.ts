@@ -163,7 +163,7 @@ import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-inicia
 import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component';
 import { AdministradorComponent } from './parametros/administrador/administrador.component';
 import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component';
-import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component'
+import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component';
 
 @NgModule({
   declarations: [
