@@ -12,7 +12,7 @@
               href="javascript:void(0)"
               role="button"
               (click)="imprimirVarios()"
-              [ngClass]="{active: imprimiendoVarios}"
+              [ngClass]="{ active: imprimiendoVarios }"
             >
               <i class="fas fa-print mr-1"></i>
               <i class="fas fa-check-double"></i>
@@ -55,27 +55,6 @@
           </div>
         </div>
         <hr class="thin" />
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <div class="card shadow">
-      <div class="card-body">
-        
-        
-          <app-orden-detalle-imprimir 
-          
-          *ngFor="let orden of datos"
-          [datos]='orden'
-          >
-
-          </app-orden-detalle-imprimir>
-
- 
-
       </div>
     </div>
   </div>
@@ -127,7 +106,7 @@
               >
                 <td class="text-nowrap">
                   <a
-                    (click)="imprimirFolio(pedido.idFolio, pedido)"
+                    (click)="imprimirFolio(pedido.idFolio, pedido.idPedido)"
                     class="btn btn-xs mr-1"
                     href="javascript:void(0)"
                     role="button"

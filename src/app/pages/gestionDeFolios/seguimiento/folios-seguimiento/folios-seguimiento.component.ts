@@ -101,40 +101,16 @@ export class FoliosSeguimientoComponent implements OnInit {
     })
   }
 
-  // async imprimirFolio(idFolio: string, pedido: iPedidosConsulta) {
-  //   let idPedido = pedido.idPedido
-  //   if (this.departamentoService.pool.length === 0)
-  //     await this.departamentoService.findAllPoolObservable().toPromise()
+  imprimirFolio(folio: string, pedido: string) {
+    this.folioService
+      .findAllOrdenesDePedidos([{ folio, pedido }])
+      .subscribe(ordenes => {
+        this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
 
-  //   this.folioService.findById(idFolio).subscribe(folio => {
-  //     folio.folioLineas
-  //       .find(x => x._id === idPedido)
-  //       .ordenes.forEach(x => {
-  //         x.ruta.forEach(r =>
-  //           this.departamentoService.popularRutaConDepartamento(r)
-  //         )
-  //       })
-
-  //     let ordenes = folio.folioLineas
-  //       .find(x => x._id === idPedido)
-  //       .ordenes.map(x => x._id)
-
-  //     this.impresionService.ordenes(ordenes).seleccionarFolio(folio).imprimir()
-
-  //     window.onafterprint = () => {
-  //       this.folioService
-  //         .marcarPedidosComoImpresos([
-  //           {
-  //             folio: idFolio,
-  //             pedidos: [idPedido]
-  //           }
-  //         ])
-  //         .subscribe(() => {
-
-  //         })
-  //     }
-  //   })
-  // }
+        let datos = this.ordenesParaMarcarImpreso(ordenes)
+        this.marcarPedidosComoImpresos(datos)
+      })
+  }
 
   imprimiendoVarios = false
 
@@ -184,30 +160,44 @@ export class FoliosSeguimientoComponent implements OnInit {
         this.datos = ordenes
         this.impresionService.ordenesVariosPedidos(ordenes).imprimir()
 
-        let datosImpresos = ordenes.reduce((a, b) => {
-          if (!a.hasOwnProperty(b.idFolio)) a[b.idFolio] = []
-          a[b.idFolio].push(b.idPedido)
-          return a
-        }, {})
-
-        let datosParaMarcar = Object.keys(datosImpresos).map(k => {
-          return {
-            folio: k,
-            pedidos: datosImpresos[k]
-          }
-        })
-
-        window.onafterprint = () => {
-          this.folioService
-            .marcarPedidosComoImpresos(datosParaMarcar)
-            .subscribe(() => {
-              datosParaMarcar.forEach(x => {
-                this.pedidos
-                  .filter(ped => x.pedidos.includes(ped.idPedido))
-                  .forEach(ped => (ped.impreso = true))
-              })
-            })
-        }
+        let datosParaMarcar = this.ordenesParaMarcarImpreso(ordenes)
+        this.marcarPedidosComoImpresos(datosParaMarcar)
       })
+  }
+
+  private ordenesParaMarcarImpreso(
+    ordenes: OrdenImpresion[]
+  ): {
+    folio: string
+    pedidos: string[]
+  }[] {
+    let datosImpresos = ordenes.reduce((a, b) => {
+      if (!a.hasOwnProperty(b.idFolio)) a[b.idFolio] = []
+      a[b.idFolio].push(b.idPedido)
+      return a
+    }, {})
+
+    let datosParaMarcar = Object.keys(datosImpresos).map(k => {
+      return {
+        folio: k,
+        pedidos: datosImpresos[k]
+      }
+    })
+
+    return datosParaMarcar
+  }
+
+  private marcarPedidosComoImpresos(datosParaMarcar) {
+    window.onafterprint = () => {
+      this.folioService
+        .marcarPedidosComoImpresos(datosParaMarcar)
+        .subscribe(() => {
+          datosParaMarcar.forEach(x => {
+            this.pedidos
+              .filter(ped => x.pedidos.includes(ped.idPedido))
+              .forEach(ped => (ped.impreso = true))
+          })
+        })
+    }
   }
 }

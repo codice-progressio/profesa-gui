@@ -66,10 +66,11 @@ export class FolioNewService {
   }
 
   findAllOrdenesDePedidos(
-    datos: { folio: string; pedido: string }[]
+    datos: { folio: string; pedido: string }[],
+    ordenesAFiltrar: string[] = null
   ): Observable<OrdenImpresion[]> {
     let url = `${this.base}/ordenesParaImpresion`
-    return this.http.post(url, datos).pipe(
+    return this.http.post(url, { datos:datos, ordenesAFiltrar }).pipe(
       map(resp => {
         return resp as OrdenImpresion[]
       }),
@@ -294,8 +295,6 @@ export class FolioNewService {
       catchError(err => this.errFun(err))
     )
   }
-
-  findByIdMultipleParaImprimir()
 
   recibirOrden(escaneada, idDepartamento): Observable<null> {
     let url = this.base.concat(`/recibirOrden`)

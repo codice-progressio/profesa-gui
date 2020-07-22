@@ -6,6 +6,8 @@ import { Folio } from '../models/folio.models'
 import { Orden } from '../models/orden.models'
 import { OrdenImpresion } from './folio/folio-new.service'
 
+
+declare var $
 @Injectable({
   providedIn: 'root'
 })
@@ -79,6 +81,9 @@ export class ImpresionService {
   }
 
   imprimir() {
+
+    //Si hay modales los cerramos todos
+    $('.modal').modal('hide')
     this.fecha = new Date()
     setTimeout(() => {
       window.print()
