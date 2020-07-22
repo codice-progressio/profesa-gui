@@ -57,7 +57,7 @@ export class ClientesCrearModificarComponent implements OnInit {
   crearFormulario(cliente: Cliente = new Cliente()) {
     this.formulario = this.fb.group({
       nombre: [cliente.nombre, [Validators.required]],
-      sae: [cliente.sae, [Validators.required]],
+      sae: [cliente.sae, null],
       laserados: this.fb.array(
         cliente.laserados.map(x => new FormControl(x.laser))
       )
