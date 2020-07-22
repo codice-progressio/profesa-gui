@@ -3,9 +3,15 @@
   [mensaje]="mensaje"
   [fecha]="fecha"
 >
+  <h3>{{ estatus }}</h3>
+  <small class="text-muted">
+    Desde el
+    <b>{{ _estatusLaboral.fechaInicioIncapacidad | date: 'dd/MM/yy':'gmt' }}</b>
+    hasta el
+    <b>{{
+      _estatusLaboral.fechaFinalizacionIncapacidad | date: 'dd/MM/yy':'gmt'
+    }}</b>
+  </small>
 
-<h3>{{estatus}}</h3>
-
-<p> {{observaciones}}</p>
-  
+  <p>{{ observaciones }}</p>
 </app-empleado-evento-plantilla>
