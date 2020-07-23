@@ -69,11 +69,11 @@ export class OrdenesDetalleComponent implements OnInit {
 
   private print() {
     $('.modal').modal('hide')
-    setTimeout(() => {
-      this.impresionService
-        .ordenes([this.orden._id])
-        .seleccionarFolio(this.folio)
-        .imprimir()
-    }, 400)
+    // setTimeout(() => {
+    //   this.impresionService
+    //     .ordenes([this.orden._id])
+    //     .seleccionarFolio(this.folio)
+    //     .imprimir()
+    // }, 400)
   }
 }

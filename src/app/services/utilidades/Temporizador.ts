@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, ModuleWithComponentFactories } from "@angular/core";
+import { OnInit, OnDestroy, ModuleWithComponentFactories, Directive } from "@angular/core";
 import * as moment from 'moment/moment';
 import 'moment-duration-format';
 
@@ -11,6 +11,7 @@ import 'moment-duration-format';
  * @implements {OnInit}
  * @implements {OnDestroy}
  */
+@Directive()
 export class Temporizador implements OnInit, OnDestroy{
 
 

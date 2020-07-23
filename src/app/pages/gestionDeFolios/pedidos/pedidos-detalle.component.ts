@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { Orden } from '../../../models/orden.models'
 import { FolioLinea } from 'src/app/models/folioLinea.models'
+import {
+  OrdenImpresion,
+  FolioNewService
+} from '../../../services/folio/folio-new.service'
 
 @Component({
   selector: 'app-pedidos-detalle',
@@ -16,11 +20,11 @@ export class PedidosDetalleComponent implements OnInit {
    */
   @Input() pedido: FolioLinea = null
   _folio
-  @Input() set  folio(f:string){
+  @Input() set folio(f: string) {
     this._folio = f
   }
 
-  get folio():string{
+  get folio(): string {
     return this._folio
   }
   @Output() idFolio = new EventEmitter<string>()
@@ -31,20 +35,22 @@ export class PedidosDetalleComponent implements OnInit {
    *
    * @memberof PedidosDetalleComponent
    */
-  @Output() orden = new EventEmitter<Orden>()
+  @Output() orden = new EventEmitter<OrdenImpresion>()
 
   detalleAvanceOrden: Orden = null
   avanceOrden(orden: Orden) {
     this.detalleAvanceOrden = orden
   }
 
-  constructor() {}
+  constructor(public folioService: FolioNewService) {}
 
   ngOnInit() {}
 
-  mostrarDetalleDeLaOrden(orden: Orden) {
-    this.orden.emit(orden)
-    this.idFolio.emit(this.folio)
-    this.idPedido.emit(this.pedido._id)
+  mostrarDetalleDeLaOrden(folio, pedido, orden) {
+    this.folioService
+      .findAllOrdenesDePedidos([{ folio, pedido }], [orden])
+      .subscribe(ordenes => {
+        this.orden.emit(ordenes.pop())
+      })
   }
 }

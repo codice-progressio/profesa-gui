@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, Renderer2 } from '@angular/core'
-import { FolioNewService, OrdenLigera } from '../../../services/folio/folio-new.service'
+import {
+  FolioNewService,
+  OrdenLigera
+} from '../../../services/folio/folio-new.service'
 import { Orden } from '../../../models/orden.models'
 import { Departamento } from '../../../models/departamento.models'
 import { Trayecto } from '../../../models/trayecto.models'
@@ -9,6 +12,14 @@ import {
 } from '../../../services/proceso/proceso.service'
 import { KeyValue } from '@angular/common'
 import { DepartamentoService } from '../../../services/departamento/departamento.service'
+import {
+  UsuarioService,
+  UsuarioLight
+} from '../../../services/usuario/usuario.service'
+import {
+  ParametrosService,
+  ScannerDepartamentoGestion
+} from '../../../services/parametros.service'
 
 @Component({
   selector: 'app-orden-detalle-avance',
@@ -25,6 +36,8 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   procesoSeleccionado: string = null
 
   ignorarHasta = 0
+  estaciones: ScannerDepartamentoGestion[]
+  usuarios: UsuarioLight[]
   @Input() set orden(orden: OrdenLigera) {
     this.rutaSeg = null
     if (!orden) return
@@ -70,11 +83,39 @@ export class OrdenDetalleAvanceComponent implements OnInit {
   constructor(
     private departamentoService: DepartamentoService,
     private folioService: FolioNewService,
-    private procesoService: ProcesoService
+    private procesoService: ProcesoService,
+    private parametrosService: ParametrosService,
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit(): void {
     this.departamentoService.findAllPool()
+
+    this.cargarEstacionesDeEscaneo()
+    this.cargarUsuarios()
+  }
+
+  cargarEstacionesDeEscaneo() {
+    if (!this.parametrosService.poolEstacionesDeEscaneo) {
+      this.parametrosService
+        .findAllEstacionesDeEscaneo()
+        .subscribe(estaciones => {
+          this.estaciones = estaciones
+        })
+    } else {
+      this.estaciones = this.parametrosService.poolEstacionesDeEscaneo
+    }
+  }
+
+  cargarUsuarios() {
+    if (
+      this.usuarioService.poolLight.length === 0 &&
+      !this.usuarioService.cargandoPool
+    ) {
+      this.usuarioService.findAllLigthPool().subscribe(x => (this.usuarios = x))
+    } else {
+      this.usuarios = this.usuarioService.poolLight
+    }
   }
 
   cargarDetalle(subRuta: any, proceso: string) {
@@ -108,5 +149,25 @@ export class OrdenDetalleAvanceComponent implements OnInit {
       (a, b) => (a += this.calcularTotal(b.peso10Botones, b.pesoTotalBoton)),
       0
     )
+  }
+
+  esteDepartamento(id) {
+    let a = this.estaciones.find(x => x.departamento._id == id)
+    delete a.usuarios
+    return a
+  }
+
+  obtenerDatos(rutaSeg, key) {
+    if (rutaSeg.hasOwnProperty('datos')) return rutaSeg.datos[key]
+  }
+
+  obtenerUsuario(idUsuario) {
+    if (!this.usuarios || !idUsuario) return
+
+    let usuario = this.usuarios.find(x => {
+      return x._id === idUsuario
+    }).nombre
+
+    if (usuario) return usuario
   }
 }

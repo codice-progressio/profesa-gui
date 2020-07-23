@@ -177,232 +177,131 @@
             </li>
           </ng-container>
         </ul>
-
-        <div class="col-12"><hr /></div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row" *ngIf="rutaSeg">
+<div class="row fadeIn animated" *ngIf="rutaSeg">
   <div class="col-12">
-    <div class="card">
-      <div class="card-body row">
-        <div class="col-12 col-sm-6">
-          <h3>
-            <span class="font-weight-bolder">Departamento:</span>
-            {{ encontrarDepartamento(rutaSeg?.departamento)?.nombre }}
-          </h3>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h3>
-            <span class="font-weight-bolder">Proceso:</span>
-            {{ procesoSeleccionado }}
-          </h3>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h5>
-            <span class="font-weight-bolder">Estatus:</span>
-            <ng-container *ngIf="rutaSeg.recibida">
-              Recibida
-              <i class="fas fa-check text-success"></i>
-            </ng-container>
+    <div class="row bg-light-gray">
+      <div class="col-12 col-sm-6">
+        <h3>
+          <span class="font-weight-bolder">Departamento:</span>
+          {{ encontrarDepartamento(rutaSeg?.departamento)?.nombre }}
+        </h3>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h3>
+          <span class="font-weight-bolder">Proceso:</span>
+          {{ procesoSeleccionado }}
+        </h3>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h5>
+          <span class="font-weight-bolder">Estatus:</span>
+          <ng-container *ngIf="rutaSeg.recibida">
+            Recibida
+            <i class="fas fa-check text-success"></i>
+          </ng-container>
 
-            <span *ngIf="!rutaSeg.recibida && rutaSeg.ubicacionActual">
-              Por recibir:
-              <i class="fas fa-exclamation tada animated infinite"></i>
-            </span>
-          </h5>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h5>
-            <span class="font-weight-bolder">Hora de recepcion:</span>
-            {{
-              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
-                | fecha: 'LLL'
-            }}
-          </h5>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h5>
-            <span class="font-weight-bolder">Hora de salida:</span>
-            {{ rutaSeg.salida | fecha: 'LLL' }}
-          </h5>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h5>
-            <span class="font-weight-bolder">Tiempo de proceso:</span>
-            {{
-              (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
-                | fechaDiferencia: rutaSeg.salida:false
-            }}
-          </h5>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h5>
-            <span class="font-weight-bolder">Piezas solicitadas:</span>
-            {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
-          </h5>
-        </div>
+          <span *ngIf="!rutaSeg.recibida && rutaSeg.ubicacionActual">
+            Por recibir:
+            <i class="fas fa-exclamation tada animated infinite"></i>
+          </span>
+        </h5>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h5>
+          <span class="font-weight-bolder">Hora de recepcion:</span>
+          {{
+            (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+              | fecha: 'LLL'
+          }}
+        </h5>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h5>
+          <span class="font-weight-bolder">Hora de salida:</span>
+          {{ rutaSeg.salida | fecha: 'LLL' }}
+        </h5>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h5>
+          <span class="font-weight-bolder">Tiempo de proceso:</span>
+          {{
+            (rutaSeg.entrada ? rutaSeg.entrada : rutaSeg.recepcion)
+              | fechaDiferencia: rutaSeg.salida:false
+          }}
+        </h5>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h5>
+          <span class="font-weight-bolder">Piezas solicitadas:</span>
+          {{ ordenConsultada.piezasTeoricas | number: '0.0' }}
+        </h5>
+      </div>
 
-        <div *ngIf="rutaSeg.datos" class="col-12">
-          <ng-container *ngIf="rutaSeg.datos?.cantidades">
-            <h5>
-              <span class="font-weight-bolder">Contado por: No aplica aun</span>
-            </h5>
+      <!-- 
+        =====================================
+         Detalle trabajado
+        =====================================
+        -->
 
-            <table class="table table-hover table-sm table-bordered">
+      <div class="col-12 mt-5">
+        <div class="card shadow">
+          <div class="card-body">
+            <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>Partida</th>
-                  <th>Espesor</th>
-                  <th>10 botones (gr)</th>
-                  <th>Peso total (kg)</th>
-                  <th>Cantidad</th>
+                  <th
+                    class="font-weight-bold"
+                    *ngFor="
+                      let th of esteDepartamento(rutaSeg.idDepartamento)
+                        .inputsFormulario
+                    "
+                  >
+                    {{ th.label }}
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  *ngFor="
-                    let cantidad of rutaSeg.datos.cantidades;
-                    let i = index
-                  "
-                >
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ cantidad.espesorPastilla }}</td>
-                  <td>{{ cantidad.peso10Botones | number: '0.2' }}</td>
-                  <td>{{ cantidad.pesoTotalBoton | number: '0.2' }}</td>
-                  <td>
-                    {{
-                      calcularTotal(
-                        cantidad.peso10Botones,
-                        cantidad.pesoTotalBoton
-                      ) | number: '0.0-0'
-                    }}
-                  </td>
-                </tr>
-
                 <tr>
-                  <td colspan="4" class="text-right">
-                    <span class="font-weight-bolder">Total departamento</span>
-                  </td>
-                  <td>
-                    {{
-                      totalDeBoton(rutaSeg.datos.cantidades) | number: '0.0-0'
-                    }}
+                  <td
+                    *ngFor="
+                      let th of esteDepartamento(rutaSeg.idDepartamento)
+                        .inputsFormulario
+                    "
+                  >
+                    <ng-container [ngSwitch]="th.type">
+                      <ng-container *ngSwitchCase="'number'">
+                        {{ obtenerDatos(rutaSeg, th.key) | number }}
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="'text'">
+                        {{ obtenerDatos(rutaSeg, th.key) }}
+                      </ng-container>
+                      <ng-container *ngSwitchDefault></ng-container>
+                    </ng-container>
+
+                    {{ th.suffix }}
                   </td>
                 </tr>
               </tbody>
             </table>
-          </ng-container>
 
-          <table *ngIf="rutaSeg.datos?.bl" class="table table-hover table-sm">
-            <thead>
-              <tr>
-                <th>Espesor de boton</th>
-                <th>BPM</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ rutaSeg.datos.espesorBoton | number: '0.2' }}</td>
-                <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
-                <td>
-                  {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table
-            *ngIf="rutaSeg.datos?.peso10Botones"
-            class="table table-hover table-sm"
-          >
-            <thead>
-              <tr>
-                <th>10 botones (gr)</th>
-                <th>Peso total (kg)</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ rutaSeg.datos.peso10Botones | number: '0.2' }}</td>
-                <td>{{ rutaSeg.datos.pesoTotalBoton | number: '0.2' }}</td>
-                <td>
-                  {{
-                    calcularTotal(
-                      rutaSeg.datos.peso10Botones,
-                      rutaSeg.datos.pesoTotalBoton
-                    ) | number: '0.0-0'
-                  }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            Operacion realizada por:
+            <span class="font-weight-bold">
+              {{ obtenerUsuario(rutaSeg?.datos?.user) }}
+            </span>
+          </div>
         </div>
-
-        <table *ngIf="rutaSeg.datos?.quebrados" class="table">
-          <thead>
-            <tr>
-              <th>Quebrados</th>
-              <th>Reves</th>
-              <th>Despostillado</th>
-              <th>Sin laser</th>
-              <th>Sin hoyos</th>
-              <th>Efecto malo</th>
-              <th>Otros</th>
-              <th>Descripcion de otros</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ rutaSeg.datos.quebrados }}</td>
-              <td>{{ rutaSeg.datos.reves }}</td>
-              <td>{{ rutaSeg.datos.despostillado }}</td>
-              <td>{{ rutaSeg.datos.sinLaser }}</td>
-              <td>{{ rutaSeg.datos.sinHoyos }}</td>
-              <td>{{ rutaSeg.datos.efectoMalo }}</td>
-              <td>{{ rutaSeg.datos.otros }}</td>
-              <td>{{ rutaSeg.datos.descripcionDeOtro }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h1 *ngIf="rutaSeg.datos?.empacadoPor">
-          Piezas empacadas: {{ rutaSeg.datos.cantidadDeBoton | number }}
-        </h1>
-        <h1 *ngIf="rutaSeg.datos?.empacadoPor && rutaSeg.datos.cantidadDeBoton">
-          Cantidad surtida: {{ rutaSeg.datos.cantidadDeBoton | number }}
-        </h1>
-
-        <h1 *ngIf="rutaSeg.datos?.terminada">
-          Orden terminada:
-
-          <i
-            *ngIf="rutaSeg.datos?.terminada"
-            class="fas fa-check text-success fa-2x"
-          ></i>
-        </h1>
-
-        <table *ngIf="rutaSeg.datos?.laser" class="table table-hover table-sm">
-          <thead>
-            <tr>
-              <th>BPM</th>
-              <th>Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ rutaSeg.datos.bl | number: '0.0-0' }}</td>
-              <td>
-                {{ rutaSeg.datos.cantidadDeBoton | number: '0.0-0' }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
+      <!-- 
+        =====================================
+         END Detalle trabajado
+        =====================================
+        -->
     </div>
   </div>
 </div>

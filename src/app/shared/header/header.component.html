@@ -7,7 +7,7 @@
     <!-- Logo -->
     <!-- ============================================================== -->
     <div class="navbar-header">
-      <a class="navbar-brand " href="index.html">
+      <a class="navbar-brand" href="index.html">
         <!-- Logo icon -->
         <b>
           <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -137,19 +137,32 @@
         <!-- ============================================================== -->
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle waves-effect waves-dark "
+            class="nav-link dropdown-toggle waves-effect waves-dark"
             href=""
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img [src]="usuario.img | imagen" alt="user" class="profile-pic"
+          >
+            <img
+              [src]="
+                usuario.img | imagen: (usuario.empleado ? 'empleados' : '')
+              "
+              alt="user"
+              class="profile-pic"
           /></a>
           <div class="dropdown-menu dropdown-menu-right animated fadeIn faster">
             <ul class="dropdown-user">
               <li>
                 <div class="dw-user-box">
-                  <div class="u-img">
-                    <img [src]="usuario.img | imagen" alt="user" />
+                  <div class="contenedor-de-imagen">
+                    <img
+                      [src]="
+                        usuario.img
+                          | imagen: (usuario.empleado ? 'empleados' : '')
+                      "
+                      alt="user"
+                      class="imagen-perfil"
+                    />
                   </div>
                   <div class="u-text">
                     <h4>{{ usuario.nombre }}</h4>
@@ -164,15 +177,15 @@
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a  routerLinkActive="active" routerLink="/perfil"
+                <a routerLinkActive="active" routerLink="/perfil"
                   ><i class="fas fa-user"></i> Perfil</a
                 >
               </li>
               <li>
                 <!-- Este modal esta en pages.compnent.ts -->
-               
-                <a class='pointer'  data-toggle="modal" data-target="#modelId"
-                  ><i class="fas fa-info    "></i> Acerca de
+
+                <a class="pointer" data-toggle="modal" data-target="#modelId"
+                  ><i class="fas fa-info"></i> Acerca de
                 </a>
               </li>
               <!-- <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>

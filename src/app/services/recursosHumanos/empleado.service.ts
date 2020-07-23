@@ -88,9 +88,6 @@ export class EmpleadoService {
     paginacion: Paginacion,
     filtros: string = ''
   ): Observable<Empleado[]> {
-    const a = this._preLoaderService.loading(
-      'Buscando empleados con el termino: ' + termino
-    )
     const url = this.base
       .concat(`/buscar/${termino}`)
       .concat('?')
@@ -102,8 +99,6 @@ export class EmpleadoService {
 
     return this.http.get(url).pipe(
       map((respuesta: any) => {
-        this._msjService.ok_(respuesta, null, a)
-
         const empleados: Empleado[] = []
 
         respuesta.empleados.forEach(x =>
@@ -149,7 +144,7 @@ export class EmpleadoService {
    * @returns {Observable<any>}
    * @memberof EmpleadoService
    */
-  save(empleado: Empleado): Observable<any> {
+  save(empleado: Empleado): Observable<Empleado> {
     return this.guardarOModificar(empleado)
   }
 
@@ -161,12 +156,12 @@ export class EmpleadoService {
    * @returns {Observable<null>}
    * @memberof EmpleadoService
    */
-  guardarOModificar(empleado: Empleado): Observable<any> {
+  guardarOModificar(empleado: Empleado): Observable<Empleado> {
     let a = this._preLoaderService.loading('Haciendo algo con el empleado')
 
     let url = this.base
     return this.http
-      .post(url, toFormData(empleado), {
+      .post<Empleado>(url, toFormData(empleado), {
         reportProgress: true,
         observe: 'events'
       })
@@ -180,7 +175,9 @@ export class EmpleadoService {
         ),
         toResponseBody((respuesta, nada, a) => {
           this._msjService.ok_(respuesta, nada, a)
+          return respuesta.empleado as Empleado
         }, a),
+
         catchError(err => {
           this._msjService.err(err)
 
@@ -240,7 +237,11 @@ export class EmpleadoService {
     })
   }
 
-  registrarPuesto(_id: string, puestoNuevoTexto: string, observaciones: string) {
+  registrarPuesto(
+    _id: string,
+    puestoNuevoTexto: string,
+    observaciones: string
+  ) {
     const a = this.preloaderEvento('Aplicando cambio de puesto')
     const url = this.urlEvento('puesto')
     return this.registroDeEventoGenerico(url, a, {
@@ -448,22 +449,19 @@ export class EmpleadoService {
     )
   }
 
-  updateIngresoEmpleado(empleado: string, fechaNueva: Date) :Observable<null>{
+  updateIngresoEmpleado(empleado: string, fechaNueva: Date): Observable<null> {
     let url = this.base.concat('/ingreso-empleado')
-    return this.http.put(
-      url,
-      {
+    return this.http
+      .put(url, {
         idEmpleado: empleado,
         fecha: fechaNueva
-      },
-      ).pipe(
+      })
+      .pipe(
         map((x: any) => {
           this._msjService.toastCorrecto(x.mensaje)
           return null
         }),
         catchError(err => this.errFun(err))
       )
-
   }
-
 }

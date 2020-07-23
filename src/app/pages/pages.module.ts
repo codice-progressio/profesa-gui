@@ -19,7 +19,6 @@ import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/i
 import { ClientesComponent } from './clientes/clientes.component'
 import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component'
 import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component'
-import { HistorialDeFoliosComponent } from './reportes/historial-de-folios/historial-de-folios.component'
 import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component'
 import { BuratoComponent } from './departamentos/burato/burato.component'
 import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component'
@@ -65,7 +64,6 @@ import { FoliosComponent } from './gestionDeFolios/folios/folios.component'
 import { PedidosCrearModificarComponent } from './gestionDeFolios/pedidos/pedidos-crear-modificar.component'
 import { OrdenesCrearModificarComponent } from './gestionDeFolios/ordenes/ordenes-crear-modificar.component'
 import { OrdenesComponent } from './gestionDeFolios/ordenes/ordenes.component'
-import { GrupoDeFiltroComponent } from './gestionDeFolios/folios/grupo-de-filtro.component'
 import { RevisionDeFoliosComponent } from './gestionDeFolios/revision/revision-de-folios/revision-de-folios.component'
 import { FoliosCrearModificarAbstractoComponent } from './gestionDeFolios/folios/abstractos/folios-crear-modificar-abstracto.component'
 import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/revision-de-ordenes-abstracto/revision-de-ordenes-abstracto.component'
@@ -165,7 +163,7 @@ import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-inicia
 import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component';
 import { AdministradorComponent } from './parametros/administrador/administrador.component';
 import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component';
-import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component'
+import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +185,6 @@ import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escane
     ClientesComponent,
     ControlDeProduccionComponent,
     ProductoTerminadoComponent,
-    HistorialDeFoliosComponent,
     MetalizadoComponent,
     BuratoComponent,
     BarnizadoComponent,
@@ -233,7 +230,6 @@ import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escane
     PedidosCrearModificarComponent,
     OrdenesCrearModificarComponent,
     OrdenesComponent,
-    GrupoDeFiltroComponent,
     RevisionDeFoliosComponent,
     FoliosCrearModificarAbstractoComponent,
     RevisionDeOrdenesAbstractoComponent,

@@ -178,7 +178,7 @@ export class RequisicionCrearModificarComponent implements OnInit {
       })
   }
   articuloSeleccionado(dato: Dato) {
-    let art: Articulo = <Articulo>dato ? dato.objeto : null
+    let art: Articulo = dato ? <Articulo> dato.objeto : null
     this.f('articulo').setValue(null)
 
     this.f('materiaPrima').setValue(false)

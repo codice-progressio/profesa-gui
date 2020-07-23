@@ -27,28 +27,22 @@
   </div>
 </div>
 
-
-<div class="row ">
-    <div class="col-12 ">
-        <div class="card m-0 p-0" style="background-color: transparent;">
-            <div class="card-body m-0 p-0">
-
-              <paginador
-              class="pull-right mr-4"
-              [totalDeElementos]="totalDeElementos"
-              [campoDeOrdenamiento]="paginacion.campoDeOrdenamiento"
-              [tipoDeOrden]="paginacion.orden"
-              (actualizarConsulta)="actualizarConsulta($event)"
-              [cargando]="keys(cargando).length > 0"
-            ></paginador>
-
-            </div>
-        </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card m-0 p-0" style="background-color: transparent;">
+      <div class="card-body m-0 p-0">
+        <paginador
+          class="pull-right mr-4"
+          [totalDeElementos]="totalDeElementos"
+          [campoDeOrdenamiento]="paginacion.campoDeOrdenamiento"
+          [tipoDeOrden]="paginacion.orden"
+          (actualizarConsulta)="actualizarConsulta($event)"
+          [cargando]="keys(cargando).length > 0"
+        ></paginador>
+      </div>
     </div>
+  </div>
 </div>
-
-
-
 
 <div
   *ngIf="usuarios.length && keys(cargando).length === 0"
@@ -74,7 +68,10 @@
                 <img
                   (click)="detalle(elemento._id)"
                   class="pointer shadow"
-                  [src]="elemento.img | imagen"
+                  [src]="
+                    elemento.img
+                      | imagen: (elemento.empleado ? 'empleados' : '')
+                  "
                   style="width: 50px; height: 50px; border-radius: 50%;"
                 />
               </td>
