@@ -245,7 +245,7 @@
                     type="checkbox"
                     class="form-check-input"
                     id="{{ i + par.key }}"
-                    [checked]="permisosExistentes.includes(per)"
+                    [checked]="permisosExistentes?.includes(per)"
                     (change)="agregarQuitarPermiso(per, $event.target.checked)"
                   />
                   <label class="form-check-label" for="{{ i + par.key }}">

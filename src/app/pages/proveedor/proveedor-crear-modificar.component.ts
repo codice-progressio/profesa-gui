@@ -29,6 +29,7 @@ import { Domicilio } from "src/app/models/proveedores/domicilio.model"
 import { Contacto } from "../../models/proveedores/contacto.model"
 import { RelacionArticulo } from "../../models/proveedores/relacionArticulo.model"
 import { Cuenta } from "../../models/proveedores/cuenta.model"
+import { Paginacion } from "src/app/utils/paginacion.util"
 
 @Component({
   selector: "app-proveedor-crear-modificar",
@@ -406,22 +407,22 @@ export class ProveedorCrearModificarComponent implements OnInit {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
 
-    // this._articuloService
-    //   .search(termino, undefined, undefined, Articulo)
-    //   .subscribe((articulos) => {
-    //     let datos: Dato[] = []
-    //     articulos.forEach((art: Articulo) => {
-    //       datos.push(this.crearDatoParaDataList(art))
-    //     })
+    this._articuloService
+      .findByTerm(termino, new Paginacion(10, 0, 1 , "nombre" ))
+      .subscribe((articulos) => {
+        let datos: Dato[] = []
+        articulos.forEach((art: Articulo) => {
+          datos.push(this.crearDatoParaDataList(art))
+        })
 
-    //     dataList.terminoBusqueda(datos)
-    //   })
+        dataList.terminoBusqueda(datos)
+      })
   }
 
   private crearDatoParaDataList(art: Articulo): Dato {
     let d = new Dato()
     d.leyendaPrincipal = art.nombre
-    d.leyendaSecundaria = art.existenciaEnKg() + " kg "
+    d.leyendaSecundaria = (art.kgPorUnidad * art.existencia) + " kg "
     d.descripcionPrincipal = art.descripcion
     d.descripcionSecundaria = "Unidades de almacenamiento en: " + art.unidad
     d.objeto = art
