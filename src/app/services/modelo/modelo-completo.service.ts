@@ -175,6 +175,17 @@ export class ModeloCompletoService {
     let url = this.base.concat('/todoParaExcel')
     return this.http.get<any[]>(url).pipe(catchError(_ => this.errFun(_)))
   }
+
+  definirParte(parte: string, idSKU) {
+    let url = this.base.concat('/setearParte')
+    return this.http.put(url, { parte, _id: idSKU }).pipe(
+      map((x: any) => null),
+      catchError(err => {
+        this.msjService.toastError(err)
+        return catchError(err)
+      })
+    )
+  }
 }
 
 export interface ModeloCompletoLigero {
@@ -185,4 +196,5 @@ export interface ModeloCompletoLigero {
   stockMinimo: number
   familiaDeProcesos: string
   medias: boolean
+  parte: string
 }
