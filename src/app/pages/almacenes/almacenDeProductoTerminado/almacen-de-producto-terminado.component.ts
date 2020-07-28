@@ -174,4 +174,14 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
       _ => delete this.cargando['excel']
     )
   }
+
+  setearParte(parte: string, sku: ModeloCompletoLigero) {
+    let parteAnterior = sku.parte
+    this.modComService.definirParte(parte, sku._id).subscribe(
+      _ => {
+        sku.parte = parte
+      },
+      _ => (sku.parte = parteAnterior)
+    )
+  }
 }
