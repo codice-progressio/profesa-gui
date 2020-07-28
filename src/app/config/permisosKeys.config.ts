@@ -144,6 +144,7 @@ export default {
   'modeloCompleto:leer:todo': 'modeloCompleto:leer:todo',
   'modeloCompleto:leer:transito': 'modeloCompleto:leer:transito',
   'modeloCompleto:modificar': 'modeloCompleto:modificar',
+  'modeloCompleto:modificar:parte': 'modeloCompleto:modificar:parte',
   'modeloCompleto:stock:modificar': 'modeloCompleto:stock:modificar',
   'proceso:crear': 'proceso:crear',
   'proceso:eliminar': 'proceso:eliminar',
