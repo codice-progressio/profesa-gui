@@ -219,7 +219,7 @@ export class ProveedorCrearModificarComponent implements OnInit {
   }
   private crearGrupo_relacionArticulo(): FormGroup {
     return this.fb.group({
-      precioUnitario: ["", [this.vs.numberValidator, Validators.min(1)]],
+      precioUnitario: ["", [this.vs.numberValidator, Validators.min(0.001)]],
       divisa: ["", []],
       item: ["", [Validators.required]],
       tiempoDeEntregaEnDias: ["", [Validators.min(1), this.vs.numberValidator]],
