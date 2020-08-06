@@ -23,7 +23,7 @@ export class ReportesProduccionService {
   ) {}
 
   urlReportes: string = 'reportes'
-
+  base = URL_BASE('reportes')
   private error(err) {
     this._msjService.err(err)
     return throwError(err)
@@ -45,8 +45,7 @@ export class ReportesProduccionService {
     )
   }
 
-
-  almacenProduccionFaltante(): Observable<ReporteFaltantesAlmacenProduccion[]>{
+  almacenProduccionFaltante(): Observable<ReporteFaltantesAlmacenProduccion[]> {
     const a = this._preLoaderService.loading('Generando reporte de faltantes')
     const url = URL_BASE('reportes/almacenDeProduccion/faltantes')
 
@@ -62,8 +61,7 @@ export class ReportesProduccionService {
     )
   }
 
-  almacenProduccionPersonalizado( id:string ): Observable<Articulo[]>{
-
+  almacenProduccionPersonalizado(id: string): Observable<Articulo[]> {
     const a = this._preLoaderService.loading('Generando reporte personalizado')
     const url = URL_BASE(`reportes/almacenDeProduccion/personalizado/${id}`)
 
@@ -71,20 +69,21 @@ export class ReportesProduccionService {
       map((datos: any) => {
         this._msjService.ok_(datos, null, a)
 
-        return datos.reportes.map(x =>
-          Object.assign(new Articulo(), x)
-        )
+        return datos.reportes.map(x => Object.assign(new Articulo(), x))
       }),
       catchError(err => this.error(err))
     )
-
-
-
-
-
   }
 
+  tiemposDeProceso(limiteInferior: Date, limiteSuperior: Date) {
+    let url = this.base
+      .concat('/controlDeProduccion/tiempoDeProcesosPorOrden')
+      .concat(`?`)
+      .concat(`inferior=${limiteInferior}`)
+      .concat(`&superior=${limiteSuperior}`)
 
+      console.log()
 
-
+    return this.http.get<any[]>(url).pipe(catchError(err => this.error(err)))
+  }
 }
