@@ -18,6 +18,7 @@
               <i class="fas fa-check-double"></i>
               Imprimir varios</a
             >
+
             <a
               *ngIf="imprimiendoVarios"
               class="btn btn-warning btn-sm mr-1"
@@ -41,6 +42,15 @@
               ></i>
               Actualizar</a
             >
+
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              data-toggle="modal"
+              data-target="#reporteTiemposDeProceso"
+            >
+              Reporte de tiempos de proceso
+            </button>
           </div>
           <div class="col-12 col-md-6 col-lg-4">
             <div class="form-group">
@@ -206,3 +216,68 @@
 
 <app-folios-detalle-abstracto [folio]="folioDetalle">
 </app-folios-detalle-abstracto>
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="reporteTiemposDeProceso"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reporte de tiempos de proceso</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="form-group">
+            <input
+              #limiteInferiorIn
+              type="date"
+              class="form-control"
+              (change)="limiteInferior = limiteInferiorIn.value"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Limite inferior</small
+            >
+          </div>
+          <div class="form-group">
+            <input
+              #limiteSuperiorIn
+              type="date"
+              class="form-control"
+              (change)="limiteSuperior = limiteSuperiorIn.value"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Limite superior
+            </small>
+          </div>
+
+          <a
+            (click)="generarReporteTiemposDeProceso()"
+            class="btn btn-success"
+            href="javascript:void(0)"
+          >
+            <i class="fas fa-file-excel"></i>
+            Generar</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+>

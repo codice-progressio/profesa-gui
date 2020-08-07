@@ -10,6 +10,8 @@ import { Paginacion } from '../../../../utils/paginacion.util'
 import { ImpresionService } from '../../../../services/impresion.service'
 import { DepartamentoService } from '../../../../services/departamento/departamento.service'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
+import { ReportesProduccionService } from '../../../../services/reportes/reportes-produccion.service'
+import { ExcelService } from '../../../../services/excel.service'
 
 @Component({
   selector: 'app-folios-seguimiento',
@@ -28,7 +30,9 @@ export class FoliosSeguimientoComponent implements OnInit {
     public folioService: FolioNewService,
     private impresionService: ImpresionService,
     private departamentoService: DepartamentoService,
-    private msjService: ManejoDeMensajesService
+    private msjService: ManejoDeMensajesService,
+    private reporteService: ReportesProduccionService,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -199,5 +203,21 @@ export class FoliosSeguimientoComponent implements OnInit {
           })
         })
     }
+  }
+
+  limiteInferior: Date
+  limiteSuperior: Date
+
+  generarReporteTiemposDeProceso() {
+    if (!this.limiteInferior || !this.limiteSuperior) {
+      this.msjService.toastErrorMensaje('Debes definir los limites del rango')
+      return
+    }
+
+    this.reporteService
+      .tiemposDeProceso(this.limiteInferior, this.limiteSuperior)
+      .subscribe(ordenes => {
+        this.excelService.exportAsExcelFile(ordenes, 'Tiempos de Proceso')
+      })
   }
 }
