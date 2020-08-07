@@ -4,7 +4,7 @@ import { SidebarComponent } from './sidebar/sidebar.component'
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
 import { NopagefoundComponent } from './nopagefound/nopagefound.component'
 import { RouterModule } from '@angular/router'
-import { CommonModule, DecimalPipe } from '@angular/common'
+import { CommonModule, DecimalPipe, DatePipe } from '@angular/common'
 
 // Pipes
 import { PipesModule } from '../pipes/pipes.module'
@@ -279,6 +279,7 @@ export class SharedModule {
         FechaPipe,
         ModeloCompletoPipe,
         DecimalPipe,
+        DatePipe,
         ContieneElPermisoPipe
       ]
     }

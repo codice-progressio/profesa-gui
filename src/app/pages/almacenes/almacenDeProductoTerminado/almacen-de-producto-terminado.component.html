@@ -7,12 +7,21 @@
 
           <div class="d-flex align-items-center">
             <a
-              title="Exportar todo a excel"
+              title="Exportar salidas de lotes a excel"
+              href="javascript:void(0)"
+              class="btn btn-success mr-3"
+              data-target="#exportarSalidas"
+              data-toggle="modal"
+            >
+              <i class="fas fa-file-excel"></i> Salidas
+            </a>
+            <a
+              title="Exportar existencia actual a excel"
               href="javascript:void(0)"
               class="btn btn-success mr-3"
               (click)="exportarTodoAExcel()"
             >
-              <i class="fas fa-file-excel"></i>
+              <i class="fas fa-file-excel"></i> Existencia actual
             </a>
 
             <div class="mr-3">
@@ -187,7 +196,8 @@
                     class="btn btn-secondary btn-xs"
                     role="button"
                     data-toggle="modal"
-                    data-target="#masOpciones"mod
+                    data-target="#masOpciones"
+                    mod
                     (click)="modeloAConsolidar = mc"
                   >
                     <i class="fas fa-plus-circle"></i>
@@ -288,3 +298,66 @@
  END Opciones adicionales
 =====================================
 -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exportarSalidas"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Definir rango de fechas para las salidas</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input
+          #inferiorInput
+            (change)="inferiorSalidas = inferiorInput.value "
+            type="date"
+            class="form-control"
+          />
+          <small class="form-text text-muted">Limite inferior</small>
+        </div>
+        <div class="form-group">
+          <input
+          #superiorInput
+            (change)="superiorSalidas = superiorInput.value "
+            type="date"
+            class="form-control"
+          />
+          <small class="form-text text-muted">Limite superior</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          (click)="generarReporteSalidas()"
+          [disabled]="generandoReporteSalidas"
+          type="button"
+          class="btn btn-primary"
+        >
+          Generar
+          <i
+            *ngIf="generandoReporteSalidas"
+            class="fas fa-sync fa-spin-fast"
+          ></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

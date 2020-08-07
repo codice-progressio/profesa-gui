@@ -82,7 +82,15 @@ export class ReportesProduccionService {
       .concat(`inferior=${limiteInferior}`)
       .concat(`&superior=${limiteSuperior}`)
 
-      console.log()
+    return this.http.get<any[]>(url).pipe(catchError(err => this.error(err)))
+  }
+
+  salidasAlmacenProductoTerminado(inferior: Date, superior: Date) {
+    let url = this.base
+      .concat('/productoTerminado/salidas')
+      .concat(`?`)
+      .concat(`inferior=${inferior}`)
+      .concat(`&superior=${superior}`)
 
     return this.http.get<any[]>(url).pipe(catchError(err => this.error(err)))
   }
