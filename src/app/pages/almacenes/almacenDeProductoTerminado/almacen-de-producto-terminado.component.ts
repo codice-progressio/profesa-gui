@@ -11,6 +11,8 @@ import { Paginacion } from '../../../utils/paginacion.util'
 import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { ExcelService } from '../../../services/excel.service'
+import { ReportesProduccionService } from '../../../services/reportes/reportes-produccion.service'
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-almacen-de-producto-terminado',
@@ -42,11 +44,17 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
 
   p = permisosKeysConfig
 
+  inferiorSalidas: Date
+  superiorSalidas: Date
+  generandoReporteSalidas = false
+
   constructor(
     public almacenProdTerSer: AlmacenProductoTerminadoService,
     public modComService: ModeloCompletoService,
     public _msjService: ManejoDeMensajesService,
-    public excelService: ExcelService
+    public excelService: ExcelService,
+    public reporteService: ReportesProduccionService,
+    private dateTime: DatePipe
   ) {}
 
   ngOnInit() {
@@ -183,5 +191,43 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
       },
       _ => (sku.parte = parteAnterior)
     )
+  }
+
+  generarReporteSalidas() {
+    if (this.generandoReporteSalidas) return
+    if (!this.inferiorSalidas || !this.superiorSalidas) {
+      this._msjService.toastErrorMensaje('Debes definir un rango valido')
+      return
+    }
+
+    this.generandoReporteSalidas = true
+
+    this.reporteService
+      .salidasAlmacenProductoTerminado(
+        this.inferiorSalidas,
+        this.superiorSalidas
+      )
+      .subscribe(
+        datos => {
+          let arreglado = datos.map(x => {
+            try {
+              x.fechaSalida = new Date(x.fechaSalida)
+              x.horaSalida = this.dateTime.transform(x.fechaSalida, 'HH:MM:ss')
+              x.fechaSalida = this.dateTime.transform(
+                x.fechaSalida,
+                'yyyy-MM-dd'
+              )
+            } catch (error) {
+              console.log(error)
+            }
+
+            return x
+          })
+          this.excelService.exportAsExcelFile(arreglado, 'SALIDAS_ALMACEN')
+
+          this.generandoReporteSalidas = false
+        },
+        _ => (this.generandoReporteSalidas = false)
+      )
   }
 }
