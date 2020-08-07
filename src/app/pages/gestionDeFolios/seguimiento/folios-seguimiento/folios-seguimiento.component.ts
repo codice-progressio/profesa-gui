@@ -12,6 +12,7 @@ import { DepartamentoService } from '../../../../services/departamento/departame
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 import { ReportesProduccionService } from '../../../../services/reportes/reportes-produccion.service'
 import { ExcelService } from '../../../../services/excel.service'
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-folios-seguimiento',
@@ -26,13 +27,16 @@ export class FoliosSeguimientoComponent implements OnInit {
   paginacion = new Paginacion(5000, 0, 1, 'fechaDeEntregaAProduccion')
   folioDetalle: Folio
 
+  generandoReporteTiemposDeProceso = false
+
   constructor(
     public folioService: FolioNewService,
     private impresionService: ImpresionService,
     private departamentoService: DepartamentoService,
     private msjService: ManejoDeMensajesService,
     private reporteService: ReportesProduccionService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -209,15 +213,38 @@ export class FoliosSeguimientoComponent implements OnInit {
   limiteSuperior: Date
 
   generarReporteTiemposDeProceso() {
+    if (this.generandoReporteTiemposDeProceso) return
     if (!this.limiteInferior || !this.limiteSuperior) {
       this.msjService.toastErrorMensaje('Debes definir los limites del rango')
       return
     }
-
+    this.generandoReporteTiemposDeProceso = true
     this.reporteService
       .tiemposDeProceso(this.limiteInferior, this.limiteSuperior)
-      .subscribe(ordenes => {
-        this.excelService.exportAsExcelFile(ordenes, 'Tiempos de Proceso')
-      })
+      .subscribe(
+        ordenes => {
+          let arreglado = ordenes.map(x => {
+            try {
+              x.fechaFinalizacion = new Date(x.fechaFinalizacion)
+              x.horaFinalizacion = this.datePipe.transform(
+                x.fechaFinalizacion,
+                'HH:MM:ss'
+              )
+              x.fechaFinalizacion = this.datePipe.transform(
+                x.fechaFinalizacion,
+                'yyyy-MM-dd'
+              )
+            } catch (error) {
+              console.log(error)
+            }
+
+            return x
+          })
+
+          this.excelService.exportAsExcelFile(arreglado, 'TIEMPOS_DE_PROCESO')
+          this.generandoReporteTiemposDeProceso = false
+        },
+        _ => (this.generandoReporteTiemposDeProceso = false)
+      )
   }
 }
