@@ -134,9 +134,10 @@ export class ModeloCompletoService {
     )
   }
 
-  modificarStock(mc: ModeloCompleto): Observable<ModeloCompleto> {
+  modificarStock(
+    mc: ModeloCompleto | ModeloCompletoLigero
+  ): Observable<ModeloCompleto> {
     // solo mandamos el stock.
-
     let m = {
       _id: mc._id,
       stockMinimo: mc.stockMinimo,
@@ -145,7 +146,6 @@ export class ModeloCompletoService {
 
     return this.http.post(`${this.base}/stock`, m).pipe(
       map((resp: any) => {
-        this.msjService.toastCorrecto(resp.mensaje)
         let mod = new ModeloCompleto()
         mod._servicio = this
 

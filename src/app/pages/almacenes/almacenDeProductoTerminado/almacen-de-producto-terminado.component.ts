@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common'
 @Component({
   selector: 'app-almacen-de-producto-terminado',
   templateUrl: './almacen-de-producto-terminado.component.html',
-  styles: []
+  styleUrls: ['./almacen-de-producto-terminado.component.css']
 })
 export class AlmacenDeProductoTerminadoComponent implements OnInit {
   /**
@@ -229,5 +229,35 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
         },
         _ => (this.generandoReporteSalidas = false)
       )
+  }
+
+  elementosEditandose: string[] = []
+  elementosGuardandose: string[] = []
+
+  editando(mc: ModeloCompletoLigero): boolean {
+    return this.elementosEditandose.includes(mc._id)
+  }
+
+  editar(mc: ModeloCompletoLigero) {
+    let id = mc._id
+    if (this.elementosEditandose.includes(id)) {
+      this.elementosEditandose = this.elementosEditandose.filter(x => x !== id)
+
+      this.elementosGuardandose.push(id)
+      this.modComService.modificarStock(mc).subscribe(
+        mcC => {
+          Object.assign(mc, mcC)
+          this.elementosGuardandose = this.elementosGuardandose.filter(
+            x => x !== id
+          )
+        },
+        _ =>
+          (this.elementosGuardandose = this.elementosGuardandose.filter(
+            x => x !== id
+          ))
+      )
+    } else {
+      this.elementosEditandose.push(id)
+    }
   }
 }
