@@ -5,6 +5,18 @@
         <h1 class=""><strong>Articulos</strong> existentes</h1>
 
         <div class="d-flex align-items-center">
+          <button
+            (click)="reporteDeExistencias()"
+            id=""
+            class="btn btn-primary mr-3"
+            role="button"
+            [disabled]="generandoReporte"
+          >
+            <i *ngIf="!generandoReporte" class="fas fa-file-excel"></i>
+            <i *ngIf="generandoReporte" class="fas fa-sync fa-spin"></i>
+            Existencias
+          </button>
+
           <div class="mr-3">
             <app-buscador-paciente
               [cbObservable]="cbObservable"
