@@ -137,4 +137,13 @@ export class ArticuloService {
       catchError(err => this.errFun(err))
     )
   }
+  
+  
+  existencias() {
+    return this.http
+      .get<any>(`${this.base}/reporte/existencias`)
+      .pipe(catchError(err => this.errFun(err)))
+  }
+
+  
 }

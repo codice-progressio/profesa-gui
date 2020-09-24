@@ -4,6 +4,7 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 import { Router } from '@angular/router'
 import { iPaginadorData } from 'src/app/shared/paginador/paginador.component'
 import { Articulo } from 'src/app/models/almacenDeMateriaPrimaYHerramientas/articulo.modelo'
+import { ExcelService } from '../../../services/excel.service'
 
 @Component({
   selector: 'app-almacen-produccion',
@@ -41,6 +42,7 @@ export class AlamacenProduccion implements OnInit {
   }
 
   constructor(
+    public excelService: ExcelService,
     public articulosService: ArticuloService,
     private router: Router
   ) {}
@@ -100,6 +102,22 @@ export class AlamacenProduccion implements OnInit {
         this.cargar()
       },
       () => delete this.cargando['eliminar']
+    )
+  }
+
+  generandoReporte = false
+  reporteDeExistencias() {
+    this.generandoReporte = true
+    this.articulosService.existencias().subscribe(
+      datos => {
+        this.excelService.exportAsExcelFile(
+          datos,
+          'ALMACEN_PRODUCCION_EXISTENCIAS'
+        )
+
+        this.generandoReporte = false
+      },
+      _ => (this.generandoReporte = false)
     )
   }
 }
