@@ -16,6 +16,15 @@
               <i class="fas fa-file-excel"></i> Salidas
             </a>
             <a
+              title="Exportar entradas a excel"
+              href="javascript:void(0)"
+              class="btn btn-success mr-3"
+              data-target="#exportarEntradas"
+              data-toggle="modal"
+            >
+              <i class="fas fa-file-excel"></i> Entradas
+            </a>
+            <a
               title="Exportar existencia actual a excel"
               href="javascript:void(0)"
               class="btn btn-success mr-3"
@@ -404,6 +413,70 @@
           Generar
           <i
             *ngIf="generandoReporteSalidas"
+            class="fas fa-sync fa-spin-fast"
+          ></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exportarEntradas"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modelTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Definir rango de fechas para las entradas</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input
+            #inferiorEntradasInput
+            (change)="inferiorEntradas = inferiorEntradasInput.value"
+            type="date"
+            class="form-control"
+          />
+          <small class="form-text text-muted">Limite inferior</small>
+        </div>
+        <div class="form-group">
+          <input
+            #superiorEntradasInput
+            (change)="superiorEntradas = superiorEntradasInput.value"
+            type="date"
+            class="form-control"
+          />
+          <small class="form-text text-muted">Limite superior</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          (click)="generarReporteEntradas()"
+          [disabled]="generandoReporteEntradas"
+          type="button"
+          class="btn btn-primary"
+        >
+          Generar
+          <i
+            *ngIf="generandoReporteEntradas"
             class="fas fa-sync fa-spin-fast"
           ></i>
         </button>

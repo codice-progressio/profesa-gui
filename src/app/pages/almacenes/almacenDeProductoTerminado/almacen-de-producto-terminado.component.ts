@@ -47,6 +47,10 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
   inferiorSalidas: Date
   superiorSalidas: Date
   generandoReporteSalidas = false
+  
+  inferiorEntradas: Date
+  superiorEntradas: Date
+  generandoReporteEntradas = false
 
   constructor(
     public almacenProdTerSer: AlmacenProductoTerminadoService,
@@ -228,6 +232,43 @@ export class AlmacenDeProductoTerminadoComponent implements OnInit {
           this.generandoReporteSalidas = false
         },
         _ => (this.generandoReporteSalidas = false)
+      )
+  }
+  generarReporteEntradas() {
+    if (this.generandoReporteEntradas) return
+    if (!this.inferiorEntradas || !this.superiorEntradas) {
+      this._msjService.toastErrorMensaje('Debes definir un rango valido')
+      return
+    }
+
+    this.generandoReporteEntradas = true
+
+    this.reporteService
+      .entradasAlmacenProductoTerminado(
+        this.inferiorEntradas,
+        this.superiorEntradas
+      )
+      .subscribe(
+        datos => {
+          let arreglado = datos.map(x => {
+            try {
+              x.fechaEntrada = new Date(x.fechaEntrada)
+              x.horaEntrada = this.dateTime.transform(x.fechaEntrada, 'HH:MM:ss')
+              x.fechaEntrada = this.dateTime.transform(
+                x.fechaEntrada,
+                'yyyy-MM-dd'
+              )
+            } catch (error) {
+              console.log(error)
+            }
+
+            return x
+          })
+          this.excelService.exportAsExcelFile(arreglado, 'ENTRADAS_ALMACEN')
+
+          this.generandoReporteEntradas = false
+        },
+        _ => (this.generandoReporteEntradas = false)
       )
   }
 

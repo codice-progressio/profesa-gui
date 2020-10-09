@@ -94,4 +94,14 @@ export class ReportesProduccionService {
 
     return this.http.get<any[]>(url).pipe(catchError(err => this.error(err)))
   }
+
+  entradasAlmacenProductoTerminado(inferior: Date, superior: Date) {
+    let url = this.base
+      .concat('/productoTerminado/entradas')
+      .concat(`?`)
+      .concat(`inferior=${inferior}`)
+      .concat(`&superior=${superior}`)
+
+    return this.http.get<any[]>(url).pipe(catchError(err => this.error(err)))
+  }
 }
