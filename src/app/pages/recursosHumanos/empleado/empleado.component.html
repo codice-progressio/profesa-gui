@@ -29,6 +29,19 @@
             >
               <i class="fas fa-plus"></i> Crear empleado</a
             >
+
+            <button
+              (click)="descargarEmpleados()"
+              class="btn btn-success text-white active mr-3"
+              [disabled]="generandoReporteEmpleados"
+            >
+              <i *ngIf="!generandoReporteEmpleados" class="fas fa-file-excel"></i>
+              <i
+                *ngIf="generandoReporteEmpleados"
+                class="fas fa-sync fa-spin"
+              ></i>
+              Descargar empleados
+          </button>
             <!-- <a
               data-toggle="collapse"
               data-target="#filtros"
@@ -124,7 +137,7 @@
                 >
                   <div
                     class="image-cropper image-rounded"
-                    style="width: 50px; height: 50px;"
+                    style="width: 50px; height: 50px"
                   >
                     <img
                       class="profile-pic"

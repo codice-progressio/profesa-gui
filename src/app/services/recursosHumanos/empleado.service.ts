@@ -464,4 +464,10 @@ export class EmpleadoService {
         catchError(err => this.errFun(err))
       )
   }
+
+  descargarEmpleados() {
+    return this.http
+      .get<any[]>(URL_BASE('reportes/rh/empleados'))
+      .pipe(catchError(err => this.errFun(err)))
+  }
 }

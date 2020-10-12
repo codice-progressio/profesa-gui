@@ -11,6 +11,7 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 import { iPaginadorData } from '../../../shared/paginador/paginador.component'
 import { EmpleadoEventoEstatusLaboralComponent } from './empleado-eventos/empleado-evento-estatus-laboral.component'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { ExcelService } from '../../../services/excel.service'
 
 @Component({
   selector: 'app-empleado',
@@ -132,7 +133,8 @@ export class EmpleadoComponent implements OnInit {
   constructor(
     private _empleadoService: EmpleadoService,
     public _msjService: ManejoDeMensajesService,
-    public _puestoService: PuestoService
+    public _puestoService: PuestoService,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -247,5 +249,18 @@ export class EmpleadoComponent implements OnInit {
         })
       })
     })
+  }
+
+  generandoReporteEmpleados = false
+  descargarEmpleados() {
+    this.generandoReporteEmpleados = true
+    this._empleadoService.descargarEmpleados().subscribe(
+      empleados => {
+        this.excelService.exportAsExcelFile(empleados, 'EMPLEADOS')
+
+        this.generandoReporteEmpleados = false
+      },
+      () => (this.generandoReporteEmpleados = false)
+    )
   }
 }
