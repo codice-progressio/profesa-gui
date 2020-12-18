@@ -16,7 +16,6 @@ import { APP_ROUTES } from './app.routes'
 // Componentes
 import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component'
-import { RegisterComponent } from './login/register.component'
 import { PagesComponent } from './pages/pages.component'
 import { SharedModule } from './shared/shared.module'
 import { NgxMaskModule } from 'ngx-mask'
@@ -26,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
+import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -35,8 +35,8 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
-    PagesComponent
+    PagesComponent,
+    ImperiumSicComponent
   ],
 
   imports: [
