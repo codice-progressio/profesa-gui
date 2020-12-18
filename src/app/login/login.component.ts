@@ -67,6 +67,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       'url(assets/images/background/nuevo.jpg) no-repeat center center fixed'
     )
 
+
+
+  this.render.setStyle(document.body, "-webkit-background-size", "cover")
+  this.render.setStyle(document.body, "-moz-background-size", "cover")
+  this.render.setStyle(document.body, "-o-background-size", "cover")
+  this.render.setStyle(document.body, "background-size", "cover")
+
   }
 
   loading = false
