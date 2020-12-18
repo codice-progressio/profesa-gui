@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "start-local": "ng serve -o --ssl true --ssl-key F:\\proyectos\\codice_progressio\\geracion-de-certificados\\cert\\desarrollo.key --ssl-cert F:\\proyectos\\codice_progressio\\geracion-de-certificados\\cert\\desarrollo.crt --host 0.0.0.0 --aot",
+    "start-local": "ng serve -o --ssl true --ssl-key F:\\proyectos\\geracion-de-certificados\\cert\\desarrollo.key --ssl-cert F:\\proyectos\\geracion-de-certificados\\cert\\desarrollo.crt --host 0.0.0.0 --aot",
     "build": "ng build --prod --verbose",
     "test": "ng test",
     "lint": "ng lint",
