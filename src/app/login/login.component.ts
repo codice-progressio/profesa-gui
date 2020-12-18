@@ -50,6 +50,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.render.removeStyle(document.body, 'padding-top')
     this.render.removeStyle(document.body, 'padding-bottom')
     this.render.removeStyle(document.body, 'background-image')
+
+    this.render.removeStyle(document.body, '-webkit-background-size')
+    this.render.removeStyle(document.body, '-moz-background-size')
+    this.render.removeStyle(document.body, '-o-background-size')
+    this.render.removeStyle(document.body, 'background-size')
   }
 
   aplicarEstilos() {
@@ -67,13 +72,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       'url(assets/images/background/nuevo.jpg) no-repeat center center fixed'
     )
 
-
-
-  this.render.setStyle(document.body, "-webkit-background-size", "cover")
-  this.render.setStyle(document.body, "-moz-background-size", "cover")
-  this.render.setStyle(document.body, "-o-background-size", "cover")
-  this.render.setStyle(document.body, "background-size", "cover")
-
+    this.render.setStyle(document.body, '-webkit-background-size', 'cover')
+    this.render.setStyle(document.body, '-moz-background-size', 'cover')
+    this.render.setStyle(document.body, '-o-background-size', 'cover')
+    this.render.setStyle(document.body, 'background-size', 'cover')
   }
 
   loading = false
