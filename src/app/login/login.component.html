@@ -1,54 +1,74 @@
-<form class="form-signin text-center shadow animated fadeIn delay-1s">
-  <img class="mb-4 mt-4" src="assets/images/logo-text.png" alt="" />
-  <h1 class="h3 mb-3 font-weight-normal">Iniciar sesion</h1>
-
-  <label for="inputEmail" class="sr-only">Usuario</label>
-  <input
-    [(ngModel)]="email"
-    type="email"
-    name="email"
-    id="inputEmail"
-    class="form-control"
-    placeholder="Usuario"
-    required=""
-    autofocus=""
-    autocomplete="username"
-    [disabled]='loading'
-  />
-  <label for="inputPassword" class="sr-only">Contrasena</label>
-  <input
-    class="mt-2"
-    [(ngModel)]="password"
-    type="password"
-    name="password"
-    id="inputPassword"
-    class="form-control"
-    placeholder="Contrasena"
-    required=""
-    autocomplete="current-password"
-    [disabled]='loading'
-  />
-
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="recordar" [checked]='emailGuardado()' />
-    <label class="form-check-label" for="recordar" (click)="recordar = !recordar" >Recordar correo</label>
-  </div>
-
-  <span class="w-100">
-    <h1>
-      <i
-        [style.visibility]="loading ? 'visible' : 'hidden'"
-        class="fas fa-sync fa-spin-fast"
-      ></i>
+<div class="form-signin-div">
+  <form class="form-signin text-center">
+    <img
+      class="mb-4 mt-4"
+      src="assets/images/logo-light-text.png"
+      alt="IMPERIUMsic logo"
+    />
+    <h1 class="h3 mb-3 font-weight-bolder text-white bg-dark-gray">
+      Iniciar sesión
     </h1>
-  </span>
 
-  <button
-    (click)="ingresar()"
-    class="btn btn-lg btn-primary btn-block"
-    type="submit"
-  >
-    Iniciar sesion
-  </button>
-  <p class="mt-5 mb-3 text-muted text-center">© R.R. {{ copyRight }}</p>
-</form>
+    <label for="inputEmail" class="sr-only">Usuario</label>
+    <input
+      [(ngModel)]="email"
+      type="email"
+      name="email"
+      id="inputEmail"
+      class="form-control"
+      placeholder="Usuario"
+      required=""
+      autofocus=""
+      autocomplete="username"
+      [disabled]="loading"
+    />
+    <label for="inputPassword" class="sr-only">Contraseña</label>
+    <input
+      class="mt-2"
+      [(ngModel)]="password"
+      type="password"
+      name="password"
+      id="inputPassword"
+      class="form-control"
+      placeholder="Contrasena"
+      required=""
+      autocomplete="current-password"
+      [disabled]="loading"
+    />
+
+    <div class="form-check">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="recordar"
+        [checked]="emailGuardado()"
+      />
+      <label
+        class="form-check-label text-white"
+        for="recordar"
+        (click)="recordar = !recordar"
+        >Recordar correo</label
+      >
+    </div>
+
+    <span class="w-100">
+      <h1>
+        <i
+          [style.visibility]="loading ? 'visible' : 'hidden'"
+          class="fas fa-sync fa-spin-fast"
+        ></i>
+      </h1>
+    </span>
+
+    <button
+      (click)="ingresar()"
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+    >
+      Iniciar sesión
+    </button>
+    <p class="mt-5 mb-3 text-muted text-center">
+      © Codice Progressio {{ copyRight }}
+    </p>
+  </form>
+</div>
