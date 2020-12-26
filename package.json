@@ -1,7 +1,7 @@
 {
-  "name": "carrduci-sys-gui",
+  "name": "imperium-sic",
   "version": "3.6.0",
-  "description": "GUI Descktop CARRDUCIsys",
+  "description": "IMPERIUMsic",
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
