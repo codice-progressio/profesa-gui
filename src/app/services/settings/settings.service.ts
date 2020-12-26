@@ -7,8 +7,8 @@ import { DOCUMENT } from "@angular/common";
 export class SettingsService {
 
   ajustes: Ajustes = {
-    temaUrl: 'assets/css/colors/red.css',
-    tema: 'red'
+    temaUrl: 'assets/css/colors/blue-dark.css',
+    tema: 'blue-dark'
   };
 
 
