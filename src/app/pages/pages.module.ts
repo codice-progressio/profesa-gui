@@ -886,7 +886,6 @@ const pagesRoutes: Routes = [
     }
   },
 
-
   // <!--
   // =====================================
   //  END ADMINISTRADOR
@@ -1014,7 +1013,11 @@ const pagesRoutes: Routes = [
       permissions: permisosKeysConfig.login
     }
   },
-  { path: 'pages/almacen', loadChildren: () => import('./almacen/almacen.module').then(m => m.AlmacenModule) }
+  {
+    path: 'almacen',
+    loadChildren: () =>
+      import('./almacen/almacen.module').then(m => m.AlmacenModule)
+  }
 ]
 
 @NgModule({
