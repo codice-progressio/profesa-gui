@@ -1013,7 +1013,8 @@ const pagesRoutes: Routes = [
       titulo: 'Informaciónde la cuenta',
       permissions: permisosKeysConfig.login
     }
-  }
+  },
+  { path: 'pages/almacen', loadChildren: () => import('./almacen/almacen.module').then(m => m.AlmacenModule) }
 ]
 
 @NgModule({
