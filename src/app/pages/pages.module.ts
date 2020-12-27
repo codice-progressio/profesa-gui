@@ -69,17 +69,7 @@ import { RevisionDeOrdenesAbstractoComponent } from './gestionDeFolios/revision/
 import { FoliosSeguimientoComponent } from './gestionDeFolios/seguimiento/folios-seguimiento/folios-seguimiento.component'
 import { ClientesCrearModificarComponent } from './clientes/clientes-crear-modificar.component'
 import { ClientesDetalleComponent } from './clientes/clientes-detalle.component'
-import { AlmacenDeProductoTerminadoCrearModificarComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-crear-modificar.component'
-import { AlmacenDeProductoTerminadoDetalleComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado-detalle.component'
-import { AlmacenDeProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/almacen-de-producto-terminado.component'
-import { AlmacenDeProductoTerminadoCrearModificarEntradaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-entrada/almacen-de-producto-terminado-crear-modificar-entrada.component'
-import { AlmacenDeProductoTerminadoCrearModificarSalidaComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-salida/almacen-de-producto-terminado-crear-modificar-salida.component'
-import { AlmacenDeProductoTerminadoCrearModificarDevolucionComponent } from './almacenes/almacenDeProductoTerminado/es/almacen-de-producto-terminado-crear-modificar-devolucion/almacen-de-producto-terminado-crear-modificar-devolucion.component'
 import { LoteDetalleComponent } from './gestionDeProcesos/modelos-completos/lotes/lote-detalle/lote-detalle.component'
-import { StockAlmacenProductoTerminadoComponent } from './almacenes/almacenDeProductoTerminado/stock/stock-almacen-producto-terminado.component'
-import { ArticuloCrearModificarComponent } from './almacenes/articulo/articulo-crear-modificar.component'
-import { ArticuloDetalleComponent } from './almacenes/articulo/articulo-detalle.component'
-import { ArticuloComponent } from './almacenes/articulo/articulo.component'
 import { ProveedorCrearModificarComponent } from './proveedor/proveedor-crear-modificar.component'
 import { ProveedorDetalleComponent } from './proveedor/proveedor-detalle.component'
 import { ProveedorComponent } from './proveedor/proveedor.component'
@@ -87,19 +77,6 @@ import { DivisaCrearModificarComponent } from './divisa/divisa-crear-modificar.c
 import { DivisaDetalleComponent } from './divisa/divisa-detalle.component'
 import { DivisaComponent } from './divisa/divisa.component'
 import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
-import { RequisicionCrearModificarComponent } from './almacenes/requisicion/requisicion-crear-modificar.component'
-import { RequisicionDetalleComponent } from './almacenes/requisicion/requisicion-detalle.component'
-import { RequisicionComponent } from './almacenes/requisicion/requisicion.component'
-import { RequisicionEstatusGeneralComponent } from './almacenes/requisicion/estatus/requisicion-estatus-general/requisicion-estatus-general.component'
-import { RequisicionEstatusEsRequisicionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-requisicion/requisicion-estatus-es-requisicion.component'
-import { RequisicionEstatusEsOrdenDeCompraComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-orden-de-compra/requisicion-estatus-es-orden-de-compra.component'
-import { RequisicionEstatusEsEntregaParcialComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/requisicion-estatus-es-entrega-parcial.component'
-import { RequisicionEstatusEsTerminadaComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/requisicion-estatus-es-terminada.component'
-import { RequisicionEstatusEsCanceladaComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/requisicion-estatus-es-cancelada.component'
-import { RecibirParcialidadComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-entrega-parcial/recibirParcialidad/recibir-parcialidad.component'
-import { RecibirTerminacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-terminada/recibir-terminacion/recibir-terminacion.component'
-import { RecibirCancelacionComponent } from './almacenes/requisicion/estatus/requisicion-estatus-es-cancelada/recibir-cancelacion/recibir-cancelacion.component'
-import { RequisicionFiltrosComponent } from './almacenes/requisicion/requisicion-filtros/requisicion-filtros.component'
 import { EmpleadoCrearModificarComponent } from './recursosHumanos/empleado/empleado-crear-modificar.component'
 import { EmpleadoDetalleComponent } from './recursosHumanos/empleado/empleado-detalle.component'
 import { EmpleadoComponent } from './recursosHumanos/empleado/empleado.component'
@@ -139,13 +116,10 @@ import { EmpleadoAgregarCastigoComponent } from './recursosHumanos/empleado/empl
 import { EmpleadoAgregarPermisoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-permiso.component'
 import { EmpleadoAgregarBonoComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-bono.component'
 import { EmpleadoAgregarEstatusLaboralComponent } from './recursosHumanos/empleado/empleado-eventos-crear/empleado-agregar-estatus-laboral.component'
-import { AlmacenESComponent } from './alamacenes/almacen-es/almacen-es.component'
 import { ReporteDeFaltantesProductoTerminadoComponent } from './reportes/reporte-de-faltantes-producto-terminado/reporte-de-faltantes-producto-terminado.component'
 import { ReporteDeFaltantesAlmacenDeProduccionComponent } from './reportes/reporte-de-faltantes-almacen-de-produccion/reporte-de-faltantes-almacen-de-produccion.component'
-import { ReportePersonalizadoAlmacenProduccionCrearModificarComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-crear-modificar.component'
-import { ReportePersonalizadoAlmacenProduccionDetalleComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion-detalle.component'
 import { RPersonalizadoAlmacenProduccionComponent } from './reportes/r-personalizado-almacen-produccion/r-personalizado-almacen-produccion.component'
-import { ReportePersonalizadoAlmacenProduccionComponent } from './almacenes/reportePersonalizadoAlmacenProduccion/reporte-personalizado-almacen-produccion.component'
+
 import { ProgramacionTransformacionComponent } from './programacion/programacion-transformacion/programacion-transformacion.component'
 import { CommonModule } from '@angular/common'
 import { ProgramacionTransformacionReporteComponent } from './programacion/programacion-transformacion/programacion-transformacion-reporte/programacion-transformacion-reporte.component'
@@ -164,17 +138,6 @@ import { PermisosGuard } from '../services/guards/permisos.guard'
 import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
 
 const pagesRoutes: Routes = [
-  // Redirecciona a PagesComponent para separar el login
-  // de la estructura principal.
-  // {
-  //     // Esta es la ruta padre y tiene hijos. Esto permite la separación
-  //     // entre el login y el dashboard para los templates.
-  //     path: '',
-  //     component: PagesComponent,
-  //     canActivate: [LoginGuardGuard],
-  //     children: [
-  // Sección de estudio.
-
   {
     path: 'parametros/localizacionDeOrdenes',
     component: ProcesosInicialesYFinalesComponent,
@@ -262,17 +225,6 @@ const pagesRoutes: Routes = [
     }
   },
   {
-    path: 'reportes/almacenDeProduccion/personalizado',
-    component: ReportePersonalizadoAlmacenProduccionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Reporte personalizado - Almacen de produccion',
-      permissions:
-        permisosKeysConfig['menu:reportes:almacenDeProduccion:personalizado']
-    }
-  },
-  {
     path: 'reportes/almacenDeProduccion/personalizado/:id',
     component: RPersonalizadoAlmacenProduccionComponent,
     canActivate: [VerificaTokenGuard, PermisosGuard],
@@ -297,153 +249,6 @@ const pagesRoutes: Routes = [
   // <!--
   // =====================================
   //  END Reportes
-  // =====================================
-  // -->
-
-  // <!--
-  // =====================================
-  //  Almacen
-  // =====================================
-  // -->
-  {
-    path: 'almacen/productoTerminado',
-    component: AlmacenDeProductoTerminadoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Almacen de producto terminado',
-      permissions: permisosKeysConfig['menu:almacen:productoTerminado']
-    }
-  },
-
-  {
-    path: 'almacen/productoTerminado/detalle/:id',
-    component: AlmacenDeProductoTerminadoDetalleComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Almacen de producto terminado',
-      permissions: permisosKeysConfig['almacenDeProductoTerminado:leer:todo']
-    }
-  },
-
-  {
-    path: 'almacen/productoTerminado/salida/:id',
-    component: AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Almacen de producto terminado',
-      permissions: permisosKeysConfig['almacenDeProductoTerminado:salida']
-    }
-  },
-
-  {
-    path: 'almacen/productoTerminado/entrada/:id',
-    component: AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Almacen de producto terminado',
-      permissions: permisosKeysConfig['almacenDeProductoTerminado:lote:crear']
-    }
-  },
-
-  {
-    path: 'almacen/produccion/entradasYSalidas',
-    component: AlmacenESComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Entradas y salidas de almacen',
-      permissions:
-        permisosKeysConfig['menu:almacen:produccion:entradasYSalidas']
-    }
-  },
-  {
-    path: 'almacen/requisiciones',
-    component: RequisicionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Requisiciones de articulos',
-      permissions: permisosKeysConfig['menu:almacen:requisiciones']
-    }
-  },
-  {
-    path: 'almacen/requisiciones/crear',
-    component: RequisicionCrearModificarComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Requisiciones de articulos',
-      permissions: permisosKeysConfig['requisicion:crear']
-    }
-  },
-  {
-    path: 'almacen/requisiciones/modificar/:id',
-    component: RequisicionCrearModificarComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Requisiciones de articulos',
-      permissions: permisosKeysConfig['requisicion:modificar']
-    }
-  },
-  {
-    path: 'almacen/requisiciones/detalle/:id',
-    component: RequisicionDetalleComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Requisiciones de articulos',
-      permissions: permisosKeysConfig['requisicion:leer:id']
-    }
-  },
-  {
-    path: 'almacen/reportesPersonalizados',
-    component: ReportePersonalizadoAlmacenProduccionComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Gestion de reportes personalizados',
-      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
-    }
-  },
-  {
-    path: 'almacen/reportesPersonalizados/crear',
-    component: ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Gestion de reportes personalizados',
-      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
-    }
-  },
-  {
-    path: 'almacen/reportesPersonalizados/modificar/:id',
-    component: ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Gestion de reportes personalizados',
-      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
-    }
-  },
-  {
-    path: 'almacen/reportesPersonalizados/detalle/:id',
-    component: ReportePersonalizadoAlmacenProduccionDetalleComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Gestion de reportes personalizados',
-      permissions: permisosKeysConfig['menu:almacen:reportesPersonalizados']
-    }
-  },
-
-  // <!--
-  // =====================================
-  //  END Almacen
   // =====================================
   // -->
 
@@ -765,17 +570,6 @@ const pagesRoutes: Routes = [
       permissions: permisosKeysConfig['folio:modificar']
     }
   },
-  {
-    path: 'ventas/stock',
-    component: StockAlmacenProductoTerminadoComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-
-    data: {
-      titulo: 'Minimos y maximos de productos en almacen',
-      permissions: permisosKeysConfig['menu:ventas:stock']
-    }
-  },
-
   // <!--
   // =====================================
   //  END VENTAS
@@ -1090,17 +884,7 @@ const pagesRoutes: Routes = [
     FoliosSeguimientoComponent,
     ClientesCrearModificarComponent,
     ClientesDetalleComponent,
-    AlmacenDeProductoTerminadoCrearModificarComponent,
-    AlmacenDeProductoTerminadoDetalleComponent,
-    AlmacenDeProductoTerminadoComponent,
-    AlmacenDeProductoTerminadoCrearModificarEntradaComponent,
-    AlmacenDeProductoTerminadoCrearModificarSalidaComponent,
-    AlmacenDeProductoTerminadoCrearModificarDevolucionComponent,
     LoteDetalleComponent,
-    StockAlmacenProductoTerminadoComponent,
-    ArticuloCrearModificarComponent,
-    ArticuloDetalleComponent,
-    ArticuloComponent,
     ProveedorCrearModificarComponent,
     ProveedorDetalleComponent,
     ProveedorComponent,
@@ -1108,19 +892,6 @@ const pagesRoutes: Routes = [
     DivisaDetalleComponent,
     DivisaComponent,
     TenidoComponent,
-    RequisicionCrearModificarComponent,
-    RequisicionDetalleComponent,
-    RequisicionComponent,
-    RequisicionEstatusGeneralComponent,
-    RequisicionEstatusEsRequisicionComponent,
-    RequisicionEstatusEsOrdenDeCompraComponent,
-    RequisicionEstatusEsEntregaParcialComponent,
-    RequisicionEstatusEsTerminadaComponent,
-    RequisicionEstatusEsCanceladaComponent,
-    RecibirParcialidadComponent,
-    RecibirTerminacionComponent,
-    RecibirCancelacionComponent,
-    RequisicionFiltrosComponent,
     EmpleadoCrearModificarComponent,
     EmpleadoDetalleComponent,
     EmpleadoComponent,
@@ -1160,13 +931,9 @@ const pagesRoutes: Routes = [
     EmpleadoAgregarPermisoComponent,
     EmpleadoAgregarBonoComponent,
     EmpleadoAgregarEstatusLaboralComponent,
-    AlmacenESComponent,
     ReporteDeFaltantesProductoTerminadoComponent,
     ReporteDeFaltantesAlmacenDeProduccionComponent,
-    ReportePersonalizadoAlmacenProduccionCrearModificarComponent,
-    ReportePersonalizadoAlmacenProduccionDetalleComponent,
     RPersonalizadoAlmacenProduccionComponent,
-    ReportePersonalizadoAlmacenProduccionComponent,
     ProgramacionTransformacionComponent,
     ProgramacionTransformacionReporteComponent,
     UsuarioCrearComponent,
