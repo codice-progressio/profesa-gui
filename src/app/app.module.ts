@@ -26,10 +26,28 @@ import { HttpClientModule } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
+import { RouterModule, Routes } from '@angular/router'
+import { LoginGuardGuard } from './services/guards/login-guard.guard'
+import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
 }
+
+const appRoutes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'IMPERIUMsic', component: ImperiumSicComponent },
+
+  {
+    path: '',
+    component: PagesComponent,
+    canActivate: [LoginGuardGuard],
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
+  },
+
+  // Página de error cuando no encuentra una ruta.
+  { path: '**', component: NopagefoundComponent }
+]
 
 @NgModule({
   declarations: [
@@ -40,9 +58,8 @@ export function tokenGetter() {
   ],
 
   imports: [
-    CommonModule,
     BrowserModule,
-    APP_ROUTES,
+    RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule, // required animations module
     HttpClientModule,
     NgxMaskModule.forRoot(),

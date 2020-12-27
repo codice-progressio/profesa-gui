@@ -178,6 +178,7 @@ import { OrdenDetalleImprimirComponent } from '../pages/gestionDeFolios/ordenes/
     OrdenDetalleImprimirComponent
   ],
   exports: [
+    CommonModule,
     NopagefoundComponent,
     HeaderComponent,
     SidebarComponent,
