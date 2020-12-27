@@ -159,11 +159,12 @@ import { ProgramacionTransformacionReporteComponent } from './programacion/progr
 import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component'
 import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component'
 import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
-import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component';
-import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component';
-import { AdministradorComponent } from './parametros/administrador/administrador.component';
-import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component';
-import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component';
+import { ProcesosInicialesYFinalesComponent } from './parametros/procesos-iniciales-yfinales/procesos-iniciales-yfinales.component'
+import { ProcesosEspecialesComponent } from './parametros/procesos-especiales/procesos-especiales.component'
+import { AdministradorComponent } from './parametros/administrador/administrador.component'
+import { EstacionesDeEscaneoComponent } from './parametros/estaciones-de-escaneo/estaciones-de-escaneo.component'
+import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escaneo/creador-de-formularios/creador-de-formularios.component'
+import { RouterModule } from '@angular/router'
 
 @NgModule({
   declarations: [
@@ -331,7 +332,11 @@ import { CreadorDeFormulariosComponent } from './parametros/estaciones-de-escane
     CreadorDeFormulariosComponent
   ],
   exports: [],
-  imports: [CommonModule, SharedModule.forRoot(), PAGES_ROUTES],
+  imports: [
+    CommonModule,
+    SharedModule.forRoot(),
+    RouterModule.forChild(PAGES_ROUTES)
+  ],
   providers: []
   // Para permitir la carga dinamica de componentes.
 })

@@ -3,20 +3,7 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
 import { ProfileComponent } from './profile/profile.component'
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
-import { MaterialesComponent } from './departamentos/materiales/materiales.component'
-import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
-import { PulidoComponent } from './departamentos/pulido/pulido.component'
-import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
-import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
-import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
 import { ClientesComponent } from './clientes/clientes.component'
-import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component'
-import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component'
-import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component'
-import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component'
-import { BuratoComponent } from './departamentos/burato/burato.component'
-import { LaserComponent } from './departamentos/laser/laser.component'
-import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component'
 import { ProcesosComponent } from './gestionDeProcesos/procesos/procesos.component'
 import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.component'
 import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component'
@@ -1129,4 +1116,4 @@ const pagesRoutes: Routes = [
   }
 ]
 
-export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes)
+export const PAGES_ROUTES = pagesRoutes
