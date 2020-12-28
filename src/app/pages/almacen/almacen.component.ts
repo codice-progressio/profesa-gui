@@ -12,4 +12,7 @@ export class AlmacenComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  
+
 }
