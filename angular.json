@@ -21,11 +21,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css", "node_modules/ngx-toastr/toastr.css"],
-            "scripts": [
-              "node_modules/marked/lib/marked.js",
-              "./node_modules/jquery/dist/jquery.js",  
-              "./node_modules/bootstrap/dist/js/bootstrap.js"
-            ]
+            "scripts": ["node_modules/marked/lib/marked.js"]
           },
           "configurations": {
             "production": {
@@ -60,18 +56,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "controlProduccion:build"
+            "browserTarget": "imperium-sic:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "controlProduccion:build:production"
+              "browserTarget": "imperium-sic:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "controlProduccion:build"
+            "browserTarget": "imperium-sic:build"
           }
         },
         "test": {
@@ -103,11 +99,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "controlProduccion:serve"
+            "devServerTarget": "imperium-sic:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "controlProduccion:serve:production"
+              "devServerTarget": "imperium-sic:serve:production"
             }
           }
         },
@@ -121,5 +117,5 @@
       }
     }
   },
-  "defaultProject": "controlProduccion"
+  "defaultProject": "imperium-sic"
 }
