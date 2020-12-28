@@ -31,6 +31,7 @@
     "@types/jquery": "^3.3.32",
     "@zxing/ngx-scanner": "^3.0.0",
     "angularx-qrcode": "^10.0.6",
+    "bootstrap": "^4.5.3",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",
     "express": "^4.17.1",
@@ -40,6 +41,7 @@
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "ng2-charts": "^1.6.0",
+    "ngx-bootstrap": "^6.2.0",
     "ngx-markdown": "^10.1.0",
     "ngx-mask": "^9.0.2",
     "ngx-toastr": "^12.0.0",
@@ -52,7 +54,7 @@
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1000.3",
+    "@angular-devkit/build-angular": "^0.1100.5",
     "@angular/language-service": "^10.0.5",
     "@types/jasmine": "^3.5.5",
     "@types/jasminewd2": "^2.0.8",
