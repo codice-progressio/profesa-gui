@@ -15,7 +15,6 @@ import { PreLoaderComponent } from '../components/pre-loader/pre-loader.componen
 import { NivelUrgenciaComponent } from '../components/nivel-urgencia/nivel-urgencia.component'
 import { PaginadorComponent } from '../components/paginador/paginador.component'
 import { ListaDeOrdenesComponent } from '../components/lista-de-ordenes/lista-de-ordenes.component'
-import { QrScannerComponent } from '../components/qr-scanner/qr-scanner.component'
 import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
 import { ModeloCompletoPipe } from '../pipes/modelo-completo.pipe'
@@ -132,7 +131,6 @@ import { OrdenDetalleImprimirComponent } from '../pages/gestionDeFolios/ordenes/
     NivelUrgenciaComponent,
     PaginadorComponent,
     ListaDeOrdenesComponent,
-    QrScannerComponent,
     ValidacionInputsComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
@@ -189,7 +187,6 @@ import { OrdenDetalleImprimirComponent } from '../pages/gestionDeFolios/ordenes/
     NivelUrgenciaComponent,
     PaginadorComponent,
     ListaDeOrdenesComponent,
-    QrScannerComponent,
     ValidacionInputsComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
@@ -255,7 +252,7 @@ export class SharedModule {
         PreLoaderService,
         ModalUploadService,
         VerificaTokenGuard,
-        // Sistema 
+        // Sistema
         ClienteService,
         ModeloCompletoService,
         BuscadorRapidoService,

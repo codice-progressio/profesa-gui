@@ -7,22 +7,8 @@ import { ProfileComponent } from './profile/profile.component'
 
 // Sistema
 import { SeguimientoDeFoliosComponent } from './seguimiento-de-folios/seguimiento-de-folios.component'
-import { MaterialesComponent } from './departamentos/materiales/materiales.component'
-import { TransformacionComponent } from './departamentos/transformacion/transformacion.component'
-import { PulidoComponent } from './departamentos/pulido/pulido.component'
-import { SeleccionComponent } from './departamentos/seleccion/seleccion.component'
-import { PastillaComponent } from './departamentos/pastilla/pastilla.component'
-import { EmpaqueComponent } from './departamentos/empaque/empaque.component'
-import { GestionDepartamentoComponent } from './departamentos/gestion-departamento/gestion-departamento.component'
 import { IndicadorDeChecadasComponent } from './reportes/indicador-de-checadas/indicador-de-checadas.component'
 import { ClientesComponent } from './clientes/clientes.component'
-import { ControlDeProduccionComponent } from './departamentos/control-de-produccion/control-de-produccion.component'
-import { ProductoTerminadoComponent } from './departamentos/producto-terminado/producto-terminado.component'
-import { MetalizadoComponent } from './departamentos/metalizado/metalizado.component'
-import { BuratoComponent } from './departamentos/burato/burato.component'
-import { BarnizadoComponent } from './departamentos/barnizado/barnizado.component'
-import { LaserComponent } from './departamentos/laser/laser.component'
-import { AlmacenDeBotonComponent } from './departamentos/almacen-de-boton/almacen-de-boton.component'
 import { FamiliaDeProcesosComponent } from './gestionDeProcesos/familia-de-procesos/familia-de-procesos.component'
 import { ProcesosComponent } from './gestionDeProcesos/procesos/procesos.component'
 import { MaquinasComponent } from './gestionDeProcesos/maquinas/maquinas.component'
@@ -76,7 +62,6 @@ import { ProveedorComponent } from './proveedor/proveedor.component'
 import { DivisaCrearModificarComponent } from './divisa/divisa-crear-modificar.component'
 import { DivisaDetalleComponent } from './divisa/divisa-detalle.component'
 import { DivisaComponent } from './divisa/divisa.component'
-import { TenidoComponent } from './departamentos/tenido/tenido/tenido.component'
 import { EmpleadoCrearModificarComponent } from './recursosHumanos/empleado/empleado-crear-modificar.component'
 import { EmpleadoDetalleComponent } from './recursosHumanos/empleado/empleado-detalle.component'
 import { EmpleadoComponent } from './recursosHumanos/empleado/empleado.component'
@@ -822,22 +807,8 @@ const pagesRoutes: Routes = [
     ProfileComponent,
     // sistema
     SeguimientoDeFoliosComponent,
-    MaterialesComponent,
-    TransformacionComponent,
-    PulidoComponent,
-    SeleccionComponent,
-    PastillaComponent,
-    EmpaqueComponent,
-    GestionDepartamentoComponent,
     IndicadorDeChecadasComponent,
     ClientesComponent,
-    ControlDeProduccionComponent,
-    ProductoTerminadoComponent,
-    MetalizadoComponent,
-    BuratoComponent,
-    BarnizadoComponent,
-    LaserComponent,
-    AlmacenDeBotonComponent,
     FamiliaDeProcesosComponent,
     ProcesosComponent,
     ProcesosDetalleComponent,
@@ -891,7 +862,6 @@ const pagesRoutes: Routes = [
     DivisaCrearModificarComponent,
     DivisaDetalleComponent,
     DivisaComponent,
-    TenidoComponent,
     EmpleadoCrearModificarComponent,
     EmpleadoDetalleComponent,
     EmpleadoComponent,
