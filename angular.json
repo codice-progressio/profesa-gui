@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "controlProduccion": {
+    "imperium-sic": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -95,7 +95,7 @@
         }
       }
     },
-    "controlProduccion-e2e": {
+    "imperium-sic-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
