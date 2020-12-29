@@ -1,4 +1,4 @@
-import { Lote } from './almacenProductoTerminado/lotes.model'
+import { Lote } from './lote.model'
 export interface SKU {
   puedoProducirlo: boolean
   puedoComprarlo: boolean

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SKU } from '../../models/sku.model'
 
 @Component({
   selector: 'app-almacen',
@@ -7,6 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlmacenComponent implements OnInit {
 
+
+
+
+  skus: SKU[] = []
   constructor() { }
 
   ngOnInit(): void {

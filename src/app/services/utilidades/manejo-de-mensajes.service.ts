@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core'
 import swal from 'sweetalert2'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { ToastrService } from 'ngx-toastr'
-import { ModelosCompletosDetalleComponent } from '../../pages/gestionDeProcesos/modelos-completos/modelos-completos-detalle.component'
-
 interface errorEstructurado {
   type?: string
   title?: string
