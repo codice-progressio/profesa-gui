@@ -1,4 +1,4 @@
-import { Lote } from './lote.model'
+import { SkuLote } from './lote.model'
 export interface SKU {
   puedoProducirlo: boolean
   puedoComprarlo: boolean
@@ -39,7 +39,7 @@ export interface SKU {
    * Los lotes de este sku. Ver schema para mas info.
    */
   lotes: {
-    type: Lote[]
+    type: SkuLote[]
     select: false
   }
 
