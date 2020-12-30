@@ -1,45 +1,13 @@
-<codice-ux-precarga> </codice-ux-precarga>
-
 <div class="row">
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
-        <h1>
-          Almacen [ SKU´s ]
-          <hr />
-          <small class="text-muted">Lista de todos los items registrados</small>
-        </h1>
-
-
-
+        <app-sku-lista *ngIf="!cargando; else precarga"> </app-sku-lista>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card shadow">
-            <div class="card-body">
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>SKU</th>
-                            <th>Minimo</th>
-                            <th>Existencia</th>
-                            <th>Observaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let sku of skus">
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-    </div>
-</div>
+<ng-template #precarga>
+  <codice-ux-precarga> </codice-ux-precarga>
+</ng-template>

@@ -8,7 +8,7 @@ import { SKU } from '../../models/sku.model'
 })
 export class AlmacenComponent implements OnInit {
 
-
+  cargando = false
 
 
   skus: SKU[] = []
