@@ -1,0 +1,25 @@
+<small class="text-muted">Lista de todos los SKU´s registrados</small>
+<hr />
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>SKU</th>
+        <th>Máximo</th>
+        <th>Existencia</th>
+        <th>Mínimo</th>
+        <th>Observaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sku of skus">
+        <td>{{ sku.nombreCompleto }}</td>
+        <td>{{ sku.stockMinimo | number }}</td>
+        <td>{{ sku.existencia | number }}</td>
+        <td>{{ sku.stockMaximo | number }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
