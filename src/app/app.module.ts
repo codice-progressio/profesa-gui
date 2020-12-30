@@ -11,8 +11,6 @@ import {
 registerLocaleData(localePy, 'es-MX')
 
 // Rutas
-import { APP_ROUTES } from './app.routes'
-
 // Componentes
 import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component'
@@ -78,8 +76,9 @@ const appRoutes: Routes = [
     // Configuraciones de idioma.
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: LOCALE_ID, useValue: 'es-MX' },
-    { provide: HTTP_INTERCEPTORS ,useClass:ErrorInterceptor, multi:true}
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
