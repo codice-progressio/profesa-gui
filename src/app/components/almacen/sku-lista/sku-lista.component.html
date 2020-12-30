@@ -1,25 +1,59 @@
 <small class="text-muted">Lista de todos los SKU´s registrados</small>
 <hr />
 
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>SKU</th>
-        <th>Máximo</th>
-        <th>Existencia</th>
-        <th>Mínimo</th>
-        <th>Observaciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let sku of skus">
-        <td>{{ sku.nombreCompleto }}</td>
-        <td>{{ sku.stockMinimo | number }}</td>
-        <td>{{ sku.existencia | number }}</td>
-        <td>{{ sku.stockMaximo | number }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4">
+  <div *ngFor="let sku of skus" class="col mb-4">
+    <div class="card shadow">
+      <a codice-title="Ver detalle de item" href="javascript:void(0)">
+        <img 
+        
+        [src]="sku.imagenes[0]?.path" class="card-img-top" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">{{ sku.nombreCompleto }}</h5>
+        <p class="card-text">{{ sku.descripcion }}</p>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">
+          <div class="row">
+            <span class="col-4 text-center font-bold">
+              <span
+                codice-title="Existencia mínima para resurtir este item [ {{
+                  sku.stockMinimo | number: '0.0-2'
+                }} ]"
+                >MIN</span
+              >
+            </span>
+            <span class="col-4 text-center font-bold">
+              <span
+                codice-title="Existencia actual [ {{
+                  sku.existencia | number: '0.0-2'
+                }} ] "
+                >EXI</span
+              >
+            </span>
+            <span class="col-4 text-center font-bold">
+              <span
+                codice-title="Existencia máxima permitida para este item [ {{
+                  sku.stockMaximo | number: '0.0-2'
+                }} ]"
+                >MAX</span
+              >
+            </span>
+          </div>
+          <div class="row">
+            <span class="col-4 text-center">{{
+              sku.stockMinimo | number: '0.0-2'
+            }}</span>
+            <span class="col-4 text-center">{{
+              sku.existencia | number: '0.0-2'
+            }}</span>
+            <span class="col-4 text-center">{{
+              sku.stockMaximo | number: '0.0-2'
+            }}</span>
+          </div>
+        </small>
+      </div>
+    </div>
+  </div>
 </div>

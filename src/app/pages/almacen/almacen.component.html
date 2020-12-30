@@ -1,10 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <div class="card shadow">
-      <div class="card-body">
-        <app-sku-lista *ngIf="!cargando; else precarga"> </app-sku-lista>
-      </div>
-    </div>
+    <app-sku-lista *ngIf="!cargando; else precarga"> </app-sku-lista>
   </div>
 </div>
 
