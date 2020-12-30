@@ -22,13 +22,14 @@ import { NgxMaskModule } from 'ngx-mask'
 import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 import { RouterModule, Routes } from '@angular/router'
 import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
+import { ErrorInterceptor } from './interceptors/error.interceptor'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -76,8 +77,8 @@ const appRoutes: Routes = [
   providers: [
     // Configuraciones de idioma.
     { provide: APP_BASE_HREF, useValue: '/' },
-    { provide: LOCALE_ID, useValue: 'es-MX' }
-    // Interceptor para agregar Bearer token.
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: HTTP_INTERCEPTORS ,useClass:ErrorInterceptor, multi:true}
   ],
   bootstrap: [AppComponent]
 })
