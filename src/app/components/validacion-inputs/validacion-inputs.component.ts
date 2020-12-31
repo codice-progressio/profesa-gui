@@ -49,7 +49,7 @@ export class ValidacionInputsComponent implements OnInit {
           return 'Correo no valido'
         },
 
-        'Mask error': ()=> 'Hay un error en el formato (mask)'
+        'Mask error': () => 'Hay un error en el formato (mask)'
       }
     }
   }
@@ -76,7 +76,6 @@ export class ValidacionInputsComponent implements OnInit {
   @Input() directo: boolean = false
 
   @Input() debug: boolean = false
-
 
   constructor() {}
 
