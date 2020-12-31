@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router'
 import { AlmacenComponent } from './almacen.component'
 import { UxModule } from '../../ux/ux.module'
 import { ComponentsModule } from '../../components/components.module'
-import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 
 const routes: Routes = [
   {
