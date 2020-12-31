@@ -8,7 +8,8 @@ import { SKU } from '../../../models/sku.model'
   styleUrls: ['./sku-lista.component.css']
 })
 export class SkuListaComponent implements OnInit {
-  @Output() cargando = new EventEmitter<boolean>()
+  @Output() estaCargando = new EventEmitter<boolean>()
+  cargando = false
   skus: SKU[] = []
 
   constructor(private skuService: SkuService) {}
@@ -18,13 +19,18 @@ export class SkuListaComponent implements OnInit {
   }
 
   cargar() {
-    this.cargando.emit(true)
+    this.estadoCarga(true)
     this.skuService.leerTodo().subscribe(
       skus => {
         this.skus = skus
-        this.cargando.emit(false)
+        this.estadoCarga(false)
       },
-      () => this.cargando.emit(false)
+      () => this.estadoCarga(false)
     )
+  }
+
+  estadoCarga(estado: boolean) {
+    this.estaCargando.emit(estado)
+    this.cargando = estado
   }
 }

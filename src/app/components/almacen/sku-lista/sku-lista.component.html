@@ -1,7 +1,10 @@
 <small class="text-muted">Lista de todos los SKU´s registrados</small>
 <hr />
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+<div
+  *ngIf="!cargando; else precarga"
+  class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4"
+>
   <div *ngFor="let sku of skus" class="col mb-4">
     <div class="card shadow">
       <a
@@ -59,3 +62,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #precarga>
+  <div class="w-25">
+    <codice-ux-precarga></codice-ux-precarga>
+  </div>
+</ng-template>
