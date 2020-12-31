@@ -1,9 +1,20 @@
 <div class="row">
   <div class="col-12">
-    <app-sku-lista *ngIf="!cargando; else precarga"> </app-sku-lista>
+    <div class="card shadow">
+      <div class="card-body">
+        <a
+          class="btn btn-primary"
+          href="javascript:void(0)"
+          role="button"
+          routerLink="crear"
+        >
+          <i class="fas fa-plus-circle"></i> Crear
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <app-sku-lista (cargando)="cargando = $event"> </app-sku-lista>
   </div>
 </div>
-
-<ng-template #precarga>
-  <codice-ux-precarga> </codice-ux-precarga>
-</ng-template>
