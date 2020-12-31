@@ -1,13 +1,15 @@
 <small class="text-muted">Lista de todos los SKU´s registrados</small>
 <hr />
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
   <div *ngFor="let sku of skus" class="col mb-4">
     <div class="card shadow">
-      <a codice-title="Ver detalle de item" href="javascript:void(0)">
-        <img 
-        
-        [src]="sku.imagenes[0]?.path" class="card-img-top" />
+      <a
+        [codice-title-options]="{ stylesRoot: [['position', 'relative']] }"
+        codice-title="Ver detalle de item"
+        href="javascript:void(0)"
+      >
+        <img [codice-src]="sku.imagenes[0].path" class="card-img-top" />
       </a>
       <div class="card-body">
         <h5 class="card-title">{{ sku.nombreCompleto }}</h5>

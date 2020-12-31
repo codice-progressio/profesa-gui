@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output } from '@angular/core'
 import { SkuService } from '../../../services/sku/sku.service'
 import { SKU } from '../../../models/sku.model'
 
@@ -8,7 +8,7 @@ import { SKU } from '../../../models/sku.model'
   styleUrls: ['./sku-lista.component.css']
 })
 export class SkuListaComponent implements OnInit {
-  cargando = new EventEmitter<boolean>()
+  @Output() cargando = new EventEmitter<boolean>()
   skus: SKU[] = []
 
   constructor(private skuService: SkuService) {}
