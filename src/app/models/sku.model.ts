@@ -1,5 +1,6 @@
 import { SkuLote } from './lote.model'
 export interface SKU {
+  _id:string
   puedoProducirlo: boolean
   puedoComprarlo: boolean
   puedoVenderlo: boolean
