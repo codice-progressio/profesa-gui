@@ -5,24 +5,19 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component'
 import { NopagefoundComponent } from './nopagefound/nopagefound.component'
 import { RouterModule } from '@angular/router'
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common'
-
 // Pipes
 import { PipesModule } from '../pipes/pipes.module'
-
 import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component'
 import { BuscadorRapidoComponent } from '../components/buscador-rapido/buscador-rapido.component'
 import { PreLoaderComponent } from '../components/pre-loader/pre-loader.component'
 import { NivelUrgenciaComponent } from '../components/nivel-urgencia/nivel-urgencia.component'
 import { PaginadorComponent } from '../components/paginador/paginador.component'
-
-import { ValidacionInputsComponent } from '../components/validacion-inputs/validacion-inputs.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
 import { NgxMaskModule } from 'ngx-mask'
 import { Paginador2Component } from '../components/paginador2/paginador2.component'
 import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component'
-
 import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abstracto.component'
 import { DataListComponent } from './data-list/data-list.component'
 import { VisorDeImagenesGeneralComponent } from './visor-de-imagenes-general/visor-de-imagenes-general.component'
@@ -84,7 +79,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     PreLoaderComponent,
     NivelUrgenciaComponent,
     PaginadorComponent,
-    ValidacionInputsComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
@@ -108,7 +102,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     BuscadorRapidoComponent,
     PreLoaderComponent,
     PaginadorComponent,
-    ValidacionInputsComponent,
     // OrganizadorDragAndDropComponent,
     ProgressBarComponent,
     Paginador2Component,
