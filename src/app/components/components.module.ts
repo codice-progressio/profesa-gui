@@ -7,20 +7,23 @@ import { DirectivesModule } from '../directives/directives.module'
 import { UxModule } from '../ux/ux.module'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ValidacionInputsComponent } from './validacion-inputs/validacion-inputs.component'
+import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 
 @NgModule({
   declarations: [
     SkuListaComponent,
     SkuDetalleComponent,
     SkuCrearModificarComponent,
-    ValidacionInputsComponent
+    ValidacionInputsComponent,
+    VisorDeImagenesConPaginacionComponent
   ],
   imports: [CommonModule, DirectivesModule, UxModule, ReactiveFormsModule],
   exports: [
     SkuListaComponent,
     SkuDetalleComponent,
     SkuCrearModificarComponent,
-    ValidacionInputsComponent
+    ValidacionInputsComponent,
+    VisorDeImagenesConPaginacionComponent
   ]
 })
 export class ComponentsModule {}

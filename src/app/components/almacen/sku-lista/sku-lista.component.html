@@ -11,6 +11,7 @@
         [codice-title-options]="{ stylesRoot: [['position', 'relative']] }"
         codice-title="Ver detalle de item"
         href="javascript:void(0)"
+        (click)="verDetalle(sku)"
       >
         <img [codice-src]="sku.imagenes[0]?.path" class="card-img-top" />
       </a>

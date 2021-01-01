@@ -88,7 +88,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     DataListComponent,
     VisorDeImagenesGeneralComponent,
     CargaDeImagenesComponent,
-    VisorDeImagenesConPaginacionComponent,
     Paginador,
     OrdenadorDeColumnasDirective
   ],
@@ -109,7 +108,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     BuscadorPacienteComponent,
     DataListComponent,
     VisorDeImagenesGeneralComponent,
-    VisorDeImagenesConPaginacionComponent,
     Paginador,
     CargaDeImagenesComponent,
     OrdenadorDeColumnasDirective,

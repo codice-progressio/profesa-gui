@@ -5,6 +5,7 @@ import { AlmacenComponent } from './almacen.component'
 import { UxModule } from '../../ux/ux.module'
 import { ComponentsModule } from '../../components/components.module'
 import { AlmacenCrearModificarComponent } from './almacen-crear-modificar/almacen-crear-modificar.component'
+import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component'
 
 const routes: Routes = [
   {
@@ -22,16 +23,27 @@ const routes: Routes = [
     }
   },
   {
-    path: 'Modificar',
+    path: 'modificar/:nombre',
     component: AlmacenCrearModificarComponent,
     data: {
       titulo: 'Modificar SKU'
+    }
+  },
+  {
+    path: 'detalle/:nombre/:id',
+    component: AlmacenDetalleComponent,
+    data: {
+      titulo: 'Detalle SKU'
     }
   }
 ]
 
 @NgModule({
-  declarations: [AlmacenComponent, AlmacenCrearModificarComponent],
+  declarations: [
+    AlmacenComponent,
+    AlmacenCrearModificarComponent,
+    AlmacenDetalleComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
