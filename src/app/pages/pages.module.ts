@@ -82,7 +82,6 @@ const pagesRoutes: Routes = [
     }
   },
 
- 
   // <!--
   // =====================================
   //  END ADMINISTRADOR
@@ -115,7 +114,8 @@ const pagesRoutes: Routes = [
   {
     path: 'almacen',
     loadChildren: () =>
-      import('./almacen/almacen.module').then(m => m.AlmacenModule)
+      import('./almacen/almacen.module').then(m => m.AlmacenModule),
+    canActivate: [VerificaTokenGuard]
   }
 ]
 
