@@ -8,6 +8,9 @@ import { UxModule } from '../ux/ux.module'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ValidacionInputsComponent } from './validacion-inputs/validacion-inputs.component'
 import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
+import { ImagenesGestionRapidaComponent } from './imagenes-gestion-rapida/imagenes-gestion-rapida.component'
+import { SkuImagenesComponent } from './almacen/sku-imagenes/sku-imagenes.component'
+import { ModalComponent } from './codice-modal/modal.component'
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagen
     SkuDetalleComponent,
     SkuCrearModificarComponent,
     ValidacionInputsComponent,
-    VisorDeImagenesConPaginacionComponent
+    VisorDeImagenesConPaginacionComponent,
+    ImagenesGestionRapidaComponent,
+    SkuImagenesComponent,
+    ModalComponent
   ],
   imports: [CommonModule, DirectivesModule, UxModule, ReactiveFormsModule],
   exports: [
@@ -23,7 +29,9 @@ import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagen
     SkuDetalleComponent,
     SkuCrearModificarComponent,
     ValidacionInputsComponent,
-    VisorDeImagenesConPaginacionComponent
+    VisorDeImagenesConPaginacionComponent,
+    SkuImagenesComponent,
+    ModalComponent
   ]
 })
 export class ComponentsModule {}
