@@ -14,7 +14,6 @@
 
     <link rel="stylesheet" href="assets/css/fontawesome/css/all.css" />
     <link rel="stylesheet" href="assets/css/bootstrap.css" />
-
     <link href="assets/css/style.css" rel="stylesheet" />
     <link id="tema" id="theme" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,31 +50,5 @@
     <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!--Custom JavaScript -->
     <script src="assets/js/custom.js"></script>
-
-    <script>
-    
-      $(document).ready(function () {
-        // Este codigo ayuda que se puedan abrir mas de un modal
-        // de manera conjunta. Se apilan y se van cerrando de uno
-        // en uno. La condicion es que no se llame a un modal desde el
-        // mismo modal por que no funciona.
-        // https://stackoverflow.com/questions/19305821/multiple-modals-overlay
-        $(document).on('show.bs.modal', '.modal', function (event) {
-          var zIndex = 1040 + 10 * $('.modal:visible').length
-          $(this).css('z-index', zIndex)
-          setTimeout(function () {
-            $('.modal-backdrop')
-              .not('.modal-stack')
-              .css('z-index', zIndex - 1)
-              .addClass('modal-stack')
-          }, 0)
-        })
-
-        // Fix recomendado para el scroll
-        $(document).on('hidden.bs.modal', '.modal', function () {
-          $('.modal:visible').length && $(document.body).addClass('modal-open')
-        })
-      })
-    </script>
   </body>
 </html>
