@@ -11,20 +11,26 @@
         <small *ngIf="sku.unidad" class="text-muted">[{{ sku.unidad }}]</small>
       </h1>
       <small class="text-muted">{{ sku.descripcion }}</small>
+    </div>
+
+    <div class="col-12">
       <hr />
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
       <h6>Puedo producirlo</h6>
       <i *ngIf="sku.puedoProducirlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoProducirlo" class="fas fa-times text-secondary"></i>
     </div>
     <div class="col-12 col-sm-6 col-md-4">
       <h6>Puedo comprarlo</h6>
       <i *ngIf="sku.puedoComprarlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoComprarlo" class="fas fa-times text-secondary"></i>
     </div>
     <div class="col-12 col-sm-6 col-md-4">
       <h6>Puedo venderlo</h6>
       <i *ngIf="sku.puedoVenderlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoVenderlo" class="fas fa-times text-secondary"></i>
     </div>
     <div class="col-12 col-sm-6 col-md-4">
       <h6>Existencia</h6>
