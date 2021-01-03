@@ -5,7 +5,8 @@ import { AlmacenComponent } from './almacen.component'
 import { UxModule } from '../../ux/ux.module'
 import { ComponentsModule } from '../../components/components.module'
 import { AlmacenCrearModificarComponent } from './almacen-crear-modificar/almacen-crear-modificar.component'
-import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component'
+import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component';
+import { AlmacenImagenesComponent } from './almacen-imagenes/almacen-imagenes.component'
 
 const routes: Routes = [
   {
@@ -35,6 +36,13 @@ const routes: Routes = [
     data: {
       titulo: 'Detalle SKU'
     }
+  },
+  {
+    path: 'imagenes/:nombre/:id',
+    component: AlmacenImagenesComponent,
+    data: {
+      titulo: 'Agregar imagenes'
+    }
   }
 ]
 
@@ -42,7 +50,8 @@ const routes: Routes = [
   declarations: [
     AlmacenComponent,
     AlmacenCrearModificarComponent,
-    AlmacenDetalleComponent
+    AlmacenDetalleComponent,
+    AlmacenImagenesComponent
   ],
   imports: [
     CommonModule,

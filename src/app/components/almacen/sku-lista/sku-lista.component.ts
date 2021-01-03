@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core'
 import { SkuService } from '../../../services/sku/sku.service'
 import { SKU } from '../../../models/sku.model'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
+import { ModalService } from '../../codice-modal/modal.service'
 
 @Component({
   selector: 'app-sku-lista',
@@ -13,7 +14,12 @@ export class SkuListaComponent implements OnInit {
   cargando = false
   skus: SKU[] = []
 
-  constructor(private skuService: SkuService, private router: Router) {}
+  constructor(
+    public modalService: ModalService,
+    private skuService: SkuService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.cargar()
@@ -35,14 +41,24 @@ export class SkuListaComponent implements OnInit {
     this.cargando = estado
   }
 
-  verDetalle(sku: SKU) {
-    // Quitamos los espacios para que se vea mas
-    // mejor.
-
-    let n = sku.nombreCompleto
+  private niceUrl(str: string): string {
+    return str
       .split(' ')
       .map(x => x.trim())
       .join('_')
-    this.router.navigate(['/almacen/detalle', n, sku._id])
+  }
+
+  verDetalle(sku: SKU) {
+    this.router.navigate(
+      ['./detalle', this.niceUrl(sku.nombreCompleto), sku._id],
+      { relativeTo: this.activatedRoute.parent }
+    )
+  }
+
+  gestionarImagenes(sku: SKU) {
+    this.router.navigate(
+      ['./imagenes', this.niceUrl(sku.nombreCompleto), sku._id],
+      { relativeTo: this.activatedRoute.parent }
+    )
   }
 }

@@ -1,0 +1,53 @@
+<div *ngIf="sku" class="row">
+  <div class="col-12">
+    <h1>{{ sku.nombreCompleto }}</h1>
+
+    <div class="col-12">
+      <hr />
+    </div>
+    <div class="col-12">
+      <codice-imagenes-gestion-rapida
+        (imagenesParaSubir)="imagenesParaSubir = $event"
+        (esteComponente)="imagenesGestionRapidaComponent = $event"
+      >
+      </codice-imagenes-gestion-rapida>
+    </div>
+
+    <div class="col-12">
+      <hr />
+    </div>
+    <div
+      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 card-deck"
+    >
+      <div *ngFor="let img of sku?.imagenes" class="col mb-4 animated fadeIn">
+        <div class="card shadow">
+          <img class="card-img-top" [codice-src]="img.path" alt="" />
+          <div class="card-footer">
+            <a
+              class="btn btn-danger btn-xs"
+              href="javascript:void(0)"
+              role="button"
+              (click)="eliminarImagen(img)"
+            >
+              <i
+                *ngIf="!eliminando.includes(img._id)"
+                class="fas fa-times-circle"
+              ></i>
+              <i
+                *ngIf="eliminando.includes(img._id)"
+                class="fas fa-sync fa-spin-fast"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="sku?.imagenes?.length === 0" class="col-12">
+      <div class="alert alert-info" role="alert">
+        <strong>info</strong>
+        Esta item no contiene imagenes.
+      </div>
+    </div>
+  </div>
+</div>

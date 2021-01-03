@@ -42,12 +42,7 @@ export class SrcDirective {
   precarga(value) {
     //Este elemento img
     let root = this.renderer.parentNode(this.el.nativeElement)
-
-    if (!root) {
-      // Debemos tener un elemento padre para poder renderizar
-      // la imagen falsa.
-      throw 'La directiva requiere que la etiqueta <img> tenga un padre'
-    }
+    
     this.imagenFalsa = this.renderer.createElement('img')
     this.renderer.setAttribute(
       this.imagenFalsa,

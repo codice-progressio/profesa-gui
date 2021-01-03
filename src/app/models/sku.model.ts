@@ -1,6 +1,6 @@
 import { SkuLote } from './lote.model'
 export interface SKU {
-  _id:string
+  _id: string
   puedoProducirlo: boolean
   puedoComprarlo: boolean
   puedoVenderlo: boolean
@@ -16,11 +16,7 @@ export interface SKU {
 
   unidad: string
   descripcion: string
-  imagenes: {
-    nombreOriginal: string
-    nombreBD: string
-    path: string
-  }[]
+  imagenes: SkuImagen[]
 
   nombreCompleto: string
 
@@ -48,4 +44,11 @@ export interface SKU {
   stockMinimo: number
   stockMaximo: number
   etiquetas: string[]
+}
+
+export interface SkuImagen {
+  _id: string
+  nombreOriginal: string
+  nombreBD: string
+  path: string
 }
