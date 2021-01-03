@@ -61,4 +61,11 @@ export class SkuListaComponent implements OnInit {
       { relativeTo: this.activatedRoute.parent }
     )
   }
+
+  modificar(sku: SKU) {
+    this.router.navigate(
+      ['./modificar', this.niceUrl(sku.nombreCompleto), sku._id],
+      { relativeTo: this.activatedRoute.parent }
+    )
+  }
 }

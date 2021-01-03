@@ -113,16 +113,22 @@ export class SkuCrearModificarComponent implements OnInit {
       return
     }
 
+    let err = () => {
+      this.formulario.enable()
+      this.cargando = false
+    }
+
+    let success = sku => {
+      this.location.back()
+    }
+
     this.formulario.disable()
     this.cargando = false
-    this.skuService.crear(model).subscribe(
-      sku => {
-        this.location.back()
-      },
-      () => {
-        this.formulario.enable()
-        this.cargando = false
-      }
-    )
+
+    let operacion = model._id
+      ? this.skuService.modificar(model)
+      : this.skuService.crear(model)
+
+    operacion.subscribe(success, err)
   }
 }

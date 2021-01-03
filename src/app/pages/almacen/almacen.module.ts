@@ -24,7 +24,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'modificar/:nombre',
+    path: 'modificar/:nombre/:id',
     component: AlmacenCrearModificarComponent,
     data: {
       titulo: 'Modificar SKU'

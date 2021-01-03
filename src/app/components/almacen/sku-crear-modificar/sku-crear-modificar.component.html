@@ -1,306 +1,318 @@
-<form [formGroup]="formulario">
-  <div class="row">
-    <!-- 
+<ng-container *ngIf="formulario; else cargaTemplate">
+  <form [formGroup]="formulario">
+    <div class="row">
+      <!-- 
 =====================================
  nombreCompleto
 =====================================
 -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('nombreCompleto')),
-            'is-valid': vs.valid(f('nombreCompleto'))
-          }"
-          type="text"
-          class="form-control"
-          formControlName="nombreCompleto"
-        />
-        <small id="helpId" class="form-text text-muted">
-          <span
-            codice-title="El nombre con el que se identificará este item en toda la apliación"
-            >Nombre del ítem</span
-          >
-        </small>
-        <app-validacion-inputs
-          [campo]="f('nombreCompleto')"
-        ></app-validacion-inputs>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('nombreCompleto')),
+              'is-valid': vs.valid(f('nombreCompleto'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="nombreCompleto"
+          />
+          <small id="helpId" class="form-text text-muted">
+            <span
+              codice-title="El nombre con el que se identificará este item en toda la apliación"
+              >Nombre del ítem</span
+            >
+          </small>
+          <app-validacion-inputs
+            [campo]="f('nombreCompleto')"
+          ></app-validacion-inputs>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END nombreCompleto
 =====================================
 -->
 
-    <!-- 
+      <!-- 
 =====================================
  unidad
 =====================================
 -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('unidad')),
-            'is-valid': vs.valid(f('unidad'))
-          }"
-          type="text"
-          class="form-control"
-          formControlName="unidad"
-        />
-        <small id="helpId" class="form-text text-muted">
-          <span
-            codice-title="La unidad en la que se maneja este item. Puedes ser kg, piezas, litros, etc. "
-            >Unidad</span
-          >
-        </small>
-        <app-validacion-inputs [campo]="f('unidad')"></app-validacion-inputs>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('unidad')),
+              'is-valid': vs.valid(f('unidad'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="unidad"
+          />
+          <small id="helpId" class="form-text text-muted">
+            <span
+              codice-title="La unidad en la que se maneja este item. Puedes ser kg, piezas, litros, etc. "
+              >Unidad</span
+            >
+          </small>
+          <app-validacion-inputs [campo]="f('unidad')"></app-validacion-inputs>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END unidad
 =====================================
 -->
 
-    <!-- 
+      <!-- 
 =====================================
  descripcion
 =====================================
 -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <textarea
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('descripcion')),
-            'is-valid': vs.valid(f('descripcion'))
-          }"
-          class="form-control"
-          formControlName="descripcion"
-        ></textarea>
-        <small id="helpId" class="form-text text-muted">
-          <span
-            codice-title="Una descripción para darse una idea mas completa del item o notas importantes sobre el mismo. "
-            >Descripción</span
-          >
-        </small>
-        <app-validacion-inputs
-          [campo]="f('descripcion')"
-        ></app-validacion-inputs>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <textarea
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('descripcion')),
+              'is-valid': vs.valid(f('descripcion'))
+            }"
+            class="form-control"
+            formControlName="descripcion"
+          ></textarea>
+          <small id="helpId" class="form-text text-muted">
+            <span
+              codice-title="Una descripción para darse una idea mas completa del item o notas importantes sobre el mismo. "
+              >Descripción</span
+            >
+          </small>
+          <app-validacion-inputs
+            [campo]="f('descripcion')"
+          ></app-validacion-inputs>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END descripcion
 =====================================
 -->
-  </div>
-  <div class="row">
-    <!-- 
+    </div>
+    <div class="row">
+      <!-- 
 =====================================
  puedoProducirlo
 =====================================
 -->
-    <div class="col-12 col-md-3 col-lg-2">
-      <div class="form-group">
-        <input
-          id="puedoProducirlo"
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('puedoProducirlo')),
-            'is-valid': vs.valid(f('puedoProducirlo'))
-          }"
-          type="checkbox"
-          class="form-check-input"
-          formControlName="puedoProducirlo"
-        />
-        <label class="form-check-label" for="puedoProducirlo">
-          <span
-            codice-title="Si se marca esta casilla este item esta disponible en la sección de produccion"
-          >
-            ¿Puedo producirlo?
-          </span>
-        </label>
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="form-group">
+          <input
+            id="puedoProducirlo"
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('puedoProducirlo')),
+              'is-valid': vs.valid(f('puedoProducirlo'))
+            }"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="puedoProducirlo"
+          />
+          <label class="form-check-label" for="puedoProducirlo">
+            <span
+              codice-title="Si se marca esta casilla este item esta disponible en la sección de produccion"
+            >
+              ¿Puedo producirlo?
+            </span>
+          </label>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END puedoProducirlo
 =====================================
 -->
-    <!-- 
+      <!-- 
 =====================================F
  puedoComprarlo
 =====================================
 -->
-    <div class="col-12 col-md-3 col-lg-2">
-      <div class="form-group">
-        <input
-          id="puedoComprarlo"
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('puedoComprarlo')),
-            'is-valid': vs.valid(f('puedoComprarlo'))
-          }"
-          type="checkbox"
-          class="form-check-input"
-          formControlName="puedoComprarlo"
-        />
-        <label class="form-check-label" for="puedoComprarlo">
-          <span
-            codice-title="Si se marca esta casilla este producto será requisible"
-          >
-            ¿Puedo comprarlo?
-          </span>
-        </label>
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="form-group">
+          <input
+            id="puedoComprarlo"
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('puedoComprarlo')),
+              'is-valid': vs.valid(f('puedoComprarlo'))
+            }"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="puedoComprarlo"
+          />
+          <label class="form-check-label" for="puedoComprarlo">
+            <span
+              codice-title="Si se marca esta casilla este producto será requisible"
+            >
+              ¿Puedo comprarlo?
+            </span>
+          </label>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END puedoComprarlo
 =====================================
 -->
-    <!-- 
+      <!-- 
 =====================================
  puedoVenderlo
 =====================================
 -->
-    <div class="col-12 col-md-3 col-lg-2">
-      <div class="form-group">
-        <input
-          id="puedoVenderlo"
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('puedoVenderlo')),
-            'is-valid': vs.valid(f('puedoVenderlo'))
-          }"
-          type="checkbox"
-          class="form-check-input"
-          formControlName="puedoVenderlo"
-        />
-        <label class="form-check-label" for="puedoVenderlo">
-          <span
-            codice-title="Si se marca esta opción el item se listara en el punto de venta"
-          >
-            ¿Puedo venderlo?
-          </span>
-        </label>
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="form-group">
+          <input
+            id="puedoVenderlo"
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('puedoVenderlo')),
+              'is-valid': vs.valid(f('puedoVenderlo'))
+            }"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="puedoVenderlo"
+          />
+          <label class="form-check-label" for="puedoVenderlo">
+            <span
+              codice-title="Si se marca esta opción el item se listara en el punto de venta"
+            >
+              ¿Puedo venderlo?
+            </span>
+          </label>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END puedoVenderlo
 =====================================
 -->
-  </div>
-  <div class="row">
-    <!-- 
+    </div>
+    <div class="row">
+      <!-- 
 =====================================
  stockMinimo
 =====================================
 -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('stockMinimo')),
-            'is-valid': vs.valid(f('stockMinimo'))
-          }"
-          type="text"
-          class="form-control"
-          formControlName="stockMinimo"
-        />
-        <small id="helpId" class="form-text text-muted">
-          <span
-            codice-title="Define el punto mínimo de existencia para generar una alerta de faltante"
-            >Stock Mínimo</span
-          >
-        </small>
-        <app-validacion-inputs
-          [campo]="f('stockMinimo')"
-        ></app-validacion-inputs>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('stockMinimo')),
+              'is-valid': vs.valid(f('stockMinimo'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="stockMinimo"
+          />
+          <small id="helpId" class="form-text text-muted">
+            <span
+              codice-title="Define el punto mínimo de existencia para generar una alerta de faltante"
+              >Stock Mínimo</span
+            >
+          </small>
+          <app-validacion-inputs
+            [campo]="f('stockMinimo')"
+          ></app-validacion-inputs>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END stockMinimo
 =====================================
 -->
 
-    <!-- 
+      <!-- 
 =====================================
  stockMaximo
 =====================================
 -->
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [ngClass]="{
-            'is-invalid': vs.invalid(f('stockMaximo')),
-            'is-valid': vs.valid(f('stockMaximo'))
-          }"
-          type="string"
-          class="form-control"
-          formControlName="stockMaximo"
-        />
-        <small id="helpId" class="form-text text-muted">
-          <span
-            codice-title="La máxima cantidad permitida de almacenamiento de este ítem"
-            >Stock Máximo</span
-          >
-        </small>
-        <app-validacion-inputs
-          [campo]="f('stockMaximo')"
-        ></app-validacion-inputs>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('stockMaximo')),
+              'is-valid': vs.valid(f('stockMaximo'))
+            }"
+            type="string"
+            class="form-control"
+            formControlName="stockMaximo"
+          />
+          <small id="helpId" class="form-text text-muted">
+            <span
+              codice-title="La máxima cantidad permitida de almacenamiento de este ítem"
+              >Stock Máximo</span
+            >
+          </small>
+          <app-validacion-inputs
+            [campo]="f('stockMaximo')"
+          ></app-validacion-inputs>
+        </div>
       </div>
-    </div>
-    <!-- 
+      <!-- 
 =====================================
  END stockMaximo
 =====================================
 -->
-  </div>
+    </div>
 
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <div class="form-group">
-        <input
-          #input
-          (keyup.enter)="agregarEtiqueta(input)"
-          type="text"
-          class="form-control"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Agregar etiquetas presionando enter</small
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <input
+            #input
+            (keyup.enter)="agregarEtiqueta(input)"
+            type="text"
+            class="form-control"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Agregar etiquetas presionando enter</small
+          >
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <span
+          *ngFor="let item of fa('etiquetas').controls; let i = index"
+          (click)="eliminarEtiqueta(i)"
+          class="badge badge-pill badge-dark mr-2"
+        >
+          <i class="fas fa-times-circle text-danger mr-1"></i>
+          {{ item.value }}</span
         >
       </div>
     </div>
 
-    <div class="col-12 col-md-6">
-      <span
-        *ngFor="let item of fa('etiquetas').controls; let i = index"
-        (click)="eliminarEtiqueta(i)"
-        class="badge badge-pill badge-dark mr-2"
+    <div class="row">
+      <a
+        (click)="submit(this.formulario.value, this.formulario.invalid)"
+        class="btn btn-success"
+        href="javascript:void(0)"
+        role="button"
       >
-        <i class="fas fa-times-circle text-danger mr-1"></i>
-        {{ item.value }}</span
+        <i *ngIf="!cargando" class="fas fa-save"></i>
+        <span
+          *ngIf="cargando"
+          style="height: 20px; width: 20px; display: inline-block"
+        >
+          <codice-ux-precarga> </codice-ux-precarga>
+        </span>
+        Guardar</a
       >
     </div>
-  </div>
+  </form>
+</ng-container>
 
+<ng-template #cargaTemplate>
   <div class="row">
-    <a
-      (click)="submit(this.formulario.value, this.formulario.invalid)"
-      class="btn btn-success"
-      href="javascript:void(0)"
-      role="button"
-    >
-      <i *ngIf="!cargando" class="fas fa-save"></i>
-      <span
-        *ngIf="cargando"
-        style="height: 20px; width: 20px; display: inline-block"
-      >
+    <div class="col-12 d-flex align-items-center align-content-center">
+      <div class="" style="width: 300px; height: 300px">
         <codice-ux-precarga> </codice-ux-precarga>
-      </span>
-      Guardar</a
-    >
+      </div>
+    </div>
   </div>
-</form>
+</ng-template>
