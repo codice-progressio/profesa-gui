@@ -1,9 +1,9 @@
 <ng-container *ngIf="!cargando; else precarga">
   <div class="row">
     <div class="col-12 col-md-4 p-0 m-0">
-      <app-visor-de-imagenes-con-paginacion
+      <codice-visor-de-imagenes
         [arregloDeImagenes]="obtenerImagenes(sku)"
-      ></app-visor-de-imagenes-con-paginacion>
+      ></codice-visor-de-imagenes>
     </div>
     <div class="col-12 col-md-8">
       <h1>

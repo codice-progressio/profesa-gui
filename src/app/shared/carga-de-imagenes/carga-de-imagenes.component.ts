@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core"
-import { VisorDeImagenesService } from "../../services/visorDeImagenes/visor-de-imagenes.service"
+import { VisorDeImagenesService } from "../visor-de-imagenes-con-paginacion/visor-de-imagenes.service"
 import { CargaDeImagenesTransporte } from "./carga-de-imagenes-transporte"
 
 @Component({

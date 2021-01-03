@@ -1,9 +1,10 @@
 <img
+  style="min-height: 200px; min-width: 200px"
   (click)="mostrarImagen(imagenActual)"
   [codice-src]="imagenActual"
-  class="w-100"
+  codice-title="Ver imagen"
+  class="w-100 shadow pointer"
 />
-
 
 <ng-container *ngIf="mostrarPaginador">
   <nav class="d-flex justify-content-center">
