@@ -17,7 +17,6 @@ import { NgxMaskModule } from 'ngx-mask'
 import { Paginador2Component } from '../components/paginador2/paginador2.component'
 import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { BuscadorPacienteComponent } from './buscador-paciente/buscador-paciente.component'
 import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abstracto.component'
 import { DataListComponent } from './data-list/data-list.component'
 import { VisorDeImagenesGeneralComponent } from './visor-de-imagenes-general/visor-de-imagenes-general.component'
@@ -83,7 +82,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     ProgressBarComponent,
     Paginador2Component,
     BotonParaImprecionComponent,
-    BuscadorPacienteComponent,
     PaginadorAbstractoComponent,
     DataListComponent,
     VisorDeImagenesGeneralComponent,
@@ -105,7 +103,6 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
     ProgressBarComponent,
     Paginador2Component,
     BotonParaImprecionComponent,
-    BuscadorPacienteComponent,
     DataListComponent,
     VisorDeImagenesGeneralComponent,
     Paginador,
