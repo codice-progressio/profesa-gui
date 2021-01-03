@@ -13,7 +13,7 @@
         href="javascript:void(0)"
         (click)="verDetalle(sku)"
       >
-        <img [codice-src]="sku.imagenes[0]?.path" class="card-img-top" />
+        <img [codice-src]="sku?.imagenes[0]?.path" class="card-img-top" />
       </a>
       <div class="card-body">
         <h5 class="card-title">{{ sku.nombreCompleto }}</h5>

@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core'
 import { SkuService } from '../../../services/sku/sku.service'
-import { SKU } from '../../../models/sku.model'
+import { SKU, SkuImagen } from '../../../models/sku.model'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '../../codice-modal/modal.service'
 
@@ -11,6 +11,18 @@ import { ModalService } from '../../codice-modal/modal.service'
 })
 export class SkuListaComponent implements OnInit {
   @Output() estaCargando = new EventEmitter<boolean>()
+
+  @Input()
+  public set termino(value: string) {
+    this._termino = value
+    if (value) this.buscar(value)
+    else this.cargar()
+  }
+  private _termino: string = ''
+  public get termino(): string {
+    return this._termino
+  }
+
   cargando = false
   skus: SKU[] = []
 
@@ -66,6 +78,17 @@ export class SkuListaComponent implements OnInit {
     this.router.navigate(
       ['./modificar', this.niceUrl(sku.nombreCompleto), sku._id],
       { relativeTo: this.activatedRoute.parent }
+    )
+  }
+
+  buscar(termino: string) {
+    this.estadoCarga(true)
+    this.skuService.buscarTermino(termino).subscribe(
+      skus => {
+        this.estadoCarga(false)
+        this.skus = skus
+      },
+      () => this.estadoCarga(false)
     )
   }
 }

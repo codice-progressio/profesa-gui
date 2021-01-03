@@ -11,6 +11,8 @@ import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagen
 import { ImagenesGestionRapidaComponent } from './imagenes-gestion-rapida/imagenes-gestion-rapida.component'
 import { SkuImagenesComponent } from './almacen/sku-imagenes/sku-imagenes.component'
 import { ModalComponent } from './codice-modal/modal.component'
+import { BuscadorRapido } from './buscador-rapido/buscador-rapido'
+import { BuscadorComponent } from './buscador/buscador.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { ModalComponent } from './codice-modal/modal.component'
     VisorDeImagenesConPaginacionComponent,
     ImagenesGestionRapidaComponent,
     SkuImagenesComponent,
-    ModalComponent
+    ModalComponent,
+    BuscadorComponent
   ],
   imports: [CommonModule, DirectivesModule, UxModule, ReactiveFormsModule],
   exports: [
@@ -31,7 +34,8 @@ import { ModalComponent } from './codice-modal/modal.component'
     ValidacionInputsComponent,
     VisorDeImagenesConPaginacionComponent,
     SkuImagenesComponent,
-    ModalComponent
+    ModalComponent,
+    BuscadorComponent
   ]
 })
 export class ComponentsModule {}

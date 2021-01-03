@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 import { SKU } from '../../models/sku.model'
+import { SkuService } from '../../services/sku/sku.service'
+import { BehaviorSubject } from 'rxjs'
 
 @Component({
   selector: 'app-almacen',
@@ -7,17 +9,18 @@ import { SKU } from '../../models/sku.model'
   styleUrls: ['./almacen.component.css']
 })
 export class AlmacenComponent implements OnInit {
-
-  cargando = false
-
-
-  skus: SKU[] = []
-  constructor() { }
-
-  ngOnInit(): void {
+  private _cargando = false
+  public get cargando() {
+    return this._cargando
   }
+  public set cargando(value) {
+    this._cargando = value
+    this.estaCargandoBuscador.next(false)
+  }
+  termino: string
+  estaCargandoBuscador: BehaviorSubject<boolean>
 
+  constructor() {}
 
-  
-
+  ngOnInit(): void {}
 }
