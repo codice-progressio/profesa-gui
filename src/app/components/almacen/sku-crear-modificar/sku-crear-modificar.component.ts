@@ -15,6 +15,8 @@ import { ValidacionesService } from 'src/app/services/utilidades/validaciones.se
 export class SkuCrearModificarComponent implements OnInit {
   cargando = false
   formulario: FormGroup
+  estaEditando = false
+
   constructor(
     private skuService: SkuService,
     public vs: ValidacionesService,
@@ -42,7 +44,10 @@ export class SkuCrearModificarComponent implements OnInit {
 
   obtenerSku(id: string) {
     this.skuService.buscarId(id).subscribe(
-      sku => this.crearFormulario(sku),
+      sku => {
+        this.estaEditando = true
+        this.crearFormulario(sku)
+      },
       () => {
         this.notiService.toast.error('No se pudo cargar el sku para modificar')
         this.location.back()
