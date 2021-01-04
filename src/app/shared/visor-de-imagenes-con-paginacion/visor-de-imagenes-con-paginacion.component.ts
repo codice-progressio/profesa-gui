@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from "@angular/core"
-import { VisorDeImagenesService } from "../../services/visorDeImagenes/visor-de-imagenes.service"
-import { ImagenPipe } from "../../pipes/imagen.pipe"
+import { Component, OnInit, Input } from '@angular/core'
+import { VisorDeImagenesService } from './visor-de-imagenes.service'
 
 /**
  *Las imagenes que le pasemos a este paginador
@@ -12,9 +11,9 @@ import { ImagenPipe } from "../../pipes/imagen.pipe"
  * @implements {OnInit}
  */
 @Component({
-  selector: "app-visor-de-imagenes-con-paginacion",
-  templateUrl: "./visor-de-imagenes-con-paginacion.component.html",
-  styleUrls: ["./visor-de-imagenes-con-paginacion.component.css"]
+  selector: 'codice-visor-de-imagenes',
+  templateUrl: './visor-de-imagenes-con-paginacion.component.html',
+  styleUrls: ['./visor-de-imagenes-con-paginacion.component.css']
 })
 export class VisorDeImagenesConPaginacionComponent implements OnInit {
   @Input() arregloDeImagenes: string[] = []

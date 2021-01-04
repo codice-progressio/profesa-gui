@@ -1,0 +1,20 @@
+<div class="form-row align-items-center">
+  <div class="col-auto">
+    <label class="sr-only" for="inputBuscador">Buscar por término</label>
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i *ngIf="!cargando" class="fas fa-search"></i>
+          <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i>
+        </div>
+      </div>
+      <input
+        [formControl]="input"
+        type="text"
+        class="form-control"
+        id="inputBuscador"
+        placeholder="Buscar por término"
+      />
+    </div>
+  </div>
+</div>

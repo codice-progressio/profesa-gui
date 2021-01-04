@@ -11,8 +11,6 @@ import {
 registerLocaleData(localePy, 'es-MX')
 
 // Rutas
-import { APP_ROUTES } from './app.routes'
-
 // Componentes
 import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component'
@@ -22,14 +20,33 @@ import { NgxMaskModule } from 'ngx-mask'
 import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
+import { RouterModule, Routes } from '@angular/router'
+import { LoginGuardGuard } from './services/guards/login-guard.guard'
+import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
+import { ErrorInterceptor } from './interceptors/error.interceptor'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
 }
+
+const appRoutes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'IMPERIUMsic', component: ImperiumSicComponent },
+
+  {
+    path: '',
+    component: PagesComponent,
+    canActivate: [LoginGuardGuard],
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
+  },
+
+  // Página de error cuando no encuentra una ruta.
+  { path: '**', component: NopagefoundComponent }
+]
 
 @NgModule({
   declarations: [
@@ -40,9 +57,8 @@ export function tokenGetter() {
   ],
 
   imports: [
-    CommonModule,
     BrowserModule,
-    APP_ROUTES,
+    RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule, // required animations module
     HttpClientModule,
     NgxMaskModule.forRoot(),
@@ -59,9 +75,10 @@ export function tokenGetter() {
   providers: [
     // Configuraciones de idioma.
     { provide: APP_BASE_HREF, useValue: '/' },
-    { provide: LOCALE_ID, useValue: 'es-MX' }
-    // Interceptor para agregar Bearer token.
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+

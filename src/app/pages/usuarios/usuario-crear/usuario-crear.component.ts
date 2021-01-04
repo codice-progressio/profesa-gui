@@ -18,10 +18,10 @@ import permisos from 'src/app/config/permisos.config'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { distinctUntilChanged, skipWhile } from 'rxjs/operators'
 import { DataListComponent } from '../../../shared/data-list/data-list.component'
-import { EmpleadoService } from '../../../services/recursosHumanos/empleado.service'
+
 import { Paginacion } from 'src/app/utils/paginacion.util'
 import { Dato } from 'src/app/shared/data-list/dato.model'
-import { Empleado } from '../../../models/recursosHumanos/empleados/empleado.model'
+
 
 @Component({
   selector: 'app-usuario-crear',
@@ -51,7 +51,6 @@ export class UsuarioCrearComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public msjService: ManejoDeMensajesService,
-    private empleadoService: EmpleadoService
   ) {}
 
   validarPassword = false
@@ -108,7 +107,6 @@ export class UsuarioCrearComponent implements OnInit {
           ? usuario.permissions.map(x => new FormControl(x))
           : []
       ),
-      empleado: [usuario.empleado?._id]
     })
 
     this.permisosExistentes = this.usuario.permissions
@@ -118,12 +116,12 @@ export class UsuarioCrearComponent implements OnInit {
 
     this.mostrarPermisos = Object.keys(permisos)
 
-    if (usuario.empleado) {
-      this.empleadoParaModificacion.leyendaPrincipal =
-        usuario.empleado.nombres + ' ' + usuario.empleado.apellidos
+    // if (usuario.empleado) {
+    //   this.empleadoParaModificacion.leyendaPrincipal =
+    //     usuario.empleado.nombres + ' ' + usuario.empleado.apellidos
 
-      this.f('nombre').disable()
-    }
+    //   this.f('nombre').disable()
+    // }
   }
 
   f(c: string): AbstractControl {
@@ -229,36 +227,36 @@ export class UsuarioCrearComponent implements OnInit {
   ejecutarOperacionesDeBusqueda(evento) {
     let termino = <string>evento.termino
     let dataList = <DataListComponent>evento.dataList
-    this.empleadoService
-      .find(termino, new Paginacion(10, 0, 1, 'nombres'))
-      .subscribe(articulos => {
-        let datos: Dato[] = []
-        articulos.forEach((empleado: Empleado) => {
-          let d = new Dato()
-          d.leyendaPrincipal = empleado.nombres + ' ' + empleado.apellidos
-          d.leyendaSecundaria = empleado.activo ? '[ Activo ]' : '[ Inactivo ]'
-          d.descripcionPrincipal = empleado.puestoActualTexto
+    // this.empleadoService
+    //   .find(termino, new Paginacion(10, 0, 1, 'nombres'))
+    //   .subscribe(articulos => {
+    //     let datos: Dato[] = []
+    //     articulos.forEach((empleado: Empleado) => {
+    //       let d = new Dato()
+    //       d.leyendaPrincipal = empleado.nombres + ' ' + empleado.apellidos
+    //       d.leyendaSecundaria = empleado.activo ? '[ Activo ]' : '[ Inactivo ]'
+    //       d.descripcionPrincipal = empleado.puestoActualTexto
 
-          d.objeto = empleado
+    //       d.objeto = empleado
 
-          datos.push(d)
-        })
+    //       datos.push(d)
+    //     })
 
-        dataList.terminoBusqueda(datos)
-      })
+    //     dataList.terminoBusqueda(datos)
+    //   })
   }
 
   seleccionado(evento: Dato) {
-    if (!evento) {
-      this.f('empleado').setValue('')
-      this.f('nombre').enable()
-      return
-    }
+    // if (!evento) {
+    //   this.f('empleado').setValue('')
+    //   this.f('nombre').enable()
+    //   return
+    // }
 
-    let empleado = evento.objeto as Empleado
+    // let empleado = evento.objeto as Empleado
 
-    this.f('empleado').setValue(empleado._id)
-    this.f('nombre').setValue(empleado.nombres + ' ' + empleado.apellidos)
-    this.f('nombre').disable()
+    // this.f('empleado').setValue(empleado._id)
+    // this.f('nombre').setValue(empleado.nombres + ' ' + empleado.apellidos)
+    // this.f('nombre').disable()
   }
 }

@@ -1,0 +1,58 @@
+
+.uploader input {
+    display: none;
+  }
+  
+  .uploader {
+    background-color: #efefef;
+    background-color: rgba(0, 0, 0, 0.02);
+    min-height: 200px;
+    width: 100%;
+    outline: 3px dashed #ccc;
+    outline-offset: 5px;
+  }
+  
+  .uploader .icon {
+    pointer-events: none;
+  }
+  
+  .uploader,
+  .uploader .icon {
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    -ms-transition: all 100ms ease-in;
+    -o-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+  }
+  
+  .uploader .icon {
+    color: #eee;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 5em;
+  }
+  
+  .contenedor {
+    opacity: 0;
+    max-height: 200px;
+    max-width: 200px;
+    margin: 20px;
+    text-align: center;
+    display: inline-block;
+    text-align: right;
+  }
+  
+  img {
+    max-height: 100%;
+    max-width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  .uploader .contenedor.loaded {
+    opacity: 1;
+  }
+  
+  a {
+    margin-top: -60px;
+    margin-right: 2px;
+  }
+  

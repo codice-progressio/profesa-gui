@@ -1,0 +1,69 @@
+/* MODAL STYLES
+-------------------------------*/
+codice-modal {
+  /* modals are hidden by default */
+  display: none;
+
+  .codice-modal {
+    /* modal container fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    /* z-index must be higher than .codice-modal-background */
+    z-index: 1000;
+
+    /* enables scrolling for tall modals */
+    overflow: auto;
+
+    .codice-modal-body {
+      padding: 20px;
+      background: #fff;
+
+      /* margin exposes part of the modal background */
+      margin: 40px;
+
+      @media (max-width: 575px) {
+        margin: 5px;
+      } //nothing with screen size bigger than 575px
+
+      animation: fadeIn ease-in 200ms;
+      -webkit-animation: fadeIn ease-in 200ms;
+      -moz-animation: fadeIn ease-in 200ms;
+      -o-animation: fadeIn ease-in 200ms;
+      -ms-animation: fadeIn ease-in 200ms;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .codice-modal-background {
+    /* modal background fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    /* semi-transparent black  */
+    background-color: #000;
+    opacity: 0.75;
+
+    /* z-index must be below .codice-modal and above everything else  */
+    z-index: 900;
+  }
+}
+
+body.codice-modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden;
+}

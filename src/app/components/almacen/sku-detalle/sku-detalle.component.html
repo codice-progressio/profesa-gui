@@ -1,0 +1,82 @@
+<ng-container *ngIf="!cargando; else precarga">
+  <div class="row">
+    <div class="col-12 col-md-4 p-0 m-0">
+      <codice-visor-de-imagenes
+        [arregloDeImagenes]="obtenerImagenes(sku)"
+      ></codice-visor-de-imagenes>
+    </div>
+    <div class="col-12 col-md-8">
+      <h1>
+        {{ sku.nombreCompleto }}
+        <small *ngIf="sku.unidad" class="text-muted">[{{ sku.unidad }}]</small>
+      </h1>
+      <small class="text-muted">{{ sku.descripcion }}</small>
+    </div>
+
+    <div class="col-12">
+      <hr />
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>Puedo producirlo</h6>
+      <i *ngIf="sku.puedoProducirlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoProducirlo" class="fas fa-times text-secondary"></i>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>Puedo comprarlo</h6>
+      <i *ngIf="sku.puedoComprarlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoComprarlo" class="fas fa-times text-secondary"></i>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>Puedo venderlo</h6>
+      <i *ngIf="sku.puedoVenderlo" class="fas fa-check text-success"></i>
+      <i *ngIf="!sku.puedoVenderlo" class="fas fa-times text-secondary"></i>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>Existencia</h6>
+      {{ sku.existencia | number: '0.0-2' }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>stockMinimo</h6>
+      {{ sku.stockMinimo | number: '0.0-2' }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <h6>stockMaximo</h6>
+      :{{ sku.stockMaximo | number: '0.0-2' }}
+    </div>
+    <div class="col-12">
+      <hr />
+    </div>
+    <div class="col-12 col-md-6">
+      <h6>Etiquetas</h6>
+      <span
+        *ngFor="let item of sku.etiquetas; let i = index"
+        class="badge badge-pill badge-dark mr-2"
+      >
+        {{ item }}</span
+      >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h3>Ultimos movimientos</h3>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #precarga>
+  <div class="row text-center">
+    <div class="col-12">
+      <span style="width: 100px">
+        <codice-ux-precarga> </codice-ux-precarga>
+      </span>
+    </div>
+  </div>
+</ng-template>

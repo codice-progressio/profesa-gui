@@ -9,22 +9,9 @@ import { PermisosGuard } from './services/guards/permisos.guard'
 import { VerificaTokenGuard } from './services/guards/verifica-token.guard'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 
-const appRoutes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'IMPERIUMsic', component: ImperiumSicComponent },
 
-  {
-    path: '',
-    component: PagesComponent,
-    canActivate: [LoginGuardGuard],
-    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
-  },
-
-  // Página de error cuando no encuentra una ruta.
-  { path: '**', component: NopagefoundComponent }
-]
 
 // La palabra "export" es para poder importar la ruta desde
 // otro lugar.
 
-export const APP_ROUTES = RouterModule.forRoot(appRoutes, { useHash: false })
+export const APP_ROUTES = "appRoutes"

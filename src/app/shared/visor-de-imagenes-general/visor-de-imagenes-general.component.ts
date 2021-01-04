@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core"
-import { VisorDeImagenesService } from "../../services/visorDeImagenes/visor-de-imagenes.service"
+import { VisorDeImagenesService } from "../visor-de-imagenes-con-paginacion/visor-de-imagenes.service"
 
 @Component({
   selector: "app-visor-de-imagenes-general",

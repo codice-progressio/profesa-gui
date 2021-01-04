@@ -2,17 +2,13 @@ import { Injectable } from "@angular/core"
 import { URL_SERVICIOS } from "../../config/config"
 import { PreLoaderService } from "src/app/components/pre-loader/pre-loader.service"
 import { ManejoDeMensajesService } from "../utilidades/manejo-de-mensajes.service"
-import { Requisicion } from "../../models/requisiciones/requisicion.model"
 import { Observable, throwError } from "rxjs"
 import {
   HttpClient,
-  HttpEvent,
-  HttpErrorResponse,
   HttpEventType
 } from "@angular/common/http"
 
 import { catchError, map } from "rxjs/operators"
-import { Puesto } from "src/app/models/recursosHumanos/puestos/puesto.model"
 
 @Injectable({
   providedIn: "root"
@@ -35,7 +31,7 @@ export class SubirArchivoService {
    * @memberof SubirArchivoService
    * @deprecated
    */
-  subirArchivo(archivo: File, tipo: string, id: string, a: number = null) {
+  subirArchivo(archivo: File, tipo: string, id: string) {
     // tslint:disable-next-line:no-shadowed-variable
     return new Promise((resolve, reject) => {
       // Vanilla JS

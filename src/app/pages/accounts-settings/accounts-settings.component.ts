@@ -10,7 +10,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 export class AccountsSettingsComponent implements OnInit {
 
 
-  constructor( public _ajustes: SettingsService) { }
+  constructor( public settingsServices: SettingsService) { }
 
   ngOnInit() {
     this.colocarCheck();
@@ -19,7 +19,7 @@ export class AccountsSettingsComponent implements OnInit {
   cambiarColor(tema: string, link: any) {
     this.aplicarCheck( link );
     // Asigna el color del tema.
-    this._ajustes.aplicarTema( tema );
+    this.settingsServices.aplicarTema( tema );
 
   }
 
@@ -36,7 +36,7 @@ export class AccountsSettingsComponent implements OnInit {
   colocarCheck() {
     const selectores: any = document.getElementsByClassName('selector');
 
-    const tema = this._ajustes.ajustes.tema;
+    const tema = this.settingsServices.ajustes.tema;
     for ( const ref of selectores) {
       if (tema === ref.getAttribute('data-theme') ) {
         ref.classList.add('working');
