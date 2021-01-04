@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { TitleDirective } from './title.directive'
 import { SrcDirective } from './src.directive'
+import { TagDirective } from './tag.directive'
 
 @NgModule({
-  declarations: [TitleDirective, SrcDirective],
+  declarations: [TitleDirective, SrcDirective, TagDirective],
   imports: [CommonModule],
-  exports: [TitleDirective, SrcDirective]
+  exports: [TitleDirective, SrcDirective, TagDirective]
 })
 export class DirectivesModule {}
