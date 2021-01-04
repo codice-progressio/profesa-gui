@@ -8,6 +8,7 @@ import {
 } from '@angular/core'
 
 import { ModalService } from './modal.service'
+import { Renderer2 } from '@angular/core'
 
 @Component({
   selector: 'codice-modal',
@@ -22,7 +23,11 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   private element: any
 
-  constructor(private modalService: ModalService, private el: ElementRef) {
+  constructor(
+    private renderer: Renderer2,
+    private modalService: ModalService,
+    private el: ElementRef
+  ) {
     this.element = el.nativeElement
   }
 
@@ -33,15 +38,22 @@ export class ModalComponent implements OnInit, OnDestroy {
       return
     }
 
-    // move element to bottom of page (just before </body>) so it can be displayed above everything else
-    document.body.appendChild(this.element)
+    // // move element to bottom of page (just before </body>) so it can be displayed above everything else
 
-    // close modal on background click
-    this.element.addEventListener('click', el => {
+    this.renderer.appendChild(document.body, this.element)
+    // document.body.appendChild(this.element)
+
+    // // close modal on background click
+    this.renderer.listen(this.element, 'click', el => {
       if (el.target.className === 'codice-modal') {
         this.close()
       }
     })
+    // this.element.addEventListener('click', el => {
+    //   if (el.target.className === 'codice-modal') {
+    //     this.close()
+    //   }
+    // })
 
     // add self (this modal instance) to the modal service so it's accessible from controllers
     this.modalService.add(this)
