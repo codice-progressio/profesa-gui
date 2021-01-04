@@ -18,13 +18,17 @@ export class SkuListaComponent implements OnInit {
     if (value) this.buscar(value)
     else this.cargar()
   }
+
   private _termino: string = ''
+
   public get termino(): string {
     return this._termino
   }
 
   cargando = false
   skus: SKU[] = []
+
+  skuEtiquetas: SKU
 
   constructor(
     public modalService: ModalService,
@@ -89,6 +93,54 @@ export class SkuListaComponent implements OnInit {
         this.skus = skus
       },
       () => this.estadoCarga(false)
+    )
+  }
+
+  etiquetasParaFiltrarse: string[] = []
+  filtrarPorEtiquetas(etiquetas) {
+    return () => {
+      this.etiquetasParaFiltrarse = Array.from(
+        new Set(this.etiquetasParaFiltrarse).add(etiquetas)
+      )
+    }
+  }
+
+  etiquetasEditar(sku: SKU) {
+    this.skuEtiquetas = sku
+    this.modalService.open('editarEtiquetas')
+  }
+
+  cargandoEtiqueta = false
+  etiquetaEliminar(sku: SKU, tag: string) {
+    return () => {
+      this.cargandoEtiqueta = true
+      this.skuService.etiqueta.eliminar(sku._id, tag).subscribe(
+        s => {
+          sku.etiquetas = sku.etiquetas.filter(x => x !== tag)
+
+          this.cargandoEtiqueta = false
+        },
+        () => (this.cargandoEtiqueta = false)
+      )
+    }
+  }
+
+  etiquetaGuardar(sku: SKU, input: any) {
+    let valor = input.value.trim()
+    if (!valor) return
+
+    this.cargandoEtiqueta = true
+    this.skuService.etiqueta.agregar(sku._id, valor).subscribe(
+      s => {
+        // Eliminamos de manera dierecta sobre el objeto
+        sku.etiquetas.push(valor)
+        input.value = ''
+        setTimeout(() => {
+          input.focus()
+        }, 100)
+        this.cargandoEtiqueta = false
+      },
+      () => (this.cargandoEtiqueta = false)
     )
   }
 }

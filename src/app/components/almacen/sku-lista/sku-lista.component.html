@@ -19,13 +19,51 @@
         <h5 class="card-title">{{ sku.nombreCompleto }}</h5>
         <p class="card-text">{{ sku.descripcion }}</p>
 
+        <div class="row">
+          <div class="col-12">
+            <span
+              *ngFor="let etiqueta of sku.etiquetas; let i = index"
+              [codice-tag]="etiqueta"
+              [codice-tag-click]="filtrarPorEtiquetas(etiqueta)"
+              [codice-tag-click-icon-class]="['fas', 'fa-tag', 'mr-1']"
+            >
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <a
+              (click)="etiquetasEditar(sku)"
+              codice-title="Editar etiquetas de este item"
+              class="btn btn-outline-secondary btn-xs mr-2"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-tags"></i>
+              Editar etiquetas
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+
         <div class="w-100 d-flex justify-content-end align-items-center">
           <a
             codice-title="Modificar este item"
             class="btn btn-primary btn-xs ml-1"
             href="javascript:void(0)"
             role="button"
-
             (click)="modificar(sku)"
           >
             <i class="fas fa-edit"></i
@@ -101,3 +139,47 @@
     <codice-ux-precarga></codice-ux-precarga>
   </div>
 </ng-template>
+
+<codice-modal id="editarEtiquetas">
+  <ng-container *ngIf="skuEtiquetas">
+    <div class="row">
+      <div class="col-12">
+        <h3>Editar etiquetas</h3>
+        <h5>{{ skuEtiquetas.nombreCompleto }}</h5>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="">Agregar etiqueta</label>
+          <input
+            #input
+            (keyup.enter)="etiquetaGuardar(skuEtiquetas, input)"
+            type="text"
+            class="form-control"
+            placeholder="Escribe la nueva etiqueta"
+            [disabled]="cargandoEtiqueta"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Presiona enter para guardar
+            <i *ngIf="cargandoEtiqueta" class="fas fa-sync fa-spin-fast"></i
+          ></small>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <span
+          *ngFor="let tag of skuEtiquetas.etiquetas"
+          [codice-tag]="tag"
+          [codice-tag-click]="etiquetaEliminar(skuEtiquetas, tag)"
+          [codice-tag-click-icon-class]="[
+            'fas',
+            'fa-times-circle',
+            'text-danger',
+            'mr-1'
+          ]"
+        >
+        </span>
+      </div>
+    </div>
+  </ng-container>
+</codice-modal>
