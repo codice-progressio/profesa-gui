@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
 })
 export class BuscadorComponent implements OnInit {
   @Output() termino = new EventEmitter<string>()
+  _termino: string
   @Output('escucharCarga') escuchaDeEstadoDeCarga = new EventEmitter<
     BehaviorSubject<boolean>
   >()
@@ -20,13 +21,14 @@ export class BuscadorComponent implements OnInit {
   public get cargando() {
     return this._cargando
   }
+
   public set cargando(value) {
     // Cuando se pone en true y término está vacio, ponemos un contador.
     // Si el contador llega al tiempo definido, quiere
     // decir que la carga fallo por alguna razón ajena
     // a este componente.
 
-    this.setearContador(value, this.termino)
+    this.setearContador(value, this._termino)
 
     this._cargando = value
   }
@@ -62,7 +64,7 @@ export class BuscadorComponent implements OnInit {
         this.input.patchValue(terminoLimpio, {
           emitEvent: false
         })
-
+        this._termino = termino
         this.termino.emit(encodeURIComponent(termino))
       })
   }
