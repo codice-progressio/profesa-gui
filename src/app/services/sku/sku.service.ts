@@ -198,7 +198,9 @@ class EtiquetaService {
 
   buscar(etiquetas: string[]) {
     return this.root.http
-      .get<SKU[]>(this.base.concat(`/buscar/?${etiquetas.join(',')}`))
+      .get<SKU[]>(
+        this.base.concat(`/buscar/etiquetas?etiquetas=${etiquetas.join(',')}`)
+      )
       .pipe(catchError(x => throwError(x)))
   }
 }
