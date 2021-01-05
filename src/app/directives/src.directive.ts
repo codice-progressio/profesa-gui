@@ -33,16 +33,14 @@ export class SrcDirective {
     this.renderer.setStyle(this.el.nativeElement, 'display', 'unset')
   }
 
-  @HostListener('error') onError() {
-    // this.renderer.setAttribute(this.el.nativeElement, 'src', this.onErrorSrc);
-  }
+  @HostListener('error') onError(err) {}
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   precarga(value) {
     //Este elemento img
     let root = this.renderer.parentNode(this.el.nativeElement)
-    
+
     this.imagenFalsa = this.renderer.createElement('img')
     this.renderer.setAttribute(
       this.imagenFalsa,
@@ -55,8 +53,8 @@ export class SrcDirective {
 
     //Desaparecemos la imagen para que no nos estorbe.
     this.renderer.setStyle(this.el.nativeElement, 'display', 'none')
-    // Ahora si la cargamos
-    this.renderer.setAttribute(this.el.nativeElement, 'src', value)
+    // Ahora si la cargamos si hay un valor
+    if (value) this.renderer.setAttribute(this.el.nativeElement, 'src', value)
   }
 
   private copiarClases(destino, original) {
