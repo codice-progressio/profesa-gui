@@ -7,6 +7,7 @@ import { ComponentsModule } from '../../components/components.module'
 import { AlmacenCrearModificarComponent } from './almacen-crear-modificar/almacen-crear-modificar.component'
 import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component';
 import { AlmacenImagenesComponent } from './almacen-imagenes/almacen-imagenes.component'
+import { DirectivesModule } from '../../directives/directives.module'
 
 const routes: Routes = [
   {
@@ -51,13 +52,14 @@ const routes: Routes = [
     AlmacenComponent,
     AlmacenCrearModificarComponent,
     AlmacenDetalleComponent,
-    AlmacenImagenesComponent
+    AlmacenImagenesComponent,
+    
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     UxModule,
-    ComponentsModule
+    ComponentsModule, DirectivesModule
   ]
 })
 export class AlmacenModule {}

@@ -14,6 +14,8 @@ export class SkuListaComponent implements OnInit {
 
   @Input()
   public set termino(value: string) {
+    // Cuando recibimos el termino disparamos la
+    // busqueda
     this._termino = value
     if (value) this.buscar(value)
     else this.cargar()
@@ -29,6 +31,31 @@ export class SkuListaComponent implements OnInit {
   skus: SKU[] = []
 
   skuEtiquetas: SKU
+  @Output() etiquetasFiltrandose = new EventEmitter<string[]>()
+  @Input()
+  public set etiquetasParaFiltrarse(value: string[]) {
+    // Cada vez que en un componente externo modificamos
+    // las etiquetas de filtrado y las recibimos aqui,
+    // ejecutamos la acción de filtrado correspondiente
+    // Unicamente si los valores son diferentes
+
+    if (value.join('') !== this._etiquetasParaFiltrarse.join('')) {
+      this._etiquetasParaFiltrarse = value
+
+      if (value.length > 0) {
+        // Solo ejecutamos el filtrado si hay valores.
+        // No ejecutamos la busqueda general aqui para
+        // no crear confusiones en caso de que se mande
+        // un arreglo vacio.
+
+        this.buscarEtiquetas(value)
+      }
+    }
+  }
+  private _etiquetasParaFiltrarse: string[] = []
+  public get etiquetasParaFiltrarse(): string[] {
+    return this._etiquetasParaFiltrarse
+  }
 
   constructor(
     public modalService: ModalService,
@@ -96,12 +123,16 @@ export class SkuListaComponent implements OnInit {
     )
   }
 
-  etiquetasParaFiltrarse: string[] = []
   filtrarPorEtiquetas(etiquetas) {
     return () => {
+      // Comprobamos que las etiquetas no esten repetidas
       this.etiquetasParaFiltrarse = Array.from(
         new Set(this.etiquetasParaFiltrarse).add(etiquetas)
       )
+      // emitimos las etiquetas para que otro componente se
+      // encargue de filtrarlos
+
+      this.etiquetasFiltrandose.emit(this.etiquetasParaFiltrarse)
     }
   }
 
@@ -141,6 +172,17 @@ export class SkuListaComponent implements OnInit {
         this.cargandoEtiqueta = false
       },
       () => (this.cargandoEtiqueta = false)
+    )
+  }
+
+  buscarEtiquetas(value: string[]) {
+    this.estadoCarga(true)
+    this.skuService.etiqueta.buscar(value).subscribe(
+      skus => {
+        this.skus = skus
+        this.estadoCarga(false)
+      },
+      () => this.estadoCarga(false)
     )
   }
 }

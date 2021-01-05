@@ -20,7 +20,16 @@ export class AlmacenComponent implements OnInit {
   termino: string
   estaCargandoBuscador: BehaviorSubject<boolean>
 
+  etiquetasFiltrandose: string[] = []
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  eliminarEtiqueta(tag: string) {
+    return () =>
+      (this.etiquetasFiltrandose = this.etiquetasFiltrandose.filter(
+        x => x !== tag
+      ))
+  }
 }

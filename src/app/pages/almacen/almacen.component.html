@@ -19,6 +19,18 @@
               (escucharCarga)="estaCargandoBuscador = $event"
             >
             </codice-buscador>
+
+            <span
+              *ngFor="let tag of etiquetasFiltrandose"
+              [codice-tag]="tag"
+              [codice-tag-click]="eliminarEtiqueta(tag)"
+              [codice-tag-click-icon-class]="[
+                'fas',
+                'fa-times-circle',
+                'mr-1',
+                'text-danger'
+              ]"
+            ></span>
           </div>
         </div>
       </div>
@@ -26,7 +38,12 @@
   </div>
 
   <div class="col-12">
-    <app-sku-lista [termino]="termino" (estaCargando)="cargando = $event">
+    <app-sku-lista
+      (etiquetasFiltrandose)="etiquetasFiltrandose = $event"
+      [etiquetasParaFiltrarse]="etiquetasFiltrandose"
+      [termino]="termino"
+      (estaCargando)="cargando = $event"
+    >
     </app-sku-lista>
   </div>
 </div>
