@@ -31,37 +31,12 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <hr />
-          </div>
-        </div>
+        <hr />
 
-        <div class="row">
-          <div class="col-12">
-            <a
-              (click)="etiquetasEditar(sku)"
-              codice-title="Editar etiquetas de este item"
-              class="btn btn-outline-secondary btn-xs mr-2"
-              href="javascript:void(0)"
-              role="button"
-            >
-              <i class="fas fa-tags"></i>
-              Editar etiquetas
-            </a>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12">
-            <hr />
-          </div>
-        </div>
-
-        <div class="w-100 d-flex justify-content-end align-items-center">
+        <div class="w-100 d-flex justify-content-center align-items-center">
           <a
             codice-title="Modificar este item"
-            class="btn btn-primary btn-xs ml-1"
+            class="btn btn-primary m-1"
             href="javascript:void(0)"
             role="button"
             (click)="modificar(sku)"
@@ -71,7 +46,7 @@
           <a
             (click)="gestionarImagenes(sku)"
             codice-title="Agregar o quitar imagenes"
-            class="btn btn-primary btn-xs ml-1"
+            class="btn btn-primary m-1"
             href="javascript:void(0)"
             role="button"
           >
@@ -81,12 +56,22 @@
           <a
             codice-title="Ver detalle de item"
             (click)="verDetalle(sku)"
-            class="btn btn-info btn-xs ml-1"
+            class="btn btn-info m-1"
             href="javascript:void(0)"
             role="button"
           >
             <i class="fas fa-search-plus"></i
           ></a>
+
+          <a
+            (click)="etiquetasEditar(sku)"
+            codice-title="Editar etiquetas de este item"
+            class="btn btn-outline-secondary m-1"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i class="fas fa-tags"></i>
+          </a>
         </div>
       </div>
       <div class="card-footer">
