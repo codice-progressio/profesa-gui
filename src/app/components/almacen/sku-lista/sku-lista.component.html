@@ -25,7 +25,7 @@
               *ngFor="let etiqueta of sku.etiquetas; let i = index"
               [codice-tag]="etiqueta"
               [codice-tag-click]="filtrarPorEtiquetas(etiqueta)"
-              [codice-tag-click-icon-class]="['fas', 'fa-tag', 'mr-1']"
+              [codice-tag-click-icon-class]="obtenerIconoDeEtiqueta(etiqueta)"
             >
             </span>
           </div>

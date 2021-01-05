@@ -185,4 +185,12 @@ export class SkuListaComponent implements OnInit {
       () => this.estadoCarga(false)
     )
   }
+
+  obtenerIconoDeEtiqueta(tag: string): string[] {
+    let base = ['fas', 'mr-1']
+    let sinFiltrar = base.concat('fa-tag')
+    let filtrando = base.concat(...['fa-filter', 'text-warning'])
+
+    return this.etiquetasParaFiltrarse.includes(tag) ? filtrando : sinFiltrar
+  }
 }
