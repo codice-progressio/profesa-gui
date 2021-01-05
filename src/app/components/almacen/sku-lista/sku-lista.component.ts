@@ -3,6 +3,7 @@ import { SkuService } from '../../../services/sku/sku.service'
 import { SKU, SkuImagen } from '../../../models/sku.model'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '../../codice-modal/modal.service'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-sku-lista',
@@ -43,12 +44,14 @@ export class SkuListaComponent implements OnInit {
       this._etiquetasParaFiltrarse = value
 
       if (value.length > 0) {
+        if (this._termino)
+          this.notiService.toast.info(
+            'Se ignoro el termino de busqueda: ' + this._termino
+          )
         // Solo ejecutamos el filtrado si hay valores.
-        // No ejecutamos la busqueda general aqui para
-        // no crear confusiones en caso de que se mande
-        // un arreglo vacio.
-
         this.buscarEtiquetas(value)
+      } else {
+        this._termino ? this.buscar(this._termino) : this.cargar()
       }
     }
   }
@@ -61,7 +64,8 @@ export class SkuListaComponent implements OnInit {
     public modalService: ModalService,
     private skuService: SkuService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private notiService: ManejoDeMensajesService
   ) {}
 
   ngOnInit(): void {
