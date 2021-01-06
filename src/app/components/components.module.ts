@@ -5,7 +5,7 @@ import { SkuDetalleComponent } from './almacen/sku-detalle/sku-detalle.component
 import { SkuCrearModificarComponent } from './almacen/sku-crear-modificar/sku-crear-modificar.component'
 import { DirectivesModule } from '../directives/directives.module'
 import { UxModule } from '../ux/ux.module'
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ValidacionInputsComponent } from './validacion-inputs/validacion-inputs.component'
 import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 import { ImagenesGestionRapidaComponent } from './imagenes-gestion-rapida/imagenes-gestion-rapida.component'
@@ -13,6 +13,10 @@ import { SkuImagenesComponent } from './almacen/sku-imagenes/sku-imagenes.compon
 import { ModalComponent } from './codice-modal/modal.component'
 import { BuscadorRapido } from './buscador-rapido/buscador-rapido'
 import { BuscadorComponent } from './buscador/buscador.component'
+import { SkuSalidaComponent } from './almacen/sku-salida/sku-salida.component'
+import { SkuEntradaComponent } from './almacen/sku-entrada/sku-entrada.component'
+import { SkuEtiquetasComponent } from './almacen/sku-etiquetas/sku-etiquetas.component'
+import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo/sku-stock-minimo-maximo.component'
 
 @NgModule({
   declarations: [
@@ -24,9 +28,19 @@ import { BuscadorComponent } from './buscador/buscador.component'
     ImagenesGestionRapidaComponent,
     SkuImagenesComponent,
     ModalComponent,
-    BuscadorComponent
+    BuscadorComponent,
+    SkuSalidaComponent,
+    SkuEntradaComponent,
+    SkuEtiquetasComponent,
+    SkuStockMinimoMaximoComponent
   ],
-  imports: [CommonModule, DirectivesModule, UxModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    DirectivesModule,
+    UxModule,
+    ReactiveFormsModule,
+    FormsModule
+  ],
   exports: [
     SkuListaComponent,
     SkuDetalleComponent,

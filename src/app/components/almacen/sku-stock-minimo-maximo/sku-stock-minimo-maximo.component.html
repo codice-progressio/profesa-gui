@@ -1,0 +1,53 @@
+<ng-container *ngIf="sku">
+  <h1><i class="fas fa-warehouse"></i> Stock mínimo y máximo</h1>
+  <hr />
+  <h3>
+    {{ sku.nombreCompleto }}
+  </h3>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <input
+          [disabled]="cargando"
+          [(ngModel)]="minimo"
+          type="number"
+          class="form-control"
+          aria-describedby="helpId"
+          placeholder="Mínimo"
+        />
+        <small class="form-text text-muted">Mínimo</small>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <input
+          [disabled]="cargando"
+          [(ngModel)]="maximo"
+          type="number"
+          class="form-control"
+          aria-describedby="helpId"
+          placeholder="Máximo"
+          suffix="$"
+          mask="0000"
+          thousandSeparator=","
+        />
+        <small class="form-text text-muted">Máximo</small>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <a
+        href="javascript:void(0)"
+        (click)="guardar()"
+        type="button"
+        class="btn btn-primary"
+      >
+        <i *ngIf="!cargando" class="fas fa-save"></i>
+        <i *ngIf="cargando" class="fas fa-sync fa-spin"></i>
+
+        Guardar
+      </a>
+    </div>
+  </div>
+</ng-container>

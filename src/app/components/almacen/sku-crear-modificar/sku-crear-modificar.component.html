@@ -192,101 +192,107 @@
 =====================================
 -->
     </div>
-    <div class="row">
-      <!-- 
+
+    <ng-container *ngIf="!estaEditando">
+      <div class="row">
+        <!-- 
 =====================================
  stockMinimo
 =====================================
 -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="form-group">
-          <input
-            [ngClass]="{
-              'is-invalid': vs.invalid(f('stockMinimo')),
-              'is-valid': vs.valid(f('stockMinimo'))
-            }"
-            type="text"
-            class="form-control"
-            formControlName="stockMinimo"
-          />
-          <small id="helpId" class="form-text text-muted">
-            <span
-              codice-title="Define el punto mínimo de existencia para generar una alerta de faltante"
-              >Stock Mínimo</span
-            >
-          </small>
-          <app-validacion-inputs
-            [campo]="f('stockMinimo')"
-          ></app-validacion-inputs>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="form-group">
+            <input
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('stockMinimo')),
+                'is-valid': vs.valid(f('stockMinimo'))
+              }"
+              type="text"
+              class="form-control"
+              formControlName="stockMinimo"
+            />
+            <small id="helpId" class="form-text text-muted">
+              <span
+                codice-title="Define el punto mínimo de existencia para generar una alerta de faltante"
+                >Stock Mínimo</span
+              >
+            </small>
+            <app-validacion-inputs
+              [campo]="f('stockMinimo')"
+            ></app-validacion-inputs>
+          </div>
         </div>
-      </div>
-      <!-- 
+        <!-- 
 =====================================
  END stockMinimo
 =====================================
 -->
 
-      <!-- 
+        <!-- Solo se puede editar el stock y las etiquetas con su operacion. 
+Esto se usa solo al crear el elemento
+-->
+        <ng-container *ngIf="!estaEditando"></ng-container>
+        <!-- 
 =====================================
  stockMaximo
 =====================================
 -->
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="form-group">
-          <input
-            [ngClass]="{
-              'is-invalid': vs.invalid(f('stockMaximo')),
-              'is-valid': vs.valid(f('stockMaximo'))
-            }"
-            type="string"
-            class="form-control"
-            formControlName="stockMaximo"
-          />
-          <small id="helpId" class="form-text text-muted">
-            <span
-              codice-title="La máxima cantidad permitida de almacenamiento de este ítem"
-              >Stock Máximo</span
-            >
-          </small>
-          <app-validacion-inputs
-            [campo]="f('stockMaximo')"
-          ></app-validacion-inputs>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="form-group">
+            <input
+              [ngClass]="{
+                'is-invalid': vs.invalid(f('stockMaximo')),
+                'is-valid': vs.valid(f('stockMaximo'))
+              }"
+              type="string"
+              class="form-control"
+              formControlName="stockMaximo"
+            />
+            <small id="helpId" class="form-text text-muted">
+              <span
+                codice-title="La máxima cantidad permitida de almacenamiento de este ítem"
+                >Stock Máximo</span
+              >
+            </small>
+            <app-validacion-inputs
+              [campo]="f('stockMaximo')"
+            ></app-validacion-inputs>
+          </div>
         </div>
-      </div>
-      <!-- 
+        <!-- 
 =====================================
  END stockMaximo
 =====================================
 -->
-    </div>
+      </div>
 
-    <!-- Solo se pueden agregar etiquetas al crear el elemento -->
-    <div *ngIf="estaEditando" class="row">
-      <div class="col-12 col-md-6">
-        <div class="form-group">
-          <input
-            #input
-            (keyup.enter)="agregarEtiqueta(input)"
-            type="text"
-            class="form-control"
-          />
-          <small id="helpId" class="form-text text-muted"
-            >Agregar etiquetas presionando enter</small
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <input
+              #input
+              (keyup.enter)="agregarEtiqueta(input)"
+              type="text"
+              class="form-control"
+            />
+            <small id="helpId" class="form-text text-muted"
+              >Agregar etiquetas presionando enter</small
+            >
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <span
+            *ngFor="let item of fa('etiquetas').controls; let i = index"
+            (click)="eliminarEtiqueta(i)"
+            class="badge badge-pill badge-dark mr-2"
+          >
+            <i class="fas fa-times-circle text-danger mr-1"></i>
+            {{ item.value }}</span
           >
         </div>
       </div>
-
-      <div class="col-12 col-md-6">
-        <span
-          *ngFor="let item of fa('etiquetas').controls; let i = index"
-          (click)="eliminarEtiqueta(i)"
-          class="badge badge-pill badge-dark mr-2"
-        >
-          <i class="fas fa-times-circle text-danger mr-1"></i>
-          {{ item.value }}</span
-        >
-      </div>
-    </div>
+    </ng-container>
 
     <div class="row">
       <a

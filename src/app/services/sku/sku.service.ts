@@ -66,10 +66,13 @@ export class SkuService {
     stock: { stockMinimo: number; stockMaximo: number }
   ) {
     return this.http
-      .put<SKU>(this.base.concat('/minimo-maximo'), {
-        _id,
-        ...stock
-      })
+      .put<{ stockMinimo: number; stockMaximo: number }>(
+        this.base.concat('/minimo-maximo'),
+        {
+          _id,
+          ...stock
+        }
+      )
       .pipe(catchError(x => throwError(x)))
   }
 }

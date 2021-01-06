@@ -31,7 +31,8 @@ export class SkuListaComponent implements OnInit {
   cargando = false
   skus: SKU[] = []
 
-  skuEtiquetas: SKU
+  skuTraslado: SKU
+
   @Output() etiquetasFiltrandose = new EventEmitter<string[]>()
   @Input()
   public set etiquetasParaFiltrarse(value: string[]) {
@@ -140,45 +141,6 @@ export class SkuListaComponent implements OnInit {
     }
   }
 
-  etiquetasEditar(sku: SKU) {
-    this.skuEtiquetas = sku
-    this.modalService.open('editarEtiquetas')
-  }
-
-  cargandoEtiqueta = false
-  etiquetaEliminar(sku: SKU, tag: string) {
-    return () => {
-      this.cargandoEtiqueta = true
-      this.skuService.etiqueta.eliminar(sku._id, tag).subscribe(
-        s => {
-          sku.etiquetas = sku.etiquetas.filter(x => x !== tag)
-
-          this.cargandoEtiqueta = false
-        },
-        () => (this.cargandoEtiqueta = false)
-      )
-    }
-  }
-
-  etiquetaGuardar(sku: SKU, input: any) {
-    let valor = input.value.trim()
-    if (!valor) return
-
-    this.cargandoEtiqueta = true
-    this.skuService.etiqueta.agregar(sku._id, valor).subscribe(
-      s => {
-        // Eliminamos de manera dierecta sobre el objeto
-        sku.etiquetas.push(valor)
-        input.value = ''
-        setTimeout(() => {
-          input.focus()
-        }, 100)
-        this.cargandoEtiqueta = false
-      },
-      () => (this.cargandoEtiqueta = false)
-    )
-  }
-
   buscarEtiquetas(value: string[]) {
     this.estadoCarga(true)
     this.skuService.etiqueta.buscar(value).subscribe(
@@ -197,4 +159,16 @@ export class SkuListaComponent implements OnInit {
 
     return this.etiquetasParaFiltrarse.includes(tag) ? filtrando : sinFiltrar
   }
+
+  idModEtiquetas = 'modalEtiquetas'
+  idModSalidas = 'modalSalidas'
+  idModEntrada = 'modalEntrada'
+  idModStock = 'modalStock'
+
+  abrirModal(sku: SKU, id: string) {
+    this.skuTraslado = sku
+    this.modalService.open(id)
+  }
+
+  
 }

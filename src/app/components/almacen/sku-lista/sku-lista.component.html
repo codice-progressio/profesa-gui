@@ -64,7 +64,7 @@
           ></a>
 
           <a
-            (click)="etiquetasEditar(sku)"
+            (click)="abrirModal(sku, idModEtiquetas)"
             codice-title="Editar etiquetas de este item"
             class="btn btn-outline-secondary m-1"
             href="javascript:void(0)"
@@ -72,6 +72,33 @@
           >
             <i class="fas fa-tags"></i>
           </a>
+        </div>
+        <hr />
+        <div class="w-100 d-flex justify-content-center align-items-center">
+          <a
+            codice-title="Modificar stock"
+            href="javascript:void(0)"
+            (click)="abrirModal(sku, idModStock)"
+            class="btn btn-outline-primary mr-1"
+          >
+            <i class="fas fa-boxes"></i
+          ></a>
+          <a
+            codice-title="Agregar una entrada manual"
+            href="javascript:void(0)"
+            (click)="abrirModal(sku, idModEntrada)"
+            class="btn btn-outline-success mr-1"
+          >
+            <i class="fas fa-plus"></i
+          ></a>
+          <a
+            codice-title="Agregar una salida manual"
+            href="javascript:void(0)"
+            (click)="abrirModal(sku, idModSalidas)"
+            class="btn btn-outline-warning"
+          >
+            <i class="fas fa-minus"></i
+          ></a>
         </div>
       </div>
       <div class="card-footer">
@@ -125,46 +152,19 @@
   </div>
 </ng-template>
 
-<codice-modal id="editarEtiquetas">
-  <ng-container *ngIf="skuEtiquetas">
-    <div class="row">
-      <div class="col-12">
-        <h3>Editar etiquetas</h3>
-        <h5>{{ skuEtiquetas.nombreCompleto }}</h5>
-      </div>
+<codice-modal [id]="idModStock">
+  <app-sku-stock-minimo-maximo [sku]="skuTraslado">
+  </app-sku-stock-minimo-maximo>
+</codice-modal>
 
-      <div class="col-12">
-        <div class="form-group">
-          <label for="">Agregar etiqueta</label>
-          <input
-            #input
-            (keyup.enter)="etiquetaGuardar(skuEtiquetas, input)"
-            type="text"
-            class="form-control"
-            placeholder="Escribe la nueva etiqueta"
-            [disabled]="cargandoEtiqueta"
-          />
-          <small id="helpId" class="form-text text-muted"
-            >Presiona enter para guardar
-            <i *ngIf="cargandoEtiqueta" class="fas fa-sync fa-spin-fast"></i
-          ></small>
-        </div>
-      </div>
+<codice-modal [id]="idModEtiquetas">
+  <app-sku-etiquetas [sku]="skuTraslado"> </app-sku-etiquetas>
+</codice-modal>
 
-      <div class="col-12">
-        <span
-          *ngFor="let tag of skuEtiquetas.etiquetas"
-          [codice-tag]="tag"
-          [codice-tag-click]="etiquetaEliminar(skuEtiquetas, tag)"
-          [codice-tag-click-icon-class]="[
-            'fas',
-            'fa-times-circle',
-            'text-danger',
-            'mr-1'
-          ]"
-        >
-        </span>
-      </div>
-    </div>
-  </ng-container>
+<codice-modal [id]="idModSalidas">
+  <app-sku-salida [sku]="skuTraslado"></app-sku-salida>
+</codice-modal>
+
+<codice-modal [id]="idModEntrada">
+  <app-sku-entrada [sku]="skuTraslado"></app-sku-entrada>
 </codice-modal>

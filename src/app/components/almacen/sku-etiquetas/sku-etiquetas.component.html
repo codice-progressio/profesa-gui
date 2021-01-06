@@ -1,0 +1,42 @@
+<ng-container *ngIf="skuTraslado">
+  <h1>
+    <i class="fas fa-tags"></i>
+    Etiquetas
+  </h1>
+  <hr />
+  <h3>{{ skuTraslado.nombreCompleto }}</h3>
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="">Agregar etiqueta</label>
+        <input
+          #input
+          (keyup.enter)="etiquetaGuardar(skuTraslado, input)"
+          type="text"
+          class="form-control"
+          placeholder="Escribe la nueva etiqueta"
+          [disabled]="cargandoEtiqueta"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Presiona enter para guardar
+          <i *ngIf="cargandoEtiqueta" class="fas fa-sync fa-spin-fast"></i
+        ></small>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <span
+        *ngFor="let tag of skuTraslado.etiquetas"
+        [codice-tag]="tag"
+        [codice-tag-click]="etiquetaEliminar(skuTraslado, tag)"
+        [codice-tag-click-icon-class]="[
+          'fas',
+          'fa-times-circle',
+          'text-danger',
+          'mr-1'
+        ]"
+      >
+      </span>
+    </div>
+  </div>
+</ng-container>
