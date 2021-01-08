@@ -22,10 +22,10 @@ export class ErrorInterceptor implements HttpInterceptor {
         let errorMessage = ''
         if (error instanceof ErrorEvent) {
           // client-side error
-          errorMessage = `APP error: ${error.error.message}`
+          errorMessage = `${error.error.message}`
         } else {
           // backend error
-          errorMessage = `Servidor: ${error.status} ${error.message}`
+          errorMessage = `${error.error}`
         }
 
         // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
