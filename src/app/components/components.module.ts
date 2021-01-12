@@ -17,6 +17,8 @@ import { SkuSalidaComponent } from './almacen/sku-salida/sku-salida.component'
 import { SkuEntradaComponent } from './almacen/sku-entrada/sku-entrada.component'
 import { SkuEtiquetasComponent } from './almacen/sku-etiquetas/sku-etiquetas.component'
 import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo/sku-stock-minimo-maximo.component'
+import { NgxMaskModule } from 'ngx-mask';
+import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
 
 @NgModule({
   declarations: [
@@ -32,14 +34,16 @@ import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo
     SkuSalidaComponent,
     SkuEntradaComponent,
     SkuEtiquetasComponent,
-    SkuStockMinimoMaximoComponent
+    SkuStockMinimoMaximoComponent,
+    SkuLotesComponent
   ],
   imports: [
     CommonModule,
     DirectivesModule,
     UxModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxMaskModule.forChild()
   ],
   exports: [
     SkuListaComponent,

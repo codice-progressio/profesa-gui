@@ -1,0 +1,107 @@
+<ng-container *ngIf="sku">
+  <a
+    [codice-collapsable-action]="idCollapsable"
+    class="btn btn-primary"
+    href="javascript:void(0)"
+    role="button"
+  >
+    Creación de lotes
+  </a>
+
+  <div [codice-collapsable-element]="idCollapsable" class="row">
+    <div class="col-12"><hr /></div>
+    <div class="col-12">
+      <h3>Crear un nuevo lote</h3>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <input
+          [(ngModel)]="observaciones"
+          class="form-control"
+          type="text"
+          [disabled]="cargando"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Descripción del lote</small
+        >
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <input
+          [(ngModel)]="caducidad"
+          type="date"
+          class="form-control"
+          [disabled]="cargando"
+        />
+        <small id="helpId" class="form-text text-muted"
+          >Fecha de caducidad</small
+        >
+      </div>
+    </div>
+    <div class="col-12">
+      <button
+        (click)="guardar()"
+        class="btn btn-primary"
+        href="javascript:void(0)"
+        role="button"
+        type="button"
+        [disabled]="cargando"
+      >
+        <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i>
+        <i *ngIf="!cargando" class="fas fa-save"></i>
+        Guardar
+      </button>
+    </div>
+    <br />
+  </div>
+
+  <div class="row">
+    <div class="col-12"><hr /></div>
+    <div class="col-12">
+      <h3>Lotes existentes</h3>
+    </div>
+
+    <div class="col-12">
+      <a
+        (click)="mostrarSinExistencia = !mostrarSinExistencia"
+        class="btn btn-primary btn-xs"
+        href="javascript:void(0)"
+        role="button"
+        codice-title="Mostrar u ocultar los lotes con existencia"
+      >
+        <span *ngIf="mostrarSinExistencia"> <i class="fas fa-eye"></i> </span>
+        <span *ngIf="!mostrarSinExistencia">
+          <i class="fas fa-eye-slash"></i> {{ lotesOcultos() }} lotes ocultos
+        </span>
+      </a>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Lote</th>
+            <th>Existencia</th>
+            <th>Caducidad</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let lote of sku.lotes">
+            <tr
+              class="pointer"
+              (click)="loteSeleccionado = lote"
+              [ngClass]="{
+                'bg-secondary text-white': loteSeleccionado?._id === lote._id
+              }"
+              *ngIf="mostrarSinExistencia ? true : lote.existencia > 0"
+            >
+              <td>{{ lote.observaciones }}</td>
+              <td>{{ lote.existencia | number }}</td>
+              <td>{{ lote.caducidad | date }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

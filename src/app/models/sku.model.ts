@@ -35,10 +35,7 @@ export interface SKU {
   /**
    * Los lotes de este sku. Ver schema para mas info.
    */
-  lotes: {
-    type: SkuLote[]
-    select: false
-  }
+  lotes: SkuLote[]
 
   // Valores para las existencias.
   stockMinimo: number

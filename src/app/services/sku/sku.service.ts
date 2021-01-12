@@ -103,7 +103,15 @@ class LoteService {
   base = this.root.base.concat('/lote')
   movimiento = new MovimientoService(this.root)
 
-  crear(id: string, lote: SkuLote) {
+  /**
+   *Crea un lote.
+   *
+   * @param {string} id
+   * @param {Partial<SkuLote>} lote
+   * @returns Retona el id y lotes unicamente.
+   * @memberof LoteService
+   */
+  crear(id: string, lote: Partial<SkuLote>) {
     return this.root.http
       .post<SKU>(this.base.concat(`/crear/${id}`), lote)
       .pipe(catchError(x => throwError(x)))
@@ -120,12 +128,27 @@ class LoteService {
       .put<SKU>(this.base.concat(`/modificar/${id}/${idLote}`), lote)
       .pipe(catchError(x => throwError(x)))
   }
+
+  /**
+   *Obtiene solo el id y los lotes dentro de un SKU
+   *
+   * @param {string} id El id del lote.
+   * @returns
+   * @memberof LoteService
+   */
+  obtenerTodo(id: string, mostrarSinExistencia = false) {
+    return this.root.http
+      .get<SKU>(
+        this.base.concat(`/${id}?sinExistencia=${mostrarSinExistencia}`)
+      )
+      .pipe(catchError(x => throwError(x)))
+  }
 }
 
 class MovimientoService {
   constructor(private root: SkuService) {}
 
-  base = this.root.base.concat('/movimiento')
+  base = this.root.base.concat('/lote/movimiento')
 
   transferirEntreAlmacenes(
     id: string,
@@ -167,7 +190,7 @@ class MovimientoService {
       .pipe(catchError(x => throwError(x)))
   }
 
-  agregar(id: string, idLote: string, movimiento: SkuLoteMovimiento) {
+  agregar(id: string, idLote: string, movimiento: Partial<SkuLoteMovimiento>) {
     let url = this.base.concat(`/agregar/${id}/${idLote}`)
     return this.root.http
       .put<SKU>(url, movimiento)
