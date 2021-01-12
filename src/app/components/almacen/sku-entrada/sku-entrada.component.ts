@@ -17,7 +17,14 @@ export class SkuEntradaComponent implements OnInit {
   entrada = new FormControl()
   observaciones = new FormControl()
 
-  cargando = false
+  private _cargando = false
+  public get cargando() {
+    return this._cargando
+  }
+  public set cargando(value) {
+    this._cargando = value
+    this.estado(value)
+  }
 
   @Input() sku: SKU
   constructor(
@@ -60,7 +67,15 @@ export class SkuEntradaComponent implements OnInit {
           this.observaciones.setValue('')
           this.input.nativeElement.focus()
         },
-        () => (this.cargando = true)
+        () => {
+          this.cargando = false
+          this.input.nativeElement.focus()
+        }
       )
+  }
+
+  private estado(disable: boolean) {
+    let e = [this.entrada, this.observaciones]
+    e.forEach(x => (disable ? x.disable() : x.enable()))
   }
 }

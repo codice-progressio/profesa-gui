@@ -14,7 +14,7 @@ export class SkuLotesComponent implements OnInit {
   observaciones: string
   caducidad: Date | null
 
-  idCollapsable = 'COLLAPSABLE' + Math.trunc(Math.random() * 100000)
+  idCollapsable = 'COLLAPSABLE' + Math.trunc(Math.random() * 100000) + this.id
   mostrarSinExistencia = false
   private _id: string
   public get id(): string {
@@ -27,6 +27,7 @@ export class SkuLotesComponent implements OnInit {
   }
 
   sku: SKU
+  @Input() crearLote: boolean = false
 
   private _loteSeleccionado: SkuLote
   public get loteSeleccionado(): SkuLote {
@@ -50,7 +51,6 @@ export class SkuLotesComponent implements OnInit {
       sku => {
         this.cargando = false
         this.sku = sku
-        console.log(sku)
       },
       () => (this.cargando = false)
     )

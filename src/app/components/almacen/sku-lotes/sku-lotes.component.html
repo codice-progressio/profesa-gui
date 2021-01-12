@@ -1,61 +1,63 @@
 <ng-container *ngIf="sku">
-  <a
-    [codice-collapsable-action]="idCollapsable"
-    class="btn btn-primary"
-    href="javascript:void(0)"
-    role="button"
-  >
-    Creación de lotes
-  </a>
+  <ng-container *ngIf="crearLote">
+    <a
+      [codice-collapsable-action]="idCollapsable"
+      class="btn btn-primary"
+      href="javascript:void(0)"
+      role="button"
+    >
+      Creación de lotes
+    </a>
 
-  <div [codice-collapsable-element]="idCollapsable" class="row">
-    <div class="col-12"><hr /></div>
-    <div class="col-12">
-      <h3>Crear un nuevo lote</h3>
-    </div>
+    <div [codice-collapsable-element]="idCollapsable" class="row">
+      <div class="col-12"><hr /></div>
+      <div class="col-12">
+        <h3>Crear un nuevo lote</h3>
+      </div>
 
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [(ngModel)]="observaciones"
-          class="form-control"
-          type="text"
-          [disabled]="cargando"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Descripción del lote</small
-        >
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [(ngModel)]="observaciones"
+            class="form-control"
+            type="text"
+            [disabled]="cargando"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Descripción del lote</small
+          >
+        </div>
       </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="form-group">
-        <input
-          [(ngModel)]="caducidad"
-          type="date"
-          class="form-control"
-          [disabled]="cargando"
-        />
-        <small id="helpId" class="form-text text-muted"
-          >Fecha de caducidad</small
-        >
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <input
+            [(ngModel)]="caducidad"
+            type="date"
+            class="form-control"
+            [disabled]="cargando"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Fecha de caducidad</small
+          >
+        </div>
       </div>
+      <div class="col-12">
+        <button
+          (click)="guardar()"
+          class="btn btn-primary"
+          href="javascript:void(0)"
+          role="button"
+          type="button"
+          [disabled]="cargando"
+        >
+          <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i>
+          <i *ngIf="!cargando" class="fas fa-save"></i>
+          Guardar
+        </button>
+      </div>
+      <br />
     </div>
-    <div class="col-12">
-      <button
-        (click)="guardar()"
-        class="btn btn-primary"
-        href="javascript:void(0)"
-        role="button"
-        type="button"
-        [disabled]="cargando"
-      >
-        <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i>
-        <i *ngIf="!cargando" class="fas fa-save"></i>
-        Guardar
-      </button>
-    </div>
-    <br />
-  </div>
+  </ng-container>
 
   <div class="row">
     <div class="col-12"><hr /></div>

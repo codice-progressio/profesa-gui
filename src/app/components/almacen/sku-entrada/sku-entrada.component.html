@@ -12,7 +12,11 @@
 
   <div class="row">
     <div class="col-12">
-      <app-sku-lotes [id]="sku._id" (lote)="loteSeleccionado = $event">
+      <app-sku-lotes
+        [crearLote]="true"
+        [id]="sku._id"
+        (lote)="loteSeleccionado = $event"
+      >
       </app-sku-lotes>
     </div>
   </div>
