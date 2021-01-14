@@ -116,6 +116,12 @@ const pagesRoutes: Routes = [
     loadChildren: () =>
       import('./almacen/almacen.module').then(m => m.AlmacenModule),
     canActivate: [VerificaTokenGuard]
+  },
+  {
+    path: 'compras',
+    loadChildren: () =>
+      import('./compras/compras.module').then(m => m.ComprasModule),
+    canActivate: [VerificaTokenGuard]
   }
 ]
 
