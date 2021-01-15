@@ -5,6 +5,7 @@ import { SrcDirective } from './src.directive'
 import { TagDirective } from './tag.directive'
 import { CollapsableElementDirective } from './collapsable/collapsable-element.directive'
 import { CollapsableActionDirective } from './collapsable/collapsable-action.directive'
+import { ResaltarDirective } from './resaltar.directive'
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { CollapsableActionDirective } from './collapsable/collapsable-action.dir
     SrcDirective,
     TagDirective,
     CollapsableElementDirective,
-    CollapsableActionDirective
+    CollapsableActionDirective,
+    ResaltarDirective
   ],
   imports: [CommonModule],
   exports: [
@@ -20,7 +22,8 @@ import { CollapsableActionDirective } from './collapsable/collapsable-action.dir
     SrcDirective,
     TagDirective,
     CollapsableElementDirective,
-    CollapsableActionDirective
+    CollapsableActionDirective,
+    ResaltarDirective
   ]
 })
 export class DirectivesModule {}
