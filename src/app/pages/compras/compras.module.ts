@@ -15,19 +15,13 @@ const routes: Routes = [
   },
   {
     path: 'proveedores',
-    component: ProveedoresComponent,
-    data: { title: 'Proveedores' }
+    loadChildren: () =>
+      import('./proveedor/proveedor.module').then(m => m.ProveedorModule)
   }
 ]
 
 @NgModule({
-  declarations: [ComprasComponent, ProveedoresComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    DirectivesModule,
-    ComponentsModule,
-    UxModule
-  ]
+  declarations: [ComprasComponent],
+  imports: [CommonModule, RouterModule.forChild(routes)]
 })
 export class ComprasModule {}

@@ -1,0 +1,898 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <ng-container *ngIf="false; else guardadoTemplate"></ng-container>
+
+        <form [formGroup]="formulario">
+          <div class="row">
+            <!-- 
+          =====================================
+           nombre
+          =====================================
+          -->
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('nombre')),
+                    'is-valid': vs.valid(f('nombre'))
+                  }"
+                  type="text"
+                  class="form-control font-20 font-weight-bolder"
+                  formControlName="nombre"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Nombre proveedor</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('nombre')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+          =====================================
+           END nombre
+          =====================================
+          -->
+
+            <!-- 
+          =====================================
+           razonSocial
+          =====================================
+          -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('razonSocial')),
+                    'is-valid': vs.valid(f('razonSocial'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="razonSocial"
+                />
+                <small id="helpId" class="form-text text-muted"
+                  >Razón social</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('razonSocial')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+          =====================================
+           END razonSocial
+          =====================================
+          -->
+
+            <!-- 
+          =====================================
+           rfc
+          =====================================
+          -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('rfc')),
+                    'is-valid': vs.valid(f('rfc'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="rfc"
+                />
+                <small id="helpId" class="form-text text-muted">RFC</small>
+                <app-validacion-inputs
+                  [campo]="f('rfc')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+          =====================================
+           END rfc
+          =====================================
+          -->
+
+            <div class="col-12">
+              <hr />
+              <h3>
+                Domicilios
+
+                <button
+                  (click)="fa('domicilios').insert(0, this.creFormDomicilio())"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  <i class="fas fa-plus-circle"></i>
+                </button>
+              </h3>
+            </div>
+            <!-- 
+         =====================================
+          Array domicilios 
+         =====================================
+         -->
+            <ng-container formArrayName="domicilios">
+              <ng-container
+                *ngFor="let dummy of fa('domicilios').controls; let i = index"
+              >
+                <ng-container [formGroupName]="i">
+                  <div codice-resaltar class="col-12">
+                    <div class="row">
+                      <!-- 
+                =====================================
+                 calle
+                =====================================
+                -->
+
+                      <div class="col-12">
+                        <h5>Domicilio {{ i + 1 }}</h5>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('calle')),
+                              'is-valid': vs.valid(dummy.get('calle'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="calle"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Calle</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('calle')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END calle
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 numeroInterior
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                dummy.get('numeroInterior')
+                              ),
+                              'is-valid': vs.valid(dummy.get('numeroInterior'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="numeroInterior"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Número interior</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('numeroInterior')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END numeroInterior
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 numeroExterior
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                dummy.get('numeroExterior')
+                              ),
+                              'is-valid': vs.valid(dummy.get('numeroExterior'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="numeroExterior"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Número exterior</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('numeroExterior')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END numeroExterior
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 colonia
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('colonia')),
+                              'is-valid': vs.valid(dummy.get('colonia'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="colonia"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Colonia</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('colonia')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END colonia
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 codigoPostal
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(
+                                dummy.get('codigoPostal')
+                              ),
+                              'is-valid': vs.valid(dummy.get('codigoPostal'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="codigoPostal"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Código postal</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('codigoPostal')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END codigoPostal
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 ciudad
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('ciudad')),
+                              'is-valid': vs.valid(dummy.get('ciudad'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="ciudad"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Ciudad</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('ciudad')"
+                            [directo]="true"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END ciudad
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 estado
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('estado')),
+                              'is-valid': vs.valid(dummy.get('estado'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="estado"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Estado</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('estado')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END estado
+                =====================================
+                -->
+
+                      <!-- 
+                =====================================
+                 pais
+                =====================================
+                -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('pais')),
+                              'is-valid': vs.valid(dummy.get('pais'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="pais"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >País</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('pais')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                 END pais
+                =====================================
+                -->
+
+                      <!-- 
+            =====================================
+             urlMaps
+            =====================================
+            -->
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('urlMaps')),
+                              'is-valid': vs.valid(dummy.get('urlMaps'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="urlMaps"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >URL Google Maps</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('urlMaps')"
+                            [directo]="true"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+            =====================================
+             END urlMaps
+            =====================================
+            -->
+
+                      <div class="col-12">
+                        <button
+                          (click)="fa('domicilios').removeAt(i)"
+                          type="button"
+                          class="btn btn-outline-danger"
+                        >
+                          <i class="fas fa-times-circle"></i> Eliminar domicilio
+                          {{ i + 1 }}
+                        </button>
+
+                        <hr />
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <!-- 
+         =====================================
+          END Array domicilios 
+         =====================================
+         -->
+
+            <div class="col-12">
+              <h3>
+                Contactos
+                <a
+                  (click)="fa('contactos').insert(0, creFormContacto())"
+                  class="btn btn-outline-primary"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-plus-circle"></i
+                ></a>
+              </h3>
+            </div>
+
+            <!-- 
+          =====================================
+          Array contactos 
+          =====================================
+          -->
+
+            <ng-container formArrayName="contactos">
+              <ng-container
+                *ngFor="let dummy of fa('contactos').controls; let i = index"
+              >
+                <ng-container [formGroupName]="i">
+                  <div codice-resaltar class="col-12">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5>Contacto {{ i + 1 }}</h5>
+                      </div>
+                      <!-- 
+                =====================================
+                nombre 
+                =====================================
+                -->
+                      <div class="col-12">
+                        <div class="form-group">
+                          <input
+                            [ngClass]="{
+                              'is-invalid': vs.invalid(dummy.get('nombre')),
+                              'is-valid': vs.valid(dummy.get('nombre'))
+                            }"
+                            type="text"
+                            class="form-control"
+                            formControlName="nombre"
+                          />
+                          <small id="helpId" class="form-text text-muted"
+                            >Nombre</small
+                          >
+                          <app-validacion-inputs
+                            [campo]="dummy.get('nombre')"
+                          ></app-validacion-inputs>
+                        </div>
+                      </div>
+                      <!-- 
+                =====================================
+                END nombre
+                =====================================
+                -->
+
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="row">
+                          <div class="col-12">
+                            <button
+                              (click)="addCampoSimple(dfa(dummy, 'telefono'))"
+                              type="button"
+                              class="btn btn-outline-primary btn-xs mb-2"
+                            >
+                              <i class="fa fa-plus-circle"></i>
+                              Teléfono
+                            </button>
+                          </div>
+
+                          <!-- 
+              =====================================
+              Array telefono 
+              =====================================
+              -->
+                          <ng-container formArrayName="telefono">
+                            <ng-container
+                              *ngFor="
+                                let dummy2 of dfa(dummy, 'telefono').controls;
+                                let a = index
+                              "
+                            >
+                              <ng-container [formGroupName]="a">
+                                <!-- 
+                    =====================================
+                    telefono
+                    =====================================
+                    -->
+                                <div class="col-12">
+                                  <div class="form-group">
+                                    <input
+                                      [ngClass]="{
+                                        'is-invalid': vs.invalid(dummy2),
+                                        'is-valid': vs.valid(dummy2)
+                                      }"
+                                      type="text"
+                                      class="form-control"
+                                      [formControl]="dummy2"
+                                    />
+                                    <small
+                                      id="helpId"
+                                      class="form-text text-muted"
+                                      >Telefono
+
+                                      <a
+                                        (click)="
+                                          dfa(dummy, 'telefono').removeAt(a)
+                                        "
+                                        class="btn btn-outline-danger btn-xs"
+                                        href="javascript:void(0)"
+                                        role="button"
+                                      >
+                                        <i class="fas fa-times-circle"></i>
+                                      </a>
+                                    </small>
+                                    <app-validacion-inputs
+                                      [campo]="dummy2"
+                                    ></app-validacion-inputs>
+                                  </div>
+                                </div>
+                                <!-- 
+                    =====================================
+                    END telefono
+                    =====================================
+                    -->
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <!-- 
+              =====================================
+              END Array telefono 
+              =====================================
+              -->
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="row">
+                          <div class="col-12">
+                            <button
+                              (click)="addCampoSimple(dfa(dummy, 'correo'))"
+                              type="button"
+                              class="btn btn-outline-primary btn-xs mb-2"
+                            >
+                              <i class="fa fa-plus-circle"></i>
+                              Correo
+                            </button>
+                          </div>
+
+                          <!-- 
+                  =====================================
+                  Array correo 
+                  =====================================
+                  -->
+                          <ng-container formArrayName="correo">
+                            <ng-container
+                              *ngFor="
+                                let dummy2 of dfa(dummy, 'correo').controls;
+                                let a = index
+                              "
+                            >
+                              <ng-container [formGroupName]="a">
+                                <!-- 
+                        =====================================
+                        correo
+                        =====================================
+                        -->
+                                <div class="col-12">
+                                  <div class="form-group">
+                                    <input
+                                      [ngClass]="{
+                                        'is-invalid': vs.invalid(dummy2),
+                                        'is-valid': vs.valid(dummy2)
+                                      }"
+                                      type="text"
+                                      class="form-control"
+                                      [formControl]="dummy2"
+                                    />
+                                    <small
+                                      id="helpId"
+                                      class="form-text text-muted"
+                                      >CorreoP
+                                      <a
+                                        (click)="
+                                          dfa(dummy, 'correo').removeAt(a)
+                                        "
+                                        class="btn btn-outline-danger btn-xs"
+                                        href="javascript:void(0)"
+                                        role="button"
+                                      >
+                                        <i class="fas fa-times-circle"></i>
+                                      </a>
+                                    </small>
+                                    <app-validacion-inputs
+                                      [campo]="dummy2"
+                                    ></app-validacion-inputs>
+                                  </div>
+                                </div>
+                                <!-- 
+                        =====================================
+                        END correo
+                        =====================================
+  -->
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <!-- 
+                  =====================================
+                  END Array correo 
+                  =====================================
+                  -->
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-4">
+                        <div class="row">
+                          <div class="col-12">
+                            <button
+                              (click)="addCampoSimple(dfa(dummy, 'puesto'))"
+                              type="button"
+                              class="btn btn-outline-primary btn-xs mb-2"
+                            >
+                              <i class="fa fa-plus-circle"></i>
+                              Puesto
+                            </button>
+                          </div>
+
+                          <!-- 
+                    =====================================
+                    Array puesto 
+                    =====================================
+                    -->
+                          <ng-container formArrayName="puesto">
+                            <ng-container
+                              *ngFor="
+                                let dummy2 of dfa(dummy, 'puesto').controls;
+                                let a = index
+                              "
+                            >
+                              <ng-container [formGroupName]="a">
+                                <!-- 
+                          =====================================
+                           puesto
+                          =====================================
+                          -->
+                                <div class="col-12">
+                                  <div class="form-group">
+                                    <input
+                                      [ngClass]="{
+                                        'is-invalid': vs.invalid(dummy2),
+                                        'is-valid': vs.valid(dummy2)
+                                      }"
+                                      type="text"
+                                      class="form-control"
+                                      [formControl]="dummy2"
+                                    />
+                                    <small
+                                      id="helpId"
+                                      class="form-text text-muted"
+                                      >Puesto
+
+                                      <a
+                                        (click)="
+                                          dfa(dummy, 'puesto').removeAt(a)
+                                        "
+                                        class="btn btn-outline-danger btn-xs"
+                                        href="javascript:void(0)"
+                                        role="button"
+                                      >
+                                        <i class="fas fa-times-circle"></i>
+                                      </a>
+                                    </small>
+                                    <app-validacion-inputs
+                                      [campo]="dummy2"
+                                    ></app-validacion-inputs>
+                                  </div>
+                                </div>
+                                <!-- 
+                          =====================================
+                           END puesto
+                          =====================================
+                          -->
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <!-- 
+                    =====================================
+                    END Array puesto 
+                    =====================================
+                    -->
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button
+                          (click)="fa('contactos').removeAt(i)"
+                          type="button"
+                          class="btn btn-outline-danger"
+                        >
+                          <i class="fas fa-times-circle"></i>
+                          Eliminar contacto
+                        </button>
+                        <hr />
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <!-- 
+          =====================================
+          END Array contactos 
+          =====================================
+          -->
+
+            <div class="col-12">
+              <h3>
+                Cuentas
+                <a
+                  (click)="fa('cuentas').insert(0, creFormContacto())"
+                  class="btn btn-outline-primary"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-plus-circle"></i
+                ></a>
+              </h3>
+            </div>
+
+            <!-- 
+          =====================================
+           Array cuentas 
+          =====================================
+          -->
+            <ng-container formArrayName="cuentas">
+              <ng-container
+                *ngFor="let dummy of fa('cuentas').controls; let i = index"
+              >
+                <ng-container [formGroupName]="i">
+                  <!-- 
+                =====================================
+                banco
+                =====================================
+                -->
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-group">
+                      <input
+                        [ngClass]="{
+                          'is-invalid': vs.invalid(dummy.get('banco')),
+                          'is-valid': vs.valid(dummy.get('banco'))
+                        }"
+                        type="text"
+                        class="form-control"
+                        formControlName="banco"
+                      />
+                      <small id="helpId" class="form-text text-muted"
+                        >Banco</small
+                      >
+                      <app-validacion-inputs
+                        [campo]="dummy.get('banco')"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <!-- 
+                =====================================
+                END banco
+                =====================================
+                -->
+
+                  <!-- 
+              =====================================
+              clabe
+              =====================================
+              -->
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-group">
+                      <input
+                        [ngClass]="{
+                          'is-invalid': vs.invalid(dummy.get('clabe')),
+                          'is-valid': vs.valid(dummy.get('clabe'))
+                        }"
+                        type="text"
+                        class="form-control"
+                        formControlName="clabe"
+                      />
+                      <small id="helpId" class="form-text text-muted"
+                        >CLAVE</small
+                      >
+                      <app-validacion-inputs
+                        [campo]="dummy.get('clabe')"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <!-- 
+              =====================================
+              END clabe
+              =====================================
+              -->
+
+                  <!-- 
+              =====================================
+              cuenta
+              =====================================
+              -->
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="form-group">
+                      <input
+                        [ngClass]="{
+                          'is-invalid': vs.invalid(dummy.get('cuenta')),
+                          'is-valid': vs.valid(dummy.get('cuenta'))
+                        }"
+                        type="text"
+                        class="form-control"
+                        formControlName="cuenta"
+                      />
+                      <small id="helpId" class="fozrm-text text-muted"
+                        >Cuenta</small
+                      >
+                      <app-validacion-inputs
+                        [campo]="dummy.get('cuenta')"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <!-- 
+              =====================================
+              END cuenta
+              =====================================
+              -->
+                  <div class="col-12">
+                    <button
+                      (click)="fa('cuentas').removeAt(i)"
+                      type="button"
+                      class="btn btn-outline-danger"
+                    >
+                      <i class="fas fa-times-circle"></i> Eliminar cuenta
+                    </button>
+                    <hr />
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <!-- 
+          =====================================
+           END Array cuentas 
+          =====================================
+          --></div>
+        </form>
+        <ng-container *ngIf="false; else guardadoTemplate"></ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #guardadoTemplate>
+  <div class="row">
+    <div class="col-12">
+      <button
+        (click)="guardar(formulario.value, formulario.invalid)"
+        type="button"
+        class="btn btn-primary"
+      >
+        <i *ngIf="!cargando" class="fas fa-save"></i>
+        <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i>
+
+        Guardar
+      </button>
+      <hr />
+    </div>
+  </div>
+</ng-template>

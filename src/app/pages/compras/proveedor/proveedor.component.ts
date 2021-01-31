@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core'
-import { Proveedor } from '../../../models/proveedor.model'
-import { ProveedorService } from '../../../services/proveedor.service'
+import { Proveedor } from 'src/app/models/proveedor.model'
+import { ProveedorService } from 'src/app/services/proveedor.service'
 
 @Component({
-  selector: 'app-proveedores',
-  templateUrl: './proveedores.component.html',
-  styleUrls: ['./proveedores.component.css']
+  selector: 'app-proveedor',
+  templateUrl: './proveedor.component.html',
+  styleUrls: ['./proveedor.component.css']
 })
-export class ProveedoresComponent implements OnInit {
+export class ProveedorComponent implements OnInit {
   proveedores: Proveedor[] = []
   estaCargandoBuscador = false
   termino: string
