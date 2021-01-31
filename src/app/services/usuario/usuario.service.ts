@@ -71,7 +71,7 @@ export class UsuarioService {
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
-        this.usuario = resp.usuario as Usuario
+        this.guardarStorage(resp.token)
 
         if (!this.usuario.permissions.includes(permisosKeysConfig.login)) {
           this.msjService.toastErrorMensaje(
@@ -79,9 +79,6 @@ export class UsuarioService {
           )
           throw ''
         }
-
-        this.apiVersion = resp.apiVersion
-        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu)
         return { correcto: true }
       }),
       catchError(err => {
@@ -96,9 +93,6 @@ export class UsuarioService {
     return this.http.get(url).pipe(
       map((resp: any) => {
         return <string[]>Object.values(resp.permisos)
-      }),
-      catchError(err => {
-        return throwError(err)
       })
     )
   }
@@ -113,10 +107,6 @@ export class UsuarioService {
 
         this.msjService.toastCorrecto(resp.mensaje)
         return true
-      }),
-      catchError(err => {
-        this.msjService.err(err)
-        return throwError(err)
       })
     )
   }
@@ -149,20 +139,22 @@ export class UsuarioService {
     }
   }
 
-  guardarStorage(id: string, token: string, usuario: Usuario, menu: any) {
-    // guardarStorage (id: string, token: string, usuario: Usuario, menu: any, roles: Roles) {
-    localStorage.setItem('id', id)
-    localStorage.setItem('token', token)
+  guardarStorage(tk: string) {
+    let token = JSON.parse(atob(tk.split('.')[1]))
+    this.token = token
+    this.apiVersion = token.apiVersion
+    localStorage.setItem('id', token._id)
+    localStorage.setItem('token', tk)
     // En el local storage no se pueden grabar objetos.
     // Hay que convertirlos en string.
-    localStorage.setItem('usuario', JSON.stringify(usuario))
 
-    localStorage.setItem('menu', JSON.stringify(menu))
-    // localStorage.setItem('roles', JSON.stringify(roles));
+    localStorage.setItem('menu', JSON.stringify(token.menu))
+    this.menu = token.menu
+    delete token.apiVersion
+    delete token.menu
 
-    this.usuario = usuario
-    this.token = token
-    this.menu = menu
+    localStorage.setItem('usuario', JSON.stringify(token))
+    this.usuario = token
     // this.roles = roles;
   }
 
@@ -211,7 +203,7 @@ export class UsuarioService {
       .then((resp: any) => {
         this.usuario.img = resp.usuario.img
         this.msjService.ok_(resp, null, a)
-        this.guardarStorage(id, this.token, this.usuario, this.menu)
+        // this.guardarStorage(id, this.token, this.usuario, this.menu)
       })
       .catch(err => {
         this.msjService.err(err)
