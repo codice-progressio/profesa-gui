@@ -49,6 +49,7 @@ import { QRCodeModule } from 'angularx-qrcode'
 import { ToastrModule } from 'ngx-toastr'
 import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
 import { ZXingScannerModule } from '@zxing/ngx-scanner'
+import { DirectivesModule } from '../directives/directives.module'
 
 @NgModule({
   imports: [
@@ -66,7 +67,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner'
       positionClass: 'toast-top-right',
       enableHtml: true
     }),
-    ZXingScannerModule
+    ZXingScannerModule,
+    DirectivesModule
   ],
   declarations: [
     HeaderComponent,
