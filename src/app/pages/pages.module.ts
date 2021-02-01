@@ -8,9 +8,6 @@ import { VerificaTokenGuard } from '../services/guards/verifica-token.guard'
 import { SharedModule } from '../shared/shared.module'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AdministradorComponent } from './parametros/administrador/administrador.component'
-import { UsuarioLeerComponent } from './usuarios/usuario-leer/usuario-leer.component'
-import { UsuarioCrearComponent } from './usuarios/usuario-crear/usuario-crear.component'
-import { UsuarioDetalleComponent } from './usuarios/usuario-detalle/usuario-detalle.component'
 import { ProfileComponent } from './profile/profile.component'
 import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
 
@@ -35,58 +32,6 @@ const pagesRoutes: Routes = [
   //   END Principal
   //  =====================================
   //  -->
-
-  // <!--
-  // =====================================
-  //  ADMINISTRADOR
-  // =====================================
-  // -->
-
-  // Mantenimientos
-
-  {
-    path: 'usuarios',
-    component: UsuarioLeerComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Usuarios',
-      permissions: permisosKeysConfig['menu:administrador:usuarios']
-    }
-  },
-
-  {
-    path: 'usuario/crear',
-    component: UsuarioCrearComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Usuarios',
-      permissions: permisosKeysConfig['administrador:usuario:crear']
-    }
-  },
-  {
-    path: 'usuario/modificar/:id',
-    component: UsuarioCrearComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Usuario',
-      permissions: permisosKeysConfig['usuario:modificar']
-    }
-  },
-  {
-    path: 'usuario/detalle/:id',
-    component: UsuarioDetalleComponent,
-    canActivate: [VerificaTokenGuard, PermisosGuard],
-    data: {
-      titulo: 'Usuario',
-      permissions: permisosKeysConfig['administrador:usuario:leer']
-    }
-  },
-
-  // <!--
-  // =====================================
-  //  END ADMINISTRADOR
-  // =====================================
-  // -->
 
   {
     path: 'perfil',
@@ -131,9 +76,6 @@ const pagesRoutes: Routes = [
     AccountsSettingsComponent,
     ProfileComponent,
     // sistema
-    UsuarioCrearComponent,
-    UsuarioDetalleComponent,
-    UsuarioLeerComponent,
     AdministradorComponent
   ],
   exports: [],
