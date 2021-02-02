@@ -191,7 +191,7 @@ export class UsuarioService {
     formData.append('img', img, img.name)
     formData.append('_id', id)
 
-    return this.http.put<Imagen>(this.base, formData)
+    return this.http.put<Imagen>(this.base.concat('/imagen'), formData)
   }
 
   eliminarImagen(id: string) {
