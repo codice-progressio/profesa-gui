@@ -11,6 +11,7 @@ import { DirectivesModule } from '../../directives/directives.module'
 import { PipesModule } from '../../pipes/pipes.module'
 import { ComponentsModule } from '../../components/components.module'
 import { UxModule } from '../../ux/ux.module'
+import { ReactiveFormsModule } from '@angular/forms'
 
 const routes: Routes = [
   {
@@ -62,8 +63,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     DirectivesModule,
     PipesModule,
-    ComponentsModule, 
+    ComponentsModule,
     UxModule,
+    ReactiveFormsModule
   ]
 })
 export class UsuariosModule {}

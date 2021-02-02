@@ -6,6 +6,7 @@ import { UsuarioService } from '../../../services/usuario/usuario.service'
 import { Usuario } from '../../../models/usuario.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte'
+import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
 
 @Component({
   selector: 'app-usuario-crear-editar',
@@ -15,17 +16,29 @@ import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carg
 export class UsuarioCrearEditarComponent implements OnInit {
   carganos: boolean
   constructor(
+    public vs: ValidacionesService,
     private notiService: ManejoDeMensajesService,
     private usuarioService: UsuarioService,
     private location: Location,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
-  cargando = false
+  private _cargando = false
+  public get cargando() {
+    return this._cargando
+  }
+  public set cargando(value) {
+    this._cargando = value
+    value ? this.formulario?.disable() : this.formulario?.enable()
+  }
+
+  mostrarFormulario = false
   formulario: FormGroup
   usuario: Usuario
+  imagenesParaSubir:Trans
 
   ngOnInit(): void {
+    this.cargando = true
     this.obtenerParametros()
   }
   obtenerParametros() {
@@ -49,7 +62,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
     }
 
     const password = {
-      password: new FormControl(usuario.password, [
+      password: new FormControl('', [
         Validators.minLength(8),
         Validators.required
       ])
@@ -58,15 +71,15 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this.formulario = new FormGroup({
       ...campos,
       // Si hay un id agregamos el campo password
-      ...(usuario._id ? password : {})
+      ...(usuario._id ? {} : password)
     })
+    // Una vez creado el formulario lo mostramos.
+    this.cargando = false
   }
 
   cargar(id: string) {
-    this.cargando = false
     this.usuarioService.buscarId(id).subscribe(
       usuario => {
-        this.cargando = false
         this.crearFormulario(usuario)
       },
       () => this.location.back()
@@ -79,16 +92,19 @@ export class UsuarioCrearEditarComponent implements OnInit {
     if (invalid) {
       return
     }
+
+    const operacion = model._id
+      ? this.usuarioService.modificar(model)
+      : this.usuarioService.crear(model)
+
     this.cargando = true
-    ;(model._id
-      ? this.usuarioService.crear(model)
-      : this.usuarioService.modificar(model)
-    ).subscribe(
+    operacion.subscribe(
       usuario => {
         this.usuario = usuario
         this.cargando = false
+        this.notiService.toast.success("Se guardo el usuario")
       },
-      () => (this.carganos = false)
+      () => (this.cargando = false)
     )
   }
 
@@ -113,6 +129,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
           this.cargando = false
           this.inputPassword.nativeElement.value = ''
           this.inputPassword.nativeElement.focus()
+          this.notiService.toast.success("Se modificó la contraseña")
         },
         () => (this.cargando = false)
       )
@@ -158,5 +175,9 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this.usuarioService
       .eliminarPermiso(this.usuario._id, permiso)
       .subscribe(this.cbPermiso, this.cbPermisoErr)
+  }
+
+  f(campo: string) {
+    return this.formulario.get(campo)
   }
 }

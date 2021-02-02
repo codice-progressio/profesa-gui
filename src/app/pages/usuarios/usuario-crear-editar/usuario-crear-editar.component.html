@@ -1,1 +1,184 @@
-<p>usuario-crear-editar works!</p>
+<div *ngIf="formulario; else cargaTemplate" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <form [formGroup]="formulario">
+              <div class="row">
+                <!-- 
+            =====================================
+             nombre
+            =====================================
+            -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <input
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('nombre')),
+                        'is-valid': vs.valid(f('nombre'))
+                      }"
+                      type="text"
+                      class="form-control"
+                      formControlName="nombre"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Nombre</small
+                    >
+                    <app-validacion-inputs
+                      [campo]="f('nombre')"
+                    ></app-validacion-inputs>
+                  </div>
+                </div>
+                <!-- 
+              =====================================
+               END nombre
+              =====================================
+              -->
+
+                <!-- 
+              =====================================
+               email
+              =====================================
+              -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <input
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('email')),
+                        'is-valid': vs.valid(f('email'))
+                      }"
+                      type="text"
+                      class="form-control"
+                      formControlName="email"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Correo</small
+                    >
+                    <app-validacion-inputs
+                      [campo]="f('email')"
+                    ></app-validacion-inputs>
+                  </div>
+                </div>
+                <!-- 
+              =====================================
+               END email
+              =====================================
+              -->
+
+                <!-- 
+              =====================================
+               password
+              =====================================
+              -->
+                <div *ngIf="!usuario?._id" class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <input
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('password')),
+                        'is-valid': vs.valid(f('password'))
+                      }"
+                      type="password"
+                      class="form-control"
+                      formControlName="password"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Password</small
+                    >
+                    <app-validacion-inputs
+                      [campo]="f('password')"
+                    ></app-validacion-inputs>
+                  </div>
+                </div>
+                <!-- 
+              =====================================
+              END password
+              =====================================
+            -->
+                <div class="col-12">
+                  <hr />
+                </div>
+
+                <div class="col-12 text-right">
+                  <button
+                    (click)="submit(formulario.value, formulario.invalid)"
+                    [disabled]="cargando"
+                    type="button"
+                    class="btn btn-success"
+                  >
+                    <i *ngIf="!cargando" class="fas fa-save"></i>
+                    <span
+                      *ngIf="cargando"
+                      style="height: 20px; width: 20px; display: inline-block"
+                    >
+                      <codice-ux-precarga> </codice-ux-precarga>
+                    </span>
+
+                    Guardar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="usuario?._id">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="form-group">
+            <input #inputPassword type="text" class="form-control" />
+            <small id="helpId" class="form-text text-muted"
+              >Nueva contraseña</small
+            >
+          </div>
+
+          <hr />
+
+          <button
+            (click)="guardarPassword(inputPassword.value)"
+            [disabled]="cargando"
+            type="button"
+            class="btn btn-success"
+          >
+            <i *ngIf="!cargando" class="fas fa-save"></i>
+            <span
+              *ngIf="cargando"
+              style="height: 20px; width: 20px; display: inline-block"
+            >
+              <codice-ux-precarga> </codice-ux-precarga>
+            </span>
+
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <codice-imagenes-gestion-rapida
+            (imagenesParaSubir)="imagenesParaSubir = $event"
+            (esteComponente)="imagenesGestionRapidaComponent = $event"
+          >
+          </codice-imagenes-gestion-rapida>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #cargaTemplate>
+  <div class="row">
+    <div class="col-12 d-flex align-items-center align-content-center">
+      <div class="" style="width: 300px; height: 300px">
+        <codice-ux-precarga> </codice-ux-precarga>
+      </div>
+    </div>
+  </div>
+</ng-template>
