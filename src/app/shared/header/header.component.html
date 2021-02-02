@@ -143,7 +143,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <img [codice-src]="usuario.img" alt="user" class="profile-pic"
+            <img [codice-src]="usuario.img.path" alt="user" class="profile-pic"
           /></a>
           <div class="dropdown-menu dropdown-menu-right animated fadeIn faster">
             <ul class="dropdown-user">
@@ -151,7 +151,7 @@
                 <div class="dw-user-box">
                   <div class="contenedor-de-imagen">
                     <img
-                      [codice-src]="usuario.img"
+                      [codice-src]="usuario.img.path"
                       alt="user"
                       class="imagen-perfil"
                     />

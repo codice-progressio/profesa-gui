@@ -10,7 +10,7 @@
                 <li class="user-profile">
                     <!-- Esta imágen se carga con pipe que se encarga de crear la url correcta -->
                     <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img  [codice-src]="
-                        usuario.img" alt="user" /><span class="hide-menu">{{usuario.nombre}} </span></a>
+                        usuario.img?.path" alt="user" /><span class="hide-menu">{{usuario.nombre}} </span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a routerLinkActive="active" routerLink="/perfil">Perfil </a></li>
                         <li><a routerLinkActive="active" routerLink="/account-settings">Configuraciones de la cuenta</a></li>
