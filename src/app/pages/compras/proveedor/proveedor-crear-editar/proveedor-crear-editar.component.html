@@ -100,7 +100,7 @@
                 Domicilios
 
                 <button
-                  (click)="fa('domicilios').insert(0, this.creFormDomicilio())"
+                  (click)="fa('domicilios').insert(0, this.creFormDomicilio({}))"
                   type="button"
                   class="btn btn-outline-primary"
                 >
@@ -429,7 +429,7 @@
               <h3>
                 Contactos
                 <a
-                  (click)="fa('contactos').insert(0, creFormContacto())"
+                  (click)="fa('contactos').insert(0, creFormContacto({}))"
                   class="btn btn-outline-primary"
                   href="javascript:void(0)"
                   role="button"
@@ -746,7 +746,7 @@
               <h3>
                 Cuentas
                 <a
-                  (click)="fa('cuentas').insert(0, creFormContacto())"
+                  (click)="fa('cuentas').insert(0, creFormContacto({}))"
                   class="btn btn-outline-primary"
                   href="javascript:void(0)"
                   role="button"
