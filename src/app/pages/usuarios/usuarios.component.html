@@ -29,7 +29,7 @@
 <div *ngIf="!cargando; else cargandoTemplate" class="row">
   <div class="col-12">
     <div class="card shadow">
-      <div class="card-body">
+      <div class="card-body table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -40,13 +40,39 @@
           </thead>
           <tbody>
             <tr *ngFor="let usuario of usuarios">
-              <td>
-                <div class="parent">
+              <td class="m-0 p-0">
+                <div class="parent m-0 p-0 pointer">
                   <img [codice-src]="usuario.img?.path" class="child" />
                 </div>
+
+                <a
+                  codice-title="Editar"
+                  class="btn btn-primary mt-1"
+                  (click)="modificar(usuario)"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-edit"></i
+                ></a>
+                <a
+                  codice-title="Ver detalle"
+                  class="btn btn-primary mt-1 ml-1"
+                  (click)="verDetalle(usuario)"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-search"></i
+                ></a>
               </td>
               <td>{{ usuario.nombre }}</td>
               <td>{{ usuario.email }}</td>
+              <td>
+                <a
+                  (click)="eliminar(usuario)"
+                  class="btn btn-danger"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-times"></i
+                ></a>
+              </td>
             </tr>
           </tbody>
         </table>

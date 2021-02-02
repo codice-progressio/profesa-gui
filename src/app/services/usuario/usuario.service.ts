@@ -204,12 +204,16 @@ export class UsuarioService {
       permission
     })
   }
-  
+
   agregarPermiso(_id: string, permission: string) {
     return this.http.put<Usuario>(this.base.concat('/agregar-permiso'), {
       _id,
       permission
     })
+  }
+
+  eliminar(_id: string) {
+    return this.http.delete<null>(this.base)
   }
 
   findAllLigthPool(): Observable<UsuarioLight[]> {

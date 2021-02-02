@@ -1,6 +1,8 @@
 .parent {
   position: relative;
   overflow: hidden;
+  width: 100px;
+  height: 100px;
 }
 
 .child {
@@ -10,4 +12,7 @@
   left: -9999px;
   right: -9999px;
   margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
 }

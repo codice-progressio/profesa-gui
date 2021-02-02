@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { UsuarioService } from '../../services/usuario/usuario.service'
 import { Usuario } from '../../models/usuario.model'
 import { BehaviorSubject } from 'rxjs'
+import { ActivatedRoute, Router } from '@angular/router'
+import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-usuarios',
@@ -9,7 +11,12 @@ import { BehaviorSubject } from 'rxjs'
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(
+    private notiService: ManejoDeMensajesService,
+    private usuarioService: UsuarioService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 
   usuarios: Usuario[] = []
   estaCargandoBuscador: BehaviorSubject<boolean>
@@ -55,5 +62,43 @@ export class UsuariosComponent implements OnInit {
       },
       () => (this.cargando = false)
     )
+  }
+
+  verDetalle(usuario: Usuario) {
+    this.router.navigate(
+      ['detalle/', this.niceUrl(usuario.nombre), usuario._id],
+      { relativeTo: this.activatedRoute }
+    )
+  }
+
+  modificar(usuario: Usuario) {
+    this.router.navigate(
+      ['modificar', this.niceUrl(usuario.nombre), usuario._id],
+      { relativeTo: this.activatedRoute }
+    )
+  }
+
+  eliminar(usuario: Usuario) {
+    this.notiService.confirmacionDeEliminacion(
+      'Este usuario ya no podra loguearse, pero aparecera en los registros he historicos.',
+      () => {
+        this.cargando = true
+
+        this.usuarioService.eliminar(usuario._id).subscribe(
+          () => {
+            this.cargando = false
+            this.usuarios = this.usuarios.filter(x => x._id !== usuario._id)
+          },
+          () => (this.cargando = false)
+        )
+      }
+    )
+  }
+
+  private niceUrl(str: string): string {
+    return str
+      .split(' ')
+      .map(x => x.trim())
+      .join('_')
   }
 }
