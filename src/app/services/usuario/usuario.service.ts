@@ -157,133 +157,14 @@ export class UsuarioService {
     // this.roles = roles;
   }
 
-  save(usuario: Usuario) {
-    const url = URL_SERVICIOS + '/usuario'
-
-    return this.http.post(url, usuario).pipe(
-      // Si todo salio bien mandamos un mensaje.
-      map((resp: any) => {
-        this.msjService.ok_(resp, null, a)
-        return resp.usuario
-      }),
-      catchError(err => {
-        this.msjService.err(err)
-        return throwError(err)
-      })
-    )
+  leerTodo() {
+    return this.http.get<Usuario[]>(this.base)
   }
 
-  // Actualiza los datos de un usuario en el local storage
-  // y el la BD.
-  update(usuario: Usuario) {
-    let url = URL_BASE(`usuario`)
-
-    return this.http.put(url, usuario).pipe(
-      map((resp: any) => {
-        this.msjService.toastCorrecto(resp.mensaje)
-        return true
-      }),
-      catchError(err => {
-        this.msjService.err(err)
-        return throwError(err)
-      })
-    )
+  buscarTermino(termino: string) {
+    const url = this.base.concat(`/buscar/termino/${termino}`)
+    return this.http.get<Usuario[]>(url)
   }
-
-  cambiarImagen(archivo: File, id: string) {
-    const a: number = this._preLoaderService.loading(
-      'Subiendo imagen para el usuario.'
-    )
-
-    this._subirArchivoService
-      .subirArchivo(archivo, 'usuarios', id)
-      .then((resp: any) => {
-        this.usuario.img = resp.usuario.img
-        this.msjService.ok_(resp, null, a)
-        // this.guardarStorage(id, this.token, this.usuario, this.menu)
-      })
-      .catch(err => {
-        this.msjService.err(err)
-        return throwError(err)
-      })
-  }
-
-  findAll(paginacion: Paginacion, filtros: string = ''): Observable<Usuario[]> {
-    const url = this.base
-      .concat('?')
-      .concat(`desde=${paginacion.desde}`)
-      .concat(`&limite=${paginacion.limite}`)
-      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
-      .concat(`&sort=${paginacion.orden}`)
-      .concat(`&${filtros}`)
-
-    return this.http.get<Usuario[]>(url).pipe(
-      map((resp: any) => {
-        this.total = resp.total
-        return resp.usuarios
-      }),
-      catchError(err => this.errFun(err))
-    )
-  }
-
-  findByTerm(
-    termino: string,
-    paginacion: Paginacion,
-    filtros: string = ''
-  ): Observable<Usuario[]> {
-    const url = this.base
-      .concat(`/buscar/termino/${termino}`)
-      .concat('?')
-      .concat(`desde=${paginacion.desde}`)
-      .concat(`&limite=${paginacion.limite}`)
-      .concat(`&campo=${paginacion.campoDeOrdenamiento}`)
-      .concat(`&sort=${paginacion.orden}`)
-      .concat(`&${filtros}`)
-
-    return this.http.get<Usuario[]>(url).pipe(
-      map((resp: any) => {
-        this.total = resp.total
-        return resp.usuarios as Usuario[]
-      }),
-      catchError(err => this.errFun(err))
-    )
-  }
-
-  findById(id: string): Observable<Usuario> {
-    let url = this.base.concat('/buscar/id/' + id)
-
-    return this.http.get<Usuario>(url).pipe(
-      map((resp: any) => {
-        return resp.usuario as Usuario
-      }),
-
-      catchError(err => this.errFun(err))
-    )
-  }
-
-  delete(id: string): Observable<Usuario> {
-    let url = this.base.concat('/' + id)
-
-    return this.http.delete(url).pipe(
-      map((resp: any) => {
-        this.msjService.toastCorrecto(resp.msj)
-        return resp.usuario
-      }),
-      catchError(err => this.errFun(err))
-    )
-  }
-
-  buscarUsuariosPorPermiso(permiso: string): Observable<Usuario[]> {
-    const url = this.base.concat(`/buscar/permiso/${permiso}`)
-
-    return this.http.get<Usuario[]>(url).pipe(
-      map((resp: any) => {
-        return resp.usuariosRole as Usuario[]
-      }),
-      catchError(err => this.errFun(err))
-    )
-  }
-
 
   findAllLigthPool(): Observable<UsuarioLight[]> {
     let url = this.base.concat('/buscar/todo/light')

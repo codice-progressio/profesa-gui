@@ -25,3 +25,46 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="!cargando; else cargandoTemplate" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nombre</th>
+              <th>correo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuarios">
+              <td>
+                <div class="parent">
+                  <img [codice-src]="usuario.img?.path" class="child" />
+                </div>
+              </td>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #cargandoTemplate>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow text-center">
+        <div class="card-body text-center">
+          <div class="w-25 text-center">
+            <codice-ux-precarga></codice-ux-precarga>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

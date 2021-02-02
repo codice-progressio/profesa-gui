@@ -10,6 +10,7 @@ import { PermisosGuard } from '../../services/guards/permisos.guard'
 import { DirectivesModule } from '../../directives/directives.module'
 import { PipesModule } from '../../pipes/pipes.module'
 import { ComponentsModule } from '../../components/components.module'
+import { UxModule } from '../../ux/ux.module'
 
 const routes: Routes = [
   {
@@ -61,7 +62,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     DirectivesModule,
     PipesModule,
-    ComponentsModule
+    ComponentsModule, 
+    UxModule,
   ]
 })
 export class UsuariosModule {}
