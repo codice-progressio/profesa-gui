@@ -295,21 +295,26 @@ Esto se usa solo al crear el elemento
     </ng-container>
 
     <div class="row">
-      <a
-        (click)="submit(this.formulario.value, this.formulario.invalid)"
-        class="btn btn-success"
-        href="javascript:void(0)"
-        role="button"
-      >
-        <i *ngIf="!cargando" class="fas fa-save"></i>
-        <span
-          *ngIf="cargando"
-          style="height: 20px; width: 20px; display: inline-block"
+      <div class="col-12">
+        <hr />
+      </div>
+      <div class="col-12 text-right">
+        <a
+          (click)="submit(this.formulario.value, this.formulario.invalid)"
+          class="btn btn-success"
+          href="javascript:void(0)"
+          role="button"
         >
-          <codice-ux-precarga> </codice-ux-precarga>
-        </span>
-        Guardar</a
-      >
+          <i *ngIf="!cargando" class="fas fa-save"></i>
+          <span
+            *ngIf="cargando"
+            style="height: 20px; width: 20px; display: inline-block"
+          >
+            <codice-ux-precarga> </codice-ux-precarga>
+          </span>
+          Guardar</a
+        >
+      </div>
     </div>
   </form>
 </ng-container>
