@@ -7,6 +7,7 @@ import { Usuario } from '../../../models/usuario.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte'
 import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
+import { ImagenesGestionRapidaComponent } from '../../../components/imagenes-gestion-rapida/imagenes-gestion-rapida.component'
 
 @Component({
   selector: 'app-usuario-crear-editar',
@@ -35,7 +36,17 @@ export class UsuarioCrearEditarComponent implements OnInit {
   mostrarFormulario = false
   formulario: FormGroup
   usuario: Usuario
-  imagenesParaSubir:Trans
+  
+  private _imagenesParaSubir: CargaDeImagenesTransporte[]
+  public get imagenesParaSubir(): CargaDeImagenesTransporte[]
+  {
+    return this._imagenesParaSubir
+  }
+  public set imagenesParaSubir(value: CargaDeImagenesTransporte[])
+  {
+    this._imagenesParaSubir = value
+    this.subirImagen(value)
+  }
 
   ngOnInit(): void {
     this.cargando = true
@@ -81,6 +92,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this.usuarioService.buscarId(id).subscribe(
       usuario => {
         this.crearFormulario(usuario)
+        this.usuario = usuario
       },
       () => this.location.back()
     )
@@ -102,7 +114,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
       usuario => {
         this.usuario = usuario
         this.cargando = false
-        this.notiService.toast.success("Se guardo el usuario")
+        this.notiService.toast.success('Se guardo el usuario')
       },
       () => (this.cargando = false)
     )
@@ -129,12 +141,13 @@ export class UsuarioCrearEditarComponent implements OnInit {
           this.cargando = false
           this.inputPassword.nativeElement.value = ''
           this.inputPassword.nativeElement.focus()
-          this.notiService.toast.success("Se modificó la contraseña")
+          this.notiService.toast.success('Se modificó la contraseña')
         },
         () => (this.cargando = false)
       )
   }
 
+  imagenesGestionRapidaComponent:ImagenesGestionRapidaComponent
   subirImagen(files: CargaDeImagenesTransporte[]) {
     this.cargando = true
     this.usuarioService
@@ -143,6 +156,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
         imagen => {
           this.cargando = false
           this.usuario.img = imagen
+          this.imagenesGestionRapidaComponent.files.pop()
         },
         () => (this.cargando = false)
       )

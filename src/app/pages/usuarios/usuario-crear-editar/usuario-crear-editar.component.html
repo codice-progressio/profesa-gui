@@ -71,6 +71,7 @@
                password
               =====================================
               -->
+
                 <div *ngIf="!usuario?._id" class="col-12 col-md-6 col-lg-4">
                   <div class="form-group">
                     <input
@@ -159,14 +160,25 @@
       </div>
     </div>
 
-    <div class="col-12">
+    <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow">
         <div class="card-body">
-          <codice-imagenes-gestion-rapida
-            (imagenesParaSubir)="imagenesParaSubir = $event"
-            (esteComponente)="imagenesGestionRapidaComponent = $event"
-          >
-          </codice-imagenes-gestion-rapida>
+          <div class="row">
+            <div class="col-12">
+              <img
+                class="w-100  shadow"
+                *ngIf="usuario.img?.path"
+                [codice-src]="usuario.img?.path"
+              />
+            </div>
+            <div class="col-12 mt-3">
+              <codice-imagenes-gestion-rapida
+                (imagenesParaSubir)="imagenesParaSubir = $event"
+                (esteComponente)="imagenesGestionRapidaComponent = $event"
+              >
+              </codice-imagenes-gestion-rapida>
+            </div>
+          </div>
         </div>
       </div>
     </div>
