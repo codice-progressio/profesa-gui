@@ -34,10 +34,10 @@ export class ProfileComponent implements OnInit {
 
     // Guardamos
 
-    this._usuarioService.update(this.usuario)
-    .subscribe( resp => {
+    // this._usuarioService.update(this.usuario)
+    // .subscribe( resp => {
 
-     });
+    //  });
 
   }
 
@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
   }
 
   cambiarImagen () {
-    this._usuarioService.cambiarImagen( this.imagenSubir, this.usuario._id);
+    // this._usuarioService.cambiarImagen( this.imagenSubir, this.usuario._id);
   }
 
 }
