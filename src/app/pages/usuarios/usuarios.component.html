@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 mt-2 mt-md-0 col-md-6">
+            <a
+              class="btn btn-primary"
+              href="javascript:void(0)"
+              role="button"
+              routerLink="crear"
+            >
+              <i class="fas fa-plus-circle"></i> Crear
+            </a>
+          </div>
+          <div class="col-12 mt-2 mt-md-0 col-md-6">
+            <codice-buscador
+              (termino)="termino = $event"
+              (escucharCarga)="estaCargandoBuscador = $event"
+            >
+            </codice-buscador>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

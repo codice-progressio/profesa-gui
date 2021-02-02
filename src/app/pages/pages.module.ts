@@ -67,6 +67,12 @@ const pagesRoutes: Routes = [
     loadChildren: () =>
       import('./compras/compras.module').then(m => m.ComprasModule),
     canActivate: [VerificaTokenGuard]
+  },
+  {
+    path: 'usuario',
+    loadChildren: () =>
+      import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
+    canActivate: [VerificaTokenGuard]
   }
 ]
 
