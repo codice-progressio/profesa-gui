@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
-import { SKU, SkuImagen } from '../../models/sku.model'
+import { SKU } from '../../models/sku.model'
+import { Imagen } from "../../models/Imagen"
 import { URL_BASE } from '../../config/config'
 import { catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs'
@@ -87,7 +88,7 @@ class ImagenService {
     formData.append('_id', id)
 
     return this.root.http
-      .put<SkuImagen>(this.base, formData)
+      .put<Imagen>(this.base, formData)
       .pipe(catchError(x => throwError(x)))
   }
 

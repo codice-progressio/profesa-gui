@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { SKU, SkuImagen } from '../../../models/sku.model'
+import { SKU } from '../../../models/sku.model'
+import { Imagen } from "../../../models/Imagen"
 import { SkuService } from '../../../services/sku/sku.service'
 import { ActivatedRoute } from '@angular/router'
 import { CargaDeImagenesTransporte } from '../../../shared/carga-de-imagenes/carga-de-imagenes-transporte'
@@ -52,7 +53,7 @@ export class SkuImagenesComponent implements OnInit {
     files.forEach(file => {
       this.skuService.imagen
         .agregar(this.sku._id, file.file)
-        .subscribe((imagen: SkuImagen) => {
+        .subscribe((imagen: Imagen) => {
           this.sku.imagenes.unshift(imagen)
           this.imagenesGestionRapidaComponent.files = this.imagenesGestionRapidaComponent.files.filter(
             localFile => localFile.file !== file.file
@@ -62,7 +63,7 @@ export class SkuImagenesComponent implements OnInit {
   }
 
   eliminando: string[] = []
-  eliminarImagen(img: SkuImagen) {
+  eliminarImagen(img: Imagen) {
     this.eliminando.push(img._id)
     this.skuService.imagen.elimiar(this.sku._id, img._id).subscribe(sku => {
       this.sku.imagenes = this.sku.imagenes.filter(x => x._id !== img._id)

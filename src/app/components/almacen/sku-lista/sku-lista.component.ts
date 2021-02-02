@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core'
 import { SkuService } from '../../../services/sku/sku.service'
-import { SKU, SkuImagen } from '../../../models/sku.model'
+import { SKU } from '../../../models/sku.model'
+import { Imagen } from "../../../models/Imagen"
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '../../codice-modal/modal.service'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'

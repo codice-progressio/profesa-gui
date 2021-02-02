@@ -1,3 +1,4 @@
+import { Imagen } from './Imagen'
 import { SkuLote } from './lote.model'
 export interface SKU {
   _id: string
@@ -16,7 +17,7 @@ export interface SKU {
 
   unidad: string
   descripcion: string
-  imagenes: SkuImagen[]
+  imagenes: Imagen[]
 
   nombreCompleto: string
 
@@ -43,9 +44,4 @@ export interface SKU {
   etiquetas: string[]
 }
 
-export interface SkuImagen {
-  _id: string
-  nombreOriginal: string
-  nombreBD: string
-  path: string
-}
+
