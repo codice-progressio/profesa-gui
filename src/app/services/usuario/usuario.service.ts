@@ -72,7 +72,6 @@ export class UsuarioService {
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
         this.guardarStorage(resp.token)
-
         if (!this.usuario.permissions.includes(permisosKeysConfig.login)) {
           this.msjService.toastErrorMensaje(
             'El usuario esta inactivo. Si es un error reportalo con el administrador'
@@ -159,8 +158,6 @@ export class UsuarioService {
   }
 
   save(usuario: Usuario) {
-    const a: number = this._preLoaderService.loading('Guardando usuario.')
-
     const url = URL_SERVICIOS + '/usuario'
 
     return this.http.post(url, usuario).pipe(
@@ -287,20 +284,6 @@ export class UsuarioService {
     )
   }
 
-  cargarVendedores(): Observable<Usuario[]> {
-    return this.buscarUsuariosPorPermiso(permisosConfig['menu:ventas'])
-  }
-
-  cargarSeleccionadores(): Observable<Usuario[]> {
-    return this.buscarUsuariosPorPermiso(permisosConfig['rol:contadorBoton:'])
-  }
-  cargarEmpacadores(): Observable<Usuario[]> {
-    return this.buscarUsuariosPorPermiso(permisosConfig['rol:empacador:'])
-  }
-
-  cargarMateriales(): Observable<Usuario[]> {
-    return this.buscarUsuariosPorPermiso(permisosConfig['rol:cargadorMaterial'])
-  }
 
   findAllLigthPool(): Observable<UsuarioLight[]> {
     let url = this.base.concat('/buscar/todo/light')
