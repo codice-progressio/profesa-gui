@@ -13,6 +13,7 @@ import { Paginacion } from 'src/app/utils/paginacion.util'
 import { URL_BASE } from '../../config/config'
 import permisosConfig from 'src/app/config/permisos.config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { Imagen } from '../../models/Imagen'
 
 @Injectable({
   providedIn: 'root'
@@ -164,6 +165,51 @@ export class UsuarioService {
   buscarTermino(termino: string) {
     const url = this.base.concat(`/buscar/termino/${termino}`)
     return this.http.get<Usuario[]>(url)
+  }
+
+  buscarId(id: string) {
+    const url = this.base.concat(`/buscar/id/${id}`)
+    return this.http.get<Usuario>(url)
+  }
+
+  crear(model: Usuario) {
+    return this.http.post<Usuario>(this.base, model)
+  }
+  modificar(model: Usuario) {
+    return this.http.put<Usuario>(this.base, model)
+  }
+
+  modificarPassword(_id: string, password: string) {
+    return this.http.put<Usuario>(this.base.concat('/password'), {
+      _id,
+      password
+    })
+  }
+
+  agregarImagen(id: string, img: File) {
+    let formData: FormData = new FormData()
+    formData.append('img', img, img.name)
+    formData.append('_id', id)
+
+    return this.http.put<Imagen>(this.base, formData)
+  }
+
+  eliminarImagen(id: string) {
+    return this.http.delete<null>(this.base.concat(`/${id}`))
+  }
+
+  eliminarPermiso(_id: string, permission: string) {
+    return this.http.put<Usuario>(this.base.concat('/eliminar-permiso'), {
+      _id,
+      permission
+    })
+  }
+  
+  agregarPermiso(_id: string, permission: string) {
+    return this.http.put<Usuario>(this.base.concat('/agregar-permiso'), {
+      _id,
+      permission
+    })
   }
 
   findAllLigthPool(): Observable<UsuarioLight[]> {
