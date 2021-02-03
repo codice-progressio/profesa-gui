@@ -55,11 +55,11 @@
                 ></a>
               </td>
               <td>{{ proveedor.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.puesto }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.correo }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor)?.nombre }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor)?.puesto[0] }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor)?.correo[0] }}</td>
               <td>
-                {{ obtenerPrimerContacto(proveedor.contactos)?.telefono }}
+                {{ obtenerPrimerContacto(proveedor)?.telefono[0] }}
               </td>
               <td>
                 <a
