@@ -30,8 +30,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
   }
   public set cargando(value) {
     this._cargando = value
-    if (value) this.formulario.disable()
-    else this.formulario.enable()
+    if (value) this.formulario?.disable()
+    else this.formulario?.enable()
   }
   formulario: FormGroup
   id: string
@@ -50,18 +50,16 @@ export class ProveedorCrearEditarComponent implements OnInit {
   obtenerId() {
     this.activatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id')
-
+      this.cargando = true
       if (!this.id) this.crearFormulario({})
       else this.obtenerProveedor(this.id)
     })
   }
 
   obtenerProveedor(id: string) {
-    this.cargando = true
     this.proveedorService.buscarId(id).subscribe(
       proveedor => {
         this.crearFormulario(proveedor)
-        this.cargando = false
       },
       () => (this.cargando = false)
     )
@@ -92,6 +90,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
         ]
       )
     })
+
+    this.cargando = false
   }
 
   creFormDomicilio(domicilios: Partial<ProveedorDomicilio>): FormGroup {
@@ -130,8 +130,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
   creFormCuentas(cuentas: Partial<ProveedorCuenta> = {}): FormGroup {
     return new FormGroup({
       _id: new FormControl(cuentas._id),
-      clabe: new FormControl(cuentas.clabe),
-      cuenta: new FormControl(cuentas.cuenta),
+      clabe: new FormControl(cuentas.clabe, [this.vs.numberValidator]),
+      cuenta: new FormControl(cuentas.cuenta, [this.vs.numberValidator]),
       banco: new FormControl(cuentas.banco)
     })
   }

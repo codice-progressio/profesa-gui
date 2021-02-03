@@ -2,9 +2,11 @@
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
-        <ng-container *ngIf="false; else guardadoTemplate"></ng-container>
+        <ng-container *ngIf="cargando; else guardadoTemplate"></ng-container>
 
-        <form [formGroup]="formulario">
+        <form 
+        *ngIf="formulario"
+        [formGroup]="formulario">
           <div class="row">
             <!-- 
           =====================================
@@ -100,7 +102,9 @@
                 Domicilios
 
                 <button
-                  (click)="fa('domicilios').insert(0, this.creFormDomicilio({}))"
+                  (click)="
+                    fa('domicilios').insert(0, this.creFormDomicilio({}))
+                  "
                   type="button"
                   class="btn btn-outline-primary"
                 >
@@ -746,7 +750,7 @@
               <h3>
                 Cuentas
                 <a
-                  (click)="fa('cuentas').insert(0, creFormContacto({}))"
+                  (click)="fa('cuentas').insert(0, creFormCuentas({}))"
                   class="btn btn-outline-primary"
                   href="javascript:void(0)"
                   role="button"
