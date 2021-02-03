@@ -35,11 +35,10 @@
             <tr>
               <th></th>
               <th></th>
-              <th>Proveedor</th>
-              <th>Contacto</th>
-              <th>Puesto</th>
-              <th>Correo</th>
-              <th>Telefono</th>
+              <th>Entidad</th>
+              <th>Tipo Contacto</th>
+              <th>Encargado</th>
+              <th>correo</th>
               <th></th>
             </tr>
           </thead>
@@ -66,12 +65,12 @@
                 ></a>
               </td>
               <td>{{ proveedor.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor)?.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor)?.puesto[0] }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor)?.correo[0] }}</td>
               <td>
-                {{ obtenerPrimerContacto(proveedor)?.telefono[0] }}
+                {{ proveedor.esCliente ? 'Cliente ' : '' }}
+                {{ proveedor.esProveedor ? 'Proveedor ' : '' }}
               </td>
+              <td>{{ obtenerPrimerContacto(proveedor)?.nombre }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor)?.correo[0] }}</td>
               <td>
                 <a
                   (click)="eliminar(proveedor)"
