@@ -4,6 +4,7 @@ import { Usuario } from '../../models/usuario.model'
 import { BehaviorSubject } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
+import { UtilidadesService } from '../../services/utilidades.service'
 
 @Component({
   selector: 'app-usuarios',
@@ -12,6 +13,7 @@ import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-men
 })
 export class UsuariosComponent implements OnInit {
   constructor(
+    private utilidadesService: UtilidadesService,
     private notiService: ManejoDeMensajesService,
     private usuarioService: UsuarioService,
     private activatedRoute: ActivatedRoute,
@@ -66,14 +68,18 @@ export class UsuariosComponent implements OnInit {
 
   verDetalle(usuario: Usuario) {
     this.router.navigate(
-      ['detalle/', this.niceUrl(usuario.nombre), usuario._id],
+      ['detalle/', this.utilidadesService.niceUrl(usuario.nombre), usuario._id],
       { relativeTo: this.activatedRoute }
     )
   }
 
   modificar(usuario: Usuario) {
     this.router.navigate(
-      ['modificar', this.niceUrl(usuario.nombre), usuario._id],
+      [
+        'modificar',
+        this.utilidadesService.niceUrl(usuario.nombre),
+        usuario._id
+      ],
       { relativeTo: this.activatedRoute }
     )
   }
@@ -93,12 +99,5 @@ export class UsuariosComponent implements OnInit {
         )
       }
     )
-  }
-
-  private niceUrl(str: string): string {
-    return str
-      .split(' ')
-      .map(x => x.trim())
-      .join('_')
   }
 }

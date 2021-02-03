@@ -1,10 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core'
 import { SkuService } from '../../../services/sku/sku.service'
 import { SKU } from '../../../models/sku.model'
-import { Imagen } from "../../../models/Imagen"
+import { Imagen } from '../../../models/Imagen'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '../../codice-modal/modal.service'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
+import { UtilidadesService } from '../../../services/utilidades.service'
 
 @Component({
   selector: 'app-sku-lista',
@@ -63,6 +64,7 @@ export class SkuListaComponent implements OnInit {
   }
 
   constructor(
+    private utilidadesService: UtilidadesService,
     public modalService: ModalService,
     private skuService: SkuService,
     private router: Router,
@@ -90,30 +92,35 @@ export class SkuListaComponent implements OnInit {
     this.cargando = estado
   }
 
-  private niceUrl(str: string): string {
-    return str
-      .split(' ')
-      .map(x => x.trim())
-      .join('_')
-  }
-
   verDetalle(sku: SKU) {
     this.router.navigate(
-      ['./detalle', this.niceUrl(sku.nombreCompleto), sku._id],
+      [
+        './detalle',
+        this.utilidadesService.niceUrl(sku.nombreCompleto),
+        sku._id
+      ],
       { relativeTo: this.activatedRoute.parent }
     )
   }
 
   gestionarImagenes(sku: SKU) {
     this.router.navigate(
-      ['./imagenes', this.niceUrl(sku.nombreCompleto), sku._id],
+      [
+        './imagenes',
+        this.utilidadesService.niceUrl(sku.nombreCompleto),
+        sku._id
+      ],
       { relativeTo: this.activatedRoute.parent }
     )
   }
 
   modificar(sku: SKU) {
     this.router.navigate(
-      ['./modificar', this.niceUrl(sku.nombreCompleto), sku._id],
+      [
+        './modificar',
+        this.utilidadesService.niceUrl(sku.nombreCompleto),
+        sku._id
+      ],
       { relativeTo: this.activatedRoute.parent }
     )
   }
@@ -170,6 +177,4 @@ export class SkuListaComponent implements OnInit {
     this.skuTraslado = sku
     this.modalService.open(id)
   }
-
-  
 }
