@@ -20,7 +20,12 @@ const routes: Routes = [
   {
     path: 'modificar/:nombre/:id',
     component: ProveedorCrearEditarComponent,
-    data: { titulo: 'Modificar proveedoor' }
+    data: { titulo: 'Modificar' }
+  },
+  {
+    path: 'detalle/:nombre/:id',
+    component: ProveedorCrearEditarComponent,
+    data: { titulo: 'Detalle' }
   }
 ]
 

@@ -4,9 +4,7 @@
       <div class="card-body">
         <ng-container *ngIf="cargando; else guardadoTemplate"></ng-container>
 
-        <form 
-        *ngIf="formulario"
-        [formGroup]="formulario">
+        <form *ngIf="formulario" [formGroup]="formulario">
           <div class="row">
             <!-- 
           =====================================
@@ -102,6 +100,7 @@
                 Domicilios
 
                 <button
+                  *ngIf="!esDetalle"
                   (click)="
                     fa('domicilios').insert(0, this.creFormDomicilio({}))
                   "
@@ -408,6 +407,7 @@
 
                       <div class="col-12">
                         <button
+                          *ngIf="!esDetalle"
                           (click)="fa('domicilios').removeAt(i)"
                           type="button"
                           class="btn btn-outline-danger"
@@ -433,6 +433,7 @@
               <h3>
                 Contactos
                 <a
+                  *ngIf="!esDetalle"
                   (click)="fa('contactos').insert(0, creFormContacto({}))"
                   class="btn btn-outline-primary"
                   href="javascript:void(0)"
@@ -492,6 +493,7 @@
                         <div class="row">
                           <div class="col-12">
                             <button
+                              *ngIf="!esDetalle"
                               (click)="addCampoSimple(dfa(dummy, 'telefono'))"
                               type="button"
                               class="btn btn-outline-primary btn-xs mb-2"
@@ -536,6 +538,7 @@
                                       >Telefono
 
                                       <a
+                                        *ngIf="!esDetalle"
                                         (click)="
                                           dfa(dummy, 'telefono').removeAt(a)
                                         "
@@ -571,6 +574,7 @@
                         <div class="row">
                           <div class="col-12">
                             <button
+                              *ngIf="!esDetalle"
                               (click)="addCampoSimple(dfa(dummy, 'correo'))"
                               type="button"
                               class="btn btn-outline-primary btn-xs mb-2"
@@ -614,6 +618,7 @@
                                       class="form-text text-muted"
                                       >CorreoP
                                       <a
+                                        *ngIf="!esDetalle"
                                         (click)="
                                           dfa(dummy, 'correo').removeAt(a)
                                         "
@@ -649,6 +654,7 @@
                         <div class="row">
                           <div class="col-12">
                             <button
+                              *ngIf="!esDetalle"
                               (click)="addCampoSimple(dfa(dummy, 'puesto'))"
                               type="button"
                               class="btn btn-outline-primary btn-xs mb-2"
@@ -693,6 +699,7 @@
                                       >Puesto
 
                                       <a
+                                        *ngIf="!esDetalle"
                                         (click)="
                                           dfa(dummy, 'puesto').removeAt(a)
                                         "
@@ -726,6 +733,7 @@
 
                       <div class="col-12">
                         <button
+                          *ngIf="!esDetalle"
                           (click)="fa('contactos').removeAt(i)"
                           type="button"
                           class="btn btn-outline-danger"
@@ -750,6 +758,7 @@
               <h3>
                 Cuentas
                 <a
+                  *ngIf="!esDetalle"
                   (click)="fa('cuentas').insert(0, creFormCuentas({}))"
                   class="btn btn-outline-primary"
                   href="javascript:void(0)"
@@ -860,6 +869,7 @@
               -->
                   <div class="col-12">
                     <button
+                      *ngIf="!esDetalle"
                       (click)="fa('cuentas').removeAt(i)"
                       type="button"
                       class="btn btn-outline-danger"
@@ -887,6 +897,7 @@
   <div class="row">
     <div class="col-12">
       <button
+        *ngIf="!esDetalle"
         (click)="submit(formulario.value, formulario.invalid)"
         type="button"
         class="btn btn-primary"

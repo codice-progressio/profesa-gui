@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Renderer2 } from '@angular/core'
 import { ProveedorService } from '../../../../services/proveedor.service'
 import {
   AbstractControl,
@@ -33,9 +33,13 @@ export class ProveedorCrearEditarComponent implements OnInit {
     if (value) this.formulario?.disable()
     else this.formulario?.enable()
   }
+
+  esDetalle = false
+
   formulario: FormGroup
   id: string
   constructor(
+    private renderer: Renderer2,
     private notiService: ManejoDeMensajesService,
     public vs: ValidacionesService,
     private location: Location,
@@ -45,6 +49,17 @@ export class ProveedorCrearEditarComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerId()
+  }
+  activarProtocoloDetalle() {
+    // Agregamos una clase a todos los input.
+    document.querySelectorAll('input').forEach(x => {
+      this.renderer.addClass(x, 'detalle')
+    })
+  }
+  esRutaDetalle() {
+    let url = this.activatedRoute.snapshot['_routerState'].url
+    console.log(url.includes('detalle'))
+    return url.includes('detalle')
   }
 
   obtenerId() {
@@ -90,8 +105,13 @@ export class ProveedorCrearEditarComponent implements OnInit {
         ]
       )
     })
-
     this.cargando = false
+    if (this.esRutaDetalle()) {
+      setTimeout(() => {
+        this.activarProtocoloDetalle()
+        this.esDetalle = true
+      }, 50)
+    }
   }
 
   creFormDomicilio(domicilios: Partial<ProveedorDomicilio>): FormGroup {
