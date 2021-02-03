@@ -202,9 +202,9 @@ export class UsuarioService {
   }
 
   agregarPermiso(_id: string, permission: string) {
-    return this.http.put<Usuario>(this.base.concat('/agregar-permiso'), {
+    return this.http.put<Usuario>(this.base.concat('/agregar-permisos'), {
       _id,
-      permission
+      permissions:[permission]
     })
   }
 
