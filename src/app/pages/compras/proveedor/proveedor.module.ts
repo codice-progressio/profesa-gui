@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'crear',
     component: ProveedorCrearEditarComponent,
     data: { titulo: 'Proveedores' }
+  },
+  {
+    path: 'modificar/:nombre/:id',
+    component: ProveedorCrearEditarComponent,
+    data: { titulo: 'Modificar proveedoor' }
   }
 ]
 

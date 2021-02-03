@@ -33,20 +33,44 @@
         <table class="table table-striped table-inverse">
           <thead class="thead-inverse">
             <tr>
+              <th></th>
               <th>Proveedor</th>
               <th>Contacto</th>
               <th>Puesto</th>
               <th>Correo</th>
               <th>Telefono</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let proveedor of proveedores">
+              <td>
+                <a
+                  (click)="editar(proveedor)"
+                  class="btn btn-primary"
+                  href="javascript:void(0)"
+                  role="button"
+                >
+                  <i class="fas fa-edit"></i
+                ></a>
+              </td>
               <td>{{ proveedor.nombre }}</td>
               <td>{{ obtenerPrimerContacto(proveedor.contactos)?.nombre }}</td>
               <td>{{ obtenerPrimerContacto(proveedor.contactos)?.puesto }}</td>
               <td>{{ obtenerPrimerContacto(proveedor.contactos)?.correo }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.telefono }}</td>
+              <td>
+                {{ obtenerPrimerContacto(proveedor.contactos)?.telefono }}
+              </td>
+              <td>
+                <a
+                  (click)="eliminar(proveedor)"
+                  class="btn btn-danger"
+                  href="javascript:void(0)"
+                  role="button"
+                >
+                  <i class="fas fa-times"></i
+                ></a>
+              </td>
             </tr>
           </tbody>
         </table>

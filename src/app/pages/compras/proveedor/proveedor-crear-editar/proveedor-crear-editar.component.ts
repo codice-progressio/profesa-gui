@@ -10,6 +10,7 @@ import {
 import { Location } from '@angular/common'
 import { ActivatedRoute } from '@angular/router'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
+import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 import {
   Proveedor,
   ProveedorDomicilio,
@@ -35,6 +36,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
   formulario: FormGroup
   id: string
   constructor(
+    private notiService: ManejoDeMensajesService,
     public vs: ValidacionesService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
@@ -138,7 +140,12 @@ export class ProveedorCrearEditarComponent implements OnInit {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
 
-    if (this.formulario.invalid) return
+    if (invalid) {
+      this.notiService.toast.error(
+        'El formulario contiene errores. Revisalo para poder continuar'
+      )
+      return
+    }
 
     if (modelo._id) this.modificar(modelo)
     else this.guardar(modelo)
@@ -156,6 +163,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     this.cargando = true
     this.proveedorService.crear(modelo).subscribe(
       pro => {
+        this.cargando = false
         this.location.back()
       },
       () => (this.cargando = false)

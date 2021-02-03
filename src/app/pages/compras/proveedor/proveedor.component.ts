@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
 import { Proveedor } from 'src/app/models/proveedor.model'
 import { ProveedorService } from 'src/app/services/proveedor.service'
+import { UtilidadesService } from '../../../services/utilidades.service'
+import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-proveedor',
@@ -13,7 +16,13 @@ export class ProveedorComponent implements OnInit {
   termino: string
   cargando = false
 
-  constructor(private proveedorService: ProveedorService) {}
+  constructor(
+    private notiService: ManejoDeMensajesService,
+    private utilidadesService: UtilidadesService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private proveedorService: ProveedorService
+  ) {}
 
   ngOnInit(): void {
     this.cargar()
@@ -29,5 +38,30 @@ export class ProveedorComponent implements OnInit {
       this.proveedores = proveedores
       this.cargando = false
     })
+  }
+
+  editar(proveedor: Proveedor) {
+    this.router.navigate(
+      [
+        'modificar',
+        this.utilidadesService.niceUrl(proveedor.nombre),
+        proveedor._id
+      ],
+      { relativeTo: this.activatedRoute }
+    )
+  }
+
+  eliminar(proveedor: Proveedor) {
+    this.notiService.confirmacionDeEliminacion(
+      'Solo el administrador podra restaurar esta información. ',
+      () => {
+        this.proveedorService.eliminar(proveedor._id).subscribe(proveedoor => {
+          this.cargando = false
+          this.proveedores = this.proveedores.filter(
+            x => x._id !== proveedor._id
+          )
+        })
+      }
+    )
   }
 }
