@@ -23,6 +23,11 @@ export class ImperiumSicComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  error = _ => {
+    this.logs.push("[ ERROR ]" +  _)
+    this.cargando = false
+  }
+
   instalar() {
     if (this.cargando) return
     if (!this.usuario)
@@ -39,20 +44,26 @@ export class ImperiumSicComponent implements OnInit {
       return
     }
 
-    let error = _ => {
-      this.logs.push(_)
-      this.cargando = false
-    }
-
     this.cargando = true
     this.instalacionService.crearParametros().subscribe(resultado => {
       this.logs.push(resultado)
       this.instalacionService
         .crearAdmin(this.usuario, this.password, this.email)
         .subscribe(res2 => {
-          this.logs.push(res2)
+          this.logs.push("[+]" + res2)
           this.cargando = false
-        }, error)
-    }, error)
+        }, this.error)
+    }, this.error)
+  }
+
+  reiniciarSuperAdmin() {
+    this.cargando = true
+    this.instalacionService.reiniciarSuperAdmin().subscribe(
+      res => {
+        this.cargando = false
+        this.logs.push("[+]"+res.mensaje)
+      },
+      () => (this.cargando = false)
+    )
   }
 }

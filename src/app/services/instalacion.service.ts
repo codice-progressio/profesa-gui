@@ -19,4 +19,11 @@ export class InstalacionService {
 
     return this.http.post(url, { nombre, password, email })
   }
+
+  reiniciarSuperAdmin() {
+    return this.http.put<any>(
+      this.base.concat('/configurar-super-admin/permisos/reiniciar'),
+      {}
+    )
+  }
 }
