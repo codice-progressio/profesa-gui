@@ -11,6 +11,8 @@ export interface Proveedor {
   // por precio de proveedor no se vean afectadas
   // al eliminar todos los datos relacionados con el proveedor.
   eliminado: boolean
+  esProveedor: boolean
+  esCliente: boolean
 }
 
 export interface ProveedorDomicilio {

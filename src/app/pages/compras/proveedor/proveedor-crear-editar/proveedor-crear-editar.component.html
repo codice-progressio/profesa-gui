@@ -6,6 +6,83 @@
 
         <form *ngIf="formulario" [formGroup]="formulario">
           <div class="row">
+            <div class="col-12">
+              <h3>Tipo de contacto</h3>
+            </div>
+            <!-- 
+            =====================================
+             esProveedor
+            =====================================
+            -->
+            <div class="col-6">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('esProveedor')),
+                    'is-valid': vs.valid(f('esProveedor'))
+                  }"
+                  type="checkbox"
+                  id="proveedor"
+                  class="form-control"
+                  formControlName="esProveedor"
+                />
+                <label
+                  style="white-space: normal"
+                  class="form-check-label text-wrap"
+                  for="proveedor"
+                >
+                  Proveedor
+                </label>
+                <app-validacion-inputs
+                  [campo]="f('esProveedor')"
+                  [directo]="true"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END esProveedor
+            =====================================
+            -->
+            <!-- 
+            =====================================
+             esCliente
+            =====================================
+            -->
+            <div class="col-6">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('esCliente')),
+                    'is-valid': vs.valid(f('esCliente'))
+                  }"
+                  type="checkbox"
+                  id="cliente"
+                  class="form-control"
+                  formControlName="esCliente"
+                />
+                <label
+                  style="white-space: normal"
+                  class="form-check-label text-wrap"
+                  for="cliente"
+                >
+                  Cliente
+                </label>
+                <app-validacion-inputs
+                  [campo]="f('esCliente')"
+                  [directo]="true"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END esCliente
+            =====================================
+            -->
+
+            <div class="col-12">
+              <hr />
+            </div>
             <!-- 
           =====================================
            nombre

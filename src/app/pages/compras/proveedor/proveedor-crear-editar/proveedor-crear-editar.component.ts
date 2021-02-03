@@ -102,7 +102,10 @@ export class ProveedorCrearEditarComponent implements OnInit {
         proveedor.cuentas?.map(x => this.creFormCuentas(x)) ?? [
           this.creFormCuentas({})
         ]
-      )
+      ),
+
+      esProveedor: new FormControl(proveedor.esProveedor),
+      esCliente: new FormControl(proveedor.esCliente),
     })
     this.cargando = false
     if (this.esRutaDetalle()) {
