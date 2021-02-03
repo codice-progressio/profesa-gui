@@ -166,7 +166,7 @@
           <div class="row">
             <div class="col-12">
               <img
-                class="w-100  shadow"
+                class="w-100 shadow"
                 *ngIf="usuario.img?.path"
                 [codice-src]="usuario.img?.path"
               />
@@ -178,6 +178,41 @@
               >
               </codice-imagenes-gestion-rapida>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <h3>Permisos</h3>
+            <hr />
+          </div>
+          <div
+            *ngFor="let kv of permisos | keyvalue; let i = index"
+            class="col-12 col-md-6"
+          >
+            <div (click)="agreagarPermiso(kv.key)" class="form-check ml-0 pl-0">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [id]="'permiso' + i"
+                [checked]="this.usuario.permissions.includes(kv.key)"
+              />
+              <label
+                style="white-space: normal"
+                class="form-check-label text-wrap"
+                [for]="'permiso' + i"
+              >
+                {{ kv.key }}
+              </label>
+            </div>
+
+            <p>{{ kv.value }}</p>
           </div>
         </div>
       </div>

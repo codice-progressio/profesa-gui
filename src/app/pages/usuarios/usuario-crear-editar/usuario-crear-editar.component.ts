@@ -36,14 +36,13 @@ export class UsuarioCrearEditarComponent implements OnInit {
   mostrarFormulario = false
   formulario: FormGroup
   usuario: Usuario
-  
+  permisos: any
+
   private _imagenesParaSubir: CargaDeImagenesTransporte[]
-  public get imagenesParaSubir(): CargaDeImagenesTransporte[]
-  {
+  public get imagenesParaSubir(): CargaDeImagenesTransporte[] {
     return this._imagenesParaSubir
   }
-  public set imagenesParaSubir(value: CargaDeImagenesTransporte[])
-  {
+  public set imagenesParaSubir(value: CargaDeImagenesTransporte[]) {
     this._imagenesParaSubir = value
     this.subirImagen(value)
   }
@@ -93,11 +92,17 @@ export class UsuarioCrearEditarComponent implements OnInit {
       usuario => {
         this.crearFormulario(usuario)
         this.usuario = usuario
+        this.cargarPermisos()
       },
       () => this.location.back()
     )
   }
 
+  cargarPermisos() {
+    this.usuarioService
+      .cargarPermisos()
+      .subscribe(permisos => (this.permisos = permisos))
+  }
   submit(model: Usuario, invalid: boolean) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
@@ -147,7 +152,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
       )
   }
 
-  imagenesGestionRapidaComponent:ImagenesGestionRapidaComponent
+  imagenesGestionRapidaComponent: ImagenesGestionRapidaComponent
   subirImagen(files: CargaDeImagenesTransporte[]) {
     this.cargando = true
     this.usuarioService
@@ -177,19 +182,27 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this.cargando = false
     this.usuario = usuario
   }
+
   cbPermisoErr = () => (this.cargando = false)
+
   agreagarPermiso(permiso: string) {
+    if (this.usuario.permissions.includes(permiso)) {
+      this.eliminarPermiso(permiso)
+      return
+    }
     this.cargando = true
     this.usuarioService
       .agregarPermiso(this.usuario._id, permiso)
       .subscribe(this.cbPermiso, this.cbPermisoErr)
   }
+
   eliminarPermiso(permiso: string) {
     this.cargando = true
     this.usuarioService
       .eliminarPermiso(this.usuario._id, permiso)
       .subscribe(this.cbPermiso, this.cbPermisoErr)
   }
+
 
   f(campo: string) {
     return this.formulario.get(campo)
