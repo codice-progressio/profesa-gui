@@ -88,13 +88,9 @@ export class UsuarioService {
     )
   }
 
-  cargarPermisos(): Observable<string[]> {
-    const url = `${URL_SERVICIOS}/login/permisos`
-    return this.http.get(url).pipe(
-      map((resp: any) => {
-        return <string[]>Object.values(resp.permisos)
-      })
-    )
+  cargarPermisos() {
+    const url = this.base.concat('/permisos')
+    return this.http.get<any>(url)
   }
 
   renuevaToken() {
