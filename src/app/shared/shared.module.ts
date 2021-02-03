@@ -62,11 +62,7 @@ import { DirectivesModule } from '../directives/directives.module'
     ReactiveFormsModule,
     DragDropModule,
     QRCodeModule,
-    ToastrModule.forRoot({
-      timeOut: 20000,
-      positionClass: 'toast-top-right',
-      enableHtml: true
-    }),
+    
     ZXingScannerModule,
     DirectivesModule
   ],

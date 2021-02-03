@@ -28,6 +28,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor'
+import { ToastrModule } from 'ngx-toastr'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -60,6 +61,15 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar:true,
+      progressAnimation:"increasing",
+      
+
+    }),
     HttpClientModule,
     NgxMaskModule.forRoot(),
     SharedModule.forRoot(),
