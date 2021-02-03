@@ -30,7 +30,7 @@ export class ProveedorComponent implements OnInit {
   }
   public set cargando(value) {
     this._cargando = value
-    this.estaCargandoBuscador.next(value)
+    this.estaCargandoBuscador?.next(value)
   }
 
   constructor(
