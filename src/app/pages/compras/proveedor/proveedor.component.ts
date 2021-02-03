@@ -80,6 +80,17 @@ export class ProveedorComponent implements OnInit {
     )
   }
 
+  detalle(proveedor: Proveedor) {
+    this.router.navigate(
+      [
+        'detalle',
+        this.utilidadesService.niceUrl(proveedor.nombre),
+        proveedor._id
+      ],
+      { relativeTo: this.activatedRoute }
+    )
+  }
+
   eliminar(proveedor: Proveedor) {
     this.notiService.confirmacionDeEliminacion(
       'Solo el administrador podra restaurar esta información. ',

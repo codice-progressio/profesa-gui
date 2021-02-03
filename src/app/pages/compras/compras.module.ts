@@ -10,7 +10,7 @@ const routes: Routes = [
     data: { title: 'Tablero de compras' }
   },
   {
-    path: 'proveedores',
+    path: 'contactos',
     loadChildren: () =>
       import('./proveedor/proveedor.module').then(m => m.ProveedorModule)
   }

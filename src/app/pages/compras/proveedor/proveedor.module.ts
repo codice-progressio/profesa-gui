@@ -7,25 +7,24 @@ import { ComponentsModule } from 'src/app/components/components.module'
 import { DirectivesModule } from 'src/app/directives/directives.module'
 import { UxModule } from 'src/app/ux/ux.module'
 import { ProveedorCrearEditarComponent } from './proveedor-crear-editar/proveedor-crear-editar.component'
-import { ProveedorDetalleComponent } from './proveedor-detalle/proveedor-detalle.component'
 import { ReactiveFormsModule } from '@angular/forms'
 
 const routes: Routes = [
-  { path: '', component: ProveedorComponent, data: { titulo: 'Proveedores' } },
+  { path: '', component: ProveedorComponent, data: { titulo: 'Contactos' } },
   {
     path: 'crear',
     component: ProveedorCrearEditarComponent,
-    data: { titulo: 'Proveedores' }
+    data: { titulo: 'Crear contacto' }
   },
   {
     path: 'modificar/:nombre/:id',
     component: ProveedorCrearEditarComponent,
-    data: { titulo: 'Modificar' }
+    data: { titulo: 'Modificar contacto' }
   },
   {
     path: 'detalle/:nombre/:id',
     component: ProveedorCrearEditarComponent,
-    data: { titulo: 'Detalle' }
+    data: { titulo: 'Detalle contacto' }
   }
 ]
 
@@ -33,8 +32,7 @@ const routes: Routes = [
   declarations: [
     ProveedorComponent,
     ProveedorCrearEditarComponent,
-    ProveedorCrearEditarComponent,
-    ProveedorDetalleComponent
+    ProveedorCrearEditarComponent
   ],
   imports: [
     CommonModule,

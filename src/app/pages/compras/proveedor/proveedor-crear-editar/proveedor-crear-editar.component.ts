@@ -58,7 +58,6 @@ export class ProveedorCrearEditarComponent implements OnInit {
   }
   esRutaDetalle() {
     let url = this.activatedRoute.snapshot['_routerState'].url
-    console.log(url.includes('detalle'))
     return url.includes('detalle')
   }
 

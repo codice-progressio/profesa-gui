@@ -34,6 +34,7 @@
           <thead class="thead-inverse">
             <tr>
               <th></th>
+              <th></th>
               <th>Proveedor</th>
               <th>Contacto</th>
               <th>Puesto</th>
@@ -44,6 +45,16 @@
           </thead>
           <tbody>
             <tr *ngFor="let proveedor of proveedores">
+              <td>
+                <a
+                  (click)="detalle(proveedor)"
+                  class="btn btn-info ml-1"
+                  href="javascript:void(0)"
+                  role="button"
+                >
+                  <i class="fas fa-search"></i
+                ></a>
+              </td>
               <td>
                 <a
                   (click)="editar(proveedor)"
