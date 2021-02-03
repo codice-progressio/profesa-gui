@@ -43,10 +43,10 @@
           <tbody>
             <tr *ngFor="let proveedor of proveedores">
               <td>{{ proveedor.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos).nombre }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos).puesto }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos).correo }}</td>
-              <td>{{ obtenerPrimerContacto(proveedor.contactos).telefono }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.nombre }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.puesto }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.correo }}</td>
+              <td>{{ obtenerPrimerContacto(proveedor.contactos)?.telefono }}</td>
             </tr>
           </tbody>
         </table>

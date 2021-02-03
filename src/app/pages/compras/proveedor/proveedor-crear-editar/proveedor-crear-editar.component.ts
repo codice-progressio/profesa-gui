@@ -100,8 +100,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
       numeroExterior: new FormControl(domicilios.numeroExterior),
       colonia: new FormControl(domicilios.colonia),
       codigoPostal: new FormControl(domicilios.codigoPostal),
-      estado: new FormControl(domicilios.estado),
-      pais: new FormControl(domicilios.pais),
+      estado: new FormControl(domicilios.estado ?? 'Jalisco'),
+      pais: new FormControl(domicilios.pais ?? 'México'),
       ciudad: new FormControl(domicilios.ciudad),
       urlMaps: new FormControl(domicilios.urlMaps)
     })
@@ -115,7 +115,9 @@ export class ProveedorCrearEditarComponent implements OnInit {
         contactos.telefono?.map(x => new FormControl(x)) ?? [new FormControl()]
       ),
       correo: new FormArray(
-        contactos.correo?.map(x => new FormControl(x)) ?? [new FormControl()]
+        contactos.correo?.map(x => new FormControl(x, [Validators.email])) ?? [
+          new FormControl('', [Validators.email])
+        ]
       ),
       puesto: new FormArray(
         contactos.puesto?.map(x => new FormControl(x)) ?? [new FormControl()]
