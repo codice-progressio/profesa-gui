@@ -4,11 +4,13 @@ import {
   ElementRef,
   Input,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  Output,
+  EventEmitter,
+  Renderer2
 } from '@angular/core'
 
 import { ModalService } from './modal.service'
-import { Renderer2 } from '@angular/core'
 
 @Component({
   selector: 'codice-modal',
@@ -20,6 +22,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   // Tomado de https://jasonwatmore.com/post/2020/09/24/angular-10-custom-modal-window-dialog-box#:~:text=To%20make%20the%20modal%20component,imports%20array%20on%20line%2016%20.
 
   @Input() id: string = ''
+  @Output() cerrado = new EventEmitter<null>()
 
   private element: any
 
@@ -34,7 +37,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // ensure id attribute exists
     if (!this.id) {
-      console.error('modal must have an id')
+      console.error('El modal debe tener un id')
       return
     }
 
@@ -75,5 +78,6 @@ export class ModalComponent implements OnInit, OnDestroy {
   close(): void {
     this.element.style.display = 'none'
     document.body.classList.remove('codice-modal-open')
+    this.cerrado.next()
   }
 }
