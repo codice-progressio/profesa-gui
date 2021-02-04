@@ -73,7 +73,8 @@ const pagesRoutes: Routes = [
     loadChildren: () =>
       import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
     canActivate: [VerificaTokenGuard]
-  }
+  },
+  { path: 'ventas', loadChildren: () => import('./pages/ventas/ventas.module').then(m => m.VentasModule) }
 ]
 
 @NgModule({

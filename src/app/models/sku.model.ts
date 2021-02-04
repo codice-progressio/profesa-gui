@@ -20,6 +20,7 @@ export interface SKU {
   imagenes: Imagen[]
 
   nombreCompleto: string
+  costoVenta:number
 
   /**
    * La existencia de sku en el almacen.

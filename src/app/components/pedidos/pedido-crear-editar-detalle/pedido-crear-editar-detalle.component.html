@@ -1,0 +1,256 @@
+<div class="row" *ngIf="formulario">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <form [formGroup]="formulario">
+          <div class="row">
+            <div class="col-12">
+              <h3>
+                <ng-container *ngIf="pedido.contacto"
+                  >{{ pedido.contacto?.nombre }}
+                </ng-container>
+                <ng-container *ngIf="!pedido.contacto"
+                  >No has seleccionado un cliente
+                </ng-container>
+                <a
+                  (click)="modalService.open(idModalContacto)"
+                  class="btn btn-success mr-3"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-plus"></i
+                ></a>
+              </h3>
+              <hr />
+            </div>
+
+            <!-- 
+            =====================================
+             observaciones
+            =====================================
+            -->
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <textarea
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('observaciones')),
+                    'is-valid': vs.valid(f('observaciones'))
+                  }"
+                  class="form-control"
+                  formControlName="observaciones"
+                  cols="15"
+                  rows="5"
+                ></textarea>
+                <small id="helpId" class="form-text text-muted"
+                  >Observaciones</small
+                >
+                <app-validacion-inputs
+                  [campo]="f('observaciones')"
+                ></app-validacion-inputs>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END observaciones
+            =====================================
+            -->
+
+            <div class="col-12">
+              <hr />
+            </div>
+
+            <!-- 
+          =====================================
+           Array articulos 
+          =====================================
+          -->
+            <ng-container formArrayName="articulos">
+              <ng-container
+                *ngFor="let dummy of fa('articulos').controls; let i = index"
+              >
+                <ng-container [formGroupName]="i">
+                  <input type="text" formControlName="sku" />
+
+                  <div class="col-12">
+                    <h5>
+                      <b> <i class="fas fa-arrow-right"></i> </b
+                      >{{ articulosSeleccionados[i]?.nombreCompleto }}
+                    </h5>
+                  </div>
+
+                  <!-- 
+          =====================================
+           cantidad
+          =====================================
+          -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <input
+                        [ngClass]="{
+                          'is-invalid': vs.invalid(dummy.get('cantidad')),
+                          'is-valid': vs.valid(dummy.get('cantidad'))
+                        }"
+                        type="text"
+                        class="form-control"
+                        formControlName="cantidad"
+                      />
+                      <small id="helpId" class="form-text text-muted"
+                        >Descripcion del input</small
+                      >
+                      <app-validacion-inputs
+                        [campo]="dummy.get('cantidad')"
+                        [directo]="true"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <!-- 
+          =====================================
+           END cantidad
+          =====================================
+          -->
+
+                  <!-- 
+          =====================================
+           observaciones
+          =====================================
+          -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <textarea
+                        [ngClass]="{
+                          'is-invalid': vs.invalid(dummy.get('observaciones')),
+                          'is-valid': vs.valid(dummy.get('observaciones'))
+                        }"
+                        class="form-control"
+                        formControlName="observaciones"
+                        cols="10"
+                        rows="3"
+                      ></textarea>
+
+                      <small id="helpId" class="form-text text-muted"
+                        >Observaciones</small
+                      >
+                      <app-validacion-inputs
+                        [campo]="dummy.get('observaciones')"
+                        [directo]="true"
+                      ></app-validacion-inputs>
+                    </div>
+                  </div>
+                  <!-- 
+          =====================================
+           END observaciones
+          =====================================
+          -->
+
+                  <div class="col-12">
+                    <hr />
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <!-- 
+          =====================================
+           END Array articulos 
+          =====================================
+          -->
+            <div class="col-12">
+              <a
+                (click)="agregarArticulo()"
+                class="btn btn-primary"
+                href="javascript:void(0)"
+                role="button"
+                ><i class="fas fa-plus"></i> Agregar articulo</a
+              >
+            </div>
+
+            <div class="col-12">
+              <hr />
+            </div>
+
+            <div class="col-12">
+              <a
+                (click)="submit(formulario.value, formulario.invalid)"
+                class="btn btn-success"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i class="fas fa-save"></i> Guardar
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<codice-modal [id]="idModalContacto">
+  <div class="row">
+    <div class="col-12">
+      <h3>Seleccionar cliente</h3>
+      <hr />
+    </div>
+
+    <div class="col-12">
+      <codice-buscador
+        (termino)="buscarContacto($event)"
+        (escucharCarga)="estaCargandoBuscadorContacto = $event"
+      >
+      </codice-buscador>
+    </div>
+
+    <div class="col-12">
+
+      <app-sku-lista
+      []
+      >
+
+
+      </app-sku-lista>
+
+
+      <div class="list-group">
+        <a
+          *ngFor="let contacto of contactos"
+          (click)="seleccionarContacto(contacto)"
+          href="javascript:void(0)"
+          class="list-group-item list-group-item-action"
+          >{{ contacto.nombre }}</a
+        >
+      </div>
+    </div>
+  </div>
+</codice-modal>
+
+<codice-modal [id]="idModalSku" (cerrado)="skuModalCerrado()">
+  <div class="row">
+    <div class="col-12">
+      <h3>Seleccionar SKU</h3>
+      <hr />
+    </div>
+
+    <div class="col-12">
+      <codice-buscador
+        (termino)="buscarSku($event)"
+        (escucharCarga)="estaCargandoBuscadorSku = $event"
+      >
+      </codice-buscador>
+    </div>
+
+    <div class="col-12">
+      <div class="list-group">
+        <a
+          *ngFor="let item of skus"
+          (click)="seleccionarSku(item)"
+          href="javascript:void(0)"
+          class="list-group-item list-group-item-action"
+        >
+          {{ item.nombreCompleto }}
+          <hr />
+          <small class="text-muted"
+            >Existencia: <b>{{ item.existencia }}</b></small
+          >
+        </a>
+      </div>
+    </div>
+  </div>
+</codice-modal>

@@ -19,6 +19,8 @@ import { SkuEtiquetasComponent } from './almacen/sku-etiquetas/sku-etiquetas.com
 import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo/sku-stock-minimo-maximo.component'
 import { NgxMaskModule } from 'ngx-mask'
 import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
+import { PedidosListaComponent } from './pedidos/pedidos-lista/pedidos-lista.component'
+import { PedidoCrearEditarDetalleComponent } from './pedidos/pedido-crear-editar-detalle/pedido-crear-editar-detalle.component'
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
     SkuEntradaComponent,
     SkuEtiquetasComponent,
     SkuStockMinimoMaximoComponent,
-    SkuLotesComponent
+    SkuLotesComponent,
+    PedidosListaComponent,
+    PedidoCrearEditarDetalleComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +58,9 @@ import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
     SkuImagenesComponent,
     ModalComponent,
     BuscadorComponent,
-    ImagenesGestionRapidaComponent
+    ImagenesGestionRapidaComponent,
+    PedidosListaComponent,
+    PedidoCrearEditarDetalleComponent
   ]
 })
 export class ComponentsModule {}
