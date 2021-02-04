@@ -98,6 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         err => {
           this.loading = false
           this.invalido = true
+          console.log(err)
         }
       )
   }

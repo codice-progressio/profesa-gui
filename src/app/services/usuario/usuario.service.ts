@@ -9,9 +9,7 @@ import { throwError } from 'rxjs/internal/observable/throwError'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { Observable } from 'rxjs'
-import { Paginacion } from 'src/app/utils/paginacion.util'
 import { URL_BASE } from '../../config/config'
-import permisosConfig from 'src/app/config/permisos.config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { Imagen } from '../../models/Imagen'
 
@@ -80,10 +78,6 @@ export class UsuarioService {
           throw ''
         }
         return { correcto: true }
-      }),
-      catchError(err => {
-        this.msjService.toastError(err)
-        return throwError(err)
       })
     )
   }
@@ -99,9 +93,8 @@ export class UsuarioService {
       map((resp: any) => {
         this.token = resp.token
         localStorage.setItem('token', this.token)
+        this.msjService.toastCorrecto('Se renovo el token')
         // Si lo hace recive true
-
-        this.msjService.toastCorrecto(resp.mensaje)
         return true
       })
     )
@@ -204,7 +197,7 @@ export class UsuarioService {
   agregarPermiso(_id: string, permission: string) {
     return this.http.put<Usuario>(this.base.concat('/agregar-permisos'), {
       _id,
-      permissions:[permission]
+      permissions: [permission]
     })
   }
 
