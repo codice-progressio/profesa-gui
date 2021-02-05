@@ -47,6 +47,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
   formulario: FormGroup
   id: string
+  esDetalle: boolean
 
   ngOnInit(): void {
     this.obtenerId()
@@ -102,6 +103,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       setTimeout(() => {
         this.modalService.open(this.idModalContacto)
       }, 1000)
+    }
+
+    if (this.esRutaDetalle()) {
+      setTimeout(() => {
+        this.activarProtocoloDetalle()
+        this.esDetalle = true
+      }, 50)
     }
   }
 
@@ -242,6 +250,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       const precio = this.articulosSeleccionados[i]?.costoVenta ?? 0
       total += Math.round((cantidad * precio + Number.EPSILON) * 100) / 100
     }
-    return total 
+    return total
   }
 }

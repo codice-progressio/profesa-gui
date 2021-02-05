@@ -4,6 +4,10 @@
       <div class="card-body">
         <form [formGroup]="formulario">
           <div class="row">
+            <div class="col-12 justify-content-between d-flex">
+              <h1>{{ pedido?._id }}</h1>
+              <h3>{{ pedido?.createdAt | date }}</h3>
+            </div>
             <div class="col-12 d-flex justify-content-between">
               <h3>
                 <ng-container *ngIf="pedido.contacto"
@@ -13,6 +17,7 @@
                   >No has seleccionado un cliente
                 </ng-container>
                 <a
+                  *ngIf="!esDetalle"
                   (click)="modalService.open(idModalContacto)"
                   class="btn btn-success mr-3"
                   href="javascript:void(0)"
@@ -78,6 +83,7 @@
                       </b>
                       {{ articulosSeleccionados[i]?.nombreCompleto }}
                       <a
+                        *ngIf="!esDetalle"
                         (click)="eliminar(i)"
                         class="btn btn-danger"
                         href="javascript:void(0)"
@@ -105,7 +111,6 @@
                         formControlName="cantidad"
                         mask="separator.2"
                         thousandSeparator=","
-                        autofocus
                       />
                       <small id="helpId" class="form-text text-muted"
                         >Cantidad</small
@@ -192,6 +197,7 @@
           -->
             <div class="col-12">
               <a
+                *ngIf="!esDetalle"
                 (click)="agregarArticulo()"
                 class="btn btn-primary"
                 href="javascript:void(0)"
@@ -206,6 +212,7 @@
 
             <div class="col-12">
               <a
+                *ngIf="!esDetalle"
                 (click)="submit(formulario.value, formulario.invalid)"
                 class="btn btn-success"
                 href="javascript:void(0)"

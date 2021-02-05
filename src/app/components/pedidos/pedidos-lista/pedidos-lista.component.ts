@@ -24,7 +24,7 @@ export class PedidosListaComponent implements OnInit {
     this.editarEmit.emit(pedido)
   }
   detalle(pedido: Pedido) {
-    this.editarEmit.emit(pedido)
+    this.detalleEmit.emit(pedido)
   }
 
   eliminando = {}
