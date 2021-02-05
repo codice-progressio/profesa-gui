@@ -93,7 +93,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
           this.articulosSeleccionados.push(x.sku)
           return this.crearArticulo(x)
         }) ?? [],
-        [this.vs.minSelectedCheckboxes()]
+        [this.vs.minSelectedCheckboxes(1)]
       )
     })
 
@@ -148,6 +148,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   seleccionarContacto(contacto: Proveedor) {
     this.pedido.contacto = contacto
+    this.formulario.get('contacto').setValue(contacto._id)
     this.modalService.close(this.idModalContacto)
     this.estaCargandoBuscadorContacto.next(false)
     this.contactos = []
@@ -196,6 +197,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.modalService.close(this.idModalSku)
   }
 
+  eliminar(i: number) {
+    this.fa('articulos').removeAt(i)
+    this.articulosSeleccionados.splice(i, 1)
+  }
+
   agregarArticulo() {
     this.fa('articulos').push(this.crearArticulo({}))
     this.indexSeleccionado = this.fa('articulos').controls.length - 1
@@ -226,5 +232,16 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       },
       () => (this.cargando = false)
     )
+  }
+
+  total() {
+    let total = 0
+    for (let i = 0; i < this.fa('articulos').controls.length; i++) {
+      const cantidad =
+        this.fa('articulos').controls[i].get('cantidad').value ?? 0
+      const precio = this.articulosSeleccionados[i]?.costoVenta ?? 0
+      total += Math.round((cantidad * precio + Number.EPSILON) * 100) / 100
+    }
+    return total 
   }
 }

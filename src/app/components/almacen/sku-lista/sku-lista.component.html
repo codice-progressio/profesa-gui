@@ -22,10 +22,11 @@
               {{ sku.nombreCompleto }}
             </div>
             <div class="col-12 text-muted">
-              $ {{ sku.costoVenta | number: '0.2' }}
+              $ {{ sku.costoVenta | number: '0.2' }} | {{ sku.unidad }}
             </div>
           </div>
         </h5>
+
         <p class="card-text">{{ sku.descripcion }}</p>
 
         <div class="row">
@@ -46,7 +47,7 @@
           <a
             *ngIf="soloSeleccionable"
             codice-title="Seleccionar este item"
-            class="btn btn-sucess m-1"
+            class="btn btn-outline-success m-1"
             href="javascript:void(0)"
             role="button"
             (click)="skuSeleccionado.emit(sku)"

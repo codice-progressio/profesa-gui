@@ -4,7 +4,7 @@
       <div class="card-body">
         <form [formGroup]="formulario">
           <div class="row">
-            <div class="col-12">
+            <div class="col-12 d-flex justify-content-between">
               <h3>
                 <ng-container *ngIf="pedido.contacto"
                   >{{ pedido.contacto?.nombre }}
@@ -19,7 +19,10 @@
                   role="button"
                   ><i class="fas fa-plus"></i
                 ></a>
+                <b class="pull-right">$ {{ total() | number: '1.2' }}</b>
               </h3>
+            </div>
+            <div class="col-12">
               <hr />
             </div>
 
@@ -30,16 +33,15 @@
             -->
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <textarea
+                <input
                   [ngClass]="{
                     'is-invalid': vs.invalid(f('observaciones')),
                     'is-valid': vs.valid(f('observaciones'))
                   }"
-                  class="form-control"
+                  class="form-control input-sm"
                   formControlName="observaciones"
-                  cols="15"
-                  rows="5"
-                ></textarea>
+                  type="text"
+                />
                 <small id="helpId" class="form-text text-muted"
                   >Observaciones</small
                 >
@@ -68,13 +70,22 @@
                 *ngFor="let dummy of fa('articulos').controls; let i = index"
               >
                 <ng-container [formGroupName]="i">
-                  <input type="text" formControlName="sku" />
-
                   <div class="col-12">
-                    <h5>
-                      <b> <i class="fas fa-arrow-right"></i> </b
-                      >{{ articulosSeleccionados[i]?.nombreCompleto }}
-                    </h5>
+                    <h4>
+                      <b
+                        >{{ i + 1 | number: '3.0' }}
+                        <i class="fas fa-arrow-right"></i>
+                      </b>
+                      {{ articulosSeleccionados[i]?.nombreCompleto }}
+                      <a
+                        (click)="eliminar(i)"
+                        class="btn btn-danger"
+                        href="javascript:void(0)"
+                        role="button"
+                      >
+                        <i class="fas fa-times"></i
+                      ></a>
+                    </h4>
                   </div>
 
                   <!-- 
@@ -82,7 +93,7 @@
            cantidad
           =====================================
           -->
-                  <div class="col-12">
+                  <div class="col-12 col-md-3">
                     <div class="form-group">
                       <input
                         [ngClass]="{
@@ -90,15 +101,17 @@
                           'is-valid': vs.valid(dummy.get('cantidad'))
                         }"
                         type="text"
-                        class="form-control"
+                        class="form-control input-sm"
                         formControlName="cantidad"
+                        mask="separator.2"
+                        thousandSeparator=","
+                        autofocus
                       />
                       <small id="helpId" class="form-text text-muted"
-                        >Descripcion del input</small
+                        >Cantidad</small
                       >
                       <app-validacion-inputs
                         [campo]="dummy.get('cantidad')"
-                        [directo]="true"
                       ></app-validacion-inputs>
                     </div>
                   </div>
@@ -113,25 +126,23 @@
            observaciones
           =====================================
           -->
-                  <div class="col-12">
+                  <div class="col-12 col-md-3">
                     <div class="form-group">
-                      <textarea
+                      <input
                         [ngClass]="{
                           'is-invalid': vs.invalid(dummy.get('observaciones')),
                           'is-valid': vs.valid(dummy.get('observaciones'))
                         }"
-                        class="form-control"
+                        class="form-control input-sm"
                         formControlName="observaciones"
-                        cols="10"
-                        rows="3"
-                      ></textarea>
+                        type="text"
+                      />
 
                       <small id="helpId" class="form-text text-muted"
                         >Observaciones</small
                       >
                       <app-validacion-inputs
                         [campo]="dummy.get('observaciones')"
-                        [directo]="true"
                       ></app-validacion-inputs>
                     </div>
                   </div>
@@ -140,6 +151,33 @@
            END observaciones
           =====================================
           -->
+                  <div class="col-12 col-md-3">
+                    <div class="form-group">
+                      <h6 class="text-right">
+                        $
+                        {{
+                          articulosSeleccionados[i]?.costoVenta | number: '0.2'
+                        }}
+                      </h6>
+                      <small id="helpId" class="form-text text-muted"
+                        >Costo unitario</small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-3">
+                    <div class="form-group">
+                      <h6 class="text-right">
+                        $
+                        {{
+                          articulosSeleccionados[i]?.costoVenta *
+                            dummy.get('cantidad').value | number: '0.2'
+                        }}
+                      </h6>
+                      <small id="helpId" class="form-text text-muted"
+                        >Importe</small
+                      >
+                    </div>
+                  </div>
 
                   <div class="col-12">
                     <hr />
@@ -175,6 +213,10 @@
               >
                 <i class="fas fa-save"></i> Guardar
               </a>
+
+              <h3 class="pull-right">
+                <b>$ {{ total() | number: '1.2' }}</b>
+              </h3>
             </div>
           </div>
         </form>
@@ -199,7 +241,6 @@
     </div>
 
     <div class="col-12">
-
       <div class="list-group">
         <a
           *ngFor="let contacto of contactos"
@@ -222,27 +263,18 @@
 
     <div class="col-12">
       <codice-buscador
-        (termino)="buscarSku($event)"
+        (termino)="buscarSku($event); terminoSku = $event"
         (escucharCarga)="estaCargandoBuscadorSku = $event"
       >
       </codice-buscador>
     </div>
 
     <div class="col-12">
-      <div class="list-group">
-        <a
-          *ngFor="let item of skus"
-          (click)="seleccionarSku(item)"
-          href="javascript:void(0)"
-          class="list-group-item list-group-item-action"
-        >
-          {{ item.nombreCompleto }}
-          <hr />
-          <small class="text-muted"
-            >Existencia: <b>{{ item.existencia }}</b></small
-          >
-        </a>
-      </div>
+      <app-sku-lista
+        [termino]="terminoSku"
+        [soloSeleccionable]="true"
+        (skuSeleccionado)="seleccionarSku($event)"
+      ></app-sku-lista>
     </div>
   </div>
 </codice-modal>
