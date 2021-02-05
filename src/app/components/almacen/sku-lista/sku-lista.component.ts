@@ -15,6 +15,9 @@ import { UtilidadesService } from '../../../services/utilidades.service'
 export class SkuListaComponent implements OnInit {
   @Output() estaCargando = new EventEmitter<boolean>()
 
+  @Input() soloSeleccionable = false
+  @Output() skuSeleccionado = new EventEmitter<SKU>() 
+
   @Input()
   public set termino(value: string) {
     // Cuando recibimos el termino disparamos la

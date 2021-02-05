@@ -16,7 +16,16 @@
         <img [codice-src]="sku?.imagenes[0]?.path" class="card-img-top" />
       </a>
       <div class="card-body">
-        <h5 class="card-title">{{ sku.nombreCompleto }}</h5>
+        <h5 class="card-title">
+          <div class="row">
+            <div class="col-12">
+              {{ sku.nombreCompleto }}
+            </div>
+            <div class="col-12 text-muted">
+              $ {{ sku.costoVenta | number: '0.2' }}
+            </div>
+          </div>
+        </h5>
         <p class="card-text">{{ sku.descripcion }}</p>
 
         <div class="row">
@@ -35,71 +44,87 @@
 
         <div class="w-100 d-flex justify-content-center align-items-center">
           <a
-            codice-title="Modificar este item"
-            class="btn btn-primary m-1"
+            *ngIf="soloSeleccionable"
+            codice-title="Seleccionar este item"
+            class="btn btn-sucess m-1"
             href="javascript:void(0)"
             role="button"
-            (click)="modificar(sku)"
+            (click)="skuSeleccionado.emit(sku)"
           >
-            <i class="fas fa-edit"></i
-          ></a>
-          <a
-            (click)="gestionarImagenes(sku)"
-            codice-title="Agregar o quitar imagenes"
-            class="btn btn-primary m-1"
-            href="javascript:void(0)"
-            role="button"
-          >
-            <i class="fas fa-camera-retro"></i
+            <i class="fas fa-check-double"></i
           ></a>
 
-          <a
-            codice-title="Ver detalle de item"
-            (click)="verDetalle(sku)"
-            class="btn btn-info m-1"
-            href="javascript:void(0)"
-            role="button"
-          >
-            <i class="fas fa-search-plus"></i
-          ></a>
+          <ng-container *ngIf="!soloSeleccionable">
+            <a
+              codice-title="Modificar este item"
+              class="btn btn-primary m-1"
+              href="javascript:void(0)"
+              role="button"
+              (click)="modificar(sku)"
+            >
+              <i class="fas fa-edit"></i
+            ></a>
+            <a
+              (click)="gestionarImagenes(sku)"
+              codice-title="Agregar o quitar imagenes"
+              class="btn btn-primary m-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-camera-retro"></i
+            ></a>
 
-          <a
-            (click)="abrirModal(sku, idModEtiquetas)"
-            codice-title="Editar etiquetas de este item"
-            class="btn btn-outline-secondary m-1"
-            href="javascript:void(0)"
-            role="button"
-          >
-            <i class="fas fa-tags"></i>
-          </a>
+            <a
+              codice-title="Ver detalle de item"
+              (click)="verDetalle(sku)"
+              class="btn btn-info m-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-search-plus"></i
+            ></a>
+
+            <a
+              (click)="abrirModal(sku, idModEtiquetas)"
+              codice-title="Editar etiquetas de este item"
+              class="btn btn-outline-secondary m-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-tags"></i>
+            </a>
+          </ng-container>
         </div>
-        <hr />
-        <div class="w-100 d-flex justify-content-center align-items-center">
-          <a
-            codice-title="Modificar stock"
-            href="javascript:void(0)"
-            (click)="abrirModal(sku, idModStock)"
-            class="btn btn-outline-primary mr-1"
-          >
-            <i class="fas fa-boxes"></i
-          ></a>
-          <a
-            codice-title="Agregar una entrada manual"
-            href="javascript:void(0)"
-            (click)="abrirModal(sku, idModEntrada)"
-            class="btn btn-outline-success mr-1"
-          >
-            <i class="fas fa-plus"></i
-          ></a>
-          <a
-            codice-title="Agregar una salida manual"
-            href="javascript:void(0)"
-            (click)="abrirModal(sku, idModSalidas)"
-            class="btn btn-outline-warning"
-          >
-            <i class="fas fa-minus"></i
-          ></a>
-        </div>
+
+        <ng-container *ngIf="!soloSeleccionable">
+          <hr />
+          <div class="w-100 d-flex justify-content-center align-items-center">
+            <a
+              codice-title="Modificar stock"
+              href="javascript:void(0)"
+              (click)="abrirModal(sku, idModStock)"
+              class="btn btn-outline-primary mr-1"
+            >
+              <i class="fas fa-boxes"></i
+            ></a>
+            <a
+              codice-title="Agregar una entrada manual"
+              href="javascript:void(0)"
+              (click)="abrirModal(sku, idModEntrada)"
+              class="btn btn-outline-success mr-1"
+            >
+              <i class="fas fa-plus"></i
+            ></a>
+            <a
+              codice-title="Agregar una salida manual"
+              href="javascript:void(0)"
+              (click)="abrirModal(sku, idModSalidas)"
+              class="btn btn-outline-warning"
+            >
+              <i class="fas fa-minus"></i
+            ></a>
+          </div>
+        </ng-container>
       </div>
       <div class="card-footer">
         <small class="text-muted">

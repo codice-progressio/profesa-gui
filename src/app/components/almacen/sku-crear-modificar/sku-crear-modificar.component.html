@@ -191,6 +191,39 @@
  END puedoVenderlo
 =====================================
 -->
+
+  <!-- 
+  =====================================
+   costoVenta
+  =====================================
+  -->
+  <div class='col-12 col-md-3 col-lg-2'>
+    <div class="form-group">
+    <input
+      [ngClass]="{
+        'is-invalid': vs.invalid(f('costoVenta')),
+        'is-valid': vs.valid(f('costoVenta'))
+      }"
+      type="text"
+      class="form-control"
+      formControlName="costoVenta"
+      mask="separator.2"
+      thousandSeparator=","
+      prefix="$ "
+    />
+    <small id="helpId" class="form-text text-muted">Costo venta</small>
+    <app-validacion-inputs
+      [campo]="f('costoVenta')"
+      
+    ></app-validacion-inputs>
+  </div>
+  </div>
+  <!-- 
+  =====================================
+   END costoVenta
+  =====================================
+  -->
+
     </div>
 
     <ng-container *ngIf="!estaEditando">

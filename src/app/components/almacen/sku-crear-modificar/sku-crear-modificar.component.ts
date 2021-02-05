@@ -77,7 +77,9 @@ export class SkuCrearModificarComponent implements OnInit {
         sku.etiquetas?.length > 0
           ? sku.etiquetas.map(x => new FormControl(x))
           : []
-      )
+      ),
+
+      costoVenta: new FormControl(sku.costoVenta ?? 0, [Validators.min(0)])
     })
 
     this.cargando = false
