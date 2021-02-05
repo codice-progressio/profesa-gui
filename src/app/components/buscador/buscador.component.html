@@ -1,6 +1,6 @@
 <div class="form-row align-items-center">
   <div class="col-auto">
-    <label class="sr-only" for="inputBuscador">Buscar por término</label>
+    <label class="sr-only" [for]="id">Buscar por término</label>
     <div class="input-group mb-2">
       <div class="input-group-prepend">
         <div class="input-group-text">
@@ -12,7 +12,7 @@
         [formControl]="input"
         type="text"
         class="form-control"
-        id="inputBuscador"
+        [id]="id"
         placeholder="Buscar por término"
       />
     </div>

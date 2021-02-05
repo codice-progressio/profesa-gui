@@ -22,6 +22,8 @@ export class BuscadorComponent implements OnInit {
     return this._cargando
   }
 
+  id = Math.round(Math.random()*100000)
+
   public set cargando(value) {
     // Cuando se pone en true y término está vacio, ponemos un contador.
     // Si el contador llega al tiempo definido, quiere
