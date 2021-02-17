@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ngcc",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --prod --aot --outputHashing=all"
   },
   "private": true,
   "dependencies": {
