@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { SKU } from '../../../models/sku.model'
 import { SkuService } from '../../../services/sku/sku.service'
 import { SkuLote } from '../../../models/lote.model'
+import { ExcelService } from '../../../services/excel.service'
+import { UtilidadesService } from '../../../services/utilidades/utilidades.service'
 
 @Component({
   selector: 'app-sku-lotes',
@@ -40,7 +42,11 @@ export class SkuLotesComponent implements OnInit {
 
   @Output('lote') lote = new EventEmitter<SkuLote>()
 
-  constructor(private skuService: SkuService) {}
+  constructor(
+    private utilidadesService: UtilidadesService,
+    private skuService: SkuService,
+    private excelService: ExcelService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -78,5 +84,19 @@ export class SkuLotesComponent implements OnInit {
     return this.sku.lotes.reduce((a, b) => {
       return (a += b.existencia > 0 ? 1 : 0)
     }, 0)
+  }
+
+  cargandoExcel = false
+  exportarMovimientosExcel() {
+    if (this.cargandoExcel) return
+    this.cargandoExcel = true
+
+    this.skuService.lote.obtenerMovimientos(this.sku._id).subscribe(
+      r => {
+        this.cargandoExcel = false
+        this.excelService.exportAsExcelFile(r, this.sku.nombreCompleto)
+      },
+      () => (this.cargandoExcel = false)
+    )
   }
 }

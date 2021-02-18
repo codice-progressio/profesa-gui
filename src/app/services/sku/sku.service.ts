@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 import { SKU } from '../../models/sku.model'
-import { Imagen } from "../../models/Imagen"
+import { Imagen } from '../../models/Imagen'
 import { URL_BASE } from '../../config/config'
 import { catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs'
@@ -143,6 +143,20 @@ class LoteService {
         this.base.concat(`/${id}?sinExistencia=${mostrarSinExistencia}`)
       )
       .pipe(catchError(x => throwError(x)))
+  }
+  /**
+   *Obtiene todos los movimientos del sku
+   *
+   * @param {string} id El id del lote.
+   * @returns
+   * @memberof LoteService
+   */
+  obtenerMovimientos(id: string, mostrarSinExistencia = false) {
+    return this.root.http.get<any[]>(
+      this.base.concat(
+        `/movimientos/${id}?sinExistencia=${mostrarSinExistencia}`
+      )
+    )
   }
 }
 
