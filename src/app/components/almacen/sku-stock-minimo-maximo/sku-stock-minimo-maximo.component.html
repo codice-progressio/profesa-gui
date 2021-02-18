@@ -11,10 +11,12 @@
         <input
           [disabled]="cargando"
           [(ngModel)]="minimo"
-          type="number"
+          type="text"
           class="form-control"
-          aria-describedby="helpId"
           placeholder="Mínimo"
+          suffix=" {{ sku.unidad }}"
+          mask="separator.2"
+          thousandSeparator=","
         />
         <small class="form-text text-muted">Mínimo</small>
       </div>
@@ -24,12 +26,11 @@
         <input
           [disabled]="cargando"
           [(ngModel)]="maximo"
-          type="number"
+          type="text"
           class="form-control"
-          aria-describedby="helpId"
           placeholder="Máximo"
-          suffix="$"
-          mask="0000"
+          suffix=" {{ sku.unidad }}"
+          mask="separator.2"
           thousandSeparator=","
         />
         <small class="form-text text-muted">Máximo</small>
