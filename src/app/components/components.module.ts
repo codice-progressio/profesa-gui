@@ -10,8 +10,6 @@ import { ValidacionInputsComponent } from './validacion-inputs/validacion-inputs
 import { VisorDeImagenesConPaginacionComponent } from '../shared/visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 import { ImagenesGestionRapidaComponent } from './imagenes-gestion-rapida/imagenes-gestion-rapida.component'
 import { SkuImagenesComponent } from './almacen/sku-imagenes/sku-imagenes.component'
-import { ModalComponent } from './codice-modal/modal.component'
-import { BuscadorRapido } from './buscador-rapido/buscador-rapido'
 import { BuscadorComponent } from './buscador/buscador.component'
 import { SkuSalidaComponent } from './almacen/sku-salida/sku-salida.component'
 import { SkuEntradaComponent } from './almacen/sku-entrada/sku-entrada.component'
@@ -22,6 +20,7 @@ import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
 import { PedidosListaComponent } from './pedidos/pedidos-lista/pedidos-lista.component'
 import { PedidoCrearEditarDetalleComponent } from './pedidos/pedido-crear-editar-detalle/pedido-crear-editar-detalle.component'
 import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.component'
+import { ModalModule } from '@codice-progressio/modal'
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.co
     VisorDeImagenesConPaginacionComponent,
     ImagenesGestionRapidaComponent,
     SkuImagenesComponent,
-    ModalComponent,
     BuscadorComponent,
     SkuSalidaComponent,
     SkuEntradaComponent,
@@ -49,7 +47,8 @@ import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.co
     UxModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMaskModule.forChild()
+    NgxMaskModule.forChild(),
+    ModalModule
   ],
   exports: [
     SkuListaComponent,
@@ -58,7 +57,6 @@ import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.co
     ValidacionInputsComponent,
     VisorDeImagenesConPaginacionComponent,
     SkuImagenesComponent,
-    ModalComponent,
     BuscadorComponent,
     ImagenesGestionRapidaComponent,
     PedidosListaComponent,

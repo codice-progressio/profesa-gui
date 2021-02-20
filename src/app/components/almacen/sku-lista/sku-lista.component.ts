@@ -3,7 +3,7 @@ import { SkuService } from '../../../services/sku/sku.service'
 import { SKU } from '../../../models/sku.model'
 import { Imagen } from '../../../models/Imagen'
 import { ActivatedRoute, Router } from '@angular/router'
-import { ModalService } from '../../codice-modal/modal.service'
+import { ModalService } from '@codice-progressio/modal'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { UtilidadesService } from '../../../services/utilidades.service'
 

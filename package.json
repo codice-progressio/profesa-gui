@@ -28,6 +28,7 @@
     "@angular/platform-browser-dynamic": "^10.0.5",
     "@angular/router": "^10.0.5",
     "@auth0/angular-jwt": "^4.0.0",
+    "@codice-progressio/modal": "^0.1.11",
     "@types/jquery": "^3.3.32",
     "@zxing/ngx-scanner": "^3.0.0",
     "angularx-qrcode": "^10.0.6",
