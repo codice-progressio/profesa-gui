@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { SKU } from '../../../models/sku.model'
 import { SkuService } from '../../../services/sku/sku.service'
+import { ParametrosService } from '../../../services/parametros.service'
+import { EtiquetaTransporte } from '../../etiquetas-editor/etiquetas-editor.component'
 
 @Component({
   selector: 'app-sku-etiquetas',
@@ -11,41 +13,48 @@ export class SkuEtiquetasComponent implements OnInit {
   @Input('sku') skuTraslado: SKU
   cargando = false
 
-  constructor(private skuService: SkuService) {}
+  etiquetas: string[] = []
 
-  ngOnInit(): void {}
+  constructor(
+    private parametrosService: ParametrosService,
+    private skuService: SkuService
+  ) {}
 
-  cargandoEtiqueta = false
-  etiquetaEliminar(sku: SKU, tag: string) {
-    return () => {
-      this.cargandoEtiqueta = true
-      this.skuService.etiqueta.eliminar(sku._id, tag).subscribe(
-        s => {
-          sku.etiquetas = sku.etiquetas.filter(x => x !== tag)
-
-          this.cargandoEtiqueta = false
-        },
-        () => (this.cargandoEtiqueta = false)
-      )
-    }
+  ngOnInit(): void {
+    this.cargarEtiquetas()
   }
 
-  etiquetaGuardar(sku: SKU, input: any) {
-    let valor = input.value.trim()
-    if (!valor) return
+  etiquetaEliminar(sku: SKU, payload: EtiquetaTransporte) {
+    payload.cargando.next(true)
+    this.skuService.etiqueta.eliminar(sku._id, payload.etiqueta).subscribe(
+      s => {
+        sku.etiquetas = sku.etiquetas.filter(x => x !== payload.etiqueta)
+        payload.cargando.next(false)
+      },
+      () => payload.cargando.next(false)
+    )
+  }
 
-    this.cargandoEtiqueta = true
-    this.skuService.etiqueta.agregar(sku._id, valor).subscribe(
+  etiquetaGuardar(sku: SKU, payload: EtiquetaTransporte) {
+    payload.cargando.next(true)
+    this.skuService.etiqueta.agregar(sku._id, payload.etiqueta).subscribe(
       s => {
         // Eliminamos de manera dierecta sobre el objeto
-        sku.etiquetas.push(valor)
-        input.value = ''
+        sku.etiquetas.push(payload.etiqueta)
+        payload.input.value = ''
         setTimeout(() => {
-          input.focus()
+          payload.input.focus()
         }, 100)
-        this.cargandoEtiqueta = false
+        payload.cargando.next(false)
+        this.cargarEtiquetas()
       },
-      () => (this.cargandoEtiqueta = false)
+      () => payload.cargando.next(false)
     )
+  }
+
+  cargarEtiquetas() {
+    this.parametrosService.etiquetas.obtenerTodo().subscribe(etiquetas => {
+      this.etiquetas = etiquetas
+    })
   }
 }

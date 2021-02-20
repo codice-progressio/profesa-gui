@@ -1,0 +1,40 @@
+<div class="col-12">
+  <div class="form-group">
+    <label for="">Agregar etiqueta</label>
+    <input
+      #inputEtiqueta
+      (keyup.enter)="etiquetaGuardar(inputEtiqueta)"
+      type="text"
+      class="form-control"
+      placeholder="Escribe la nueva etiqueta"
+      [disabled]="cargando"
+      list="listaEtiquetas"
+    />
+
+    <datalist id="listaEtiquetas">
+      <ng-container *ngIf="!cargando">
+        <option *ngFor="let etiqueta of etiquetas" [value]="etiqueta"></option>
+      </ng-container>
+    </datalist>
+
+    <small id="helpId" class="form-text text-muted"
+      >Presiona enter para guardar
+      <i *ngIf="cargando" class="fas fa-sync fa-spin-fast"></i
+    ></small>
+  </div>
+</div>
+
+<div class="col-12">
+  <span
+    *ngFor="let tag of etiquetasExistentes"
+    [codice-tag]="tag"
+    [codice-tag-click]="etiquetaEliminar(tag)"
+    [codice-tag-click-icon-class]="[
+      'fas',
+      'fa-times-circle',
+      'text-danger',
+      'mr-1'
+    ]"
+  >
+  </span>
+</div>

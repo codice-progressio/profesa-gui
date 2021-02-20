@@ -28,7 +28,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor'
-import { ToastrModule } from 'ngx-toastr'
+import { ToastrModule } from 'ngx-toastr';
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -54,7 +54,7 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     PagesComponent,
-    ImperiumSicComponent
+    ImperiumSicComponent,
   ],
 
   imports: [
