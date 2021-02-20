@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SkuStockMinimoMaximoComponent } from './sku-stock-minimo-maximo.component';
 
@@ -6,7 +6,7 @@ describe('SkuStockMinimoMaximoComponent', () => {
   let component: SkuStockMinimoMaximoComponent;
   let fixture: ComponentFixture<SkuStockMinimoMaximoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SkuStockMinimoMaximoComponent ]
     })
