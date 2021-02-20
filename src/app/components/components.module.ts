@@ -61,7 +61,8 @@ import { ModalModule } from '@codice-progressio/modal'
     ImagenesGestionRapidaComponent,
     PedidosListaComponent,
     PedidoCrearEditarDetalleComponent,
-    EtiquetasEditorComponent
+    EtiquetasEditorComponent,
+    ModalComponent
   ]
 })
 export class ComponentsModule {}
