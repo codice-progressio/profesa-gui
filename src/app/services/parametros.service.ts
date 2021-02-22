@@ -11,7 +11,7 @@ export class ParametrosService {
   constructor(public http: HttpClient) {
     this.etiquetas = new EtiquetasService(this)
   }
-  
+
   base = URL_BASE('parametros')
 }
 
@@ -21,6 +21,12 @@ class EtiquetasService {
   base = this.root.base.concat('/etiquetas')
 
   obtenerTodo() {
-    return this.root.http.get<string[]>(this.base)
+    return this.root.http.get<string[]>(this.base.concat())
+  }
+
+  eliminar(etiqueta: string) {
+    return this.root.http.put<string>(this.base.concat('/eliminar'), {
+      etiqueta
+    })
   }
 }

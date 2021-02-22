@@ -19,6 +19,7 @@ export class EtiquetasEditorComponent implements OnInit {
 
   cargando = false
   @Input('existentes') etiquetasExistentes: string[] = []
+  @Input() soloEtiquetas = false
   etiquetas: string[] = []
 
   escuchaCargando = new BehaviorSubject<boolean>(false)
