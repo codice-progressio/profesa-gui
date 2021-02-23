@@ -10,8 +10,9 @@ import { URLQuery } from './utilidades/URLQuery'
   providedIn: 'root'
 })
 export class ProveedorService {
+  constructor(public http: HttpClient) {}
   base = URL_BASE('proveedor')
-  constructor(private http: HttpClient) {}
+  etiquetas = new ProveedorEtiquetas(this)
 
   crear(proveedor: Proveedor) {
     return this.http
@@ -52,5 +53,29 @@ export class ProveedorService {
     return this.http
       .get(this.base.concat(`/relacionados/${id}`))
       .pipe(catchError(x => throwError(x)))
+  }
+}
+
+export class ProveedorEtiquetas {
+  constructor(private root: ProveedorService) {}
+  base = this.root.base.concat('/etiquetas')
+
+  agregar(_id: string, etiqueta: string) {
+    return this.root.http.put<string[]>(this.base.concat('/agregar'), {
+      _id,
+      etiqueta
+    })
+  }
+
+  eliminar(_id: string, etiqueta: string) {
+    return this.root.http.put(this.base.concat('/eliminar'), { _id, etiqueta })
+  }
+
+  filtrarPorEtiquetas(etiquetas: string[]) {
+    return this.root.http.get<Proveedor[]>(
+      this.base
+        .concat('/buscar/etiquetas?etiquetas=')
+        .concat(encodeURIComponent(etiquetas.join(',')))
+    )
   }
 }

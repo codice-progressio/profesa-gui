@@ -8,6 +8,7 @@ import { DirectivesModule } from 'src/app/directives/directives.module'
 import { UxModule } from 'src/app/ux/ux.module'
 import { ProveedorCrearEditarComponent } from './proveedor-crear-editar/proveedor-crear-editar.component'
 import { ReactiveFormsModule } from '@angular/forms'
+import { ModalModule } from '@codice-progressio/modal'
 
 const routes: Routes = [
   { path: '', component: ProveedorComponent, data: { titulo: 'Contactos' } },
@@ -40,7 +41,9 @@ const routes: Routes = [
     DirectivesModule,
     ComponentsModule,
     UxModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule
+
   ]
 })
 export class ProveedorModule {}
