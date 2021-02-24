@@ -1,0 +1,111 @@
+<div class="row contenedor-detalle">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <ng-container *ngIf="false; else botones"></ng-container>
+          <ng-template #botones>
+            <div class="col-12">
+              <a
+                *ngIf="detalle"
+                href="javascript:void(0)"
+                (click)="editar()"
+                class="btn btn-primary"
+                role="button"
+                ><i *ngIf="!cargando; else spin" class="fas fa-edit"></i
+              ></a>
+              <a
+                (click)="submit(formulario.value, formulario.invalid)"
+                *ngIf="editando"
+                class="btn btn-success"
+                role="button"
+                ><i *ngIf="!cargando; else spin" class="fas fa-save"></i>
+                Guardar</a
+              >
+
+              <ng-template #spin>
+                <i class="fas fa-sync fa-spin-fast"></i>
+              </ng-template>
+            </div>
+          </ng-template>
+          <div class="col-12">
+            <hr />
+          </div>
+
+          <div class="col-12">
+            <form *ngIf="formulario" [formGroup]="formulario">
+              <div class="row">
+                <!-- 
+                    =====================================
+                     nombre
+                    =====================================
+                    -->
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <input
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('nombre')),
+                        'is-valid': vs.valid(f('nombre'))
+                      }"
+                      type="text"
+                      class="form-control"
+                      formControlName="nombre"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Nombre de la ruta</small
+                    >
+                    <app-validacion-inputs
+                      [campo]="f('nombre')"
+                    ></app-validacion-inputs>
+                  </div>
+                </div>
+                <!-- 
+                    =====================================
+                     END nombre
+                    =====================================
+                    -->
+
+                <!-- 
+                    =====================================
+                     descripcion
+                    =====================================
+                    -->
+                <div class="col-12 col-md-6 col-lg-auto">
+                  <div class="form-group">
+                    <textarea
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('descripcion')),
+                        'is-valid': vs.valid(f('descripcion'))
+                      }"
+                      class="form-control"
+                      formControlName="descripcion"
+                      cols="30"
+                      rows="10"
+                    ></textarea>
+                    <small id="helpId" class="form-text text-muted"
+                      >descripcion</small
+                    >
+                    <app-validacion-inputs
+                      [campo]="f('descripcion')"
+                    ></app-validacion-inputs>
+                  </div>
+                </div>
+                <!-- 
+                    =====================================
+                     END descripcion
+                    =====================================
+                    -->
+              </div>
+            </form>
+          </div>
+
+          <div class="col-12">
+            <hr />
+          </div>
+
+          <ng-container *ngIf="false; else botones"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
