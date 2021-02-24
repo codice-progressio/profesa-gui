@@ -8,10 +8,22 @@ import { ComponentsModule } from '../../../components/components.module'
 import { ReactiveFormsModule } from '@angular/forms'
 
 const routes: Routes = [
-  { path: '', component: RutasComponent },
-  { path: 'crear', component: RutaCrearEditarDetalleComponent },
-  { path: 'editar/:nombre/:id', component: RutaCrearEditarDetalleComponent },
-  { path: 'detalle/:nombre/:id', component: RutaCrearEditarDetalleComponent }
+  { path: '', component: RutasComponent, data: { titulo: 'Rutas existentes' } },
+  {
+    path: 'crear',
+    component: RutaCrearEditarDetalleComponent,
+    data: { titulo: 'Crear ruta' }
+  },
+  {
+    path: 'editar/:nombre/:id',
+    component: RutaCrearEditarDetalleComponent,
+    data: { titulo: 'Editar ruta' }
+  },
+  {
+    path: 'detalle/:nombre/:id',
+    component: RutaCrearEditarDetalleComponent,
+    data: { titulo: 'Detalle de ruta' }
+  }
 ]
 
 @NgModule({
