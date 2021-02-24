@@ -1,3 +1,4 @@
+import { RutaDeEntrega } from './rutaDeEntrega.model'
 export interface Proveedor {
   _id: string
   nombre: string
@@ -12,8 +13,9 @@ export interface Proveedor {
   // al eliminar todos los datos relacionados con el proveedor.
   eliminado: boolean
   esProveedor: boolean
-  esCliente: boolean,
+  esCliente: boolean
   etiquetas: string[]
+  rutas: RutaDeEntrega[]
 }
 
 export interface ProveedorDomicilio {
