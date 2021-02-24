@@ -112,7 +112,6 @@ transform: translateX(-50%);
     display: inline !important;
     position: absolute !important;
   }
- 
 }
 
 hr {
@@ -343,9 +342,7 @@ tr.repetir-encabezado:hover {
   background-color: white !important;
 }
 
-
-
-.detalle {
+.contenedor-detalle .detalle {
   border: none;
   padding-left: 0%;
   border-bottom: solid;
