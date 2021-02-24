@@ -1,4 +1,4 @@
-<div class="row  contenedor-detalle">
+<div class="row contenedor-detalle">
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
@@ -607,7 +607,7 @@
                                       }"
                                       type="text"
                                       class="form-control"
-                                      [formControl]="dummy2"
+                                      [formControl]="dummy2 | formControlParse"
                                     />
                                     <small
                                       id="helpId"
@@ -688,7 +688,7 @@
                                       }"
                                       type="text"
                                       class="form-control"
-                                      [formControl]="dummy2"
+                                      [formControl]="dummy2 | formControlParse"
                                     />
                                     <small
                                       id="helpId"
@@ -768,7 +768,7 @@
                                       }"
                                       type="text"
                                       class="form-control"
-                                      [formControl]="dummy2"
+                                      [formControl]="dummy2 | formControlParse"
                                     />
                                     <small
                                       id="helpId"
