@@ -4,7 +4,7 @@ import { Directive, ElementRef, Renderer2, Input } from '@angular/core'
   selector: '[codice-resaltar]'
 })
 export class ResaltarDirective {
-  @Input('codice-resaltar') tiempo: number = 10
+  @Input('codice-resaltar') tiempo: string = '10'
   constructor(private el: ElementRef, private renderer: Renderer2) {
     this.renderer.setStyle(this.el.nativeElement, 'opacity', 0)
 
@@ -17,7 +17,7 @@ export class ResaltarDirective {
           clearInterval(intervalo)
           this.renderer.removeStyle(this.el.nativeElement, 'opacity')
         }
-      }, this.tiempo)
+      }, parseInt(this.tiempo))
     }, 500)
   }
 }
