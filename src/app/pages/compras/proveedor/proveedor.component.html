@@ -41,83 +41,80 @@
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body table-responsive">
-        <table class="table table-striped table-inverse">
-          <thead class="thead-inverse">
-            <tr>
-              <th></th>
-              <th></th>
-              <th>Entidad</th>
-              <th>Tipo Contacto</th>
-              <th>Encargado</th>
-              <th>correo</th>
-              <th>Etiquetas</th>
+        <div *ngFor="let contacto of contactos" class="row">
+          <div class="col-12 col-md-4 mt-1">
+            <a
+              (click)="detalle(contacto)"
+              class="btn btn-info mr-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-search"></i
+            ></a>
 
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let contacto of contactos">
-              <td>
-                <a
-                  (click)="detalle(contacto)"
-                  class="btn btn-info ml-1"
-                  href="javascript:void(0)"
-                  role="button"
-                >
-                  <i class="fas fa-search"></i
-                ></a>
-              </td>
-              <td>
-                <a
-                  (click)="editar(contacto)"
-                  class="btn btn-primary"
-                  href="javascript:void(0)"
-                  role="button"
-                >
-                  <i class="fas fa-edit"></i
-                ></a>
-              </td>
-              <td>
-                <a
-                  (click)="abrirModalEtiqueta(contacto)"
-                  class="btn btn-outline-secondary"
-                  href="javascript:void(0)"
-                  role="button"
-                >
-                  <i class="fas fa-tag"></i
-                ></a>
-              </td>
-              <td>{{ contacto.nombre }}</td>
-              <td>
-                {{ contacto.esCliente ? 'Cliente ' : '' }}
-                {{ contacto.esProveedor ? 'contacto ' : '' }}
-              </td>
-              <td>{{ obtenerPrimerContacto(contacto)?.nombre }}</td>
-              <td>{{ obtenerPrimerContacto(contacto)?.correo[0] }}</td>
-              <td>
-                <span
-                  *ngFor="let etiqueta of contacto.etiquetas; let i = index"
-                  [codice-tag]="etiqueta"
-                  [codice-tag-click]="filtrarPorEtiquetas(etiqueta)"
-                  [codice-tag-click-icon-class]="
-                    obtenerIconoDeEtiqueta(etiqueta)
-                  "
-                >
-                </span>
-              </td>
-              <td>
-                <a
-                  (click)="eliminar(contacto)"
-                  class="btn btn-danger"
-                  href="javascript:void(0)"
-                  role="button"
-                >
-                  <i class="fas fa-times"></i
-                ></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <a
+              (click)="editar(contacto)"
+              class="btn btn-primary mr-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-edit"></i
+            ></a>
+
+            <a
+              (click)="eliminar(contacto)"
+              class="btn btn-danger mr-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-times"></i
+            ></a>
+
+            <a
+              (click)="abrirModalEtiqueta(contacto)"
+              class="btn btn-outline-secondary mr-1"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-tag"></i
+            ></a>
+          </div>
+
+          <div class="col-12 col-md-4 mt-1">
+            {{ contacto.nombre }}
+
+            <br />
+            <small class="text-muted font-10">Nombre</small>
+          </div>
+          <div class="col-12 col-md-4 mt-1">
+            {{ contacto.esCliente ? 'Cliente ' : '' }}
+            {{ contacto.esProveedor ? 'contacto ' : '' }}
+            <br />
+            <small class="text-muted font-10">Tipo contacto</small>
+          </div>
+
+          <div class="col-12 col-md-4 mt-1">
+            {{ obtenerPrimerContacto(contacto)?.nombre }} <br />
+            <small class="text-muted font-10">Enlace</small>
+          </div>
+          <div class="col-12 col-md-4 mt-1">
+            {{ obtenerPrimerContacto(contacto)?.correo[0] }} <br />
+            <small class="text-muted font-10">Correo enlace</small>
+          </div>
+          <div class="col-12 col-md-4 mt-1">
+            <span
+              *ngFor="let etiqueta of contacto.etiquetas; let i = index"
+              [codice-tag]="etiqueta"
+              [codice-tag-click]="filtrarPorEtiquetas(etiqueta)"
+              [codice-tag-click-icon-class]="obtenerIconoDeEtiqueta(etiqueta)"
+            >
+            </span>
+            <br />
+            <small class="text-muted font-10">Etiquetas</small>
+          </div>
+
+          <div class="col-12"><hr /></div>
+        </div>
       </div>
     </div>
   </div>
