@@ -9,6 +9,7 @@ import { UxModule } from 'src/app/ux/ux.module'
 import { ProveedorCrearEditarComponent } from './proveedor-crear-editar/proveedor-crear-editar.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ModalModule } from '@codice-progressio/modal'
+import { PipesModule } from '../../../pipes/pipes.module'
 
 const routes: Routes = [
   { path: '', component: ProveedorComponent, data: { titulo: 'Contactos' } },
@@ -42,7 +43,8 @@ const routes: Routes = [
     ComponentsModule,
     UxModule,
     ReactiveFormsModule,
-    ModalModule
+    ModalModule,
+    PipesModule
 
   ]
 })
