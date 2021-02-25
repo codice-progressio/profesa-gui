@@ -5,7 +5,7 @@ import { Directive, ElementRef, Input, Renderer2, OnInit } from '@angular/core'
 })
 export class TagDirective implements OnInit {
   @Input('codice-tag') texto: string
-  @Input('codice-tag-click') funcion: (event: any) => boolean | void
+  @Input('codice-tag-click') funcion: (event: any) =>  void
   @Input('codice-tag-click-class') claseBtn: string[] = ['pointer']
   @Input('codice-tag-click-icon-class') claseIcon: string[] = []
 
@@ -17,7 +17,7 @@ export class TagDirective implements OnInit {
     }, 100)
   }
 
-  construirEtiqueta(eti: string, funcion: (event: any) => boolean | void) {
+  construirEtiqueta(eti: string, funcion: (event: any) =>  void) {
     let estaEtiqueta = this.el.nativeElement
 
     if (funcion) {

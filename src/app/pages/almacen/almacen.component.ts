@@ -27,7 +27,7 @@ export class AlmacenComponent implements OnInit {
   ngOnInit(): void {}
 
   eliminarEtiqueta(tag: string) {
-    return () =>
+    return (event: any) =>
       (this.etiquetasFiltrandose = this.etiquetasFiltrandose.filter(
         x => x !== tag
       ))
