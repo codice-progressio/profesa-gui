@@ -185,7 +185,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
 
   cbPermisoErr = () => (this.cargando = false)
 
-  agreagarPermiso(permiso: string) {
+  agreagarPermiso(permiso: string | any) {
     if (this.usuario.permissions.includes(permiso)) {
       this.eliminarPermiso(permiso)
       return
