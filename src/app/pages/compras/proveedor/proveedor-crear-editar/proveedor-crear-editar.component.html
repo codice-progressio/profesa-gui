@@ -962,8 +962,18 @@
           =====================================
            END Array cuentas 
           =====================================
-          --></div>
+          -->
+
+            <div class="col-12"><hr /></div>
+            <div class="col-12 col-md-6">
+              <ng-container
+                *ngIf="false; else rutasSeleccionadas"
+              ></ng-container>
+            </div>
+            <div class="col-12"><hr /></div>
+          </div>
         </form>
+
         <ng-container *ngIf="false; else guardadoTemplate"></ng-container>
       </div>
     </div>
@@ -984,7 +994,76 @@
 
         Guardar
       </button>
+
+      <a
+        *ngIf="editando"
+        (click)="abrirModalRutas(contactoSeleccionado)"
+        class="btn btn-outline-secondary ml-1"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-route"></i>
+      </a>
       <hr />
     </div>
+  </div>
+</ng-template>
+
+<codice-modal [id]="idModalRutas">
+  <div *ngIf="contactoSeleccionado && !cargandoRutas" class="row">
+    <div class="col-12">
+      <h1>Agregar etiqueta</h1>
+      <hr />
+    </div>
+    <div class="col-12 col-md-6">
+      <ng-container *ngIf="false; else rutasSeleccionadas"></ng-container>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action active"
+          >Rutas Rutas disponibles</a
+        >
+        <a
+          *ngFor="let ruta of rutas"
+          (click)="agregarEliminarRuta(ruta, contactoSeleccionado)"
+          href="javascript:void(0)"
+          class="list-group-item list-group-item-action"
+          >{{ ruta.nombre }}</a
+        >
+      </div>
+    </div>
+
+    <div class="col-12">
+      <hr />
+
+      <a
+        (click)="guardarRutas(contactoSeleccionado)"
+        class="btn btn-primary"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i *ngIf="!guardandoRutas" class="fas fa-route"></i>
+        <i *ngIf="guardandoRutas" class="fas fa-sync fa-spin-fast"></i>
+        Guardar rutas
+      </a>
+    </div>
+  </div>
+</codice-modal>
+
+<ng-template #rutasSeleccionadas>
+  <div *ngIf="contactoSeleccionado" class="list-group">
+    <a
+      href="javascript:void(0)"
+      class="list-group-item list-group-item-action active"
+      >Rutas activas</a
+    >
+    <a
+      *ngFor="let ruta of contactoSeleccionado.rutas"
+      (click)="agregarEliminarRuta(ruta, contactoSeleccionado)"
+      href="javascript:void(0)"
+      class="list-group-item list-group-item-action"
+      >{{ ruta.nombre }}</a
+    >
   </div>
 </ng-template>

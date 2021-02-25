@@ -17,6 +17,9 @@ import {
   ProveedorContacto,
   ProveedorCuenta
 } from '../../../../models/proveedor.model'
+import { RutaDeEntrega } from 'src/app/models/rutaDeEntrega.model'
+import { RutaDeEntregaService } from '../../../../services/ruta-de-entrega.service'
+import { ModalService } from '@codice-progressio/modal'
 
 @Component({
   selector: 'app-proveedor-crear-editar',
@@ -39,6 +42,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
   formulario: FormGroup
   id: string
   constructor(
+    private rutasService: RutaDeEntregaService,
+    private modalService: ModalService,
     private renderer: Renderer2,
     private notiService: ManejoDeMensajesService,
     public vs: ValidacionesService,
@@ -56,9 +61,16 @@ export class ProveedorCrearEditarComponent implements OnInit {
       this.renderer.addClass(x, 'detalle')
     })
   }
+
   esRutaDetalle() {
     let url = this.activatedRoute.snapshot['_routerState'].url
     return url.includes('detalle')
+  }
+
+  editando = false
+  esRutaEdicion() {
+    let url = this.activatedRoute.snapshot['_routerState'].url
+    return url.includes('modificar')
   }
 
   obtenerId() {
@@ -80,6 +92,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
   }
 
   crearFormulario(proveedor: Partial<Proveedor>) {
+    this.contactoSeleccionado = proveedor as Proveedor
     this.formulario = new FormGroup({
       _id: new FormControl(proveedor._id, []),
       nombre: new FormControl(proveedor.nombre, [
@@ -105,7 +118,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
       ),
 
       esProveedor: new FormControl(proveedor.esProveedor),
-      esCliente: new FormControl(proveedor.esCliente),
+      esCliente: new FormControl(proveedor.esCliente)
     })
     this.cargando = false
     if (this.esRutaDetalle()) {
@@ -113,6 +126,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
         this.activarProtocoloDetalle()
         this.esDetalle = true
       }, 50)
+    } else if (this.esRutaEdicion()) {
+      this.editando = true
     }
   }
 
@@ -212,5 +227,51 @@ export class ProveedorCrearEditarComponent implements OnInit {
 
   addCampoSimple(campo: AbstractControl) {
     this.fa(campo).push(new FormControl())
+  }
+
+  idModalRutas = Math.random() * 100000 + 'rutas'
+  cargandoRutas = false
+  rutas: RutaDeEntrega[] = []
+  contactoSeleccionado: Proveedor
+
+  abrirModalRutas(contacto: Proveedor) {
+    this.cargarRutas()
+    this.permitirModificarRuta = true
+    this.modalService.open(this.idModalRutas)
+  }
+
+  cargarRutas() {
+    this.cargandoRutas = true
+    this.rutasService.leerTodo().subscribe(
+      rutas => {
+        this.cargandoRutas = false
+        this.rutas = rutas
+      },
+      () => (this.cargandoRutas = false)
+    )
+  }
+
+  permitirModificarRuta = false
+  agregarEliminarRuta(ruta: RutaDeEntrega, contacto: Proveedor) {
+    if (!this.permitirModificarRuta) return
+    if (!contacto.rutas.find(x => x._id === ruta._id)) contacto.rutas.push(ruta)
+    else {
+      contacto.rutas = contacto.rutas.filter(x => x._id !== ruta._id)
+    }
+  }
+
+  guardandoRutas = false
+
+  guardarRutas(contacto: Proveedor) {
+    if (this.guardandoRutas) return
+    this.guardandoRutas = true
+    this.proveedorService.rutas.agregarModificar(contacto).subscribe(
+      () => {
+        this.guardandoRutas = false
+        this.permitirModificarRuta = false
+        this.modalService.close(this.idModalRutas)
+      },
+      () => (this.guardandoRutas = false)
+    )
   }
 }

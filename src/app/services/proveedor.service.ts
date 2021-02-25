@@ -13,6 +13,7 @@ export class ProveedorService {
   constructor(public http: HttpClient) {}
   base = URL_BASE('proveedor')
   etiquetas = new ProveedorEtiquetas(this)
+  rutas = new ProveedorRutas(this)
 
   crear(proveedor: Proveedor) {
     return this.http
@@ -77,5 +78,17 @@ export class ProveedorEtiquetas {
         .concat('/buscar/etiquetas?etiquetas=')
         .concat(encodeURIComponent(etiquetas.join(',')))
     )
+  }
+}
+
+export class ProveedorRutas {
+  constructor(private root: ProveedorService) {}
+  base = this.root.base.concat('/rutas')
+
+  agregarModificar(contacto: Proveedor) {
+    return this.root.http.put<string[]>(this.base.concat('/agregar'), {
+      _id: contacto._id,
+      rutas: contacto.rutas.map(x => x._id)
+    })
   }
 }
