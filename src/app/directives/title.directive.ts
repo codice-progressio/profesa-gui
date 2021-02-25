@@ -15,11 +15,11 @@ export class TitleDirective {
   @Input('codice-title') title: string = ''
 
   private _options: TitleOptions = new TitleOptions()
-  public get options(): TitleOptions {
+  public get options(): Partial<TitleOptions> {
     return this._options
   }
   @Input('codice-title-options')
-  public set options(value: TitleOptions) {
+  public set options(value: Partial<TitleOptions>) {
     let options = new TitleOptions()
 
     Object.keys(options).forEach(key => {
