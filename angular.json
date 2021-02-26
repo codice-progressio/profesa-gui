@@ -21,7 +21,15 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css", "node_modules/ngx-toastr/toastr.css"],
-            "scripts": ["node_modules/marked/lib/marked.js"]
+            "scripts": ["node_modules/marked/lib/marked.js"],
+            "allowedCommonJsDependencies": [
+              "@zxing/ngx-scanner",
+              "@zxing/library",
+              "angularx-qrcode",
+              "qrcode",
+              "xlsx",
+              "file-saver"
+            ]
           },
           "configurations": {
             "production": {
