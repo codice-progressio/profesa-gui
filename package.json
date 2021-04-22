@@ -27,7 +27,7 @@
     "@angular/platform-browser": "^11.2.1",
     "@angular/platform-browser-dynamic": "^11.2.1",
     "@angular/router": "^11.2.1",
-    "@auth0/angular-jwt": "^4.0.0",
+    "@auth0/angular-jwt": "^5.0.2",
     "@codice-progressio/modal": "^0.1.11",
     "@types/jquery": "^3.3.32",
     "@zxing/ngx-scanner": "^3.0.0",
