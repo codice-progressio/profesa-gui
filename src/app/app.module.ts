@@ -38,8 +38,9 @@ export function tokenGetter() {
 }
 
 export function allowedDomains(): string[] {
-  console.log({ URL_DOMINIO })
-  return [URL_DOMINIO.concat("/*")]
+  let d = [URL_DOMINIO.concat(''), 'herokuapp.com']
+  console.log(d)
+  return d
 }
 
 const appRoutes: Routes = [
@@ -86,8 +87,8 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: allowedDomains(),
-        disallowedRoutes: disallowedRoutes(),
+        // allowedDomains: allowedDomains(),
+        // disallowedRoutes: disallowedRoutes(),
         throwNoTokenError: true
       }
     })
