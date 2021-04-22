@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "start-local": "ng serve -o --ssl true --ssl-key .\\node_modules\\@codice-progressio\\easy-https\\cert\\desarrollo.key --ssl-cert .\\node_modules\\@codice-progressio\\easy-https\\cert\\desarrollo.crt",
+    "start-local": "ng serve -o --ssl true --ssl-key ./node_modules/@codice-progressio/easy-https/cert/desarrollo.key --ssl-cert ./node_modules/@codice-progressio/easy-https/cert/desarrollo.crt",
     "build": "ng build --prod --verbose",
     "test": "ng test",
     "lint": "ng lint",

@@ -39,7 +39,7 @@ export function tokenGetter() {
 
 export function allowedDomains(): string[] {
   console.log({ URL_DOMINIO })
-  return [URL_DOMINIO]
+  return [URL_DOMINIO.concat("/*")]
 }
 
 const appRoutes: Routes = [
@@ -87,7 +87,8 @@ const appRoutes: Routes = [
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: allowedDomains(),
-        disallowedRoutes: disallowedRoutes()
+        disallowedRoutes: disallowedRoutes(),
+        throwNoTokenError: true
       }
     })
   ],
