@@ -28,10 +28,18 @@ import { RouterModule, Routes } from '@angular/router'
 import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor'
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr'
 
 export function tokenGetter() {
-  return localStorage.getItem('token')
+  localStorage.getItem('token')
+  let token = localStorage.getItem('token')
+  console.log({ token })
+  return token
+}
+
+export function whitelistedDomains() {
+  console.log({ URL_DOMINIO })
+  return [URL_DOMINIO]
 }
 
 const appRoutes: Routes = [
@@ -54,21 +62,22 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     PagesComponent,
-    ImperiumSicComponent,
+    ImperiumSicComponent
   ],
 
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes, { useHash: false, relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(appRoutes, {
+      useHash: false,
+      relativeLinkResolution: 'legacy'
+    }),
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-top-right',
       enableHtml: true,
-      progressBar:true,
-      progressAnimation:"increasing",
-      
-
+      progressBar: true,
+      progressAnimation: 'increasing'
     }),
     HttpClientModule,
     NgxMaskModule.forRoot(),
@@ -77,8 +86,8 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: [URL_DOMINIO],
-        blacklistedRoutes: [URL_DOMINIO + '/login']
+        whitelistedDomains: whitelistedDomains()
+        // blacklistedRoutes: [URL_DOMINIO + '/login']
       }
     })
   ],
@@ -91,4 +100,3 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
