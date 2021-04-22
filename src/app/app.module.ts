@@ -37,7 +37,7 @@ export function tokenGetter() {
   return token
 }
 
-export function whitelistedDomains() {
+export function allowedDomains(): string[] {
   console.log({ URL_DOMINIO })
   return [URL_DOMINIO]
 }
@@ -86,8 +86,8 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: whitelistedDomains()
-        // blacklistedRoutes: [URL_DOMINIO + '/login']
+        allowedDomains: allowedDomains(),
+        disallowedRoutes: disallowedRoutes()
       }
     })
   ],
@@ -100,3 +100,10 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+function disallowedRoutes(): (string | RegExp)[] {
+  let a = [URL_DOMINIO.concat('/login')].map(x => 'https://'.concat(x))
+
+  console.log(a)
+  return a
+}
