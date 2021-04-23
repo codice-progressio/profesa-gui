@@ -38,7 +38,10 @@ export function tokenGetter() {
 }
 
 export function allowedDomains(): string[] {
-  let d = [URL_DOMINIO.concat(''), 'herokuapp.com']
+  let d = [
+    'imperium-sic-api.herokuapp.com',
+    // URL_DOMINIO.concat('')
+  ]
   console.log(d)
   return d
 }
@@ -87,9 +90,9 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        // allowedDomains: allowedDomains(),
+        allowedDomains: allowedDomains(),
         // disallowedRoutes: disallowedRoutes(),
-        throwNoTokenError: true
+        // throwNoTokenError: true
       }
     })
   ],
