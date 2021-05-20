@@ -158,7 +158,6 @@ video {
 .progress.active .progress-bar,
 .progress-bar.active {
   -webkit-animation: progress-bar-stripes 2s linear infinite;
-  -o-animation: progress-bar-stripes 2s linear infinite;
   animation: progress-bar-stripes 2s linear infinite;
 }
 
@@ -178,8 +177,6 @@ video {
   display: inline-block;
   margin-bottom: 0;
   margin-right: 20px;
-  -webkit-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
@@ -189,7 +186,6 @@ video {
   -webkit-transition: 5s all;
   animation-duration: 5s;
   animation-name: myanimation;
-  -o-transition: 5s all;
   transition: 5s all;
 }
 
@@ -292,6 +288,7 @@ video {
 }
 
 .cdk-drag {
+  cursor: -webkit-grab;
   cursor: grab;
 }
 
@@ -330,8 +327,7 @@ tr.repetir-encabezado td {
   font-weight: 500;
   /* box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.4); */
   -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
+  -webkit-user-select: none; /* Safari */ /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
