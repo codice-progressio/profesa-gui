@@ -41,12 +41,10 @@
         type="checkbox"
         class="form-check-input"
         id="recordar"
-        [checked]="emailGuardado()"
+        [(ngModel)]="recordar"
+        [ngModelOptions]="{ standalone: true }"
       />
-      <label
-        class="form-check-label text-white"
-        for="recordar"
-        (click)="recordar = !recordar"
+      <label class="form-check-label text-white" for="recordar"
         >Recordar correo</label
       >
     </div>
