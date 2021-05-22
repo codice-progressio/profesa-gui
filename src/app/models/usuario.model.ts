@@ -1,4 +1,4 @@
-import { Imagen } from "./Imagen"
+import { Imagen } from './Imagen'
 export class Usuario {
   constructor(
     public _id?: string,
@@ -7,5 +7,6 @@ export class Usuario {
     public password?: string,
     public img?: Imagen,
     public permissions: string[] = [],
+    public inhabilitado?: boolean
   ) {}
 }

@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms'
 import { Usuario } from '../models/usuario.model'
 import { DefaultsService } from '../services/configDefualts/defaults.service'
 import { UsuarioService } from '../services/usuario/usuario.service'
+import { ManejoDeMensajesService } from '../services/utilidades/manejo-de-mensajes.service'
 
 declare function init_plugins()
 declare const gapi: any
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   copyRight = new Date().getFullYear()
 
   constructor(
+    private msjService: ManejoDeMensajesService,
     public router: Router,
     public _usuarioService: UsuarioService,
     private render: Renderer2
@@ -83,6 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   recordar = true
   ingresar() {
     if (!this.password || !this.email) {
+      this.msjService.toast.warning("Debes completar las credenciales")
       this.invalido = true
       return
     }

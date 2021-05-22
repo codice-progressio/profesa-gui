@@ -85,19 +85,19 @@ export class UsuarioService {
     } else {
       localStorage.removeItem('email')
     }
-    const url = URL_SERVICIOS + '/login'
+    const url = URL_SERVICIOS + '/usuario/login'
     return this.http.post(url, { email, password }).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
         this.guardarStorage(resp.token)
-        if (!this.usuario.permissions.includes(permisosKeysConfig.login)) {
-          this.msjService.toastErrorMensaje(
+        if (this.usuario.inhabilitado) {
+          let msj =
             'El usuario esta inactivo. Si es un error reportalo con el administrador'
-          )
-          throw ''
+          this.msjService.toastErrorMensaje(msj)
+          throw msj
         }
-        return { correcto: true }
+        return resp
       })
     )
   }
@@ -107,25 +107,13 @@ export class UsuarioService {
     return this.http.get<any>(url)
   }
 
-  renuevaToken() {
-    const url = URL_SERVICIOS + `/login/renuevatoken`
-    return this.http.post(url, { token: this.token }).pipe(
-      map((resp: any) => {
-        this.token = resp.token
-        localStorage.setItem('token', this.token)
-        this.msjService.toastCorrecto('Se renovo el token')
-        // Si lo hace recive true
-        return true
-      })
-    )
-  }
-
   logout() {
     this.usuario = null
     this.token = ''
     this.menu = [null]
     localStorage.removeItem('usuario')
     localStorage.removeItem('menu')
+    localStorage.removeItem('token')
     this.router.navigate(['/login'])
   }
 
@@ -138,7 +126,7 @@ export class UsuarioService {
       this.token = localStorage.getItem('token')
       this.usuario = JSON.parse(localStorage.getItem('usuario'))
       // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
-      this.menu = JSON.parse(localStorage.getItem('menu'))
+      // this.menu = JSON.parse(localStorage.getItem('menu'))
       // this.roles = JSON.parse(localStorage.getItem('roles'));
     } else {
       this.token = ''
