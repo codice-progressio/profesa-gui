@@ -1,0 +1,106 @@
+<div class="row centrar">
+  <div class="col-12 centrar">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="text-white w-100">
+          <i class="fas fa-mail-bulk"></i>
+          Recuperar contraseña
+        </h1>
+        <hr class="border-white" />
+
+        <ng-container *ngIf="!validarCodigo; else validarCodigoTemplate">
+          <div *ngIf="!enviado" class="form-group">
+            <input
+              [(ngModel)]="email"
+              type="email"
+              class="form-control"
+              [disabled]="cargando"
+              placeholder="Escribe tu correo"
+              style="text-align: center"
+            />
+          </div>
+          <br />
+          <br />
+          <a
+            *ngIf="!enviado"
+            (click)="generarLinkRecuperarContrasena()"
+            class="btn btn-primary"
+            href="javascript:void(0)"
+            role="button"
+          >
+            <i *ngIf="cargando" class="fas fa-sync fa-spin"></i>
+            <i *ngIf="!cargando" class="fas fa-paper-plane"> </i> Enviar</a
+          >
+          <h3 *ngIf="enviado" class="text-warning">
+            Hemos enviado un correo a {{ email }} con el link para recuperar tu
+            contraseña
+          </h3>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #validarCodigoTemplate>
+  <div *ngIf="!enviado" class="form-group">
+    <input
+      [(ngModel)]="password"
+      type="password"
+      class="form-control"
+      [disabled]="cargando"
+      placeholder="Ingresa la nueva contraseña"
+      style="text-align: center"
+    />
+  </div>
+  <br />
+  <br />
+  <a
+    *ngIf="!enviado"
+    (click)="cambiarContrasena(password, codigo)"
+    class="btn btn-primary"
+    href="javascript:void(0)"
+    role="button"
+  >
+    <i *ngIf="cargando" class="fas fa-sync fa-spin"></i>
+    <i *ngIf="!cargando" class="fas fa-paper-plane"> </i> Enviar</a
+  >
+
+  <ng-container *ngIf="enviado">
+    <h3 class="w-100 text-white text-center">
+      <i
+        *ngIf="this.varEstado['comprobando']"
+        class="fas fa-2x fa-sync fa-spin text-warning"
+      ></i>
+      <i
+        *ngIf="this.varEstado['correcto']"
+        class="fas fa-2x fa-check text-success"
+      ></i>
+      <i
+        *ngIf="this.varEstado['incorrecto']"
+        class="fas fa-2x fa-times text-danger"
+      ></i>
+    </h3>
+    <h5 class="w-100 text-white">
+      <span *ngIf="this.varEstado['comprobando']"
+        >...Comprobando código...</span
+      >
+      <span *ngIf="this.varEstado['correcto']">¡Tu contraseña ha sido restablecida!</span>
+      <span *ngIf="this.varEstado['incorrecto']"
+        >¡Ups!, parece que el código no es correcto.</span
+      >
+    </h5>
+    <hr class="border-white" />
+    <br />
+    <br />
+    <br />
+
+    <a
+      (click)="regresar()"
+      class="btn btn-primary"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-arrow-left"></i> Ir al login</a
+    >
+  </ng-container>
+</ng-template>

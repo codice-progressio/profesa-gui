@@ -59,6 +59,18 @@ export class UsuarioService {
     return this.http.post(url, { nombre, password, email })
   }
 
+  generarLinkRecuperarContrasena(email: string) {
+    let url = this.base.concat(
+      `/generar-link-recuperar-password?email=${email}`
+    )
+    return this.http.get(url)
+  }
+
+  cambiarContrasena(password: string, codigo: string) {
+    let url = this.base.concat('/recuperar-password-email')
+    return this.http.post(url, { password, codigo })
+  }
+
   errFun(err) {
     this.msjService.err(err)
     return throwError(err)

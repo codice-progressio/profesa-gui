@@ -31,6 +31,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor'
 import { ToastrModule } from 'ngx-toastr'
 import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario.component'
 import { environment } from '../environments/environment'
+import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -42,6 +43,10 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'IMPERIUMsic', component: ImperiumSicComponent },
   { path: 'usuario/confirmar', component: ConfirmarUsuarioComponent },
+  {
+    path: 'usuario/recuperar-contrasena',
+    component: RecuperarContrasenaComponent
+  },
 
   {
     path: '',
@@ -60,7 +65,8 @@ const appRoutes: Routes = [
     LoginComponent,
     PagesComponent,
     ImperiumSicComponent,
-    ConfirmarUsuarioComponent
+    ConfirmarUsuarioComponent,
+    RecuperarContrasenaComponent
   ],
 
   imports: [
