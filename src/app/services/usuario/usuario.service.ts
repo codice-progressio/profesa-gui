@@ -50,6 +50,10 @@ export class UsuarioService {
     this.cargarStorage()
   }
 
+  confirmarUsuario(codigo: string) {
+    return this.http.get(this.base.concat('/confirmar'))
+  }
+
   errFun(err) {
     this.msjService.err(err)
     return throwError(err)

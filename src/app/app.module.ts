@@ -29,22 +29,19 @@ import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor'
 import { ToastrModule } from 'ngx-toastr'
+import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario.component'
+import { environment } from '../environments/environment'
 
 export function tokenGetter() {
   localStorage.getItem('token')
   let token = localStorage.getItem('token')
-  console.log({ token })
   return token
-}
-
-export function whitelistedDomains() {
-  console.log({ URL_DOMINIO })
-  return [URL_DOMINIO]
 }
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'IMPERIUMsic', component: ImperiumSicComponent },
+  { path: 'usuario/confirmar', component: ConfirmarUsuarioComponent },
 
   {
     path: '',
@@ -62,7 +59,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     PagesComponent,
-    ImperiumSicComponent
+    ImperiumSicComponent,
+    ConfirmarUsuarioComponent
   ],
 
   imports: [
@@ -86,8 +84,9 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: whitelistedDomains()
-        // blacklistedRoutes: [URL_DOMINIO + '/login']
+        allowedDomains: [environment.URL_DOMINIO]
+        // disallowedRoutes: disallowedRoutes(),
+        // throwNoTokenError: true
       }
     })
   ],
@@ -100,3 +99,10 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+function disallowedRoutes(): (string | RegExp)[] {
+  let a = [URL_DOMINIO.concat('/login')].map(x => 'https://'.concat(x))
+
+  console.log(a)
+  return a
+}

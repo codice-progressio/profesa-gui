@@ -3,9 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { version } from '../../package.json';
+import { URL_DOMINIO } from '../app/config/config'
 export const environment = {
   production: false,
-  VERSION: version
+  VERSION: version,
+  URL_DOMINIO
+
 };
 
 
