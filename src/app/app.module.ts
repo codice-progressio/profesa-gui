@@ -29,26 +29,19 @@ import { LoginGuardGuard } from './services/guards/login-guard.guard'
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor'
 import { ToastrModule } from 'ngx-toastr'
+import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario.component'
+import { environment } from '../environments/environment'
 
 export function tokenGetter() {
   localStorage.getItem('token')
   let token = localStorage.getItem('token')
-  console.log({ token })
   return token
-}
-
-export function allowedDomains(): string[] {
-  let d = [
-    'imperium-sic-api.herokuapp.com',
-    // URL_DOMINIO.concat('')
-  ]
-  console.log(d)
-  return d
 }
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'IMPERIUMsic', component: ImperiumSicComponent },
+  { path: 'usuario/confirmar', component: ConfirmarUsuarioComponent },
 
   {
     path: '',
@@ -66,7 +59,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     PagesComponent,
-    ImperiumSicComponent
+    ImperiumSicComponent,
+    ConfirmarUsuarioComponent
   ],
 
   imports: [
@@ -90,7 +84,7 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: allowedDomains(),
+        allowedDomains: [environment.URL_DOMINIO]
         // disallowedRoutes: disallowedRoutes(),
         // throwNoTokenError: true
       }
