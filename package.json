@@ -6,12 +6,11 @@
     "ng": "ng",
     "start": "node server.js",
     "start-local": "ng serve -o --ssl true --ssl-key ./node_modules/@codice-progressio/easy-https/cert/desarrollo.key --ssl-cert ./node_modules/@codice-progressio/easy-https/cert/desarrollo.crt",
-    "build": "ng build --prod --verbose",
+    "build": "ng build --prod --aot --outputHashing=all --verbose",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc",
-    "heroku-postbuild": "ng build --prod --aot --outputHashing=all"
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +26,7 @@
     "@angular/platform-browser": "^11.2.1",
     "@angular/platform-browser-dynamic": "^11.2.1",
     "@angular/router": "^11.2.1",
+    "@angular/service-worker": "^11.2.1",
     "@auth0/angular-jwt": "^5.0.2",
     "@codice-progressio/modal": "^0.1.11",
     "@types/jquery": "^3.3.32",

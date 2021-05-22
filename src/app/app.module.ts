@@ -31,7 +31,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor'
 import { ToastrModule } from 'ngx-toastr'
 import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario.component'
 import { environment } from '../environments/environment'
-import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
+import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
+import { ServiceWorkerModule } from '@angular/service-worker'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -96,6 +97,12 @@ const appRoutes: Routes = [
         // disallowedRoutes: disallowedRoutes(),
         // throwNoTokenError: true
       }
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
     })
   ],
   providers: [
