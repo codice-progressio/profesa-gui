@@ -11,7 +11,7 @@ import { ManejoDeMensajesService } from '../services/utilidades/manejo-de-mensaj
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private notiSerivce: ManejoDeMensajesService) {}
+  constructor(private msjService: ManejoDeMensajesService) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -30,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
-        this.notiSerivce.toast.error(errorMessage)
+        this.msjService.toast.error(errorMessage)
         return throwError(errorMessage)
       })
     )
