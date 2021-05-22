@@ -1,167 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow m-5">
+      <div class="card-body">
+        <h1>Instalaciones antes de uso</h1>
+        <p class="text-muted"></p>
+        <hr />
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-
-    <title>Primeros pasos</title>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-12">
-        <div class="card shadow m-5">
-          <div class="card-body">
-            <h1>Instalaciones antes de uso</h1>
-            <hr />
-
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <div class="form-group">
-                  <label for="Usuario">Usuario Administrador</label>
-                  <input
-                    [disabled]="cargando"
-                    [(ngModel)]="usuario"
-                    type="text"
-                    class="form-control"
-                    name="Usuario"
-                    id="Usuario"
-                    aria-describedby="Usuario"
-                    placeholder="Usuario administrador"
-                  />
-                  <small id="Usuario" class="form-text text-muted"
-                    >Nombre de usuario del administrador</small
-                  >
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="form-group">
-                  <label for="Correo">Correo Administrador</label>
-                  <input
-                    [disabled]="cargando"
-                    [(ngModel)]="email"
-                    type="email"
-                    class="form-control"
-                    name="Correo"
-                    id="Correo"
-                    aria-describedby="Correo"
-                    placeholder="Correo administrador"
-                  />
-                  <small id="Correo" class="form-text text-muted"
-                    >Nombre de usuario del administrador</small
-                  >
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="form-group">
-                  <label for="Password">Password Administrador</label>
-                  <input
-                    [disabled]="cargando"
-                    [(ngModel)]="password"
-                    type="password"
-                    class="form-control"
-                    name="Password"
-                    id="Password"
-                    aria-describedby="Password"
-                    placeholder="Password administrador"
-                  />
-                  <small id="Password" class="form-text text-muted"
-                    >password</small
-                  >
-                </div>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="form-group">
-                  <label for="PasswordConfirma"
-                    >PasswordConfirma Administrador</label
-                  >
-                  <input
-                    [disabled]="cargando"
-                    [(ngModel)]="passwordConfirma"
-                    type="password"
-                    class="form-control"
-                    name="PasswordConfirma"
-                    id="PasswordConfirma"
-                    aria-describedby="PasswordConfirma"
-                    placeholder="PasswordConfirma administrador"
-                  />
-                  <small id="PasswordConfirma" class="form-text text-muted"
-                    >password</small
-                  >
-                </div>
-              </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="Usuario">Administrador</label>
+              <input
+                [disabled]="cargando"
+                [(ngModel)]="nombre"
+                type="text"
+                class="form-control"
+                name="Usuario"
+                id="Usuario"
+                aria-describedby="Usuario"
+                placeholder="Usuario administrador"
+              />
+              <small id="Usuario" class="form-text text-muted"
+                >Nombre del administrador</small
+              >
             </div>
-
-            <a
-              (click)="instalar()"
-              class="btn btn-primary"
-              href="javascript:void(0)"
-              role="button"
-            >
-              <i *ngIf="cargando" class="fas fa-spin-fast fa-sync"></i>
-
-              Instalar</a
-            >
-
-            <a
-              class="btn btn-info m-l-5"
-              [routerLink]="['/login']"
-              role="button"
-            >
-              <i class="fas fa-arrow-left"></i>
-              Regresar al login</a
-            >
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="Correo">Correo</label>
+              <input
+                [disabled]="cargando"
+                [(ngModel)]="email"
+                type="email"
+                class="form-control"
+                name="Correo"
+                id="Correo"
+                aria-describedby="Correo"
+                placeholder="Correo administrador"
+              />
+              <small id="Correo" class="form-text text-muted"
+                >correo@personal.com</small
+              >
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="Password">Password</label>
+              <input
+                [disabled]="cargando"
+                [(ngModel)]="password"
+                type="password"
+                class="form-control"
+                name="Password"
+                id="Password"
+                aria-describedby="Password"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="PasswordConfirma">Confirmar password</label>
+              <input
+                [disabled]="cargando"
+                [(ngModel)]="passwordConfirma"
+                type="password"
+                class="form-control"
+                name="PasswordConfirma"
+                id="PasswordConfirma"
+                aria-describedby="PasswordConfirma"
+              />
+            </div>
           </div>
         </div>
+
+        <a
+          (click)="instalar()"
+          class="btn btn-primary"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i *ngIf="cargando" class="fas fa-spin-fast fa-sync"></i>
+
+          Instalar</a
+        >
+
+        <a class="btn btn-info m-l-5" [routerLink]="['/login']" role="button">
+          <i class="fas fa-arrow-left"></i>
+          Regresar al login</a
+        >
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="row">
-      <div class="col-12">
-        <div class="card shadow">
-          <div class="card-body">
-            <button
-              (click)="reiniciarSuperAdmin()"
-              type="button"
-              class="btn btn-primary"
-            >
-              REINICIAR SUPER ADMINISTRADOR
-            </button>
-          </div>
-        </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <button
+          (click)="reiniciarSuperAdmin()"
+          type="button"
+          class="btn btn-primary"
+        >
+          REINICIAR SUPER ADMINISTRADOR
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-    <pre class="bash">
+<pre class="bash">
 
         {{ logs | json }}
-    </pre>
-
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+    </pre
+>

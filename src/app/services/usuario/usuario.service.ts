@@ -51,7 +51,12 @@ export class UsuarioService {
   }
 
   confirmarUsuario(codigo: string) {
-    return this.http.get(this.base.concat('/confirmar'))
+    return this.http.get(this.base.concat(`/confirmar?codigo=${codigo}`))
+  }
+
+  crearAdmin(nombre: string, password: string, email) {
+    let url = this.base.concat('/crear-administrador')
+    return this.http.post(url, { nombre, password, email })
   }
 
   errFun(err) {

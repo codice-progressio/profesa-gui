@@ -6,7 +6,8 @@ import { URL_BASE } from '../config/config'
   providedIn: 'root'
 })
 export class InstalacionService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient 
+    ) {}
 
   base = URL_BASE('parametros')
 
@@ -14,11 +15,6 @@ export class InstalacionService {
     return this.http.post(this.base, null)
   }
 
-  crearAdmin(nombre: string, password: string, email) {
-    let url = this.base.concat('/super-admin/crear')
-
-    return this.http.post(url, { nombre, password, email })
-  }
 
   reiniciarSuperAdmin() {
     return this.http.put<any>(
