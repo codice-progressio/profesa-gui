@@ -55,6 +55,8 @@ const appRoutes: Routes = [
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
   },
 
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   // Página de error cuando no encuentra una ruta.
   { path: '**', component: NopagefoundComponent }
 ]
