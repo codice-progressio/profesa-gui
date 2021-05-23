@@ -44,40 +44,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.render.removeStyle(document.body, 'height')
-    this.render.removeStyle(document.body, 'display')
-    this.render.removeStyle(document.body, 'display')
-    this.render.removeStyle(document.body, '-ms-flex-align')
-    this.render.removeStyle(document.body, 'align-items')
-    this.render.removeStyle(document.body, 'padding-top')
-    this.render.removeStyle(document.body, 'padding-bottom')
-    this.render.removeStyle(document.body, 'background-image')
-
-    this.render.removeStyle(document.body, '-webkit-background-size')
-    this.render.removeStyle(document.body, '-moz-background-size')
-    this.render.removeStyle(document.body, '-o-background-size')
-    this.render.removeStyle(document.body, 'background-size')
+    this.render.removeClass(document.body, 'login-usuario')
   }
 
   aplicarEstilos() {
-    this.render.setStyle(document.body, 'height', '100%')
-    this.render.setStyle(document.body, 'display', '-ms-flexbox')
-    this.render.setStyle(document.body, 'display', 'flex')
-    this.render.setStyle(document.body, '-ms-flex-align', 'center')
-    this.render.setStyle(document.body, 'align-items', 'center')
-    this.render.setStyle(document.body, 'padding-top', '40px')
-    this.render.setStyle(document.body, 'padding-bottom', '40px')
-
-    this.render.setStyle(
-      document.body,
-      'background',
-      'url(assets/images/background/nuevo.jpg) no-repeat center center fixed'
-    )
-
-    this.render.setStyle(document.body, '-webkit-background-size', 'cover')
-    this.render.setStyle(document.body, '-moz-background-size', 'cover')
-    this.render.setStyle(document.body, '-o-background-size', 'cover')
-    this.render.setStyle(document.body, 'background-size', 'cover')
+    this.render.addClass(document.body, 'login-usuario')
   }
 
   loading = false
@@ -99,7 +70,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           // Cargamos los menus del usuario
           this._usuarioService.obtenerMenus().subscribe(
             () => {
-              this.msjService.toast.info('Menus cargados correctamente')
               this.router.navigate(['/dashboard'])
             },
             () => {

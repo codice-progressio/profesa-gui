@@ -107,6 +107,7 @@ export class UsuarioService {
     return this.http.get(url).pipe(
       map((r: any) => {
         localStorage.setItem('menu', JSON.stringify(r.menu))
+        this.menu = r.menu
         return r
       })
     )
@@ -124,6 +125,7 @@ export class UsuarioService {
     localStorage.removeItem('usuario')
     localStorage.removeItem('menu')
     localStorage.removeItem('token')
+    localStorage.removeItem('id')
     this.router.navigate(['/login'])
   }
 
