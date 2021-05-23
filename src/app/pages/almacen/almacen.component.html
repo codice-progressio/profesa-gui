@@ -12,6 +12,15 @@
             >
               <i class="fas fa-plus-circle"></i> Crear
             </a>
+            <a
+              class="btn btn-success ml-1"
+              href="javascript:void(0)"
+              role="button"
+              (click)="generarExcel(skus)"
+              title="Exportar resultados a excel"
+            >
+              <i class="fas fa-file-excel"></i>
+            </a>
           </div>
           <div class="col-12 mt-2 mt-md-0 col-md-6">
             <codice-buscador
@@ -43,6 +52,7 @@
       [etiquetasParaFiltrarse]="etiquetasFiltrandose"
       [termino]="termino"
       (estaCargando)="cargando = $event"
+      (resultados)="skus = $event"
     >
     </app-sku-lista>
   </div>

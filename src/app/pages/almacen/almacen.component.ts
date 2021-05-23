@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { SKU } from '../../models/sku.model'
 import { SkuService } from '../../services/sku/sku.service'
 import { BehaviorSubject } from 'rxjs'
+import { ExcelService } from '../../services/excel.service'
 
 @Component({
   selector: 'app-almacen',
@@ -21,8 +22,9 @@ export class AlmacenComponent implements OnInit {
   estaCargandoBuscador: BehaviorSubject<boolean>
 
   etiquetasFiltrandose: string[] = []
+  skus: SKU[] = []
 
-  constructor() {}
+  constructor(private excelService: ExcelService) {}
 
   ngOnInit(): void {}
 
@@ -31,5 +33,9 @@ export class AlmacenComponent implements OnInit {
       (this.etiquetasFiltrandose = this.etiquetasFiltrandose.filter(
         x => x !== tag
       ))
+  }
+
+  generarExcel(skus: SKU[]) {
+    this.excelService.exportAsExcelFile(skus, 'ALMACEN')
   }
 }

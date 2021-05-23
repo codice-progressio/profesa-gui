@@ -16,7 +16,7 @@ export class SkuListaComponent implements OnInit {
   @Output() estaCargando = new EventEmitter<boolean>()
 
   @Input() soloSeleccionable = false
-  @Output() skuSeleccionado = new EventEmitter<SKU>() 
+  @Output() skuSeleccionado = new EventEmitter<SKU>()
 
   @Input()
   public set termino(value: string) {
@@ -34,11 +34,19 @@ export class SkuListaComponent implements OnInit {
   }
 
   cargando = false
-  skus: SKU[] = []
+  private _skus: SKU[] = []
+  public get skus(): SKU[] {
+    return this._skus
+  }
+  public set skus(value: SKU[]) {
+    this._skus = value
+    this.resultados.emit(value)
+  }
 
   skuTraslado: SKU
 
   @Output() etiquetasFiltrandose = new EventEmitter<string[]>()
+  @Output() resultados = new EventEmitter<SKU[]>()
   @Input()
   public set etiquetasParaFiltrarse(value: string[]) {
     // Cada vez que en un componente externo modificamos
