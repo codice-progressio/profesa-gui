@@ -184,23 +184,25 @@ export class UsuarioService {
   }
 
   leerTodo() {
-    return this.http.get<Usuario[]>(this.base)
+    return this.http.get<Usuario[]>(this.base).pipe(map((r: any) => r.usuarios))
   }
 
   buscarTermino(termino: string) {
     const url = this.base.concat(`/buscar/termino/${termino}`)
-    return this.http.get<Usuario[]>(url)
+    return this.http.get<Usuario[]>(url).pipe(map((r: any) => r.usuarios))
   }
 
   buscarId(id: string) {
     const url = this.base.concat(`/buscar/id/${id}`)
-    return this.http.get<Usuario>(url)
+    return this.http.get<Usuario>(url).pipe(map((r: any) => r.usuario))
   }
 
   crear(model: Usuario) {
     let m = model as any
     delete m._id
-    return this.http.post<Usuario>(this.base, m)
+    return this.http
+      .post<Usuario>(this.base, m)
+      .pipe(map((r: any) => r.usuario))
   }
   modificar(model: Usuario) {
     return this.http.put<Usuario>(this.base, model)
