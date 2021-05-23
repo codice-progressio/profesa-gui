@@ -32,20 +32,19 @@ export class PermisosGuard implements CanActivate {
     let jUsuario = localStorage.getItem('usuario')
     //No hay un usuario, mandamos al login
     if (!jUsuario) {
-      this.msjService.toast.info('Fuiste redirijido al login por que al parecer no has iniciado sesión')
+      this.msjService.toast.info(
+        'Fuiste redirijido al login por que al parecer no has iniciado sesión'
+      )
       this.router.navigate['/login']
       return
     }
 
     let usuario = JSON.parse(jUsuario) as Usuario
     // Siendo super admin puede entrar a donde sea. s
-    if (usuario.permissions.includes('SUPER_ADMIN')) {
-      return true
-    }
+    if (usuario.permissions.includes('administrador')) return true
+
     // Si no hay permissions entonces solo el super admin puede entrar.
-    if (!permiso) {
-      permiso = 'SUPER_ADMIN'
-    }
+    if (!permiso) permiso = 'administrador'
 
     // El usuario debe contener el permiso
 
