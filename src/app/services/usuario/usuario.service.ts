@@ -102,6 +102,16 @@ export class UsuarioService {
     )
   }
 
+  obtenerMenus() {
+    let url = URL_SERVICIOS.concat('/login/obtener-menus')
+    return this.http.get(url).pipe(
+      map((r: any) => {
+        localStorage.setItem('menu', JSON.stringify(r.menu))
+        return r
+      })
+    )
+  }
+
   cargarPermisos() {
     const url = this.base.concat('/permisos')
     return this.http.get<any>(url)
@@ -123,10 +133,11 @@ export class UsuarioService {
 
   cargarStorage() {
     if (localStorage.getItem('token')) {
+      console.log('Cargando storage')
       this.token = localStorage.getItem('token')
       this.usuario = JSON.parse(localStorage.getItem('usuario'))
       // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
-      // this.menu = JSON.parse(localStorage.getItem('menu'))
+      this.menu = JSON.parse(localStorage.getItem('menu'))
       // this.roles = JSON.parse(localStorage.getItem('roles'));
     } else {
       this.token = ''

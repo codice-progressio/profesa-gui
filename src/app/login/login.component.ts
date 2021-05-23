@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   recordar = true
   ingresar() {
     if (!this.password || !this.email) {
-      this.msjService.toast.warning("Debes completar las credenciales")
+      this.msjService.toast.warning('Debes completar las credenciales')
       this.invalido = true
       return
     }
@@ -96,12 +96,22 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login(this.email, this.password, this.recordar)
       .subscribe(
         () => {
-          this.router.navigate(['/dashboard'])
+          // Cargamos los menus del usuario
+          this._usuarioService.obtenerMenus().subscribe(
+            () => {
+              this.msjService.toast.info('Menus cargados correctamente')
+              this.router.navigate(['/dashboard'])
+            },
+            () => {
+              this.msjService.toast.error(
+                'Hubo un problema obteniendo los menus. Inicia sesión de nuevo.'
+              )
+            }
+          )
         },
         err => {
           this.loading = false
           this.invalido = true
-          console.log(err)
         }
       )
   }
