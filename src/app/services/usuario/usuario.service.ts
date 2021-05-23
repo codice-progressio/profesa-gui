@@ -198,7 +198,9 @@ export class UsuarioService {
   }
 
   crear(model: Usuario) {
-    return this.http.post<Usuario>(this.base, model)
+    let m = model as any
+    delete m._id
+    return this.http.post<Usuario>(this.base, m)
   }
   modificar(model: Usuario) {
     return this.http.put<Usuario>(this.base, model)
