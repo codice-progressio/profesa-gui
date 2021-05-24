@@ -8,6 +8,7 @@ import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-
 import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte'
 import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
 import { ImagenesGestionRapidaComponent } from '../../../components/imagenes-gestion-rapida/imagenes-gestion-rapida.component'
+import { FicheroService } from '../../../services/fichero.service'
 
 @Component({
   selector: 'app-usuario-crear-editar',
@@ -17,6 +18,7 @@ import { ImagenesGestionRapidaComponent } from '../../../components/imagenes-ges
 export class UsuarioCrearEditarComponent implements OnInit {
   carganos: boolean
   constructor(
+    private ficheroService: FicheroService,
     public vs: ValidacionesService,
     private notiService: ManejoDeMensajesService,
     private usuarioService: UsuarioService,
@@ -155,7 +157,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
   imagenesGestionRapidaComponent: ImagenesGestionRapidaComponent
   subirImagen(files: CargaDeImagenesTransporte[]) {
     this.cargando = true
-    this.usuarioService
+    this.ficheroService.usuario
       .agregarImagen(this.usuario._id, files[0].file)
       .subscribe(
         imagen => {
@@ -169,7 +171,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
 
   eliminarImagen() {
     this.cargando = true
-    this.usuarioService.eliminarImagen(this.usuario._id).subscribe(
+    this.ficheroService.usuario.eliminarImagen(this.usuario._id).subscribe(
       imagen => {
         this.cargando = false
         this.usuario.img = null
@@ -202,7 +204,6 @@ export class UsuarioCrearEditarComponent implements OnInit {
       .eliminarPermiso(this.usuario._id, permiso)
       .subscribe(this.cbPermiso, this.cbPermisoErr)
   }
-
 
   f(campo: string) {
     return this.formulario.get(campo)

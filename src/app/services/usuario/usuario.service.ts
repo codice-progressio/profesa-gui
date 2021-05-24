@@ -114,8 +114,8 @@ export class UsuarioService {
   }
 
   cargarPermisos() {
-    const url = this.base.concat('/permisos')
-    return this.http.get<any>(url)
+    const url = this.base.concat('/info/permisos-existentes')
+    return this.http.get<any>(url).pipe(map(x => x.permisos))
   }
 
   logout() {
@@ -193,7 +193,7 @@ export class UsuarioService {
   }
 
   buscarId(id: string) {
-    const url = this.base.concat(`/buscar/id/${id}`)
+    const url = this.base.concat(`/id/${id}`)
     return this.http.get<Usuario>(url).pipe(map((r: any) => r.usuario))
   }
 
@@ -209,22 +209,9 @@ export class UsuarioService {
   }
 
   modificarPassword(_id: string, password: string) {
-    return this.http.put<Usuario>(this.base.concat('/password'), {
-      _id,
+    return this.http.put(this.base.concat('/password/').concat(_id), {
       password
     })
-  }
-
-  agregarImagen(id: string, img: File) {
-    let formData: FormData = new FormData()
-    formData.append('img', img, img.name)
-    formData.append('_id', id)
-
-    return this.http.put<Imagen>(this.base.concat('/imagen'), formData)
-  }
-
-  eliminarImagen(id: string) {
-    return this.http.delete<null>(this.base.concat(`/${id}`))
   }
 
   eliminarPermiso(_id: string, permission: string) {
