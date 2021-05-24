@@ -135,7 +135,6 @@ export class UsuarioService {
 
   cargarStorage() {
     if (localStorage.getItem('token')) {
-      console.log('Cargando storage')
       this.token = localStorage.getItem('token')
       this.usuario = JSON.parse(localStorage.getItem('usuario'))
       // CARGAMOS EL MENU DESDE EL BACKEND SERVER.

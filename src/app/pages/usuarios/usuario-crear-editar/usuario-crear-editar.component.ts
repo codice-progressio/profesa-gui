@@ -144,7 +144,6 @@ export class UsuarioCrearEditarComponent implements OnInit {
       .modificarPassword(this.usuario._id, passLimpio)
       .subscribe(
         usuario => {
-          this.usuario = usuario
           this.cargando = false
           this.inputPassword.nativeElement.value = ''
           this.inputPassword.nativeElement.focus()
