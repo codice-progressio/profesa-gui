@@ -192,38 +192,63 @@
 =====================================
 -->
 
-  <!-- 
+      <!-- 
   =====================================
    costoVenta
   =====================================
   -->
-  <div class='col-12 col-md-3 col-lg-2'>
-    <div class="form-group">
-    <input
-      [ngClass]="{
-        'is-invalid': vs.invalid(f('costoVenta')),
-        'is-valid': vs.valid(f('costoVenta'))
-      }"
-      type="text"
-      class="form-control"
-      formControlName="costoVenta"
-      mask="separator.2"
-      thousandSeparator=","
-      prefix="$ "
-    />
-    <small id="helpId" class="form-text text-muted">Costo venta</small>
-    <app-validacion-inputs
-      [campo]="f('costoVenta')"
-      
-    ></app-validacion-inputs>
-  </div>
-  </div>
-  <!-- 
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('costoVenta')),
+              'is-valid': vs.valid(f('costoVenta'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="costoVenta"
+            mask="separator.2"
+            thousandSeparator=","
+            prefix="$ "
+          />
+          <small id="helpId" class="form-text text-muted">Costo venta</small>
+          <app-validacion-inputs
+            [campo]="f('costoVenta')"
+          ></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
   =====================================
    END costoVenta
   =====================================
   -->
-
+      <!-- 
+=====================================
+codigo
+=====================================
+-->
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            [ngClass]="{
+              'is-invalid': vs.invalid(f('codigo')),
+              'is-valid': vs.valid(f('codigo'))
+            }"
+            type="text"
+            class="form-control"
+            formControlName="codigo"
+          />
+          <small id="helpId" class="form-text text-muted"
+            >Codigo [ Barras ]</small
+          >
+          <app-validacion-inputs [campo]="f('codigo')"></app-validacion-inputs>
+        </div>
+      </div>
+      <!-- 
+=====================================
+END codigo
+=====================================
+-->
     </div>
 
     <ng-container *ngIf="!estaEditando">

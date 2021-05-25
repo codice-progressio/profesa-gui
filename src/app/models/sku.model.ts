@@ -20,7 +20,9 @@ export interface SKU {
   imagenes: Imagen[]
 
   nombreCompleto: string
-  costoVenta:number
+  costoVenta: number
+
+  codigo: string
 
   /**
    * La existencia de sku en el almacen.
@@ -44,5 +46,3 @@ export interface SKU {
   stockMaximo: number
   etiquetas: string[]
 }
-
-

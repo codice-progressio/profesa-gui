@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card p-0 m-0">
+      <div class="card-body p-1 m-1 b-b">
+        <a
+          (click)="sinDistracciones()"
+          class="btn btn-outline-primary btn-sm"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <span *ngIf="!utilidadesService.fullScreen.ocultarMarcoDeApp"
+            ><i class="fas fa-expand"></i
+          ></span>
+          <span *ngIf="utilidadesService.fullScreen.ocultarMarcoDeApp"
+            ><i class="fas fa-compress"></i>
+          </span>
+        </a>
+
+        <span class="ml-2"
+          >Cajero: <b>{{ nombreDeUsuario }}</b></span
+        >
+
+        <span class="float-right">{{ hora | fecha: 'LLLL' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-1 h-100 pl-3">
+  <div class="col-12 h-100">
+    <div class="row">
+      <div class="col-12 col-md-4 col-lg-4 text-center">
+        <div class="form-group">
+          <input
+            style="text-align: center; font-weight: bold"
+            #inputScanner
+            type="text"
+            class="form-control mw-100"
+            aria-describedby="helpId"
+            placeholder="Escanea o ingresa un codigo"
+            (keyup.enter)="buscarCodigo(inputScanner.value)"
+            (focus)="usuarioOcupado = false"
+            [disabled]="cargando"
+          />
+        </div>
+
+        <small class="text-muted">Total:</small>
+        <h1 class="text-center">$ {{ obtenerTotal() | number: '0.2' }}</h1>
+
+        <ng-container *ngIf="obtenerTotal() > 0">
+          <div class="form-group">
+            <input
+              formControl="efectivoInput"
+              id="efectivo"
+              type="text"
+              class="form-control"
+              placeholder="Efectivo"
+              mask="separator.2"
+              thousandSeparator=","
+              prefix="$ "
+              (focus)="this.usuarioOcupado = true"
+            />
+          </div>
+
+          <small class="text-muted">Cambio:</small>
+          <h1 class="text-center text-danger">
+            <hr />
+
+            $ {{ 123343 | number: '0.2' }}
+          </h1>
+
+          <hr />
+
+          <a
+            title="Volver a imprimir ticket"
+            class="btn btn-warning"
+            href="javascript:void(0)"
+            role="button"
+            ><i class="fas fa-print"></i
+          ></a>
+        </ng-container>
+      </div>
+      <div class="col-12 col-md-8 col-lg-8 contenedor-tabla">
+        <table class="table table-hover table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Cant</th>
+              <th>Descripcion</th>
+              <th>Precio</th>
+              <th>Importe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let linea of nota; let i = index">
+              <td class="aling-middle">{{ linea.cantidad }}</td>
+              <td class="aling-middle">
+                {{ linea.sku.nombreCompleto }}
+              </td>
+              <td class="justify-content-between">
+                ${{ linea.precio | number: '0.2' }}
+              </td>
+              <td class="justify-content-between">
+                ${{ linea.precio * linea.cantidad | number: '0.2' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

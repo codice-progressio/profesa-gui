@@ -83,7 +83,8 @@ const pagesRoutes: Routes = [
     path: 'parametros',
     loadChildren: () =>
       import('./parametros/parametros.module').then(m => m.ParametrosModule)
-  }
+  },
+  { path: 'punto-de-venta', loadChildren: () => import('./punto-de-venta/punto-de-venta.module').then(m => m.PuntoDeVentaModule) }
 ]
 
 @NgModule({

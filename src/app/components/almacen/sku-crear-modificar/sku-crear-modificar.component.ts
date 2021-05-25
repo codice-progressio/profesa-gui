@@ -79,7 +79,8 @@ export class SkuCrearModificarComponent implements OnInit {
           : []
       ),
 
-      costoVenta: new FormControl(sku.costoVenta ?? 0, [Validators.min(0)])
+      costoVenta: new FormControl(sku.costoVenta ?? 0, [Validators.min(0)]), 
+      codigo: new FormControl(sku.codigo)
     })
 
     this.cargando = false
@@ -135,7 +136,7 @@ export class SkuCrearModificarComponent implements OnInit {
     let operacion = model._id
       ? this.skuService.modificar(model)
       : this.skuService.crear(model)
-
+    console.log(model)
     operacion.subscribe(success, err)
   }
 }

@@ -56,6 +56,12 @@ export class SkuService {
       .pipe(catchError(x => throwError(x)))
   }
 
+  buscarCodigo(codigo: string) {
+    return this.http.get<SKU>(
+      this.base.concat(`/buscar/codigo/${encodeURIComponent(codigo)}`)
+    )
+  }
+
   modificar(sku: SKU) {
     return this.http
       .put<SKU>(this.base, sku)
