@@ -193,26 +193,29 @@
             <hr />
           </div>
           <div
-            *ngFor="let kv of permisos | keyvalue; let i = index"
-            class="col-12 col-md-6"
+            *ngFor="let key of permisosOrdenados; let i = index"
+            class="col-12 col-lg-6"
           >
-            <div (click)="agreagarPermiso(kv.key)" class="form-check ml-0 pl-0">
+            <div class="form-check ml-0 pl-0">
               <input
                 class="form-check-input"
                 type="checkbox"
                 [id]="'permiso' + i"
-                [checked]="this.usuario.permissions.includes(kv.key+'')"
+                [checked]="this.usuario.permissions.includes(key + '')"
+                (change)="agreagarPermiso(key)"
+                [disabled]="cargando"
               />
+
               <label
                 style="white-space: normal"
                 class="form-check-label text-wrap"
                 [for]="'permiso' + i"
               >
-                {{ kv.key }}
+                {{ key }}
               </label>
             </div>
 
-            <p>{{ kv.value }}</p>
+            <p>{{ permisos[key] }}</p>
           </div>
         </div>
       </div>

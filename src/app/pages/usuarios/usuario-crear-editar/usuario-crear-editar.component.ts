@@ -18,6 +18,7 @@ import { FicheroService } from '../../../services/fichero.service'
 export class UsuarioCrearEditarComponent implements OnInit {
   carganos: boolean
   constructor(
+    private msjService: ManejoDeMensajesService,
     private ficheroService: FicheroService,
     public vs: ValidacionesService,
     private notiService: ManejoDeMensajesService,
@@ -38,7 +39,8 @@ export class UsuarioCrearEditarComponent implements OnInit {
   mostrarFormulario = false
   formulario: FormGroup
   usuario: Usuario
-  permisos: any
+  permisos: [string: string]
+  permisosOrdenados: string[] = []
 
   private _imagenesParaSubir: CargaDeImagenesTransporte[]
   public get imagenesParaSubir(): CargaDeImagenesTransporte[] {
@@ -101,9 +103,17 @@ export class UsuarioCrearEditarComponent implements OnInit {
   }
 
   cargarPermisos() {
-    this.usuarioService
-      .cargarPermisos()
-      .subscribe(permisos => (this.permisos = permisos))
+    this.usuarioService.cargarPermisos().subscribe(
+      permisos => {
+        this.permisos = permisos
+
+        // Ordemamos alfabeticamente
+        this.permisosOrdenados = Object.keys(this.permisos).sort()
+      },
+      () => {
+        this.msjService.toast.error('No se pudieron cargar los permisos')
+      }
+    )
   }
   submit(model: Usuario, invalid: boolean) {
     this.formulario.markAllAsTouched()
@@ -181,12 +191,15 @@ export class UsuarioCrearEditarComponent implements OnInit {
 
   cbPermiso = usuario => {
     this.cargando = false
-    this.usuario = usuario
+    this.usuario.permissions = usuario.permissions
   }
 
   cbPermisoErr = () => (this.cargando = false)
 
-  agreagarPermiso(permiso: string | any) {
+  agreagarPermiso(permiso: string) {
+    if (this.cargando) {
+      return
+    }
     if (this.usuario.permissions.includes(permiso)) {
       this.eliminarPermiso(permiso)
       return

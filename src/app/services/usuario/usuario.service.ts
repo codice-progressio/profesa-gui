@@ -213,18 +213,23 @@ export class UsuarioService {
     })
   }
 
-  eliminarPermiso(_id: string, permission: string) {
-    return this.http.put<Usuario>(this.base.concat('/eliminar-permiso'), {
-      _id,
-      permission
-    })
+  eliminarPermiso(_id: string, permiso: string) {
+    return this.http
+      .put<Usuario>(this.base.concat('/eliminar-permiso'), {
+        _id,
+        permiso
+      })
+      .pipe(map((r: any) => r.usuario))
   }
 
-  agregarPermiso(_id: string, permission: string) {
-    return this.http.put<Usuario>(this.base.concat('/agregar-permisos'), {
-      _id,
-      permissions: [permission]
-    })
+  agregarPermiso(_id: string, permiso: string) {
+    console.log(permiso)
+    return this.http
+      .put<Usuario>(this.base.concat('/agregar-permiso'), {
+        _id,
+        permiso
+      })
+      .pipe(map((r: any) => r.usuario))
   }
 
   eliminar(_id: string) {
