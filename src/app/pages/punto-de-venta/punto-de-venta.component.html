@@ -32,7 +32,7 @@
       <div class="col-12 col-md-4 col-lg-4 text-center">
         <div class="form-group">
           <input
-            style="text-align: center; font-weight: bold"
+            id="input-scanner"
             #inputScanner
             type="text"
             class="form-control mw-100"
@@ -45,8 +45,11 @@
         </div>
 
         <small class="text-muted">Total:</small>
-        <h1 class="text-center">$ {{ obtenerTotal() | number: '0.2' }}</h1>
+        <h1 id="total" class="text-center font-weight-bold">
+          $ {{ obtenerTotal() | number: '0.2' }}
+        </h1>
 
+        <small class="text-muted">Su pago:</small>
         <ng-container *ngIf="obtenerTotal() > 0">
           <div class="form-group">
             <input
@@ -61,11 +64,7 @@
               (focus)="this.usuarioOcupado = true"
             />
           </div>
-
-          <small class="text-muted">Cambio:</small>
           <h1 class="text-center text-danger">
-            <hr />
-
             $ {{ 123343 | number: '0.2' }}
           </h1>
 
