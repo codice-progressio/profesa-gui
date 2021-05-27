@@ -17,13 +17,18 @@ th {
 }
 
 #total{
-  color: rgb(206, 0, 0);
+  color: rgb(33, 44, 192);
 }
 
 #efectivo {
   font-size: 26pt;
   text-align: center;
-  color: rgb(11, 0, 163);
+  color: rgb(40, 39, 46);
   font-weight: bold;
-  
 }
+
+#cambio {
+  color:rgb(148, 0, 0);
+  font-weight: bold;
+}
+

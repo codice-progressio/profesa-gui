@@ -39,8 +39,10 @@
             aria-describedby="helpId"
             placeholder="Escanea o ingresa un codigo"
             (keyup.enter)="buscarCodigo(inputScanner.value)"
+            (keyup.space)="buscarCodigo(inputScanner.value)"
             (focus)="usuarioOcupado = false"
             [disabled]="cargando"
+            autocomplete="ÑÖcompletes"
           />
         </div>
 
@@ -53,20 +55,32 @@
         <ng-container *ngIf="obtenerTotal() > 0">
           <div class="form-group">
             <input
-              formControl="efectivoInput"
+              #inputEfectivo
+              [formControl]="inputEfectivoFC"
               id="efectivo"
               type="text"
               class="form-control"
               placeholder="Efectivo"
+              (focus)="
+                this.usuarioOcupado = true;"
+              (keyup.enter)="cobrar(inputEfectivoFC.value)"
               mask="separator.2"
               thousandSeparator=","
-              prefix="$ "
-              (focus)="this.usuarioOcupado = true"
+              autocomplete="chrome-off"
             />
           </div>
-          <h1 class="text-center text-danger">
-            $ {{ 123343 | number: '0.2' }}
+
+          <small *ngIf="cambio >= 0" class="text-muted">Cambio:</small>
+
+          <h1 id="cambio" class="text-center">
+            $ {{ cambio | number: '0.2' }}
           </h1>
+          <ng-container *ngIf="0 > cambio">
+            <small class="text-muted">
+              <i class="fas fa-exclamation-circle text-warning"></i>
+              Pendiente por pagar
+            </small>
+          </ng-container>
 
           <hr />
 
