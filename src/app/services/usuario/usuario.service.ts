@@ -134,17 +134,23 @@ export class UsuarioService {
   }
 
   cargarStorage() {
-    if (localStorage.getItem('token')) {
-      this.token = localStorage.getItem('token')
-      this.usuario = JSON.parse(localStorage.getItem('usuario'))
-      // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
-      this.menu = JSON.parse(localStorage.getItem('menu'))
-      // this.roles = JSON.parse(localStorage.getItem('roles'));
-    } else {
+    let limpiar = () => {
       this.token = ''
       this.usuario = null
       // Si no hay token destruimos el menu.
       this.menu = [null]
+    }
+    try {
+      if (localStorage.getItem('token')) {
+        this.token = localStorage.getItem('token')
+        this.usuario = JSON.parse(localStorage.getItem('usuario'))
+        // CARGAMOS EL MENU DESDE EL BACKEND SERVER.
+        this.menu = JSON.parse(localStorage.getItem('menu'))
+        // this.roles = JSON.parse(localStorage.getItem('roles'));
+      } else limpiar()
+    } catch (error) {
+      limpiar()
+      this.logout()
     }
   }
 
