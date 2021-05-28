@@ -19,16 +19,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError(error => {
-        console.log(error)
         let errorMessage = ''
         if (error instanceof ErrorEvent) {
           // client-side error
-          errorMessage = `${error.error.message}`
+          errorMessage += `${error.error.message}`
         } else {
           // backend error
-          errorMessage = `${error.error}`
+          errorMessage += `${error.error}`
         }
-
+        
+        console.log({errorMessage})
         // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
         this.msjService.toast.error(errorMessage)
         return throwError(errorMessage)
