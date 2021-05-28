@@ -16,6 +16,7 @@ import { SKU } from '../../models/sku.model'
 import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
 import { SkuService } from '../../services/sku/sku.service'
 import { FormControl } from '@angular/forms'
+import { Productos, VentaService } from '../../services/venta.service'
 
 @Component({
   selector: 'app-punto-de-venta',
@@ -26,7 +27,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   nombreDeUsuario = this.usuarioService.usuario.nombre
   hora: string
   relojIntervalo
-  nota: NotaLinea[] = []
+  nota: Partial<Productos>[] = []
   notaLocalStorage = 'nota-fullscreen'
   private _cargando = false
   public get cargando() {
@@ -62,6 +63,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(
+    private ventaService: VentaService,
     private skuService: SkuService,
     private msjService: ManejoDeMensajesService,
     public utilidadesService: UtilidadesService,
@@ -211,12 +213,21 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //Si se completa la cuota desactivamos el campo de efectivo
     this.cargando = true
-  }
-}
 
-interface NotaLinea {
-  sku: SKU
-  cantidad: number
-  // Obtener primero desde el sku
-  precio: number
+    this.ventaService.nota.cobrar(this.nota).subscribe(
+      r => {
+        this.reiniciar()
+      },
+      () => this.reiniciar()
+    )
+  }
+
+  reiniciar() {
+    this.cargando = false
+    this.nota = []
+    this.cambio = 0
+    this.inpScanner.nativeElement.focus()
+    this.inputEfectivoFC.setValue('')
+    console.log('Debe reiniicar')
+  }
 }

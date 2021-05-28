@@ -107,7 +107,7 @@
             <tr *ngFor="let linea of nota; let i = index">
               <td class="aling-middle">{{ linea.cantidad }}</td>
               <td class="aling-middle">
-                {{ linea.sku.nombreCompleto }}
+                {{ linea.sku?.nombreCompleto }}
               </td>
               <td class="justify-content-between">
                 ${{ linea.precio | number: '0.2' }}
