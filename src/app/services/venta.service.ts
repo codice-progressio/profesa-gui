@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { URL_BASE } from '../config/config'
 import { SKU } from '../models/sku.model'
 import { Usuario } from '../models/usuario.model'
+import { Ticket } from './impresion.service'
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +24,9 @@ class NotaService {
 
   base = this.root.base.concat('nota')
   cobrar(nota: Partial<Productos>[]) {
-    return this.root.http.post(
+    return this.root.http.post<Nota>(
       this.base,
-      nota.map(x => {
+      nota.map((x: any) => {
         x.idSku = x.sku._id
         return x
       })
@@ -47,4 +48,5 @@ export interface Nota {
   usuario: string | Usuario
   articulos: Productos[]
   total: number
+  create_at: Date
 }

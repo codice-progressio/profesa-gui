@@ -22,7 +22,14 @@ export class UsuarioService {
    * @type {Usuario}
    * @memberof UsuarioService
    */
-  usuario: Usuario
+  private _usuario: Usuario
+  public get usuario(): Usuario {
+    let usuario = JSON.parse(localStorage.getItem('usuario'))
+    return usuario
+  }
+  public set usuario(value: Usuario) {
+    this._usuario = value
+  }
   // Cuando se recarga la página la tratamos de leer (en el login)
   // y si no la inicializamos (cargando del storage) va a dar error.
   token: string

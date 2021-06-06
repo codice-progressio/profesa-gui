@@ -17,6 +17,8 @@ import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-men
 import { SkuService } from '../../services/sku/sku.service'
 import { FormControl } from '@angular/forms'
 import { Productos, VentaService } from '../../services/venta.service'
+import { ImpresionService, articulo } from '../../services/impresion.service'
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-punto-de-venta',
@@ -24,7 +26,7 @@ import { Productos, VentaService } from '../../services/venta.service'
   styleUrls: ['./punto-de-venta.component.css']
 })
 export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
-  nombreDeUsuario = this.usuarioService.usuario.nombre
+  nombreDeUsuario: string = ''
   hora: string
   relojIntervalo
   nota: Partial<Productos>[] = []
@@ -68,8 +70,11 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     private msjService: ManejoDeMensajesService,
     public utilidadesService: UtilidadesService,
     private usuarioService: UsuarioService,
-    private renderer: Renderer2
-  ) {}
+    private renderer: Renderer2,
+    private impresionService: ImpresionService
+  ) {
+    this.nombreDeUsuario = this.usuarioService.usuario.nombre
+  }
 
   ngAfterViewInit(): void {
     this.retornarFoco()
@@ -216,10 +221,40 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.ventaService.nota.cobrar(this.nota).subscribe(
       r => {
-        this.reiniciar()
+        this.impresionService
+          .imprimir({
+            nombre_empresa: 'IMPERIUMsic',
+            consecutivo: r.consecutivo + '',
+            create_at: this.crearFecha(r.create_at),
+            usuario: this.usuarioService.usuario.nombre,
+            articulos: this.nota.map(x => {
+              console.log(x)
+              let articulo: articulo = {
+                cantidad: x.cantidad,
+                producto: x.sku.nombreCompleto,
+                precio_unitario: x.precio + '',
+                importe: x.cantidad * x.precio + ''
+              }
+
+              return articulo
+            }),
+            total: this.obtenerTotal() + '',
+            efectivo: totalDineroRecibido + '',
+            cambio: this.cambio + ''
+          })
+          .subscribe(respuestaImprecion => {
+            setTimeout(() => {
+              this.reiniciar()
+            }, 3000)
+          })
       },
       () => this.reiniciar()
     )
+  }
+
+  crearFecha(fecha: string | Date) {
+    moment.locale('es')
+    return moment(fecha).format('DD/MM/YYYY hh:mm').toString()
   }
 
   reiniciar() {
