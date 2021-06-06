@@ -13,7 +13,7 @@ declare function init_plugins()
   styleUrls: ['./pages.component.css']
 })
 export class PagesComponent implements OnInit {
-  guiVersion: string = environment.VERSION
+  guiVersion: string = "N/A"
   apiVersion: string
 
   changelogData: string

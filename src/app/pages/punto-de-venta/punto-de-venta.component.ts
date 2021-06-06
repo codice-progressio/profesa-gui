@@ -7,7 +7,8 @@ import {
   Renderer2,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  HostListener
 } from '@angular/core'
 import { UtilidadesService } from '../../services/utilidades.service'
 import { UsuarioService } from '../../services/usuario/usuario.service'
@@ -15,6 +16,9 @@ import { SKU } from '../../models/sku.model'
 import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
 import { SkuService } from '../../services/sku/sku.service'
 import { FormControl } from '@angular/forms'
+import { Productos, VentaService } from '../../services/venta.service'
+import { ImpresionService, articulo } from '../../services/impresion.service'
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-punto-de-venta',
@@ -22,10 +26,10 @@ import { FormControl } from '@angular/forms'
   styleUrls: ['./punto-de-venta.component.css']
 })
 export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
-  nombreDeUsuario = this.usuarioService.usuario.nombre
+  nombreDeUsuario: string = ''
   hora: string
   relojIntervalo
-  nota: NotaLinea[] = []
+  nota: Partial<Productos>[] = []
   notaLocalStorage = 'nota-fullscreen'
   private _cargando = false
   public get cargando() {
@@ -33,19 +37,44 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public set cargando(value) {
     this.usuarioOcupado = value
+    if (value) this.inputEfectivoFC.disable()
+    else this.inputEfectivoFC.enable()
     this._cargando = value
   }
 
-  @ViewChild('inputScanner') inputScanner: ElementRef<HTMLInputElement>
+  @ViewChild('inputScanner') inpScanner: ElementRef<HTMLInputElement>
+  @ViewChild('inputEfectivo') inpEfectivo: ElementRef<HTMLInputElement>
 
-  efectivoInput = new FormControl('')
+  campoEfectivoSeleccionado = false
+  @HostListener('window:keydown.space', ['$event'])
+  spaceEvent(event: any) {
+    console.log(event)
+    // En caso de que el input de efectivo sea visible y este seleccionado
+    if (
+      document.activeElement === this.inpEfectivo?.nativeElement &&
+      this.obtenerTotal() > 0
+    ) {
+      // pues ejecutamos la operacion de corbro
+      this.cobrar(this.inputEfectivoFC.value)
+    }
+    // Si el input scanner no tiene ningún codigo,
+    else if (!this.inpScanner.nativeElement.value) {
+      // entonces podemos pasar el foco al input de efectivo
+      this.inpEfectivo?.nativeElement.focus()
+    }
+  }
+
   constructor(
+    private ventaService: VentaService,
     private skuService: SkuService,
     private msjService: ManejoDeMensajesService,
     public utilidadesService: UtilidadesService,
     private usuarioService: UsuarioService,
-    private renderer: Renderer2
-  ) {}
+    private renderer: Renderer2,
+    private impresionService: ImpresionService
+  ) {
+    this.nombreDeUsuario = this.usuarioService.usuario.nombre
+  }
 
   ngAfterViewInit(): void {
     this.retornarFoco()
@@ -54,10 +83,10 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   usuarioOcupado = false
   intervaloDeFocoScanner
   retornarFoco() {
-    this.inputScanner.nativeElement.focus()
+    this.inpScanner.nativeElement.focus()
     this.intervaloDeFocoScanner = setInterval(() => {
       // Si el usuario no esta ocupado, entonces devolvemos el foco al scanner
-      if (!this.usuarioOcupado) this.inputScanner.nativeElement.focus()
+      if (!this.usuarioOcupado) this.inpScanner.nativeElement.focus()
     }, 100)
   }
 
@@ -115,7 +144,9 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (!codigo.trim()) {
-      return this.msjService.toast.error('El código no puede estar vacio')
+      // this.msjService.toast.error('El código no puede estar vacio')
+      this.inputEfectivoFC.setValue('')
+      return
     }
 
     this.cargando = true
@@ -123,7 +154,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skuService.buscarCodigo(codigo.trim()).subscribe(
       r => {
         if (!r) {
-          this.msjService.toast.error('No existe el código')
+          this.msjService.toast.error('No existe el código: ' + codigo.trim())
           this.limpiarInput()
           this.cargando = false
           return
@@ -145,18 +176,93 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   limpiarInput() {
-    this.inputScanner.nativeElement.value = ''
-    this.inputScanner.nativeElement.focus()
+    this.inpScanner.nativeElement.value = ''
+    this.inpScanner.nativeElement.focus()
   }
 
-  obtenerTotal() {
+  obtenerTotal(): number {
     return this.nota.map(x => x.cantidad * x.precio).reduce((a, b) => a + b, 0)
   }
-}
 
-interface NotaLinea {
-  sku: SKU
-  cantidad: number
-  // Obtener primero desde el sku
-  precio: number
+  cambio = 0
+  dineroRecibido: number[] = []
+  inputEfectivoFC = new FormControl('')
+
+  cobrar(valor: string) {
+    if (this.cargando) {
+      // No permitimos que se ingresen mas datos.
+      return
+    }
+
+    let valorN = +parseFloat(valor).toFixed(2)
+
+    if (!valorN) valorN = this.obtenerTotal()
+    this.dineroRecibido.push(valorN)
+    let totalDineroRecibido = this.dineroRecibido.reduce((a, b) => a + b, 0)
+    this.cambio = totalDineroRecibido - this.obtenerTotal()
+    // Si hay pendiente por cobrar
+    // no podemos continuar.
+    if (this.cambio < 0) {
+      this.msjService.toast.warning(
+        'Faltan cubrir: $' + this.cambio * -1,
+        undefined,
+        {
+          timeOut: 3000
+        }
+      )
+      this.inpEfectivo.nativeElement.value = ''
+      this.inpEfectivo.nativeElement.focus()
+
+      return
+    }
+
+    //Si se completa la cuota desactivamos el campo de efectivo
+    this.cargando = true
+
+    this.ventaService.nota.cobrar(this.nota).subscribe(
+      r => {
+        this.impresionService
+          .imprimir({
+            nombre_empresa: 'IMPERIUMsic',
+            consecutivo: r.consecutivo + '',
+            create_at: this.crearFecha(r.create_at),
+            usuario: this.usuarioService.usuario.nombre,
+            articulos: this.nota.map(x => {
+              console.log(x)
+              let articulo: articulo = {
+                cantidad: x.cantidad,
+                producto: x.sku.nombreCompleto,
+                precio_unitario: x.precio + '',
+                importe: x.cantidad * x.precio + ''
+              }
+
+              return articulo
+            }),
+            total: this.obtenerTotal() + '',
+            efectivo: totalDineroRecibido + '',
+            cambio: this.cambio + ''
+          })
+          .subscribe(respuestaImprecion => {
+            setTimeout(() => {
+              this.reiniciar()
+            }, 3000)
+          })
+      },
+      () => this.reiniciar()
+    )
+  }
+
+  crearFecha(fecha: string | Date) {
+    moment.locale('es')
+    return moment(fecha).format('DD/MM/YYYY hh:mm').toString()
+  }
+
+  reiniciar() {
+    this.cargando = false
+    this.nota = []
+    this.cambio = 0
+    this.inpScanner.nativeElement.focus()
+    this.inputEfectivoFC.setValue('')
+    console.log('Debe reiniicar')
+  }
 }

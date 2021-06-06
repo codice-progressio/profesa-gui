@@ -31,7 +31,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor'
 import { ToastrModule } from 'ngx-toastr'
 import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario.component'
 import { environment } from '../environments/environment'
-import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
+import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 
 export function tokenGetter() {
@@ -93,7 +93,11 @@ const appRoutes: Routes = [
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: [environment.URL_DOMINIO]
+        allowedDomains: [
+          environment.URL_DOMINIO,
+          'http://localhost:9090',
+          'http://127.0.0.1:9090'
+        ]
         // disallowedRoutes: disallowedRoutes(),
         // throwNoTokenError: true
       }

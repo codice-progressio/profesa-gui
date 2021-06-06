@@ -32,42 +32,55 @@
       <div class="col-12 col-md-4 col-lg-4 text-center">
         <div class="form-group">
           <input
-            style="text-align: center; font-weight: bold"
+            id="input-scanner"
             #inputScanner
             type="text"
             class="form-control mw-100"
             aria-describedby="helpId"
             placeholder="Escanea o ingresa un codigo"
             (keyup.enter)="buscarCodigo(inputScanner.value)"
+            (keyup.space)="buscarCodigo(inputScanner.value)"
             (focus)="usuarioOcupado = false"
             [disabled]="cargando"
+            autocomplete="ÑÖcompletes"
           />
         </div>
 
         <small class="text-muted">Total:</small>
-        <h1 class="text-center">$ {{ obtenerTotal() | number: '0.2' }}</h1>
+        <h1 id="total" class="text-center font-weight-bold">
+          $ {{ obtenerTotal() | number: '0.2' }}
+        </h1>
 
+        <small class="text-muted">Su pago:</small>
         <ng-container *ngIf="obtenerTotal() > 0">
           <div class="form-group">
             <input
-              formControl="efectivoInput"
+              #inputEfectivo
+              [formControl]="inputEfectivoFC"
               id="efectivo"
               type="text"
               class="form-control"
               placeholder="Efectivo"
+              (focus)="
+                this.usuarioOcupado = true;"
+              (keyup.enter)="cobrar(inputEfectivoFC.value)"
               mask="separator.2"
               thousandSeparator=","
-              prefix="$ "
-              (focus)="this.usuarioOcupado = true"
+              autocomplete="chrome-off"
             />
           </div>
 
-          <small class="text-muted">Cambio:</small>
-          <h1 class="text-center text-danger">
-            <hr />
+          <small *ngIf="cambio >= 0" class="text-muted">Cambio:</small>
 
-            $ {{ 123343 | number: '0.2' }}
+          <h1 id="cambio" class="text-center">
+            $ {{ cambio | number: '0.2' }}
           </h1>
+          <ng-container *ngIf="0 > cambio">
+            <small class="text-muted">
+              <i class="fas fa-exclamation-circle text-warning"></i>
+              Pendiente por pagar
+            </small>
+          </ng-container>
 
           <hr />
 
@@ -94,7 +107,7 @@
             <tr *ngFor="let linea of nota; let i = index">
               <td class="aling-middle">{{ linea.cantidad }}</td>
               <td class="aling-middle">
-                {{ linea.sku.nombreCompleto }}
+                {{ linea.sku?.nombreCompleto }}
               </td>
               <td class="justify-content-between">
                 ${{ linea.precio | number: '0.2' }}
