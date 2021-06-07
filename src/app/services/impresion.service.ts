@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Nota } from './venta.service'
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class ImpresionService {
     let opciones: Partial<OpcionesImpresion> = {
       imprimir: this.ticket(ticket),
       opciones: {
-        impresora: "OneNote for Windows 10",
+        impresora: 'OneNote for Windows 10',
         tamano_papel: {
           width: 78000,
           height: 100000

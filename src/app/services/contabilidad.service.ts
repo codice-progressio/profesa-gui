@@ -1,28 +1,27 @@
-import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { URL_BASE } from '../config/config'
+import { URL_BASE } from '../config/config.prod'
+import { HttpClient } from '@angular/common/http'
 import { SKU } from '../models/sku.model'
 import { Usuario } from '../models/usuario.model'
-import { Ticket } from './impresion.service'
 
 @Injectable({
   providedIn: 'root'
 })
-export class VentaService {
-  nota: NotaService
-  http: HttpClient
-  base = URL_BASE('venta-al-publico/')
+export class ContabilidadService {
+  remision: Remision
+  facturas: Facturas
 
-  constructor(httpClient: HttpClient) {
-    this.http = httpClient
-    this.nota = new NotaService(this)
+  base = URL_BASE('contabilidad/')
+  constructor(public http: HttpClient) {
+    this.remision = new Remision(this)
+    this.facturas = new Facturas(this)
   }
 }
 
-class NotaService {
-  constructor(private root: VentaService) {}
+class Remision {
+  constructor(private root: ContabilidadService) {}
 
-  base = this.root.base.concat('nota')
+  base = this.root.base.concat('remision')
   cobrar(nota: Partial<Productos>[]) {
     return this.root.http.post<Nota>(
       this.base,
@@ -32,6 +31,9 @@ class NotaService {
       })
     )
   }
+}
+class Facturas {
+  constructor(private root: ContabilidadService) {}
 }
 
 export interface Productos {

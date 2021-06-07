@@ -16,9 +16,9 @@ import { SKU } from '../../models/sku.model'
 import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
 import { SkuService } from '../../services/sku/sku.service'
 import { FormControl } from '@angular/forms'
-import { Productos, VentaService } from '../../services/venta.service'
 import { ImpresionService, articulo } from '../../services/impresion.service'
 import * as moment from 'moment'
+import { ContabilidadService, Productos } from '../../services/contabilidad.service'
 
 @Component({
   selector: 'app-punto-de-venta',
@@ -65,7 +65,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(
-    private ventaService: VentaService,
+    private contabilidadService: ContabilidadService,
     private skuService: SkuService,
     private msjService: ManejoDeMensajesService,
     public utilidadesService: UtilidadesService,
@@ -219,7 +219,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     //Si se completa la cuota desactivamos el campo de efectivo
     this.cargando = true
 
-    this.ventaService.nota.cobrar(this.nota).subscribe(
+    this.contabilidadService.remision.cobrar(this.nota).subscribe(
       r => {
         this.impresionService
           .imprimir({

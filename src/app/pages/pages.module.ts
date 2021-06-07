@@ -84,7 +84,20 @@ const pagesRoutes: Routes = [
     loadChildren: () =>
       import('./parametros/parametros.module').then(m => m.ParametrosModule)
   },
-  { path: 'punto-de-venta', loadChildren: () => import('./punto-de-venta/punto-de-venta.module').then(m => m.PuntoDeVentaModule) }
+  {
+    path: 'punto-de-venta',
+    loadChildren: () =>
+      import('./punto-de-venta/punto-de-venta.module').then(
+        m => m.PuntoDeVentaModule
+      )
+  },
+  {
+    path: 'contabilidad',
+    loadChildren: () =>
+      import('./contabilidad/contabilidad.module').then(
+        m => m.ContabilidadModule
+      )
+  }
 ]
 
 @NgModule({
