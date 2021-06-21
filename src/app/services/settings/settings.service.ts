@@ -9,8 +9,8 @@ export class SettingsService {
   darkReader: any = DarkReader
 
   ajustes: Ajustes = {
-    temaUrl: 'assets/css/colors/blue-dark.css',
-    tema: 'blue-dark'
+    temaUrl: 'assets/css/colors/blue.css',
+    tema: 'blue'
   }
 
   constructor(@Inject(DOCUMENT) private _document) {
@@ -32,12 +32,12 @@ export class SettingsService {
   }
 
   aplicarTema(tema: string) {
-    this.temaOscuro(tema)
     const url: string = `assets/css/colors/${tema}.css`
     this._document.getElementById('tema').setAttribute('href', url)
     this.ajustes.tema = tema
     this.ajustes.temaUrl = url
-
+    
+    this.temaOscuro(tema)
     this.guardarAjustes()
   }
 
