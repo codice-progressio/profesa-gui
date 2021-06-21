@@ -19,17 +19,17 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError(error => {
-        console.log('interceptor', error)
-        let errorMessage: string = ''
+        console.log(error)
+        let errorMessage: string | undefined = undefined
         // client-side error
-        errorMessage += error?.error?.message ?? ''
+        error?.error?.message
+          ? (errorMessage += error?.error?.message)
+          : undefined
         // backend error
-        errorMessage += error?.error?.error
+        error?.error?.error ? (errorMessage += error?.error?.error) : undefined
 
-        // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
-        console.log(errorMessage)
-        this.msjService.toast.error(errorMessage)
-        return throwError(errorMessage)
+        if (errorMessage) this.msjService.toast.error(errorMessage)
+        return throwError(errorMessage ?? 'Error no capturado')
       })
     )
   }
