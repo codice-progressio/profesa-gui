@@ -18,7 +18,10 @@ import { SkuService } from '../../services/sku/sku.service'
 import { FormControl } from '@angular/forms'
 import { ImpresionService, articulo } from '../../services/impresion.service'
 import * as moment from 'moment'
-import { ContabilidadService, Productos } from '../../services/contabilidad.service'
+import {
+  ContabilidadService,
+  Productos
+} from '../../services/contabilidad.service'
 
 @Component({
   selector: 'app-punto-de-venta',
@@ -243,9 +246,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
             cambio: this.cambio + ''
           })
           .subscribe(respuestaImprecion => {
-            setTimeout(() => {
-              this.reiniciar()
-            }, 3000)
+            this.reiniciar()
           })
       },
       () => this.reiniciar()
