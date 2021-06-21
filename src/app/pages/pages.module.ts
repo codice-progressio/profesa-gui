@@ -96,7 +96,11 @@ const pagesRoutes: Routes = [
     loadChildren: () =>
       import('./contabilidad/contabilidad.module').then(
         m => m.ContabilidadModule
-      )
+      ),
+    data: {
+      
+      permissions: permisosKeysConfig['menu:contabilidad']
+    }
   }
 ]
 

@@ -26,7 +26,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           ? (errorMessage += error?.error?.message)
           : undefined
         // backend error
-        error?.error?.error ? (errorMessage += error?.error?.error) : undefined
+        if (!errorMessage)
+          error?.error?.error ? (errorMessage = error?.error?.error) : undefined
 
         if (errorMessage) this.msjService.toast.error(errorMessage)
         return throwError(errorMessage ?? 'Error no capturado')

@@ -1,52 +1,62 @@
-import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from "@angular/common";
+import { Injectable, Inject } from '@angular/core'
+import { DOCUMENT } from '@angular/common'
+import * as DarkReader from 'darkreader'
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
+  darkReader: any = DarkReader
 
   ajustes: Ajustes = {
     temaUrl: 'assets/css/colors/blue-dark.css',
     tema: 'blue-dark'
-  };
-
-
-  constructor( @Inject(DOCUMENT) private _document) {
-    this.cargarAjustes();
-   }
-
-
-  guardarAjustes() {
-    localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
   }
 
-  cargarAjustes () {
-    if ( localStorage.getItem('ajustes') ) {
-      this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
-      
-      this.aplicarTema( this.ajustes.tema);
-    } else {
-      
-      this.aplicarTema( this.ajustes.tema);
+  constructor(@Inject(DOCUMENT) private _document) {
+    this.cargarAjustes()
+  }
 
+  guardarAjustes() {
+    localStorage.setItem('ajustes', JSON.stringify(this.ajustes))
+  }
+
+  cargarAjustes() {
+    if (localStorage.getItem('ajustes')) {
+      this.ajustes = JSON.parse(localStorage.getItem('ajustes'))
+
+      this.aplicarTema(this.ajustes.tema)
+    } else {
+      this.aplicarTema(this.ajustes.tema)
     }
   }
 
-  aplicarTema( tema: string ) {
+  aplicarTema(tema: string) {
+    this.temaOscuro(tema)
+    const url: string = `assets/css/colors/${tema}.css`
+    this._document.getElementById('tema').setAttribute('href', url)
+    this.ajustes.tema = tema
+    this.ajustes.temaUrl = url
+
+    this.guardarAjustes()
+  }
+
+  temaOscuro(tema: string) {
     
-
-    const url: string = `assets/css/colors/${ tema }.css`;
-    this._document.getElementById('tema').setAttribute('href', url);
-    this.ajustes.tema = tema;
-    this.ajustes.temaUrl = url;
-
-    this.guardarAjustes();
+    if (tema.includes('dark')) {
+      if (this.darkReader.isEnabled()) return
+      this.darkReader.enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 10
+      })
+    } else {
+      this.darkReader.disable()
+    }
   }
 }
 
-
 interface Ajustes {
-  temaUrl: string;
-  tema: string;
+  temaUrl: string
+  tema: string
 }

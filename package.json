@@ -36,6 +36,7 @@
     "angularx-qrcode": "^10.0.6",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",
+    "darkreader": "^4.9.33",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
     "jshint": "^2.11.0",

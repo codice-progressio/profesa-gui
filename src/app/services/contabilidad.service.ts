@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { URL_BASE } from '../config/config.prod'
+import { URL_BASE } from '../config/config'
 import { HttpClient } from '@angular/common/http'
 import { SKU } from '../models/sku.model'
 import { Usuario } from '../models/usuario.model'
@@ -8,22 +8,22 @@ import { Usuario } from '../models/usuario.model'
   providedIn: 'root'
 })
 export class ContabilidadService {
-  remision: Remision
-  facturas: Facturas
+  remision: RemisionService
+  facturas: FacturaService
 
   base = URL_BASE('contabilidad/')
   constructor(public http: HttpClient) {
-    this.remision = new Remision(this)
-    this.facturas = new Facturas(this)
+    this.remision = new RemisionService(this)
+    this.facturas = new FacturaService(this)
   }
 }
 
-class Remision {
+class RemisionService {
   constructor(private root: ContabilidadService) {}
 
   base = this.root.base.concat('remision')
   cobrar(nota: Partial<Productos>[]) {
-    return this.root.http.post<Nota>(
+    return this.root.http.post<Remision>(
       this.base,
       nota.map((x: any) => {
         x.idSku = x.sku._id
@@ -32,7 +32,7 @@ class Remision {
     )
   }
 }
-class Facturas {
+class FacturaService {
   constructor(private root: ContabilidadService) {}
 }
 
@@ -45,10 +45,17 @@ export interface Productos {
   precioActual: number
 }
 
-export interface Nota {
+export interface Remision {
   consecutivo: number
   usuario: string | Usuario
   articulos: Productos[]
+  total: number
+  create_at: Date
+}
+
+export interface RemisionLigera {
+  consecutivo: number
+  usuario: string | Usuario
   total: number
   create_at: Date
 }
