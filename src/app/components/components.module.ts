@@ -21,6 +21,7 @@ import { PedidosListaComponent } from './pedidos/pedidos-lista/pedidos-lista.com
 import { PedidoCrearEditarDetalleComponent } from './pedidos/pedido-crear-editar-detalle/pedido-crear-editar-detalle.component'
 import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.component'
 import { ModalModule } from '@codice-progressio/modal'
+import { ControlRemisionesComponent } from './control-remisiones/control-remisiones.component'
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ModalModule } from '@codice-progressio/modal'
     SkuLotesComponent,
     PedidosListaComponent,
     PedidoCrearEditarDetalleComponent,
-    EtiquetasEditorComponent
+    EtiquetasEditorComponent,
+    ControlRemisionesComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { ModalModule } from '@codice-progressio/modal'
     ImagenesGestionRapidaComponent,
     PedidosListaComponent,
     PedidoCrearEditarDetalleComponent,
-    EtiquetasEditorComponent
+    EtiquetasEditorComponent,
+    ControlRemisionesComponent
   ]
 })
 export class ComponentsModule {}
