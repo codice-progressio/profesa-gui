@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { catchError } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+import { ManejoDeMensajesService } from './utilidades/manejo-de-mensajes.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImpresionService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private msjService: ManejoDeMensajesService,
+    private http: HttpClient
+  ) {}
 
   base = 'http://127.0.0.1:9090/'
 
@@ -25,7 +31,14 @@ export class ImpresionService {
       }
     }
 
-    return this.http.post(this.base, opciones)
+    return this.http.post(this.base, opciones).pipe(
+      catchError(error => {
+        this.msjService.toast.error(
+          'Hubo un error en el servicio de impresión. ¿Esta activo el servicio?'
+        )
+        return throwError(error)
+      })
+    )
   }
 
   articulo = (datos: articulo) => ` <tr>
