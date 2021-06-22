@@ -38,8 +38,11 @@
           </div>
           <div class="align-self-center">
             <h6 class="text-muted m-t-10 m-b-0">Costo Inventario</h6>
-            <h2 class="m-t-0">
-              $ {{ eSer.costoInventario | number: '4.2-2' }}
+            <h2
+              title="No se toman en cuenta las existencias menores que 0"
+              class="m-t-0"
+            >
+              $ {{ eSer.costoInventario | number: '0.2-2' }}
             </h2>
 
             <h6 class="text-muted m-t-10 m-b-0 font-10">
