@@ -16,7 +16,7 @@ th {
   font-weight: bold;
 }
 
-#total{
+#total {
   color: rgb(33, 44, 192);
 }
 
@@ -28,7 +28,19 @@ th {
 }
 
 #cambio {
-  color:rgb(148, 0, 0);
+  color: rgb(148, 0, 0);
   font-weight: bold;
 }
 
+td > input {
+  font-weight: bold;
+  border: none;
+  width: 100%;
+}
+
+#table-cantidad{
+  max-width: 30px;
+}
+#table-precio{
+  max-width: 40px;
+}

@@ -40,6 +40,7 @@
             placeholder="Escanea o ingresa un codigo"
             (keyup.enter)="buscarCodigo(inputScanner.value)"
             (keyup.space)="buscarCodigo(inputScanner.value)"
+            (keyup.arrowright)="modoEdicion(0, 0, true)"
             (focus)="usuarioOcupado = false"
             [disabled]="cargando"
             autocomplete="ÑÖcompletes"
@@ -61,8 +62,7 @@
               type="text"
               class="form-control"
               placeholder="Efectivo"
-              (focus)="
-                this.usuarioOcupado = true;"
+              (focus)="this.usuarioOcupado = true"
               (keyup.enter)="cobrar(inputEfectivoFC.value)"
               mask="separator.2"
               thousandSeparator=","
@@ -105,12 +105,64 @@
           </thead>
           <tbody>
             <tr *ngFor="let linea of nota; let i = index">
-              <td class="aling-middle">{{ linea.cantidad }}</td>
+              <td
+                (click)="modoEdicion(0, i)"
+                id="table-cantidad"
+                class="aling-middle"
+              >
+                <ng-template #texto0>
+                  {{ linea.cantidad }}
+                </ng-template>
+                <input
+                  *ngIf="
+                    matris.x + '_' + matris.y === '0_' + i && editando;
+                    else texto0
+                  "
+                  #inputCantidad
+                  [id]="'xy' + '0' + i"
+                  (keyup.arrowright)="modoEdicion(matris.x + 1, matris.y)"
+                  (keyup.arrowleft)="modoEdicion(matris.x - 1, matris.y)"
+                  (keyup.arrowup)="modoEdicion(matris.x, matris.y - 1)"
+                  (keyup.arrowdown)="modoEdicion(matris.x, matris.y + 1)"
+                  (keyup.escape)="salirModoEdicion()"
+                  (keyup.delete)="eliminarLinea(0, i)"
+                  [(ngModel)]="linea.cantidad"
+                  type="text"
+                  (keypress)="soloNumeros(inputCantidad, $event)"
+                  (keyup.enter)="salirModoEdicion()"
+                  (blur)="salirModoEdicion()"
+                />
+              </td>
               <td class="aling-middle">
                 {{ linea.sku?.nombreCompleto }}
               </td>
-              <td class="justify-content-between">
-                ${{ linea.precio | number: '0.2' }}
+              <td
+                (click)="modoEdicion(1, i)"
+                id="table-precio"
+                class="justify-content-between"
+              >
+                <ng-template #texto1>
+                  ${{ linea.precio | number: '0.2' }}
+                </ng-template>
+                <input
+                  *ngIf="
+                    matris.x + '_' + matris.y === '1_' + i && editando;
+                    else texto1
+                  "
+                  #inputPrecio
+                  [id]="'xy' + '1' + i"
+                  (keyup.arrowright)="modoEdicion(matris.x + 1, matris.y)"
+                  (keyup.arrowleft)="modoEdicion(matris.x - 1, matris.y)"
+                  (keyup.arrowup)="modoEdicion(matris.x, matris.y - 1)"
+                  (keyup.arrowdown)="modoEdicion(matris.x, matris.y + 1)"
+                  (keyup.escape)="salirModoEdicion()"
+                  (keyup.delete)="eliminarLinea(1, i)"
+                  [(ngModel)]="linea.precio"
+                  type="text"
+                  (keypress)="soloNumeros(inputPrecio, $event)"
+                  (keyup.enter)="salirModoEdicion()"
+                  (blur)="salirModoEdicion()"
+                />
               </td>
               <td class="justify-content-between">
                 ${{ linea.precio * linea.cantidad | number: '0.2' }}

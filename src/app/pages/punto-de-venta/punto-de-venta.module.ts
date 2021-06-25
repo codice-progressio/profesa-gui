@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PuntoDeVentaComponent } from './punto-de-venta.component';
 import { PipesModule } from '../../pipes/pipes.module'
 import { NgxMaskModule } from 'ngx-mask'
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 
 const routes: Routes = [
@@ -20,7 +20,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PipesModule,
     NgxMaskModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class PuntoDeVentaModule { }

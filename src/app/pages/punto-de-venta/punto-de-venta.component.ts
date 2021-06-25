@@ -85,6 +85,11 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   usuarioOcupado = false
   intervaloDeFocoScanner
+  /**
+   *Solo se llama una vez.
+   *
+   * @memberof PuntoDeVentaComponent
+   */
   retornarFoco() {
     this.inpScanner.nativeElement.focus()
     this.intervaloDeFocoScanner = setInterval(() => {
@@ -265,5 +270,66 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     this.inpScanner.nativeElement.focus()
     this.inputEfectivoFC.setValue('')
     console.log('Debe reiniicar')
+  }
+
+  matris = {
+    x: 0,
+    y: 0
+  }
+  editando = false
+  modoEdicion(x: number, y: number, esInputScanner = false) {
+    // Validaciones
+    // x no puede ser menor que 0 ni mayor que 1
+    // y no puede superar la cantidad de elementos
+    // que hay en nota
+
+    if (x > 1 || x < 0 || y < 0 || y > this.nota.length - 1) {
+      this.salirModoEdicion()
+      return
+    }
+
+    // Si las validaciones salen bien, entonces
+    // guardamos las nuevas coordenadas
+    this.matris = { x, y }
+    this.editando = this.usuarioOcupado = true
+    // Esperamos un momento para enfocar
+    let id = 'xy' + x + y
+    console.log(this.matris, id)
+    setTimeout(() => {
+      let input: HTMLInputElement = document.getElementById(
+        id
+      ) as HTMLInputElement
+      input.focus()
+      input.select()
+    }, 10)
+  }
+
+  salirModoEdicion() {
+    this.editando = this.usuarioOcupado = false
+    console.log('salirModoEdicion')
+  }
+
+  soloNumeros(input: HTMLInputElement, evt) {
+    // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+    var key = window.Event ? evt.which : evt.keyCode
+    var chark = String.fromCharCode(key)
+    var tempValue = input.value + chark
+    var isNumber = key >= 48 && key <= 57
+    var isSpecial = key == 8 || key == 13 || key == 0 || key == 46
+    if (isNumber || isSpecial) {
+      return this.filter(tempValue)
+    }
+
+    return false
+  }
+  filter(__val__) {
+    var preg = /^([0-9]+\.?[0-9]{0,2})$/
+    return preg.test(__val__) === true
+  }
+
+  eliminarLinea(x: number, y: number) {
+    this.modoEdicion(x, y - 1)
+
+    this.nota.splice(y, 1)
   }
 }
