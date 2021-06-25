@@ -158,7 +158,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.cargando = true
-
+    this.cambio = 0
     this.skuService.buscarCodigo(codigo.trim()).subscribe(
       r => {
         if (!r) {
@@ -203,11 +203,11 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     let valorN = +parseFloat(valor).toFixed(2)
-
     if (!valorN) valorN = this.obtenerTotal()
     this.dineroRecibido.push(valorN)
     let totalDineroRecibido = this.dineroRecibido.reduce((a, b) => a + b, 0)
     this.cambio = totalDineroRecibido - this.obtenerTotal()
+    this.cambio = +parseFloat(this.cambio + '').toFixed(2)
     // Si hay pendiente por cobrar
     // no podemos continuar.
     if (this.cambio < 0) {
@@ -236,7 +236,6 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
             create_at: this.crearFecha(r.create_at),
             usuario: this.usuarioService.usuario.nombre,
             articulos: this.nota.map(x => {
-              console.log(x)
               let articulo: articulo = {
                 cantidad: x.cantidad,
                 producto: x.sku.nombreCompleto,
@@ -266,10 +265,10 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
   reiniciar() {
     this.cargando = false
     this.nota = []
-    this.cambio = 0
+    this.dineroRecibido = []
+    // this.cambio = 0
     this.inpScanner.nativeElement.focus()
     this.inputEfectivoFC.setValue('')
-    console.log('Debe reiniicar')
   }
 
   matris = {

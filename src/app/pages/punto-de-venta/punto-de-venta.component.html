@@ -52,8 +52,8 @@
           $ {{ obtenerTotal() | number: '0.2' }}
         </h1>
 
-        <small class="text-muted">Su pago:</small>
         <ng-container *ngIf="obtenerTotal() > 0">
+          <small class="text-muted">Su pago:</small>
           <div class="form-group">
             <input
               #inputEfectivo
@@ -69,29 +69,19 @@
               autocomplete="chrome-off"
             />
           </div>
-
-          <small *ngIf="cambio >= 0" class="text-muted">Cambio:</small>
-
-          <h1 id="cambio" class="text-center">
-            $ {{ cambio | number: '0.2' }}
-          </h1>
-          <ng-container *ngIf="0 > cambio">
-            <small class="text-muted">
-              <i class="fas fa-exclamation-circle text-warning"></i>
-              Pendiente por pagar
-            </small>
-          </ng-container>
-
-          <hr />
-
-          <a
-            title="Volver a imprimir ticket"
-            class="btn btn-warning"
-            href="javascript:void(0)"
-            role="button"
-            ><i class="fas fa-print"></i
-          ></a>
         </ng-container>
+
+        <ng-container *ngIf="0 > cambio; else cambioTemplate">
+          <small class="text-muted">
+            <i class="fas fa-exclamation-circle text-warning"></i>
+            Pendiente por recibir
+          </small>
+        </ng-container>
+        <ng-template #cambioTemplate>
+          <small class="text-muted">Cambio:</small>
+        </ng-template>
+
+        <h1 id="cambio" class="text-center">$ {{ cambio | number: '0.2' }}</h1>
       </div>
       <div class="col-12 col-md-8 col-lg-8 contenedor-tabla">
         <table class="table table-hover table-striped table-sm">
