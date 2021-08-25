@@ -1,0 +1,318 @@
+<form [formGroup]="formulario">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="row">
+            <!-- 
+            =====================================
+             nombre
+            =====================================
+            -->
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('nombre')),
+                    'is-valid': vs.valid(f('nombre'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="nombre"
+                  
+                />
+                <small id="helpId" class="form-text text-muted"> Nombre </small>
+                <codice-validaciones
+                  [campo]="f('nombre')"
+                ></codice-validaciones>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END nombre
+            =====================================
+            -->
+
+            <!-- 
+            =====================================
+             iva
+            =====================================
+            -->
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <input
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('iva')),
+                    'is-valid': vs.valid(f('iva'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="iva"
+
+                  mask="separator.2"
+                  [allowNegativeNumbers]="false"
+                  thousandSeparator=","
+                  suffix=" %"
+                />
+                <small id="helpId" class="form-text text-muted">IVA</small>
+                <codice-validaciones [campo]="f('iva')"></codice-validaciones>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END iva
+            =====================================
+            -->
+
+            <!-- 
+            =====================================
+             descripcion
+            =====================================
+            -->
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <textarea
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('descripcion')),
+                    'is-valid': vs.valid(f('descripcion'))
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="descripcion"
+                  cols="10"
+                  rows="5"
+                ></textarea>
+
+                <small id="helpId" class="form-text text-muted"
+                  >Descripción</small
+                >
+                <codice-validaciones
+                  [campo]="f('descripcion')"
+                ></codice-validaciones>
+              </div>
+            </div>
+            <!-- 
+            =====================================
+             END descripcion
+            =====================================
+            -->
+          </div>
+
+          <ng-template #guardarFormulario>
+            <div class="row">
+              <div class="col-12 text-rigth">
+                <a
+                  (click)="submit(formulario.value, formulario.invalid)"
+                  class="btn btn-success"
+                  href="javascript:void(0)"
+                  role="button"
+                >
+                  <i *ngIf="cargando" class="fas fa-sync fa-spin"></i>
+
+                  <i *ngIf="!cargando" class="fas fa-save"></i> Guardar
+                </a>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-container
+            *ngIf="esDetalle; else guardarFormulario"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!esDetalle" class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
+              <a
+                (click)="agregarTodosLosProductos()"
+                class="btn btn-primary"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i class="fas fa-plus-circle"></i> Agregar todos los skus</a
+              >
+            </div>
+            <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
+              <a
+                (click)="limpiarTodosLosProductos()"
+                class="btn btn-danger"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i class="fas fa-times-circle"></i> Limpiar todos los skus</a
+              >
+            </div>
+            <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
+              <a
+                (click)="modalService.open(modal)"
+                class="btn btn-info"
+                href="javascript:void(0)"
+                role="button"
+              >
+                <i class="fas fa-boxes"></i> Buscar y agregar skus</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  (click)="paginacion.irAPagina(paginacion.paginaActual - 1)"
+                  aria-label="Previous"
+                >
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Anterior</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">
+                  {{ paginacion.paginaActual }} /
+                  {{ paginacion.totalDePaginas }}
+                </a>
+              </li>
+
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  (click)="paginacion.irAPagina(paginacion.paginaActual + 1)"
+                  aria-label="Next"
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Siguiente</span>
+                </a>
+              </li>
+              <li class="page-item">{{ this.fa('skus').length }} elementos</li>
+            </ul>
+          </nav>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Código</th>
+                  <th>SKU</th>
+                  <th>Descripción</th>
+                  <th>Unidad</th>
+                  <th>Precio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 
+=====================================
+ Array skus 
+=====================================
+-->
+                <ng-container formArrayName="skus">
+                  <ng-container
+                    *ngFor="let dummy of fa('skus').controls; let i = index"
+                  >
+                    <ng-container
+                      *ngIf="i >= corte.inicio && i <= corte.fin - 1"
+                      [formGroupName]="i"
+                    >
+                      <tr>
+                        <td>
+                          <a
+                            *ngIf="!esDetalle"
+                            (click)="fa('skus').removeAt(i)"
+                            class="btn btn-danger btn-sm"
+                            href="javascript:void(0)"
+                            role="button"
+                            ><i class="fas fa-times-circle"></i
+                          ></a>
+                        </td>
+                        <td>{{ dummy.get('sku').value?.codigo }}</td>
+                        <td>{{ dummy.get('sku').value?.nombreCompleto }}</td>
+                        <td>{{ dummy.get('sku').value?.descripcion }}</td>
+                        <td>{{ dummy.get('sku').value?.unidad }}</td>
+                        <td style="min-width: 150px">
+                          <!-- 
+      =====================================
+       precio
+      =====================================
+      -->
+                          <div class="form-group d-inline">
+                            <input
+                              [ngClass]="{
+                                'is-invalid': vs.invalid(dummy.get('precio')),
+                                'is-valid': vs.valid(dummy.get('precio'))
+                              }"
+                              type="text"
+                              class="form-control"
+                              formControlName="precio"
+                              mask="separator.2"
+                              [allowNegativeNumbers]="false"
+                              thousandSeparator=","
+                              prefix="$ "
+                            />
+
+                            <codice-validaciones
+                              [campo]="dummy.get('precio')"
+                            ></codice-validaciones>
+                          </div>
+                          <!-- 
+      =====================================
+       END precio
+      =====================================
+      -->
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <!-- 
+=====================================
+ END Array skus 
+=====================================
+-->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<codice-modal [id]="modal">
+  <div class="row">
+    <div class="col-12">
+      <codice-buscador
+        (termino)="termino = $event"
+        (escucharCarga)="estaCargandoBuscador = $event"
+      >
+      </codice-buscador>
+    </div>
+    <div class="col-12">
+      <app-sku-lista
+        (etiquetasFiltrandose)="etiquetasFiltrandose = $event"
+        [etiquetasParaFiltrarse]="etiquetasFiltrandose"
+        [termino]="termino"
+        (estaCargando)="cargando = $event"
+        [soloSeleccionable]="true"
+        (skuSeleccionado)="agregarSku($event)"
+        (resultados)="this.estaCargandoBuscador.next(false)"
+      >
+      </app-sku-lista>
+    </div>
+  </div>
+</codice-modal>

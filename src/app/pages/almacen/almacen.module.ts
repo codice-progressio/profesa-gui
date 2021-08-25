@@ -5,7 +5,7 @@ import { AlmacenComponent } from './almacen.component'
 import { UxModule } from '../../ux/ux.module'
 import { ComponentsModule } from '../../components/components.module'
 import { AlmacenCrearModificarComponent } from './almacen-crear-modificar/almacen-crear-modificar.component'
-import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component';
+import { AlmacenDetalleComponent } from './almacen-detalle/almacen-detalle.component'
 import { AlmacenImagenesComponent } from './almacen-imagenes/almacen-imagenes.component'
 import { DirectivesModule } from '../../directives/directives.module'
 
@@ -52,14 +52,14 @@ const routes: Routes = [
     AlmacenComponent,
     AlmacenCrearModificarComponent,
     AlmacenDetalleComponent,
-    AlmacenImagenesComponent,
-    
+    AlmacenImagenesComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     UxModule,
-    ComponentsModule, DirectivesModule
+    ComponentsModule,
+    DirectivesModule
   ]
 })
 export class AlmacenModule {}
