@@ -77,7 +77,7 @@ const pagesRoutes: Routes = [
   {
     path: 'ventas',
     loadChildren: () =>
-      import('./pages/ventas/ventas.module').then(m => m.VentasModule)
+      import('./ventas/ventas.module').then(m => m.VentasModule)
   },
   {
     path: 'parametros',

@@ -1,0 +1,27 @@
+<h1>Lista de precios</h1>
+<small class="text-muted"
+  >Selecciona una lista de precios que se aplicara por defecto cuando un cliente
+  no tenga asignada una. En caso de que no se seleccione, se utilizara el precio
+  de venta directo del producto</small
+>
+<hr />
+<div *ngIf="!cargando; else cargaTemplate" class="form-group">
+  <select
+    [disabled]="cargando"
+    (ngModelChange)="submit($event)"
+    class="custom-select"
+    [(ngModel)]="listaSeleccionada"
+  >
+    <option *ngFor="let lista of listas" [ngValue]="lista">
+      {{ lista.nombre }}
+    </option>
+  </select>
+</div>
+
+<ng-template #cargaTemplate>
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1 class="text-center display-1"><i class="fas fa-sync fa-spin"></i></h1>
+    </div>
+  </div>
+</ng-template>
