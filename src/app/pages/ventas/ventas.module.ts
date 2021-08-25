@@ -9,6 +9,14 @@ const routes: Routes = [
     path: 'misPedidos',
     loadChildren: () =>
       import('./pedido/pedido.module').then(m => m.PedidoModule)
+  },
+  {
+   
+    path: 'listas-de-precios',
+    loadChildren: () =>
+      import('./lista-de-precios/lista-de-precios.module').then(
+        m => m.ListaDePreciosModule
+      )
   }
 ]
 

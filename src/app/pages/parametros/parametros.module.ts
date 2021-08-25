@@ -6,6 +6,8 @@ import { ComponentsModule } from '../../components/components.module'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { PermisosGuard } from 'src/app/services/guards/permisos.guard'
 import { VerificaTokenGuard } from 'src/app/services/guards/verifica-token.guard'
+import { ParametrosListaDePreciosComponent } from './parametros-lista-de-precios/parametros-lista-de-precios.component'
+import { FormsModule } from '@angular/forms'
 
 const routes: Routes = [
   {
@@ -31,7 +33,12 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [ParametrosComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), ComponentsModule]
+  declarations: [ParametrosComponent, ParametrosListaDePreciosComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    ComponentsModule,
+    FormsModule
+  ]
 })
 export class ParametrosModule {}

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core'
-import { Pedido } from '../../../../models/pedido.model'
-import { PedidoService } from '../../../../services/pedido.service'
+import { Pedido } from '../../../models/pedido.model'
+import { PedidoService } from '../../../services/pedido.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
-import { UtilidadesService } from '../../../../services/utilidades/utilidades.service'
-import { ProveedorService } from '../../../../services/proveedor.service'
-import { Proveedor } from '../../../../models/proveedor.model'
+import { UtilidadesService } from '../../../services/utilidades/utilidades.service'
+import { ProveedorService } from '../../../services/proveedor.service'
+import { Proveedor } from '../../../models/proveedor.model'
 
 @Component({
   selector: 'app-pedido',
