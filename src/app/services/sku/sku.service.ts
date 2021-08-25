@@ -4,7 +4,7 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 import { SKU } from '../../models/sku.model'
 import { Imagen } from '../../models/Imagen'
 import { URL_BASE } from '../../config/config'
-import { catchError } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 import { throwError } from 'rxjs'
 import { SkuLote, SkuLoteMovimiento } from '../../models/lote.model'
 import { URLQuery } from '../utilidades/URLQuery'
@@ -42,6 +42,11 @@ export class SkuService {
   leerTodo(filtros: URLQuery = new URLQuery()) {
     let url = this.base.concat(filtros.obtenerQuery())
     return this.http.get<SKU[]>(url).pipe(catchError(x => throwError(x)))
+  }
+
+  leerTodo_listaDePrecios() {
+    let url = this.base.concat('/todo')
+    return this.http.get<SKU[]>(url).pipe(map((res: any) => res.skus as SKU[]))
   }
 
   buscarId(id: string) {

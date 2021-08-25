@@ -41,7 +41,7 @@ export class PermisosGuard implements CanActivate {
 
     let usuario = JSON.parse(jUsuario) as Usuario
     // Siendo super admin puede entrar a donde sea. s
-    if (usuario.permissions.includes('administrador')) return true
+    // if (usuario.permissions.includes('administrador')) return true
 
     // Si no hay permissions entonces solo el super admin puede entrar.
     if (!permiso) permiso = 'administrador'
