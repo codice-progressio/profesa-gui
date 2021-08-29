@@ -17,6 +17,7 @@ export class ListaDePreciosComponent implements OnInit {
   cargando = false
 
   listasDePrecios: ListaDePrecios[] = []
+  listaMuyGrande = false
 
   ngOnInit(): void {
     this.cargarListas()

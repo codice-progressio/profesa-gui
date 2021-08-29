@@ -1,0 +1,76 @@
+<h1>Lista de precios en lote</h1>
+<small class="text-muted"
+  >Cons skus existentes, crea una lista de clientes nueva relacionando el codigo
+  del producto con el precio dado. Los demas datos se pueden modificar en el
+  detalle de la lista. F</small
+>
+<hr />
+<div class="form-group">
+  <input
+    [(ngModel)]="inputFile"
+    type="file"
+    class="upload"
+    (change)="procesarArchivo($event.target)"
+    class="form-control-file"
+    accept=".csv"
+    [disabled]="cargando"
+  />
+</div>
+
+<div class="form-group">
+  <input
+    [disabled]="!!datos"
+    [(ngModel)]="caracterDeSeparacion"
+    type="text"
+    class="form-control"
+  />
+  <small id="helpId" class="form-text text-muted"
+    >Caracter de separación de CSV</small
+  >
+</div>
+
+<ng-container *ngIf="!cargando; else cargandoTemplate"></ng-container>
+
+<br />
+
+<ng-container *ngIf="datos">
+  <p>
+    Estan preparados {{ datos.length }} listas de precio para agregar/actualizar
+    la lista de precios
+  </p>
+
+  <div class="form-group">
+    <input
+      [disabled]="cargando"
+      type="text"
+      class="form-control"
+      [(ngModel)]="nombre"
+    />
+
+    <small id="helpId" class="form-text text-muted">Nombre de la lista</small>
+  </div>
+</ng-container>
+
+<a
+  (click)="submit()"
+  class="btn btn-primary"
+  href="javascript:void(0)"
+  role="button"
+  >Cargar</a
+>
+<a
+  *ngIf="errores"
+  (click)="descargarErrores(this.errores)"
+  class="btn btn-danger ml-3"
+  href="javascript:void(0)"
+  role="button"
+>
+  <i class="fas fa-file-excel"></i> Desacargar errores</a
+>
+<ng-template #cargandoTemplate>
+  <div class="row">
+    <div class="col-12 text-center">
+      <i class="fas fa-sync fa-spin fa-4x"></i>
+    </div>
+  </div>
+</ng-template>
