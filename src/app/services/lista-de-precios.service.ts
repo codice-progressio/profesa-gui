@@ -23,15 +23,21 @@ export class ListaDePreciosService {
     return this.http.post(this.base, modelo)
   }
 
-  modificar(modelo: ListaDePrecios) {
-    return this.http.put(this.base, modelo)
+  modificar(modelo: ListaDePrecios, noCargarSkus = false) {
+    return this.http.put(
+      this.base.concat(`?noCargarSkus=${noCargarSkus}`),
+      modelo
+    )
   }
 
-  buscarPorId(id: string) {
-    let url = this.base.concat('/id/').concat(id)
+  buscarPorId(id: string, noCargarSkus = false) {
+    let url = this.base
+      .concat('/id/')
+      .concat(id)
+      .concat('?noCargarSkus=' + noCargarSkus)
+
     return this.http.get(url).pipe(
       map((res: any) => {
-        console.log(res)
         return res.listaDePrecios
       })
     )
@@ -40,5 +46,10 @@ export class ListaDePreciosService {
   eliminar(id: string) {
     let url = this.base.concat('/' + id)
     return this.http.delete(url)
+  }
+
+  tamanoDeLista(id: string) {
+    let url = this.base.concat(`/id/${id}/tamano-de-lista`)
+    return this.http.get(url)
   }
 }

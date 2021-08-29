@@ -19,7 +19,6 @@
                   type="text"
                   class="form-control"
                   formControlName="nombre"
-                  
                 />
                 <small id="helpId" class="form-text text-muted"> Nombre </small>
                 <codice-validaciones
@@ -48,7 +47,6 @@
                   type="text"
                   class="form-control"
                   formControlName="iva"
-
                   mask="separator.2"
                   [allowNegativeNumbers]="false"
                   thousandSeparator=","
@@ -122,13 +120,12 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!esDetalle" class="row">
+  <div *ngIf="!esDetalle && !noCargarSkus" class="row">
     <div class="col-12">
       <div class="card shadow">
         <div class="card-body">
           <div class="row">
-            <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
+            <!-- <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
               <a
                 (click)="agregarTodosLosProductos()"
                 class="btn btn-primary"
@@ -137,7 +134,7 @@
               >
                 <i class="fas fa-plus-circle"></i> Agregar todos los skus</a
               >
-            </div>
+            </div> -->
             <div class="col-12 col-md-4 text-center mt-3 mt-md-0">
               <a
                 (click)="limpiarTodosLosProductos()"
@@ -168,125 +165,134 @@
     <div class="col-12">
       <div class="card shadow">
         <div class="card-body">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  (click)="paginacion.irAPagina(paginacion.paginaActual - 1)"
-                  aria-label="Previous"
-                >
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Anterior</span>
-                </a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">
-                  {{ paginacion.paginaActual }} /
-                  {{ paginacion.totalDePaginas }}
-                </a>
-              </li>
+          <h1 *ngIf="noCargarSkus">
+            Esta lista es demasiado grande para modificarse en este apartado.
+            Debe modificarse por lotes.
+          </h1>
 
-              <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  (click)="paginacion.irAPagina(paginacion.paginaActual + 1)"
-                  aria-label="Next"
-                >
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Siguiente</span>
-                </a>
-              </li>
-              <li class="page-item">{{ this.fa('skus').length }} elementos</li>
-            </ul>
-          </nav>
+          <ng-container *ngIf="!noCargarSkus">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="paginacion.irAPagina(paginacion.paginaActual - 1)"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Anterior</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="javascript:void(0)">
+                    {{ paginacion.paginaActual }} /
+                    {{ paginacion.totalDePaginas }}
+                  </a>
+                </li>
 
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Código</th>
-                  <th>SKU</th>
-                  <th>Descripción</th>
-                  <th>Unidad</th>
-                  <th>Precio</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- 
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="paginacion.irAPagina(paginacion.paginaActual + 1)"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Siguiente</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  {{ this.fa('skus').length }} elementos
+                </li>
+              </ul>
+            </nav>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th>SKU</th>
+                    <th>Descripción</th>
+                    <th>Unidad</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 
 =====================================
  Array skus 
 =====================================
 -->
-                <ng-container formArrayName="skus">
-                  <ng-container
-                    *ngFor="let dummy of fa('skus').controls; let i = index"
-                  >
+                  <ng-container formArrayName="skus">
                     <ng-container
-                      *ngIf="i >= corte.inicio && i <= corte.fin - 1"
-                      [formGroupName]="i"
+                      *ngFor="let dummy of fa('skus').controls; let i = index"
                     >
-                      <tr>
-                        <td>
-                          <a
-                            *ngIf="!esDetalle"
-                            (click)="fa('skus').removeAt(i)"
-                            class="btn btn-danger btn-sm"
-                            href="javascript:void(0)"
-                            role="button"
-                            ><i class="fas fa-times-circle"></i
-                          ></a>
-                        </td>
-                        <td>{{ dummy.get('sku').value?.codigo }}</td>
-                        <td>{{ dummy.get('sku').value?.nombreCompleto }}</td>
-                        <td>{{ dummy.get('sku').value?.descripcion }}</td>
-                        <td>{{ dummy.get('sku').value?.unidad }}</td>
-                        <td style="min-width: 150px">
-                          <!-- 
+                      <ng-container
+                        *ngIf="i >= corte.inicio && i <= corte.fin - 1"
+                        [formGroupName]="i"
+                      >
+                        <tr>
+                          <td>
+                            <a
+                              *ngIf="!esDetalle"
+                              (click)="fa('skus').removeAt(i)"
+                              class="btn btn-danger btn-sm"
+                              href="javascript:void(0)"
+                              role="button"
+                              ><i class="fas fa-times-circle"></i
+                            ></a>
+                          </td>
+                          <td>{{ dummy.get('sku').value?.codigo }}</td>
+                          <td>{{ dummy.get('sku').value?.nombreCompleto }}</td>
+                          <td>{{ dummy.get('sku').value?.descripcion }}</td>
+                          <td>{{ dummy.get('sku').value?.unidad }}</td>
+                          <td style="min-width: 150px">
+                            <!-- 
       =====================================
        precio
       =====================================
       -->
-                          <div class="form-group d-inline">
-                            <input
-                              [ngClass]="{
-                                'is-invalid': vs.invalid(dummy.get('precio')),
-                                'is-valid': vs.valid(dummy.get('precio'))
-                              }"
-                              type="text"
-                              class="form-control"
-                              formControlName="precio"
-                              mask="separator.2"
-                              [allowNegativeNumbers]="false"
-                              thousandSeparator=","
-                              prefix="$ "
-                            />
+                            <div class="form-group d-inline">
+                              <input
+                                [ngClass]="{
+                                  'is-invalid': vs.invalid(dummy.get('precio')),
+                                  'is-valid': vs.valid(dummy.get('precio'))
+                                }"
+                                type="text"
+                                class="form-control"
+                                formControlName="precio"
+                                mask="separator.2"
+                                [allowNegativeNumbers]="false"
+                                thousandSeparator=","
+                                prefix="$ "
+                              />
 
-                            <codice-validaciones
-                              [campo]="dummy.get('precio')"
-                            ></codice-validaciones>
-                          </div>
-                          <!-- 
+                              <codice-validaciones
+                                [campo]="dummy.get('precio')"
+                              ></codice-validaciones>
+                            </div>
+                            <!-- 
       =====================================
        END precio
       =====================================
       -->
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
+                      </ng-container>
                     </ng-container>
                   </ng-container>
-                </ng-container>
-                <!-- 
+                  <!-- 
 =====================================
  END Array skus 
 =====================================
 -->
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>

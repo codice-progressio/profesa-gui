@@ -131,13 +131,22 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
       this.renderer.setStyle(x, 'border', 'none')
       this.renderer.setStyle(x, 'border-bottom-style', 'solid')
       this.renderer.setStyle(x, 'border-bottom-width', '1px')
-      this.renderer.setStyle(x, "background-color","transparent" )
-      this.renderer.setStyle(x, "color","#000" )
+      this.renderer.setStyle(x, 'background-color', 'transparent')
+      this.renderer.setStyle(x, 'color', '#000')
     })
   }
-  modificar(id: string) {
+
+  noCargarSkus = false
+
+  async modificar(id: string) {
     this.esModificar = this.cargando = true
-    this.listaDePreciosService.buscarPorId(id).subscribe(
+
+    let resp: any = await this.listaDePreciosService
+      .tamanoDeLista(id)
+      .toPromise()
+    if (resp.tamano * 1 > 500) this.noCargarSkus = true
+
+    this.listaDePreciosService.buscarPorId(id, this.noCargarSkus).subscribe(
       lista => {
         this.cargando = false
         this.crearFormulario(lista)
@@ -240,7 +249,9 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
     if (this.esCrear)
       this.listaDePreciosService.crear(modelo).subscribe(cb, cbError)
     if (this.esModificar)
-      this.listaDePreciosService.modificar(modelo).subscribe(cb, cbError)
+      this.listaDePreciosService
+        .modificar(modelo, this.noCargarSkus)
+        .subscribe(cb, cbError)
   }
 }
 

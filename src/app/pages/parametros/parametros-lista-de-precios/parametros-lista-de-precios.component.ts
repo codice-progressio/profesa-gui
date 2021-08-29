@@ -54,7 +54,7 @@ export class ParametrosListaDePreciosComponent implements OnInit {
           'Se guardo la lista de precios por defecto'
         )
       },
-      () => (this.cargando = false)
+     
     )
   }
 }

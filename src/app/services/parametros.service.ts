@@ -10,11 +10,13 @@ import { ListaDePrecios } from '../models/listaDePrecios.model'
 export class ParametrosService {
   etiquetas: EtiquetasService
   listasDePrecio: ListaDePrecioService
+  sku: SKUService
   base = URL_BASE('parametros')
 
   constructor(public http: HttpClient) {
     this.etiquetas = new EtiquetasService(this)
     this.listasDePrecio = new ListaDePrecioService(this)
+    this.sku = new SKUService(this)
   }
 }
 
@@ -39,10 +41,11 @@ class ListaDePrecioService {
   constructor(private root: ParametrosService) {}
 
   cargar() {
-    return this.root.http
-      .get<string>(this.base)
-      .pipe(map((res: any) => {
-        return res.parametros.listaDePreciosDefault}))
+    return this.root.http.get<string>(this.base).pipe(
+      map((res: any) => {
+        return res.parametros.listaDePreciosDefault
+      })
+    )
   }
 
   leerTodoLigero() {
@@ -53,5 +56,18 @@ class ListaDePrecioService {
 
   guardar(_id: string) {
     return this.root.http.post(this.base, { _id })
+  }
+
+  cargarEnLote(datos: any[], nombre: string) {
+    return this.root.http.post(this.base.concat('/lote'), { datos, nombre })
+  }
+}
+
+class SKUService {
+  base = this.root.base.concat('/skus')
+  constructor(private root: ParametrosService) {}
+
+  cargarEnLote(datos: any[]) {
+    return this.root.http.post(this.base, datos)
   }
 }
