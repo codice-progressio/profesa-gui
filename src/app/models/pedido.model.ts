@@ -1,10 +1,10 @@
 import { Usuario } from './usuario.model'
-import { Proveedor } from './proveedor.model'
+import { Contacto } from './contacto.model'
 import { SKU } from './sku.model'
 export interface Pedido {
   _id: Number
   eliminado: boolean
-  contacto: Proveedor
+  contacto: Contacto
   usuario: Usuario
   articulos: ArticuloPedido[]
   observaciones: string

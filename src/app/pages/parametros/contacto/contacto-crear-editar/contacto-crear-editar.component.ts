@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core'
-import { ProveedorService } from '../../../../services/proveedor.service'
+import { ContactoService } from '../../../../services/contacto.service'
 import {
   AbstractControl,
   FormArray,
@@ -12,21 +12,21 @@ import { ActivatedRoute } from '@angular/router'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 import {
-  Proveedor,
-  ProveedorDomicilio,
-  ProveedorContacto,
-  ProveedorCuenta
-} from '../../../../models/proveedor.model'
+  Contacto,
+  ContactoDomicilio,
+  ContactoContacto,
+  ContactoCuenta
+} from '../../../../models/contacto.model'
 import { RutaDeEntrega } from 'src/app/models/rutaDeEntrega.model'
 import { RutaDeEntregaService } from '../../../../services/ruta-de-entrega.service'
 import { ModalService } from '@codice-progressio/modal'
 
 @Component({
-  selector: 'app-proveedor-crear-editar',
-  templateUrl: './proveedor-crear-editar.component.html',
-  styleUrls: ['./proveedor-crear-editar.component.css']
+  selector: 'app-contacto-crear-editar',
+  templateUrl: './contacto-crear-editar.component.html',
+  styleUrls: ['./contacto-crear-editar.component.css']
 })
-export class ProveedorCrearEditarComponent implements OnInit {
+export class ContactoCrearEditarComponent implements OnInit {
   private _cargando = false
   public get cargando() {
     return this._cargando
@@ -49,7 +49,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     public vs: ValidacionesService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private proveedorService: ProveedorService
+    private proveedorService: ContactoService
   ) {}
 
   ngOnInit(): void {
@@ -91,8 +91,8 @@ export class ProveedorCrearEditarComponent implements OnInit {
     )
   }
 
-  crearFormulario(proveedor: Partial<Proveedor>) {
-    this.contactoSeleccionado = proveedor as Proveedor
+  crearFormulario(proveedor: Partial<Contacto>) {
+    this.contactoSeleccionado = proveedor as Contacto
     this.formulario = new FormGroup({
       _id: new FormControl(proveedor._id, []),
       nombre: new FormControl(proveedor.nombre, [
@@ -131,7 +131,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     }
   }
 
-  creFormDomicilio(domicilios: Partial<ProveedorDomicilio>): FormGroup {
+  creFormDomicilio(domicilios: Partial<ContactoDomicilio>): FormGroup {
     return new FormGroup({
       _id: new FormControl(domicilios._id),
       calle: new FormControl(domicilios.calle),
@@ -146,7 +146,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     })
   }
 
-  creFormContacto(contactos: Partial<ProveedorContacto>): FormGroup {
+  creFormContacto(contactos: Partial<ContactoContacto>): FormGroup {
     return new FormGroup({
       _id: new FormControl(contactos._id),
       nombre: new FormControl(contactos.nombre),
@@ -164,7 +164,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     })
   }
 
-  creFormCuentas(cuentas: Partial<ProveedorCuenta> = {}): FormGroup {
+  creFormCuentas(cuentas: Partial<ContactoCuenta> = {}): FormGroup {
     return new FormGroup({
       _id: new FormControl(cuentas._id),
       clabe: new FormControl(cuentas.clabe, [this.vs.numberValidator]),
@@ -173,7 +173,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     })
   }
 
-  submit(modelo: Proveedor, invalid: boolean) {
+  submit(modelo: Contacto, invalid: boolean) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
 
@@ -188,7 +188,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     else this.guardar(modelo)
   }
 
-  modificar(modelo: Proveedor) {
+  modificar(modelo: Contacto) {
     this.cargando = true
     this.proveedorService.modificar(modelo).subscribe(
       modelo => this.location.back(),
@@ -196,7 +196,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
     )
   }
 
-  guardar(modelo: Proveedor) {
+  guardar(modelo: Contacto) {
     this.cargando = true
     this.proveedorService.crear(modelo).subscribe(
       pro => {
@@ -232,9 +232,9 @@ export class ProveedorCrearEditarComponent implements OnInit {
   idModalRutas = Math.random() * 100000 + 'rutas'
   cargandoRutas = false
   rutas: RutaDeEntrega[] = []
-  contactoSeleccionado: Proveedor
+  contactoSeleccionado: Contacto
 
-  abrirModalRutas(contacto: Proveedor) {
+  abrirModalRutas(contacto: Contacto) {
     this.cargarRutas()
     this.permitirModificarRuta = true
     this.modalService.open(this.idModalRutas)
@@ -252,7 +252,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
   }
 
   permitirModificarRuta = false
-  agregarEliminarRuta(ruta: RutaDeEntrega, contacto: Proveedor) {
+  agregarEliminarRuta(ruta: RutaDeEntrega, contacto: Contacto) {
     if (!this.permitirModificarRuta) return
     if (!contacto.rutas.find(x => x._id === ruta._id)) contacto.rutas.push(ruta)
     else {
@@ -262,7 +262,7 @@ export class ProveedorCrearEditarComponent implements OnInit {
 
   guardandoRutas = false
 
-  guardarRutas(contacto: Proveedor) {
+  guardarRutas(contacto: Contacto) {
     if (this.guardandoRutas) return
     this.guardandoRutas = true
     this.proveedorService.rutas.agregarModificar(contacto).subscribe(

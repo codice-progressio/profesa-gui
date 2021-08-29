@@ -1,13 +1,13 @@
 import { RutaDeEntrega } from './rutaDeEntrega.model'
-export interface Proveedor {
+export interface Contacto {
   _id: string
   nombre: string
   razonSocial: string
-  domicilios: ProveedorDomicilio[]
-  contactos: ProveedorContacto[]
+  domicilios: ContactoDomicilio[]
+  contactos: ContactoContacto[]
   rfc: string
-  cuentas: ProveedorCuenta[]
-  // Establece como eliminado el proveedor. Esto sirve
+  cuentas: ContactoCuenta[]
+  // Establece como eliminado el contacto. Esto sirve
   // para que las referencias como las compras
   // por precio de proveedor no se vean afectadas
   // al eliminar todos los datos relacionados con el proveedor.
@@ -16,9 +16,10 @@ export interface Proveedor {
   esCliente: boolean
   etiquetas: string[]
   rutas: RutaDeEntrega[]
+  listaDePrecios: string
 }
 
-export interface ProveedorDomicilio {
+export interface ContactoDomicilio {
   _id: string
   calle: string
   numeroInterior: string
@@ -31,7 +32,7 @@ export interface ProveedorDomicilio {
   urlMaps: string
 }
 
-export interface ProveedorContacto {
+export interface ContactoContacto {
   _id: string
   nombre: string[]
   telefono: string[]
@@ -39,7 +40,7 @@ export interface ProveedorContacto {
   puesto: string[]
 }
 
-export interface ProveedorCuenta {
+export interface ContactoCuenta {
   _id: string
   clabe: number
   cuenta: number
