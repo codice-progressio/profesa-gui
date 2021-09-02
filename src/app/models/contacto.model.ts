@@ -1,6 +1,8 @@
+import { ListaDePrecios } from './listaDePrecios.model'
 import { RutaDeEntrega } from './rutaDeEntrega.model'
 export interface Contacto {
   _id: string
+  codigo: string
   nombre: string
   razonSocial: string
   domicilios: ContactoDomicilio[]
@@ -16,6 +18,7 @@ export interface Contacto {
   esCliente: boolean
   etiquetas: string[]
   rutas: RutaDeEntrega[]
+  // listaDePrecios: string | ListaDePrecios
   listaDePrecios: string
 }
 

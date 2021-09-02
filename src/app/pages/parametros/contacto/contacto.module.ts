@@ -7,7 +7,7 @@ import { ComponentsModule } from 'src/app/components/components.module'
 import { DirectivesModule } from 'src/app/directives/directives.module'
 import { UxModule } from 'src/app/ux/ux.module'
 import { ContactoCrearEditarComponent } from './contacto-crear-editar/contacto-crear-editar.component'
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ModalModule } from '@codice-progressio/modal'
 import { PipesModule } from '../../../pipes/pipes.module'
 
@@ -44,7 +44,8 @@ const routes: Routes = [
     UxModule,
     ReactiveFormsModule,
     ModalModule,
-    PipesModule
+    PipesModule,
+    FormsModule
 
   ]
 })

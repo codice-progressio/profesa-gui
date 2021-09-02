@@ -80,7 +80,9 @@ export class ProveedorComponent implements OnInit {
     this.router.navigate(
       [
         'modificar',
-        this.utilidadesService.niceUrl(proveedor.nombre),
+        this.utilidadesService.niceUrl(
+          proveedor.nombre ?? proveedor.razonSocial
+        ),
         proveedor._id
       ],
       { relativeTo: this.activatedRoute }
@@ -91,7 +93,9 @@ export class ProveedorComponent implements OnInit {
     this.router.navigate(
       [
         'detalle',
-        this.utilidadesService.niceUrl(proveedor.nombre),
+        this.utilidadesService.niceUrl(
+          proveedor.nombre ?? proveedor.razonSocial
+        ),
         proveedor._id
       ],
       { relativeTo: this.activatedRoute }

@@ -171,6 +171,53 @@
           =====================================
           -->
 
+            <!-- 
+          =====================================
+           Array array 
+          =====================================
+          -->
+
+            <!-- 
+          =====================================
+           END Array array 
+          =====================================
+          -->
+
+            <!-- 
+          =====================================
+           listaDePrecios
+          =====================================
+          -->
+            <div *ngIf="f('esCliente').value" class="col-12 col-sm-6 col-lg-4">
+              <div class="form-group">
+                <select
+                  [ngClass]="{
+                    'is-invalid': vs.invalid(f('listaDePrecios')),
+                    'is-valid': vs.valid(f('listaDePrecios'))
+                  }"
+                  class="form-control form-control-sm"
+                  formControlName="listaDePrecios"
+                  class="custom-select"
+                >
+                  <option [value]="l._id" *ngFor="let l of listasDePrecio">
+                    {{ l.nombre }}
+                  </option>
+                </select>
+              </div>
+
+              <small id="helpId" class="form-text text-muted"
+                >Lista de precios</small
+              >
+              <app-validacion-inputs
+                [campo]="f('listaDePrecios')"
+              ></app-validacion-inputs>
+            </div>
+            <!-- 
+          =====================================
+           END listaDePrecios
+          =====================================
+          -->
+
             <div class="col-12">
               <hr />
               <h3>

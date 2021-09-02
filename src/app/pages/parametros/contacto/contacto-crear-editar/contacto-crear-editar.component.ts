@@ -20,6 +20,8 @@ import {
 import { RutaDeEntrega } from 'src/app/models/rutaDeEntrega.model'
 import { RutaDeEntregaService } from '../../../../services/ruta-de-entrega.service'
 import { ModalService } from '@codice-progressio/modal'
+import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
+import { ListaDePreciosService } from 'src/app/services/lista-de-precios.service'
 
 @Component({
   selector: 'app-contacto-crear-editar',
@@ -41,6 +43,7 @@ export class ContactoCrearEditarComponent implements OnInit {
 
   formulario: FormGroup
   id: string
+  listasDePrecio: ListaDePrecios[] = []
   constructor(
     private rutasService: RutaDeEntregaService,
     private modalService: ModalService,
@@ -49,17 +52,45 @@ export class ContactoCrearEditarComponent implements OnInit {
     public vs: ValidacionesService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private proveedorService: ContactoService
+    private proveedorService: ContactoService,
+    private listaDePreciosService: ListaDePreciosService
   ) {}
 
   ngOnInit(): void {
     this.obtenerId()
   }
+
+  listaSeleccionada: ListaDePrecios
+  cargandoListas = false
+
+  obtenerListas() {
+    this.cargandoListas = true
+    this.listaDePreciosService.todoLigero().subscribe(
+      listas => {
+        this.listasDePrecio = listas
+
+        this.cargandoListas = false
+      },
+      () => (this.cargandoListas = false)
+    )
+  }
+
+  cambiarLista(datos) {
+    console.log(datos)
+  }
+
+  definirLista(valor: any) {
+    console.log(valor.value)
+  }
+
   activarProtocoloDetalle() {
     // Agregamos una clase a todos los input.
-    document.querySelectorAll('input').forEach(x => {
+    document.querySelectorAll('input, select').forEach(x => {
       this.renderer.addClass(x, 'detalle')
     })
+
+    ;["esProveedor", "esCliente"].forEach(x=>this.f(x).disable())
+    
   }
 
   esRutaDetalle() {
@@ -91,35 +122,36 @@ export class ContactoCrearEditarComponent implements OnInit {
     )
   }
 
-  crearFormulario(proveedor: Partial<Contacto>) {
-    this.contactoSeleccionado = proveedor as Contacto
+  crearFormulario(contacto: Partial<Contacto>) {
+    this.contactoSeleccionado = contacto as Contacto
     this.formulario = new FormGroup({
-      _id: new FormControl(proveedor._id, []),
-      nombre: new FormControl(proveedor.nombre, [
-        Validators.required,
-        Validators.minLength(4)
-      ]),
-      razonSocial: new FormControl(proveedor.razonSocial, []),
+      _id: new FormControl(contacto._id, []),
+      nombre: new FormControl(contacto.nombre, [Validators.minLength(4)]),
+      razonSocial: new FormControl(contacto.razonSocial, []),
       domicilios: new FormArray(
-        proveedor.domicilios?.map(x => this.creFormDomicilio(x)) ?? [
+        contacto.domicilios?.map(x => this.creFormDomicilio(x)) ?? [
           this.creFormDomicilio({})
         ]
       ),
       contactos: new FormArray(
-        proveedor.contactos?.map(x => this.creFormContacto(x)) ?? [
+        contacto.contactos?.map(x => this.creFormContacto(x)) ?? [
           this.creFormContacto({})
         ]
       ),
-      rfc: new FormControl(proveedor.rfc, []),
+      rfc: new FormControl(contacto.rfc, []),
       cuentas: new FormArray(
-        proveedor.cuentas?.map(x => this.creFormCuentas(x)) ?? [
+        contacto.cuentas?.map(x => this.creFormCuentas(x)) ?? [
           this.creFormCuentas({})
         ]
       ),
 
-      esProveedor: new FormControl(proveedor.esProveedor),
-      esCliente: new FormControl(proveedor.esCliente)
+      esProveedor: new FormControl(contacto.esProveedor),
+      esCliente: new FormControl(contacto.esCliente),
+      listaDePrecios: new FormControl(contacto.listaDePrecios)
     })
+
+    this.obtenerListas()
+
     this.cargando = false
     if (this.esRutaDetalle()) {
       setTimeout(() => {
@@ -216,9 +248,9 @@ export class ContactoCrearEditarComponent implements OnInit {
   }
 
   fa(campoArreglo: string | AbstractControl) {
-    return (typeof campoArreglo === 'string'
-      ? this.f(campoArreglo)
-      : campoArreglo) as FormArray
+    return (
+      typeof campoArreglo === 'string' ? this.f(campoArreglo) : campoArreglo
+    ) as FormArray
   }
 
   dfa(dummy: AbstractControl, campo: string): FormArray {
@@ -273,5 +305,12 @@ export class ContactoCrearEditarComponent implements OnInit {
       },
       () => (this.guardandoRutas = false)
     )
+  }
+
+  compararLista(l1: ListaDePrecios, l2: ListaDePrecios): boolean {
+
+    console.log({l1,l2})
+
+    return l1 && l2 ? l1._id === l2._id : l1 === l2
   }
 }
