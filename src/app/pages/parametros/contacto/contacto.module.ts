@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { Routes, RouterModule } from '@angular/router'
-import { ProveedorComponent } from './proveedor.component'
+import { ProveedorComponent } from './contacto.component'
 
 import { ComponentsModule } from 'src/app/components/components.module'
 import { DirectivesModule } from 'src/app/directives/directives.module'
 import { UxModule } from 'src/app/ux/ux.module'
-import { ProveedorCrearEditarComponent } from './proveedor-crear-editar/proveedor-crear-editar.component'
-import { ReactiveFormsModule } from '@angular/forms'
+import { ContactoCrearEditarComponent } from './contacto-crear-editar/contacto-crear-editar.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ModalModule } from '@codice-progressio/modal'
 import { PipesModule } from '../../../pipes/pipes.module'
 
@@ -15,17 +15,17 @@ const routes: Routes = [
   { path: '', component: ProveedorComponent, data: { titulo: 'Contactos' } },
   {
     path: 'crear',
-    component: ProveedorCrearEditarComponent,
+    component: ContactoCrearEditarComponent,
     data: { titulo: 'Crear contacto' }
   },
   {
     path: 'modificar/:nombre/:id',
-    component: ProveedorCrearEditarComponent,
+    component: ContactoCrearEditarComponent,
     data: { titulo: 'Modificar contacto' }
   },
   {
     path: 'detalle/:nombre/:id',
-    component: ProveedorCrearEditarComponent,
+    component: ContactoCrearEditarComponent,
     data: { titulo: 'Detalle contacto' }
   }
 ]
@@ -33,8 +33,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ProveedorComponent,
-    ProveedorCrearEditarComponent,
-    ProveedorCrearEditarComponent
+    ContactoCrearEditarComponent,
+    ContactoCrearEditarComponent
   ],
   imports: [
     CommonModule,
@@ -44,8 +44,9 @@ const routes: Routes = [
     UxModule,
     ReactiveFormsModule,
     ModalModule,
-    PipesModule
+    PipesModule,
+    FormsModule
 
   ]
 })
-export class ProveedorModule {}
+export class ContactoModule {}

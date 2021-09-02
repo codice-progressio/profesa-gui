@@ -5,10 +5,10 @@ import { ValidacionesService } from '../../../services/utilidades/validaciones.s
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ArticuloPedido, Pedido } from '../../../models/pedido.model'
 import { Location } from '@angular/common'
-import { Proveedor } from '../../../models/proveedor.model'
+import { Contacto } from '../../../models/contacto.model'
 import { ModalService } from '@codice-progressio/modal'
 import { BehaviorSubject } from 'rxjs'
-import { ProveedorService } from '../../../services/proveedor.service'
+import { ContactoService } from '../../../services/contacto.service'
 import { SkuService } from '../../../services/sku/sku.service'
 import { SKU } from '../../../models/sku.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
@@ -22,7 +22,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   constructor(
     private notiService: ManejoDeMensajesService,
     private skuService: SkuService,
-    private contactoService: ProveedorService,
+    private contactoService: ContactoService,
     private pedidoService: PedidoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -134,7 +134,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   terminoContacto: string
   estaCargandoBuscadorContacto: BehaviorSubject<boolean>
-  contactos: Proveedor[] = []
+  contactos: Contacto[] = []
 
   buscarContacto(termino) {
     if (!termino.trim()) {
@@ -154,7 +154,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     )
   }
 
-  seleccionarContacto(contacto: Proveedor) {
+  seleccionarContacto(contacto: Contacto) {
     this.pedido.contacto = contacto
     this.formulario.get('contacto').setValue(contacto._id)
     this.modalService.close(this.idModalContacto)

@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
-import { Proveedor } from 'src/app/models/proveedor.model'
-import { ProveedorService } from 'src/app/services/proveedor.service'
+import { Contacto } from 'src/app/models/contacto.model'
+import { ContactoService } from 'src/app/services/contacto.service'
 import { UtilidadesService } from '../../../services/utilidades.service'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { EtiquetaTransporte } from '../../../components/etiquetas-editor/etiquetas-editor.component'
 import { ModalService } from '@codice-progressio/modal'
 
 @Component({
-  selector: 'app-proveedor',
-  templateUrl: './proveedor.component.html',
-  styleUrls: ['./proveedor.component.css']
+  selector: 'app-contacto',
+  templateUrl: './contacto.component.html',
+  styleUrls: ['./contacto.component.css']
 })
 export class ProveedorComponent implements OnInit {
-  contactos: Proveedor[] = []
+  contactos: Contacto[] = []
   estaCargandoBuscador: BehaviorSubject<boolean>
 
   private _termino: string
@@ -36,7 +36,7 @@ export class ProveedorComponent implements OnInit {
   }
 
   idModalEtiqueta = Math.random() * 100000 + 'etiquetas'
-  contactoSeleccionado: Proveedor | null = null
+  contactoSeleccionado: Contacto | null = null
   cargandoEtiquetas = false
 
   constructor(
@@ -45,14 +45,14 @@ export class ProveedorComponent implements OnInit {
     private utilidadesService: UtilidadesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private proveedorService: ProveedorService
+    private proveedorService: ContactoService
   ) {}
 
   ngOnInit(): void {
     this.cargar()
   }
 
-  obtenerPrimerContacto(proveedor: Proveedor) {
+  obtenerPrimerContacto(proveedor: Contacto) {
     return proveedor?.contactos?.[0]
   }
 
@@ -76,29 +76,33 @@ export class ProveedorComponent implements OnInit {
     )
   }
 
-  editar(proveedor: Proveedor) {
+  editar(proveedor: Contacto) {
     this.router.navigate(
       [
         'modificar',
-        this.utilidadesService.niceUrl(proveedor.nombre),
+        this.utilidadesService.niceUrl(
+          proveedor.nombre ?? proveedor.razonSocial
+        ),
         proveedor._id
       ],
       { relativeTo: this.activatedRoute }
     )
   }
 
-  detalle(proveedor: Proveedor) {
+  detalle(proveedor: Contacto) {
     this.router.navigate(
       [
         'detalle',
-        this.utilidadesService.niceUrl(proveedor.nombre),
+        this.utilidadesService.niceUrl(
+          proveedor.nombre ?? proveedor.razonSocial
+        ),
         proveedor._id
       ],
       { relativeTo: this.activatedRoute }
     )
   }
 
-  eliminar(proveedor: Proveedor) {
+  eliminar(proveedor: Contacto) {
     this.notiService.confirmacionDeEliminacion(
       'Solo el administrador podra restaurar esta información. ',
       () => {
@@ -110,12 +114,12 @@ export class ProveedorComponent implements OnInit {
     )
   }
 
-  abrirModalEtiqueta(contacto: Proveedor) {
+  abrirModalEtiqueta(contacto: Contacto) {
     this.contactoSeleccionado = contacto
     this.modalService.open(this.idModalEtiqueta)
   }
 
-  etiquetaGuardar(contacto: Proveedor, payload: EtiquetaTransporte) {
+  etiquetaGuardar(contacto: Contacto, payload: EtiquetaTransporte) {
     payload.cargando.next(true)
     this.proveedorService.etiquetas
       .agregar(contacto._id, payload.etiqueta)
@@ -128,7 +132,7 @@ export class ProveedorComponent implements OnInit {
       )
   }
 
-  etiquetaEliminar(contacto: Proveedor, payload: EtiquetaTransporte) {
+  etiquetaEliminar(contacto: Contacto, payload: EtiquetaTransporte) {
     payload.cargando.next(true)
     this.proveedorService.etiquetas
       .eliminar(contacto._id, payload.etiqueta)
