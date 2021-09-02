@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common'
 import { Inject, Injectable, OnInit } from '@angular/core'
-
+import { NgxCsvParser } from 'ngx-csv-parser'
+import { NgxCSVParserError } from 'ngx-csv-parser'
+import { map } from 'rxjs/operators'
 @Injectable({
   providedIn: 'root'
 })
@@ -8,9 +10,9 @@ export class UtilidadesService {
   fullScreen: FullScreen
   ficheros: Ficheros
 
-  constructor() {
+  constructor(public ngxCsvParser: NgxCsvParser) {
     this.fullScreen = new FullScreen(this)
-    this.ficheros = new Ficheros()
+    this.ficheros = new Ficheros(this)
   }
 
   niceUrl(str: string): string {
@@ -22,40 +24,53 @@ export class UtilidadesService {
 }
 
 class Ficheros {
-  procesarArchivo(target, caracterDeSeparacion) {
-    return new Promise((resolve, reject) => {
-      let ficheros: FileList = target?.files as FileList
-      if (ficheros && ficheros.length > 0) {
-        let file: File = ficheros.item(0)
-        let reader: FileReader = new FileReader()
-        reader.readAsText(file)
-        reader.onload = e => {
-          let arreglo: string[][] = (reader.result as string)
-            .split('\r\n')
-            .map(x => x.split(caracterDeSeparacion))
+  constructor(private root: UtilidadesService) {}
 
-          let encabezados = arreglo.shift().reduce((acumulador, actual) => {
-            acumulador[actual.trim()] = ''
+  procesarArchivo(target, delimiter) {
+    // Parse the file you want to select for the operation along with the configuration
+    return this.root.ngxCsvParser
+      .parse(target.files[0], { header: true, delimiter })
+      .pipe(
+        map(x => {
+          console.log(x)
+          return x
+        })
+      )
+      .toPromise()
 
-            return acumulador
-          }, {})
+    // return new Promise((resolve, reject) => {
+    //   let ficheros: FileList = target?.files as FileList
+    //   if (ficheros && ficheros.length > 0) {
+    //     let file: File = ficheros.item(0)
+    //     let reader: FileReader = new FileReader()
+    //     reader.readAsText(file)
+    //     reader.onload = e => {
+    //       let arreglo: string[][] = (reader.result as string)
+    //         .split('\r\n')
+    //         .map(x => x.split(caracterDeSeparacion))
 
-          let acomodado = arreglo.map(actual => {
-            let objeto = {}
+    //       let encabezados = arreglo.shift().reduce((acumulador, actual) => {
+    //         acumulador[actual.trim()] = ''
 
-            let contador = 0
-            for (const key in encabezados) {
-              objeto[key] = actual[contador]
-              contador++
-            }
+    //         return acumulador
+    //       }, {})
 
-            return objeto
-          }, [])
+    //       let acomodado = arreglo.map(actual => {
+    //         let objeto = {}
 
-          return resolve(acomodado as any[])
-        }
-      } else return reject()
-    })
+    //         let contador = 0
+    //         for (const key in encabezados) {
+    //           objeto[key] = actual[contador]
+    //           contador++
+    //         }
+
+    //         return objeto
+    //       }, [])
+
+    //       return resolve(acomodado as any[])
+    //     }
+    //   } else return reject()
+    // })
   }
 }
 

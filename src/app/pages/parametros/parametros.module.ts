@@ -9,7 +9,9 @@ import { VerificaTokenGuard } from 'src/app/services/guards/verifica-token.guard
 import { ParametrosListaDePreciosComponent } from './parametros-lista-de-precios/parametros-lista-de-precios.component'
 import { FormsModule } from '@angular/forms'
 import { ParametrosSkuEnLotesComponent } from './parametros-sku-en-lotes/parametros-sku-en-lotes.component'
-import { ParametrosListaDePreciosEnLotesComponent } from './parametros-lista-de-precios-en-lotes/parametros-lista-de-precios-en-lotes.component'
+import { ParametrosListaDePreciosEnLotesComponent } from './parametros-lista-de-precios-en-lotes/parametros-lista-de-precios-en-lotes.component';
+import { ParametrosContactosEnLotesComponent } from './parametros-contactos-en-lotes/parametros-contactos-en-lotes.component'
+
 
 const routes: Routes = [
   {
@@ -45,13 +47,15 @@ const routes: Routes = [
     ParametrosComponent,
     ParametrosListaDePreciosComponent,
     ParametrosSkuEnLotesComponent,
-    ParametrosListaDePreciosEnLotesComponent
+    ParametrosListaDePreciosEnLotesComponent,
+    ParametrosContactosEnLotesComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     ComponentsModule,
-    FormsModule
+    FormsModule,
+  
   ]
 })
 export class ParametrosModule {}
