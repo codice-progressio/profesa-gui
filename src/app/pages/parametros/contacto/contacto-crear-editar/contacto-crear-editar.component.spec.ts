@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ProveedorComponent } from './proveedor.component';
+import { ContactoCrearEditarComponent } from './contacto-crear-editar.component';
 
-describe('ProveedorComponent', () => {
-  let component: ProveedorComponent;
-  let fixture: ComponentFixture<ProveedorComponent>;
+describe('ProveedorCrearEditarComponent', () => {
+  let component: ContactoCrearEditarComponent;
+  let fixture: ComponentFixture<ContactoCrearEditarComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProveedorComponent ]
+      declarations: [ ContactoCrearEditarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProveedorComponent);
+    fixture = TestBed.createComponent(ContactoCrearEditarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

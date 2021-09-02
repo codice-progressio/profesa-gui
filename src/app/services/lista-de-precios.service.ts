@@ -52,4 +52,13 @@ export class ListaDePreciosService {
     let url = this.base.concat(`/id/${id}/tamano-de-lista`)
     return this.http.get(url)
   }
+
+  todoLigero() {
+    let url = this.base.concat('/todo-ligero')
+    return this.http.get<ListaDePrecios[]>(url).pipe(
+      map((res: any) => {
+        return res.listaDePrecios
+      })
+    )
+  }
 }

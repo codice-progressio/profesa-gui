@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { RutaDeEntrega } from '../models/rutaDeEntrega.model'
 import { URL_BASE } from '../config/config'
-import { Proveedor } from '../models/proveedor.model'
+import { Contacto } from '../models/contacto.model'
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class RutaDeEntregaService {
   }
 
   buscarContactosDeRuta(id: string) {
-    return this.http.get<Proveedor>(
+    return this.http.get<Contacto>(
       this.base.concat(`/buscar/contactos-de-ruta/${id}`)
     )
   }

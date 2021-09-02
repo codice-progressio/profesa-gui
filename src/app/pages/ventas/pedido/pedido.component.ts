@@ -4,8 +4,8 @@ import { PedidoService } from '../../../services/pedido.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
 import { UtilidadesService } from '../../../services/utilidades/utilidades.service'
-import { ProveedorService } from '../../../services/proveedor.service'
-import { Proveedor } from '../../../models/proveedor.model'
+import { ContactoService } from '../../../services/contacto.service'
+import { Contacto } from '../../../models/contacto.model'
 
 @Component({
   selector: 'app-pedido',
@@ -14,7 +14,7 @@ import { Proveedor } from '../../../models/proveedor.model'
 })
 export class PedidoComponent implements OnInit {
   constructor(
-    private proveedorService: ProveedorService,
+    private proveedorService: ContactoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private pedidoService: PedidoService

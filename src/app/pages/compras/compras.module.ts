@@ -8,11 +8,6 @@ const routes: Routes = [
     path: '',
     component: ComprasComponent,
     data: { title: 'Tablero de compras' }
-  },
-  {
-    path: 'contactos',
-    loadChildren: () =>
-      import('./proveedor/proveedor.module').then(m => m.ProveedorModule)
   }
 ]
 

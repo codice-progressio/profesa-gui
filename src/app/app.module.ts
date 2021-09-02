@@ -33,6 +33,7 @@ import { ConfirmarUsuarioComponent } from './confirmar-usuario/confirmar-usuario
 import { environment } from '../environments/environment'
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
+import { NgxCsvParserModule } from 'ngx-csv-parser'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -102,6 +103,7 @@ const appRoutes: Routes = [
         // throwNoTokenError: true
       }
     }),
+    NgxCsvParserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
