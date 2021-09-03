@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-12 col-lg-6 col-xl-4">
+  <div *ngIf="permisoEtiquetas()" class="col-12 col-lg-6 col-xl-4">
     <div class="card shadow">
       <div class="card-body">
         <div class="row">
@@ -24,14 +24,16 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
+
+  <div *ngIf="permisoListaDePrecioDefault()" class="col-12 col-md-6">
     <div class="card shadow">
       <div class="card-body">
         <app-parametros-lista-de-precios></app-parametros-lista-de-precios>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
+
+  <div *ngIf="permisoSkuEnLotes()" class="col-12 col-md-6">
     <div class="card shadow">
       <div class="card-body">
         <app-parametros-sku-en-lotes></app-parametros-sku-en-lotes>
@@ -39,14 +41,14 @@
     </div>
   </div>
 
-  <div class="col-12 col-md-6">
+  <div *ngIf="permisoListaDePrecioEnLotes()" class="col-12 col-md-6">
     <div class="card shadow">
       <div class="card-body">
         <app-parametros-lista-de-precios-en-lotes></app-parametros-lista-de-precios-en-lotes>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
+  <div *ngIf="permisoContactosEnLotes()" class="col-12 col-md-6">
     <div class="card shadow">
       <div class="card-body">
         <app-parametros-contactos-en-lotes></app-parametros-contactos-en-lotes>
