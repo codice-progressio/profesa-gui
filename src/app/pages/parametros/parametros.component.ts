@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { ParametrosService } from '../../services/parametros.service'
 import { EtiquetaTransporte } from '../../components/etiquetas-editor/etiquetas-editor.component'
+import permisosKeysConfig from 'src/app/config/permisosKeys.config'
+import { ContieneElPermisoPipe } from 'src/app/pipes/contiene-el-permiso.pipe'
 
 @Component({
   selector: 'app-parametros',
@@ -8,9 +10,13 @@ import { EtiquetaTransporte } from '../../components/etiquetas-editor/etiquetas-
   styleUrls: ['./parametros.component.css']
 })
 export class ParametrosComponent implements OnInit {
-  constructor(private parametrosService: ParametrosService) {}
+  constructor(
+    private contieneElPermiso: ContieneElPermisoPipe,
+    private parametrosService: ParametrosService
+  ) {}
   etiquetasExistentes: string[] = []
   cargandoEtiquetas = false
+  permisos = permisosKeysConfig
 
   ngOnInit(): void {
     this.cargarEtiquetasExitentes()
@@ -43,6 +49,37 @@ export class ParametrosComponent implements OnInit {
         payload.cargando.next(false)
         this.cargandoEtiquetas = false
       }
+    )
+  }
+
+  permisoEtiquetas() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:etiquetas:administrar']
+    )
+  }
+  permisoListaDePreciosDefault() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:lista-de-precios:administrar']
+    )
+  }
+  permisoListaDePrecioDefault() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:lista-de-precios:administrar']
+    )
+  }
+  permisoSkuEnLotes() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:skus:administrar']
+    )
+  }
+  permisoListaDePrecioEnLotes() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:lista-de-precios:administrar']
+    )
+  }
+  permisoContactosEnLotes() {
+    return this.contieneElPermiso.transform(
+      this.permisos['configuraciones:contactos:administrar']
     )
   }
 }
