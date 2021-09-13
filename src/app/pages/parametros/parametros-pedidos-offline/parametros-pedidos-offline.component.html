@@ -1,0 +1,77 @@
+<h1>
+  <i class="fas fa-plane text-danger"></i>
+  Pedidos offline
+</h1>
+
+<small class="text-muted"
+  >Sincronizar los datos necesarios para tomar pedidos offline</small
+>
+
+<hr />
+
+<div class="row">
+  <div class="col-12 col-sm-4">
+    <div class="card">
+      <div class="card-body shadow text-center">
+        <h1>
+          <ng-container *ngIf="!cargandoUsuarios; else cargandoTemplate">
+            {{ totalUsuarios | number }}
+          </ng-container>
+        </h1>
+        Usuarios
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-4">
+    <div class="card">
+      <div class="card-body shadow text-center">
+        <h1>
+          <ng-container *ngIf="!cargandoContactos; else cargandoTemplate">
+            {{ totalContactos | number }}
+          </ng-container>
+        </h1>
+        Contactos
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-4">
+    <div class="card">
+      <div class="card-body shadow text-center">
+        <h1>
+          <ng-container *ngIf="!cargandoSkus; else cargandoTemplate">
+            {{ totalSkus | number }}
+          </ng-container>
+        </h1>
+        SKUs
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-4">
+    <div class="card">
+      <div class="card-body shadow text-center">
+        <h1>
+          <ng-container *ngIf="!cargandoListasDePrecios; else cargandoTemplate">
+            {{ totalListasDePrecios | number }}
+          </ng-container>
+        </h1>
+        Listas de Precios
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<a
+  (click)="sincronizar()"
+  class="btn btn-primary"
+  href="javascript:void(0)"
+  role="button"
+>
+  <i class="fas fa-sync" [ngClass]="{ 'fa-spin': estaCargando() }"></i>
+  Sincronizar
+</a>
+
+<ng-template #cargandoTemplate>
+  <i class="fas fa-sync fa-spin"></i>
+</ng-template>

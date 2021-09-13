@@ -4,21 +4,16 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 mt-2 mt-md-0 col-md-6">
-            <a
-              class="btn btn-primary"
-              href="javascript:void(0)"
-              role="button"
-              routerLink="crear"
-            >
+            <a class="btn btn-primary" role="button" [routerLink]="['crear']">
               <i class="fas fa-plus-circle"></i> Crear
             </a>
           </div>
           <div class="col-12 mt-2 mt-md-0 col-md-6">
-            <codice-buscador
+            <!-- <codice-buscador
               (termino)="termino = $event"
               (escucharCarga)="estaCargandoBuscador = $event"
             >
-            </codice-buscador>
+            </codice-buscador> -->
           </div>
         </div>
       </div>
@@ -30,19 +25,63 @@
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body">
-        <app-pedidos-lista
-          *ngIf="!cargando; else cargaTemplate"
-          [pedidos]="pedidos"
-          (editar)="editar($event)"
-          (detalle)="detalle($event)"
-        >
-        </app-pedidos-lista>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pedido of pedidos">
+                <td>
+                  <a
+                    (click)="detalle(pedido)"
+                    class="btn btn-info ml-1"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-search"></i
+                  ></a>
+                </td>
+                <td>
+                  <a
+                    (click)="editar(pedido)"
+                    class="btn btn-primary"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-edit"></i
+                  ></a>
+                </td>
+                <td>{{ pedido._id }}</td>
+                <td>{{ pedido.contacto.nombre }}</td>
+                <td>#SIN DEFINIR</td>
+                <td>
+                  <a
+                    (click)="eliminar(pedido)"
+                    class="btn btn-danger"
+                    href="javascript:void(0)"
+                    role="button"
+                  >
+                    <i class="fas fa-times"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <ng-template #cargaTemplate>
           <div class="row">
             <div class="col-12">
-              <div style="width: 200px" class="text-center">
-                <codice-ux-precarga></codice-ux-precarga>
+              <div class="text-center">
+                <h1 class="display-1"><i class="fas fa-sync fa-spin"></i></h1>
               </div>
             </div>
           </div>

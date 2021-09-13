@@ -82,4 +82,9 @@ export class ParametrosComponent implements OnInit {
       this.permisos['configuraciones:contactos:administrar']
     )
   }
+
+  permisosPedidosOffline() {
+    
+    return true
+  }
 }

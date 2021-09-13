@@ -3,9 +3,8 @@ import { Pedido } from '../../../models/pedido.model'
 import { PedidoService } from '../../../services/pedido.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
-import { UtilidadesService } from '../../../services/utilidades/utilidades.service'
 import { ContactoService } from '../../../services/contacto.service'
-import { Contacto } from '../../../models/contacto.model'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 
 @Component({
   selector: 'app-pedido',
@@ -14,10 +13,10 @@ import { Contacto } from '../../../models/contacto.model'
 })
 export class PedidoComponent implements OnInit {
   constructor(
-    private proveedorService: ContactoService,
+    private notiService: ManejoDeMensajesService,
+    private pedidoService: PedidoService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private pedidoService: PedidoService
+    private activatedRoute: ActivatedRoute
   ) {}
   pedidos: Pedido[] = []
 
@@ -35,6 +34,7 @@ export class PedidoComponent implements OnInit {
   public get termino(): string {
     return this._termino
   }
+
   public set termino(value: string) {
     this._termino = value
     this.buscar(value)
@@ -42,6 +42,27 @@ export class PedidoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargar()
+  }
+
+  eliminando = {}
+  eliminar(pedido: Pedido) {
+    if (this.eliminando[pedido._id + '']) return
+
+    this.notiService.confirmacionDeEliminacion(
+      'Esta acción solo la puede deshacer el administrador',
+      () => {
+        this.eliminando[pedido._id + ''] = true
+        this.pedidoService.eliminar(pedido._id).subscribe(
+          () => {
+            this.pedidos = this.pedidos.filter(x => x._id === pedido._id)
+            this.eliminando[pedido._id + ''] = false
+          },
+          () => {
+            this.eliminando[pedido._id + ''] = false
+          }
+        )
+      }
+    )
   }
 
   cargar() {
@@ -77,5 +98,4 @@ export class PedidoComponent implements OnInit {
       relativeTo: this.activatedRoute
     })
   }
-
 }

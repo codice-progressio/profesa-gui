@@ -11,6 +11,7 @@ import { Observable, throwError } from 'rxjs'
 import { URL_BASE } from '../../config/config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { Imagen } from '../../models/Imagen'
+import { Offline, OfflineBasico, OfflineService } from '../offline.service'
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,7 @@ export class UsuarioService {
 
   poolLight: UsuarioLight[] = []
   cargandoPool = false
+  offline: UsuarioOfflineService
 
   constructor(
     // Para que este funcione hay que hacer un "imports"
@@ -52,9 +54,11 @@ export class UsuarioService {
     public router: Router,
     public _subirArchivoService: SubirArchivoService,
     public msjService: ManejoDeMensajesService,
-    public _preLoaderService: PreLoaderService
+    public _preLoaderService: PreLoaderService,
+    public offlineService: OfflineService
   ) {
     this.cargarStorage()
+    this.offline = new UsuarioOfflineService(this)
   }
 
   confirmarUsuario(codigo: string) {
@@ -270,4 +274,42 @@ export class UsuarioService {
 export interface UsuarioLight {
   _id: string
   nombre: string
+}
+
+class UsuarioOfflineService extends OfflineBasico implements Offline<Usuario> {
+  constructor(private root: UsuarioService) {
+    super(root.offlineService)
+    this.tabla = this.offlineService.tablas.usuarios
+  }
+
+  sincronizarDatos(datos: Usuario[]): Promise<number> {
+    let PROMESAS = datos.map(x =>
+      this.offlineService.idb.save<Usuario>(x, this.tabla, this.db).toPromise()
+    )
+
+    return Promise.all(PROMESAS).then(x => {
+      return this.contarDatos()
+    })
+  }
+
+  rutaBase(ruta: string[] = []): string {
+    let r = this.root.base.concat('/' + this.urlBase)
+    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
+    return r
+  }
+
+  obtenerDatos(): Observable<Usuario[]> {
+    return this.root.http.get<Usuario[]>(this.rutaBase(['sincronizar'])).pipe(
+      map((resp: any) => {
+        return resp.usuarios as Usuario[]
+      })
+    )
+  }
+
+  eliminarDatos(): Observable<any> {
+    return this.offlineService.idb.deleteAll(this.tabla, this.db)
+  }
+  contarDatos(): Promise<number> {
+    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
+  }
 }

@@ -17,8 +17,7 @@ import { SkuEtiquetasComponent } from './almacen/sku-etiquetas/sku-etiquetas.com
 import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo/sku-stock-minimo-maximo.component'
 import { NgxMaskModule } from 'ngx-mask'
 import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
-import { PedidosListaComponent } from './pedidos/pedidos-lista/pedidos-lista.component'
-import { PedidoCrearEditarDetalleComponent } from './pedidos/pedido-crear-editar-detalle/pedido-crear-editar-detalle.component'
+
 import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.component'
 import { ModalModule } from '@codice-progressio/modal'
 import { ControlRemisionesComponent } from './control-remisiones/control-remisiones.component'
@@ -38,8 +37,6 @@ import { ControlRemisionesComponent } from './control-remisiones/control-remisio
     SkuEtiquetasComponent,
     SkuStockMinimoMaximoComponent,
     SkuLotesComponent,
-    PedidosListaComponent,
-    PedidoCrearEditarDetalleComponent,
     EtiquetasEditorComponent,
     ControlRemisionesComponent
   ],
@@ -58,11 +55,14 @@ import { ControlRemisionesComponent } from './control-remisiones/control-remisio
     SkuCrearModificarComponent,
     ValidacionInputsComponent,
     VisorDeImagenesConPaginacionComponent,
+    ImagenesGestionRapidaComponent,
     SkuImagenesComponent,
     BuscadorComponent,
-    ImagenesGestionRapidaComponent,
-    PedidosListaComponent,
-    PedidoCrearEditarDetalleComponent,
+    SkuSalidaComponent,
+    SkuEntradaComponent,
+    SkuEtiquetasComponent,
+    SkuStockMinimoMaximoComponent,
+    SkuLotesComponent,
     EtiquetasEditorComponent,
     ControlRemisionesComponent
   ]
