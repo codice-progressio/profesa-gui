@@ -8,7 +8,12 @@ import { catchError, map } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs'
 import { SkuLote, SkuLoteMovimiento } from '../../models/lote.model'
 import { URLQuery } from '../utilidades/URLQuery'
-import { Offline, OfflineBasico, OfflineService } from '../offline.service'
+import {
+  indexOffline,
+  Offline,
+  OfflineBasico,
+  OfflineService
+} from '../offline.service'
 
 @Injectable({
   providedIn: 'root'
@@ -267,6 +272,7 @@ class SkuOfflineService extends OfflineBasico implements Offline<SKU> {
     this.tabla = this.offlineService.tablas.skus
     // this.offlineService.db.subscribe(x => (this.db = x))
   }
+
 
   sincronizarDatos(datos: SKU[]): Promise<number> {
     let PROMESAS = datos.map(x =>

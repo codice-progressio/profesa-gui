@@ -12,6 +12,8 @@ import { ContactoService } from '../../../../services/contacto.service'
 import { SkuService } from '../../../../services/sku/sku.service'
 import { SKU } from '../../../../models/sku.model'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
+import { indexOffline } from 'src/app/services/offline.service'
+import { OfflineService } from '../../../../services/offline.service'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -20,6 +22,7 @@ import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-
 })
 export class PedidoCrearEditarDetalleComponent implements OnInit {
   constructor(
+    private offlineService: OfflineService,
     private notiService: ManejoDeMensajesService,
     private skuService: SkuService,
     private contactoService: ContactoService,
@@ -51,6 +54,20 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerId()
+
+    this.offlineService.db.subscribe(db => {
+      if(!db) return
+      this.skuService.offline.generarYCargarIndiceEnMemoria(db, [
+        'nombreCompleto',
+        'descripcion',
+        'credito'
+      ])
+      this.contactoService.offline.generarYCargarIndiceEnMemoria(db, [
+        'rfc',
+        'nombre',
+        'razonSocial'
+      ])
+    })
   }
 
   activarProtocoloDetalle() {
@@ -136,22 +153,30 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   estaCargandoBuscadorContacto: BehaviorSubject<boolean>
   contactos: Contacto[] = []
 
-  buscarContacto(termino) {
+  buscarContacto(ter) {
+    let termino = ter.trim()
     if (!termino.trim()) {
       this.contactos = []
       this.estaCargandoBuscadorContacto.next(false)
       return
     }
     this.estaCargandoBuscadorContacto.next(true)
-    this.contactoService.buscarTermino(termino).subscribe(
-      contactos => {
-        this.contactos = contactos
+    //   contactos => {
+    //     this.contactos = contactos
+    //     this.estaCargandoBuscadorContacto.next(false)
+    //   },
+    //   () => {
+    //     this.estaCargandoBuscadorContacto.next(false)
+    //   }
+    // )
+
+    this.contactoService.offline
+      .buscarTermino<Contacto>(termino)
+      .then(datos => {
         this.estaCargandoBuscadorContacto.next(false)
-      },
-      () => {
-        this.estaCargandoBuscadorContacto.next(false)
-      }
-    )
+        this.contactos = datos
+      })
+      .catch(_ => this.estaCargandoBuscadorContacto.next(false))
   }
 
   seleccionarContacto(contacto: Contacto) {
@@ -167,22 +192,22 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   grupo: FormGroup
 
   skus: SKU[] = []
-  buscarSku(termino) {
-    if (!termino.trim()) {
+  buscarSku(ter) {
+    let termino = ter.trim()
+    if (!termino) {
       this.skus = []
       this.estaCargandoBuscadorSku.next(false)
       return
     }
     this.estaCargandoBuscadorSku.next(true)
-    this.skuService.buscarTermino(termino).subscribe(
-      skus => {
+
+    this.skuService.offline
+      .buscarTermino<SKU>(termino)
+      .then(skus => {
         this.estaCargandoBuscadorSku.next(false)
         this.skus = skus
-      },
-      () => {
-        this.estaCargandoBuscadorSku.next(false)
-      }
-    )
+      })
+      .catch(_ => this.estaCargandoBuscadorSku.next(false))
   }
 
   articulosSeleccionados: SKU[] = []

@@ -65,10 +65,56 @@ export class OfflineBasico {
   tabla: string
   db: IDBDatabase
   urlBase: string = 'offline'
+  indice: indexOffline[] = []
+
   constructor(public offlineService: OfflineService) {
     this.offlineService.db.subscribe(x => {
       this.db = x
     })
+  }
+
+  async generarYCargarIndiceEnMemoria<T>(db: IDBDatabase, campos: string[]) {
+    try {
+      console.log({ tabla: this.tabla, db })
+      let skip = await this.offlineService.idb.contarDatosEnTabla(
+        this.tabla,
+        db
+      )
+
+      let resultados = await this.offlineService.idb
+        .find<T>(this.tabla, db, { limit: 0, skip })
+        .toPromise()
+
+      console.log(campos, resultados)
+
+      this.indice = resultados.map(resultados => {
+        let campo = campos.map(x => resultados[x]).join(' ')
+        let _id = resultados['_id']
+        return { campo, _id }
+      })
+
+      console.log(this.indice)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  buscarTermino<T>(termino: string): Promise<T[]> {
+    let PROMESAS = this.indice
+      .filter(indice => indice.campo.includes(termino))
+      .map(x => x._id)
+      .map(
+        x =>
+          new Promise<T>((resolve, reject) => {
+            this.offlineService.idb
+              .findById<T>(this.tabla, this.db, x)
+              .subscribe(
+                f => resolve(f),
+                _ => reject(_)
+              )
+          })
+      )
+    return Promise.all(PROMESAS)
   }
 }
 
@@ -78,4 +124,9 @@ export interface Offline<T> {
   eliminarDatos(): Observable<any>
   contarDatos(): Promise<number>
   sincronizarDatos(datos: T[]): Promise<number>
+}
+
+export interface indexOffline {
+  _id: string
+  campo: string
 }
