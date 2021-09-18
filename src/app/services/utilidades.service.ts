@@ -30,12 +30,7 @@ class Ficheros {
     // Parse the file you want to select for the operation along with the configuration
     return this.root.ngxCsvParser
       .parse(target.files[0], { header: true, delimiter })
-      .pipe(
-        map(x => {
-          console.log(x)
-          return x
-        })
-      )
+      .pipe(map(x => x))
       .toPromise()
 
     // return new Promise((resolve, reject) => {
