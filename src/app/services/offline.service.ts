@@ -14,6 +14,11 @@ export class OfflineService {
   nombreBD = 'IMPERIUMsic'
   baseDeDatos: IDBDatabase
 
+  /**
+   * Para no tener problemas de inicializacion tenemos que
+   * suscribirnos a este evento y obtener los datos despues de
+   * inicializar DB
+   */
   db = new BehaviorSubject<IDBDatabase>(null)
 
   constructor(
@@ -73,35 +78,49 @@ export class OfflineBasico {
     })
   }
 
+  /**
+   *Carga los datos desde index-db a la memoria, ordenandolos y
+   * preparandolos para busqueda.
+   *
+   * @template T
+   * @param {IDBDatabase} db La base de datos en uso.
+   * @param {string[]} campos Los campos que se van a indesar. El orden del
+   * array se respeta para mejoras en la busqueda.
+   * @memberof OfflineBasico
+   */
   async generarYCargarIndiceEnMemoria<T>(db: IDBDatabase, campos: string[]) {
     try {
-      console.log({ tabla: this.tabla, db })
-      let skip = await this.offlineService.idb.contarDatosEnTabla(
+      let limit = await this.offlineService.idb.contarDatosEnTabla(
         this.tabla,
         db
       )
 
       let resultados = await this.offlineService.idb
-        .find<T>(this.tabla, db, { limit: 0, skip })
+        .find<T>(this.tabla, db, { skip: 0, limit })
         .toPromise()
 
-      console.log(campos, resultados)
-
-      this.indice = resultados.map(resultados => {
-        let campo = campos.map(x => resultados[x]).join(' ')
-        let _id = resultados['_id']
-        return { campo, _id }
-      })
-
-      console.log(this.indice)
+      this.indice = resultados
+        .map(resultados => {
+          let campo = campos
+            .map(x => resultados[x])
+            .join(' ')
+            .toLowerCase()
+          let _id = resultados['_id']
+          return { campo, _id }
+        })
+        .sort((a, b) => (a.campo > b.campo ? 1 : 0))
     } catch (error) {
       console.log(error)
     }
   }
 
-  buscarTermino<T>(termino: string): Promise<T[]> {
+  buscarTermino<T>(termino: string, limite = 30): Promise<T[]> {
     let PROMESAS = this.indice
-      .filter(indice => indice.campo.includes(termino))
+      .filter(indice => {
+        return indice.campo.includes(termino.toLowerCase())
+      })
+      .sort((a, b) => (a.campo > b.campo ? 1 : 0))
+      .slice(0, limite)
       .map(x => x._id)
       .map(
         x =>

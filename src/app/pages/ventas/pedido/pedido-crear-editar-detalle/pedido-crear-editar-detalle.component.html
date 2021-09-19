@@ -243,19 +243,34 @@
       <codice-buscador
         (termino)="buscarContacto($event)"
         (escucharCarga)="estaCargandoBuscadorContacto = $event"
+        [encodeURIComponent]="false"
       >
       </codice-buscador>
     </div>
 
-    <div class="col-12">
+    <div class="col-12 m-0 p-0">
       <div class="list-group">
         <a
+          href="javascript:void(0)"
           *ngFor="let contacto of contactos"
           (click)="seleccionarContacto(contacto)"
-          href="javascript:void(0)"
-          class="list-group-item list-group-item-action"
-          >{{ contacto.nombre }}</a
+          class="
+            list-group-item list-group-item-action
+            flex-column
+            align-items-start
+          "
         >
+          <div class="d-flex w-100 justify-content-between">
+            <i class="fas fa-user fa-2x"></i>
+            <h5 class="mb-1">
+              <br />
+              {{ contacto.razonSocial }}
+            </h5>
+          </div>
+          <p class="mb-1">
+            {{ contacto.nombre }}
+          </p>
+        </a>
       </div>
     </div>
   </div>
@@ -272,6 +287,7 @@
       <codice-buscador
         (termino)="buscarSku($event); terminoSku = $event"
         (escucharCarga)="estaCargandoBuscadorSku = $event"
+        [encodeURIComponent]="false"
       >
       </codice-buscador>
     </div>

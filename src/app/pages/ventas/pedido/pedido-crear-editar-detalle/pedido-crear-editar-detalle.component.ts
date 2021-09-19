@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 import { PedidoService } from '../../../../services/pedido.service'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms'
@@ -12,7 +12,6 @@ import { ContactoService } from '../../../../services/contacto.service'
 import { SkuService } from '../../../../services/sku/sku.service'
 import { SKU } from '../../../../models/sku.model'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
-import { indexOffline } from 'src/app/services/offline.service'
 import { OfflineService } from '../../../../services/offline.service'
 
 @Component({
@@ -27,7 +26,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     private skuService: SkuService,
     private contactoService: ContactoService,
     private pedidoService: PedidoService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     public vs: ValidacionesService,
     private location: Location,
@@ -54,18 +52,20 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerId()
-
+    this.cargarIndicesEnMemoria()
+  }
+  cargarIndicesEnMemoria() {
     this.offlineService.db.subscribe(db => {
-      if(!db) return
+      if (!db) return
       this.skuService.offline.generarYCargarIndiceEnMemoria(db, [
         'nombreCompleto',
         'descripcion',
         'credito'
       ])
       this.contactoService.offline.generarYCargarIndiceEnMemoria(db, [
-        'rfc',
+        'razonSocial',
         'nombre',
-        'razonSocial'
+        'rfc'
       ])
     })
   }
@@ -153,23 +153,14 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   estaCargandoBuscadorContacto: BehaviorSubject<boolean>
   contactos: Contacto[] = []
 
-  buscarContacto(ter) {
+  buscarContacto(ter: string) {
     let termino = ter.trim()
-    if (!termino.trim()) {
+    if (!termino) {
       this.contactos = []
       this.estaCargandoBuscadorContacto.next(false)
       return
     }
     this.estaCargandoBuscadorContacto.next(true)
-    //   contactos => {
-    //     this.contactos = contactos
-    //     this.estaCargandoBuscadorContacto.next(false)
-    //   },
-    //   () => {
-    //     this.estaCargandoBuscadorContacto.next(false)
-    //   }
-    // )
-
     this.contactoService.offline
       .buscarTermino<Contacto>(termino)
       .then(datos => {
