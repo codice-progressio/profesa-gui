@@ -103,6 +103,7 @@ export class OfflineBasico {
         .map(resultados => {
           let campo = campos
             .map(x => resultados[x])
+            .map(x => x?.trim() ?? x)
             .join(' ')
             .toLowerCase()
           let _id = resultados['_id']
