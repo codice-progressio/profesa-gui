@@ -1,234 +1,416 @@
 <div class="row" *ngIf="formulario">
   <div class="col-12">
-    <div class="card shadow">
-      <div class="card-body">
-        <form [formGroup]="formulario">
-          <div class="row">
-            <div class="col-12 justify-content-between d-flex">
-              <h1>{{ pedido?._id }}</h1>
-              <h3>{{ pedido?.createdAt | date }}</h3>
-            </div>
-            <div class="col-12 d-flex justify-content-between">
-              <h3>
-                <ng-container *ngIf="pedido.contacto"
-                  >{{ pedido.contacto?.nombre }}
-                </ng-container>
-                <ng-container *ngIf="!pedido.contacto"
-                  >No has seleccionado un cliente
-                </ng-container>
-                <a
-                  *ngIf="!esDetalle"
-                  (click)="modalService.open(idModalContacto)"
-                  class="btn btn-success mr-3"
-                  href="javascript:void(0)"
-                  role="button"
-                  ><i class="fas fa-plus"></i
-                ></a>
-                <b class="pull-right">$ {{ total() | number: '1.2' }}</b>
-              </h3>
-            </div>
-            <div class="col-12">
-              <hr />
-            </div>
+    <form [formGroup]="formulario">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 justify-content-between d-flex">
+                  <h1>{{ pedido?._id }}</h1>
+                  <h3>{{ pedido?.createdAt | date }}</h3>
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                  <h3>
+                    <ng-container *ngIf="pedido.contacto">
+                      {{
+                        pedido.contacto?.nombre ?? pedido.contacto?.razonSocial
+                      }}
+                      <br />
+                      <small class="text-muted"> Cliente </small>
 
-            <!-- 
-            =====================================
-             observaciones
-            =====================================
-            -->
-            <div class="col-12 col-md-6">
-              <div class="form-group">
-                <input
-                  [ngClass]="{
-                    'is-invalid': vs.invalid(f('observaciones')),
-                    'is-valid': vs.valid(f('observaciones'))
-                  }"
-                  class="form-control input-sm"
-                  formControlName="observaciones"
-                  type="text"
-                />
-                <small id="helpId" class="form-text text-muted"
-                  >Observaciones</small
-                >
-                <codice-validaciones
-                  [campo]="f('observaciones')"
-                ></codice-validaciones>
+                      <a
+                        (click)="pedido.contacto = undefined"
+                        class="btn btn-danger rounded"
+                        href="javascript:void(0)"
+                        role="button"
+                      >
+                        <i class="fas fa-times-circle"></i
+                      ></a>
+                    </ng-container>
+                    <ng-container *ngIf="!pedido.contacto">
+                      <a
+                        *ngIf="!esDetalle"
+                        (click)="modalService.open(idModalContacto)"
+                        class="btn btn-success mr-3"
+                        href="javascript:void(0)"
+                        role="button"
+                      >
+                        <i class="fas fa-user"></i> Contacto</a
+                      >
+                    </ng-container>
+                  </h3>
+                </div>
+
+                <!-- 
+                    =====================================
+                     observaciones
+                    =====================================
+                    -->
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <input
+                      [ngClass]="{
+                        'is-invalid': vs.invalid(f('observaciones')),
+                        'is-valid': vs.valid(f('observaciones'))
+                      }"
+                      class="form-control input-sm"
+                      formControlName="observaciones"
+                      type="text"
+                    />
+                    <small id="helpId" class="form-text text-muted"
+                      >Observaciones</small
+                    >
+                    <codice-validaciones
+                      [campo]="f('observaciones')"
+                    ></codice-validaciones>
+                  </div>
+                </div>
+                <!-- 
+                    =====================================
+                     END observaciones
+                    =====================================
+                    -->
               </div>
             </div>
-            <!-- 
-            =====================================
-             END observaciones
-            =====================================
-            -->
-
+          </div>
+        </div>
+        <div class="col-12">
+          <div
+            *ngIf="
+              !hayUnArticuloEditandose() && articulosSeleccionados.length > 0
+            "
+            class="row"
+          >
             <div class="col-12">
-              <hr />
+              <div class="card shadow">
+                <div class="card-body">
+                  <codice-buscador
+                    (termino)="
+                      filtrarFoliosPorArticulo($event); terminoSku = $event
+                    "
+                    (escucharCarga)="estaCargandoBuscadorFolio = $event"
+                    [encodeURIComponent]="false"
+                  >
+                  </codice-buscador>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- 
+        <!-- 
           =====================================
            Array articulos 
           =====================================
           -->
-            <ng-container formArrayName="articulos">
-              <ng-container
-                *ngFor="let dummy of fa('articulos').controls; let i = index"
-              >
-                <ng-container [formGroupName]="i">
-                  <div class="col-12">
-                    <h4>
-                      <b
-                        >{{ i + 1 | number: '3.0' }}
-                        <i class="fas fa-arrow-right"></i>
-                      </b>
-                      {{ articulosSeleccionados[i]?.nombreCompleto }}
-                      <a
-                        *ngIf="!esDetalle"
-                        (click)="eliminar(i)"
-                        class="btn btn-danger"
-                        href="javascript:void(0)"
-                        role="button"
-                      >
-                        <i class="fas fa-times"></i
-                      ></a>
-                    </h4>
-                  </div>
-
-                  <!-- 
+        <ng-container formArrayName="articulos">
+          <ng-container
+            *ngFor="let dummy of fa('articulos').controls; let i = index"
+          >
+            <ng-container [formGroupName]="i">
+              <!-- 
           =====================================
-           cantidad
+           TEMPLATES
           =====================================
           -->
-                  <div class="col-12 col-md-3">
-                    <div class="form-group">
-                      <input
-                        [ngClass]="{
-                          'is-invalid': vs.invalid(dummy.get('cantidad')),
-                          'is-valid': vs.valid(dummy.get('cantidad'))
-                        }"
-                        type="text"
-                        class="form-control input-sm"
-                        formControlName="cantidad"
-                        mask="separator.2"
-                        thousandSeparator=","
-                      />
-                      <small id="helpId" class="form-text text-muted"
-                        >Cantidad</small
-                      >
-                      <codice-validaciones
-                        [campo]="dummy.get('cantidad')"
-                      ></codice-validaciones>
-                    </div>
-                  </div>
-                  <!-- 
+              <ng-template #folioTemplate>
+                <b># </b>{{ i + 1 | number: '3.0' }}
+              </ng-template>
+
+              <ng-template #importeTemplate>
+                <h6 class="text-right">
+                  $
+                  {{ articulosSeleccionados[i]?.costoVenta | number: '0.2' }}
+                </h6>
+                <small id="helpId" class="form-text text-muted"
+                  >Costo unitario</small
+                >
+              </ng-template>
+
+              <ng-template #costoVenta>
+                <h6 class="text-right">
+                  $
+                  {{
+                    articulosSeleccionados[i]?.costoVenta *
+                      dummy.get('cantidad').value | number: '0.2'
+                  }}
+                </h6>
+                <small id="helpId" class="form-text text-muted">Importe</small>
+              </ng-template>
+
+              <!-- 
           =====================================
-           END cantidad
+           END TEMPLATES
           =====================================
           -->
 
-                  <!-- 
-          =====================================
-           observaciones
-          =====================================
-          -->
-                  <div class="col-12 col-md-3">
-                    <div class="form-group">
-                      <input
-                        [ngClass]="{
-                          'is-invalid': vs.invalid(dummy.get('observaciones')),
-                          'is-valid': vs.valid(dummy.get('observaciones'))
-                        }"
-                        class="form-control input-sm"
-                        formControlName="observaciones"
-                        type="text"
-                      />
+              <div *ngIf="mostrar(i)" class="col-12">
+                <div class="card shadow mt-0">
+                  <div class="card-body">
+                    <ng-template #editandoTemplate>
+                      <div class="row">
+                        <div class="col-12">
+                          <a
+                            *ngIf="!esDetalle"
+                            (click)="eliminar(i)"
+                            class="btn btn-danger mr-2"
+                            href="javascript:void(0)"
+                            role="button"
+                          >
+                            <i class="fas fa-times"></i
+                          ></a>
 
-                      <small id="helpId" class="form-text text-muted"
-                        >Observaciones</small
-                      >
-                      <codice-validaciones
-                        [campo]="dummy.get('observaciones')"
-                      ></codice-validaciones>
-                    </div>
-                  </div>
-                  <!-- 
-          =====================================
-           END observaciones
-          =====================================
-          -->
-                  <div class="col-12 col-md-3">
-                    <div class="form-group">
-                      <h6 class="text-right">
-                        $
-                        {{
-                          articulosSeleccionados[i]?.costoVenta | number: '0.2'
-                        }}
-                      </h6>
-                      <small id="helpId" class="form-text text-muted"
-                        >Costo unitario</small
-                      >
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-3">
-                    <div class="form-group">
-                      <h6 class="text-right">
-                        $
-                        {{
-                          articulosSeleccionados[i]?.costoVenta *
-                            dummy.get('cantidad').value | number: '0.2'
-                        }}
-                      </h6>
-                      <small id="helpId" class="form-text text-muted"
-                        >Importe</small
-                      >
-                    </div>
-                  </div>
+                          <h3>
+                            <ng-container
+                              *ngIf="false; else folioTemplate"
+                            ></ng-container>
+                            <br />
+                            {{ articulosSeleccionados[i]?.nombreCompleto }}
+                          </h3>
+                        </div>
 
-                  <div class="col-12">
-                    <hr />
+                        <!-- 
+            =====================================
+             cantidad
+            =====================================
+            -->
+                        <div class="col-12 col-md-3 text-center">
+                          <div class="form-group">
+                            <input
+                              [ngClass]="{
+                                'is-invalid': vs.invalid(dummy.get('cantidad')),
+                                'is-valid': vs.valid(dummy.get('cantidad'))
+                              }"
+                              type="text"
+                              class="
+                                form-control
+                                input-lg
+                                font-20 font-weight-bolder
+                                text-center
+                              "
+                              formControlName="cantidad"
+                              mask="separator.2"
+                              thousandSeparator=","
+                            />
+                            <small id="helpId" class="form-text text-muted"
+                              >Cantidad | Unidad:
+                              {{ articulosSeleccionados[i]?.unidad }}</small
+                            >
+                            <codice-validaciones
+                              [campo]="dummy.get('cantidad')"
+                            ></codice-validaciones>
+                          </div>
+
+                          <a
+                            (click)="agregar(i, -1)"
+                            class="btn btn-info mr-2"
+                            href="javascript:void(0)"
+                            role="button"
+                          >
+                            <i class="fas fa-minus-circle fa-4x"></i
+                          ></a>
+                          <a
+                            (click)="agregar(i, +1)"
+                            class="btn btn-primary"
+                            href="javascript:void(0)"
+                            role="button"
+                          >
+                            <i class="fas fa-plus-circle fa-4x"></i
+                          ></a>
+                        </div>
+                        <!-- 
+            =====================================
+             END cantidad
+            =====================================
+            -->
+
+                        <!-- 
+            =====================================
+             observaciones
+            =====================================
+            -->
+                        <div class="col-12 col-md-3 mt-2">
+                          <div class="form-group">
+                            <input
+                              [ngClass]="{
+                                'is-invalid': vs.invalid(
+                                  dummy.get('observaciones')
+                                ),
+                                'is-valid': vs.valid(dummy.get('observaciones'))
+                              }"
+                              class="form-control input-sm"
+                              formControlName="observaciones"
+                              type="text"
+                            />
+
+                            <small id="helpId" class="form-text text-muted"
+                              >Observaciones</small
+                            >
+                            <codice-validaciones
+                              [campo]="dummy.get('observaciones')"
+                            ></codice-validaciones>
+                          </div>
+                        </div>
+                        <!-- 
+            =====================================
+             END observaciones
+            =====================================
+            -->
+                        <div class="col-12 col-md-3">
+                          <div class="form-group">
+                            <ng-container
+                              *ngIf="false; else importeTemplate"
+                            ></ng-container>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                          <div class="form-group">
+                            <ng-container
+                              *ngIf="false; else costoVenta"
+                            ></ng-container>
+                          </div>
+                        </div>
+
+                        <div *ngIf="!esDetalle" class="col-12">
+                          <a
+                            (click)="dejarDeEditar(i)"
+                            class="btn btn-success"
+                            href="javascript:void(0)"
+                            role="button"
+                          >
+                            <i class="fas fa-save"></i
+                          ></a>
+                        </div>
+
+                        <div class="col-12">
+                          <hr />
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <ng-container
+                      *ngIf="
+                        !dummy.get('editando').value;
+                        else editandoTemplate
+                      "
+                    >
+                      <div class="row">
+                        <div class="col-12">
+                          <h3>
+                            <ng-container
+                              *ngIf="false; else folioTemplate"
+                            ></ng-container>
+
+                            <a
+                              (click)="editar(i)"
+                              class="btn btn-success"
+                              href="javascript:void(0)"
+                              role="button"
+                              ><i class="fas fa-edit"></i
+                            ></a>
+                            <hr />
+                            {{ articulosSeleccionados[i].nombreCompleto }}
+                          </h3>
+
+                          <small class="text-muted">
+                            Unidad: {{ articulosSeleccionados[i].unidad }}
+                          </small>
+                          <hr />
+                        </div>
+                        <div
+                          class="
+                            col-12
+                            d-flex
+                            justify-content-between
+                            align-items-center
+                          "
+                        >
+                          <div class="row">
+                            <div class="col-4 text-center">
+                              {{ dummy.get('cantidad').value | number: '0.2' }}
+
+                              <br />
+                              <small class="text-muted">Cantidad</small>
+                            </div>
+                            <div class="col-4 text-center">
+                              $
+                              {{
+                                articulosSeleccionados[i].costoVenta
+                                  | number: '0.2'
+                              }}
+
+                              <br />
+                              <small class="text-muted">Costo unitario</small>
+                            </div>
+                            <div class="col-4 text-center">
+                              $
+                              {{
+                                dummy.get('cantidad').value *
+                                  articulosSeleccionados[i].costoVenta
+                                  | number: '0.2'
+                              }}
+
+                              <br />
+                              <small class="text-muted">Importe</small>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="dummy.get('observaciones').value"
+                          class="col-12"
+                        >
+                          <hr />
+                          {{ dummy.get('observaciones').value }}
+                        </div>
+                      </div>
+                    </ng-container>
                   </div>
-                </ng-container>
-              </ng-container>
+                </div>
+              </div>
             </ng-container>
-            <!-- 
+          </ng-container>
+        </ng-container>
+        <!-- 
           =====================================
            END Array articulos 
           =====================================
           -->
-            <div class="col-12">
-              <a
-                *ngIf="!esDetalle"
-                (click)="agregarArticulo()"
-                class="btn btn-primary"
-                href="javascript:void(0)"
-                role="button"
-                ><i class="fas fa-plus"></i> Agregar articulo</a
-              >
-            </div>
 
-            <div class="col-12">
-              <hr />
-            </div>
-
-            <div class="col-12">
-              <a
-                *ngIf="!esDetalle"
-                (click)="submit(formulario.value, formulario.invalid)"
-                class="btn btn-success"
-                href="javascript:void(0)"
-                role="button"
-              >
-                <i class="fas fa-save"></i> Guardar
-              </a>
-
-              <h3 class="pull-right">
-                <b>$ {{ total() | number: '1.2' }}</b>
-              </h3>
-            </div>
+        <ng-container *ngIf="!esDetalle">
+          <div class="col-12">
+            <a
+              *ngIf="!hayUnArticuloEditandose()"
+              (click)="agregarArticulo()"
+              class="btn btn-primary"
+              href="javascript:void(0)"
+              role="button"
+              ><i class="fas fa-plus"></i> Agregar articulo</a
+            >
           </div>
-        </form>
+          <div class="col-12">
+            <hr />
+          </div>
+
+          <div class="col-12">
+            <a
+              *ngIf="!hayUnArticuloEditandose()"
+              (click)="submit(formulario.value, formulario.invalid)"
+              class="btn btn-success"
+              href="javascript:void(0)"
+              role="button"
+            >
+              <i class="fas fa-save"></i> Guardar
+            </a>
+
+            <h3 class="pull-right">
+              <b>$ {{ total() | number: '1.2' }}</b>
+            </h3>
+          </div>
+        </ng-container>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 

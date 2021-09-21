@@ -142,10 +142,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     return new FormGroup({
       cantidad: new FormControl(articulo.cantidad, [
         Validators.required,
-        Validators.min(0.001)
+        Validators.min(0.01)
       ]),
       sku: new FormControl(articulo.sku, [Validators.required]),
-      observaciones: new FormControl(articulo.observaciones)
+      observaciones: new FormControl(articulo.observaciones),
+      editando: new FormControl('true', [])
     })
   }
 
@@ -222,8 +223,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   eliminar(i: number) {
-    this.fa('articulos').removeAt(i)
-    this.articulosSeleccionados.splice(i, 1)
+    let msj = `¿Quieres eliminar "${this.articulosSeleccionados[i].nombreCompleto} ?`
+    this.notiService.confirmarAccion(msj, () => {
+      this.fa('articulos').removeAt(i)
+      this.articulosSeleccionados.splice(i, 1)
+    })
   }
 
   agregarArticulo() {
@@ -267,5 +271,84 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       total += Math.round((cantidad * precio + Number.EPSILON) * 100) / 100
     }
     return total
+  }
+
+  editar(i: number) {
+    //Quitamos los que esten marcados como editandose.
+
+    this.fa('articulos').controls.forEach(x =>
+      x.get('editando').setValue(false)
+    )
+
+    //Quitamos los filtros
+    this.noMostrarArticulos = []
+
+    // Encendemos el otro.
+    this.fa('articulos').at(i).get('editando').setValue(true)
+  }
+
+  hayUnArticuloEditandose() {
+    for (const iterator of this.fa('articulos').controls) {
+      if (iterator.get('editando').value) return true
+    }
+
+    return false
+  }
+
+  dejarDeEditar(i: number) {
+    // La cantidad no puede estar en 0
+
+    let control = this.fa('articulos').at(i)
+    let controlCantidad = control.get('cantidad')
+    controlCantidad.markAsTouched()
+    controlCantidad.updateValueAndValidity()
+    if (controlCantidad.invalid) {
+      this.notiService.toast.warning('La cantidad no es valida')
+      return
+    }
+
+    control.get('editando').setValue(false)
+  }
+
+  agregar(i: number, valor: number) {
+    let control = this.fa('articulos').at(i).get('cantidad')
+    control.setValue(+control.value + valor)
+    control.markAsTouched()
+    control.updateValueAndValidity()
+  }
+
+  noMostrarArticulos: string[] = []
+  mostrar(i: number) {
+    if (this.noMostrarArticulos.length === 0) return true
+    let id = this.articulosSeleccionados[i]._id
+    return !this.noMostrarArticulos.includes(id)
+  }
+
+  estaCargandoBuscadorFolio: BehaviorSubject<boolean>
+  filtrarFoliosPorArticulo(ter: string) {
+    let termino = ter.trim()
+    if (!termino) {
+      this.estaCargandoBuscadorFolio.next(false)
+      this.noMostrarArticulos = []
+      return
+    }
+    console.log(termino)
+    termino = termino.toLowerCase()
+    this.estaCargandoBuscadorFolio.next(true)
+    this.noMostrarArticulos = []
+    this.noMostrarArticulos = this.articulosSeleccionados
+      .map(x => {
+        return {
+          _id: x._id,
+          campo: x.nombreCompleto.toLowerCase()
+        }
+      })
+      .filter(x => {
+        return !x.campo.includes(termino)
+      })
+      .map(x => x._id)
+
+    this.estaCargandoBuscadorFolio.next(false)
+    console.log(this.noMostrarArticulos)
   }
 }
