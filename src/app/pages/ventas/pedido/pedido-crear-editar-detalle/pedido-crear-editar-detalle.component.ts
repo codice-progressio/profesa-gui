@@ -332,7 +332,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       this.noMostrarArticulos = []
       return
     }
-    console.log(termino)
     termino = termino.toLowerCase()
     this.estaCargandoBuscadorFolio.next(true)
     this.noMostrarArticulos = []
@@ -349,6 +348,5 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .map(x => x._id)
 
     this.estaCargandoBuscadorFolio.next(false)
-    console.log(this.noMostrarArticulos)
   }
 }

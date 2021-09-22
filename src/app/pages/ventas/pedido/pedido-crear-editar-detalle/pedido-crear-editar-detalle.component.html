@@ -93,6 +93,10 @@
                     [encodeURIComponent]="false"
                   >
                   </codice-buscador>
+
+                  <span *ngIf="noMostrarArticulos.length > 0">
+                    Folios ocultos: {{ noMostrarArticulos.length }}
+                  </span>
                 </div>
               </div>
             </div>
