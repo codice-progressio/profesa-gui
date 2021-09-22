@@ -163,7 +163,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
     this.estaCargandoBuscadorContacto.next(true)
     this.contactoService.offline
-      .buscarTermino<Contacto>(termino)
+      .find<Contacto>(termino)
       .then(datos => {
         this.estaCargandoBuscadorContacto.next(false)
         this.contactos = datos
@@ -194,7 +194,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.estaCargandoBuscadorSku.next(true)
 
     this.skuService.offline
-      .buscarTermino<SKU>(termino)
+      .find<SKU>(termino)
       .then(skus => {
         this.estaCargandoBuscadorSku.next(false)
         this.skus = skus

@@ -115,10 +115,12 @@ export class OfflineBasico {
     }
   }
 
-  buscarTermino<T>(termino: string, limite = 30): Promise<T[]> {
+  find<T>(termino: string, limite = 30): Promise<T[]> {
     let PROMESAS = this.indice
       .filter(indice => {
-        return indice.campo.includes(termino.toLowerCase())
+        return !termino.trim()
+          ? true
+          : indice.campo.includes(termino.toLowerCase())
       })
       .sort((a, b) => (a.campo > b.campo ? 1 : 0))
       .slice(0, limite)
@@ -136,6 +138,7 @@ export class OfflineBasico {
       )
     return Promise.all(PROMESAS)
   }
+
 }
 
 export interface Offline<T> {
