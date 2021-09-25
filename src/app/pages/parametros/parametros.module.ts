@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms'
 import { ParametrosSkuEnLotesComponent } from './parametros-sku-en-lotes/parametros-sku-en-lotes.component'
 import { ParametrosListaDePreciosEnLotesComponent } from './parametros-lista-de-precios-en-lotes/parametros-lista-de-precios-en-lotes.component';
 import { ParametrosContactosEnLotesComponent } from './parametros-contactos-en-lotes/parametros-contactos-en-lotes.component';
-import { ParametrosPedidosOfflineComponent } from './parametros-pedidos-offline/parametros-pedidos-offline.component'
+import { ParametrosPedidosOfflineComponent } from './parametros-pedidos-offline/parametros-pedidos-offline.component';
+import { ParametrosUsuariosEnLotesComponent } from './parametros-usuarios-en-lotes/parametros-usuarios-en-lotes.component'
 
 
 const routes: Routes = [
@@ -50,7 +51,8 @@ const routes: Routes = [
     ParametrosSkuEnLotesComponent,
     ParametrosListaDePreciosEnLotesComponent,
     ParametrosContactosEnLotesComponent,
-    ParametrosPedidosOfflineComponent
+    ParametrosPedidosOfflineComponent,
+    ParametrosUsuariosEnLotesComponent
   ],
   imports: [
     CommonModule,

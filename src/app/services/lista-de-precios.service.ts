@@ -16,9 +16,9 @@ import { Offline, OfflineBasico, OfflineService } from './offline.service'
 })
 export class ListaDePreciosService {
   base = URL_BASE('lista-de-precios')
-  offline: ListaDePreciosOfflineService
+  offline: ListaDePreciosOfflineService<ListaDePrecios>
   constructor(public http: HttpClient, public offlineService: OfflineService) {
-    this.offline = new ListaDePreciosOfflineService(this)
+    this.offline = new ListaDePreciosOfflineService(this, this.base)
   }
 
   buscar() {
@@ -73,48 +73,17 @@ export class ListaDePreciosService {
   }
 }
 
-class ListaDePreciosOfflineService
-  extends OfflineBasico
-  implements Offline<ListaDePrecios>
+class ListaDePreciosOfflineService<T>
+  extends OfflineBasico<T>
+  implements Offline<T>
 {
-  constructor(private root: ListaDePreciosService) {
-    super(root.offlineService)
-    this.tabla = this.offlineService.tablas.listasDePrecios
-    // this.offlineService.db.subscribe(x => (this.db = x))
-  }
-
-  sincronizarDatos(datos: ListaDePrecios[]): Promise<number> {
-    let PROMESAS = datos.map(x =>
-      this.offlineService.idb
-        .save<ListaDePrecios>(x, this.tabla, this.db)
-        .toPromise()
+  constructor(private root: ListaDePreciosService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.listasDePrecios,
+      'listasDePrecios'
     )
-
-    return Promise.all(PROMESAS).then(x => {
-      return this.contarDatos()
-    })
-  }
-
-  rutaBase(ruta: string[] = []): string {
-    let r = this.root.base.concat('/' + this.urlBase)
-    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
-    return r
-  }
-
-  obtenerDatos(): Observable<ListaDePrecios[]> {
-    return this.root.http
-      .get<ListaDePrecios[]>(this.rutaBase(['sincronizar']))
-      .pipe(
-        map((resp: any) => {
-          return resp.listasDePrecios as ListaDePrecios[]
-        })
-      )
-  }
-
-  eliminarDatos(): Observable<any> {
-    return this.offlineService.idb.deleteAll(this.tabla, this.db)
-  }
-  contarDatos(): Promise<number> {
-    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
   }
 }

@@ -14,9 +14,9 @@ export class ContactoService {
   base = URL_BASE('contacto')
   etiquetas = new ProveedorEtiquetas(this)
   rutas = new ProveedorRutas(this)
-  offline: ContactoOfflineService
+  offline: ContactoOfflineService<Contacto>
   constructor(public http: HttpClient, public offlineService: OfflineService) {
-    this.offline = new ContactoOfflineService(this)
+    this.offline = new ContactoOfflineService(this, this.base)
   }
 
   crear(contacto: Contacto) {
@@ -97,44 +97,14 @@ export class ProveedorRutas {
   }
 }
 
-class ContactoOfflineService
-  extends OfflineBasico
-  implements Offline<Contacto>
-{
-  constructor(private root: ContactoService) {
-    super(root.offlineService)
-    this.tabla = this.offlineService.tablas.contactos
-  }
-
-  sincronizarDatos(datos: Contacto[]): Promise<number> {
-    let PROMESAS = datos.map(x =>
-      this.offlineService.idb.save<Contacto>(x, this.tabla, this.db).toPromise()
+class ContactoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: ContactoService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.contactos,
+      'contacto'
     )
-
-    return Promise.all(PROMESAS).then(x => {
-      return this.contarDatos()
-    })
-  }
-
-  rutaBase(ruta: string[] = []): string {
-    let r = this.root.base.concat('/' + this.urlBase)
-    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
-    return r
-  }
-
-  obtenerDatos(): Observable<Contacto[]> {
-    return this.root.http.get<Contacto[]>(this.rutaBase(['sincronizar'])).pipe(
-      map((resp: any) => {
-        return resp.contactos as Contacto[]
-      })
-    )
-  }
-
-  eliminarDatos(): Observable<any> {
-    return this.offlineService.idb.deleteAll(this.tabla, this.db)
-  }
-
-  contarDatos(): Promise<number> {
-    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
   }
 }

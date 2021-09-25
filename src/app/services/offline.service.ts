@@ -6,6 +6,8 @@ import {
   IndexedDBService
 } from '@codice-progressio/indexed-db'
 import { BehaviorSubject, Observable } from 'rxjs'
+import { HttpClient } from '@angular/common/http'
+import { map } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +35,8 @@ export class OfflineService {
     usuarios: 'usuarios',
     listasDePrecios: 'listas-de-precios',
     skus: 'skus',
-    contactos: 'contactos'
+    contactos: 'contactos',
+    pedidos: 'pedidos'
   }
 
   inicializarIndexedDB() {
@@ -66,13 +69,28 @@ export class OfflineService {
   }
 }
 
-export class OfflineBasico {
-  tabla: string
+export class OfflineBasico<T> {
   db: IDBDatabase
   urlBase: string = 'offline'
   indice: indexOffline[] = []
 
-  constructor(public offlineService: OfflineService) {
+  /**
+   * Creates an instance of OfflineBasico.
+   * @param {OfflineService} offlineService El servicio offlineService
+   * @param {HttpClient} http El cliente para hacer la conexión
+   * @param {string} base La ruta base que se va a tomar para obtener los datos
+   * desde el backend.
+   * @param {string} tabla El nombre que se le dara a la tabla en index-db
+   * @param {string} key_response
+   * @memberof OfflineBasico
+   */
+  constructor(
+    public offlineService: OfflineService,
+    private http: HttpClient,
+    private base: string,
+    private tabla: string,
+    private key_response: string
+  ) {
     this.offlineService.db.subscribe(x => {
       this.db = x
     })
@@ -139,6 +157,76 @@ export class OfflineBasico {
     return Promise.all(PROMESAS)
   }
 
+  /**
+   *Guarda los datos en indexed-db
+   *
+   * @param {T[]} datos Todos los datos a registrar
+   * @return {*}  {Promise<number>}
+   * @memberof OfflineBasico
+   */
+  sincronizarDatos(datos: T[]): Promise<number> {
+    return new Promise((resolve, reject) => {
+      if (!datos || datos.length === 0) return reject('No se recibieron datos')
+
+      let PROMESAS = datos.map(x =>
+        this.offlineService.idb.save<T>(x, this.tabla, this.db).toPromise()
+      )
+
+      Promise.all(PROMESAS)
+        .then(x => {
+          resolve(this.contarDatos())
+        })
+        .catch(err => reject(err))
+    })
+  }
+
+  /**
+   *Crea la ruta base estandar.
+   *
+   * @param {string[]} [ruta=[]]
+   * @return {*}  {string}
+   * @memberof OfflineBasico
+   */
+  rutaBase(ruta: string[] = []): string {
+    let r = this.base.concat('/' + this.urlBase)
+    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
+    return r
+  }
+
+  /**
+   *Se comunica con el backend para obtener los datos a sincronziar con *indexed-db
+   *
+   * @return {*}  {Observable<T[]>}
+   * @memberof OfflineBasico
+   */
+  obtenerDatos(): Observable<T[]> {
+    return this.http.get<T[]>(this.rutaBase(['sincronizar'])).pipe(
+      map((resp: any) => {
+        console.log(resp)
+        return resp[this.key_response] as T[]
+      })
+    )
+  }
+
+  /**
+   *Elimina todos los datos de la tabla seleccionada
+   *
+   * @return {*}  {Observable<any>}
+   * @memberof OfflineBasico
+   */
+  eliminarDatos(): Observable<any> {
+    return this.offlineService.idb.deleteAll(this.tabla, this.db)
+  }
+
+  /**
+   * Retorna el total de datos existentes en la tabla seleccionada
+   *
+   * @return {*}  {Promise<number>}
+   * @memberof OfflineBasico
+   */
+  contarDatos(): Promise<number> {
+    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
+  }
 }
 
 export interface Offline<T> {

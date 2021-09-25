@@ -22,7 +22,7 @@ export class SkuService {
   lote: LoteService
   imagen: ImagenService
   etiqueta: EtiquetaService
-  offline: SkuOfflineService
+  offline: SkuOfflineService<SKU>
 
   base = URL_BASE('sku')
   constructor(
@@ -33,7 +33,7 @@ export class SkuService {
     this.lote = new LoteService(this)
     this.imagen = new ImagenService(this)
     this.etiqueta = new EtiquetaService(this)
-    this.offline = new SkuOfflineService(this)
+    this.offline = new SkuOfflineService(this, this.base)
   }
 
   crear(sku: SKU) {
@@ -266,42 +266,14 @@ class EtiquetaService {
   }
 }
 
-class SkuOfflineService extends OfflineBasico implements Offline<SKU> {
-  constructor(private root: SkuService) {
-    super(root.offlineService)
-    this.tabla = this.offlineService.tablas.skus
-    // this.offlineService.db.subscribe(x => (this.db = x))
-  }
-
-
-  sincronizarDatos(datos: SKU[]): Promise<number> {
-    let PROMESAS = datos.map(x =>
-      this.offlineService.idb.save<SKU>(x, this.tabla, this.db).toPromise()
+class SkuOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: SkuService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.pedidos,
+      'skus'
     )
-
-    return Promise.all(PROMESAS).then(x => {
-      return this.contarDatos()
-    })
-  }
-
-  rutaBase(ruta: string[] = []): string {
-    let r = this.root.base.concat('/' + this.urlBase)
-    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
-    return r
-  }
-
-  obtenerDatos(): Observable<SKU[]> {
-    return this.root.http.get<SKU[]>(this.rutaBase(['sincronizar'])).pipe(
-      map((resp: any) => {
-        return resp.skus as SKU[]
-      })
-    )
-  }
-
-  eliminarDatos(): Observable<any> {
-    return this.offlineService.idb.deleteAll(this.tabla, this.db)
-  }
-  contarDatos(): Promise<number> {
-    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
   }
 }

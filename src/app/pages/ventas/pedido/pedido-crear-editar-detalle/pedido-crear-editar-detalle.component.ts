@@ -254,12 +254,16 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     this.cargando = true
 
-    this.pedidoService.crear(modelo).subscribe(
-      () => {
-        this.location.back()
-      },
-      () => (this.cargando = false)
-    )
+
+
+    this.pedidoService
+
+    // this.pedidoService.crear(modelo).subscribe(
+    //   () => {
+    //     this.location.back()
+    //   },
+    //   () => (this.cargando = false)
+    // )
   }
 
   total() {

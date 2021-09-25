@@ -4,8 +4,6 @@ import { map } from 'rxjs/operators'
 import { URL_BASE } from '../config/config'
 import { ListaDePrecios } from '../models/listaDePrecios.model'
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +12,7 @@ export class ParametrosService {
   listasDePrecio: ListaDePrecioService
   sku: SKUService
   contactos: ContactosService
+  usuarios: UsuariosService
   base = URL_BASE('parametros')
 
   constructor(public http: HttpClient) {
@@ -21,6 +20,7 @@ export class ParametrosService {
     this.listasDePrecio = new ListaDePrecioService(this)
     this.sku = new SKUService(this)
     this.contactos = new ContactosService(this)
+    this.usuarios = new UsuariosService(this)
   }
 }
 
@@ -77,6 +77,14 @@ class SKUService {
 }
 class ContactosService {
   base = this.root.base.concat('/contactos')
+  constructor(private root: ParametrosService) {}
+
+  cargarEnLote(datos: any[]) {
+    return this.root.http.post(this.base, datos)
+  }
+}
+class UsuariosService {
+  base = this.root.base.concat('/usuarios')
   constructor(private root: ParametrosService) {}
 
   cargarEnLote(datos: any[]) {

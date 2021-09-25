@@ -45,7 +45,7 @@ export class UsuarioService {
 
   poolLight: UsuarioLight[] = []
   cargandoPool = false
-  offline: UsuarioOfflineService
+  offline: UsuarioOfflineService<Usuario>
 
   constructor(
     // Para que este funcione hay que hacer un "imports"
@@ -58,7 +58,7 @@ export class UsuarioService {
     public offlineService: OfflineService
   ) {
     this.cargarStorage()
-    this.offline = new UsuarioOfflineService(this)
+    this.offline = new UsuarioOfflineService(this, this.base)
   }
 
   confirmarUsuario(codigo: string) {
@@ -276,40 +276,14 @@ export interface UsuarioLight {
   nombre: string
 }
 
-class UsuarioOfflineService extends OfflineBasico implements Offline<Usuario> {
-  constructor(private root: UsuarioService) {
-    super(root.offlineService)
-    this.tabla = this.offlineService.tablas.usuarios
-  }
-
-  sincronizarDatos(datos: Usuario[]): Promise<number> {
-    let PROMESAS = datos.map(x =>
-      this.offlineService.idb.save<Usuario>(x, this.tabla, this.db).toPromise()
+class UsuarioOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: UsuarioService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.usuarios,
+      'usuarios'
     )
-
-    return Promise.all(PROMESAS).then(x => {
-      return this.contarDatos()
-    })
-  }
-
-  rutaBase(ruta: string[] = []): string {
-    let r = this.root.base.concat('/' + this.urlBase)
-    if (ruta.length > 0) r = r.concat('/').concat(ruta.join('/'))
-    return r
-  }
-
-  obtenerDatos(): Observable<Usuario[]> {
-    return this.root.http.get<Usuario[]>(this.rutaBase(['sincronizar'])).pipe(
-      map((resp: any) => {
-        return resp.usuarios as Usuario[]
-      })
-    )
-  }
-
-  eliminarDatos(): Observable<any> {
-    return this.offlineService.idb.deleteAll(this.tabla, this.db)
-  }
-  contarDatos(): Promise<number> {
-    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
   }
 }

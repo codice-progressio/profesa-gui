@@ -42,23 +42,25 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
       this.cargandoSkus = true
       this.cargandoListasDePrecios = true
 
+      let error = (err)=> console.error(err)
+
       this.skuService.offline.contarDatos().then(total => {
         this.totalSkus = total
         this.cargandoSkus = false
-      })
+      }).catch(error)
       this.contactoService.offline.contarDatos().then(total => {
         this.totalContactos = total
         this.cargandoContactos = false
-      })
+      }).catch(error)
       this.usuarioService.offline.contarDatos().then(total => {
         this.totalUsuarios = total
         this.cargandoUsuarios = false
-      })
+      }).catch(error)
 
       this.listaDePreciosService.offline.contarDatos().then(total => {
         this.totalListasDePrecios = total
         this.cargandoListasDePrecios = false
-      })
+      }).catch(error)
     })
   }
 
@@ -76,13 +78,6 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
       this.cargandoSkus ||
       this.cargandoListasDePrecios
     )
-  }
-
-  hayBD(){
-
-   
-
-
   }
 
   cargarListasDePrecios() {
