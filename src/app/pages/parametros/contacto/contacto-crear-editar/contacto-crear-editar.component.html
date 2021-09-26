@@ -221,6 +221,76 @@
             <div class="col-12">
               <hr />
               <h3>
+                Usuarios asignados
+                <br />
+                <small class="text-muted">Que fungen como vendedores</small>
+              </h3>
+
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="list-group">
+                    <codice-buscador
+                      (escucharCarga)="buscadorUsuario = $event"
+                      (termino)="buscarUsuarios($event)"
+                    >
+                    </codice-buscador>
+
+                    <ng-container
+                      *ngIf="usuarios.length > 0; else sinUsuariosTemplate"
+                    >
+                      <a
+                        (click)="usuarioSeleccionar(usuario)"
+                        *ngFor="let usuario of usuarios"
+                        href="javascript:void(0)"
+                        class="list-group-item list-group-item-action pointer"
+                      >
+                        {{ usuario.nombre }}
+                      </a>
+                    </ng-container>
+
+                    <ng-template #sinUsuariosTemplate>
+                      <a
+                        href="javascript:void(0)"
+                        class="list-group-item list-group-item-action disabled"
+                        >No hay usuarios para listar</a
+                      >
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="list-group">
+                    <a
+                      href="#"
+                      class="list-group-item list-group-item-action active"
+                      >Usuarios asignados</a
+                    >
+                    <ng-container
+                      *ngIf="
+                        contacto.usuariosAsignados.length > 0;
+                        else sinUsuariosTemplate
+                      "
+                    >
+                      <a
+                        (click)="usuarioEliminar(i)"
+                        *ngFor="
+                          let usuario of contacto.usuariosAsignados;
+                          let i = index
+                        "
+                        href="javascript:void(0)"
+                        class="list-group-item list-group-item-action pointer"
+                      >
+                        <i class="fas fa-times-circle text-danger"></i>
+                        {{ usuario.nombre }}
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <hr />
+              <h3>
                 Domicilios
 
                 <button
