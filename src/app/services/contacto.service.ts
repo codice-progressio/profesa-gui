@@ -104,7 +104,7 @@ class ContactoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
       root.http,
       base,
       root.offlineService.tablas.contactos,
-      'contacto'
+      'contactos'
     )
   }
 }
