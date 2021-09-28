@@ -5,7 +5,7 @@ import {
   IDBOpcionesObjectStore,
   IndexedDBService
 } from '@codice-progressio/indexed-db'
-import { BehaviorSubject, Observable } from 'rxjs'
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators'
 
@@ -14,21 +14,23 @@ import { map } from 'rxjs/operators'
 })
 export class OfflineService {
   nombreBD = 'IMPERIUMsic'
-  baseDeDatos: IDBDatabase
 
   /**
    * Para no tener problemas de inicializacion tenemos que
    * suscribirnos a este evento y obtener los datos despues de
    * inicializar DB
    */
-  db = new BehaviorSubject<IDBDatabase>(null)
+  db = new ReplaySubject<null>()
 
   constructor(
     private notiService: ManejoDeMensajesService,
     public idb: IndexedDBService
   ) {
     this.inicializarIndexedDB()
-    this.db.subscribe(x => (this.baseDeDatos = x))
+
+    this.idb.db_event.subscribe(() => {
+      this.db.next()
+    })
   }
 
   tablas = {
@@ -36,7 +38,8 @@ export class OfflineService {
     listasDePrecios: 'listas-de-precios',
     skus: 'skus',
     contactos: 'contactos',
-    pedidos: 'pedidos'
+    pedidos: 'pedidos',
+    pedidos_indice: 'pedidos_indice'
   }
 
   inicializarIndexedDB() {
@@ -55,10 +58,7 @@ export class OfflineService {
     )
 
     this.idb.inicializar(opciones, tablas).subscribe(
-      bd => {
-        this.db.next(bd)
-        this.baseDeDatos = bd
-      },
+      () => {},
       () => {
         this.notiService.ups(
           'No compatible con IndexedDB',
@@ -70,10 +70,9 @@ export class OfflineService {
 }
 
 export class OfflineBasico<T> {
-  db: IDBDatabase
   urlBase: string = 'offline'
   indice: indexOffline[] = []
-
+  private err = err => console.error(err)
   /**
    * Creates an instance of OfflineBasico.
    * @param {OfflineService} offlineService El servicio offlineService
@@ -90,11 +89,7 @@ export class OfflineBasico<T> {
     private base: string,
     private tabla: string,
     private key_response: string
-  ) {
-    this.offlineService.db.subscribe(x => {
-      this.db = x
-    })
-  }
+  ) {}
 
   /**
    *Carga los datos desde index-db a la memoria, ordenandolos y
@@ -106,31 +101,24 @@ export class OfflineBasico<T> {
    * array se respeta para mejoras en la busqueda.
    * @memberof OfflineBasico
    */
-  async generarYCargarIndiceEnMemoria<T>(db: IDBDatabase, campos: string[]) {
-    try {
-      let limit = await this.offlineService.idb.contarDatosEnTabla(
-        this.tabla,
-        db
-      )
-
-      let resultados = await this.offlineService.idb
-        .find<T>(this.tabla, db, { skip: 0, limit })
-        .toPromise()
-
-      this.indice = resultados
-        .map(resultados => {
-          let campo = campos
-            .map(x => resultados[x])
-            .map(x => x?.trim() ?? x)
-            .join(' ')
-            .toLowerCase()
-          let _id = resultados['_id']
-          return { campo, _id }
-        })
-        .sort((a, b) => (a.campo > b.campo ? 1 : 0))
-    } catch (error) {
-      console.log(error)
-    }
+  generarYCargarIndiceEnMemoria<T>(campos: string[]) {
+    this.offlineService.idb.contarDatos(this.tabla).subscribe(limit => {
+      this.offlineService.idb
+        .find<T>(this.tabla, { skip: 0, limit })
+        .subscribe(resultados => {
+          this.indice = resultados
+            .map(resultados => {
+              let campo = campos
+                .map(x => resultados[x])
+                .map(x => x?.trim() ?? x)
+                .join(' ')
+                .toLowerCase()
+              let _id = resultados['_id']
+              return { campo, _id }
+            })
+            .sort((a, b) => (a.campo > b.campo ? 1 : 0))
+        }, this.err)
+    }, this.err)
   }
 
   find<T>(termino: string, limite = 30): Promise<T[]> {
@@ -146,15 +134,17 @@ export class OfflineBasico<T> {
       .map(
         x =>
           new Promise<T>((resolve, reject) => {
-            this.offlineService.idb
-              .findById<T>(this.tabla, this.db, x)
-              .subscribe(
-                f => resolve(f),
-                _ => reject(_)
-              )
+            this.offlineService.idb.findById<T>(this.tabla, x).subscribe(
+              f => resolve(f),
+              _ => reject(_)
+            )
           })
       )
     return Promise.all(PROMESAS)
+  }
+
+  findById(id: any) {
+    return this.offlineService.idb.findById<T>(this.tabla, id)
   }
 
   /**
@@ -169,12 +159,15 @@ export class OfflineBasico<T> {
       if (!datos || datos.length === 0) return reject('No se recibieron datos')
 
       let PROMESAS = datos.map(x =>
-        this.offlineService.idb.save<T>(x, this.tabla, this.db).toPromise()
+        this.offlineService.idb.save<T>(x, this.tabla).toPromise()
       )
 
       Promise.all(PROMESAS)
         .then(x => {
-          resolve(this.contarDatos())
+          this.contarDatos().subscribe(
+            x => resolve(x),
+            err => reject(err)
+          )
         })
         .catch(err => reject(err))
     })
@@ -200,12 +193,9 @@ export class OfflineBasico<T> {
    * @memberof OfflineBasico
    */
   obtenerDatos(): Observable<T[]> {
-    return this.http.get<T[]>(this.rutaBase(['sincronizar'])).pipe(
-      map((resp: any) => {
-        console.log(resp)
-        return resp[this.key_response] as T[]
-      })
-    )
+    return this.http
+      .get<T[]>(this.rutaBase(['sincronizar']))
+      .pipe(map((resp: any) => resp[this.key_response] as T[]))
   }
 
   /**
@@ -215,17 +205,21 @@ export class OfflineBasico<T> {
    * @memberof OfflineBasico
    */
   eliminarDatos(): Observable<any> {
-    return this.offlineService.idb.deleteAll(this.tabla, this.db)
+    return this.offlineService.idb.deleteAll(this.tabla)
   }
 
   /**
    * Retorna el total de datos existentes en la tabla seleccionada
    *
-   * @return {*}  {Promise<number>}
+   * @returns
    * @memberof OfflineBasico
    */
-  contarDatos(): Promise<number> {
-    return this.offlineService.idb.contarDatosEnTabla(this.tabla, this.db)
+  contarDatos() {
+    return this.offlineService.idb.contarDatos(this.tabla)
+  }
+
+  guardar(modelo: T) {
+    return this.offlineService.idb.save(modelo, this.tabla)
   }
 }
 
@@ -233,7 +227,7 @@ export interface Offline<T> {
   rutaBase(): string
   obtenerDatos(): Observable<T[]>
   eliminarDatos(): Observable<any>
-  contarDatos(): Promise<number>
+  contarDatos(): Observable<number>
   sincronizarDatos(datos: T[]): Promise<number>
 }
 
