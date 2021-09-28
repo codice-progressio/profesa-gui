@@ -272,7 +272,7 @@ class SkuOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
       root.offlineService,
       root.http,
       base,
-      root.offlineService.tablas.pedidos,
+      root.offlineService.tablas.skus,
       'skus'
     )
   }
