@@ -42,25 +42,25 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
       this.cargandoSkus = true
       this.cargandoListasDePrecios = true
 
-      let error = (err)=> console.error(err)
+      let error = err => console.error(err)
 
-      this.skuService.offline.contarDatos().then(total => {
+      this.skuService.offline.contarDatos().subscribe(total => {
         this.totalSkus = total
         this.cargandoSkus = false
-      }).catch(error)
-      this.contactoService.offline.contarDatos().then(total => {
+      }, error)
+      this.contactoService.offline.contarDatos().subscribe(total => {
         this.totalContactos = total
         this.cargandoContactos = false
-      }).catch(error)
-      this.usuarioService.offline.contarDatos().then(total => {
+      }, error)
+      this.usuarioService.offline.contarDatos().subscribe(total => {
         this.totalUsuarios = total
         this.cargandoUsuarios = false
-      }).catch(error)
+      }, error)
 
-      this.listaDePreciosService.offline.contarDatos().then(total => {
+      this.listaDePreciosService.offline.contarDatos().subscribe(total => {
         this.totalListasDePrecios = total
         this.cargandoListasDePrecios = false
-      }).catch(error)
+      }, error)
     })
   }
 
