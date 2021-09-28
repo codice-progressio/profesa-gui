@@ -28,7 +28,7 @@
     "@angular/router": "^12.0.1",
     "@angular/service-worker": "^12.0.1",
     "@auth0/angular-jwt": "^5.0.2",
-    "@codice-progressio/indexed-db": "^0.2.4",
+    "@codice-progressio/indexed-db": "^0.3.0",
     "@codice-progressio/input-validaciones": "^1.0.0",
     "@codice-progressio/modal": "^0.2.0",
     "@types/jquery": "^3.3.32",
