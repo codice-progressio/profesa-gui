@@ -125,7 +125,7 @@
               <ng-template #importeTemplate>
                 <h6 class="text-right">
                   $
-                  {{ articulosSeleccionados[i]?.costoVenta | number: '0.2' }}
+                  {{ dummy.get('sku').value?.costoVenta | number: '0.2' }}
                 </h6>
                 <small id="helpId" class="form-text text-muted"
                   >Costo unitario</small
@@ -136,7 +136,7 @@
                 <h6 class="text-right">
                   $
                   {{
-                    articulosSeleccionados[i]?.costoVenta *
+                    dummy.get('sku').value?.costoVenta *
                       dummy.get('cantidad').value | number: '0.2'
                   }}
                 </h6>
@@ -170,7 +170,7 @@
                               *ngIf="false; else folioTemplate"
                             ></ng-container>
                             <br />
-                            {{ articulosSeleccionados[i]?.nombreCompleto }}
+                            {{ dummy.get('sku').value?.nombreCompleto }}
                           </h3>
                         </div>
 
@@ -199,7 +199,7 @@
                             />
                             <small id="helpId" class="form-text text-muted"
                               >Cantidad | Unidad:
-                              {{ articulosSeleccionados[i]?.unidad }}</small
+                              {{ dummy.get('sku').value?.unidad }}</small
                             >
                             <codice-validaciones
                               [campo]="dummy.get('cantidad')"
@@ -314,11 +314,11 @@
                               ><i class="fas fa-edit"></i
                             ></a>
                             <hr />
-                            {{ articulosSeleccionados[i].nombreCompleto }}
+                            {{ dummy.get('sku').value?.nombreCompleto }}
                           </h3>
 
                           <small class="text-muted">
-                            Unidad: {{ articulosSeleccionados[i].unidad }}
+                            Unidad: {{ dummy.get('sku').value?.unidad }}
                           </small>
                           <hr />
                         </div>
@@ -340,7 +340,7 @@
                             <div class="col-4 text-center">
                               $
                               {{
-                                articulosSeleccionados[i].costoVenta
+                                dummy.get('sku').value?.costoVenta
                                   | number: '0.2'
                               }}
 
@@ -351,7 +351,7 @@
                               $
                               {{
                                 dummy.get('cantidad').value *
-                                  articulosSeleccionados[i].costoVenta
+                                  dummy.get('sku').value?.costoVenta
                                   | number: '0.2'
                               }}
 

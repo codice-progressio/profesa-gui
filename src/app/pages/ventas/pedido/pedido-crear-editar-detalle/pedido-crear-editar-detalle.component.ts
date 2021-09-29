@@ -23,7 +23,6 @@ import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 export class PedidoCrearEditarDetalleComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
-    private offlineService: OfflineService,
     private notiService: ManejoDeMensajesService,
     private skuService: SkuService,
     private contactoService: ContactoService,
@@ -34,6 +33,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     private renderer: Renderer2,
     public modalService: ModalService
   ) {}
+
+  comprobarIndice() {
+    let pedidoI = this.pedidoService.offline.indice.length
+    let contactoI = this.contactoService.offline.indice.length
+    if (!pedidoI && !contactoI) this.location.back()
+    else this.obtenerId()
+  }
 
   idModalContacto = 'modalPedido'
   idModalSku = 'modakSku'
@@ -53,7 +59,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   esDetalle: boolean
 
   ngOnInit(): void {
-    this.obtenerId()
+    this.comprobarIndice()
   }
 
   activarProtocoloDetalle() {
@@ -73,16 +79,22 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       this.id = params.get('id')
       this.cargando = true
       if (!this.id) this.crearFormulario({})
-      else this.obtenerPedido(this.id)
+      else this.obtenerPedido(+this.id)
     })
   }
 
-  obtenerPedido(id: string) {
-    this.pedidoService.buscarId(id).subscribe(
+  obtenerPedido(id: number) {
+    this.pedidoService.offline.findById(id).subscribe(
       pedido => {
+        console.log(pedido)
+
         this.crearFormulario(pedido)
       },
-      () => this.location.back()
+      err => {
+        console.log(err)
+        this.notiService.toastError('No existe el pedido')
+        this.location.back()
+      }
     )
   }
 
@@ -213,7 +225,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.fa('articulos')
       .at(this.indexSeleccionado)
       .get('sku')
-      .setValue(item._id)
+      .setValue(item)
     this.articulosSeleccionados.push(item)
     this.modalService.close(this.idModalSku)
   }
