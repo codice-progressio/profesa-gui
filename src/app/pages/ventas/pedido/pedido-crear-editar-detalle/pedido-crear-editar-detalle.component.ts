@@ -255,7 +255,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     modelo.total = this.total()
     modelo.folio = this.crearFolio()
-
+    modelo.createdAt = new Date()
     modelo._id = id
     this.pedidoService.offline.guardar(modelo).subscribe(
       () => this.location.back(),
