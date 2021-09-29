@@ -13,6 +13,7 @@ import { SkuService } from '../../../../services/sku/sku.service'
 import { SKU } from '../../../../models/sku.model'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
 import { OfflineService } from '../../../../services/offline.service'
+import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -21,6 +22,7 @@ import { OfflineService } from '../../../../services/offline.service'
 })
 export class PedidoCrearEditarDetalleComponent implements OnInit {
   constructor(
+    private usuarioService: UsuarioService,
     private offlineService: OfflineService,
     private notiService: ManejoDeMensajesService,
     private skuService: SkuService,
@@ -52,22 +54,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerId()
-    this.cargarIndicesEnMemoria()
-  }
-  cargarIndicesEnMemoria() {
-    this.offlineService.db.subscribe(db => {
-      if (!db) return
-      this.skuService.offline.generarYCargarIndiceEnMemoria(db, [
-        'nombreCompleto',
-        'descripcion',
-        'credito'
-      ])
-      this.contactoService.offline.generarYCargarIndiceEnMemoria(db, [
-        'razonSocial',
-        'nombre',
-        'rfc'
-      ])
-    })
   }
 
   activarProtocoloDetalle() {
@@ -244,7 +230,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
   }
 
-  submit(modelo: Pedido, invalid: boolean) {
+  async submit(modelo: Pedido, invalid: boolean) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
     if (invalid) {
@@ -253,17 +239,35 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
 
     this.cargando = true
+    //Total
 
+    let id = await this.obtenerUltimoId()
 
+    modelo.total = this.total()
+    modelo.folio = this.crearFolio()
 
-    this.pedidoService
+    modelo._id = id
+    this.pedidoService.offline.guardar(modelo).subscribe(
+      () => this.location.back(),
+      () => (this.cargando = false)
+    )
+  }
+  crearFolio(): String {
+    let nombre = this.usuarioService.usuario.nombre.replace(' ', '-')
+    let fecha = new Date().toISOString()
+    return `${nombre}-${fecha}`
+  }
 
-    // this.pedidoService.crear(modelo).subscribe(
-    //   () => {
-    //     this.location.back()
-    //   },
-    //   () => (this.cargando = false)
-    // )
+  async obtenerUltimoId() {
+    let ultimoId = await this.pedidoService.offline_indice
+      .findById(0)
+      .toPromise()
+    if (!ultimoId) {
+      await this.pedidoService.offline_indice
+        .guardar({ _id: 0, ultimo: 1 })
+        .toPromise()
+      return 1
+    } else return ultimoId.ultimo + 1
   }
 
   total() {
@@ -274,6 +278,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       const precio = this.articulosSeleccionados[i]?.costoVenta ?? 0
       total += Math.round((cantidad * precio + Number.EPSILON) * 100) / 100
     }
+
     return total
   }
 

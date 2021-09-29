@@ -11,6 +11,11 @@ export interface Pedido {
   acciones: PedidoAccion[]
   createdAt: Date
   upadtedAt: Date
+
+  //UI
+
+  total:Number
+  folio:String //Usuario +  fecha + hora
 }
 
 export interface ArticuloPedido {

@@ -34,6 +34,7 @@ import { environment } from '../environments/environment'
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
+import { ModalModule } from '@codice-progressio/modal'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -103,6 +104,7 @@ const appRoutes: Routes = [
         // throwNoTokenError: true
       }
     }),
+    ModalModule,
     NgxCsvParserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

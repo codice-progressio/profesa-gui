@@ -12,9 +12,11 @@ import { map } from 'rxjs/operators'
 export class PedidoService {
   base = URL_BASE('pedido')
   offline: PedidoOfflineService<Pedido>
+  offline_indice: PedidoIndiceOfflineService<{ _id: number; ultimo: number }>
 
   constructor(public http: HttpClient, public offlineService: OfflineService) {
     this.offline = new PedidoOfflineService(this, this.base)
+    this.offline_indice = new PedidoIndiceOfflineService(this, 'no se ocupa')
   }
   buscarUsuario() {
     return this.http.get<Pedido[]>(this.base.concat('/buscar/usuario'))
@@ -49,6 +51,20 @@ class PedidoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
       base,
       root.offlineService.tablas.pedidos,
       'pedidos'
+    )
+  }
+}
+class PedidoIndiceOfflineService<T>
+  extends OfflineBasico<T>
+  implements Offline<T>
+{
+  constructor(private root: PedidoService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.pedidos_indice,
+      'pedidos_indice'
     )
   }
 }

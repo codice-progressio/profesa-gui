@@ -101,24 +101,34 @@ export class OfflineBasico<T> {
    * array se respeta para mejoras en la busqueda.
    * @memberof OfflineBasico
    */
-  generarYCargarIndiceEnMemoria<T>(campos: string[]) {
-    this.offlineService.idb.contarDatos(this.tabla).subscribe(limit => {
-      this.offlineService.idb
-        .find<T>(this.tabla, { skip: 0, limit })
-        .subscribe(resultados => {
-          this.indice = resultados
-            .map(resultados => {
-              let campo = campos
-                .map(x => resultados[x])
-                .map(x => x?.trim() ?? x)
-                .join(' ')
-                .toLowerCase()
-              let _id = resultados['_id']
-              return { campo, _id }
-            })
-            .sort((a, b) => (a.campo > b.campo ? 1 : 0))
-        }, this.err)
-    }, this.err)
+  generarYCargarIndiceEnMemoria<T>(campos: string[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.offlineService.idb.contarDatos(this.tabla).subscribe(
+        limit => {
+          this.offlineService.idb
+            .find<T>(this.tabla, { skip: 0, limit })
+            .subscribe(
+              resultados => {
+                this.indice = resultados
+                  .map(resultados => {
+                    let campo = campos
+                      .map(x => resultados[x])
+                      .map(x => x?.trim() ?? x)
+                      .join(' ')
+                      .toLowerCase()
+                    let _id = resultados['_id']
+                    return { campo, _id }
+                  })
+                  .sort((a, b) => (a.campo > b.campo ? 1 : 0))
+
+                resolve()
+              },
+              err => reject(err)
+            )
+        },
+        err => reject(err)
+      )
+    })
   }
 
   find<T>(termino: string, limite = 30): Promise<T[]> {
