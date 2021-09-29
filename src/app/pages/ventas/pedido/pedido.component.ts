@@ -67,13 +67,18 @@ export class PedidoComponent implements OnInit {
 
   cargar() {
     this.cargando = true
-    this.pedidoService.buscarUsuario().subscribe(
-      pedidos => {
-        this.pedidos = pedidos
-        this.cargando = false
-      },
-      () => (this.cargando = false)
-    )
+    this.pedidoService.offline.contarDatos().subscribe(limit => {
+      this.pedidoService.offline.findAll({ skip: 0, limit }).subscribe(
+        datos => {
+          this.pedidos = datos
+          this.cargando = false
+        },
+        err => {
+          console.log(err)
+          this.cargando = false
+        }
+      )
+    })
   }
 
   buscar(termino: string) {
@@ -99,4 +104,3 @@ export class PedidoComponent implements OnInit {
     })
   }
 }
-
