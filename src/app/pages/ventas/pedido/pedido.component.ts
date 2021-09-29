@@ -44,21 +44,16 @@ export class PedidoComponent implements OnInit {
     this.cargar()
   }
 
-  eliminando = {}
   eliminar(pedido: Pedido) {
-    if (this.eliminando[pedido._id + '']) return
-
     this.notiService.confirmacionDeEliminacion(
-      'Esta acción solo la puede deshacer el administrador',
+      'Esta acción no se puede deshacer',
       () => {
-        this.eliminando[pedido._id + ''] = true
-        this.pedidoService.eliminar(pedido._id).subscribe(
+        this.pedidoService.offline.delete(pedido._id).subscribe(
           () => {
-            this.pedidos = this.pedidos.filter(x => x._id === pedido._id)
-            this.eliminando[pedido._id + ''] = false
+            this.pedidos = this.pedidos.filter(x => x._id !== pedido._id)
           },
-          () => {
-            this.eliminando[pedido._id + ''] = false
+          (err) => {
+            console.log(err)
           }
         )
       }
