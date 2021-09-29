@@ -13,9 +13,8 @@ export interface Pedido {
   upadtedAt: Date
 
   //UI
-
-  total:Number
-  folio:String //Usuario +  fecha + hora
+  total: number
+  folio: String //Usuario +  fecha + hora
 }
 
 export interface ArticuloPedido {
