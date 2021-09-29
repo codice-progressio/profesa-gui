@@ -85,11 +85,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   obtenerPedido(id: number) {
     this.pedidoService.offline.findById(id).subscribe(
-      pedido => {
-        console.log(pedido)
-
-        this.crearFormulario(pedido)
-      },
+      pedido => this.crearFormulario(pedido),
       err => {
         console.log(err)
         this.notiService.toastError('No existe el pedido')
@@ -107,7 +103,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         pedido.articulos?.map(x => {
           // Cargamos los articulos en la lista para su descripcion
           this.articulosSeleccionados.push(x.sku)
-          return this.crearArticulo(x)
+          return this.crearArticulo(x, false)
         }) ?? [],
         [this.vs.minSelectedCheckboxes(1)]
       )
@@ -142,7 +138,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     return this.f(campo) as FormArray
   }
 
-  crearArticulo(articulo: Partial<ArticuloPedido>) {
+  crearArticulo(articulo: Partial<ArticuloPedido>, editar = true) {
     return new FormGroup({
       cantidad: new FormControl(articulo.cantidad, [
         Validators.required,
@@ -150,7 +146,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       ]),
       sku: new FormControl(articulo.sku, [Validators.required]),
       observaciones: new FormControl(articulo.observaciones),
-      editando: new FormControl('true', [])
+      editando: new FormControl(editar, [])
     })
   }
 
