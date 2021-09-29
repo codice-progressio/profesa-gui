@@ -29,7 +29,7 @@
           <h3 class="card-subtitle mb-2 text-muted font-bold">
             {{ +pedido._id | number: '3.0' }}
           </h3>
-          <p>{{pedido.createdAt | date }}</p>
+          <span>{{ pedido.createdAt | date: 'dd/MM/yyyy hh:mm' }}</span>
         </div>
         <h5 class="card-title">
           {{ pedido.contacto.nombre ?? pedido.contacto.razonSocial }}
@@ -37,11 +37,17 @@
         <p class="card-text">
           {{ pedido.observaciones }}
         </p>
-
-        <div
-          class="d-flex justify-content-between align-items-center bg-light"
-        ></div>
-
+        <hr />
+        <div class="row">
+          <div title="Total de la nota" class="col-6 text-center">
+            <b>Total:</b>
+            $ {{ pedido.total | number: '0.2' }}
+          </div>
+          <div title="Cantidad de articulos" class="col-6 text-center">
+            <b>Items:</b>
+            {{ pedido.articulos.length }}
+          </div>
+        </div>
         <hr />
 
         <a
