@@ -101,7 +101,7 @@ export class OfflineBasico<T> {
    * array se respeta para mejoras en la busqueda.
    * @memberof OfflineBasico
    */
-  generarYCargarIndiceEnMemoria<T>(campos: string[]): Promise<void> {
+  generarYCargarIndiceEnMemoria(campos: string[]): Promise<void> {
     return new Promise((resolve, reject) => {
       this.offlineService.idb.contarDatos(this.tabla).subscribe(
         limit => {
@@ -131,7 +131,7 @@ export class OfflineBasico<T> {
     })
   }
 
-  find<T>(termino: string, limite = 30): Promise<T[]> {
+  find(termino: string, limite = 30): Promise<T[]> {
     let PROMESAS = this.indice
       .filter(indice => {
         return !termino.trim()
@@ -155,6 +155,10 @@ export class OfflineBasico<T> {
 
   findById(id: any) {
     return this.offlineService.idb.findById<T>(this.tabla, id)
+  }
+
+  findAll(paginacion = { skip: 0, limit: 30 }) {
+    return this.offlineService.idb.find<T>(this.tabla, paginacion)
   }
 
   /**

@@ -203,7 +203,7 @@ export class OperacionesOffline {
   constructor(private root: SkuListaComponent) {}
   find(termino = '') {
     this.root.skuService.offline
-      .find<SKU>(termino)
+      .find(termino)
       .then(skus => {
         this.root.skus = skus
         this.root.estadoCarga(false)
