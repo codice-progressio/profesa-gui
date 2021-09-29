@@ -161,6 +161,10 @@ export class OfflineBasico<T> {
     return this.offlineService.idb.find<T>(this.tabla, paginacion)
   }
 
+  delete(id: any) {
+    return this.offlineService.idb.delete(this.tabla, id)
+  }
+
   /**
    *Guarda los datos en indexed-db
    *
