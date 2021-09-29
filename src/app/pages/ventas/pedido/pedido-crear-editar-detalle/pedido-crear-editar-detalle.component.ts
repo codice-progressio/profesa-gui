@@ -222,10 +222,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       return
     }
     this.skus = []
-    this.fa('articulos')
-      .at(this.indexSeleccionado)
-      .get('sku')
-      .setValue(item)
+    this.fa('articulos').at(this.indexSeleccionado).get('sku').setValue(item)
     this.articulosSeleccionados.push(item)
     this.modalService.close(this.idModalSku)
   }
@@ -262,18 +259,22 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     this.cargando = true
     //Total
+    let id: number
 
-    let id = await this.obtenerUltimoId()
+    if (this.id) id = +this.id
+    else id = await this.obtenerUltimoId()
 
     modelo.total = this.total()
     modelo.folio = this.crearFolio()
     modelo.createdAt = new Date()
     modelo._id = id
+
     this.pedidoService.offline.guardar(modelo).subscribe(
       () => this.location.back(),
       () => (this.cargando = false)
     )
   }
+
   crearFolio(): String {
     let nombre = this.usuarioService.usuario.nombre.replace(' ', '-')
     let fecha = new Date().toISOString()
