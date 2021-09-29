@@ -101,7 +101,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   crearFormulario(pedido: Partial<Pedido>) {
     this.pedido = pedido
     this.formulario = new FormGroup({
-      contacto: new FormControl(pedido.contacto?._id, [Validators.required]),
+      contacto: new FormControl(pedido.contacto, [Validators.required]),
       observaciones: new FormControl(pedido.observaciones),
       articulos: new FormArray(
         pedido.articulos?.map(x => {

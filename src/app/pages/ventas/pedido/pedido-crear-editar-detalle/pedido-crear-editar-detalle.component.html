@@ -14,7 +14,8 @@
                   <h3>
                     <ng-container *ngIf="pedido.contacto">
                       {{
-                        pedido.contacto?.nombre ?? pedido.contacto?.razonSocial
+                        f('contacto').value?.nombre ??
+                          f('contacto').value?.razonSocial
                       }}
                       <br />
                       <small class="text-muted"> Cliente </small>
