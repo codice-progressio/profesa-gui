@@ -102,11 +102,17 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     })
 
     this.cargando = false
-    if (!pedido.contacto) {
-      setTimeout(() => {
-        this.modalService.open(this.idModalContacto)
-      }, 1000)
-    }
+
+    let intervalo = setInterval(() => {
+      if (this.contactoService.offline.indice.length) {
+        clearInterval(intervalo)
+        if (!pedido.contacto) {
+          setTimeout(() => {
+            this.modalService.open(this.idModalContacto)
+          }, 1000)
+        }
+      }
+    }, 100)
 
     if (this.esRutaDetalle()) {
       setTimeout(() => {
@@ -159,7 +165,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   seleccionarContacto(contacto: Contacto) {
     this.pedido.contacto = contacto
-    this.formulario.get('contacto').setValue(contacto._id)
+    this.formulario.get('contacto').setValue({
+      nombre: contacto.nombre,
+      razonSocial: contacto.razonSocial,
+      _id: contacto._id
+    })
     this.modalService.close(this.idModalContacto)
     this.estaCargandoBuscadorContacto.next(false)
     this.contactos = []
@@ -262,12 +272,17 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     let ultimoId = await this.pedidoService.offline_indice
       .findById(0)
       .toPromise()
-    if (!ultimoId) {
-      await this.pedidoService.offline_indice
-        .guardar({ _id: 0, ultimo: 1 })
-        .toPromise()
-      return 1
-    } else return ultimoId.ultimo + 1
+
+    let ultimo = 0
+
+    if (!ultimoId) ultimo++
+    else ultimo = ultimoId.ultimo + 1
+
+    await this.pedidoService.offline_indice
+      .guardar({ _id: 0, ultimo })
+      .toPromise()
+    console.log(ultimo)
+    return ultimo
   }
 
   total() {

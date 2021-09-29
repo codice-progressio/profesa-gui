@@ -60,7 +60,9 @@
                   ></a>
                 </td>
                 <td>{{ pedido._id }}</td>
-                <td>{{ pedido.contacto.nombre }}</td>
+                <td>
+                  {{ pedido.contacto.nombre ?? pedido.contacto.razonSocial }}
+                </td>
                 <td>#SIN DEFINIR</td>
                 <td>
                   <a
