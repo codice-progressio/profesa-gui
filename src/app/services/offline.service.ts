@@ -233,7 +233,7 @@ export class OfflineBasico<T> {
   }
 
   guardar(modelo: T) {
-    return this.offlineService.idb.save(modelo, this.tabla)
+    return this.offlineService.idb.update(modelo, this.tabla)
   }
 }
 
