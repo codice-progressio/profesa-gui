@@ -132,6 +132,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.formulario = new FormGroup({
       contacto: new FormControl(pedido.contacto, [Validators.required]),
       observaciones: new FormControl(pedido.observaciones),
+      total: new FormControl(pedido.total),
+      iva: new FormControl(pedido.iva),
+      importe: new FormControl(pedido.importe),
       articulos: new FormArray(
         pedido.articulos?.map(x => {
           // Cargamos los articulos en la lista para su descripcion
@@ -195,12 +198,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (lista && articulo.sku?._id) {
       let id = articulo.sku._id
       let dato = lista.skus.find(x => x.sku === id)
-      console.log(
-        'aplicando lista',
-        lista.nombre,
-        dato,
-        articulo.sku.costoVenta
-      )
       if (dato) return new FormControl(dato.precio)
     }
     return new FormControl(articulo.precio)
@@ -325,7 +322,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (this.id) id = +this.id
     else id = await this.obtenerUltimoId()
 
-    modelo.total = this.total()
+    modelo.total = this.importe()
     modelo.folio = this.crearFolio()
     modelo.createdAt = new Date()
     modelo._id = id
@@ -357,18 +354,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .toPromise()
     console.log(ultimo)
     return ultimo
-  }
-
-  total() {
-    let total = 0
-    for (let i = 0; i < this.fa('articulos').controls.length; i++) {
-      const cantidad =
-        this.fa('articulos').controls[i].get('cantidad').value ?? 0
-      const precio = this.articulosSeleccionados[i]?.costoVenta ?? 0
-      total += Math.round((cantidad * precio + Number.EPSILON) * 100) / 100
-    }
-
-    return total
   }
 
   editar(i: number) {
@@ -452,10 +437,46 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.notiService.confirmarAccion(
       'Esto borrara todos los datos que ya se han registrado.',
       () => {
+        this.articulosSeleccionados = []
+        this.lista = undefined
         this.crearFormulario({})
       },
-      'Cancelaste la accion',
+      '',
       () => {}
     )
+  }
+
+  redondear(valor: number) {
+    return Math.round((valor + Number.EPSILON) * 100) / 100
+  }
+
+  importe() {
+    let total = 0
+    for (let i = 0; i < this.fa('articulos').controls.length; i++) {
+      let articulo = this.fa('articulos').controls[i]
+      let cantidad = articulo.get('cantidad').value ?? 0
+      let precio = articulo.get('precio').value ?? 0
+      total += this.redondear(cantidad * precio)
+    }
+
+    return total
+  }
+
+  iva() {
+    let iva = 0
+    if (this.lista) {
+      iva = this.importe() * (this.lista?.iva / 100)
+    }
+
+    iva = this.redondear(iva)
+    this.f('iva').setValue(iva)
+    return iva
+  }
+
+  total() {
+    let total = this.importe() + this.iva()
+    total = this.redondear(total)
+    this.f('iva').setValue(total)
+    return total
   }
 }

@@ -20,7 +20,7 @@
                       <br />
                       <small class="text-muted"> Cliente </small>
 
-                      <a
+                      <a *ngIf="!esDetalle"
                         (click)="reiniciarPedido()"
                         class="btn btn-danger rounded"
                         href="javascript:void(0)"
@@ -131,8 +131,7 @@
 
               <ng-template #importeTemplate>
                 <h6 class="text-right">
-                  $
-                  {{ dummy.get('sku').value?.costoVenta | number: '0.2' }}
+                  $ {{ dummy.get('precio').value | number: '0.2' }}
                 </h6>
                 <small id="helpId" class="form-text text-muted"
                   >Costo unitario</small
@@ -143,8 +142,8 @@
                 <h6 class="text-right">
                   $
                   {{
-                    dummy.get('sku').value?.costoVenta *
-                      dummy.get('cantidad').value | number: '0.2'
+                    dummy.get('precio').value * dummy.get('cantidad').value
+                      | number: '0.2'
                   }}
                 </h6>
                 <small id="helpId" class="form-text text-muted">Importe</small>
@@ -314,6 +313,7 @@
                             ></ng-container>
 
                             <a
+                              *ngIf="!esDetalle"
                               (click)="editar(i)"
                               class="btn btn-success"
                               href="javascript:void(0)"
@@ -346,10 +346,7 @@
                             </div>
                             <div class="col-4 text-center">
                               $
-                              {{
-                                dummy.get('sku').value?.costoVenta
-                                  | number: '0.2'
-                              }}
+                              {{ dummy.get('precio').value | number: '0.2' }}
 
                               <br />
                               <small class="text-muted">Costo unitario</small>
@@ -358,8 +355,7 @@
                               $
                               {{
                                 dummy.get('cantidad').value *
-                                  dummy.get('sku').value?.costoVenta
-                                  | number: '0.2'
+                                  dummy.get('precio').value | number: '0.2'
                               }}
 
                               <br />
@@ -415,8 +411,15 @@
               <i class="fas fa-save"></i> Guardar
             </a>
 
-            <h3 class="pull-right">
-              <b>$ {{ total() | number: '1.2' }}</b>
+            <h3 class="pull-right text-right">
+              <span class="text-muted">
+                IMPORTE: $ {{ importe() | number: '1.2' }}
+              </span>
+
+              <hr />
+              <span class="text-muted">IVA: $ {{ iva() | number: '1.2' }}</span>
+              <hr />
+              <b class="text-muted">TOTAL: $ {{ total() | number: '1.2' }}</b>
             </h3>
           </div>
         </ng-container>
