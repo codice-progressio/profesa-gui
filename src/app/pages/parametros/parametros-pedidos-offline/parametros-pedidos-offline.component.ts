@@ -30,38 +30,34 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.obtenerRegistros()
+    this.offlineService.db.subscribe(() => this.gestionRegistros())
   }
-  obtenerRegistros() {
-    // Esperamos que se cargue la BD
-    this.offlineService.db.subscribe(x => {
-      if (!x) return
 
-      this.cargandoUsuarios = true
-      this.cargandoContactos = true
-      this.cargandoSkus = true
-      this.cargandoListasDePrecios = true
+  gestionRegistros() {
+    this.cargandoUsuarios = true
+    this.cargandoContactos = true
+    this.cargandoSkus = true
+    this.cargandoListasDePrecios = true
 
-      let error = err => console.error(err)
+    let error = err => console.error(err)
 
-      this.skuService.offline.contarDatos().subscribe(total => {
-        this.totalSkus = total
-        this.cargandoSkus = false
-      }, error)
-      this.contactoService.offline.contarDatos().subscribe(total => {
-        this.totalContactos = total
-        this.cargandoContactos = false
-      }, error)
-      this.usuarioService.offline.contarDatos().subscribe(total => {
-        this.totalUsuarios = total
-        this.cargandoUsuarios = false
-      }, error)
+    this.skuService.offline.contarDatos().subscribe(total => {
+      this.totalSkus = total
+      this.cargandoSkus = false
+    }, error)
+    this.contactoService.offline.contarDatos().subscribe(total => {
+      this.totalContactos = total
+      this.cargandoContactos = false
+    }, error)
+    this.usuarioService.offline.contarDatos().subscribe(total => {
+      this.totalUsuarios = total
+      this.cargandoUsuarios = false
+    }, error)
 
-      this.listaDePreciosService.offline.contarDatos().subscribe(total => {
-        this.totalListasDePrecios = total
-        this.cargandoListasDePrecios = false
-      }, error)
-    })
+    this.listaDePreciosService.offline.contarDatos().subscribe(total => {
+      this.totalListasDePrecios = total
+      this.cargandoListasDePrecios = false
+    }, error)
   }
 
   sincronizar() {
@@ -82,6 +78,8 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
 
   cargarListasDePrecios() {
     // Eliminamos todo
+
+    this.listaDePreciosService.offline.indice = []
 
     let cbError = err => {
       console.log(err)
@@ -105,6 +103,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   }
 
   cargarSkus() {
+    this.skuService.offline.indice = []
     this.cargandoSkus = true
     this.skuService.offline.eliminarDatos().subscribe(
       () => {
@@ -125,6 +124,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   }
 
   cargarContactos() {
+    this.contactoService.offline.indice = []
     this.cargandoContactos = true
     this.contactoService.offline.eliminarDatos().subscribe(
       () => {
@@ -145,6 +145,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   }
 
   cargarUsuarios() {
+    this.usuarioService.offline.indice = []
     this.cargandoUsuarios = true
     this.usuarioService.offline.eliminarDatos().subscribe(
       () => {
