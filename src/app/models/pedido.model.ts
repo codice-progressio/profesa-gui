@@ -20,6 +20,8 @@ export interface Pedido {
 export interface ArticuloPedido {
   _id: string
   cantidad: number
+  //Si aplica, se usa de lista de precio
+  precio: number
   sku: SKU
   observaciones: string
 }

@@ -21,7 +21,7 @@
                       <small class="text-muted"> Cliente </small>
 
                       <a
-                        (click)="pedido.contacto = undefined"
+                        (click)="reiniciarPedido()"
                         class="btn btn-danger rounded"
                         href="javascript:void(0)"
                         role="button"
@@ -41,6 +41,12 @@
                       >
                     </ng-container>
                   </h3>
+                  <ng-container *ngIf="lista">
+                    <span class="text-mutes"
+                      >Aplicando lista de precios: '{{ lista.nombre }}' con
+                      {{ lista.iva }}% IVA</span
+                    >
+                  </ng-container>
                 </div>
 
                 <!-- 
@@ -383,7 +389,7 @@
           =====================================
           -->
 
-        <ng-container *ngIf="!esDetalle">
+        <ng-container *ngIf="!esDetalle && pedido.contacto">
           <div class="col-12">
             <a
               *ngIf="!hayUnArticuloEditandose()"

@@ -1,8 +1,14 @@
 import { Component, OnInit, Renderer2 } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { PedidoService } from '../../../../services/pedido.service'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms'
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms'
 import { ArticuloPedido, Pedido } from '../../../../models/pedido.model'
 import { Location } from '@angular/common'
 import { Contacto } from '../../../../models/contacto.model'
@@ -12,8 +18,9 @@ import { ContactoService } from '../../../../services/contacto.service'
 import { SkuService } from '../../../../services/sku/sku.service'
 import { SKU } from '../../../../models/sku.model'
 import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-de-mensajes.service'
-import { OfflineService } from '../../../../services/offline.service'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
+import { ListaDePreciosService } from '../../../../services/lista-de-precios.service'
+import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -21,7 +28,11 @@ import { UsuarioService } from 'src/app/services/usuario/usuario.service'
   styleUrls: ['./pedido-crear-editar-detalle.component.css']
 })
 export class PedidoCrearEditarDetalleComponent implements OnInit {
+  lista: ListaDePrecios
+
   constructor(
+    private router: Router,
+    private listaDePreciosService: ListaDePreciosService,
     private usuarioService: UsuarioService,
     private notiService: ManejoDeMensajesService,
     private skuService: SkuService,
@@ -37,8 +48,14 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   comprobarIndice() {
     let pedidoI = this.pedidoService.offline.indice.length
     let contactoI = this.contactoService.offline.indice.length
-    if (!pedidoI && !contactoI) this.location.back()
-    else this.obtenerId()
+    if (!pedidoI && !contactoI) {
+      this.notiService.confirmarAccion(
+        'Los indices no se han  cargado, ¿Quieres recargar la aplicación?',
+        () => this.router.navigate(['/login']),
+        ' No se pueden registrar pedidos',
+        () => this.location.back()
+      )
+    } else this.obtenerId()
   }
 
   idModalContacto = 'modalPedido'
@@ -85,13 +102,29 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   obtenerPedido(id: number) {
     this.pedidoService.offline.findById(id).subscribe(
-      pedido => this.crearFormulario(pedido),
+      pedido => {
+        if (pedido.contacto.listaDePrecios)
+          this.obtenerListaDePrecios(pedido.contacto, pedido)
+        else this.crearFormulario(pedido)
+      },
       err => {
         console.log(err)
         this.notiService.toastError('No existe el pedido')
         this.location.back()
       }
     )
+  }
+
+  obtenerListaDePrecios(contacto: Contacto, pedido: Pedido = null) {
+    this.listaDePreciosService.offline
+      .findById(contacto.listaDePrecios)
+      .subscribe(
+        lista => {
+          this.lista = lista
+          if (pedido) this.crearFormulario(pedido)
+        },
+        err => console.error(err)
+      )
   }
 
   crearFormulario(pedido: Partial<Pedido>) {
@@ -144,10 +177,33 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         Validators.required,
         Validators.min(0.01)
       ]),
+
+      //definimos el precio directo para calcularlo junto
+      // con la lista en caso de que haya.
+
+      precio: this.obtenerPrecioDeArticulo(articulo, this.lista),
       sku: new FormControl(articulo.sku, [Validators.required]),
       observaciones: new FormControl(articulo.observaciones),
       editando: new FormControl(editar, [])
     })
+  }
+
+  obtenerPrecioDeArticulo(
+    articulo: Partial<ArticuloPedido>,
+    lista: ListaDePrecios
+  ): AbstractControl {
+    if (lista && articulo.sku?._id) {
+      let id = articulo.sku._id
+      let dato = lista.skus.find(x => x.sku === id)
+      console.log(
+        'aplicando lista',
+        lista.nombre,
+        dato,
+        articulo.sku.costoVenta
+      )
+      if (dato) return new FormControl(dato.precio)
+    }
+    return new FormControl(articulo.precio)
   }
 
   terminoContacto: string
@@ -176,8 +232,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.formulario.get('contacto').setValue({
       nombre: contacto.nombre,
       razonSocial: contacto.razonSocial,
-      _id: contacto._id
+      _id: contacto._id,
+      listaDePrecios: contacto.listaDePrecios
     })
+
+    this.obtenerListaDePrecios(contacto)
     this.modalService.close(this.idModalContacto)
     this.estaCargandoBuscadorContacto.next(false)
     this.contactos = []
@@ -218,7 +277,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       return
     }
     this.skus = []
-    this.fa('articulos').at(this.indexSeleccionado).get('sku').setValue(item)
+
+    let articulo = this.fa('articulos').at(this.indexSeleccionado)
+    articulo.get('sku').setValue(item)
+    articulo
+      .get('precio')
+      .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
+
     this.articulosSeleccionados.push(item)
     this.modalService.close(this.idModalSku)
   }
@@ -381,5 +446,16 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .map(x => x._id)
 
     this.estaCargandoBuscadorFolio.next(false)
+  }
+
+  reiniciarPedido() {
+    this.notiService.confirmarAccion(
+      'Esto borrara todos los datos que ya se han registrado.',
+      () => {
+        this.crearFormulario({})
+      },
+      'Cancelaste la accion',
+      () => {}
+    )
   }
 }
