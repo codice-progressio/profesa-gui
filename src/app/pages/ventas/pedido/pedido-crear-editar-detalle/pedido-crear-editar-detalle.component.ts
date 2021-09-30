@@ -324,7 +324,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (this.id) id = +this.id
     else id = await this.obtenerUltimoId()
 
-    modelo.total = this.importe()
     modelo.folio = this.crearFolio()
     modelo.createdAt = new Date()
     modelo._id = id
@@ -466,6 +465,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       total += this.redondear(cantidad * precio)
     }
 
+    this.f('importe').setValue(total)
+
     return total
   }
 
@@ -483,7 +484,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   total() {
     let total = this.importe() + this.iva()
     total = this.redondear(total)
-    this.f('iva').setValue(total)
+    this.f('total').setValue(total)
     return total
   }
 }
