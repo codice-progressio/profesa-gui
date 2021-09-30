@@ -121,7 +121,14 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .subscribe(
         lista => {
           this.lista = lista
-          if (pedido) this.crearFormulario(pedido)
+          if (pedido) {
+            this.crearFormulario(pedido)
+          } else {
+            this.f('contacto').value.listaDePrecios = {
+              ...lista,
+              skus: []
+            }
+          }
         },
         err => console.error(err)
       )
