@@ -16,7 +16,7 @@ export interface Pedido {
   total: number
   iva:number
   importe:number
-  folio: String //Usuario +  fecha + hora
+  folio: string //Usuario +  fecha + hora
 }
 
 export interface ArticuloPedido {

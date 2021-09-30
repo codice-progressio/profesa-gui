@@ -333,7 +333,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     )
   }
 
-  crearFolio(): String {
+  crearFolio(): string {
     let nombre = this.usuarioService.usuario.nombre.replace(' ', '-')
     let fecha = new Date().toISOString()
     return `${nombre}-${fecha}`
