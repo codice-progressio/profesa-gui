@@ -101,7 +101,7 @@ export class ExcelService {
       origin: ultimaFila(worksheet)
     })
 
-    let espacios = new Array(5).map(x => '')
+    let espacios = new Array(6).map(x => '')
 
     XLSX.utils.sheet_add_aoa(
       worksheet,
