@@ -187,7 +187,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       precio: this.obtenerPrecioDeArticulo(articulo, this.lista),
       sku: new FormControl(articulo.sku, [Validators.required]),
       observaciones: new FormControl(articulo.observaciones),
-      editando: new FormControl(editar, [])
+      editando: new FormControl(editar, []),
+      importe: new FormControl(articulo.importe)
     })
   }
 
@@ -230,7 +231,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       nombre: contacto.nombre,
       razonSocial: contacto.razonSocial,
       _id: contacto._id,
-      listaDePrecios: contacto.listaDePrecios
+      listaDePrecios: contacto.listaDePrecios,
+      rfc: contacto.rfc
     })
 
     this.obtenerListaDePrecios(contacto)
@@ -394,10 +396,15 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   agregar(i: number, valor: number) {
-    let control = this.fa('articulos').at(i).get('cantidad')
-    control.setValue(+control.value + valor)
-    control.markAsTouched()
-    control.updateValueAndValidity()
+    let articulo = this.fa('articulos').at(i)
+    let cantidadF = articulo.get('cantidad')
+    let cantidad = (cantidadF.value ?? 0) + valor
+    let precio = articulo.get('precio').value ?? 0
+
+    articulo.get('importe').setValue(this.redondear(precio * cantidad))
+    cantidadF.setValue(cantidad)
+    cantidadF.markAsTouched()
+    cantidadF.updateValueAndValidity()
   }
 
   noMostrarArticulos: string[] = []

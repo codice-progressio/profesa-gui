@@ -51,7 +51,8 @@ export class AppComponent implements OnInit {
           .generarYCargarIndiceEnMemoria([
             'nombreCompleto',
             'descripcion',
-            'credito'
+            'credito',
+            "codigo"
           ])
           .then(() => {
             sku = true

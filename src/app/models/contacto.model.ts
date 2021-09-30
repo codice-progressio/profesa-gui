@@ -20,7 +20,7 @@ export interface Contacto {
   etiquetas: string[]
   rutas: RutaDeEntrega[]
   // listaDePrecios: string | ListaDePrecios
-  listaDePrecios: string
+  listaDePrecios: ListaDePrecios,
   usuariosAsignados: Usuario []
 }
 

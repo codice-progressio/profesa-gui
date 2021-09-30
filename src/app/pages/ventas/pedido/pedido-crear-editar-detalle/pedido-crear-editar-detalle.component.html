@@ -20,7 +20,8 @@
                       <br />
                       <small class="text-muted"> Cliente </small>
 
-                      <a *ngIf="!esDetalle"
+                      <a
+                        *ngIf="!esDetalle"
                         (click)="reiniciarPedido()"
                         class="btn btn-danger rounded"
                         href="javascript:void(0)"
@@ -141,10 +142,7 @@
               <ng-template #costoVenta>
                 <h6 class="text-right">
                   $
-                  {{
-                    dummy.get('precio').value * dummy.get('cantidad').value
-                      | number: '0.2'
-                  }}
+                  {{ dummy.get('importe').value | number: '0.2' }}
                 </h6>
                 <small id="helpId" class="form-text text-muted">Importe</small>
               </ng-template>

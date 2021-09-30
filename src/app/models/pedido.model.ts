@@ -14,9 +14,13 @@ export interface Pedido {
 
   //UI
   total: number
-  iva:number
-  importe:number
+  iva: number
+  importe: number
   folio: string //Usuario +  fecha + hora
+  ubicacion: {
+    latitud: number
+    longitud: number
+  }
 }
 
 export interface ArticuloPedido {
@@ -26,6 +30,7 @@ export interface ArticuloPedido {
   precio: number
   sku: SKU
   observaciones: string
+  importe: number
 }
 
 export interface PedidoAccion {
