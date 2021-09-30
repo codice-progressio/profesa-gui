@@ -59,7 +59,7 @@ export class ExcelService {
       [
         'Cliente:',
         pedido.contacto.nombre ?? pedido.contacto.razonSocial,
-        'rfc',
+        'RFC',
         pedido.contacto.rfc,
         'Lista de precios:',
         pedido.contacto.listaDePrecios.nombre,
@@ -67,7 +67,7 @@ export class ExcelService {
         pedido.contacto.listaDePrecios.iva
       ],
       ['Vendedor:', this.usuarioService.usuario.nombre],
-      ['Primer dato', 'Segundo dato']
+      ['Observaciones', pedido.observaciones]
     ])
 
     let ultimaFila = ws => {
