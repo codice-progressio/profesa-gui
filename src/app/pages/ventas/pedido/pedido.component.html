@@ -24,7 +24,7 @@
 <div class="row">
   <div *ngFor="let pedido of pedidos" class="col-12">
     <div class="card shadow">
-      <div class="card-body">
+      <div class="card-body text-center">
         <div class="d-flex justify-content-between">
           <h3 class="card-subtitle mb-2 text-muted font-bold">
             {{ +pedido._id | number: '3.0' }}
@@ -39,13 +39,21 @@
         </p>
         <hr />
         <div class="row">
-          <div title="Total de la nota" class="col-6 text-center">
-            <b>Total:</b>
-            $ {{ pedido.total | number: '0.2' }}
-          </div>
-          <div title="Cantidad de articulos" class="col-6 text-center">
+          <div title="Cantidad de articulos" class="col-6 col-sm-3 text-center">
             <b>Items:</b>
             {{ pedido.articulos.length }}
+          </div>
+          <div title="IVA" class="col-6 col-sm-3 text-center">
+            <b>IVA:</b>
+            $ {{ pedido.iva | number: '0.2' }}
+          </div>
+          <div title="Importe antes de iva" class="col-6 col-sm-3 text-center">
+            <b>Importe:</b>
+            $ {{ pedido.importe | number: '0.2' }}
+          </div>
+          <div title="Total de la nota" class="col-6 col-sm-3 text-center">
+            <b>Total:</b>
+            $ {{ pedido.total | number: '0.2' }}
           </div>
         </div>
         <hr />
@@ -70,11 +78,20 @@
 
         <a
           (click)="eliminar(pedido)"
-          class="btn btn-danger"
+          class="btn btn-danger mr-3"
           href="javascript:void(0)"
           role="button"
         >
           <i class="fas fa-times"></i
+        ></a>
+
+        <a
+          (click)="descargar(pedido)"
+          class="btn btn-success"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-file-excel"></i
         ></a>
       </div>
     </div>

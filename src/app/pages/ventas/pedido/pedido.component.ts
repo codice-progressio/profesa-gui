@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
 import { ContactoService } from '../../../services/contacto.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { ExcelService } from 'src/app/services/excel.service'
 
 @Component({
   selector: 'app-pedido',
@@ -13,6 +14,7 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 })
 export class PedidoComponent implements OnInit {
   constructor(
+    private excelService: ExcelService,
     private notiService: ManejoDeMensajesService,
     private pedidoService: PedidoService,
     private router: Router,
@@ -52,7 +54,7 @@ export class PedidoComponent implements OnInit {
           () => {
             this.pedidos = this.pedidos.filter(x => x._id !== pedido._id)
           },
-          (err) => {
+          err => {
             console.log(err)
           }
         )
@@ -97,5 +99,9 @@ export class PedidoComponent implements OnInit {
     this.router.navigate(['detalle', pedido._id], {
       relativeTo: this.activatedRoute
     })
+  }
+
+  descargar(pedido: Pedido) {
+    this.excelService.pedidoComoHojaDeExcel(pedido)
   }
 }
