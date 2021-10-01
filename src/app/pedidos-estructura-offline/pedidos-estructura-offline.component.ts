@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common'
+import { Component, OnInit } from '@angular/core'
 
 @Component({
   selector: 'app-pedidos-estructura-offline',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pedidos-estructura-offline.component.css']
 })
 export class PedidosEstructuraOfflineComponent implements OnInit {
+  constructor(private location: Location) {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  regresar() {
+    this.location.back()
   }
-
 }

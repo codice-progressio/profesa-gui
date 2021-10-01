@@ -1,6 +1,14 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col-12 mb-3"><h1 class="text-secondary">Pedidos</h1></div>
+    <div class="col-12 mb-3">
+      <h1 class="text-secondary">
+        <a (click)="regresar()" class="btn btn-info" href="javascript:void(0)">
+          <i class="fas fa-arrow-left"></i
+        ></a>
+
+        Pedidos
+      </h1>
+    </div>
   </div>
   <div class="row">
     <router-outlet></router-outlet>
