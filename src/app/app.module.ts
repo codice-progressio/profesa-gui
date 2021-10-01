@@ -34,7 +34,8 @@ import { environment } from '../environments/environment'
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
-import { ModalModule } from '@codice-progressio/modal'
+import { ModalModule } from '@codice-progressio/modal';
+import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -46,13 +47,14 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'IMPERIUMsic', component: ImperiumSicComponent },
   { path: 'usuario/confirmar', component: ConfirmarUsuarioComponent },
-  
-  { path: 'offline/pedidos', 
-  
-  
-loadChildren:()=> import('./pages/ventas/ventas.module').then(m=>m.VentasModule)
 
-},
+  {
+    path: 'offline/pedidos',
+
+    component:PedidosEstructuraOfflineComponent,
+    loadChildren: () =>
+      import('./pages/ventas/ventas.module').then(m => m.VentasModule)
+  },
   {
     path: 'usuario/recuperar-contrasena',
     component: RecuperarContrasenaComponent
@@ -78,7 +80,8 @@ loadChildren:()=> import('./pages/ventas/ventas.module').then(m=>m.VentasModule)
     PagesComponent,
     ImperiumSicComponent,
     ConfirmarUsuarioComponent,
-    RecuperarContrasenaComponent
+    RecuperarContrasenaComponent,
+    PedidosEstructuraOfflineComponent
   ],
 
   imports: [
