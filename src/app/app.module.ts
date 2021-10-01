@@ -46,6 +46,13 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'IMPERIUMsic', component: ImperiumSicComponent },
   { path: 'usuario/confirmar', component: ConfirmarUsuarioComponent },
+  
+  { path: 'offline/pedidos', 
+  
+  
+loadChildren:()=> import('./pages/ventas/ventas.module').then(m=>m.VentasModule)
+
+},
   {
     path: 'usuario/recuperar-contrasena',
     component: RecuperarContrasenaComponent
