@@ -24,7 +24,7 @@ export class SkuListaComponent implements OnInit {
     // busqueda
     this._termino = value
     if (value) this.buscar(value)
-    else this.cargar()
+    // else this.cargar()
   }
 
   @Input() offline = false
