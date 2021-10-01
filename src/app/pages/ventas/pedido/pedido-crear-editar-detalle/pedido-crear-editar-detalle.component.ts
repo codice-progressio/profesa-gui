@@ -347,7 +347,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   crearFolio(): string {
-    let nombre = this.usuarioService.usuario.nombre.replace(' ', '-')
+    let nombre = this.usuarioService.usuarioOffline.nombre.replace(' ', '-')
     let fecha = new Date().toISOString()
     return `${nombre}-${fecha}`
   }

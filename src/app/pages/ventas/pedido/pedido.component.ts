@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs'
 import { ContactoService } from '../../../services/contacto.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 import { ExcelService } from 'src/app/services/excel.service'
+import { Usuario } from 'src/app/models/usuario.model'
+import { UsuarioService } from 'src/app/services/usuario/usuario.service'
+import { ParametrosService } from 'src/app/services/parametros.service'
 
 @Component({
   selector: 'app-pedido',
@@ -14,6 +17,8 @@ import { ExcelService } from 'src/app/services/excel.service'
 })
 export class PedidoComponent implements OnInit {
   constructor(
+    private parametrosService: ParametrosService,
+    private usaurioService: UsuarioService,
     private excelService: ExcelService,
     private notiService: ManejoDeMensajesService,
     private pedidoService: PedidoService,
@@ -21,6 +26,7 @@ export class PedidoComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
   pedidos: Pedido[] = []
+  usuario: Usuario
 
   private _cargando = false
   public get cargando() {
@@ -44,6 +50,25 @@ export class PedidoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargar()
+
+    this.comprobarUsuario()
+  }
+
+  comprobarUsuario() {
+    if (!this.usaurioService.usuarioOffline) {
+      this.parametrosService.offline.findById(0).subscribe(
+        p => {
+          this.usaurioService.usuarioOffline = p.usuario_registrado
+          this.usuario = this.usaurioService.usuarioOffline
+        },
+        err => {
+          this.notiService.toastErrorMensaje(
+            'No se encontro un registro de usuario valido. Inicia sesión de nuevo.'
+          )
+          this.router.navigate(['/'])
+        }
+      )
+    } else this.usuario = this.usaurioService.usuarioOffline
   }
 
   eliminar(pedido: Pedido) {

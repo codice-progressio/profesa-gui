@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
 import { URL_BASE } from '../config/config'
 import { ListaDePrecios } from '../models/listaDePrecios.model'
+import { Usuario } from '../models/usuario.model'
+import { Offline, OfflineBasico, OfflineService } from './offline.service'
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +16,16 @@ export class ParametrosService {
   contactos: ContactosService
   usuarios: UsuariosService
   base = URL_BASE('parametros')
+  offline: ParametrosOfflineService<ParametrosOfflineModel>
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public offlineService: OfflineService) {
     this.etiquetas = new EtiquetasService(this)
     this.listasDePrecio = new ListaDePrecioService(this)
     this.sku = new SKUService(this)
     this.contactos = new ContactosService(this)
     this.usuarios = new UsuariosService(this)
+
+    this.offline = new ParametrosOfflineService(this, 'no se ocupa la base')
   }
 }
 
@@ -89,5 +94,26 @@ class UsuariosService {
 
   cargarEnLote(datos: any[]) {
     return this.root.http.post(this.base, datos)
+  }
+}
+
+interface ParametrosOfflineModel {
+  //Solo ocupamos un registro
+  _id: number
+  usuario_registrado: Usuario
+}
+
+class ParametrosOfflineService<T>
+  extends OfflineBasico<T>
+  implements Offline<T>
+{
+  constructor(private root: ParametrosService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.parametros,
+      'parametros'
+    )
   }
 }

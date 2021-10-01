@@ -66,7 +66,7 @@ export class ExcelService {
         'IVA:',
         pedido.contacto.listaDePrecios.iva
       ],
-      ['Vendedor:', this.usuarioService.usuario.nombre],
+      ['Vendedor:', this.usuarioService.usuarioOffline.nombre],
       ['Observaciones', pedido.observaciones]
     ])
 

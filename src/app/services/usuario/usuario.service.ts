@@ -12,6 +12,7 @@ import { URL_BASE } from '../../config/config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { Imagen } from '../../models/Imagen'
 import { Offline, OfflineBasico, OfflineService } from '../offline.service'
+import { ParametrosService } from '../parametros.service'
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,7 @@ export class UsuarioService {
   constructor(
     // Para que este funcione hay que hacer un "imports"
     // en service.module.ts
+    public parametrosService: ParametrosService,
     public http: HttpClient,
     public router: Router,
     public _subirArchivoService: SubirArchivoService,
@@ -182,6 +184,33 @@ export class UsuarioService {
     localStorage.setItem('usuario', JSON.stringify(token))
     this.usuario = token
     // this.roles = roles;
+
+    this.registrarParaOffline(token)
+  }
+
+  usuarioOffline: Usuario
+
+  registrarParaOffline(usuario: Usuario) {
+    let err = err => console.error(err)
+    this.parametrosService.offline.contarDatos().subscribe(p => {
+      if (p < 1) {
+        this.guardarOfflineUsuario({ _id: 0, usuario_registrado: usuario })
+      } else {
+        this.parametrosService.offline.findById(0).subscribe(p => {
+          p.usuario_registrado = usuario
+          this.guardarOfflineUsuario(p)
+        })
+      }
+    }, err)
+  }
+  private guardarOfflineUsuario(datos: {
+    _id: number
+    usuario_registrado: Usuario
+  }) {
+    this.parametrosService.offline.guardar(datos).subscribe(() => {
+      this.usuarioOffline = datos.usuario_registrado
+      console.log('se registro un nuevo usuario')
+    })
   }
 
   parseJwt(token: string) {

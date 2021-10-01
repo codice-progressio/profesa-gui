@@ -39,7 +39,8 @@ export class OfflineService {
     skus: 'skus',
     contactos: 'contactos',
     pedidos: 'pedidos',
-    pedidos_indice: 'pedidos_indice'
+    pedidos_indice: 'pedidos_indice',
+    parametros: 'parametros'
   }
 
   inicializarIndexedDB() {
