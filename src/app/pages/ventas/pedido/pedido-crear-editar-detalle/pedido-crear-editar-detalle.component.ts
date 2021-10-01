@@ -117,7 +117,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   obtenerListaDePrecios(contacto: Contacto, pedido: Pedido = null) {
     this.listaDePreciosService.offline
-      .findById(contacto.listaDePrecios)
+      .findById(contacto.listaDePrecios._id)
       .subscribe(
         lista => {
           this.lista = lista
