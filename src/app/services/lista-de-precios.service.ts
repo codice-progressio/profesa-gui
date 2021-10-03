@@ -1,15 +1,25 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import {
+  IDBOpciones,
+  IDBOpcionesObjectStore,
+  IndexedDBService
+} from '@codice-progressio/indexed-db'
+import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { URL_BASE } from '../config/config'
 import { ListaDePrecios } from '../models/listaDePrecios.model'
+import { Offline, OfflineBasico, OfflineService } from './offline.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListaDePreciosService {
-  constructor(private http: HttpClient) {}
   base = URL_BASE('lista-de-precios')
+  offline: ListaDePreciosOfflineService<ListaDePrecios>
+  constructor(public http: HttpClient, public offlineService: OfflineService) {
+    this.offline = new ListaDePreciosOfflineService(this, this.base)
+  }
 
   buscar() {
     return this.http.get(this.base).pipe(
@@ -59,6 +69,21 @@ export class ListaDePreciosService {
       map((res: any) => {
         return res.listaDePrecios
       })
+    )
+  }
+}
+
+class ListaDePreciosOfflineService<T>
+  extends OfflineBasico<T>
+  implements Offline<T>
+{
+  constructor(private root: ListaDePreciosService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.listasDePrecios,
+      'listasDePrecios'
     )
   }
 }

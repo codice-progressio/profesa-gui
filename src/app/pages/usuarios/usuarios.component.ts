@@ -47,7 +47,7 @@ export class UsuariosComponent implements OnInit {
   buscar(termino: string) {
     if (!termino) return this.cargar()
     this.cargando = true
-    this.usuarioService.buscarTermino(termino).subscribe(
+    this.usuarioService.leer(termino).subscribe(
       usuarios => {
         this.cargando = false
         this.usuarios = usuarios
@@ -57,7 +57,7 @@ export class UsuariosComponent implements OnInit {
   }
   cargar() {
     this.cargando = true
-    this.usuarioService.leerTodo().subscribe(
+    this.usuarioService.leer().subscribe(
       usuarios => {
         this.usuarios = usuarios
         this.cargando = false

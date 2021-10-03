@@ -4,21 +4,18 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 mt-2 mt-md-0 col-md-6">
-            <a
-              class="btn btn-primary"
-              href="javascript:void(0)"
-              role="button"
-              routerLink="crear"
-            >
+            <h3>Vendedor: {{ usuario?.nombre }}</h3>
+
+            <a class="btn btn-primary" role="button" [routerLink]="['crear']">
               <i class="fas fa-plus-circle"></i> Crear
             </a>
           </div>
           <div class="col-12 mt-2 mt-md-0 col-md-6">
-            <codice-buscador
+            <!-- <codice-buscador
               (termino)="termino = $event"
               (escucharCarga)="estaCargandoBuscador = $event"
             >
-            </codice-buscador>
+            </codice-buscador> -->
           </div>
         </div>
       </div>
@@ -27,26 +24,77 @@
 </div>
 
 <div class="row">
-  <div class="col-12">
+  <div *ngFor="let pedido of pedidos" class="col-12">
     <div class="card shadow">
-      <div class="card-body">
-        <app-pedidos-lista
-          *ngIf="!cargando; else cargaTemplate"
-          [pedidos]="pedidos"
-          (editar)="editar($event)"
-          (detalle)="detalle($event)"
-        >
-        </app-pedidos-lista>
-
-        <ng-template #cargaTemplate>
-          <div class="row">
-            <div class="col-12">
-              <div style="width: 200px" class="text-center">
-                <codice-ux-precarga></codice-ux-precarga>
-              </div>
-            </div>
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between">
+          <h3 class="card-subtitle mb-2 text-muted font-bold">
+            {{ +pedido._id | number: '3.0' }}
+          </h3>
+          <span>{{ pedido.createdAt | date: 'dd/MM/yyyy hh:mm' }}</span>
+        </div>
+        <h5 class="card-title">
+          {{ pedido.contacto.nombre ?? pedido.contacto.razonSocial }}
+        </h5>
+        <p class="card-text">
+          {{ pedido.observaciones }}
+        </p>
+        <hr />
+        <div class="row">
+          <div title="Cantidad de articulos" class="col-6 col-sm-3 text-center">
+            <b>Items:</b>
+            {{ pedido.articulos.length }}
           </div>
-        </ng-template>
+          <div title="IVA" class="col-6 col-sm-3 text-center">
+            <b>IVA:</b>
+            $ {{ pedido.iva | number: '0.2' }}
+          </div>
+          <div title="Importe antes de iva" class="col-6 col-sm-3 text-center">
+            <b>Importe:</b>
+            $ {{ pedido.importe | number: '0.2' }}
+          </div>
+          <div title="Total de la nota" class="col-6 col-sm-3 text-center">
+            <b>Total:</b>
+            $ {{ pedido.total | number: '0.2' }}
+          </div>
+        </div>
+        <hr />
+
+        <a
+          (click)="detalle(pedido)"
+          class="btn btn-info mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-search"></i
+        ></a>
+
+        <a
+          (click)="editar(pedido)"
+          class="btn btn-primary mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-edit"></i
+        ></a>
+
+        <a
+          (click)="eliminar(pedido)"
+          class="btn btn-danger mr-3"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-times"></i
+        ></a>
+
+        <a
+          (click)="descargar(pedido)"
+          class="btn btn-success"
+          href="javascript:void(0)"
+          role="button"
+        >
+          <i class="fas fa-file-excel"></i
+        ></a>
       </div>
     </div>
   </div>

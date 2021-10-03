@@ -5,9 +5,15 @@ import { SKU } from '../../models/sku.model'
 import { Imagen } from '../../models/Imagen'
 import { URL_BASE } from '../../config/config'
 import { catchError, map } from 'rxjs/operators'
-import { throwError } from 'rxjs'
+import { Observable, throwError } from 'rxjs'
 import { SkuLote, SkuLoteMovimiento } from '../../models/lote.model'
 import { URLQuery } from '../utilidades/URLQuery'
+import {
+  indexOffline,
+  Offline,
+  OfflineBasico,
+  OfflineService
+} from '../offline.service'
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +22,18 @@ export class SkuService {
   lote: LoteService
   imagen: ImagenService
   etiqueta: EtiquetaService
+  offline: SkuOfflineService<SKU>
 
   base = URL_BASE('sku')
   constructor(
     public http: HttpClient,
-    public msjService: ManejoDeMensajesService
+    public msjService: ManejoDeMensajesService,
+    public offlineService: OfflineService
   ) {
     this.lote = new LoteService(this)
     this.imagen = new ImagenService(this)
     this.etiqueta = new EtiquetaService(this)
+    this.offline = new SkuOfflineService(this, this.base)
   }
 
   crear(sku: SKU) {
@@ -254,5 +263,17 @@ class EtiquetaService {
         this.base.concat(`/buscar/etiquetas?etiquetas=${etiquetas.join(',')}`)
       )
       .pipe(catchError(x => throwError(x)))
+  }
+}
+
+class SkuOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: SkuService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.skus,
+      'skus'
+    )
   }
 }

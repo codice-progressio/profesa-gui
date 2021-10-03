@@ -24,8 +24,11 @@ export class SkuListaComponent implements OnInit {
     // busqueda
     this._termino = value
     if (value) this.buscar(value)
-    else this.cargar()
+    // else this.cargar()
   }
+
+  @Input() offline = false
+  operacionesOffline: OperacionesOffline
 
   private _termino: string = ''
 
@@ -77,25 +80,28 @@ export class SkuListaComponent implements OnInit {
   constructor(
     private utilidadesService: UtilidadesService,
     public modalService: ModalService,
-    private skuService: SkuService,
+    public skuService: SkuService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private notiService: ManejoDeMensajesService
-  ) {}
-
-  ngOnInit(): void {
-    this.cargar()
+  ) {
+    this.operacionesOffline = new OperacionesOffline(this)
   }
+
+  ngOnInit(): void {}
 
   cargar() {
     this.estadoCarga(true)
-    this.skuService.leerTodo().subscribe(
-      skus => {
-        this.skus = skus
-        this.estadoCarga(false)
-      },
-      () => this.estadoCarga(false)
-    )
+
+    if (this.offline) this.operacionesOffline.find()
+    else
+      this.skuService.leerTodo().subscribe(
+        skus => {
+          this.skus = skus
+          this.estadoCarga(false)
+        },
+        () => this.estadoCarga(false)
+      )
   }
 
   estadoCarga(estado: boolean) {
@@ -138,13 +144,16 @@ export class SkuListaComponent implements OnInit {
 
   buscar(termino: string) {
     this.estadoCarga(true)
-    this.skuService.buscarTermino(termino).subscribe(
-      skus => {
-        this.estadoCarga(false)
-        this.skus = skus
-      },
-      () => this.estadoCarga(false)
-    )
+
+    if (this.offline) this.operacionesOffline.find(termino)
+    else
+      this.skuService.buscarTermino(termino).subscribe(
+        skus => {
+          this.estadoCarga(false)
+          this.skus = skus
+        },
+        () => this.estadoCarga(false)
+      )
   }
 
   filtrarPorEtiquetas(etiquetas) {
@@ -187,5 +196,20 @@ export class SkuListaComponent implements OnInit {
   abrirModal(sku: SKU, id: string) {
     this.skuTraslado = sku
     this.modalService.open(id)
+  }
+}
+
+export class OperacionesOffline {
+  constructor(private root: SkuListaComponent) {}
+  find(termino = '') {
+    this.root.skuService.offline
+      .find(termino)
+      .then(skus => {
+        this.root.skus = skus
+        this.root.estadoCarga(false)
+      })
+      .catch(err => {
+        ;() => this.root.estadoCarga(false)
+      })
   }
 }

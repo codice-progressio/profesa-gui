@@ -15,14 +15,22 @@ export class SkuEtiquetasComponent implements OnInit {
 
   etiquetas: string[] = []
 
+  @Input()
+  private _offline = false
+  public get offline() {
+    return this._offline
+  }
+  public set offline(value) {
+    this._offline = value
+    if (!value) this.cargarEtiquetas()
+  }
+
   constructor(
     private parametrosService: ParametrosService,
     private skuService: SkuService
   ) {}
 
-  ngOnInit(): void {
-    this.cargarEtiquetas()
-  }
+  ngOnInit(): void {}
 
   etiquetaEliminar(sku: SKU, payload: EtiquetaTransporte) {
     payload.cargando.next(true)

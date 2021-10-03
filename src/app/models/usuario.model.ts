@@ -7,6 +7,7 @@ export class Usuario {
     public password?: string,
     public img?: Imagen,
     public permissions: string[] = [],
-    public inhabilitado?: boolean
+    public inhabilitado?: boolean,
+    public password_offline?: string
   ) {}
 }

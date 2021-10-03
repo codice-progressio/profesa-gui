@@ -11,13 +11,26 @@ export interface Pedido {
   acciones: PedidoAccion[]
   createdAt: Date
   upadtedAt: Date
+
+  //UI
+  total: number
+  iva: number
+  importe: number
+  folio: string //Usuario +  fecha + hora
+  ubicacion: {
+    latitud: number
+    longitud: number
+  }
 }
 
 export interface ArticuloPedido {
   _id: string
   cantidad: number
+  //Si aplica, se usa de lista de precio
+  precio: number
   sku: SKU
   observaciones: string
+  importe: number
 }
 
 export interface PedidoAccion {

@@ -1,8 +1,8 @@
-<h1>3.- Lista de precios en lote</h1>
+<h1>2.- Usuarios en lote</h1>
 <small class="text-muted"
-  >Cons skus existentes, crea una lista de clientes nueva relacionando el codigo
-  del producto con el precio dado. Los demas datos se pueden modificar en el
-  detalle de la lista. F</small
+  >Subir nuevos usuarios o remplazar los existentes. Esto es una operación
+  destructiva y se recomienda generar un respaldo de la base de datos antes de
+  continuar.</small
 >
 <hr />
 <div class="form-group">
@@ -19,10 +19,10 @@
 
 <div class="form-group">
   <input
-    [disabled]="!!datos"
-    [(ngModel)]="caracterDeSeparacion"
+    [(ngModel)]="caracterDeSeparcion"
     type="text"
     class="form-control"
+    [disabled]="cargando"
   />
   <small id="helpId" class="form-text text-muted"
     >Caracter de separación de CSV</small
@@ -33,23 +33,10 @@
 
 <br />
 
-<ng-container *ngIf="datos">
-  <p>
-    Estan preparados {{ datos.length }} listas de precio para agregar/actualizar
-    la lista de precios
-  </p>
-
-  <div class="form-group">
-    <input
-      [disabled]="cargando"
-      type="text"
-      class="form-control"
-      [(ngModel)]="nombre"
-    />
-
-    <small id="helpId" class="form-text text-muted">Nombre de la lista</small>
-  </div>
-</ng-container>
+<p *ngIf="datos">
+  Estan preparados {{ datos.length }} skus para agregar/actualizar la base de
+  datos
+</p>
 
 <a
   (click)="submit()"
@@ -58,6 +45,7 @@
   role="button"
   >Cargar</a
 >
+
 <a
   *ngIf="errores"
   (click)="descargarErrores(this.errores)"
@@ -67,6 +55,7 @@
 >
   <i class="fas fa-file-excel"></i> Desacargar errores</a
 >
+
 <ng-template #cargandoTemplate>
   <div class="row">
     <div class="col-12 text-center">

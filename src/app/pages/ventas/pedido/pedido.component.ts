@@ -3,9 +3,12 @@ import { Pedido } from '../../../models/pedido.model'
 import { PedidoService } from '../../../services/pedido.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
-import { UtilidadesService } from '../../../services/utilidades/utilidades.service'
 import { ContactoService } from '../../../services/contacto.service'
-import { Contacto } from '../../../models/contacto.model'
+import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
+import { ExcelService } from 'src/app/services/excel.service'
+import { Usuario } from 'src/app/models/usuario.model'
+import { UsuarioService } from 'src/app/services/usuario/usuario.service'
+import { ParametrosService } from 'src/app/services/parametros.service'
 
 @Component({
   selector: 'app-pedido',
@@ -14,12 +17,16 @@ import { Contacto } from '../../../models/contacto.model'
 })
 export class PedidoComponent implements OnInit {
   constructor(
-    private proveedorService: ContactoService,
+    private parametrosService: ParametrosService,
+    private usaurioService: UsuarioService,
+    private excelService: ExcelService,
+    private notiService: ManejoDeMensajesService,
+    private pedidoService: PedidoService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private pedidoService: PedidoService
+    private activatedRoute: ActivatedRoute
   ) {}
   pedidos: Pedido[] = []
+  usuario: Usuario
 
   private _cargando = false
   public get cargando() {
@@ -35,6 +42,7 @@ export class PedidoComponent implements OnInit {
   public get termino(): string {
     return this._termino
   }
+
   public set termino(value: string) {
     this._termino = value
     this.buscar(value)
@@ -42,17 +50,57 @@ export class PedidoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargar()
+
+    this.comprobarUsuario()
+  }
+
+  comprobarUsuario() {
+    if (!this.usaurioService.usuarioOffline) {
+      this.parametrosService.offline.findById(0).subscribe(
+        p => {
+          this.usaurioService.usuarioOffline = p.usuario_registrado
+          this.usuario = this.usaurioService.usuarioOffline
+        },
+        err => {
+          this.notiService.toastErrorMensaje(
+            'No se encontro un registro de usuario valido. Inicia sesión de nuevo.'
+          )
+          this.router.navigate(['/'])
+        }
+      )
+    } else this.usuario = this.usaurioService.usuarioOffline
+  }
+
+  eliminar(pedido: Pedido) {
+    this.notiService.confirmacionDeEliminacion(
+      'Esta acción no se puede deshacer',
+      () => {
+        this.pedidoService.offline.delete(pedido._id).subscribe(
+          () => {
+            this.pedidos = this.pedidos.filter(x => x._id !== pedido._id)
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    )
   }
 
   cargar() {
     this.cargando = true
-    this.pedidoService.buscarUsuario().subscribe(
-      pedidos => {
-        this.pedidos = pedidos
-        this.cargando = false
-      },
-      () => (this.cargando = false)
-    )
+    this.pedidoService.offline.contarDatos().subscribe(limit => {
+      this.pedidoService.offline.findAll({ skip: 0, limit }).subscribe(
+        datos => {
+          this.pedidos = datos
+          this.cargando = false
+        },
+        err => {
+          console.log(err)
+          this.cargando = false
+        }
+      )
+    })
   }
 
   buscar(termino: string) {
@@ -78,4 +126,7 @@ export class PedidoComponent implements OnInit {
     })
   }
 
+  descargar(pedido: Pedido) {
+    this.excelService.pedidoComoHojaDeExcel(pedido)
+  }
 }

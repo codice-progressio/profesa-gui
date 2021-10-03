@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { BehaviorSubject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
@@ -15,6 +15,8 @@ export class BuscadorComponent implements OnInit {
     BehaviorSubject<boolean>
   >()
 
+  @Input() encodeURIComponent: boolean = true
+
   estaCargando = new BehaviorSubject<boolean>(false)
 
   private _cargando = false
@@ -22,7 +24,7 @@ export class BuscadorComponent implements OnInit {
     return this._cargando
   }
 
-  id = Math.round(Math.random()*100000)
+  id = Math.round(Math.random() * 100000)
 
   public set cargando(value) {
     // Cuando se pone en true y término está vacio, ponemos un contador.
@@ -61,13 +63,16 @@ export class BuscadorComponent implements OnInit {
       )
       .subscribe((termino: string) => {
         let terminoLimpio = this.limpiarTermino(termino)
-
         // Asignamos de nuevo el termino limpio.
         this.input.patchValue(terminoLimpio, {
           emitEvent: false
         })
-        this._termino = termino
-        this.termino.emit(encodeURIComponent(termino))
+        this._termino = terminoLimpio
+        this.termino.emit(
+          this.encodeURIComponent
+            ? encodeURIComponent(terminoLimpio)
+            : terminoLimpio
+        )
       })
   }
 
@@ -76,7 +81,7 @@ export class BuscadorComponent implements OnInit {
     return limpio
   }
 
-  intervalo: number
+  intervalo: any
   setearContador(estaCargando: boolean, termino: string) {
     if (estaCargando && termino === '') {
       if (!this.intervalo) {

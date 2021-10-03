@@ -77,9 +77,18 @@ export class ParametrosComponent implements OnInit {
       this.permisos['configuraciones:lista-de-precios:administrar']
     )
   }
+
   permisoContactosEnLotes() {
     return this.contieneElPermiso.transform(
       this.permisos['configuraciones:contactos:administrar']
     )
+  }
+
+  permisoUsuariosEnLotes() {
+    return this.contieneElPermiso.transform(this.permisos['usuario:crear'])
+  }
+
+  permisosPedidosOffline() {
+    return true
   }
 }
