@@ -11,6 +11,8 @@ import { Observable, throwError } from 'rxjs'
 import { URL_BASE } from '../../config/config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { Imagen } from '../../models/Imagen'
+import { Offline, OfflineBasico, OfflineService } from '../offline.service'
+import { ParametrosService } from '../parametros.service'
 
 @Injectable({
   providedIn: 'root'
@@ -44,17 +46,21 @@ export class UsuarioService {
 
   poolLight: UsuarioLight[] = []
   cargandoPool = false
+  offline: UsuarioOfflineService<Usuario>
 
   constructor(
     // Para que este funcione hay que hacer un "imports"
     // en service.module.ts
+    public parametrosService: ParametrosService,
     public http: HttpClient,
     public router: Router,
     public _subirArchivoService: SubirArchivoService,
     public msjService: ManejoDeMensajesService,
-    public _preLoaderService: PreLoaderService
+    public _preLoaderService: PreLoaderService,
+    public offlineService: OfflineService
   ) {
     this.cargarStorage()
+    this.offline = new UsuarioOfflineService(this, this.base)
   }
 
   confirmarUsuario(codigo: string) {
@@ -178,6 +184,33 @@ export class UsuarioService {
     localStorage.setItem('usuario', JSON.stringify(token))
     this.usuario = token
     // this.roles = roles;
+
+    this.registrarParaOffline(token)
+  }
+
+  usuarioOffline: Usuario
+
+  registrarParaOffline(usuario: Usuario) {
+    let err = err => console.error(err)
+    this.parametrosService.offline.contarDatos().subscribe(p => {
+      if (p < 1) {
+        this.guardarOfflineUsuario({ _id: 0, usuario_registrado: usuario })
+      } else {
+        this.parametrosService.offline.findById(0).subscribe(p => {
+          p.usuario_registrado = usuario
+          this.guardarOfflineUsuario(p)
+        })
+      }
+    }, err)
+  }
+  private guardarOfflineUsuario(datos: {
+    _id: number
+    usuario_registrado: Usuario
+  }) {
+    this.parametrosService.offline.guardar(datos).subscribe(() => {
+      this.usuarioOffline = datos.usuario_registrado
+      console.log('se registro un nuevo usuario')
+    })
   }
 
   parseJwt(token: string) {
@@ -195,12 +228,12 @@ export class UsuarioService {
     return JSON.parse(jsonPayload)
   }
 
-  leerTodo() {
-    return this.http.get<Usuario[]>(this.base).pipe(map((r: any) => r.usuarios))
-  }
-
-  buscarTermino(termino: string) {
-    const url = this.base.concat(`/buscar/termino/${termino}`)
+  leer(termino = '', opciones = { limit: 30, skip: 0 }) {
+    let url = this.base
+      .concat(`?`)
+      .concat(`termino=${termino}`)
+      .concat(`&limit=${opciones.limit}`)
+      .concat(`&opciones=${opciones.skip}`)
     return this.http.get<Usuario[]>(url).pipe(map((r: any) => r.usuarios))
   }
 
@@ -248,26 +281,21 @@ export class UsuarioService {
   eliminar(_id: string) {
     return this.http.delete<null>(this.base)
   }
-
-  findAllLigthPool(): Observable<UsuarioLight[]> {
-    let url = this.base.concat('/buscar/todo/light')
-    this.cargandoPool = true
-
-    return this.http.get<UsuarioLight[]>(url).pipe(
-      map((x: any) => {
-        this.poolLight = x.usuarios as UsuarioLight[]
-        this.cargandoPool = false
-        return this.poolLight
-      }),
-      catchError(err => {
-        this.cargandoPool = false
-        return this.errFun(err)
-      })
-    )
-  }
 }
 
 export interface UsuarioLight {
   _id: string
   nombre: string
+}
+
+class UsuarioOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: UsuarioService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.usuarios,
+      'usuarios'
+    )
+  }
 }

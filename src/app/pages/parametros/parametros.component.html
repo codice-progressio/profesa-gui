@@ -1,4 +1,46 @@
 <div class="row">
+  <div *ngIf="permisoSkuEnLotes()" class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-parametros-sku-en-lotes></app-parametros-sku-en-lotes>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="permisoUsuariosEnLotes()" class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-parametros-usuarios-en-lotes></app-parametros-usuarios-en-lotes>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="permisoListaDePrecioEnLotes()" class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-parametros-lista-de-precios-en-lotes></app-parametros-lista-de-precios-en-lotes>
+      </div>
+    </div>
+  </div>
+
+  
+  <div *ngIf="permisoListaDePrecioDefault()" class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-parametros-lista-de-precios></app-parametros-lista-de-precios>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="permisoContactosEnLotes()" class="col-12 col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <app-parametros-contactos-en-lotes></app-parametros-contactos-en-lotes>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="permisoEtiquetas()" class="col-12 col-lg-6 col-xl-4">
     <div class="card shadow">
       <div class="card-body">
@@ -25,33 +67,10 @@
     </div>
   </div>
 
-  <div *ngIf="permisoListaDePrecioDefault()" class="col-12 col-md-6">
+  <div *ngIf="permisosPedidosOffline()" class="col-12 col-lg-6">
     <div class="card shadow">
       <div class="card-body">
-        <app-parametros-lista-de-precios></app-parametros-lista-de-precios>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="permisoSkuEnLotes()" class="col-12 col-md-6">
-    <div class="card shadow">
-      <div class="card-body">
-        <app-parametros-sku-en-lotes></app-parametros-sku-en-lotes>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="permisoListaDePrecioEnLotes()" class="col-12 col-md-6">
-    <div class="card shadow">
-      <div class="card-body">
-        <app-parametros-lista-de-precios-en-lotes></app-parametros-lista-de-precios-en-lotes>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="permisoContactosEnLotes()" class="col-12 col-md-6">
-    <div class="card shadow">
-      <div class="card-body">
-        <app-parametros-contactos-en-lotes></app-parametros-contactos-en-lotes>
+        <app-parametros-pedidos-offline></app-parametros-pedidos-offline>
       </div>
     </div>
   </div>

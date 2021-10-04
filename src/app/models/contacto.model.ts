@@ -1,5 +1,6 @@
 import { ListaDePrecios } from './listaDePrecios.model'
 import { RutaDeEntrega } from './rutaDeEntrega.model'
+import { Usuario } from './usuario.model'
 export interface Contacto {
   _id: string
   codigo: string
@@ -19,7 +20,8 @@ export interface Contacto {
   etiquetas: string[]
   rutas: RutaDeEntrega[]
   // listaDePrecios: string | ListaDePrecios
-  listaDePrecios: string
+  listaDePrecios: ListaDePrecios,
+  usuariosAsignados: Usuario []
 }
 
 export interface ContactoDomicilio {

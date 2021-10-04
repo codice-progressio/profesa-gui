@@ -30,42 +30,16 @@ class Ficheros {
     // Parse the file you want to select for the operation along with the configuration
     return this.root.ngxCsvParser
       .parse(target.files[0], { header: true, delimiter })
+<<<<<<< HEAD
       .pipe(map(x => x))
+=======
+      .pipe(
+        map(x => {
+          return x
+        })
+      )
+>>>>>>> pedidos
       .toPromise()
-
-    // return new Promise((resolve, reject) => {
-    //   let ficheros: FileList = target?.files as FileList
-    //   if (ficheros && ficheros.length > 0) {
-    //     let file: File = ficheros.item(0)
-    //     let reader: FileReader = new FileReader()
-    //     reader.readAsText(file)
-    //     reader.onload = e => {
-    //       let arreglo: string[][] = (reader.result as string)
-    //         .split('\r\n')
-    //         .map(x => x.split(caracterDeSeparacion))
-
-    //       let encabezados = arreglo.shift().reduce((acumulador, actual) => {
-    //         acumulador[actual.trim()] = ''
-
-    //         return acumulador
-    //       }, {})
-
-    //       let acomodado = arreglo.map(actual => {
-    //         let objeto = {}
-
-    //         let contador = 0
-    //         for (const key in encabezados) {
-    //           objeto[key] = actual[contador]
-    //           contador++
-    //         }
-
-    //         return objeto
-    //       }, [])
-
-    //       return resolve(acomodado as any[])
-    //     }
-    //   } else return reject()
-    // })
   }
 }
 

@@ -2,18 +2,22 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Contacto } from '../models/contacto.model'
 import { URL_BASE } from '../config/config'
-import { catchError } from 'rxjs/operators'
-import { throwError } from 'rxjs'
+import { catchError, map } from 'rxjs/operators'
+import { Observable, throwError } from 'rxjs'
 import { URLQuery } from './utilidades/URLQuery'
+import { Offline, OfflineBasico, OfflineService } from './offline.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactoService {
-  constructor(public http: HttpClient) {}
   base = URL_BASE('contacto')
   etiquetas = new ProveedorEtiquetas(this)
   rutas = new ProveedorRutas(this)
+  offline: ContactoOfflineService<Contacto>
+  constructor(public http: HttpClient, public offlineService: OfflineService) {
+    this.offline = new ContactoOfflineService(this, this.base)
+  }
 
   crear(contacto: Contacto) {
     return this.http
@@ -90,5 +94,17 @@ export class ProveedorRutas {
       _id: contacto._id,
       rutas: contacto.rutas.map(x => x._id)
     })
+  }
+}
+
+class ContactoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
+  constructor(private root: ContactoService, base: string) {
+    super(
+      root.offlineService,
+      root.http,
+      base,
+      root.offlineService.tablas.contactos,
+      'contactos'
+    )
   }
 }

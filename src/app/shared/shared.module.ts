@@ -19,7 +19,6 @@ import { PaginadorAbstractoComponent } from './paginador-abstracto/paginador-abs
 import { DataListComponent } from './data-list/data-list.component'
 import { VisorDeImagenesGeneralComponent } from './visor-de-imagenes-general/visor-de-imagenes-general.component'
 import { CargaDeImagenesComponent } from './carga-de-imagenes/carga-de-imagenes.component'
-import { VisorDeImagenesConPaginacionComponent } from './visor-de-imagenes-con-paginacion/visor-de-imagenes-con-paginacion.component'
 
 import { PaginadorComponent as Paginador } from './paginador/paginador.component'
 import { SettingsService } from '../services/settings/settings.service'
@@ -42,7 +41,6 @@ import { OrdenadorDeColumnasDirective } from '../directives/ordenador-de-columna
 import { DragDropModule } from '@angular/cdk/drag-drop'
 import { FechaPipe } from '../pipes/fecha.pipe'
 import { QRCodeModule } from 'angularx-qrcode'
-import { ToastrModule } from 'ngx-toastr'
 import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
 import { ZXingScannerModule } from '@zxing/ngx-scanner'
 import { DirectivesModule } from '../directives/directives.module'

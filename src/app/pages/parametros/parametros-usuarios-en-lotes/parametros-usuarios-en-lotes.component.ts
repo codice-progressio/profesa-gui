@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core'
-import { Contacto } from 'src/app/models/contacto.model'
+import { Usuario } from 'src/app/models/usuario.model'
 import { ExcelService } from 'src/app/services/excel.service'
 import { ParametrosService } from 'src/app/services/parametros.service'
 import { UtilidadesService } from 'src/app/services/utilidades.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
 
 @Component({
-  selector: 'app-parametros-contactos-en-lotes',
-  templateUrl: './parametros-contactos-en-lotes.component.html',
-  styleUrls: ['./parametros-contactos-en-lotes.component.css']
+  selector: 'app-parametros-usuarios-en-lotes',
+  templateUrl: './parametros-usuarios-en-lotes.component.html',
+  styleUrls: ['./parametros-usuarios-en-lotes.component.css']
 })
-export class ParametrosContactosEnLotesComponent implements OnInit {
+export class ParametrosUsuariosEnLotesComponent implements OnInit {
   fichero: any
   caracterDeSeparcion = '+'
-  datos: Contacto[] = undefined
+  datos: Usuario[] = undefined
   // Solo para borrar
   inputFile: any
   cargando = false
@@ -54,10 +54,10 @@ export class ParametrosContactosEnLotesComponent implements OnInit {
     }
 
     this.cargando = true
-    this.parametrosService.contactos.cargarEnLote(this.datos).subscribe(
+    this.parametrosService.usuarios.cargarEnLote(this.datos).subscribe(
       (respuesta: any) => {
         this.errores = respuesta.rechazados
-        console.log(respuesta)
+
         if (this.errores.length > 0)
           this.msjService.toast.warning(
             `Hubo ${this.errores.length} errores al procesar los datos. `
@@ -71,14 +71,14 @@ export class ParametrosContactosEnLotesComponent implements OnInit {
     )
   }
 
-  errores: { error: string; datos: Contacto }[] = undefined
+  errores: { error: string; datos: Usuario }[] = undefined
 
-  descargarErrores(datos: { error: string; datos: Contacto }[]) {
+  descargarErrores(datos: { error: string; datos: Usuario }[]) {
     let preparados = datos.map(x => {
       x.datos['error'] = x.error
       return x.datos
     })
 
-    this.excelService.exportAsExcelFile(preparados, 'ERRORES_CONTACTO_LOTES')
+    this.excelService.exportAsExcelFile(preparados, 'ERRORES_USUARIO_LOTES')
   }
 }

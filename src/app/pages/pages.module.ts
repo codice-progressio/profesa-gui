@@ -98,7 +98,6 @@ const pagesRoutes: Routes = [
         m => m.ContabilidadModule
       ),
     data: {
-      
       permissions: permisosKeysConfig['menu:contabilidad']
     }
   }
@@ -110,7 +109,7 @@ const pagesRoutes: Routes = [
     AccountsSettingsComponent,
     ProfileComponent,
     // sistema
-    AdministradorComponent
+    AdministradorComponent,
   ],
   exports: [],
   imports: [

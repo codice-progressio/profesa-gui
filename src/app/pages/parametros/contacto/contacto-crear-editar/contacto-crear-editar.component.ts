@@ -22,7 +22,9 @@ import { RutaDeEntregaService } from '../../../../services/ruta-de-entrega.servi
 import { ModalService } from '@codice-progressio/modal'
 import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { ListaDePreciosService } from 'src/app/services/lista-de-precios.service'
-
+import { UsuarioService } from 'src/app/services/usuario/usuario.service'
+import { Usuario } from '../../../../models/usuario.model'
+import { BehaviorSubject } from 'rxjs'
 @Component({
   selector: 'app-contacto-crear-editar',
   templateUrl: './contacto-crear-editar.component.html',
@@ -44,6 +46,7 @@ export class ContactoCrearEditarComponent implements OnInit {
   formulario: FormGroup
   id: string
   listasDePrecio: ListaDePrecios[] = []
+  contacto: Contacto
   constructor(
     private rutasService: RutaDeEntregaService,
     private modalService: ModalService,
@@ -52,8 +55,9 @@ export class ContactoCrearEditarComponent implements OnInit {
     public vs: ValidacionesService,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private proveedorService: ContactoService,
-    private listaDePreciosService: ListaDePreciosService
+    private contactoService: ContactoService,
+    private listaDePreciosService: ListaDePreciosService,
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit(): void {
@@ -88,9 +92,7 @@ export class ContactoCrearEditarComponent implements OnInit {
     document.querySelectorAll('input, select').forEach(x => {
       this.renderer.addClass(x, 'detalle')
     })
-
-    ;["esProveedor", "esCliente"].forEach(x=>this.f(x).disable())
-    
+    ;['esProveedor', 'esCliente'].forEach(x => this.f(x).disable())
   }
 
   esRutaDetalle() {
@@ -114,9 +116,10 @@ export class ContactoCrearEditarComponent implements OnInit {
   }
 
   obtenerProveedor(id: string) {
-    this.proveedorService.buscarId(id).subscribe(
-      proveedor => {
-        this.crearFormulario(proveedor)
+    this.contactoService.buscarId(id).subscribe(
+      contacto => {
+        this.crearFormulario(contacto)
+        this.contacto = contacto
       },
       () => (this.cargando = false)
     )
@@ -147,7 +150,10 @@ export class ContactoCrearEditarComponent implements OnInit {
 
       esProveedor: new FormControl(contacto.esProveedor),
       esCliente: new FormControl(contacto.esCliente),
-      listaDePrecios: new FormControl(contacto.listaDePrecios)
+      listaDePrecios: new FormControl(contacto.listaDePrecios),
+      usuariosAsignados: new FormArray(
+        contacto.usuariosAsignados?.map(x => new FormControl(x._id))
+      )
     })
 
     this.obtenerListas()
@@ -222,7 +228,7 @@ export class ContactoCrearEditarComponent implements OnInit {
 
   modificar(modelo: Contacto) {
     this.cargando = true
-    this.proveedorService.modificar(modelo).subscribe(
+    this.contactoService.modificar(modelo).subscribe(
       modelo => this.location.back(),
       () => (this.cargando = false)
     )
@@ -230,7 +236,7 @@ export class ContactoCrearEditarComponent implements OnInit {
 
   guardar(modelo: Contacto) {
     this.cargando = true
-    this.proveedorService.crear(modelo).subscribe(
+    this.contactoService.crear(modelo).subscribe(
       pro => {
         this.cargando = false
         this.location.back()
@@ -297,7 +303,7 @@ export class ContactoCrearEditarComponent implements OnInit {
   guardarRutas(contacto: Contacto) {
     if (this.guardandoRutas) return
     this.guardandoRutas = true
-    this.proveedorService.rutas.agregarModificar(contacto).subscribe(
+    this.contactoService.rutas.agregarModificar(contacto).subscribe(
       () => {
         this.guardandoRutas = false
         this.permitirModificarRuta = false
@@ -308,9 +314,45 @@ export class ContactoCrearEditarComponent implements OnInit {
   }
 
   compararLista(l1: ListaDePrecios, l2: ListaDePrecios): boolean {
-
-    console.log({l1,l2})
+    console.log({ l1, l2 })
 
     return l1 && l2 ? l1._id === l2._id : l1 === l2
+  }
+
+  usuarios: Usuario[] = []
+
+  buscadorUsuario: BehaviorSubject<boolean>
+  termino = ''
+  buscarUsuarios(ter: string) {
+    this.termino = ter.trim()
+    if (!this.termino) {
+      this.buscadorUsuario.next(false)
+      this.usuarios = []
+      return
+    }
+
+    this.buscadorUsuario.next(true)
+    this.usuarioService.leer(this.termino).subscribe(
+      u => {
+        this.usuarios = u
+        this.buscadorUsuario.next(false)
+      },
+      () => this.buscadorUsuario.next(false)
+    )
+  }
+
+  usuarioSeleccionar(usuario: Usuario) {
+    let usuarioYaEstaAgregado = this.contacto.usuariosAsignados
+      .map(x => x._id)
+      .includes(usuario._id)
+    if (!usuarioYaEstaAgregado) {
+      this.contacto.usuariosAsignados.push(usuario)
+      this.fa('usuariosAsignados').push(new FormControl(usuario._id))
+    }
+  }
+
+  usuarioEliminar(i: number) {
+    this.contacto.usuariosAsignados.splice(i, 1)
+    this.fa('usuariosAsignados').removeAt(i)
   }
 }
