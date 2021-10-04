@@ -336,7 +336,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (this.id) id = +this.id
     else id = await this.obtenerUltimoId()
 
-    modelo.folio = this.crearFolio()
+    modelo.folio = this.crearFolio(id)
     modelo.createdAt = new Date()
     modelo._id = id
 
@@ -346,10 +346,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     )
   }
 
-  crearFolio(): string {
+  crearFolio(consecutivo:number): string {
     let nombre = this.usuarioService.usuarioOffline.nombre.replace(' ', '-').toUpperCase()
-    let fecha = this.datePipe.transform(new Date(),'yyyy_MM_dd')
-    return `${nombre}-${fecha}`
+    let fecha = this.datePipe.transform( new Date(),'yyyy_MM_dd' )
+    return `${nombre}-${fecha}-${consecutivo}`
   }
 
   async obtenerUltimoId() {
