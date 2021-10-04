@@ -126,7 +126,11 @@ export class PedidoComponent implements OnInit {
     })
   }
 
-  descargar(pedido: Pedido) {
-    this.excelService.pedidoComoHojaDeExcel(pedido)
+  compartir(pedido: Pedido) {
+    this.excelService.pedidoComoHojaDeExcel(pedido).then(x=>{
+      console.log(x)
+    })
+
+    .catch(x=> console.log(x))
   }
 }

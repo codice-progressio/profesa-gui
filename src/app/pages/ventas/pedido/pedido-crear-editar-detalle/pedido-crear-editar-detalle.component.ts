@@ -10,7 +10,7 @@ import {
   Validators
 } from '@angular/forms'
 import { ArticuloPedido, Pedido } from '../../../../models/pedido.model'
-import { Location } from '@angular/common'
+import { DatePipe, Location } from '@angular/common'
 import { Contacto } from '../../../../models/contacto.model'
 import { ModalService } from '@codice-progressio/modal'
 import { BehaviorSubject } from 'rxjs'
@@ -31,6 +31,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   lista: ListaDePrecios
 
   constructor(
+    private datePipe:DatePipe,
     private router: Router,
     private listaDePreciosService: ListaDePreciosService,
     private usuarioService: UsuarioService,
@@ -346,8 +347,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   crearFolio(): string {
-    let nombre = this.usuarioService.usuarioOffline.nombre.replace(' ', '-')
-    let fecha = new Date().toISOString()
+    let nombre = this.usuarioService.usuarioOffline.nombre.replace(' ', '-').toUpperCase()
+    let fecha = this.datePipe.transform(new Date(),'yyyy_MM_dd')
     return `${nombre}-${fecha}`
   }
 

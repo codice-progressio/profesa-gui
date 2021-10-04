@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common'
 import { Injectable } from '@angular/core'
 
 const EXCEL_TYPE =
@@ -13,7 +14,10 @@ import { UsuarioService } from './usuario/usuario.service'
   providedIn: 'root'
 })
 export class ExcelService {
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private datePipe: DatePipe
+  ) {}
 
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json)
@@ -28,12 +32,16 @@ export class ExcelService {
     })
     this.saveAsExcelFile(excelBuffer, excelFileName)
   }
+
+  generarNombre(fileName: string): string {
+    let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd_HH_mm')
+
+    return `${fileName}_EXPORTADO_${fecha}.${EXCEL_EXTENSION}`
+  }
+
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE })
-    FileSaver.saveAs(
-      data,
-      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
-    )
+    FileSaver.saveAs(data, this.generarNombre(fileName))
   }
 
   pedidoComoHojaDeExcel(pedido: Pedido) {
@@ -117,10 +125,22 @@ export class ExcelService {
 
     wb.Sheets.PEDIDO = worksheet
 
-    let excelBuffer: any = XLSX.write(wb, {
+    let data: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
       bookType: 'xlsx',
       type: 'array'
     })
-    this.saveAsExcelFile(excelBuffer, pedido.folio)
+    const navigator = window.navigator as any
+
+    return new Promise((resolve, reject) => {
+      if (navigator.canShare)
+        navigator
+          .share({
+            files: [data],
+            title: this.generarNombre(pedido.folio),
+            text: pedido.folio
+          })
+          .then(result => resolve(result))
+      else reject('No soportado por el dispositivo')
+    })
   }
 }
