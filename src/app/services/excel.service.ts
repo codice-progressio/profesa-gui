@@ -36,7 +36,7 @@ export class ExcelService {
   generarNombre(fileName: string): string {
     let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd_HH_mm')
 
-    return `${fileName}_EXPORTADO_${fecha}.${EXCEL_EXTENSION}`
+    return `${fileName}_EXPORTADO_${fecha}${EXCEL_EXTENSION}`
   }
 
   private saveAsExcelFile(buffer: any, fileName: string): void {
@@ -125,21 +125,20 @@ export class ExcelService {
 
     wb.Sheets.PEDIDO = worksheet
 
-    let data: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
+    let file: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
       bookType: 'xlsx',
       type: 'array'
     })
     const navigator = window.navigator as any
 
     return new Promise((resolve, reject) => {
-      if (navigator.canShare)
-        navigator
-          .share({
-            files: [data],
-            title: this.generarNombre(pedido.folio),
-            text: pedido.folio
-          })
-          .then(result => resolve(result))
+      let data = {
+        files: [file],
+        title: this.generarNombre(pedido.folio),
+        text: pedido.folio
+      }
+      if (navigator.canShare(data))
+        navigator.share(data).then(result => resolve(result))
       else reject('No soportado por el dispositivo')
     })
   }
