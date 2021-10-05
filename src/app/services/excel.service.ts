@@ -125,11 +125,18 @@ export class ExcelService {
 
     wb.Sheets.PEDIDO = worksheet
 
-    let file: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
+    let f: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
       bookType: 'xlsx',
       type: 'array'
     })
-    const navigator = window.navigator as any
+
+    let data: Blob = new Blob([f], { type: EXCEL_TYPE })
+    let file = new File([data], this.generarNombre(pedido.folio), {
+      type: EXCEL_TYPE
+    })
+    
+
+    let navigator = window.navigator as any
 
     return new Promise((resolve, reject) => {
       let data = {
