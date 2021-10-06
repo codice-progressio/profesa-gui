@@ -20,7 +20,6 @@ export class UbicacionService {
   inicializar() {
     this.gps.posicionActual.subscribe(
       ubicacion => {
-        console.log({ ubicacion })
         this.geo.next(ubicacion)
       },
       err => {
