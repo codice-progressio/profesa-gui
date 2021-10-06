@@ -2,7 +2,8 @@ import { DatePipe } from '@angular/common'
 import { Injectable } from '@angular/core'
 
 const EXCEL_TYPE =
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
 const EXCEL_EXTENSION = '.xlsx'
 
 import * as FileSaver from 'file-saver'
@@ -127,13 +128,15 @@ export class ExcelService {
 
     wb.Sheets.PEDIDO = worksheet
 
-    let f: any = XLSX.writeFile(wb, this.generarNombre(pedido.folio), {
+    let f: any = XLSX.write(wb, {
       bookType: 'xlsx',
-      type: 'array'
+      type: 'base64'
     })
 
-    let data: Blob = new Blob([f], { type: EXCEL_TYPE })
-    let file = new File([data], this.generarNombre(pedido.folio), {
+    let blob = new Blob([this.s2ab(atob(f))], {
+      type: ''
+    })
+    let file = new File([blob], this.generarNombre(pedido.folio), {
       type: EXCEL_TYPE
     })
 
@@ -142,12 +145,37 @@ export class ExcelService {
     return new Promise((resolve, reject) => {
       let data = {
         files: [file],
-        title: this.generarNombre(pedido.folio),
-        text: pedido.folio
+        // title: this.generarNombre(pedido.folio),
+        // text: pedido.folio
+
+        url: 'www.hola.com',
+        // files: filesArray,
+        title: 'Pictures',
+        text: 'Photos from Mexico'
       }
-      if (navigator.canShare(data))
-        navigator.share(data).then(result => resolve(result))
-      else reject('No soportado por el dispositivo')
+
+      // if (navigator.canShare({ files: filesArray })) {
+      navigator
+        .share({
+          // url: 'www.hola.com',
+          files: [file],
+          title: 'Pictures',
+          text: 'Photos from Mexico'
+        })
+        .then(r => resolve(r))
+        .catch(e => reject(e))
+      // }
+
+      // // if (navigator.canShare({ files: [file] }))
+      // navigator.canShare(data).then(result => resolve(result))
+      // // else reject('No soportado por el dispositivo')
     })
+  }
+
+  s2ab(s) {
+    let buf = new ArrayBuffer(s.length)
+    let view = new Uint8Array(buf)
+    for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
+    return buf
   }
 }
