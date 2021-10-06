@@ -21,6 +21,8 @@ import { ManejoDeMensajesService } from '../../../../services/utilidades/manejo-
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ListaDePreciosService } from '../../../../services/lista-de-precios.service'
 import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
+import { UbicacionService } from 'src/app/services/ubicacion.service'
+import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -31,7 +33,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   lista: ListaDePrecios
 
   constructor(
-    private datePipe:DatePipe,
+    private datePipe: DatePipe,
     private router: Router,
     private listaDePreciosService: ListaDePreciosService,
     private usuarioService: UsuarioService,
@@ -43,7 +45,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     public vs: ValidacionesService,
     private location: Location,
     private renderer: Renderer2,
-    public modalService: ModalService
+    public modalService: ModalService,
+    public ubicacionService: UbicacionService
   ) {}
 
   comprobarIndice() {
@@ -75,9 +78,18 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   formulario: FormGroup
   id: string
   esDetalle: boolean
+  geo: PosicionDeGeolocalizacion
 
   ngOnInit(): void {
+    this.ubicacion()
     this.comprobarIndice()
+  }
+  
+  ubicacion() {
+    this.ubicacionService.geo.subscribe(
+      p => (this.geo = p),
+      err => console.log('error en componente')
+    )
   }
 
   activarProtocoloDetalle() {
@@ -154,7 +166,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
           return this.crearArticulo(x, false)
         }) ?? [],
         [this.vs.minSelectedCheckboxes(1)]
-      )
+      ),
+
+      ubicacion: new FormControl(pedido.ubicacion)
     })
 
     this.cargando = false
@@ -334,7 +348,16 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     let id: number
 
     if (this.id) id = +this.id
-    else id = await this.obtenerUltimoId()
+    else {
+      if (!this.geo) {
+        this.notiService.toast.error('La ubicación no esta disponible')
+        return
+      }
+      modelo.ubicacion.latitud = this.geo.coords.latitude
+      modelo.ubicacion.longitud = this.geo.coords.longitude
+
+      id = await this.obtenerUltimoId()
+    }
 
     modelo.folio = this.crearFolio(id)
     modelo.createdAt = new Date()
@@ -346,9 +369,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     )
   }
 
-  crearFolio(consecutivo:number): string {
-    let nombre = this.usuarioService.usuarioOffline.nombre.replace(' ', '-').toUpperCase()
-    let fecha = this.datePipe.transform( new Date(),'yyyy_MM_dd' )
+  crearFolio(consecutivo: number): string {
+    let nombre = this.usuarioService.usuarioOffline.nombre
+      .replace(' ', '-')
+      .toUpperCase()
+    let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')
     return `${nombre}-${fecha}-${consecutivo}`
   }
 

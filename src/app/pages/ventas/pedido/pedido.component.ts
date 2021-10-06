@@ -9,6 +9,7 @@ import { ExcelService } from 'src/app/services/excel.service'
 import { Usuario } from 'src/app/models/usuario.model'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ParametrosService } from 'src/app/services/parametros.service'
+import { GpsService, PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 
 @Component({
   selector: 'app-pedido',
@@ -23,7 +24,8 @@ export class PedidoComponent implements OnInit {
     private notiService: ManejoDeMensajesService,
     private pedidoService: PedidoService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private gpsService: GpsService
   ) {}
   pedidos: Pedido[] = []
   usuario: Usuario
@@ -52,6 +54,23 @@ export class PedidoComponent implements OnInit {
     this.cargar()
 
     this.comprobarUsuario()
+    this.comprobarGPS()
+  }
+
+  geo: PosicionDeGeolocalizacion = undefined
+
+  comprobarGPS() {
+    this.gpsService.posicionActual.subscribe(
+      p => {
+        this.geo = p
+      },
+      err => {
+        this.geo = undefined
+        alert(
+          'No se puede acceder a la ubicación. No podras generar nuevos pedidos'
+        )
+      }
+    )
   }
 
   comprobarUsuario() {
@@ -127,10 +146,12 @@ export class PedidoComponent implements OnInit {
   }
 
   compartir(pedido: Pedido) {
-    this.excelService.pedidoComoHojaDeExcel(pedido).then(x=>{
-      console.log(x)
-    })
+    this.excelService
+      .pedidoComoHojaDeExcel(pedido)
+      .then(x => {
+        console.log(x)
+      })
 
-    .catch(x=> console.log(x))
+      .catch(x => console.log(x))
   }
 }

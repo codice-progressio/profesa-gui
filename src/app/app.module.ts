@@ -36,6 +36,7 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
 import { ModalModule } from '@codice-progressio/modal';
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
+import { GpsModule } from '@codice-progressio/gps'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -115,6 +116,7 @@ const appRoutes: Routes = [
       }
     }),
     ModalModule,
+    GpsModule,
     NgxCsvParserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
