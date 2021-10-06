@@ -84,7 +84,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.ubicacion()
     this.comprobarIndice()
   }
-  
+
   ubicacion() {
     this.ubicacionService.geo.subscribe(
       p => (this.geo = p),
@@ -353,8 +353,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         this.notiService.toast.error('La ubicación no esta disponible')
         return
       }
-      modelo.ubicacion.latitud = this.geo.coords.latitude
-      modelo.ubicacion.longitud = this.geo.coords.longitude
+      modelo['ubicacion'] = {
+        latitud: this.geo.coords.latitude,
+        longitud: this.geo.coords.longitude
+      }
 
       id = await this.obtenerUltimoId()
     }
@@ -390,7 +392,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     await this.pedidoService.offline_indice
       .guardar({ _id: 0, ultimo })
       .toPromise()
-    console.log(ultimo)
     return ultimo
   }
 
