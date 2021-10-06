@@ -62,7 +62,9 @@ export class ExcelService {
         'Fecha:',
         pedido.createdAt,
         'Ubicacion:',
-        'PENDIENTE DE CREAR'
+        pedido.ubicacion
+          ? `https://google.com/maps?q=${pedido.ubicacion.latitud},${pedido.ubicacion.longitud}`
+          : 'SIN UBICACION'
       ],
       [
         'Cliente:',
@@ -134,7 +136,6 @@ export class ExcelService {
     let file = new File([data], this.generarNombre(pedido.folio), {
       type: EXCEL_TYPE
     })
-    
 
     let navigator = window.navigator as any
 
