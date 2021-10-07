@@ -192,8 +192,21 @@
             <h3>Permisos</h3>
             <hr />
           </div>
+
+          <div class="col-12">
+            <p>Seleccionar un rol:</p>
+            <a
+              *ngFor="let value of roles | keyvalue"
+              (click)="agregarEliminarRol(value.key)"
+              class="btn btn-primary"
+              href="javascript:void(0)"
+              role="button"
+              >{{ value.key }}</a
+            >
+            <hr />
+          </div>
+
           <div
-          
             *ngFor="let key of permisosOrdenados; let i = index"
             class="col-12 col-lg-6"
           >

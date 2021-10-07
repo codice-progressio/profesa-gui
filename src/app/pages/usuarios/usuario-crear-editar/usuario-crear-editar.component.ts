@@ -2,7 +2,10 @@ import { Location } from '@angular/common'
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router'
-import { UsuarioService } from '../../../services/usuario/usuario.service'
+import {
+  ROLES,
+  UsuarioService
+} from '../../../services/usuario/usuario.service'
 import { Usuario } from '../../../models/usuario.model'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { CargaDeImagenesTransporte } from 'src/app/shared/carga-de-imagenes/carga-de-imagenes-transporte'
@@ -35,6 +38,8 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this._cargando = value
     value ? this.formulario?.disable() : this.formulario?.enable()
   }
+
+  roles = ROLES
 
   mostrarFormulario = false
   formulario: FormGroup
@@ -219,5 +224,20 @@ export class UsuarioCrearEditarComponent implements OnInit {
 
   f(campo: string) {
     return this.formulario.get(campo)
+  }
+
+  agregarEliminarRol(key: string) {
+    let promesas = this.roles[key].map(x =>
+      this.usuarioService.agregarPermiso(this.usuario._id, x).toPromise()
+    )
+
+    this.cargando = true
+    Promise.all(promesas)
+      .then(result => {
+        this.cargar(this.usuario._id)
+      })
+      .catch(err => {
+        this.cargando = false
+      })
   }
 }
