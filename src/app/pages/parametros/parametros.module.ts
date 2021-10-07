@@ -9,11 +9,10 @@ import { VerificaTokenGuard } from 'src/app/services/guards/verifica-token.guard
 import { ParametrosListaDePreciosComponent } from './parametros-lista-de-precios/parametros-lista-de-precios.component'
 import { FormsModule } from '@angular/forms'
 import { ParametrosSkuEnLotesComponent } from './parametros-sku-en-lotes/parametros-sku-en-lotes.component'
-import { ParametrosListaDePreciosEnLotesComponent } from './parametros-lista-de-precios-en-lotes/parametros-lista-de-precios-en-lotes.component';
-import { ParametrosContactosEnLotesComponent } from './parametros-contactos-en-lotes/parametros-contactos-en-lotes.component';
-import { ParametrosPedidosOfflineComponent } from './parametros-pedidos-offline/parametros-pedidos-offline.component';
+import { ParametrosListaDePreciosEnLotesComponent } from './parametros-lista-de-precios-en-lotes/parametros-lista-de-precios-en-lotes.component'
+import { ParametrosContactosEnLotesComponent } from './parametros-contactos-en-lotes/parametros-contactos-en-lotes.component'
+import { ParametrosPedidosOfflineComponent } from './parametros-pedidos-offline/parametros-pedidos-offline.component'
 import { ParametrosUsuariosEnLotesComponent } from './parametros-usuarios-en-lotes/parametros-usuarios-en-lotes.component'
-
 
 const routes: Routes = [
   {
@@ -23,7 +22,7 @@ const routes: Routes = [
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Parametros',
-      permissions: permisosKeysConfig['menu:administrador:parametros']
+      permissions: permisosKeysConfig['menu:configuraciones:parametros']
     }
   },
   {
@@ -58,8 +57,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     ComponentsModule,
-    FormsModule,
-  
+    FormsModule
   ]
 })
 export class ParametrosModule {}
