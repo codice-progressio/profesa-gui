@@ -51,7 +51,7 @@ export class ExcelService {
       Title: 'Pedido: ' + pedido.folio,
       Subject: pedido.contacto.nombre ?? pedido.contacto.razonSocial,
       Author: 'IMPERIUMsic',
-      CreatedDate: pedido.createdAt
+      CreatedDate: new Date(pedido.createdAt)
     }
 
     wb.SheetNames.push('PEDIDO')
@@ -61,7 +61,10 @@ export class ExcelService {
         'Folio:',
         pedido.folio,
         'Fecha:',
-        pedido.createdAt,
+        this.datePipe.transform(
+          new Date(pedido.createdAt),
+          'dd/MMMM/yyyy HH:MM'
+        ),
         'Ubicacion:',
         pedido.ubicacion
           ? `https://google.com/maps?q=${pedido.ubicacion.latitud},${pedido.ubicacion.longitud}`

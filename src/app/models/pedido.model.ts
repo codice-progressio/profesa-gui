@@ -9,8 +9,8 @@ export interface Pedido {
   articulos: ArticuloPedido[]
   observaciones: string
   acciones: PedidoAccion[]
-  createdAt: Date
-  upadtedAt: Date
+  createdAt: Date | string
+  upadtedAt: Date | string
 
   //UI
   total: number

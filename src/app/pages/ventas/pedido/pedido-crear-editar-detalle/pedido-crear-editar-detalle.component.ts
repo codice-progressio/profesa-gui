@@ -362,7 +362,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
 
     modelo.folio = this.crearFolio(id)
-    modelo.createdAt = new Date()
+    modelo.createdAt = new Date().toISOString()
     modelo._id = id
 
     this.pedidoService.offline.guardar(modelo).subscribe(
