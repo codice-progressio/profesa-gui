@@ -299,3 +299,10 @@ class UsuarioOfflineService<T> extends OfflineBasico<T> implements Offline<T> {
     )
   }
 }
+
+export const ROLES = {
+  VENDEDOR: [
+    permisosKeysConfig.login,
+    permisosKeysConfig['menu:configuraciones:parametros']
+  ]
+}
