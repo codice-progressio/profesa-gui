@@ -127,18 +127,19 @@ export class UsuarioCrearEditarComponent implements OnInit {
       return
     }
 
-    const operacion = model._id
-      ? this.usuarioService.modificar(model)
-      : this.usuarioService.crear(model)
+    let err = () => (this.cargando = false)
 
     this.cargando = true
-    operacion.subscribe(
-      usuario => {
+    if (model._id) {
+      this.usuarioService
+        .modificar(model)
+        .subscribe(usuario => (this.cargando = false), err)
+    } else
+      this.usuarioService.crear(model).subscribe(usuario => {
         this.cargando = false
+        this.location.back()
         this.notiService.toast.success('Se guardo el usuario')
-      },
-      () => (this.cargando = false)
-    )
+      }, err)
   }
 
   @ViewChild('inputPassword') inputPassword: ElementRef
