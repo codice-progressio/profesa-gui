@@ -249,8 +249,11 @@ export class UsuarioService {
       .post<Usuario>(this.base, m)
       .pipe(map((r: any) => r.usuario))
   }
+
   modificar(model: Usuario) {
-    return this.http.put<Usuario>(this.base, model)
+    return this.http
+      .put<Usuario>(this.base.concat('/id/' + model._id), model)
+      .pipe(map((r: any) => r.usuario))
   }
 
   modificarPassword(_id: string, password: string) {

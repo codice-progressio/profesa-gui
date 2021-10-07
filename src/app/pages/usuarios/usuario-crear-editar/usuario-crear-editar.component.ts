@@ -134,7 +134,6 @@ export class UsuarioCrearEditarComponent implements OnInit {
     this.cargando = true
     operacion.subscribe(
       usuario => {
-        this.usuario = usuario
         this.cargando = false
         this.notiService.toast.success('Se guardo el usuario')
       },
