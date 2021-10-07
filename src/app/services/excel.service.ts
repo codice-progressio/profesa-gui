@@ -125,57 +125,27 @@ export class ExcelService {
         origin: ultimaFila(worksheet)
       }
     )
-
     wb.Sheets.PEDIDO = worksheet
-
-    let f: any = XLSX.write(wb, {
-      bookType: 'xlsx',
-      type: 'base64'
-    })
-
-    let blob = new Blob([this.s2ab(atob(f))], {
-      type: ''
-    })
-    let file = new File([blob], this.generarNombre(pedido.folio), {
-      type: EXCEL_TYPE
-    })
+    let texto = XLSX.utils.sheet_to_csv(worksheet, { forceQuotes: true })
 
     let navigator = window.navigator as any
+    const file = new File([texto], pedido.folio.concat('.csv'), {
+      type: 'text/csv'
+    })
 
     return new Promise((resolve, reject) => {
-      let data = {
-        files: [file],
-        // title: this.generarNombre(pedido.folio),
-        // text: pedido.folio
-
-        url: 'www.hola.com',
-        // files: filesArray,
-        title: 'Pictures',
-        text: 'Photos from Mexico'
-      }
-
-      // if (navigator.canShare({ files: filesArray })) {
-      navigator
-        .share({
-          // url: 'www.hola.com',
-          files: [file],
-          title: 'Pictures',
-          text: 'Photos from Mexico'
-        })
-        .then(r => resolve(r))
-        .catch(e => reject(e))
-      // }
-
-      // // if (navigator.canShare({ files: [file] }))
-      // navigator.canShare(data).then(result => resolve(result))
-      // // else reject('No soportado por el dispositivo')
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator
+          .share({
+            files: [file],
+            text: pedido.observaciones ?? '',
+            title: `Pedido con folio #${pedido.folio} del cliente ${
+              pedido.contacto.nombre ?? pedido.contacto.razonSocial
+            }`
+          })
+          .then(() => resolve(''))
+          .catch((e: any) => reject(e))
+      } else reject('No se puede compartir')
     })
-  }
-
-  s2ab(s) {
-    let buf = new ArrayBuffer(s.length)
-    let view = new Uint8Array(buf)
-    for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
-    return buf
   }
 }
