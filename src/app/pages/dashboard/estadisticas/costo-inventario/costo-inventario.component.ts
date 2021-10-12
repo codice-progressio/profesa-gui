@@ -9,7 +9,9 @@ import { EstadisticasService } from 'src/app/services/estadisticas.service'
 export class CostoInventarioComponent implements OnInit {
   constructor(public eSer: EstadisticasService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargarTotalCostoInventario()
+  }
 
   cargandoTotalCostoInventario = false
 

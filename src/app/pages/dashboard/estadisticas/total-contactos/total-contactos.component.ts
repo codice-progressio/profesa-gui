@@ -9,7 +9,9 @@ import { EstadisticasService } from 'src/app/services/estadisticas.service'
 export class TotalContactosComponent implements OnInit {
   constructor(public eSer: EstadisticasService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargarTotalContactos()
+  }
 
   cargandoTotalContactos = false
 
