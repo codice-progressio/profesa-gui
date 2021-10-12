@@ -8,9 +8,9 @@ import { URL_BASE } from '../config/config'
 })
 export class EstadisticasService {
   base = URL_BASE('estadisticas')
-
   totalItems = 0
   costoInventario = 0
+  totalContactos = 0
 
   constructor(private http: HttpClient) {}
 
@@ -34,5 +34,14 @@ export class EstadisticasService {
           return res
         })
       )
+  }
+
+  contarContactos() {
+    return this.http.get(this.base.concat('/total-contactos')).pipe(
+      map((res: any) => {
+        this.totalContactos = res.total
+        return res
+      })
+    )
   }
 }

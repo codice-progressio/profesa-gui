@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.cargarTotalItems()
     this.cargarTotalCostoInventario()
+    this.cargarTotalContactos()
   }
 
   cargandoTotalSkus = false
@@ -35,6 +36,18 @@ export class DashboardComponent implements OnInit {
         this.cargandoTotalCostoInventario = false
       },
       () => (this.cargandoTotalCostoInventario = false)
+    )
+  }
+
+  cargandoTotalContactos = false
+
+  cargarTotalContactos() {
+    this.cargandoTotalContactos = true
+    this.eSer.contarContactos().subscribe(
+      total => {
+        this.cargandoTotalContactos = false
+      },
+      () => (this.cargandoTotalContactos = false)
     )
   }
 }
