@@ -6,6 +6,7 @@ import { UsuarioService } from '../usuario/usuario.service'
 })
 export class SidebarService {
   public menu: any[] = []
+  permitirOcultarMenu: boolean
 
   constructor(public _usuarioService: UsuarioService) {}
 

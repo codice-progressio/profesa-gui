@@ -3,6 +3,7 @@ import { Usuario } from '../../models/usuario.model'
 import { Router } from '@angular/router'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { VersionAppService } from 'src/app/services/version-app.service'
+import { SidebarService } from 'src/app/services/shared/sidebar.service'
 
 @Component({
   selector: 'app-header',
@@ -18,12 +19,13 @@ export class HeaderComponent implements OnInit {
   constructor(
     private versionAppService: VersionAppService,
     public _usuarioService: UsuarioService,
-    public router: Router
+    public router: Router,
+    public sidebarService: SidebarService
   ) {}
 
   ngOnInit() {
     this.usuario = this._usuarioService.usuario
-    this.versionAppService.ui.subscribe(v=>this.gui = v)
+    this.versionAppService.ui.subscribe(v => (this.gui = v))
   }
 
   // Para el loguot solo ocupamos llamar el servicio de usuario que lo contiene
@@ -31,5 +33,9 @@ export class HeaderComponent implements OnInit {
 
   buscar(termino: string) {
     this.router.navigate(['/busqueda', termino])
+  }
+
+  noEjecutarEventoDeCerradoExterno() {
+    this.sidebarService.permitirOcultarMenu = false
   }
 }
