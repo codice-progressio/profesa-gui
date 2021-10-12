@@ -1,4 +1,14 @@
 export default {
+  'menu:configuraciones:contactos': 'menu:configuraciones:contactos',
+  'menu:configuraciones:rutas-de-entrega':
+    'menu:configuraciones:rutas-de-entrega',
+  'menu:configuraciones:parametros': 'menu:configuraciones:parametros',
+  'menu:configuraciones:usuarios': 'menu:configuraciones:usuarios',
+  'menu:ventas:listas-de-precios': 'menu:ventas:listas-de-precios',
+  'menu:ventas:mis-pedidos': 'menu:ventas:mis-pedidos',
+  'menu:ventas': 'menu:ventas',
+  'menu:almacen:sku': 'menu:almacen:sku',
+  'menu:almacen': 'menu:almacen',
   'lista-de-precios:eliminar': 'lista-de-precios:eliminar',
   'lista-de-precios:asignar-a-acliente': 'lista-de-precios:asignar-a-acliente',
   'lista-de-precios:modificar:id': 'lista-de-precios:modificar:id',
