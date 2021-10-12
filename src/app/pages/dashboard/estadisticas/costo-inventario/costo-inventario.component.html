@@ -1,0 +1,34 @@
+<div class="card shadow">
+  <div class="card-body">
+    <div class="d-flex no-block">
+      <div class="m-r-20 align-self-center">
+        <span class="lstick m-r-20"></span
+        ><i class="fas fa-dollar-sign fa-3x"></i>
+      </div>
+      <div class="align-self-center">
+        <h6 class="text-muted m-t-10 m-b-0">Costo Inventario</h6>
+        <h2
+          title="No se toman en cuenta las existencias menores que 0"
+          class="m-t-0"
+        >
+          $ {{ eSer.costoInventario | number: '0.2-2' }}
+        </h2>
+
+        <h6 class="text-muted m-t-10 m-b-0 font-10">
+          <a
+            (click)="cargarTotalCostoInventario()"
+            class="text-muted"
+            role="button"
+          >
+            <i
+              class="fas fa-sync"
+              [ngClass]="{ 'fa-spin-fast': cargandoTotalCostoInventario }"
+            ></i>
+
+            Actualizar
+          </a>
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>

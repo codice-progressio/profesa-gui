@@ -1,53 +1,40 @@
 import { Component, OnInit } from '@angular/core'
 import { EstadisticasService } from '../../services/estadisticas.service'
-
+import permisos from '../../config/permisosKeys.config'
+import { UsuarioService } from '../../services/usuario/usuario.service'
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styles: []
 })
 export class DashboardComponent implements OnInit {
-  constructor(public eSer: EstadisticasService) {}
+  constructor(
+    public usuarioService: UsuarioService,
+    public eSer: EstadisticasService
+  ) {}
 
   ngOnInit() {
-    this.cargarTotalItems()
-    this.cargarTotalCostoInventario()
-    this.cargarTotalContactos()
   }
 
-  cargandoTotalSkus = false
-
-  cargarTotalItems() {
-    this.cargandoTotalSkus = true
-    this.eSer.totalSkus().subscribe(
-      total => {
-        this.cargandoTotalSkus = false
-      },
-      () => (this.cargandoTotalSkus = false)
+  permisoTotalSkus() {
+    return this.usuarioService.usuario.permissions.includes(
+      permisos['estadisticas:total-skus']
     )
   }
 
-  cargandoTotalCostoInventario = false
-
-  cargarTotalCostoInventario() {
-    this.cargandoTotalCostoInventario = true
-    this.eSer.costoExistencias().subscribe(
-      total => {
-        this.cargandoTotalCostoInventario = false
-      },
-      () => (this.cargandoTotalCostoInventario = false)
+  permisoCostoInventario() {
+    return this.usuarioService.usuario.permissions.includes(
+      permisos['estadisticas:total-costo-existencias']
     )
   }
 
-  cargandoTotalContactos = false
 
-  cargarTotalContactos() {
-    this.cargandoTotalContactos = true
-    this.eSer.contarContactos().subscribe(
-      total => {
-        this.cargandoTotalContactos = false
-      },
-      () => (this.cargandoTotalContactos = false)
+
+
+
+  permisoTotalContactos() {
+    return this.usuarioService.usuario.permissions.includes(
+      permisos['estadisticas:total-contactos']
     )
   }
 }

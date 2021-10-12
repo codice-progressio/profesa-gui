@@ -1,25 +1,4 @@
 export default {
-  'configuraciones:usuarios:administrar':
-    'configuraciones:usuarios:administrar',
-  'menu:contabilidad:facturas': 'menu:contabilidad:facturas',
-  'menu:contabilidad:remisiones': 'menu:contabilidad:remisiones',
-  'menu:contabilidad:tablero-contable': 'menu:contabilidad:tablero-contable',
-  'menu:contabilidad': 'menu:contabilidad',
-  'menu:venta-al-publico:punto-de-venta':
-    'menu:venta-al-publico:punto-de-venta',
-  'menu:venta-al-publico': 'menu:venta-al-publico',
-  'menu:configuraciones:contactos': 'menu:configuraciones:contactos',
-  'menu:configuraciones:rutas-de-entrega':
-    'menu:configuraciones:rutas-de-entrega',
-  'menu:configuraciones:parametros': 'menu:configuraciones:parametros',
-  'menu:configuraciones:usuarios': 'menu:configuraciones:usuarios',
-  'menu:compras': 'menu:compras',
-  'menu:ventas:clientes': 'menu:ventas:clientes',
-  'menu:ventas:listas-de-precios': 'menu:ventas:listas-de-precios',
-  'menu:ventas:mis-pedidos': 'menu:ventas:mis-pedidos',
-  'menu:ventas': 'menu:ventas',
-  'menu:almacen:sku': 'menu:almacen:sku',
-  'menu:almacen': 'menu:almacen',
   'lista-de-precios:eliminar': 'lista-de-precios:eliminar',
   'lista-de-precios:asignar-a-acliente': 'lista-de-precios:asignar-a-acliente',
   'lista-de-precios:modificar:id': 'lista-de-precios:modificar:id',
@@ -36,6 +15,12 @@ export default {
   'rutas-de-entrega:buscar:id': 'rutas-de-entrega:buscar:id',
   'rutas-de-entrega:leer:todo': 'rutas-de-entrega:leer:todo',
   'rutas-de-entrega:crear-modificar': 'rutas-de-entrega:crear-modificar',
+  'estadisticas:total-contactos': 'estadisticas:total-contactos',
+  'estadisticas:total-costo-existencias':
+    'estadisticas:total-costo-existencias',
+  'estadisticas:total-skus': 'estadisticas:total-skus',
+  'configuraciones:usuarios:administrar':
+    'configuraciones:usuarios:administrar',
   'configuraciones:contactos:administrar':
     'configuraciones:contactos:administrar',
   'configuraciones:skus:administrar': 'configuraciones:skus:administrar',
