@@ -17,6 +17,7 @@ export class SkuListaComponent implements OnInit {
 
   @Input() soloSeleccionable = false
   @Output() skuSeleccionado = new EventEmitter<SKU>()
+  @Input() permitirVerDetalle = true
 
   @Input()
   public set termino(value: string) {
@@ -110,6 +111,8 @@ export class SkuListaComponent implements OnInit {
   }
 
   verDetalle(sku: SKU) {
+    if (!this.permitirVerDetalle) return
+
     this.router.navigate(
       [
         './detalle',
