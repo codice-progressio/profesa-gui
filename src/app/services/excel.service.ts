@@ -1,7 +1,9 @@
+import { DatePipe } from '@angular/common'
 import { Injectable } from '@angular/core'
 
 const EXCEL_TYPE =
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
 const EXCEL_EXTENSION = '.xlsx'
 
 import * as FileSaver from 'file-saver'
@@ -13,7 +15,10 @@ import { UsuarioService } from './usuario/usuario.service'
   providedIn: 'root'
 })
 export class ExcelService {
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private datePipe: DatePipe
+  ) {}
 
   public exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json)
@@ -28,12 +33,16 @@ export class ExcelService {
     })
     this.saveAsExcelFile(excelBuffer, excelFileName)
   }
+
+  generarNombre(fileName: string): string {
+    let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd_HH_mm')
+
+    return `${fileName}_EXPORTADO_${fecha}${EXCEL_EXTENSION}`
+  }
+
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE })
-    FileSaver.saveAs(
-      data,
-      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
-    )
+    FileSaver.saveAs(data, this.generarNombre(fileName))
   }
 
   pedidoComoHojaDeExcel(pedido: Pedido) {
@@ -42,7 +51,7 @@ export class ExcelService {
       Title: 'Pedido: ' + pedido.folio,
       Subject: pedido.contacto.nombre ?? pedido.contacto.razonSocial,
       Author: 'IMPERIUMsic',
-      CreatedDate: pedido.createdAt
+      CreatedDate: new Date(pedido.createdAt)
     }
 
     wb.SheetNames.push('PEDIDO')
@@ -52,9 +61,14 @@ export class ExcelService {
         'Folio:',
         pedido.folio,
         'Fecha:',
-        pedido.createdAt,
+        this.datePipe.transform(
+          new Date(pedido.createdAt),
+          'dd/MMMM/yyyy HH:MM'
+        ),
         'Ubicacion:',
-        'PENDIENTE DE CREAR'
+        pedido.ubicacion
+          ? `https://google.com/maps?q=${pedido.ubicacion.latitud},${pedido.ubicacion.longitud}`
+          : 'SIN UBICACION'
       ],
       [
         'Cliente:',
@@ -114,13 +128,27 @@ export class ExcelService {
         origin: ultimaFila(worksheet)
       }
     )
-
     wb.Sheets.PEDIDO = worksheet
+    let texto = XLSX.utils.sheet_to_csv(worksheet, { forceQuotes: true })
 
-    let excelBuffer: any = XLSX.write(wb, {
-      bookType: 'xlsx',
-      type: 'array'
+    let navigator = window.navigator as any
+    const file = new File([texto], pedido.folio.concat('.csv'), {
+      type: 'text/csv'
     })
-    this.saveAsExcelFile(excelBuffer, pedido.folio)
+
+    return new Promise((resolve, reject) => {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator
+          .share({
+            files: [file],
+            text: pedido.observaciones ?? '',
+            title: `Pedido con folio #${pedido.folio} del cliente ${
+              pedido.contacto.nombre ?? pedido.contacto.razonSocial
+            }`
+          })
+          .then(() => resolve(''))
+          .catch((e: any) => reject(e))
+      } else reject('No se puede compartir')
+    })
   }
 }
