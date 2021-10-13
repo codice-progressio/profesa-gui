@@ -214,7 +214,9 @@ export class UsuarioService {
   }) {
     this.parametrosService.offline.guardar(datos).subscribe(() => {
       this.usuarioOffline = datos.usuario_registrado
-      console.log('se registro un nuevo usuario')
+      this.msjService.toast.info(
+        ' <i class=" text-success fas fa-check-circle    "></i>  Usuario almacenado para trabajo offline.'
+      )
     })
   }
 
