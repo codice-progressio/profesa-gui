@@ -16,6 +16,7 @@ export class BuscadorComponent implements OnInit {
   >()
 
   @Input() encodeURIComponent: boolean = true
+  @Input() tiempoDeEspera = 1300
 
   estaCargando = new BehaviorSubject<boolean>(false)
 
@@ -59,7 +60,7 @@ export class BuscadorComponent implements OnInit {
           this.estaCargando.next(true)
         }),
         distinctUntilChanged(),
-        debounceTime(500)
+        debounceTime(this.tiempoDeEspera)
       )
       .subscribe((termino: string) => {
         let terminoLimpio = this.limpiarTermino(termino)
