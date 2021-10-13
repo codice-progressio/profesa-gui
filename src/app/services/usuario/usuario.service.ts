@@ -103,7 +103,12 @@ export class UsuarioService {
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
+        if (resp?.mensaje) {
+          this.msjService.toast.error(resp.mensaje)
+        }
+
         this.guardarStorage(resp.token)
+
         if (this.usuario.inhabilitado) {
           let msj =
             'El usuario esta inactivo. Si es un error reportalo con el administrador'
