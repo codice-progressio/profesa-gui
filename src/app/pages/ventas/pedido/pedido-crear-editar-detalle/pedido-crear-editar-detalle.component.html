@@ -209,7 +209,14 @@
                               [campo]="dummy.get('cantidad')"
                             ></codice-validaciones>
                           </div>
+                        </div>
+                        <!-- 
+            =====================================
+             END cantidad
+            =====================================
+            -->
 
+                        <div class="col-12 text-center">
                           <a
                             (click)="agregar(i, -1)"
                             class="btn btn-info mr-2"
@@ -227,11 +234,18 @@
                             <i class="fas fa-plus-circle fa-4x"></i
                           ></a>
                         </div>
-                        <!-- 
-            =====================================
-             END cantidad
-            =====================================
-            -->
+
+                        <div class="col-12 text-center">
+                          <a
+                            *ngFor="let item of [10, 50, 100]"
+                            (click)="agregar(i, +item)"
+                            class="btn btn-primary m-3 font-bold font-20"
+                            href="javascript:void(0)"
+                            role="button"
+                          >
+                            {{ item }}
+                          </a>
+                        </div>
 
                         <!-- 
             =====================================
