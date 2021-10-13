@@ -457,13 +457,20 @@
           <div class="d-flex w-100 justify-content-between">
             <i class="fas fa-user fa-2x"></i>
             <h5 class="mb-1">
-              <br />
               {{ contacto.razonSocial }}
             </h5>
           </div>
           <p class="mb-1">
             {{ contacto.nombre }}
           </p>
+          <ng-container *ngFor="let domicilio of contacto.domicilios">
+            <hr />
+
+            {{ domicilio.calle }} {{ domicilio.numeroExterior }}
+            {{ domicilio.numeroInterior }} {{ domicilio.colonia }}
+            {{ domicilio.ciudad }}
+            {{ domicilio.estado }}
+          </ng-container>
         </a>
       </div>
     </div>
