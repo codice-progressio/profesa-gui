@@ -258,7 +258,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       razonSocial: contacto.razonSocial,
       _id: contacto._id,
       listaDePrecios: contacto.listaDePrecios,
-      rfc: contacto.rfc
+      rfc: contacto.rfc,
+      domicilios: contacto.domicilios,
+      codigo: contacto.codigo,
+      contactos: contacto.contactos
     })
 
     this.obtenerListaDePrecios(contacto)
@@ -360,6 +363,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
       id = await this.obtenerUltimoId()
     }
+
+    console.log({modelo})
 
     modelo.folio = this.crearFolio(id)
     modelo.createdAt = new Date().toISOString()
