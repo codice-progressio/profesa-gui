@@ -98,4 +98,9 @@ export class BuscadorComponent implements OnInit {
       return
     }
   }
+
+  limpiarControl() {
+    if (this.cargando) return
+    this.input.setValue('')
+  }
 }

@@ -15,6 +15,14 @@
         [id]="id"
         placeholder="Buscar por término"
       />
+      <div class="input-group-append">
+        <div
+          (click)="limpiarControl()"
+          class="input-group-text pointer bg-danger text-white"
+        >
+          <i class="fas fa-times-circle"></i>
+        </div>
+      </div>
     </div>
   </div>
 </div>
