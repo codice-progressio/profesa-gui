@@ -8,7 +8,7 @@
   <div *ngFor="let sku of skus" class="col mb-4">
     <div class="card shadow">
       <a
-        *ngIf="verDetalle"
+        *ngIf="permitirVerDetalle"
         [codice-title-options]="{ stylesRoot: [['position', 'relative']] }"
         codice-title="Ver detalle de item"
         href="javascript:void(0)"
