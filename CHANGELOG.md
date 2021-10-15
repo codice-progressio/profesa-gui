@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.2](https://github.com/codice-progressio/profesa-gui/compare/v4.3.1...v4.3.2) (2021-10-15)
+
+
+### Bug Fixes
+
+* Ver detalle no quitaba la imagen de la lista de skus ([906b2cf](https://github.com/codice-progressio/profesa-gui/commit/906b2cf23bb1bef5a6b9320aa504914c31beebb9))
+
 ### [4.3.1](https://github.com/codice-progressio/profesa-gui/compare/v4.3.0...v4.3.1) (2021-10-15)
 
 ## [4.3.0](https://github.com/codice-progressio/profesa-gui/compare/v4.2.0...v4.3.0) (2021-10-15)
