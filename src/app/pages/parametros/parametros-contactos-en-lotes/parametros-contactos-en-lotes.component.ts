@@ -57,7 +57,6 @@ export class ParametrosContactosEnLotesComponent implements OnInit {
     this.parametrosService.contactos.cargarEnLote(this.datos).subscribe(
       (respuesta: any) => {
         this.errores = respuesta.rechazados
-        console.log(respuesta)
         if (this.errores.length > 0)
           this.msjService.toast.warning(
             `Hubo ${this.errores.length} errores al procesar los datos. `
