@@ -200,7 +200,7 @@
                               formControlName="cantidad"
                               mask="separator.2"
                               thousandSeparator=","
-                             (keyup)="agregar(i, 0)"
+                              (keyup)="agregar(i, 0)"
                             />
                             <small id="helpId" class="form-text text-muted"
                               >Cantidad | Unidad:
@@ -467,20 +467,18 @@
             list-group-item list-group-item-action
             flex-column
             align-items-start
+            
           "
         >
-          <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 font-bold">
             <i class="fas fa-user fa-2x"></i>
-            <h5 class="mb-1">
-              {{ contacto.razonSocial }}
-            </h5>
-          </div>
+            {{ contacto.razonSocial }}
+          </h5>
           <p class="mb-1">
             {{ contacto.nombre }}
           </p>
           <ng-container *ngFor="let domicilio of contacto.domicilios">
-            <hr />
-
+            <i class="fas fa-map-marker-alt"></i>
             {{ domicilio.calle }} {{ domicilio.numeroExterior }}
             {{ domicilio.numeroInterior }} {{ domicilio.colonia }}
             {{ domicilio.ciudad }}
