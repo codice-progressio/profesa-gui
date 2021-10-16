@@ -19,6 +19,7 @@ export class ParametrosSkuEnLotesComponent implements OnInit {
   cargando = false
 
   constructor(
+    private notiService: ManejoDeMensajesService,
     private excelService: ExcelService,
     private utilidadesService: UtilidadesService,
     private parametrosService: ParametrosService,
@@ -46,6 +47,8 @@ export class ParametrosSkuEnLotesComponent implements OnInit {
       )
   }
 
+  porcentajeAvance = 0
+
   submit() {
     if (this.cargando) return
     if (!this.datos) {
@@ -54,21 +57,38 @@ export class ParametrosSkuEnLotesComponent implements OnInit {
     }
 
     this.cargando = true
-    this.parametrosService.sku.cargarEnLote(this.datos).subscribe(
-      (respuesta: any) => {
-        this.errores = respuesta.rechazados
 
-        if (this.errores.length > 0)
-          this.msjService.toast.warning(
-            `Hubo ${this.errores.length} errores al procesar los datos. `
-          )
-        this.cargando = false
-        this.inputFile = ''
+    this.porcentajeAvance = 0
+    this.errores = []
+
+    let datosSeparados = this.utilidadesService.dividirArreglo(this.datos)
+    this.envioDeDatos(datosSeparados)
+  }
+
+  envioDeDatos(datos: any[], contador = 0) {
+    console.log(contador, datos[contador])
+    this.parametrosService.sku.cargarEnLote(datos[contador]).subscribe(
+      (respuesta: any) => {
+        this.errores.push(...respuesta.rechazados)
+
+        this.porcentajeAvance = (contador / (datos.length - 1)) * 100
+        if (datos.length - 1 > contador) this.envioDeDatos(datos, contador + 1)
+        else this.terminoDeCargar()
       },
       error => {
         this.cargando = false
       }
     )
+  }
+
+  terminoDeCargar() {
+    if (this.errores.length > 0)
+      this.msjService.toast.warning(
+        `Hubo ${this.errores.length} errores al procesar los datos. `
+      )
+    this.cargando = false
+    this.inputFile = ''
+    this.notiService.toast.info('Se cargaron los datos.')
   }
 
   errores: { error: string; datos: SKU }[] = undefined
