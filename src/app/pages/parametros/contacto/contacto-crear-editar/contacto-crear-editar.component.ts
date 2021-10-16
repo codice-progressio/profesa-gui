@@ -129,6 +129,7 @@ export class ContactoCrearEditarComponent implements OnInit {
     this.contactoSeleccionado = contacto as Contacto
     this.formulario = new FormGroup({
       _id: new FormControl(contacto._id, []),
+      codigo: new FormControl(contacto.codigo),
       nombre: new FormControl(contacto.nombre, [Validators.minLength(4)]),
       razonSocial: new FormControl(contacto.razonSocial, []),
       domicilios: new FormArray(
