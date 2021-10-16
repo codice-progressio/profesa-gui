@@ -1,6 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, ReplaySubject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
 
 @Component({
@@ -39,6 +47,8 @@ export class BuscadorComponent implements OnInit {
   }
 
   input = new FormControl()
+  @ViewChild('myInput') inputEl: ElementRef<HTMLInputElement>
+  // @Output() enfoque = EventEmitter<
 
   constructor() {}
 
@@ -77,6 +87,10 @@ export class BuscadorComponent implements OnInit {
       })
   }
 
+  enfocar() {
+    this.inputEl.nativeElement.focus()
+  }
+
   limpiarTermino(termino: string) {
     let limpio = termino.trim()
     return limpio
@@ -102,5 +116,6 @@ export class BuscadorComponent implements OnInit {
   limpiarControl() {
     if (this.cargando) return
     this.input.setValue('')
+    this.enfocar()
   }
 }
