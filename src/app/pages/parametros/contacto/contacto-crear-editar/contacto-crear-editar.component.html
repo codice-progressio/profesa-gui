@@ -83,35 +83,6 @@
             <div class="col-12">
               <hr />
             </div>
-
-            <!-- 
-              =====================================
-               codigo
-              =====================================
-              -->
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="form-group">
-                <input
-                  [ngClass]="{
-                    'is-invalid': vs.invalid(f('codigo')),
-                    'is-valid': vs.valid(f('codigo'))
-                  }"
-                  type="text"
-                  class="form-control"
-                  formControlName="codigo"
-                />
-                <small id="helpId" class="form-text text-muted">Código</small>
-                <app-validacion-inputs
-                  [campo]="f('codigo')"
-                ></app-validacion-inputs>
-              </div>
-            </div>
-            <!-- 
-              =====================================
-               END codigo
-              =====================================
-              -->
-
             <!-- 
           =====================================
            nombre
