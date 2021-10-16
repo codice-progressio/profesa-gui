@@ -12,7 +12,7 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 })
 export class ParametrosContactosEnLotesComponent implements OnInit {
   fichero: any
-  caracterDeSeparcion = '+'
+  caracterDeSeparcion = ','
   datos: Contacto[] = undefined
   // Solo para borrar
   inputFile: any
