@@ -66,7 +66,6 @@ export class ParametrosSkuEnLotesComponent implements OnInit {
   }
 
   envioDeDatos(datos: any[], contador = 0) {
-    console.log(contador, datos[contador])
     this.parametrosService.sku.cargarEnLote(datos[contador]).subscribe(
       (respuesta: any) => {
         this.errores.push(...respuesta.rechazados)
