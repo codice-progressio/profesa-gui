@@ -12,7 +12,7 @@ import { ExcelService } from 'src/app/services/excel.service'
 })
 export class ParametrosSkuEnLotesComponent implements OnInit {
   fichero: any
-  caracterDeSeparcion = '+'
+  caracterDeSeparcion = ','
   datos: SKU[] = undefined
   // Solo para borrar
   inputFile: any
