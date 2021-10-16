@@ -13,7 +13,7 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 export class ParametrosListaDePreciosEnLotesComponent implements OnInit {
   inputFile = ''
   cargando = false
-  caracterDeSeparacion = '+'
+  caracterDeSeparacion = ','
   datos: ListaDePrecios[]
   nombre = ''
 
