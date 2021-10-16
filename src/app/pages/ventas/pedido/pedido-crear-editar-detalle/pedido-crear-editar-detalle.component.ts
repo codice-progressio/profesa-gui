@@ -294,7 +294,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   articulosSeleccionados: SKU[] = []
-  indexSeleccionado: number
+  agregarArticulo() {
+    this.modalService.open(this.idModalSku)
+  }
+
   seleccionarSku(item: SKU) {
     this.estaCargandoBuscadorSku.next(false)
     if (this.articulosSeleccionados.find(x => x._id === item._id)) {
@@ -306,14 +309,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
     this.skus = []
 
-    let articulo = this.fa('articulos').at(this.indexSeleccionado)
+    let articulo = this.crearArticulo({})
     articulo.get('sku').setValue(item)
     articulo
       .get('precio')
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
-
+    this.fa('articulos').push(articulo)
     this.articulosSeleccionados.push(item)
-    this.modalService.close(this.idModalSku)
   }
 
   eliminar(i: number) {
@@ -324,19 +326,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     })
   }
 
-  agregarArticulo() {
-    this.fa('articulos').push(this.crearArticulo({}))
-    this.indexSeleccionado = this.fa('articulos').controls.length - 1
-    this.modalService.open(this.idModalSku)
-  }
-
-  skuModalCerrado() {
-    let sku = this.fa('articulos').at(this.indexSeleccionado).get('sku').value
-    if (!sku) {
-      // Eliminamos el articulo si no seleeccion ningún sku
-      this.fa('articulos').removeAt(this.indexSeleccionado)
-    }
-  }
+  skuModalCerrado() {}
 
   async submit(modelo: Pedido, invalid: boolean) {
     this.formulario.markAllAsTouched()
@@ -397,42 +387,34 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     return ultimo
   }
 
-  editar(i: number) {
-    //Quitamos los que esten marcados como editandose.
+  // editar(i: number) {
+  //   //Quitamos los que esten marcados como editandose.
 
-    this.fa('articulos').controls.forEach(x =>
-      x.get('editando').setValue(false)
-    )
+  //   // this.fa('articulos').controls.forEach(x =>
+  //   //   // x.get('editando').setValue(false)
+  //   // )
 
-    //Quitamos los filtros
-    this.noMostrarArticulos = []
+  //   //Quitamos los filtros
+  //   // this.noMostrarArticulos = []
 
-    // Encendemos el otro.
-    this.fa('articulos').at(i).get('editando').setValue(true)
-  }
+  //   // // Encendemos el otro.
+  //   // this.fa('articulos').at(i).get('editando').setValue(true)
+  // }
 
-  hayUnArticuloEditandose() {
-    for (const iterator of this.fa('articulos').controls) {
-      if (iterator.get('editando').value) return true
-    }
+  // // dejarDeEditar(i: number) {
+  // //   // La cantidad no puede estar en 0
 
-    return false
-  }
+  // //   let control = this.fa('articulos').at(i)
+  // //   let controlCantidad = control.get('cantidad')
+  // //   controlCantidad.markAsTouched()
+  // //   controlCantidad.updateValueAndValidity()
+  // //   if (controlCantidad.invalid) {
+  // //     this.notiService.toast.warning('La cantidad no es valida')
+  // //     return
+  // //   }
 
-  dejarDeEditar(i: number) {
-    // La cantidad no puede estar en 0
-
-    let control = this.fa('articulos').at(i)
-    let controlCantidad = control.get('cantidad')
-    controlCantidad.markAsTouched()
-    controlCantidad.updateValueAndValidity()
-    if (controlCantidad.invalid) {
-      this.notiService.toast.warning('La cantidad no es valida')
-      return
-    }
-
-    control.get('editando').setValue(false)
-  }
+  // //   control.get('editando').setValue(false)
+  // // }
 
   agregar(i: number, valor: number) {
     let articulo = this.fa('articulos').at(i)
@@ -446,9 +428,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     articulo.get('importe').setValue(this.redondear(precio * cantidad))
 
     //Solo aplicamos el valor si la cantidad se modifico (Esto ayuda con el punto)
-    if (v !== cantidad) 
-      cantidadF.setValue(cantidad)
-    
+    if (v !== cantidad) cantidadF.setValue(cantidad)
+
     cantidadF.markAsTouched()
     cantidadF.updateValueAndValidity()
   }
