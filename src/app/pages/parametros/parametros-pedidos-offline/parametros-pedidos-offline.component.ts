@@ -41,7 +41,6 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
     this.contar.subscribe(() => {
 
       this.contador++
-      console.log(this.contador)
       if (this.contador === 4) this.indiceService.cargarIndicesEnMemoria()
     })
   }
