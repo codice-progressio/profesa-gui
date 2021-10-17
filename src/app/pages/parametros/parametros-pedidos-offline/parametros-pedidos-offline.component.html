@@ -4,12 +4,31 @@
 </h1>
 
 <small class="text-muted"
-  >Sincronizar los datos necesarios para tomar pedidos offline</small
->
+  >Sincronizar los datos necesarios para tomar pedidos offline.
+</small>
 
 <hr />
+<h3>Versión servidor: {{ versionServidor }}</h3>
+<a
+  *ngIf="tienePermisoVersionado()"
+  (click)="reiniciarVersionado()"
+  href="javascript:void(0)"
+>
+  <i *ngIf="cargandoReinicioDeVersion" class="fas fa-sync fa-spin"></i>
 
+  Reiniciar version
+</a>
 <div class="row">
+  <div class="col-12 col-sm-4">
+    <div class="card">
+      <div class="card-body shadow text-center">
+        <h1>
+          {{ version }}
+        </h1>
+        Version
+      </div>
+    </div>
+  </div>
   <div class="col-12 col-sm-4">
     <div class="card">
       <div class="card-body shadow text-center">

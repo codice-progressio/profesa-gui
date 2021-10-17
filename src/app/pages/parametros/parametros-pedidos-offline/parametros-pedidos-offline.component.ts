@@ -7,6 +7,9 @@ import { Offline, OfflineService } from '../../../services/offline.service'
 import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
 import { ReplaySubject } from 'rxjs'
 
+import { ParametrosService } from '../../../services/parametros.service'
+import permisos from '../../../config/permisosKeys.config'
+
 @Component({
   selector: 'app-parametros-pedidos-offline',
   templateUrl: './parametros-pedidos-offline.component.html',
@@ -29,19 +32,26 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
     private usuarioService: UsuarioService,
     private listaDePreciosService: ListaDePreciosService,
     private offlineService: OfflineService,
-    private indiceService: IndicesIndexedDbService
+    private indiceService: IndicesIndexedDbService,
+    public parametrosService: ParametrosService
   ) {}
 
   contador = 0
   contar = new ReplaySubject<number>(null)
+  version = 'X'
+  versionServidor = 'X'
 
   ngOnInit(): void {
     this.offlineService.db.subscribe(() => this.gestionRegistros())
     this.contador = 0
     this.contar.subscribe(() => {
-
       this.contador++
       if (this.contador === 4) this.indiceService.cargarIndicesEnMemoria()
+    })
+
+    this.version = this.parametrosService.leerVersionDeDatosOffline()
+    this.parametrosService.sincronizarVersionDeDatosOffline().subscribe(x => {
+      this.versionServidor = x
     })
   }
 
@@ -78,6 +88,10 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
     this.cargarContactos()
     this.cargarSkus()
     this.cargarListasDePrecios()
+    this.parametrosService.sincronizarVersionDeDatosOffline().subscribe(x => {
+      localStorage.setItem('version_offline', x)
+      this.version = x
+    })
   }
 
   estaCargando() {
@@ -179,6 +193,26 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
       err => {
         this.cargandoUsuarios = false
       }
+    )
+  }
+
+  cargandoReinicioDeVersion = false
+  reiniciarVersionado() {
+    this.cargandoReinicioDeVersion = true
+    this.parametrosService.reiniciarVersionadoOffline().subscribe(
+      () => {
+        this.cargandoReinicioDeVersion = false
+        this.version = '0'
+        this.versionServidor = this.version
+        localStorage.setItem('version_offline', this.version)
+      },
+      () => (this.cargandoReinicioDeVersion = false)
+    )
+  }
+
+  tienePermisoVersionado() {
+    return this.usuarioService.usuario.permissions.includes(
+      permisos['parametros:version-offline-reiniciar']
     )
   }
 }

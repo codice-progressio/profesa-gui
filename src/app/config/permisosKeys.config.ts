@@ -1,4 +1,6 @@
 export default {
+  'parametros:version-offline-reiniciar':
+    'parametros:version-offline-reiniciar',
   'menu:configuraciones:contactos': 'menu:configuraciones:contactos',
   'menu:configuraciones:rutas-de-entrega':
     'menu:configuraciones:rutas-de-entrega',
