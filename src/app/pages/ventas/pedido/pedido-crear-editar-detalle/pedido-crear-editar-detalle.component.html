@@ -176,7 +176,11 @@
                         <ng-container
                           *ngIf="false; else folioTemplate"
                         ></ng-container>
-                        | {{ dummy.get('sku').value?.nombreCompleto }}
+                        <hr>
+                        <b class="font-bold">
+                          {{ dummy.get('sku').value?.nombreCompleto }}</b
+                          >
+                          <hr>
                       </div>
 
                       <!-- 
