@@ -67,7 +67,10 @@
                     =====================================
                     -->
                 <div class="col-12 col-md-6">
-                  <div class="form-group">
+                  <div
+                    *ngIf="!esDetalle; else observacionTemplate"
+                    class="form-group"
+                  >
                     <input
                       [ngClass]="{
                         'is-invalid': vs.invalid(f('observaciones')),
@@ -84,6 +87,10 @@
                       [campo]="f('observaciones')"
                     ></codice-validaciones>
                   </div>
+
+                  <ng-template #observacionTemplate>{{
+                    f('observaciones').value
+                  }}</ng-template>
                 </div>
                 <!-- 
                     =====================================
@@ -176,11 +183,11 @@
                         <ng-container
                           *ngIf="false; else folioTemplate"
                         ></ng-container>
-                        <hr>
+                        <hr />
                         <b class="font-bold">
                           {{ dummy.get('sku').value?.nombreCompleto }}</b
-                          >
-                          <hr>
+                        >
+                        <hr />
                       </div>
 
                       <!-- 
