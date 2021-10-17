@@ -4,6 +4,8 @@ import { ContactoService } from '../../../services/contacto.service'
 import { UsuarioService } from '../../../services/usuario/usuario.service'
 import { ListaDePreciosService } from '../../../services/lista-de-precios.service'
 import { Offline, OfflineService } from '../../../services/offline.service'
+import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
+import { ReplaySubject } from 'rxjs'
 
 @Component({
   selector: 'app-parametros-pedidos-offline',
@@ -26,11 +28,22 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
     private contactoService: ContactoService,
     private usuarioService: UsuarioService,
     private listaDePreciosService: ListaDePreciosService,
-    private offlineService: OfflineService
+    private offlineService: OfflineService,
+    private indiceService: IndicesIndexedDbService
   ) {}
+
+  contador = 0
+  contar = new ReplaySubject<number>(null)
 
   ngOnInit(): void {
     this.offlineService.db.subscribe(() => this.gestionRegistros())
+    this.contador = 0
+    this.contar.subscribe(() => {
+
+      this.contador++
+      console.log(this.contador)
+      if (this.contador === 4) this.indiceService.cargarIndicesEnMemoria()
+    })
   }
 
   gestionRegistros() {
@@ -61,6 +74,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   }
 
   sincronizar() {
+    this.contador = 0
     this.cargarUsuarios()
     this.cargarContactos()
     this.cargarSkus()
@@ -92,6 +106,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
           x => {
             this.totalListasDePrecios = x
             this.cargandoListasDePrecios = false
+            this.contar.next()
           },
           () => (this.cargandoListasDePrecios = false)
         )
@@ -112,6 +127,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalSkus = x
               this.cargandoSkus = false
+              this.contar.next()
             },
             () => (this.cargandoSkus = false)
           )
@@ -133,6 +149,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalContactos = x
               this.cargandoContactos = false
+              this.contar.next()
             },
             () => (this.cargandoContactos = false)
           )
@@ -154,6 +171,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalUsuarios = x
               this.cargandoUsuarios = false
+              this.contar.next()
             },
             () => (this.cargandoUsuarios = false)
           )

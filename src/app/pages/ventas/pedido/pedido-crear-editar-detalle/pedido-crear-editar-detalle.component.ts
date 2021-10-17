@@ -23,6 +23,7 @@ import { ListaDePreciosService } from '../../../../services/lista-de-precios.ser
 import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { UbicacionService } from 'src/app/services/ubicacion.service'
 import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
+import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -46,20 +47,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     private location: Location,
     private renderer: Renderer2,
     public modalService: ModalService,
-    public ubicacionService: UbicacionService
+    public ubicacionService: UbicacionService,
+    private indiceService: IndicesIndexedDbService
   ) {}
 
   comprobarIndice() {
-    let pedidoI = this.pedidoService.offline.indice.length
-    let contactoI = this.contactoService.offline.indice.length
-    if (!pedidoI && !contactoI) {
-      this.notiService.confirmarAccion(
-        'Los indices no se han  cargado, ¿Quieres recargar la aplicación?',
-        () => this.router.navigate(['/login']),
-        ' No se pueden registrar pedidos',
-        () => this.location.back()
-      )
-    } else this.obtenerId()
+    this.indiceService.cargarIndicesEnMemoria()
+    this.obtenerId()
   }
 
   idModalContacto = 'modalPedido'
