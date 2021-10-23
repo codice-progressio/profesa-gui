@@ -7,7 +7,7 @@ const app = express()
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist'))
 
-app.all('/api/env.js', (req, res) => {
+app.all('/env.js', (req, res) => {
   console.log('env sobre escrito')
 
   let buffer = fs.readFileSync('./dist/env.js', 'utf-8').split('\n')
