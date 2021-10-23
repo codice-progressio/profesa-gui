@@ -8,9 +8,7 @@ const app = express()
 app.use(express.static(__dirname + '/dist'))
 
 app.all('/env.js', (req, res) => {
-  console.log('env sobre escrito')
-
-  let buffer = fs.readFileSync('./dist/env.js', 'utf-8').split('\n')
+  let buffer = fs.readFileSync('./dist/env.prod.js', 'utf-8').split('\n')
 
   //Obtener variables escritas
   const plantilla = 'window.__env.'
@@ -20,8 +18,6 @@ app.all('/env.js', (req, res) => {
     .map(x => x.split('.')[2])
     .map(x => x.split('=')[0].trim())
 
-  // Obtener variales de ambiente
-
   let nuevoBuffer = ';(function (window) { \n'
   nuevoBuffer += 'window.__env = window.__env || {}\n'
   variables.forEach(x => {
@@ -29,7 +25,6 @@ app.all('/env.js', (req, res) => {
   })
 
   nuevoBuffer += '})(this)'
-
   res.setHeader('content-type', 'text/javascript')
   res.write(nuevoBuffer)
   res.end()
