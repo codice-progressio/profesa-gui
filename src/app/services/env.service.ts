@@ -8,10 +8,12 @@ export class EnvService {
   // be overridden by env.js
 
   // API url
-  public apiUrl = ''
+  public URL_DOMINIO = ''
+  public URL_SERVICIOS = ''
 
   // Whether or not to enable debug mode
   public enableDebug = true
+  public URL_BASE = path => `${this.URL_SERVICIOS}/${path}`
 
   constructor() {}
 }

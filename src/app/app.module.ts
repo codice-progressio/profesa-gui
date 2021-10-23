@@ -21,7 +21,6 @@ import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 import { RouterModule, Routes } from '@angular/router'
@@ -44,6 +43,8 @@ export function tokenGetter() {
   let token = localStorage.getItem('token')
   return token
 }
+
+declare var window: any
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -108,12 +109,11 @@ const appRoutes: Routes = [
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: [
-          environment.URL_DOMINIO,
+          //Importacion por fuerza
+          window.__env.URL_DOMINIO,
           'http://localhost:9090',
           'http://127.0.0.1:9090'
         ]
-        // disallowedRoutes: disallowedRoutes(),
-        // throwNoTokenError: true
       }
     }),
     ModalModule,
@@ -136,10 +136,3 @@ const appRoutes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-function disallowedRoutes(): (string | RegExp)[] {
-  let a = [URL_DOMINIO.concat('/login')].map(x => 'https://'.concat(x))
-
-  console.log(a)
-  return a
-}

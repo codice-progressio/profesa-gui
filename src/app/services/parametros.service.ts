@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
-import { URL_BASE } from '../config/config'
 import { ListaDePrecios } from '../models/listaDePrecios.model'
 import { Usuario } from '../models/usuario.model'
+import { EnvService } from './env.service'
 import { Offline, OfflineBasico, OfflineService } from './offline.service'
 
 @Injectable({
@@ -15,10 +15,15 @@ export class ParametrosService {
   sku: SKUService
   contactos: ContactosService
   usuarios: UsuariosService
-  base = URL_BASE('parametros')
+  base = ''
   offline: ParametrosOfflineService<ParametrosOfflineModel>
 
-  constructor(public http: HttpClient, public offlineService: OfflineService) {
+  constructor(
+    public http: HttpClient,
+    public offlineService: OfflineService,
+    private envService: EnvService
+  ) {
+    this.base = this.envService.URL_BASE('parametros')
     this.etiquetas = new EtiquetasService(this)
     this.listasDePrecio = new ListaDePrecioService(this)
     this.sku = new SKUService(this)

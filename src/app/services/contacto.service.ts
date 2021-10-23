@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Contacto } from '../models/contacto.model'
-import { URL_BASE } from '../config/config'
 import { catchError, map } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs'
 import { URLQuery } from './utilidades/URLQuery'
 import { Offline, OfflineBasico, OfflineService } from './offline.service'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactoService {
-  base = URL_BASE('contacto')
+  base = ''
   etiquetas = new ProveedorEtiquetas(this)
   rutas = new ProveedorRutas(this)
   offline: ContactoOfflineService<Contacto>
-  constructor(public http: HttpClient, public offlineService: OfflineService) {
+  constructor(
+    private envService: EnvService,
+    public http: HttpClient,
+    public offlineService: OfflineService
+  ) {
+    this.base = this.envService.URL_BASE('contacto')
     this.offline = new ContactoOfflineService(this, this.base)
   }
 
