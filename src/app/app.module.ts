@@ -34,9 +34,10 @@ import { environment } from '../environments/environment'
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
-import { ModalModule } from '@codice-progressio/modal';
+import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 import { GpsModule } from '@codice-progressio/gps'
+import { EnvServiceProvider } from './services/env.service.provider'
 
 export function tokenGetter() {
   localStorage.getItem('token')
@@ -52,7 +53,7 @@ const appRoutes: Routes = [
   {
     path: 'offline/pedidos',
 
-    component:PedidosEstructuraOfflineComponent,
+    component: PedidosEstructuraOfflineComponent,
     loadChildren: () =>
       import('./pages/ventas/ventas.module').then(m => m.VentasModule)
   },
@@ -129,7 +130,8 @@ const appRoutes: Routes = [
     // Configuraciones de idioma.
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: LOCALE_ID, useValue: 'es-MX' },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    EnvServiceProvider
   ],
   bootstrap: [AppComponent]
 })
