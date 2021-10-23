@@ -1,6 +1,6 @@
 {
   "name": "imperium-sic",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "IMPERIUMsic",
   "scripts": {
     "ng": "ng",
