@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { URL_BASE } from '../config/config'
 import { catchError, map } from 'rxjs/operators'
 import { throwError } from 'rxjs'
 import { ManejoDeMensajesService } from './utilidades/manejo-de-mensajes.service'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChangelogService {
-  base = URL_BASE('changelogs')
+  base = ''
 
   constructor(
     private http: HttpClient,
-    private msjService: ManejoDeMensajesService
-  ) {}
+    private msjService: ManejoDeMensajesService,
+    private envService: EnvService
+  ) {
+    this.base = this.envService.URL_BASE('changelogs')
+  }
 
   guardando = false
   editando = false
@@ -22,7 +25,7 @@ export class ChangelogService {
   guardar(s: string) {
     this.guardando = true
     this.editando = false
-    return this.http.put(this.base, {changelog:s}).pipe(
+    return this.http.put(this.base, { changelog: s }).pipe(
       map(res => {
         this.msjService.toastCorrecto('Se guardaron los cambios')
         this.guardando = false

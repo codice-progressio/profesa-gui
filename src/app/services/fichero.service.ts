@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Imagen } from '../models/Imagen'
-import { URL_BASE } from '../config/config'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class FicheroService {
   usuario: FicheroUsuario
-  constructor(public http: HttpClient) {
+  constructor(public envService: EnvService, public http: HttpClient) {
     this.usuario = new FicheroUsuario(this)
   }
 }
@@ -22,12 +22,12 @@ class FicheroUsuario {
     formData.append('_id', id)
 
     return this.root.http.put<Imagen>(
-      URL_BASE('ficheros/usuario/imagen'),
+      this.root.envService.URL_BASE('ficheros/usuario/imagen'),
       formData
     )
   }
 
   eliminarImagen(id: string) {
-    return this.root.http.delete<null>('ficheros/usuario/imagen/'+id)
+    return this.root.http.delete<null>('ficheros/usuario/imagen/' + id)
   }
 }

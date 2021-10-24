@@ -21,7 +21,6 @@ import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { URL_DOMINIO } from './config/config'
 import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 import { RouterModule, Routes } from '@angular/router'
@@ -34,15 +33,18 @@ import { environment } from '../environments/environment'
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
-import { ModalModule } from '@codice-progressio/modal';
+import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 import { GpsModule } from '@codice-progressio/gps'
+import { EnvServiceProvider } from './services/env.service.provider'
 
 export function tokenGetter() {
   localStorage.getItem('token')
   let token = localStorage.getItem('token')
   return token
 }
+
+declare var window: any
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -52,7 +54,7 @@ const appRoutes: Routes = [
   {
     path: 'offline/pedidos',
 
-    component:PedidosEstructuraOfflineComponent,
+    component: PedidosEstructuraOfflineComponent,
     loadChildren: () =>
       import('./pages/ventas/ventas.module').then(m => m.VentasModule)
   },
@@ -107,12 +109,11 @@ const appRoutes: Routes = [
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: [
-          environment.URL_DOMINIO,
+          //Importacion por fuerza
+          window.__env.URL_DOMINIO,
           'http://localhost:9090',
           'http://127.0.0.1:9090'
         ]
-        // disallowedRoutes: disallowedRoutes(),
-        // throwNoTokenError: true
       }
     }),
     ModalModule,
@@ -129,15 +130,9 @@ const appRoutes: Routes = [
     // Configuraciones de idioma.
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: LOCALE_ID, useValue: 'es-MX' },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    EnvServiceProvider
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-function disallowedRoutes(): (string | RegExp)[] {
-  let a = [URL_DOMINIO.concat('/login')].map(x => 'https://'.concat(x))
-
-  console.log(a)
-  return a
-}

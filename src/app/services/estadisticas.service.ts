@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
-import { URL_BASE } from '../config/config'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadisticasService {
-  base = URL_BASE('estadisticas')
+  base = ''
   totalItems = 0
   costoInventario = 0
   totalContactos = 0
 
-  constructor(private http: HttpClient) {}
+  constructor(private envService: EnvService, private http: HttpClient) {
+    this.base = this.envService.URL_BASE('estadisticas')
+  }
 
   totalSkus() {
     return this.http

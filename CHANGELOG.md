@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
+
 * Cambiado caracter de separación ([06d78aa](https://github.com/codice-progressio/profesa-gui/commit/06d78aa5ce29a5baa0047a2a59e77860f25cbe61))
 * Cambiado caracter de separación de contactos ([6cca530](https://github.com/codice-progressio/profesa-gui/commit/6cca5301fd5a21a3fde80766173c1e99c32ff3ab))
 * Carga en lotes de contactos mejorada para rendimiento ([0adbe66](https://github.com/codice-progressio/profesa-gui/commit/0adbe6667dcf21488a0283ede0acedad78243211))
@@ -43,6 +44,7 @@ All notable changes to this project will be documented in this file. See [standa
 * Versionado y README.md en mejoras ([88cc87a](https://github.com/codice-progressio/profesa-gui/commit/88cc87aaef7cfca037886417ce1d7c5030d4ea26))
 
 
+
 ### Bug Fixes
 
 * CHANGELOG.md no estaba en los ficheros a tomar en cuenta ([1801cef](https://github.com/codice-progressio/profesa-gui/commit/1801cefa31431efb7aec86642848c2739d02146f))
@@ -53,3 +55,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * Versionado y README.md en mejoras ([88cc87a](https://github.com/codice-progressio/profesa-gui/commit/88cc87aaef7cfca037886417ce1d7c5030d4ea26))
+
+### Bug Fixes
+
+* Ruta de archivo congruente con script postbuild y script postbuild agregado ([b5527eb](https://github.com/RafaelAngelRamirez/imperium-sic-gui/commit/b5527eb99699a72fa4262918b161b10c48887cf8))

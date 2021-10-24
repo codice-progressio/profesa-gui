@@ -1,12 +1,15 @@
 import { Pipe, PipeTransform } from "@angular/core"
-import { URL_SERVICIOS } from "../config/config"
+import { EnvService } from "../services/env.service"
 
 @Pipe({
   name: "imagen"
 })
 export class ImagenPipe implements PipeTransform {
+
+  constructor (private envService: EnvService){}
+  
   transform(img: string, tipo: string = "usuario"): string {
-    let url = URL_SERVICIOS + `/img`
+    let url = this.envService.URL_SERVICIOS + `/img`
     if (!img) {
       //No hay una imagen
       return url + "/noimg"

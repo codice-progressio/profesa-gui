@@ -1,20 +1,18 @@
-import { Injectable } from "@angular/core"
-import { URL_SERVICIOS } from "../../config/config"
-import { PreLoaderService } from "src/app/components/pre-loader/pre-loader.service"
-import { ManejoDeMensajesService } from "../utilidades/manejo-de-mensajes.service"
-import { Observable, throwError } from "rxjs"
-import {
-  HttpClient,
-  HttpEventType
-} from "@angular/common/http"
+import { Injectable } from '@angular/core'
+import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
+import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
+import { Observable, throwError } from 'rxjs'
+import { HttpClient, HttpEventType } from '@angular/common/http'
 
-import { catchError, map } from "rxjs/operators"
+import { catchError, map } from 'rxjs/operators'
+import { EnvService } from '../env.service'
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class SubirArchivoService {
   constructor(
+    private envService: EnvService,
     public _preLoaderService: PreLoaderService,
     public _msjService: ManejoDeMensajesService,
     public http: HttpClient
@@ -38,21 +36,19 @@ export class SubirArchivoService {
       const formData = new FormData()
       const xhr = new XMLHttpRequest()
 
-      formData.append("imagen", archivo, archivo.name)
+      formData.append('imagen', archivo, archivo.name)
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            
             resolve(JSON.parse(xhr.response))
           } else {
-            
             reject(JSON.parse(xhr.response))
           }
         }
       }
 
-      const url = URL_SERVICIOS + `/upload/${tipo}/${id}`
-      xhr.open("PUT", url, true)
+      const url = this.envService.URL_SERVICIOS + `/upload/${tipo}/${id}`
+      xhr.open('PUT', url, true)
       xhr.send(formData)
     })
   }
@@ -65,20 +61,15 @@ export class SubirArchivoService {
    * @memberof SubirArchivoService
    */
   facturasRequisicion(archivos: File[], id: string): Observable<string[]> {
-    return this.subirImagenes(
-      archivos,
-      id,
-      "facturas",
-      "Cargando facturas"
-    )
+    return this.subirImagenes(archivos, id, 'facturas', 'Cargando facturas')
   }
 
   organigramaPuesto(archivo: File, id: string): Observable<string[]> {
     return this.subirImagenes(
       [archivo],
       id,
-      "organigramaPuesto",
-      "Cargando organigrama"
+      'organigramaPuesto',
+      'Cargando organigrama'
     )
   }
 
@@ -106,17 +97,15 @@ export class SubirArchivoService {
     // Creamos el formulario
     const formData = new FormData()
     // Agregamos todas las tipo al formData para mandar los archivos.
-    archivos.forEach((f) =>
-      formData.append('imagenes', f, f.name)
-    )
+    archivos.forEach(f => formData.append('imagenes', f, f.name))
 
-    const url = URL_SERVICIOS + `/upload/${tipo}/${id}`
+    const url = this.envService.URL_SERVICIOS + `/upload/${tipo}/${id}`
     return this.http
       .put(url, formData, {
         //Reporte el progreso de la carga
         reportProgress: true,
         // Esta atengo a los eventos.
-        observe: "events"
+        observe: 'events'
       })
       .pipe(
         map((event: any) => {
@@ -128,7 +117,7 @@ export class SubirArchivoService {
               this._preLoaderService.progreso(
                 a,
                 progress,
-                "Espera mientras terminamos de cargar las imagenes"
+                'Espera mientras terminamos de cargar las imagenes'
               )
               return null
 
@@ -140,7 +129,7 @@ export class SubirArchivoService {
               return `Evento no manejado: ${event.type}`
           }
         }),
-        catchError((err) => {
+        catchError(err => {
           this._msjService.err(err)
           throw throwError(err)
         })
@@ -148,7 +137,7 @@ export class SubirArchivoService {
   }
 
   private soloImagenes(files: File[]) {
-    files.forEach((f) => {
+    files.forEach(f => {
       let mimeType = f.type
       if (mimeType.match(/image\/*/) == null) {
         throw `${f.name} no es una imagen`

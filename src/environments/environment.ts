@@ -2,10 +2,8 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { URL_DOMINIO } from '../app/config/config'
 export const environment = {
   production: false,
-  URL_DOMINIO
 }
 
 /*
