@@ -21,7 +21,7 @@ app.all('/env.js', (req, res) => {
   let nuevoBuffer = ';(function (window) { \n'
   nuevoBuffer += 'window.__env = window.__env || {}\n'
   variables.forEach(x => {
-    if (process.env[x]) nuevoBuffer += `${plantilla}${x}=${process.env[x]} \n`
+    if (process.env[x]) nuevoBuffer += `${plantilla}${x}="${process.env[x]}" \n`
   })
 
   nuevoBuffer += '})(this)'
