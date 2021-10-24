@@ -1,6 +1,6 @@
 {
   "name": "imperium-sic",
-  "version": "4.0.7",
+  "version": "4.4.0",
   "description": "IMPERIUMsic",
   "scripts": {
     "ng": "ng",
@@ -33,7 +33,7 @@
     "@codice-progressio/gps": "^0.1.8",
     "@codice-progressio/indexed-db": "^0.4.0",
     "@codice-progressio/input-validaciones": "^1.0.0",
-    "@codice-progressio/modal": "^0.2.0",
+    "@codice-progressio/modal": "^0.3.1",
     "@types/jquery": "^3.3.32",
     "@zxing/browser": "0.0.9",
     "@zxing/library": "^0.18.5",

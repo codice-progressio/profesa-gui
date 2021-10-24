@@ -107,7 +107,12 @@ export class UsuarioService {
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
       map((resp: any) => {
+        if (resp?.mensaje) {
+          this.msjService.toast.error(resp.mensaje)
+        }
+
         this.guardarStorage(resp.token)
+
         if (this.usuario.inhabilitado) {
           let msj =
             'El usuario esta inactivo. Si es un error reportalo con el administrador'
@@ -213,7 +218,9 @@ export class UsuarioService {
   }) {
     this.parametrosService.offline.guardar(datos).subscribe(() => {
       this.usuarioOffline = datos.usuario_registrado
-      console.log('se registro un nuevo usuario')
+      this.msjService.toast.info(
+        ' <i class=" text-success fas fa-check-circle    "></i>  Usuario almacenado para trabajo offline.'
+      )
     })
   }
 

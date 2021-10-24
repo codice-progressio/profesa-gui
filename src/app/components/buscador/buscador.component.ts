@@ -1,6 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, ReplaySubject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
 
 @Component({
@@ -16,6 +24,7 @@ export class BuscadorComponent implements OnInit {
   >()
 
   @Input() encodeURIComponent: boolean = true
+  @Input() tiempoDeEspera = 1300
 
   estaCargando = new BehaviorSubject<boolean>(false)
 
@@ -38,6 +47,8 @@ export class BuscadorComponent implements OnInit {
   }
 
   input = new FormControl()
+  @ViewChild('myInput') inputEl: ElementRef<HTMLInputElement>
+  // @Output() enfoque = EventEmitter<
 
   constructor() {}
 
@@ -59,7 +70,7 @@ export class BuscadorComponent implements OnInit {
           this.estaCargando.next(true)
         }),
         distinctUntilChanged(),
-        debounceTime(500)
+        debounceTime(this.tiempoDeEspera)
       )
       .subscribe((termino: string) => {
         let terminoLimpio = this.limpiarTermino(termino)
@@ -74,6 +85,10 @@ export class BuscadorComponent implements OnInit {
             : terminoLimpio
         )
       })
+  }
+
+  enfocar() {
+    this.inputEl.nativeElement.focus()
   }
 
   limpiarTermino(termino: string) {
@@ -96,5 +111,11 @@ export class BuscadorComponent implements OnInit {
       clearTimeout(this.intervalo)
       return
     }
+  }
+
+  limpiarControl() {
+    if (this.cargando) return
+    this.input.setValue('')
+    this.enfocar()
   }
 }

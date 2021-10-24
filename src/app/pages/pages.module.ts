@@ -9,7 +9,10 @@ import { SharedModule } from '../shared/shared.module'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AdministradorComponent } from './parametros/administrador/administrador.component'
 import { ProfileComponent } from './profile/profile.component'
-import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
+import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component';
+import { TotalContactosComponent } from './dashboard/estadisticas/total-contactos/total-contactos.component';
+import { TotalSkusComponent } from './dashboard/estadisticas/total-skus/total-skus.component';
+import { CostoInventarioComponent } from './dashboard/estadisticas/costo-inventario/costo-inventario.component'
 
 const pagesRoutes: Routes = [
   //  <!--
@@ -110,6 +113,9 @@ const pagesRoutes: Routes = [
     ProfileComponent,
     // sistema
     AdministradorComponent,
+    TotalContactosComponent,
+    TotalSkusComponent,
+    CostoInventarioComponent,
   ],
   exports: [],
   imports: [

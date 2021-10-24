@@ -32,6 +32,24 @@ export class ParametrosService {
 
     this.offline = new ParametrosOfflineService(this, 'no se ocupa la base')
   }
+
+  sincronizarVersionDeDatosOffline() {
+    return this.http.get(this.base.concat('/version-offline')).pipe(
+      map((res: any) => {
+        let version = res.version_offline
+        // localStorage.setItem('version_offline', version)
+        return version
+      })
+    )
+  }
+
+  leerVersionDeDatosOffline() {
+    return localStorage.getItem('version_offline') ?? ''
+  }
+
+  reiniciarVersionadoOffline() {
+    return this.http.post(this.base.concat('/version-offline-reiniciar'),{})
+  }
 }
 
 class EtiquetasService {

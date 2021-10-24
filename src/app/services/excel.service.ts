@@ -80,6 +80,13 @@ export class ExcelService {
         'IVA:',
         pedido.contacto.listaDePrecios.iva
       ],
+      [
+        'Cod. Cliente:',
+        pedido.contacto.codigo,
+        'Domicilios',
+
+        ...this.generarDomicilios(pedido.contacto.domicilios)
+      ],
       ['Vendedor:', this.usuarioService.usuarioOffline.nombre],
       ['Observaciones', pedido.observaciones]
     ])
@@ -149,6 +156,22 @@ export class ExcelService {
           .then(() => resolve(''))
           .catch((e: any) => reject(e))
       } else reject('No se puede compartir')
+    })
+  }
+
+  generarDomicilios(
+    domicilios: import('../models/contacto.model').ContactoDomicilio[]
+  ): string[] {
+    if (!domicilios) return []
+    return domicilios.map(x => {
+      return [
+        x.calle,
+        x.numeroExterior,
+        x.numeroInterior,
+        x.colonia,
+        x.ciudad,
+        x.estado
+      ].join(' ')
     })
   }
 }

@@ -4,6 +4,11 @@ import { ContactoService } from '../../../services/contacto.service'
 import { UsuarioService } from '../../../services/usuario/usuario.service'
 import { ListaDePreciosService } from '../../../services/lista-de-precios.service'
 import { Offline, OfflineService } from '../../../services/offline.service'
+import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
+import { ReplaySubject } from 'rxjs'
+
+import { ParametrosService } from '../../../services/parametros.service'
+import permisos from '../../../config/permisosKeys.config'
 
 @Component({
   selector: 'app-parametros-pedidos-offline',
@@ -26,11 +31,28 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
     private contactoService: ContactoService,
     private usuarioService: UsuarioService,
     private listaDePreciosService: ListaDePreciosService,
-    private offlineService: OfflineService
+    private offlineService: OfflineService,
+    private indiceService: IndicesIndexedDbService,
+    public parametrosService: ParametrosService
   ) {}
+
+  contador = 0
+  contar = new ReplaySubject<number>(null)
+  version = 'X'
+  versionServidor = 'X'
 
   ngOnInit(): void {
     this.offlineService.db.subscribe(() => this.gestionRegistros())
+    this.contador = 0
+    this.contar.subscribe(() => {
+      this.contador++
+      if (this.contador === 4) this.indiceService.cargarIndicesEnMemoria()
+    })
+
+    this.version = this.parametrosService.leerVersionDeDatosOffline()
+    this.parametrosService.sincronizarVersionDeDatosOffline().subscribe(x => {
+      this.versionServidor = x
+    })
   }
 
   gestionRegistros() {
@@ -61,10 +83,15 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
   }
 
   sincronizar() {
+    this.contador = 0
     this.cargarUsuarios()
     this.cargarContactos()
     this.cargarSkus()
     this.cargarListasDePrecios()
+    this.parametrosService.sincronizarVersionDeDatosOffline().subscribe(x => {
+      localStorage.setItem('version_offline', x)
+      this.version = x
+    })
   }
 
   estaCargando() {
@@ -92,6 +119,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
           x => {
             this.totalListasDePrecios = x
             this.cargandoListasDePrecios = false
+            this.contar.next()
           },
           () => (this.cargandoListasDePrecios = false)
         )
@@ -112,6 +140,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalSkus = x
               this.cargandoSkus = false
+              this.contar.next()
             },
             () => (this.cargandoSkus = false)
           )
@@ -133,6 +162,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalContactos = x
               this.cargandoContactos = false
+              this.contar.next()
             },
             () => (this.cargandoContactos = false)
           )
@@ -154,6 +184,7 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
             x => {
               this.totalUsuarios = x
               this.cargandoUsuarios = false
+              this.contar.next()
             },
             () => (this.cargandoUsuarios = false)
           )
@@ -162,6 +193,26 @@ export class ParametrosPedidosOfflineComponent implements OnInit {
       err => {
         this.cargandoUsuarios = false
       }
+    )
+  }
+
+  cargandoReinicioDeVersion = false
+  reiniciarVersionado() {
+    this.cargandoReinicioDeVersion = true
+    this.parametrosService.reiniciarVersionadoOffline().subscribe(
+      () => {
+        this.cargandoReinicioDeVersion = false
+        this.version = '0'
+        this.versionServidor = this.version
+        localStorage.setItem('version_offline', this.version)
+      },
+      () => (this.cargandoReinicioDeVersion = false)
+    )
+  }
+
+  tienePermisoVersionado() {
+    return this.usuarioService.usuario.permissions.includes(
+      permisos['parametros:version-offline-reiniciar']
     )
   }
 }

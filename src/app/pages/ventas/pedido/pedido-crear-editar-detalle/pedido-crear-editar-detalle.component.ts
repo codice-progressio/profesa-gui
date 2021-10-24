@@ -23,6 +23,7 @@ import { ListaDePreciosService } from '../../../../services/lista-de-precios.ser
 import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { UbicacionService } from 'src/app/services/ubicacion.service'
 import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
+import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -46,20 +47,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     private location: Location,
     private renderer: Renderer2,
     public modalService: ModalService,
-    public ubicacionService: UbicacionService
+    public ubicacionService: UbicacionService,
+    private indiceService: IndicesIndexedDbService
   ) {}
 
   comprobarIndice() {
-    let pedidoI = this.pedidoService.offline.indice.length
-    let contactoI = this.contactoService.offline.indice.length
-    if (!pedidoI && !contactoI) {
-      this.notiService.confirmarAccion(
-        'Los indices no se han  cargado, ¿Quieres recargar la aplicación?',
-        () => this.router.navigate(['/login']),
-        ' No se pueden registrar pedidos',
-        () => this.location.back()
-      )
-    } else this.obtenerId()
+    this.indiceService.cargarIndicesEnMemoria()
+    this.obtenerId()
   }
 
   idModalContacto = 'modalPedido'
@@ -258,7 +252,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       razonSocial: contacto.razonSocial,
       _id: contacto._id,
       listaDePrecios: contacto.listaDePrecios,
-      rfc: contacto.rfc
+      rfc: contacto.rfc,
+      domicilios: contacto.domicilios,
+      codigo: contacto.codigo,
+      contactos: contacto.contactos
     })
 
     this.obtenerListaDePrecios(contacto)
@@ -291,7 +288,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   articulosSeleccionados: SKU[] = []
-  indexSeleccionado: number
+  agregarArticulo() {
+    this.modalService.open(this.idModalSku)
+  }
+
   seleccionarSku(item: SKU) {
     this.estaCargandoBuscadorSku.next(false)
     if (this.articulosSeleccionados.find(x => x._id === item._id)) {
@@ -303,14 +303,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
     this.skus = []
 
-    let articulo = this.fa('articulos').at(this.indexSeleccionado)
+    let articulo = this.crearArticulo({})
     articulo.get('sku').setValue(item)
     articulo
       .get('precio')
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
-
+    this.fa('articulos').push(articulo)
     this.articulosSeleccionados.push(item)
-    this.modalService.close(this.idModalSku)
   }
 
   eliminar(i: number) {
@@ -321,19 +320,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     })
   }
 
-  agregarArticulo() {
-    this.fa('articulos').push(this.crearArticulo({}))
-    this.indexSeleccionado = this.fa('articulos').controls.length - 1
-    this.modalService.open(this.idModalSku)
-  }
-
-  skuModalCerrado() {
-    let sku = this.fa('articulos').at(this.indexSeleccionado).get('sku').value
-    if (!sku) {
-      // Eliminamos el articulo si no seleeccion ningún sku
-      this.fa('articulos').removeAt(this.indexSeleccionado)
-    }
-  }
+  skuModalCerrado() {}
 
   async submit(modelo: Pedido, invalid: boolean) {
     this.formulario.markAllAsTouched()
@@ -360,7 +347,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
       id = await this.obtenerUltimoId()
     }
-
     modelo.folio = this.crearFolio(id)
     modelo.createdAt = new Date().toISOString()
     modelo._id = id
@@ -395,51 +381,49 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     return ultimo
   }
 
-  editar(i: number) {
-    //Quitamos los que esten marcados como editandose.
+  // editar(i: number) {
+  //   //Quitamos los que esten marcados como editandose.
 
-    this.fa('articulos').controls.forEach(x =>
-      x.get('editando').setValue(false)
-    )
+  //   // this.fa('articulos').controls.forEach(x =>
+  //   //   // x.get('editando').setValue(false)
+  //   // )
 
-    //Quitamos los filtros
-    this.noMostrarArticulos = []
+  //   //Quitamos los filtros
+  //   // this.noMostrarArticulos = []
 
-    // Encendemos el otro.
-    this.fa('articulos').at(i).get('editando').setValue(true)
-  }
+  //   // // Encendemos el otro.
+  //   // this.fa('articulos').at(i).get('editando').setValue(true)
+  // }
 
-  hayUnArticuloEditandose() {
-    for (const iterator of this.fa('articulos').controls) {
-      if (iterator.get('editando').value) return true
-    }
+  // // dejarDeEditar(i: number) {
+  // //   // La cantidad no puede estar en 0
 
-    return false
-  }
+  // //   let control = this.fa('articulos').at(i)
+  // //   let controlCantidad = control.get('cantidad')
+  // //   controlCantidad.markAsTouched()
+  // //   controlCantidad.updateValueAndValidity()
+  // //   if (controlCantidad.invalid) {
+  // //     this.notiService.toast.warning('La cantidad no es valida')
+  // //     return
+  // //   }
 
-  dejarDeEditar(i: number) {
-    // La cantidad no puede estar en 0
-
-    let control = this.fa('articulos').at(i)
-    let controlCantidad = control.get('cantidad')
-    controlCantidad.markAsTouched()
-    controlCantidad.updateValueAndValidity()
-    if (controlCantidad.invalid) {
-      this.notiService.toast.warning('La cantidad no es valida')
-      return
-    }
-
-    control.get('editando').setValue(false)
-  }
+  // //   control.get('editando').setValue(false)
+  // // }
 
   agregar(i: number, valor: number) {
     let articulo = this.fa('articulos').at(i)
     let cantidadF = articulo.get('cantidad')
-    let cantidad = (cantidadF.value ?? 0) + valor
+
+    let v = cantidadF.value
+
+    let cantidad: number = (cantidadF.value ?? 0) + +valor
     let precio = articulo.get('precio').value ?? 0
 
     articulo.get('importe').setValue(this.redondear(precio * cantidad))
-    cantidadF.setValue(cantidad)
+
+    //Solo aplicamos el valor si la cantidad se modifico (Esto ayuda con el punto)
+    if (v !== cantidad) cantidadF.setValue(cantidad)
+
     cantidadF.markAsTouched()
     cantidadF.updateValueAndValidity()
   }

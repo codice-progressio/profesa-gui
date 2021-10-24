@@ -8,9 +8,9 @@ import { EnvService } from './env.service'
 })
 export class EstadisticasService {
   base = ''
-
   totalItems = 0
   costoInventario = 0
+  totalContactos = 0
 
   constructor(private envService: EnvService, private http: HttpClient) {
     this.base = this.envService.URL_BASE('estadisticas')
@@ -36,5 +36,14 @@ export class EstadisticasService {
           return res
         })
       )
+  }
+
+  contarContactos() {
+    return this.http.get(this.base.concat('/total-contactos')).pipe(
+      map((res: any) => {
+        this.totalContactos = res.total
+        return res
+      })
+    )
   }
 }

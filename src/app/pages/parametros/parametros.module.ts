@@ -18,7 +18,6 @@ const routes: Routes = [
   {
     path: '',
     component: ParametrosComponent,
-
     canActivate: [VerificaTokenGuard, PermisosGuard],
     data: {
       titulo: 'Parametros',

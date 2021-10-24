@@ -55,6 +55,7 @@ export class PermisosGuard implements CanActivate {
       msj += 'El siguiente permiso es necesario: <br> <hr>'
 
       msj += `<br />${permiso} `
+      msj += `<br /> <small class='text-muted'>${state.url}</small> `
 
       swal({
         title: '<strong>NO AUTORIZADO</strong>',

@@ -21,6 +21,19 @@ export class UtilidadesService {
       .map(x => x.trim())
       .join('_')
   }
+
+  /**
+   *Divide un arreglo en partes pequeñas
+   *
+   * @param {any[]} arreglo
+   * @returns {any[]}
+   * @memberof UtilidadesService
+   */
+  dividirArreglo(arreglo: any[], opciones = { tamano: 50 }): any[] {
+    let separado = []
+    while (arreglo.length > 0) separado.push(arreglo.splice(0, opciones.tamano))
+    return separado
+  }
 }
 
 class Ficheros {

@@ -12,13 +12,14 @@ import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-m
 })
 export class ParametrosContactosEnLotesComponent implements OnInit {
   fichero: any
-  caracterDeSeparcion = '+'
+  caracterDeSeparcion = ','
   datos: Contacto[] = undefined
   // Solo para borrar
   inputFile: any
   cargando = false
 
   constructor(
+    private notiService: ManejoDeMensajesService,
     private excelService: ExcelService,
     private utilidadesService: UtilidadesService,
     private parametrosService: ParametrosService,
@@ -46,6 +47,8 @@ export class ParametrosContactosEnLotesComponent implements OnInit {
       )
   }
 
+  porcentajeAvance = 0
+
   submit() {
     if (this.cargando) return
     if (!this.datos) {
@@ -54,21 +57,36 @@ export class ParametrosContactosEnLotesComponent implements OnInit {
     }
 
     this.cargando = true
-    this.parametrosService.contactos.cargarEnLote(this.datos).subscribe(
+    this.porcentajeAvance = 0
+    this.errores = []
+
+    let datosSeparados = this.utilidadesService.dividirArreglo(this.datos)
+    this.envioDeDatos(datosSeparados)
+  }
+
+  envioDeDatos(datos: any[], contador = 0) {
+    this.parametrosService.contactos.cargarEnLote(datos[contador]).subscribe(
       (respuesta: any) => {
-        this.errores = respuesta.rechazados
-        console.log(respuesta)
-        if (this.errores.length > 0)
-          this.msjService.toast.warning(
-            `Hubo ${this.errores.length} errores al procesar los datos. `
-          )
-        this.cargando = false
-        this.inputFile = ''
+        this.errores.push(...respuesta.rechazados)
+
+        this.porcentajeAvance = (contador / (datos.length -1))*100
+        if (datos.length - 1 > contador) this.envioDeDatos(datos, contador + 1)
+        else this.terminoDeCargar()
       },
       error => {
         this.cargando = false
       }
     )
+  }
+
+  terminoDeCargar() {
+    if (this.errores.length > 0)
+      this.msjService.toast.warning(
+        `Hubo ${this.errores.length} errores al procesar los datos. `
+      )
+    this.cargando = false
+    this.inputFile = ''
+    this.notiService.toast.info("Se cargaron los datos")
   }
 
   errores: { error: string; datos: Contacto }[] = undefined
