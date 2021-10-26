@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { URL_BASE } from '../config/config'
 import { Pedido } from '../models/pedido.model'
 import { Offline, OfflineBasico, OfflineService } from './offline.service'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
-  base = URL_BASE('pedido')
+  base = ''
   offline: PedidoOfflineService<Pedido>
   offline_indice: PedidoIndiceOfflineService<{ _id: number; ultimo: number }>
 
-  constructor(public http: HttpClient, public offlineService: OfflineService) {
+  constructor(
+    public http: HttpClient,
+    public offlineService: OfflineService,
+    private envService: EnvService
+  ) {
+    this.base = this.envService.URL_BASE('pedido')
     this.offline = new PedidoOfflineService(this, this.base)
     this.offline_indice = new PedidoIndiceOfflineService(this, 'no se ocupa')
   }

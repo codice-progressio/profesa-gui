@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 import { SKU } from '../../models/sku.model'
 import { Imagen } from '../../models/Imagen'
-import { URL_BASE } from '../../config/config'
 import { catchError, map } from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs'
 import { SkuLote, SkuLoteMovimiento } from '../../models/lote.model'
@@ -14,6 +13,7 @@ import {
   OfflineBasico,
   OfflineService
 } from '../offline.service'
+import { EnvService } from '../env.service'
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +24,14 @@ export class SkuService {
   etiqueta: EtiquetaService
   offline: SkuOfflineService<SKU>
 
-  base = URL_BASE('sku')
+  base = ''
   constructor(
+    public envService: EnvService,
     public http: HttpClient,
     public msjService: ManejoDeMensajesService,
     public offlineService: OfflineService
   ) {
+    this.base = this.envService.URL_BASE('sku')
     this.lote = new LoteService(this)
     this.imagen = new ImagenService(this)
     this.etiqueta = new EtiquetaService(this)

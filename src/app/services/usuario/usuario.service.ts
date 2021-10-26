@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core'
 import { Usuario } from '../../models/usuario.model'
 import { HttpClient } from '@angular/common/http'
-import { URL_SERVICIOS } from '../../config/config'
 import { map, catchError } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 import { PreLoaderService } from 'src/app/components/pre-loader/pre-loader.service'
 import { Observable, throwError } from 'rxjs'
-import { URL_BASE } from '../../config/config'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 import { Imagen } from '../../models/Imagen'
 import { Offline, OfflineBasico, OfflineService } from '../offline.service'
 import { ParametrosService } from '../parametros.service'
+import { EnvService } from '../env.service'
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +40,7 @@ export class UsuarioService {
   menu: any[] = []
 
   apiVersion: string
-  base = URL_BASE('usuario')
+  base = ''
   total = 0
 
   poolLight: UsuarioLight[] = []
@@ -49,6 +48,7 @@ export class UsuarioService {
   offline: UsuarioOfflineService<Usuario>
 
   constructor(
+    private envService: EnvService,
     // Para que este funcione hay que hacer un "imports"
     // en service.module.ts
     public parametrosService: ParametrosService,
@@ -60,6 +60,7 @@ export class UsuarioService {
     public offlineService: OfflineService
   ) {
     this.cargarStorage()
+    this.base = this.envService.URL_BASE('usuario')
     this.offline = new UsuarioOfflineService(this, this.base)
   }
 
@@ -98,7 +99,10 @@ export class UsuarioService {
     } else {
       localStorage.removeItem('email')
     }
-    const url = URL_SERVICIOS + '/usuario/login'
+    const url = this.envService.URL_SERVICIOS + '/usuario/login'
+
+
+    
     return this.http.post(url, { email, password }).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
@@ -121,7 +125,7 @@ export class UsuarioService {
   }
 
   obtenerMenus() {
-    let url = URL_SERVICIOS.concat('/login/obtener-menus')
+    let url = this.envService.URL_SERVICIOS.concat('/login/obtener-menus')
     return this.http.get(url).pipe(
       map((r: any) => {
         localStorage.setItem('menu', JSON.stringify(r.menu))

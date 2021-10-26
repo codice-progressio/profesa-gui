@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
-import { URL_BASE } from '../config/config'
 import { HttpClient } from '@angular/common/http'
 import { SKU } from '../models/sku.model'
 import { Usuario } from '../models/usuario.model'
+import { EnvService } from './env.service'
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,11 @@ export class ContabilidadService {
   remision: RemisionService
   facturas: FacturaService
 
-  base = URL_BASE('contabilidad/')
-  constructor(public http: HttpClient) {
+  base = ''
+  constructor(public http: HttpClient, private envService: EnvService) {
     this.remision = new RemisionService(this)
     this.facturas = new FacturaService(this)
+    this.base = this.envService.URL_BASE('contabilidad')
   }
 }
 
