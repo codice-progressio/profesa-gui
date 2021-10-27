@@ -416,13 +416,15 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     let v = cantidadF.value
 
-    let cantidad: number = (cantidadF.value ?? 0) + +valor
+    let cantidad: number = (cantidadF.value * 1 ?? 0) + valor
     let precio = articulo.get('precio').value ?? 0
 
     articulo.get('importe').setValue(this.redondear(precio * cantidad))
-
     //Solo aplicamos el valor si la cantidad se modifico (Esto ayuda con el punto)
+
     if (v !== cantidad) cantidadF.setValue(cantidad)
+    //Si es un valor negativo, devolvemos a 0.
+    if (cantidad < 0) cantidadF.setValue(0)
 
     cantidadF.markAsTouched()
     cantidadF.updateValueAndValidity()
