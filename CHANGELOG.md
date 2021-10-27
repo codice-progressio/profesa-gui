@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.2](https://github.com/codice-progressio/profesa-gui/compare/v4.4.1...v4.4.2) (2021-10-27)
+
+
+### Bug Fixes
+
+* Estructura de pedidos no se muestra bien en la pantalla del movil ([594e655](https://github.com/codice-progressio/profesa-gui/commit/594e6557931745f70ea601b0d1ca4ab4c1a62302))
+
 ### [4.4.1](https://github.com/codice-progressio/profesa-gui/compare/v4.4.0...v4.4.1) (2021-10-27)
 
 
