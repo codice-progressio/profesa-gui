@@ -151,4 +151,8 @@ export class PedidoComponent implements OnInit {
       e => console.error(e)
     )
   }
+
+  esModoOffline() {
+    return true
+  }
 }

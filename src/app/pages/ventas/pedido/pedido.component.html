@@ -52,22 +52,29 @@
             <b>IVA:</b>
             $ {{ pedido.iva | number: '0.2' }}
           </div>
-          <div
-            title="Importe antes de iva"
-            class="col-12 col-sm-3 text-center"
-          >
+          <div title="Importe antes de iva" class="col-12 col-sm-3 text-center">
             <b>Importe:</b>
             $ {{ pedido.importe | number: '0.2' }}
           </div>
-          <div
-            title="Total de la nota"
-            class="col-12 col-sm-3 text-center"
-          >
+          <div title="Total de la nota" class="col-12 col-sm-3 text-center">
             <b>Total:</b>
             $ {{ pedido.total | number: '0.2' }}
           </div>
         </div>
         <hr />
+
+        <ng-container *ngIf="!esModoOffline()">
+
+
+          <a name="" id="" class="btn btn-primary" href="#" role="button">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Confirmar pedido
+          </a>
+  
+          <hr />
+        </ng-container>
+        
+
 
         <a
           (click)="detalle(pedido)"
