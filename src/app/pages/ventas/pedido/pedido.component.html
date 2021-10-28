@@ -41,19 +41,28 @@
         </p>
         <hr />
         <div class="row">
-          <div title="Cantidad de articulos" class="col-6 col-sm-3 text-center">
+          <div
+            title="Cantidad de articulos"
+            class="col-12 col-sm-3 text-center"
+          >
             <b>Items:</b>
             {{ pedido.articulos.length }}
           </div>
-          <div title="IVA" class="col-6 col-sm-3 text-center">
+          <div title="IVA" class="col-12 col-sm-3 text-center">
             <b>IVA:</b>
             $ {{ pedido.iva | number: '0.2' }}
           </div>
-          <div title="Importe antes de iva" class="col-6 col-sm-3 text-center">
+          <div
+            title="Importe antes de iva"
+            class="col-12 col-sm-3 text-center"
+          >
             <b>Importe:</b>
             $ {{ pedido.importe | number: '0.2' }}
           </div>
-          <div title="Total de la nota" class="col-6 col-sm-3 text-center">
+          <div
+            title="Total de la nota"
+            class="col-12 col-sm-3 text-center"
+          >
             <b>Total:</b>
             $ {{ pedido.total | number: '0.2' }}
           </div>
