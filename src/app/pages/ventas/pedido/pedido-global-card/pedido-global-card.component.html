@@ -35,7 +35,7 @@
 
     <ng-container *ngIf="!esModoOffline">
       <a
-        *ngIf="!pedido.sincronizado; else confirmadoTemplate"
+        *ngIf="!pedido?.sincronizado; else confirmadoTemplate"
         (click)="subirNube(pedido)"
         class="btn btn-primary"
         role="button"
@@ -51,20 +51,9 @@
           Confirmado
         </span>
       </ng-template>
-      
-
-
-      
-
-
-
-
-
-
-
     </ng-container>
 
-    <ng-container *ngIf="!pedido.sincronizado">
+    <ng-container *ngIf="!pedido?.sincronizado">
       <hr />
       <a
         (click)="detalle(pedido)"
