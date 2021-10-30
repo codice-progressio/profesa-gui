@@ -18,6 +18,13 @@ const template = temp => {
 }
 
 export default sandboxOf(PedidoGlobalCardComponent)
+  .add('Sin pedidos', {
+    template: template(`<app-pedido-global-card  
+    [pedidos]="pedidos"
+    [esModoOffline]="true"
+  ></app-pedido-global-card>`),
+    context: { pedidos: [] }
+  })
   .add('2 pedidos online', {
     template: template(`<app-pedido-global-card  
     [pedidos]="pedidos"
