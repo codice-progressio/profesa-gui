@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "start-local": "ng serve -o --ssl true --ssl-key ./node_modules/@codice-progressio/easy-https/cert/desarrollo.key --ssl-cert ./node_modules/@codice-progressio/easy-https/cert/desarrollo.crt",
+    "start-local": "ng serve -o --ssl true --ssl-key ./node_modules/@codice-progressio/easy-https/cert/desarrollo.key --ssl-cert ./node_modules/@codice-progressio/easy-https/cert/desarrollo.crt --port 5000",
     "build": "ng build --configuration production --outputHashing=all",
     "postbuild": "echo '[ IMPERIUMsic ] Creando env.prod.js' && mv ./dist/env.js ./dist/env.prod.js",
     "test": "ng test",
@@ -13,7 +13,7 @@
     "e2e": "ng e2e",
     "postinstall": "ngcc",
     "release": "standard-version",
-    "playground": "angular-playground"
+    "playground": "angular-playground --ng-cli-port 5001"
   },
   "private": true,
   "dependencies": {

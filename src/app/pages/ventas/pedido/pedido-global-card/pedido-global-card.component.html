@@ -1,0 +1,106 @@
+<div *ngFor="let pedido of pedidos" class="card shadow">
+  <div class="card-body text-center">
+    <div class="d-flex justify-content-between">
+      <h3 class="card-subtitle mb-2 text-muted font-bold">
+        FOL: {{ +pedido._id | number: '3.0' }}
+      </h3>
+      <span>{{ pedido.createdAt | date: 'dd/MM/yyyy hh:mm' }}</span>
+    </div>
+    <h5 class="card-title">
+      {{ pedido.contacto.nombre ?? pedido.contacto.razonSocial }}
+    </h5>
+    <p class="card-text">
+      {{ pedido.observaciones }}
+    </p>
+    <hr />
+    <div class="row">
+      <div title="Cantidad de articulos" class="col-12 col-sm-3 text-center">
+        <b>Items:</b>
+        {{ pedido.articulos.length }}
+      </div>
+      <div title="IVA" class="col-12 col-sm-3 text-center">
+        <b>IVA:</b>
+        $ {{ pedido.iva | number: '0.2' }}
+      </div>
+      <div title="Importe antes de iva" class="col-12 col-sm-3 text-center">
+        <b>Importe:</b>
+        $ {{ pedido.importe | number: '0.2' }}
+      </div>
+      <div title="Total de la nota" class="col-12 col-sm-3 text-center">
+        <b>Total:</b>
+        $ {{ pedido.total | number: '0.2' }}
+      </div>
+    </div>
+    <hr />
+
+    <ng-container *ngIf="!esModoOffline">
+      <a
+        *ngIf="!pedido.sincronizado; else confirmadoTemplate"
+        (click)="subirNube(pedido)"
+        class="btn btn-primary"
+        role="button"
+      >
+        <i *ngIf="!cargando" class="fas fa-cloud-upload-alt"></i>
+        <i *ngIf="cargando" class="fas fa-sync fa-spin"></i>
+        Confirmar pedido
+      </a>
+
+      <ng-template #confirmadoTemplate>
+        <span class="text-success font-bold font-20">
+          <i class="fas fa-cloud"></i>
+          Confirmado
+        </span>
+      </ng-template>
+      
+
+
+      
+
+
+
+
+
+
+
+    </ng-container>
+
+    <ng-container *ngIf="!pedido.sincronizado">
+      <hr />
+      <a
+        (click)="detalle(pedido)"
+        class="btn btn-info mr-3"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-search"></i
+      ></a>
+
+      <a
+        (click)="editar(pedido)"
+        class="btn btn-primary mr-3"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-edit"></i
+      ></a>
+
+      <a
+        (click)="eliminar(pedido)"
+        class="btn btn-danger mr-3"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-times"></i
+      ></a>
+
+      <a
+        (click)="compartir(pedido)"
+        class="btn btn-success"
+        href="javascript:void(0)"
+        role="button"
+      >
+        <i class="fas fa-share-alt"></i>
+      </a>
+    </ng-container>
+  </div>
+</div>

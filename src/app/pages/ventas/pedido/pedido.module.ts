@@ -7,7 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { InputValidacionesModule } from '@codice-progressio/input-validaciones'
 import { ModalModule } from '@codice-progressio/modal'
 import { ComponentsModule } from '../../../components/components.module'
-import { NgxMaskModule } from 'ngx-mask'
+import { NgxMaskModule } from 'ngx-mask';
+import { PedidoGlobalCardComponent } from './pedido-global-card/pedido-global-card.component'
 
 const routes: Routes = [
   { path: '', component: PedidoComponent, data: { titulo: 'Mis pedidos' } },
@@ -30,7 +31,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PedidoComponent, PedidoCrearEditarDetalleComponent],
+  declarations: [PedidoComponent, PedidoCrearEditarDetalleComponent, PedidoGlobalCardComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

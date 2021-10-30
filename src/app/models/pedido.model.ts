@@ -21,6 +21,18 @@ export interface Pedido {
     latitud: number
     longitud: number
   }
+
+  sincronizado:boolean
+  estado: Estado[]
+}
+
+interface Estado {
+  _id: string
+  nombre: string
+  descripcion: string
+  hora_inicio: Date
+  hora_final: Date
+  observaciones
 }
 
 export interface ArticuloPedido {
