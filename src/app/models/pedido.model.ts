@@ -1,6 +1,7 @@
 import { Usuario } from './usuario.model'
 import { Contacto } from './contacto.model'
 import { SKU } from './sku.model'
+import { EstadoDeProceso } from '../componentes-modulares/estado-de-proceso/estado-de-proceso.model'
 export interface Pedido {
   _id: Number
   eliminado: boolean
@@ -23,17 +24,10 @@ export interface Pedido {
   }
 
   sincronizado:boolean
-  estado: Estado[]
+  estado: EstadoDeProceso[]
 }
 
-interface Estado {
-  _id: string
-  nombre: string
-  descripcion: string
-  hora_inicio: Date
-  hora_final: Date
-  observaciones
-}
+
 
 export interface ArticuloPedido {
   _id: string
