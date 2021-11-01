@@ -1,7 +1,7 @@
 import { EstadoDeProceso } from 'src/app/componentes-modulares/estado-de-proceso/estado-de-proceso.model'
 
 let contador = 0
-export const EstadoDeProcsoMock: Partial<EstadoDeProceso>[] = new Array(10)
+export const EstadoDeProcesoMock: Partial<EstadoDeProceso>[] = new Array(10)
   .fill({} as Partial<EstadoDeProceso>)
   .map(x => {
     return {
