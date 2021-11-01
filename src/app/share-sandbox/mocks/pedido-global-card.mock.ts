@@ -26,11 +26,7 @@ export const PedidosMock: Partial<Pedido>[] = new Array(100)
       ubicacion: {
         latitud: undefined,
         longitud: undefined
-      },
-
-      
-      
-
+      }
     }
     return p
   })
