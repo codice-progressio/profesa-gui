@@ -31,9 +31,9 @@
         $ {{ pedido.total | number: '0.2' }}
       </div>
     </div>
-    <hr />
-
+    
     <ng-container *ngIf="!esModoOffline">
+      <hr />
       <a
         *ngIf="!pedido?.sincronizado; else confirmadoTemplate"
         (click)="subirNube(pedido)"
