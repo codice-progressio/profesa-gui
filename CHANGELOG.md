@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/codice-progressio/profesa-gui/compare/v4.4.3...v4.5.0) (2021-11-02)
+
+
+### Features
+
+* Componente con sinconizacion para la nuve ([a6fb574](https://github.com/codice-progressio/profesa-gui/commit/a6fb574db3ac0f8c80145a8957e32ceb7944930e))
+* Componente estado de procesos agregado ([8fa1760](https://github.com/codice-progressio/profesa-gui/commit/8fa1760bdcd8b3d48140ae30f722e1c3f89f4c0f))
+* Componente global se muestra leyenda sin pedidos ([5d22f2f](https://github.com/codice-progressio/profesa-gui/commit/5d22f2fda3e67b6af5925c27402830fdd77014c3))
+* Estado de proceso - detalle componente creado ([1f7ae8b](https://github.com/codice-progressio/profesa-gui/commit/1f7ae8bcb53b97338773ee0101fdc9f30246cdef))
+
+
+### Bug Fixes
+
+* dotenv agregado ([f3851bb](https://github.com/codice-progressio/profesa-gui/commit/f3851bb12772849c22175d07db2b7a4acc5c486f))
+* Estructuracion de sandbox mejorada ([5347d01](https://github.com/codice-progressio/profesa-gui/commit/5347d0192a63d7861e08ed41496e93fe0620e31d))
+* Linea divisora sobrante ([0da446c](https://github.com/codice-progressio/profesa-gui/commit/0da446c0055726ad6fabf0d5aff1355b514e1642))
+* Nombre de mock corregido ([9b17302](https://github.com/codice-progressio/profesa-gui/commit/9b173021ad73dc27a074c3aaeb91333dc0347f41))
+
 ### [4.4.3](https://github.com/codice-progressio/profesa-gui/compare/v4.4.2...v4.4.3) (2021-10-28)
 
 
