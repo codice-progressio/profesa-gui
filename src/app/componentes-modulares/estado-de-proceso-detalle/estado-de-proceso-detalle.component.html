@@ -1,0 +1,43 @@
+<ng-container *ngIf="datos.length > 0; else noData">
+  <div *ngFor="let estado of datos; let i = index" class="col-12">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <i class="fas fa-clock"></i> {{ estado?.hora_inicio | date: 'medium' }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title text-white font-bold">
+          <i class="fas fa-warehouse fa-2x"></i>
+          {{ estado?.nombre }}
+        </h5>
+        <p class="card-text">{{ estado?.descripcion }}</p>
+        <hr class="bg-secondary" />
+        <p class="card-text text-warning">{{ estado?.observaciones }}</p>
+      </div>
+      <div class="card-footer">
+        <ng-container *ngIf="estado?.hora_final; else contadorTemp">
+          <span class="text-success">
+            <i class="fas fa-check"></i>
+            {{ estado?.hora_final | date: 'medium' }}
+          </span>
+
+          <br />
+          <small class="text-mute"
+            >Tiempo transcurrido: {{ tiempoTranscurrido(estado) }}
+          </small>
+        </ng-container>
+
+        <ng-template #contadorTemp>
+          <ng-container *ngIf="!temporizador(estado, i)">
+            <span class="text-warning">
+              <i class="fas fa-user-clock"></i>
+            </span>
+
+            Transcurrido: {{ horas[i] }}
+          </ng-container>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #noData> No hay estados de proceso para mostrar. </ng-template>
