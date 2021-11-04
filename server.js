@@ -38,4 +38,19 @@ app.get('/*', (req, res) =>
 // Start the app by listening on the default Heroku port
 const PORT = process.env.PORT || 5000
 console.log(PORT)
-app.listen(PORT)
+
+if (process.env.NUBE === 'true') app.listen(PORT)
+else {
+  let fs = require('fs')
+  let ssl = {
+    key: process.env.KEY,
+    cert: process.env.CERT
+  }
+  const key = fs.readFileSync(ssl.key, 'utf8')
+  const cert = fs.readFileSync(ssl.cert, 'utf8')
+  const credentials = { key, cert }
+
+  require('https')
+    .createServer(credentials, app)
+    .listen(process.env.PORT, msjServidor)
+}
