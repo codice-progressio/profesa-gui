@@ -52,5 +52,5 @@ else {
 
   require('https')
     .createServer(credentials, app)
-    .listen(process.env.PORT, msjServidor)
+    .listen(PORT, () => console.log('Servidor en linea, puerto ' + PORT))
 }
