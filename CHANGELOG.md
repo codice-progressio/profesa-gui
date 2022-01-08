@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.5.5](https://github.com/codice-progressio/profesa-gui/compare/v4.5.4...v4.5.5) (2022-01-08)
+
+
+### Bug Fixes
+
+* Actualizaciones ([5e3c782](https://github.com/codice-progressio/profesa-gui/commit/5e3c7823ebf95a76529ac86b3e64a259b8e33d31))
+
 ### [4.5.4](https://github.com/codice-progressio/profesa-gui/compare/v4.5.3...v4.5.4) (2021-11-05)
 
 
