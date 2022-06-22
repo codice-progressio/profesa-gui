@@ -9,7 +9,7 @@ const app = express()
 app.use(express.static(__dirname + '/dist'))
 
 app.all('/env.js', (req, res) => {
-  let buffer = fs.readFileSync('./dist/env.prod.js', 'utf-8').split('\n')
+  let buffer = fs.readFileSync(process.env.RUTA_ENV_PROD_JS, 'utf-8').split('\n')
 
   //Obtener variables escritas
   const plantilla = 'window.__env.'
@@ -24,7 +24,6 @@ app.all('/env.js', (req, res) => {
   variables.forEach(x => {
     if (process.env[x]) nuevoBuffer += `${plantilla}${x}="${process.env[x]}" \n`
   })
-
   nuevoBuffer += '})(this)'
   res.setHeader('content-type', 'text/javascript')
   res.write(nuevoBuffer)
