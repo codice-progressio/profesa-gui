@@ -40,7 +40,7 @@ const routes: Routes = [
     InputValidacionesModule,
     ModalModule,
     ComponentsModule,
-    NgxMaskModule
+    NgxMaskModule,
   ]
 })
 export class PedidoModule {}

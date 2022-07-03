@@ -24,94 +24,36 @@
 </div>
 
 <div class="row">
-  <div *ngFor="let pedido of pedidos" class="col-12">
-    <div class="card shadow">
-      <div class="card-body text-center">
-        <div class="d-flex justify-content-between">
-          <h3 class="card-subtitle mb-2 text-muted font-bold">
-            {{ +pedido._id | number: '3.0' }}
-          </h3>
-          <span>{{ pedido.createdAt | date: 'dd/MM/yyyy hh:mm' }}</span>
-        </div>
-        <h5 class="card-title">
-          {{ pedido.contacto.nombre ?? pedido.contacto.razonSocial }}
-        </h5>
-        <p class="card-text">
-          {{ pedido.observaciones }}
-        </p>
-        <hr />
-        <div class="row">
-          <div
-            title="Cantidad de articulos"
-            class="col-12 col-sm-3 text-center"
-          >
-            <b>Items:</b>
-            {{ pedido.articulos.length }}
-          </div>
-          <div title="IVA" class="col-12 col-sm-3 text-center">
-            <b>IVA:</b>
-            $ {{ pedido.iva | number: '0.2' }}
-          </div>
-          <div title="Importe antes de iva" class="col-12 col-sm-3 text-center">
-            <b>Importe:</b>
-            $ {{ pedido.importe | number: '0.2' }}
-          </div>
-          <div title="Total de la nota" class="col-12 col-sm-3 text-center">
-            <b>Total:</b>
-            $ {{ pedido.total | number: '0.2' }}
+  <div class="card shadow">
+    <div *ngIf="pedidos?.length > 0" class="row">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <codice-buscador
+              (termino)="terminoDeBusqueda = $event"
+              (escucharCarga)="cargandoBuscador = $event"
+              [encodeURIComponent]="false"
+            >
+            </codice-buscador>
+
+            <span *ngIf="articulosQueNoSeMuestran > 0">
+              Folios ocultos: {{ articulosQueNoSeMuestran }}
+            </span>
           </div>
         </div>
-        <hr />
-
-        <ng-container *ngIf="!esModoOffline()">
-
-
-          <a name="" id="" class="btn btn-primary" href="#" role="button">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Confirmar pedido
-          </a>
-  
-          <hr />
-        </ng-container>
-        
-
-
-        <a
-          (click)="detalle(pedido)"
-          class="btn btn-info mr-3"
-          href="javascript:void(0)"
-          role="button"
-        >
-          <i class="fas fa-search"></i
-        ></a>
-
-        <a
-          (click)="editar(pedido)"
-          class="btn btn-primary mr-3"
-          href="javascript:void(0)"
-          role="button"
-        >
-          <i class="fas fa-edit"></i
-        ></a>
-
-        <a
-          (click)="eliminar(pedido)"
-          class="btn btn-danger mr-3"
-          href="javascript:void(0)"
-          role="button"
-        >
-          <i class="fas fa-times"></i
-        ></a>
-
-        <a
-          (click)="compartir(pedido)"
-          class="btn btn-success"
-          href="javascript:void(0)"
-          role="button"
-        >
-          <i class="fas fa-share-alt"></i>
-        </a>
       </div>
     </div>
   </div>
+  <app-pedido-global-card
+    [pedidos]="pedidos"
+    (detalle)="detalle($event)"
+    (editar)="editar($event)"
+    (eliminar)="eliminar($event)"
+    (compartir)="compartir($event)"
+    (subirNube)="subirNube($event)"
+
+    [terminoDeBusqueda]="terminoDeBusqueda"
+    (articulosQueNoSeMuestran)="articulosQueNoSeMuestran = $event"
+  >
+  </app-pedido-global-card>
 </div>
