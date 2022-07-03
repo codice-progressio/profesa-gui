@@ -101,8 +101,6 @@ export class UsuarioService {
     }
     const url = this.envService.URL_SERVICIOS + '/usuario/login'
 
-
-    
     return this.http.post(url, { email, password }).pipe(
       // Guardamos la información en el local storage para que quede
       // disponible si el usuario cierra el navegador.
@@ -199,6 +197,20 @@ export class UsuarioService {
 
   usuarioOffline: Usuario
 
+  obtenerUsuarioOffline() {
+    console.log(this.usuarioOffline)
+    if (!this.usuarioOffline) {
+      // Obtenemos del localStorage
+      let storageUsuario = JSON.parse(localStorage.getItem('usuarioOffline'))
+      console.log({storageUsuario})
+      if (storageUsuario) {
+        this.usuarioOffline = storageUsuario as Usuario
+      } else this.logout()
+
+    }
+    return this.usuarioOffline
+  }
+
   registrarParaOffline(usuario: Usuario) {
     let err = err => console.error(err)
     this.parametrosService.offline.contarDatos().subscribe(p => {
@@ -212,12 +224,21 @@ export class UsuarioService {
       }
     }, err)
   }
+
   private guardarOfflineUsuario(datos: {
     _id: number
     usuario_registrado: Usuario
   }) {
     this.parametrosService.offline.guardar(datos).subscribe(() => {
       this.usuarioOffline = datos.usuario_registrado
+
+      // Guardamos en local storage por si se recarga el navegdor de manera extraña
+
+      localStorage.setItem(
+        'usuarioOffline',
+        JSON.stringify(datos.usuario_registrado)
+      )
+
       this.msjService.toast.info(
         ' <i class=" text-success fas fa-check-circle    "></i>  Usuario almacenado para trabajo offline.'
       )

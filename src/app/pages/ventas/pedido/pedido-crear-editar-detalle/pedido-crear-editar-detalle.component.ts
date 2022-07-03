@@ -196,9 +196,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   crearArticulo(articulo: Partial<ArticuloPedido>, editar = true) {
     return new FormGroup({
-      cantidad: new FormControl(articulo.cantidad, [
-        Validators.required,
-        Validators.min(0.01)
+      cantidad: new FormControl(articulo.cantidad || 0, [
+        Validators.required
+        // Validators.min(0.01)
       ]),
 
       //definimos el precio directo para calcularlo junto
@@ -310,6 +310,16 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
     this.fa('articulos').push(articulo)
     this.articulosSeleccionados.push(item)
+
+    this.guardadoRapido()
+  }
+
+  guardadoRapido() {
+    // Guardamos los cambios
+    let pedido = this.formulario.value
+    let esInvalido = this.formulario.invalid
+
+    this.submit(pedido, esInvalido, false)
   }
 
   eliminar(i: number) {
@@ -322,7 +332,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   skuModalCerrado() {}
 
-  async submit(modelo: Pedido, invalid: boolean) {
+  async submit(modelo: Pedido, invalid: boolean, retornarNavegacion = true) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
     if (invalid) {
@@ -352,17 +362,27 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     modelo._id = id
 
     this.pedidoService.offline.guardar(modelo).subscribe(
-      () => this.location.back(),
+      () => {
+        if (retornarNavegacion) this.location.back()
+        this.cargando = false
+      },
       () => (this.cargando = false)
     )
   }
 
   crearFolio(consecutivo: number): string {
-    let nombre = this.usuarioService.usuarioOffline.nombre
-      .replace(' ', '-')
-      .toUpperCase()
-    let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')
-    return `${nombre}-${fecha}-${consecutivo}`
+    let usuarioOffline = this.usuarioService.obtenerUsuarioOffline()
+
+    console.log({usuarioOffline})
+    if (usuarioOffline) {
+      let nombre = usuarioOffline.nombre.replace(' ', '-').toUpperCase()
+      let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')
+      return `${nombre}-${fecha}-${consecutivo}`
+    } else {
+      this.notiService.toast.error(
+        'No se pudo obtener el usuario. Inicia sessión de nuevo'
+      )
+    }
   }
 
   async obtenerUltimoId() {
@@ -428,6 +448,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     cantidadF.markAsTouched()
     cantidadF.updateValueAndValidity()
+    this.guardadoRapido()
   }
 
   noMostrarArticulos: string[] = []
