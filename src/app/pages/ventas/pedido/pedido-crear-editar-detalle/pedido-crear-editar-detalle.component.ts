@@ -373,7 +373,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   crearFolio(consecutivo: number): string {
     let usuarioOffline = this.usuarioService.obtenerUsuarioOffline()
 
-    console.log({usuarioOffline})
     if (usuarioOffline) {
       let nombre = usuarioOffline.nombre.replace(' ', '-').toUpperCase()
       let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')

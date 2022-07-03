@@ -4,10 +4,16 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 mt-2 mt-md-0 col-md-6">
-            <h3>Vendedor: {{ usuario?.nombre }}</h3>
+            <small class="text-muted">Vendedor</small>
+            <br>
+            <h3>{{ usuario?.nombre }}</h3>
 
-            <a class="btn btn-primary" role="button" [routerLink]="['crear']">
-              <i class="fas fa-plus-circle"></i> Crear
+            <a
+              class="btn btn-primary btn-sm"
+              role="button"
+              [routerLink]="['crear']"
+            >
+              <i class="fas fa-plus-circle"></i> Crear pedido
             </a>
           </div>
           <div class="col-12 mt-2 mt-md-0 col-md-6">
@@ -21,13 +27,9 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="card shadow">
-    <div *ngIf="pedidos?.length > 0" class="row">
-      <div class="col-12">
-        <div class="card shadow">
+  <div class="col-12">
+        <div *ngIf="pedidos?.length > 0" >
+        <div class="card ">
           <div class="card-body">
             <codice-buscador
               (termino)="terminoDeBusqueda = $event"
@@ -39,7 +41,6 @@
             <span *ngIf="articulosQueNoSeMuestran > 0">
               Folios ocultos: {{ articulosQueNoSeMuestran }}
             </span>
-          </div>
         </div>
       </div>
     </div>
@@ -51,7 +52,6 @@
     (eliminar)="eliminar($event)"
     (compartir)="compartir($event)"
     (subirNube)="subirNube($event)"
-
     [terminoDeBusqueda]="terminoDeBusqueda"
     (articulosQueNoSeMuestran)="articulosQueNoSeMuestran = $event"
   >

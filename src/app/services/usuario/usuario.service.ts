@@ -198,11 +198,9 @@ export class UsuarioService {
   usuarioOffline: Usuario
 
   obtenerUsuarioOffline() {
-    console.log(this.usuarioOffline)
     if (!this.usuarioOffline) {
       // Obtenemos del localStorage
       let storageUsuario = JSON.parse(localStorage.getItem('usuarioOffline'))
-      console.log({storageUsuario})
       if (storageUsuario) {
         this.usuarioOffline = storageUsuario as Usuario
       } else this.logout()
