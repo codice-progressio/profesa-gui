@@ -136,6 +136,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
   }
 
   buscar(termino: string) {
+    console.log('buscar')
     this.cargando = true
     this.pedidoService.buscarTermino(termino).subscribe(
       pedidos => {

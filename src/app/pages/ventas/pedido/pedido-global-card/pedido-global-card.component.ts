@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core'
 import { BehaviorSubject } from 'rxjs'
 import { Pedido } from 'src/app/models/pedido.model'
 
@@ -8,7 +15,20 @@ import { Pedido } from 'src/app/models/pedido.model'
   styleUrls: ['./pedido-global-card.component.css']
 })
 export class PedidoGlobalCardComponent implements OnInit, OnDestroy {
-  @Input() pedidos: Pedido[] = []
+  pedidos: Pedido[] = []
+  private _todosLosPedidos: Pedido[] = []
+  public get todosLosPedidos(): Pedido[]
+  {
+    return this._todosLosPedidos
+  }
+  @Input()
+  public set todosLosPedidos(pedidos: Pedido[])
+  {
+    this._todosLosPedidos = pedidos
+    this.pedidos = pedidos
+    this.generarIndiceDeBusqueda(pedidos)
+  }
+
   @Input() esModoOffline = true
 
   @Input() cargando = false
@@ -31,6 +51,30 @@ export class PedidoGlobalCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargando_behavior.subscribe(valor => (this.cargando = valor))
   }
+
+  private generarIndiceDeBusqueda(pedidos: Pedido[]) {
+    console.log({ pedidos })
+    this.indiceBusqueda = pedidos.map((pedido, indice) => {
+      console.log({ pedido })
+      let nombreContacto = pedido.contacto.nombre ?? ''
+      let razonSocial = pedido.contacto.razonSocial ?? ''
+      let observaciones = pedido.observaciones ?? ''
+      let folio = pedido.folio ?? ''
+      let cadena = `${nombreContacto} ${razonSocial} ${observaciones} ${folio}`
+      cadena = cadena
+        .split(' ')
+        .map(x => x.toLowerCase().trim())
+        .filter(x => x)
+        .join(' ')
+      return {
+        cadena,
+        indice
+      }
+    })
+
+    console.log('indice', this.indiceBusqueda)
+  }
+
   detalle(p: Pedido) {
     this._detalle.emit(p)
   }
@@ -67,6 +111,7 @@ export class PedidoGlobalCardComponent implements OnInit, OnDestroy {
   @Input()
   public set terminoDeBusqueda(value) {
     // Al obtener el termino ejecutamos la accion de filrar
+    console.log('terminoDeBusqueda', value)
     this._terminoDeBusqueda = value
     this.filtrar(value)
   }
@@ -79,42 +124,58 @@ export class PedidoGlobalCardComponent implements OnInit, OnDestroy {
    * @type {BehaviorSubject<boolean>}
    * @memberof PedidoGlobalCardComponent
    */
-  @Input() cargandoBuscador: BehaviorSubject<boolean>
+  @Input() buscadorExterno: BehaviorSubject<boolean>
   @Output() articulosQueNoSeMuestran = new EventEmitter<number>()
+
+  /**
+   *Facilita la busqueda de datos manteniendo una cadena 
+   cons los datos necesarios para buscar. 
+   *
+   * @type {IndiceBusqueda[]}
+   * @memberof PedidoGlobalCardComponent
+   */
   indiceBusqueda: IndiceBusqueda[] = []
-  todosLosPedidos = []
 
   filtrar(termino: string) {
-    let termLimpio = termino.trim()
+    let termLimpio = termino.trim().toLowerCase()
+    console.log('filtrar=> 0 termLimpio', !termLimpio)
+    console.log('filtrar=> 1 todosLosPedidos', this.todosLosPedidos)
+    this.pedidos = this.todosLosPedidos.slice()
+    console.log('filtrar=> 2 this.pedidos', this.pedidos)
+    
+    
+    
     if (!termLimpio) {
-      this.pedidos = this.todosLosPedidos
-      this.todosLosPedidos = []
+      console.log(`filtrar=> 3 no hay termino '${termLimpio}'`)
+      console.log('this.todosLosPedidos', this.todosLosPedidos)
       this.articulosQueNoSeMuestran.emit(0)
       this.actualizarCargandoBuscador(false)
       this.terminoSku = termLimpio
       return
     }
-
-    this.todosLosPedidos = this.pedidos
+    console.log('filtrar=> 4 indiceBusqueda', this.indiceBusqueda)
 
     this.pedidos = this.indiceBusqueda
       .filter(ib => ib.cadena.includes(termLimpio))
       .map(x => x.indice)
-      .map(x => this.pedidos[x])
+      .map(x => this.todosLosPedidos.slice(x, x+1).pop())
+
+    console.log('filtrar=> 5 this.todosLosPedidos', this.todosLosPedidos)
+
+
+    this.actualizarCargandoBuscador(false)
   }
 
-
-  actualizarCargandoBuscador(estado:boolean, completar:boolean = false) {
-    if (this.cargandoBuscador !== undefined){
-       
-      if (!completar)
-        this.cargandoBuscador.next(estado)
-      else
-        this.cargandoBuscador.complete()
-
+  actualizarCargandoBuscador(estado: boolean, completar: boolean = false) {
+    console.log(
+      'this.cargandoBuscador !== undefined',
+      this.buscadorExterno !== undefined
+    )
+    if (this.buscadorExterno !== undefined) {
+      console.log({completar, estado})
+      if (!completar) this.buscadorExterno.next(estado)
+      else this.buscadorExterno.complete()
     }
-
-
   }
 }
 
