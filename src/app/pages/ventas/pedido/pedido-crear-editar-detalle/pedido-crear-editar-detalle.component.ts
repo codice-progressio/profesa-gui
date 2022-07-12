@@ -73,6 +73,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   id: string
   esDetalle: boolean
   geo: PosicionDeGeolocalizacion
+  mostrarObservaciones = false
 
   ngOnInit(): void {
     this.ubicacion()
