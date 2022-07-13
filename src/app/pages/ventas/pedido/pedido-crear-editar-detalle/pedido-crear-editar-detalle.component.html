@@ -363,8 +363,9 @@
 
         <ng-container *ngIf="!esDetalle && pedido.contacto">
           <div
-          *ngIf="mostrarBarraSticki()"
-          class="col-12 fixed-bottom text-center barra-inferior">
+            *ngIf="mostrarBarraSticki()"
+            class="col-12 fixed-bottom text-center barra-inferior"
+          >
             <div class="row">
               <div
                 (click)="submit(formulario.value, formulario.invalid)"
@@ -372,22 +373,19 @@
               >
                 <div class="pseudo-btn-0"></div>
               </div>
-              <div class="col-6 m-0 p-0">
-                <table class="table table-borderless text-center font-14">
-                  <thead>
-                    <th scope="col">Importe</th>
-                    <th scope="col">IVA</th>
-                    <th scope="col">Total</th>
-                  </thead>
+              <div
+                (click)="abrir_total_modal()"
+                class="col-6 m-0 p-0 text-center"
+              >
+                <span class="text-muted font-14"> Importe sin IVA </span>
+                <br />
+                <span class="font-bold font-18">
+                  $ {{ importe() | number: '1.2' }}
 
-                  <tbody>
-                    <td>$ {{ importe() | number: '1.2' }}</td>
-                    <td>$ {{ iva() | number: '1.2' }}</td>
-                    <td>$ {{ total() | number: '1.2' }}</td>
-                  </tbody>
-                </table>
+                  <i class="fas fa-eye"></i>
+                </span>
               </div>
-              <div (click)="agregarArticulo()" class="col-3 ">
+              <div (click)="agregarArticulo()" class="col-3">
                 <div class="pseudo-btn-1"></div>
               </div>
             </div>
@@ -397,6 +395,34 @@
     </form>
   </div>
 </div>
+
+<codice-modal
+  [id]="idModalDetalleTotal"
+  (cerrado)="total_modal_abierto = false"
+  *ngIf="formulario"
+>
+  <div class="row text-center">
+    <div class="col-12">
+      <h3>
+        <small class="text-muted">Importe</small>
+        <br>
+        <span class="font-bold"> $ {{ importe() | number: '1.2' }} </span>
+        <hr>
+      </h3>
+      <h3>
+        <small class="text-muted">IVA</small>
+        <br>
+        <span class="font-bold"> $ {{ iva() | number: '1.2' }} </span>
+        <hr>
+      </h3>
+      <h1>
+        <small class="text-muted">Total</small>
+        <br>
+        <span class="font-bold"> $ {{ total() | number: '1.2' }} </span>
+      </h1>
+    </div>
+  </div>
+</codice-modal>
 
 <codice-modal [id]="idModalContacto" (cerrado)="contacto_modal_abierto = false">
   <div class="row">

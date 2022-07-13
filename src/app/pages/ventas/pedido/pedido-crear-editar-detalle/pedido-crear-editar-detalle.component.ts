@@ -59,6 +59,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   idModalContacto = 'modalPedido'
   idModalSku = 'modakSku'
+  idModalDetalleTotal = 'detalle_total'
   pedido: Partial<Pedido> = {}
 
   private _cargando = false
@@ -273,6 +274,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   sku_modal_abierto = false
   contacto_modal_abierto = false
+  total_modal_abierto = false
 
   skus: SKU[] = []
   buscarSku(ter) {
@@ -540,7 +542,17 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   mostrarBarraSticki() {
-    let mostrar = this.sku_modal_abierto || this.contacto_modal_abierto ? false: true
+    let mostrar =
+      this.sku_modal_abierto ||
+      this.contacto_modal_abierto ||
+      this.total_modal_abierto
+        ? false
+        : true
     return mostrar
+  }
+
+  abrir_total_modal() {
+    this.modalService.open(this.idModalDetalleTotal)
+    this.total_modal_abierto = true
   }
 }

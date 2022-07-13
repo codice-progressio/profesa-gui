@@ -86,3 +86,12 @@ div.pseudo-btn-1:after {
   width: 100%;
   /* background-color: rgb(60, 60, 60); */
 }
+
+
+.relleno-total {
+  height: 25%;
+  width: 100%;
+  background-color: rgb(60, 60, 60);
+}
+
+
