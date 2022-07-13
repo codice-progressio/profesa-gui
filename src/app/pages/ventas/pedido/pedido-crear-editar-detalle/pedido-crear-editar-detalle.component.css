@@ -10,21 +10,28 @@ input.cantidad {
 }
 
 .barra-inferior {
-  background-color: white;
+  /* background-color: rgba(0, 0, 0, 0.609); */
   display: inline-block;
   vertical-align: middle;
-  -webkit-box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
+  /* -webkit-box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
   -moz-box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
-  box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
-  height: 60px;
+  box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1); */
+  height: 70px;
+  /* color: white; */
+  backdrop-filter: blur(5px);
+  padding-top: 5px;
 }
+
+/* .barra-inferior table th , .barra-inferior table td {
+  color: white;
+} */
 
 div.pseudo-btn-0,
 div.pseudo-btn-1 {
   height: 60px;
   width: 60px;
   position: relative;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 div.pseudo-btn-0:after,
@@ -65,20 +72,16 @@ div.pseudo-btn-1:after {
 }
 
 .pseudo-btn-0 {
-  background-color: green;
-
-  margin-left: 10px;
+  background-color: #06d79c;
+  float: right;
 }
 .pseudo-btn-1 {
   background-color: #745af2;
-  float: right;
-  margin-right: 10px;
+  margin-right: 0;
 }
 
-
 .compensacion-inferior {
-
   height: 70px;
   width: 100%;
-  background-color: rgb(60, 60, 60);
+  /* background-color: rgb(60, 60, 60); */
 }

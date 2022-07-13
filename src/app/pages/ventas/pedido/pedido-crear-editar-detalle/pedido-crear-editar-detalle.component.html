@@ -331,7 +331,7 @@
                             {{ dummy.get('cantidad').value | number: '0.2' }}
                           </td>
                           <td>
-                            $ {{ dummy.get('precio').value | number: '0.s2' }}
+                            $ {{ dummy.get('precio').value | number: '0.2' }}
                           </td>
                           <td>
                             $
@@ -362,15 +362,15 @@
           -->
 
         <ng-container *ngIf="!esDetalle && pedido.contacto">
-          <div class="col-12 fixed-bottom text-center p-0 barra-inferior">
+          <div class="col-12 fixed-bottom text-center barra-inferior">
             <div class="row">
               <div
                 (click)="submit(formulario.value, formulario.invalid)"
-                class="col-2"
+                class="col-3"
               >
                 <div class="pseudo-btn-0"></div>
               </div>
-              <div class="col-8 m-0 p-0 bg-white">
+              <div class="col-6 m-0 p-0">
                 <table class="table table-borderless text-center font-14">
                   <thead>
                     <th scope="col">Importe</th>
@@ -385,7 +385,7 @@
                   </tbody>
                 </table>
               </div>
-              <div (click)="agregarArticulo()" class="col-2">
+              <div (click)="agregarArticulo()" class="col-3 ">
                 <div class="pseudo-btn-1"></div>
               </div>
             </div>
@@ -464,6 +464,7 @@
         (skuSeleccionado)="seleccionarSku($event)"
         [offline]="true"
         [permitirVerDetalle]="false"
+        [capturarCantidad]="true"
       ></app-sku-lista>
     </div>
   </div>

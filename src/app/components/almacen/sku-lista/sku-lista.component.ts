@@ -16,8 +16,19 @@ export class SkuListaComponent implements OnInit {
   @Output() estaCargando = new EventEmitter<boolean>()
 
   @Input() soloSeleccionable = false
-  @Output() skuSeleccionado = new EventEmitter<SKU>()
+  @Output() skuSeleccionado = new EventEmitter<SKUSeleccionado>()
   @Input() permitirVerDetalle = true
+
+
+  /**
+   *Combinado con soloSeleccionable permite mostrar un Input
+    *para agregar emitir una cantidad de manera más rapida. 
+   *
+   * @memberof SkuListaComponent
+   */
+  @Input() capturarCantidad = false
+  // El mismo para todos los inputs
+  valor_a_enviar = 0
 
   @Input()
   public set termino(value: string) {
@@ -200,6 +211,12 @@ export class SkuListaComponent implements OnInit {
     this.skuTraslado = sku
     this.modalService.open(id)
   }
+
+
+  emitirSkuSeleccionado(sku: SKU, cantidad = 0) {
+
+    this.skuSeleccionado.emit({ sku, cantidad })
+  }
 }
 
 export class OperacionesOffline {
@@ -215,4 +232,12 @@ export class OperacionesOffline {
         ;() => this.root.estadoCarga(false)
       })
   }
+}
+
+
+
+export interface SKUSeleccionado {
+
+  sku: SKU
+  cantidad?: number
 }

@@ -55,10 +55,27 @@
             class="btn btn-outline-success m-1"
             href="javascript:void(0)"
             role="button"
-            (click)="skuSeleccionado.emit(sku)"
+            (click)="emitirSkuSeleccionado(sku, valor_a_enviar)"
           >
             <i class="fas fa-check-double"></i
           ></a>
+
+          <ng-container *ngIf="capturarCantidad">
+            <hr />
+            <div class="form-group">
+              <input
+                [(ngModel)]="valor_a_enviar"
+                type="number"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                class="form-control"
+                placeholder="0"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Ingresa cantidad</small
+              >
+            </div>
+          </ng-container>
 
           <ng-container *ngIf="!soloSeleccionable">
             <a

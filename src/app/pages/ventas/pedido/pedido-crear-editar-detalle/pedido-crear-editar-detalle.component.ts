@@ -24,6 +24,7 @@ import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { UbicacionService } from 'src/app/services/ubicacion.service'
 import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
+import { SKUSeleccionado } from 'src/app/components/almacen/sku-lista/sku-lista.component'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -293,7 +294,8 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     this.modalService.open(this.idModalSku)
   }
 
-  seleccionarSku(item: SKU) {
+  seleccionarSku(datos: SKUSeleccionado) {
+    let item = datos.sku
     this.estaCargandoBuscadorSku.next(false)
     if (this.articulosSeleccionados.find(x => x._id === item._id)) {
       this.notiService.invalido(
@@ -306,6 +308,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     let articulo = this.crearArticulo({})
     articulo.get('sku').setValue(item)
+    articulo.get('cantidad').setValue(datos.cantidad)
     articulo
       .get('precio')
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
