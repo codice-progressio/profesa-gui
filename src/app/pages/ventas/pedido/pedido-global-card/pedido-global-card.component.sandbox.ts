@@ -4,7 +4,9 @@ import { PedidosMock } from '../../../../share-sandbox/mocks/pedido-global-card.
 
 import { GoblalTemplateSandbox } from 'src/app/share-sandbox/templates/globlal.template.sandbox'
 
-export default sandboxOf(PedidoGlobalCardComponent)
+export default sandboxOf(PedidoGlobalCardComponent, {
+  imports:[]
+})
   .add('Sin pedidos', {
     template: GoblalTemplateSandbox(`<app-pedido-global-card  
     [pedidos]="pedidos"
@@ -45,5 +47,10 @@ export default sandboxOf(PedidoGlobalCardComponent)
     [pedidos]="pedidos"
     [esModoOffline]="true"
   ></app-pedido-global-card>`),
-    context: { pedidos: PedidosMock }
+    context: {
+      pedidos: PedidosMock.map((x, i) => {
+        x._id = i + 1
+        return x
+      })
+    }
   })

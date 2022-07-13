@@ -1,0 +1,97 @@
+th,
+td {
+  padding: 0px;
+}
+
+input.cantidad {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.barra-inferior {
+  /* background-color: rgba(0, 0, 0, 0.609); */
+  display: inline-block;
+  vertical-align: middle;
+  /* -webkit-box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
+  -moz-box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1);
+  box-shadow: 0px -8px 9px -6px rgba(112, 112, 112, 1); */
+  height: 70px;
+  /* color: white; */
+  backdrop-filter: blur(5px);
+  padding-top: 5px;
+  z-index: 10;
+}
+
+/* .barra-inferior table th , .barra-inferior table td {
+  color: white;
+} */
+
+div.pseudo-btn-0,
+div.pseudo-btn-1 {
+  height: 60px;
+  width: 60px;
+  position: relative;
+  border-radius: 50%;
+}
+
+div.pseudo-btn-0:after,
+div.pseudo-btn-1:after {
+  position: absolute;
+  top: 15px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  font-size: 20px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+}
+
+div.pseudo-btn-0:after {
+  content: '';
+
+  -webkit-mask: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M433.1 129.1l-83.9-83.9C342.3 38.32 327.1 32 316.1 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h320c35.35 0 64-28.65 64-64V163.9C448 152.9 441.7 137.7 433.1 129.1zM224 416c-35.34 0-64-28.66-64-64s28.66-64 64-64s64 28.66 64 64S259.3 416 224 416zM320 208C320 216.8 312.8 224 304 224h-224C71.16 224 64 216.8 64 208v-96C64 103.2 71.16 96 80 96h224C312.8 96 320 103.2 320 112V208z"/></svg>')
+    no-repeat 50% 50%;
+
+  mask: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M433.1 129.1l-83.9-83.9C342.3 38.32 327.1 32 316.1 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h320c35.35 0 64-28.65 64-64V163.9C448 152.9 441.7 137.7 433.1 129.1zM224 416c-35.34 0-64-28.66-64-64s28.66-64 64-64s64 28.66 64 64S259.3 416 224 416zM320 208C320 216.8 312.8 224 304 224h-224C71.16 224 64 216.8 64 208v-96C64 103.2 71.16 96 80 96h224C312.8 96 320 103.2 320 112V208z"/></svg>')
+    no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: white;
+}
+div.pseudo-btn-1:after {
+  content: '';
+
+  -webkit-mask: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM256 368C269.3 368 280 357.3 280 344V280H344C357.3 280 368 269.3 368 256C368 242.7 357.3 232 344 232H280V168C280 154.7 269.3 144 256 144C242.7 144 232 154.7 232 168V232H168C154.7 232 144 242.7 144 256C144 269.3 154.7 280 168 280H232V344C232 357.3 242.7 368 256 368z"/></svg>')
+    no-repeat 50% 50%;
+  mask: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM256 368C269.3 368 280 357.3 280 344V280H344C357.3 280 368 269.3 368 256C368 242.7 357.3 232 344 232H280V168C280 154.7 269.3 144 256 144C242.7 144 232 154.7 232 168V232H168C154.7 232 144 242.7 144 256C144 269.3 154.7 280 168 280H232V344C232 357.3 242.7 368 256 368z"/></svg>')
+    no-repeat 50% 50%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: white;
+}
+
+.pseudo-btn-0 {
+  background-color: #06d79c;
+  float: right;
+}
+.pseudo-btn-1 {
+  background-color: #745af2;
+  margin-right: 0;
+}
+
+.compensacion-inferior {
+  height: 70px;
+  width: 100%;
+  /* background-color: rgb(60, 60, 60); */
+}
+
+
+.relleno-total {
+  height: 25%;
+  width: 100%;
+  background-color: rgb(60, 60, 60);
+}
+
+

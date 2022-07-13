@@ -1,4 +1,3 @@
-import { Component, OnInit } from '@angular/core'
 import { Pedido } from '../../../models/pedido.model'
 import { PedidoService } from '../../../services/pedido.service'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -10,13 +9,15 @@ import { Usuario } from 'src/app/models/usuario.model'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ParametrosService } from 'src/app/services/parametros.service'
 import { GpsService, PosicionDeGeolocalizacion } from '@codice-progressio/gps'
+import { DatosNube } from './pedido-global-card/pedido-global-card.component'
+import { Component, OnInit, OnDestroy } from '@angular/core'
 
 @Component({
   selector: 'app-pedido',
   templateUrl: './pedido.component.html',
   styleUrls: ['./pedido.component.css']
 })
-export class PedidoComponent implements OnInit {
+export class PedidoComponent implements OnInit, OnDestroy {
   constructor(
     private parametrosService: ParametrosService,
     private usaurioService: UsuarioService,
@@ -27,8 +28,12 @@ export class PedidoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private gpsService: GpsService
   ) {}
+
   pedidos: Pedido[] = []
   usuario: Usuario
+  terminoDeBusqueda = ''
+  articulosQueNoSeMuestran = 0
+  cargandoBuscador: BehaviorSubject<boolean> = new BehaviorSubject(false)
 
   private _cargando = false
   public get cargando() {
@@ -55,6 +60,14 @@ export class PedidoComponent implements OnInit {
 
     this.comprobarUsuario()
     this.comprobarGPS()
+
+    this.cargandoBuscador.subscribe(cargando => {
+      this.cargando = cargando
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.cargandoBuscador.complete()
   }
 
   geo: PosicionDeGeolocalizacion = undefined
@@ -123,6 +136,7 @@ export class PedidoComponent implements OnInit {
   }
 
   buscar(termino: string) {
+    console.log('buscar')
     this.cargando = true
     this.pedidoService.buscarTermino(termino).subscribe(
       pedidos => {
@@ -154,5 +168,14 @@ export class PedidoComponent implements OnInit {
 
   esModoOffline() {
     return true
+  }
+
+  subirNube(datosNube: DatosNube) {
+    this.cargando = true
+    datosNube.cargando.next(true)
+    this.pedidoService.crear(datosNube.pedido).subscribe(() => {
+      datosNube.cargando.next(false)
+      this.cargando = false
+    })
   }
 }

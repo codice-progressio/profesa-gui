@@ -5,7 +5,7 @@
   *ngIf="!cargando; else precarga"
   class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 card-deck"
 >
-  <div *ngFor="let sku of skus" class="col mb-4">
+  <div *ngFor="let sku of skus; let i = index" class="col mb-4">
     <div class="card shadow">
       <a
         *ngIf="permitirVerDetalle"
@@ -55,10 +55,33 @@
             class="btn btn-outline-success m-1"
             href="javascript:void(0)"
             role="button"
-            (click)="skuSeleccionado.emit(sku)"
+            (click)="emitirSkuSeleccionado(sku, valor_a_enviar)"
           >
             <i class="fas fa-check-double"></i
           ></a>
+
+          <ng-container *ngIf="capturarCantidad">
+            <hr />
+            <div class="form-group">
+              <input
+                [id]="'valor_a_enviar'+i"
+                [(ngModel)]="valor_a_enviar"
+                type="number"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                class="form-control"
+              />
+              <small id="helpId" class="form-text text-muted"
+                >Ingresa cantidad</small
+              >
+              <a
+                (click)="reiniciar_valor_a_enviar(i)"
+                class="btn btn-link text-danger"
+                href="javascript:void(0)"
+                role="button"
+                >Limpiar cantidad</a>
+            </div>
+          </ng-container>
 
           <ng-container *ngIf="!soloSeleccionable">
             <a

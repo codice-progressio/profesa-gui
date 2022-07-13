@@ -24,6 +24,7 @@ import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { UbicacionService } from 'src/app/services/ubicacion.service'
 import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
+import { SKUSeleccionado } from 'src/app/components/almacen/sku-lista/sku-lista.component'
 
 @Component({
   selector: 'app-pedido-crear-editar-detalle',
@@ -58,6 +59,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   idModalContacto = 'modalPedido'
   idModalSku = 'modakSku'
+  idModalDetalleTotal = 'detalle_total'
   pedido: Partial<Pedido> = {}
 
   private _cargando = false
@@ -73,6 +75,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   id: string
   esDetalle: boolean
   geo: PosicionDeGeolocalizacion
+  mostrarObservaciones = false
 
   ngOnInit(): void {
     this.ubicacion()
@@ -173,6 +176,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         if (!pedido.contacto) {
           setTimeout(() => {
             this.modalService.open(this.idModalContacto)
+            this.contacto_modal_abierto = true
           }, 1000)
         }
       }
@@ -196,9 +200,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   crearArticulo(articulo: Partial<ArticuloPedido>, editar = true) {
     return new FormGroup({
-      cantidad: new FormControl(articulo.cantidad, [
-        Validators.required,
-        Validators.min(0.01)
+      cantidad: new FormControl(articulo.cantidad || 0, [
+        Validators.required
+        // Validators.min(0.01)
       ]),
 
       //definimos el precio directo para calcularlo junto
@@ -268,6 +272,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   estaCargandoBuscadorSku: BehaviorSubject<boolean>
   grupo: FormGroup
 
+  sku_modal_abierto = false
+  contacto_modal_abierto = false
+  total_modal_abierto = false
+
   skus: SKU[] = []
   buscarSku(ter) {
     let termino = ter.trim()
@@ -290,9 +298,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   articulosSeleccionados: SKU[] = []
   agregarArticulo() {
     this.modalService.open(this.idModalSku)
+    this.sku_modal_abierto = true
   }
 
-  seleccionarSku(item: SKU) {
+  seleccionarSku(datos: SKUSeleccionado) {
+    let item = datos.sku
     this.estaCargandoBuscadorSku.next(false)
     if (this.articulosSeleccionados.find(x => x._id === item._id)) {
       this.notiService.invalido(
@@ -305,11 +315,22 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     let articulo = this.crearArticulo({})
     articulo.get('sku').setValue(item)
+    articulo.get('cantidad').setValue(datos.cantidad)
     articulo
       .get('precio')
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
     this.fa('articulos').push(articulo)
     this.articulosSeleccionados.push(item)
+
+    this.guardadoRapido()
+  }
+
+  guardadoRapido() {
+    // Guardamos los cambios
+    let pedido = this.formulario.value
+    let esInvalido = this.formulario.invalid
+
+    this.submit(pedido, esInvalido, false)
   }
 
   eliminar(i: number) {
@@ -320,9 +341,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     })
   }
 
-  skuModalCerrado() {}
-
-  async submit(modelo: Pedido, invalid: boolean) {
+  async submit(modelo: Pedido, invalid: boolean, retornarNavegacion = true) {
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
     if (invalid) {
@@ -352,17 +371,26 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     modelo._id = id
 
     this.pedidoService.offline.guardar(modelo).subscribe(
-      () => this.location.back(),
+      () => {
+        if (retornarNavegacion) this.location.back()
+        this.cargando = false
+      },
       () => (this.cargando = false)
     )
   }
 
   crearFolio(consecutivo: number): string {
-    let nombre = this.usuarioService.usuarioOffline.nombre
-      .replace(' ', '-')
-      .toUpperCase()
-    let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')
-    return `${nombre}-${fecha}-${consecutivo}`
+    let usuarioOffline = this.usuarioService.obtenerUsuarioOffline()
+
+    if (usuarioOffline) {
+      let nombre = usuarioOffline.nombre.replace(' ', '-').toUpperCase()
+      let fecha = this.datePipe.transform(new Date(), 'yyyy_MM_dd')
+      return `${nombre}-${fecha}-${consecutivo}`
+    } else {
+      this.notiService.toast.error(
+        'No se pudo obtener el usuario. Inicia sessión de nuevo'
+      )
+    }
   }
 
   async obtenerUltimoId() {
@@ -428,6 +456,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     cantidadF.markAsTouched()
     cantidadF.updateValueAndValidity()
+    this.guardadoRapido()
   }
 
   noMostrarArticulos: string[] = []
@@ -510,5 +539,20 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     total = this.redondear(total)
     this.f('total').setValue(total)
     return total
+  }
+
+  mostrarBarraSticki() {
+    let mostrar =
+      this.sku_modal_abierto ||
+      this.contacto_modal_abierto ||
+      this.total_modal_abierto
+        ? false
+        : true
+    return mostrar
+  }
+
+  abrir_total_modal() {
+    this.modalService.open(this.idModalDetalleTotal)
+    this.total_modal_abierto = true
   }
 }

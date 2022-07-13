@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '@codice-progressio/modal'
 import { BehaviorSubject } from 'rxjs'
+import { SKUSeleccionado } from 'src/app/components/almacen/sku-lista/sku-lista.component'
 import {
   ListaDePrecios,
   SKUListaDePrecios
@@ -186,7 +187,8 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
     })
   }
 
-  agregarSku(sku: SKU) {
+  agregarSku(datos: SKUSeleccionado) {
+    let sku = datos.sku
     if (this.esSkuRepetido(sku._id)) return
 
     let skus = this.fa('skus')
@@ -223,7 +225,7 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
 
         this.fa('skus').clear()
 
-        skus.forEach(x => this.agregarSku(x))
+        skus.forEach(x => this.agregarSku({sku:x, cantidad:0}))
 
         this.cargando = false
       },

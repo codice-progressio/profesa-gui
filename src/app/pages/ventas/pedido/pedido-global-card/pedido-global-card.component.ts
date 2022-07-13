@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core'
+import { BehaviorSubject } from 'rxjs'
 import { Pedido } from 'src/app/models/pedido.model'
 
 @Component({
@@ -6,21 +14,64 @@ import { Pedido } from 'src/app/models/pedido.model'
   templateUrl: './pedido-global-card.component.html',
   styleUrls: ['./pedido-global-card.component.css']
 })
-export class PedidoGlobalCardComponent implements OnInit {
-  @Input() pedidos: Pedido[] = []
+export class PedidoGlobalCardComponent implements OnInit, OnDestroy {
+  pedidos: Pedido[] = []
+  private _todosLosPedidos: Pedido[] = []
+  public get todosLosPedidos(): Pedido[]
+  {
+    return this._todosLosPedidos
+  }
+  @Input()
+  public set todosLosPedidos(pedidos: Pedido[])
+  {
+    this._todosLosPedidos = pedidos
+    this.pedidos = pedidos
+    this.generarIndiceDeBusqueda(pedidos)
+  }
+
   @Input() esModoOffline = true
 
   @Input() cargando = false
+  cargando_behavior = new BehaviorSubject(false)
 
   @Output('detalle') _detalle = new EventEmitter<Pedido>()
   @Output('editar') _editar = new EventEmitter<Pedido>()
   @Output('eliminar') _eliminar = new EventEmitter<Pedido>()
   @Output('compartir') _compartir = new EventEmitter<Pedido>()
-  @Output('subirNube') _subirNube = new EventEmitter<Pedido>()
+  @Output('subirNube') _subirNube = new EventEmitter<DatosNube>()
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.actualizarCargandoBuscador(false, true)
+    this.cargando_behavior.complete()
+  }
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargando_behavior.subscribe(valor => (this.cargando = valor))
+  }
+
+  private generarIndiceDeBusqueda(pedidos: Pedido[]) {
+    this.indiceBusqueda = pedidos.map((pedido, indice) => {
+      let nombreContacto = pedido.contacto.nombre ?? ''
+      let razonSocial = pedido.contacto.razonSocial ?? ''
+      let observaciones = pedido.observaciones ?? ''
+      let folio = pedido.folio ?? ''
+      let cadena = `${nombreContacto} ${razonSocial} ${observaciones} ${folio}`
+      cadena = cadena
+        .split(' ')
+        .map(x => x.toLowerCase().trim())
+        .filter(x => x)
+        .join(' ')
+      return {
+        cadena,
+        indice
+      }
+    })
+
+  }
+
   detalle(p: Pedido) {
     this._detalle.emit(p)
   }
@@ -37,7 +88,93 @@ export class PedidoGlobalCardComponent implements OnInit {
   subirNube(p: Pedido) {
     if (!this.cargando) {
       this.cargando = true
-      this._subirNube.emit(p)
+      this._subirNube.emit({
+        pedido: p,
+        cargando: this.cargando_behavior
+      })
     }
   }
+
+  // ------------------------------------
+  // --------------BUSQUEDA--------------
+  // ------------------------------------
+
+  // Obtenemos el termino de busqueda
+  // para filtrar los pedidos existentes.
+  private _terminoDeBusqueda = ''
+  public get terminoDeBusqueda() {
+    return this._terminoDeBusqueda
+  }
+  @Input()
+  public set terminoDeBusqueda(value) {
+    // Al obtener el termino ejecutamos la accion de filrar
+    this._terminoDeBusqueda = value
+    this.filtrar(value)
+  }
+
+  terminoSku: string = ''
+
+  /**
+   *La subscripcion al buscador
+   *
+   * @type {BehaviorSubject<boolean>}
+   * @memberof PedidoGlobalCardComponent
+   */
+  @Input() buscadorExterno: BehaviorSubject<boolean>
+  @Output() articulosQueNoSeMuestran = new EventEmitter<number>()
+
+  /**
+   *Facilita la busqueda de datos manteniendo una cadena 
+   cons los datos necesarios para buscar. 
+   *
+   * @type {IndiceBusqueda[]}
+   * @memberof PedidoGlobalCardComponent
+   */
+  indiceBusqueda: IndiceBusqueda[] = []
+
+  filtrar(termino: string) {
+    let termLimpio = termino.trim().toLowerCase()
+    this.pedidos = this.todosLosPedidos.slice()
+    
+    
+    
+    if (!termLimpio) {
+      this.articulosQueNoSeMuestran.emit(0)
+      this.actualizarCargandoBuscador(false)
+      this.terminoSku = termLimpio
+      return
+    }
+
+    this.pedidos = this.indiceBusqueda
+      .filter(ib => ib.cadena.includes(termLimpio))
+      .map(x => x.indice)
+      .map(x => this.todosLosPedidos.slice(x, x+1).pop())
+
+
+
+    this.actualizarCargandoBuscador(false)
+  }
+
+  actualizarCargandoBuscador(estado: boolean, completar: boolean = false) {
+    if (this.buscadorExterno !== undefined) {
+      if (!completar) this.buscadorExterno.next(estado)
+      else this.buscadorExterno.complete()
+    }
+  }
+}
+
+interface IndiceBusqueda {
+  cadena: string
+  indice: number
+}
+
+/**
+ *Agrupa la carga y el pedido para enviarlos en un solo paquete
+ al componente pare. 
+ *
+ * @interface DatosNube
+ */
+export interface DatosNube {
+  cargando: BehaviorSubject<boolean>
+  pedido: Pedido
 }
