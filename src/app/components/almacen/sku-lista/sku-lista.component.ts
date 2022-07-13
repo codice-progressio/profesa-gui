@@ -19,10 +19,9 @@ export class SkuListaComponent implements OnInit {
   @Output() skuSeleccionado = new EventEmitter<SKUSeleccionado>()
   @Input() permitirVerDetalle = true
 
-
   /**
    *Combinado con soloSeleccionable permite mostrar un Input
-    *para agregar emitir una cantidad de manera más rapida. 
+   *para agregar emitir una cantidad de manera más rapida.
    *
    * @memberof SkuListaComponent
    */
@@ -212,10 +211,18 @@ export class SkuListaComponent implements OnInit {
     this.modalService.open(id)
   }
 
-
   emitirSkuSeleccionado(sku: SKU, cantidad = 0) {
+    if (!cantidad) cantidad = 0
 
     this.skuSeleccionado.emit({ sku, cantidad })
+  }
+
+  reiniciar_valor_a_enviar(i: number) {
+    this.valor_a_enviar = 0
+    let input = document.getElementById(
+      `valor_a_enviar${i}`
+    ) as HTMLInputElement
+    input.focus()
   }
 }
 
@@ -234,10 +241,7 @@ export class OperacionesOffline {
   }
 }
 
-
-
 export interface SKUSeleccionado {
-
   sku: SKU
   cantidad?: number
 }
