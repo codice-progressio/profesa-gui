@@ -362,7 +362,9 @@
           -->
 
         <ng-container *ngIf="!esDetalle && pedido.contacto">
-          <div class="col-12 fixed-bottom text-center barra-inferior">
+          <div
+          *ngIf="mostrarBarraSticki()"
+          class="col-12 fixed-bottom text-center barra-inferior">
             <div class="row">
               <div
                 (click)="submit(formulario.value, formulario.invalid)"
@@ -396,7 +398,7 @@
   </div>
 </div>
 
-<codice-modal [id]="idModalContacto">
+<codice-modal [id]="idModalContacto" (cerrado)="contacto_modal_abierto = false">
   <div class="row">
     <div class="col-12">
       <h3>Seleccionar cliente</h3>
@@ -441,7 +443,7 @@
   </div>
 </codice-modal>
 
-<codice-modal [id]="idModalSku" (cerrado)="skuModalCerrado()">
+<codice-modal [id]="idModalSku" (cerrado)="sku_modal_abierto = false">
   <div class="row">
     <div class="col-12">
       <h3>Seleccionar SKU</h3>

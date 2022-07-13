@@ -175,6 +175,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         if (!pedido.contacto) {
           setTimeout(() => {
             this.modalService.open(this.idModalContacto)
+            this.contacto_modal_abierto = true
           }, 1000)
         }
       }
@@ -270,6 +271,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   estaCargandoBuscadorSku: BehaviorSubject<boolean>
   grupo: FormGroup
 
+  sku_modal_abierto = false
+  contacto_modal_abierto = false
+
   skus: SKU[] = []
   buscarSku(ter) {
     let termino = ter.trim()
@@ -292,6 +296,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   articulosSeleccionados: SKU[] = []
   agregarArticulo() {
     this.modalService.open(this.idModalSku)
+    this.sku_modal_abierto = true
   }
 
   seleccionarSku(datos: SKUSeleccionado) {
@@ -333,8 +338,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       this.articulosSeleccionados.splice(i, 1)
     })
   }
-
-  skuModalCerrado() {}
 
   async submit(modelo: Pedido, invalid: boolean, retornarNavegacion = true) {
     this.formulario.markAllAsTouched()
@@ -534,5 +537,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     total = this.redondear(total)
     this.f('total').setValue(total)
     return total
+  }
+
+  mostrarBarraSticki() {
+    let mostrar = this.sku_modal_abierto || this.contacto_modal_abierto ? false: true
+    return mostrar
   }
 }

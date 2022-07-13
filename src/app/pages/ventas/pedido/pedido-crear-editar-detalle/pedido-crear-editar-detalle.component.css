@@ -20,6 +20,7 @@ input.cantidad {
   /* color: white; */
   backdrop-filter: blur(5px);
   padding-top: 5px;
+  z-index: 10;
 }
 
 /* .barra-inferior table th , .barra-inferior table td {
