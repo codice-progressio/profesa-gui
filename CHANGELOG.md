@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.6.0](https://github.com/codice-progressio/profesa-gui/compare/v4.5.7...v4.6.0) (2022-07-13)
+
+
+### Features
+
+* Guardado rápido ([0c87b3f](https://github.com/codice-progressio/profesa-gui/commit/0c87b3f2e00bab489fd478d43aa27361ac7e48f9))
+* Mejoras de interfaz ([de15230](https://github.com/codice-progressio/profesa-gui/commit/de15230127850fae9b98e792fee9352d8100ecbf))
+* Se agregan cantidades desde lista de skus. ([2326b86](https://github.com/codice-progressio/profesa-gui/commit/2326b8607f2b8d5ee95d48c3a6e860b83edf1961))
+* Total e iva se muestran en modal para conservar espacio en barra sticky ([87c3968](https://github.com/codice-progressio/profesa-gui/commit/87c3968cc2b0b5565c7ca91e32eb5adb4d886c1e))
+
+
+### Bug Fixes
+
+* Barra sticky se oculta con modales. ([e95cd39](https://github.com/codice-progressio/profesa-gui/commit/e95cd397caad1d678cd2bac81ea87d74f3233bec))
+* Buscador rápido de pedidos locales no funciona ([d9b1d12](https://github.com/codice-progressio/profesa-gui/commit/d9b1d126dace27bbae634fcc949f346def2b6000))
+* Encapsulamiento de componente de pedidos mejorado ([12f0f58](https://github.com/codice-progressio/profesa-gui/commit/12f0f589aa8be5b7175fe3694f43d774d140ea17))
+* Mejora visual buscador pedidos ([7464171](https://github.com/codice-progressio/profesa-gui/commit/746417118877f60552d8d29d89b66be59039ec0c))
+* Reducción de elementos visuales y posición estática para agregar pedidos. ([6d0f1be](https://github.com/codice-progressio/profesa-gui/commit/6d0f1bedf4e41c1f5a96cc583fe15669ae01f828))
+* Reinicio de cantidades en lista de skus ([a684864](https://github.com/codice-progressio/profesa-gui/commit/a684864489d4d233c11a39a8f9b4a81096f158d0))
+
 ### [4.5.7](https://github.com/codice-progressio/profesa-gui/compare/v4.5.6...v4.5.7) (2022-06-22)
 
 
