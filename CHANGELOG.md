@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.1](https://github.com/codice-progressio/profesa-gui/compare/v4.6.0...v4.6.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* Se duplican el folio por cada producto que se agrega ([89a7039](https://github.com/codice-progressio/profesa-gui/commit/89a7039a64678429dd68e3985301e1beb1fb495c))
+
 ## [4.6.0](https://github.com/codice-progressio/profesa-gui/compare/v4.5.7...v4.6.0) (2022-07-13)
 
 
