@@ -148,8 +148,21 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       )
   }
 
-  crearFormulario(pedido: Partial<Pedido>) {
+  async crearFormulario(pedido: Partial<Pedido>) {
     this.pedido = pedido
+
+    // Si el pedido no tiene un _id es por que es nuevo
+
+    let ultimoId = pedido?._id
+    let folio = pedido?.folio
+    if (!pedido._id) {
+      let id = await this.obtenerSiguienteId()
+      ultimoId = id
+      folio = this.crearFolio(id)
+      this.id = id.toString()
+      pedido._id = id
+    }
+
     this.formulario = new FormGroup({
       contacto: new FormControl(pedido.contacto, [Validators.required]),
       observaciones: new FormControl(pedido.observaciones),
@@ -165,7 +178,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         [this.vs.minSelectedCheckboxes(1)]
       ),
 
-      ubicacion: new FormControl(pedido.ubicacion)
+      ubicacion: new FormControl(pedido.ubicacion),
+      folio: new FormControl(folio),
+      createdAt: new FormControl(new Date().toISOString()),
+      _id: new FormControl(ultimoId)
     })
 
     this.cargando = false
@@ -351,24 +367,14 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     this.cargando = true
     //Total
-    let id: number
-
-    if (this.id) id = +this.id
-    else {
-      if (!this.geo) {
-        this.notiService.toast.error('La ubicación no esta disponible')
-        return
-      }
-      modelo['ubicacion'] = {
-        latitud: this.geo.coords.latitude,
-        longitud: this.geo.coords.longitude
-      }
-
-      id = await this.obtenerUltimoId()
+    if (!this.geo) {
+      this.notiService.toast.error('La ubicación no esta disponible')
+      return
     }
-    modelo.folio = this.crearFolio(id)
-    modelo.createdAt = new Date().toISOString()
-    modelo._id = id
+    modelo['ubicacion'] = {
+      latitud: this.geo.coords.latitude,
+      longitud: this.geo.coords.longitude
+    }
 
     this.pedidoService.offline.guardar(modelo).subscribe(
       () => {
@@ -393,7 +399,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     }
   }
 
-  async obtenerUltimoId() {
+  async obtenerSiguienteId() {
     let ultimoId = await this.pedidoService.offline_indice
       .findById(0)
       .toPromise()
