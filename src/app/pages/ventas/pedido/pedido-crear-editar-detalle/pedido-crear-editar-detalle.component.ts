@@ -337,6 +337,12 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       .setValue(this.obtenerPrecioDeArticulo(articulo.value, this.lista).value)
     this.fa('articulos').push(articulo)
     this.articulosSeleccionados.push(item)
+    
+    this.notiService.toast.info(`Añadido`, '', {
+      timeOut:700,
+      positionClass: 'toast-top-center',
+
+    })
 
     this.guardadoRapido()
   }
