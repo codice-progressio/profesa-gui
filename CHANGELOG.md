@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.2](https://github.com/codice-progressio/profesa-gui/compare/v4.6.1...v4.6.2) (2022-07-30)
+
+
+### Bug Fixes
+
+* Crear notificacion al seleccionar pedido en offline [#55](https://github.com/codice-progressio/profesa-gui/issues/55) ([7e7ef7a](https://github.com/codice-progressio/profesa-gui/commit/7e7ef7a785098dc3852cd9b31825dba9446db706))
+
 ### [4.6.1](https://github.com/codice-progressio/profesa-gui/compare/v4.6.0...v4.6.1) (2022-07-14)
 
 
