@@ -45,7 +45,7 @@ export class ExcelService {
     FileSaver.saveAs(data, this.generarNombre(fileName))
   }
 
-  pedidoComoHojaDeExcel(pedido: Pedido) {
+  pedidoComoTextoPlanoFormateado(pedido: Pedido) {
     let wb = XLSX.utils.book_new()
     wb.Props = {
       Title: 'Pedido: ' + pedido.folio,
@@ -56,7 +56,9 @@ export class ExcelService {
 
     wb.SheetNames.push('PEDIDO')
 
-    let worksheet = XLSX.utils.aoa_to_sheet([
+    let tamano_columnas = []
+
+    let encabezados = [
       [
         'Folio:',
         pedido.folio,
@@ -64,19 +66,13 @@ export class ExcelService {
         this.datePipe.transform(
           new Date(pedido.createdAt),
           'dd/MMMM/yyyy HH:MM'
-        ),
-        'Ubicacion:',
-        pedido.ubicacion
-          ? `https://google.com/maps?q=${pedido.ubicacion.latitud},${pedido.ubicacion.longitud}`
-          : 'SIN UBICACION'
+        )
       ],
       [
         'Cliente:',
         pedido.contacto.nombre ?? pedido.contacto.razonSocial,
         'RFC',
         pedido.contacto.rfc,
-        'Lista de precios:',
-        pedido.contacto.listaDePrecios.nombre,
         'IVA:',
         pedido.contacto.listaDePrecios.iva
       ],
@@ -87,14 +83,21 @@ export class ExcelService {
 
         ...this.generarDomicilios(pedido.contacto.domicilios)
       ],
-      ['Vendedor:', this.usuarioService.usuarioOffline.nombre],
-      ['Observaciones', pedido.observaciones]
-    ])
-
-    let ultimaFila = ws => {
-      let range = XLSX.utils.decode_range(worksheet['!ref'])
-      return range.e.r - range.s.r + 1
-    }
+      [
+        'Vendedor:',
+        this.usuarioService.usuarioOffline.nombre,
+        'Ubicacion:',
+        pedido.ubicacion
+          ? `https://google.com/maps?q=${pedido.ubicacion.latitud},${pedido.ubicacion.longitud}`
+          : 'SIN UBICACION'
+      ],
+      [
+        'Lista de precios:',
+        pedido.contacto.listaDePrecios.nombre,
+        'Observaciones',
+        pedido.observaciones
+      ]
+    ]
 
     let aplanado = pedido.articulos
       .map(x => {
@@ -118,29 +121,135 @@ export class ExcelService {
         return objetoOrdenado
       })
 
-    XLSX.utils.sheet_add_json(worksheet, aplanado, {
-      origin: ultimaFila(worksheet)
+    let ultimaFila = ws => {
+      let range = XLSX.utils.decode_range(ws['!ref'])
+      return range.e.r - range.s.r + 1
+    }
+
+    let opciones = w => ({
+      origin: ultimaFila(w)
     })
 
-    let espacios = new Array(6).map(x => '')
+    let articulos_encabezados = [[...Object.keys(aplanado[0])]]
+    let articulos_items = [...aplanado.map(x => Object.values(x))]
 
+    let espacios = new Array(articulos_encabezados[0].length - 2).map(
+      x => ' XX '
+    )
+
+    let totales = [
+      [...espacios, 'IMPORTE: ', pedido.importe],
+      [...espacios, 'IVA: ', pedido.iva],
+      [...espacios, 'TOTAL: ', pedido.total]
+    ]
+
+    //Parseo de columnas
+    // Numeros a texto
+
+    let parsear = columnas => {
+      return columnas.map((columna, i) => {
+        let c = columna
+        // Si c es un numero lo convierto a texto
+        if (typeof c === 'number') c = c.toString()
+        // Si c es no es un texto despues de comprobar que es un numero
+        // entonces lo hacemos vacio ( quitamos null, undefined, etc)
+        if (typeof c !== 'string') c = ''
+        // Quitamos espacios en blanco
+        c = c?.trim()
+        return c
+      })
+    }
+
+    encabezados = encabezados.map(parsear)
+    articulos_encabezados = articulos_encabezados.map(parsear)
+    articulos_items = articulos_items.map(parsear)
+    totales = totales.map(parsear)
+
+    // Analisis de columnas
+
+    let analizar_tamano_de_columnas = (tamanos, columnas) => {
+      columnas.forEach((columna, i) => {
+        // Creamos un nuevo valor
+
+        if (!tamanos[i]) tamanos[i] = 0
+
+        let tam_max_columna = tamanos[i]
+        let tamano_analizado = columna ? columna.length : 0
+        if (tamano_analizado > tam_max_columna) tamanos[i] = tamano_analizado
+      })
+    }
+
+    let analisis = columnas =>
+      analizar_tamano_de_columnas(tamano_columnas, columnas)
+
+    encabezados.forEach(analisis)
+    articulos_encabezados.forEach(analisis)
+    articulos_items.forEach(analisis)
+    totales.forEach(analisis)
+
+    // Crear arreglos faltantes para columnas
+
+    let columnas_faltantes = columnas => {
+      let columnas_actuales = columnas.length
+      let columnas_diferencia = tamano_columnas.length - columnas_actuales
+      if (columnas_diferencia > 0) {
+        return [...columnas, ...new Array(columnas_diferencia).fill('')]
+      }
+      return columnas
+    }
+
+    encabezados = encabezados.map(columnas_faltantes)
+    articulos_encabezados = articulos_encabezados.map(columnas_faltantes)
+    articulos_items = articulos_items.map(columnas_faltantes)
+    totales = totales.map(columnas_faltantes)
+
+
+    //Compensacion de columnas
+
+    let compensar_columnas = (tamanos, columnas) => {
+      return columnas.map((columna, i) => {
+        let tamano = tamanos[i]
+        let nueva_columna = columna.padEnd(tamano, ' ')
+        return nueva_columna
+      })
+    }
+
+    let compensar = columnas => compensar_columnas(tamano_columnas, columnas)
+
+    encabezados = encabezados.map(compensar)
+    articulos_encabezados = articulos_encabezados.map(compensar)
+    articulos_items = articulos_items.map(compensar)
+    totales = totales.map(compensar)
+
+    // Crear espacios
+    let crear_espacios = () => {
+      return [new Array(tamano_columnas.length)
+        .fill('-')
+        .map((c, i) => new Array(tamano_columnas[i]).fill('-').join(''))]
+    }
+
+
+
+    let worksheet = XLSX.utils.aoa_to_sheet(encabezados)
     XLSX.utils.sheet_add_aoa(
       worksheet,
-      [
-        [...espacios, 'IMPORTE: ', pedido.importe],
-        [...espacios, 'IVA: ', pedido.iva],
-        [...espacios, 'TOTAL: ', pedido.total]
-      ],
-      {
-        origin: ultimaFila(worksheet)
-      }
+      articulos_encabezados,
+      opciones(worksheet)
     )
+    XLSX.utils.sheet_add_aoa(worksheet, crear_espacios(), opciones(worksheet))
+    XLSX.utils.sheet_add_aoa(worksheet, articulos_items, opciones(worksheet))
+    XLSX.utils.sheet_add_aoa(worksheet, crear_espacios(), opciones(worksheet))
+    XLSX.utils.sheet_add_aoa(worksheet, totales, opciones(worksheet))
+
     wb.Sheets.PEDIDO = worksheet
-    let texto = XLSX.utils.sheet_to_csv(worksheet, { forceQuotes: true })
+    let texto = XLSX.utils.sheet_to_html(worksheet, {
+      // forceQuotes: false,
+      // FS: '|'
+    })
 
     let navigator = window.navigator as any
-    const file = new File([texto], pedido.folio.concat('.csv'), {
-      type: 'text/csv'
+    const file = new File([texto], pedido.folio.concat('.html'), {
+      type: 'text/html'
     })
 
     return new Promise((resolve, reject) => {

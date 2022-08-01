@@ -160,7 +160,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
   }
 
   compartir(pedido: Pedido) {
-    this.excelService.pedidoComoHojaDeExcel(pedido).then(
+    this.excelService.pedidoComoTextoPlanoFormateado(pedido).then(
       () => {},
       e => console.error(e)
     )
