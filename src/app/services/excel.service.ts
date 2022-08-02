@@ -110,7 +110,7 @@ export class ExcelService {
         let objetoOrdenado = {}
         ;[
           'cantidad',
-          'unidad',
+          // 'unidad',
           'codigo',
           'nombreCompleto',
           'descripcion',
