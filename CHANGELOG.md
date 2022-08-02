@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.4](https://github.com/codice-progressio/profesa-gui/compare/v4.6.3...v4.6.4) (2022-08-02)
+
+
+### Bug Fixes
+
+* Removida columna de unidad ([318348d](https://github.com/codice-progressio/profesa-gui/commit/318348dba55286d354c1141e50dbdf75ae981abc))
+
 ### [4.6.3](https://github.com/codice-progressio/profesa-gui/compare/v4.6.2...v4.6.3) (2022-08-01)
 
 
