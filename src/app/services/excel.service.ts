@@ -113,7 +113,7 @@ export class ExcelService {
           // 'unidad',
           'codigo',
           'nombreCompleto',
-          'descripcion',
+          // 'descripcion',
           'observaciones',
           'precio',
           'importe'
