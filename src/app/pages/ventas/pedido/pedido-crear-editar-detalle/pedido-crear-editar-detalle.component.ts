@@ -373,14 +373,14 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
     this.cargando = true
     //Total
-    if (!this.geo) {
-      this.notiService.toast.error('La ubicación no esta disponible')
-      return
-    }
-    modelo['ubicacion'] = {
-      latitud: this.geo.coords.latitude,
-      longitud: this.geo.coords.longitude
-    }
+    // if (!this.geo) {
+    //   this.notiService.toast.error('La ubicación no esta disponible')
+    //   return
+    // }
+    // modelo['ubicacion'] = {
+    //   latitud: this.geo.coords.latitude,
+    //   longitud: this.geo.coords.longitude
+    // }
 
     this.pedidoService.offline.guardar(modelo).subscribe(
       () => {

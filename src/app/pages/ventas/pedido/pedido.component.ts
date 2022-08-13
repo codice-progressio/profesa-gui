@@ -59,7 +59,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
     this.cargar()
 
     this.comprobarUsuario()
-    this.comprobarGPS()
+    // this.comprobarGPS()
 
     this.cargandoBuscador.subscribe(cargando => {
       this.cargando = cargando
