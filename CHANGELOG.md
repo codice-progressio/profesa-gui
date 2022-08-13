@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.6](https://github.com/codice-progressio/profesa-gui/compare/v4.6.5...v4.6.6) (2022-08-13)
+
+
+### Bug Fixes
+
+* Cambiar ruta de inicio por defecto ( que sea de pedidos ) [#58](https://github.com/codice-progressio/profesa-gui/issues/58) ([3a08994](https://github.com/codice-progressio/profesa-gui/commit/3a0899431c3ea71176ab1c0208f3bd254089217e))
+* En la lista de skus por agregar se muestra el precio de la lista utilizada para el cliente ([fc2c9eb](https://github.com/codice-progressio/profesa-gui/commit/fc2c9eb3cbf15a3c4f38eafd7a0e32cd46120d5e))
+* GPS da error en ocasiones, lo que no permite tomar el pedido [#59](https://github.com/codice-progressio/profesa-gui/issues/59) ([0aa8fe4](https://github.com/codice-progressio/profesa-gui/commit/0aa8fe4671dc95b301c357c94f1224b58b1fe147))
+* Prevenir recarga de pagina al hacer scroll [#57](https://github.com/codice-progressio/profesa-gui/issues/57) ([1109791](https://github.com/codice-progressio/profesa-gui/commit/11097910889078899e12e31c45ab671b9e306b45))
+
 ### [4.6.5](https://github.com/codice-progressio/profesa-gui/compare/v4.6.4...v4.6.5) (2022-08-04)
 
 
