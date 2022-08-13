@@ -139,6 +139,13 @@ export class UsuarioService {
   }
 
   logout() {
+    
+    let ruta = '/login'
+
+    if (this.usuario.permissions.includes(permisosKeysConfig['menu:configuraciones:parametros'])) 
+      ruta = 'offline/pedidos/mis-pedidos'
+    
+    
     this.usuario = null
     this.token = ''
     this.menu = [null]
@@ -146,7 +153,7 @@ export class UsuarioService {
     localStorage.removeItem('menu')
     localStorage.removeItem('token')
     localStorage.removeItem('id')
-    this.router.navigate(['/login'])
+    this.router.navigate([ruta])
   }
 
   estaLoguedo() {
