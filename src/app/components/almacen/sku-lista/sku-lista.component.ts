@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { ModalService } from '@codice-progressio/modal'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { UtilidadesService } from '../../../services/utilidades.service'
+import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 
 @Component({
   selector: 'app-sku-lista',
@@ -18,6 +19,7 @@ export class SkuListaComponent implements OnInit {
   @Input() soloSeleccionable = false
   @Output() skuSeleccionado = new EventEmitter<SKUSeleccionado>()
   @Input() permitirVerDetalle = true
+  @Input() lista_de_precios:ListaDePrecios = null
 
   /**
    *Combinado con soloSeleccionable permite mostrar un Input
@@ -158,7 +160,7 @@ export class SkuListaComponent implements OnInit {
   buscar(termino: string) {
     this.estadoCarga(true)
 
-    if (this.offline) this.operacionesOffline.find(termino)
+    if (this.offline) this.operacionesOffline.find(termino, this.lista_de_precios)
     else
       this.skuService.buscarTermino(termino).subscribe(
         skus => {
@@ -228,16 +230,33 @@ export class SkuListaComponent implements OnInit {
 
 export class OperacionesOffline {
   constructor(private root: SkuListaComponent) {}
-  find(termino = '') {
+  find(termino = '', lista_de_precios: ListaDePrecios = undefined) {
     this.root.skuService.offline
       .find(termino)
       .then(skus => {
         this.root.skus = skus
+
+        //Obtenemos el valor de la lista de precios para mostrar
+        // en la busqueda el precio antes de IVA
+
+        if (lista_de_precios)
+          this.root.skus = this.root.skus.map(x => {
+            x.costoVenta = this.obtener_precio_de_lista(x, lista_de_precios)
+            return x
+          })
+
         this.root.estadoCarga(false)
       })
       .catch(err => {
         ;() => this.root.estadoCarga(false)
       })
+  }
+
+  private obtener_precio_de_lista(sku: SKU, lista: ListaDePrecios) {
+    let precio = 0
+    let sku_nuevo = lista.skus.find(x => x.sku === sku._id)
+    precio = sku_nuevo.precio
+    return precio
   }
 }
 
