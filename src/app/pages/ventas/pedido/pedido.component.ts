@@ -124,7 +124,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
     this.pedidoService.offline.contarDatos().subscribe(limit => {
       this.pedidoService.offline.findAll({ skip: 0, limit }).subscribe(
         datos => {
-          this.pedidos = datos
+          this.pedidos = datos.reverse()
           this.cargando = false
         },
         err => {
