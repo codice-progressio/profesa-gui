@@ -11,6 +11,6 @@ export class ContieneElPermisoPipe implements PipeTransform {
   transform(permiso: string): boolean {
     let usuario = JSON.parse(localStorage.getItem('usuario')) as Usuario
 
-    return usuario.permissions.includes(permiso)
+    return usuario?.permissions?.includes(permiso)
   }
 }
