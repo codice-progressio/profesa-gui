@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.8](https://github.com/codice-progressio/profesa-gui/compare/v4.6.7...v4.6.8) (2022-09-17)
+
+
+### Bug Fixes
+
+* Actualización ([70cac9c](https://github.com/codice-progressio/profesa-gui/commit/70cac9c8603811395d5915b710e91808d409538c))
+* Actualizado ([3adf2d8](https://github.com/codice-progressio/profesa-gui/commit/3adf2d8224f6dc49e04fb66b95ec0454c7e58369))
+* Agregada referencia a lista de precios ([539b441](https://github.com/codice-progressio/profesa-gui/commit/539b4414235d6b9a3b69c0f1d6b5af0b3b711239))
+* Error al cargar usuarios cuando se desloguea ([d25bee2](https://github.com/codice-progressio/profesa-gui/commit/d25bee24f82d33accf3e42f46f60ea04e4ca0eeb))
+* Si el precio no está en la lista asignada se genera un error. ([e4c58e6](https://github.com/codice-progressio/profesa-gui/commit/e4c58e69d210a0ba3a30707c70bab486b1adbe46))
+
 ### [4.6.7](https://github.com/codice-progressio/profesa-gui/compare/v4.6.6...v4.6.7) (2022-08-18)
 
 
