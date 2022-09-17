@@ -14,7 +14,7 @@ import {
   OrdenLigera
 } from '../../services/folio/folio-new.service'
 import { timeout } from 'rxjs/operators'
-import { FormGroup } from '@angular/forms'
+import { UntypedFormGroup } from '@angular/forms'
 @Component({
   selector: 'app-scanner-formulario-dinamico',
   templateUrl: './scanner-formulario-dinamico.component.html',
@@ -187,7 +187,7 @@ export class ScannerFormularioDinamicoComponent implements OnInit {
     )
   }
 
-  submit(datos: FormGroup) {
+  submit(datos: UntypedFormGroup) {
     this.cargando['registrando'] = 'Registrando datos de proceso.'
     this.folioService
       .registrar(this.ordenEscaneada, this.idDepartamento, datos.value)

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core'
 import { QuestionBase } from '../question-base'
-import { FormGroup, AbstractControl } from '@angular/forms'
+import { UntypedFormGroup, AbstractControl } from '@angular/forms'
 import { ValidacionesService } from '../../../services/utilidades/validaciones.service'
 import { Subject } from 'rxjs'
 
@@ -13,7 +13,7 @@ export class DynamicFormQuestionComponent {
   constructor(public vs: ValidacionesService) {}
 
   @Input() question: QuestionBase<string>
-  @Input() form: FormGroup
+  @Input() form: UntypedFormGroup
   @Output() actualizarKey = new Subject<null>()
   @Input() modoCreador = false
 

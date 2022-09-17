@@ -1,6 +1,6 @@
 import { Location } from '@angular/common'
 import { Component, OnInit, Renderer2 } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { RutaDeEntrega } from 'src/app/models/rutaDeEntrega.model'
 import { RutaDeEntregaService } from 'src/app/services/ruta-de-entrega.service'
@@ -23,7 +23,7 @@ export class RutaCrearEditarDetalleComponent implements OnInit {
     private utilidadesService: UtilidadesService
   ) {}
 
-  formulario: FormGroup
+  formulario: UntypedFormGroup
   detalle: boolean = false
   editando: boolean = false
   id: string = ''
@@ -69,14 +69,14 @@ export class RutaCrearEditarDetalleComponent implements OnInit {
 
   crearFormulario(ruta: Partial<RutaDeEntrega>) {
     this.ruta = ruta as RutaDeEntrega
-    this.formulario = new FormGroup({
-      _id: new FormControl(ruta._id, []),
+    this.formulario = new UntypedFormGroup({
+      _id: new UntypedFormControl(ruta._id, []),
 
-      nombre: new FormControl(ruta.nombre, [
+      nombre: new UntypedFormControl(ruta.nombre, [
         Validators.minLength(4),
         Validators.required
       ]),
-      descripcion: new FormControl(ruta.descripcion, [])
+      descripcion: new UntypedFormControl(ruta.descripcion, [])
     })
 
     if (this.esRutaDetalle()) {

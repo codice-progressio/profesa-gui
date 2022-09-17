@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { UntypedFormControl } from '@angular/forms'
 import { SkuLote } from 'src/app/models/lote.model'
 import { SkuService } from 'src/app/services/sku/sku.service'
 import { ManejoDeMensajesService } from 'src/app/services/utilidades/manejo-de-mensajes.service'
@@ -13,8 +13,8 @@ import { SKU } from '../../../models/sku.model'
 export class SkuSalidaComponent implements OnInit {
   @ViewChild('input') input: ElementRef
 
-  salida = new FormControl()
-  observaciones = new FormControl()
+  salida = new UntypedFormControl()
+  observaciones = new UntypedFormControl()
 
   private _cargando = false
   public get cargando() {

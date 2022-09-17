@@ -2,9 +2,9 @@ import { Component, OnInit, Renderer2 } from '@angular/core'
 import { ContactoService } from '../../../../services/contacto.service'
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators
 } from '@angular/forms'
 import { Location } from '@angular/common'
@@ -43,7 +43,7 @@ export class ContactoCrearEditarComponent implements OnInit {
 
   esDetalle = false
 
-  formulario: FormGroup
+  formulario: UntypedFormGroup
   id: string
   listasDePrecio: ListaDePrecios[] = []
   contacto: Contacto
@@ -127,33 +127,33 @@ export class ContactoCrearEditarComponent implements OnInit {
 
   crearFormulario(contacto: Partial<Contacto>) {
     this.contactoSeleccionado = contacto as Contacto
-    this.formulario = new FormGroup({
-      _id: new FormControl(contacto._id, []),
-      codigo: new FormControl(contacto.codigo),
-      nombre: new FormControl(contacto.nombre, [Validators.minLength(4)]),
-      razonSocial: new FormControl(contacto.razonSocial, []),
-      domicilios: new FormArray(
+    this.formulario = new UntypedFormGroup({
+      _id: new UntypedFormControl(contacto._id, []),
+      codigo: new UntypedFormControl(contacto.codigo),
+      nombre: new UntypedFormControl(contacto.nombre, [Validators.minLength(4)]),
+      razonSocial: new UntypedFormControl(contacto.razonSocial, []),
+      domicilios: new UntypedFormArray(
         contacto.domicilios?.map(x => this.creFormDomicilio(x)) ?? [
           this.creFormDomicilio({})
         ]
       ),
-      contactos: new FormArray(
+      contactos: new UntypedFormArray(
         contacto.contactos?.map(x => this.creFormContacto(x)) ?? [
           this.creFormContacto({})
         ]
       ),
-      rfc: new FormControl(contacto.rfc, []),
-      cuentas: new FormArray(
+      rfc: new UntypedFormControl(contacto.rfc, []),
+      cuentas: new UntypedFormArray(
         contacto.cuentas?.map(x => this.creFormCuentas(x)) ?? [
           this.creFormCuentas({})
         ]
       ),
 
-      esProveedor: new FormControl(contacto.esProveedor),
-      esCliente: new FormControl(contacto.esCliente),
-      listaDePrecios: new FormControl(contacto.listaDePrecios),
-      usuariosAsignados: new FormArray(
-        contacto.usuariosAsignados?.map(x => new FormControl(x._id))
+      esProveedor: new UntypedFormControl(contacto.esProveedor),
+      esCliente: new UntypedFormControl(contacto.esCliente),
+      listaDePrecios: new UntypedFormControl(contacto.listaDePrecios),
+      usuariosAsignados: new UntypedFormArray(
+        contacto.usuariosAsignados?.map(x => new UntypedFormControl(x._id))
       )
     })
 
@@ -170,45 +170,45 @@ export class ContactoCrearEditarComponent implements OnInit {
     }
   }
 
-  creFormDomicilio(domicilios: Partial<ContactoDomicilio>): FormGroup {
-    return new FormGroup({
-      _id: new FormControl(domicilios._id),
-      calle: new FormControl(domicilios.calle),
-      numeroInterior: new FormControl(domicilios.numeroInterior),
-      numeroExterior: new FormControl(domicilios.numeroExterior),
-      colonia: new FormControl(domicilios.colonia),
-      codigoPostal: new FormControl(domicilios.codigoPostal),
-      estado: new FormControl(domicilios.estado ?? 'Jalisco'),
-      pais: new FormControl(domicilios.pais ?? 'México'),
-      ciudad: new FormControl(domicilios.ciudad),
-      urlMaps: new FormControl(domicilios.urlMaps)
+  creFormDomicilio(domicilios: Partial<ContactoDomicilio>): UntypedFormGroup {
+    return new UntypedFormGroup({
+      _id: new UntypedFormControl(domicilios._id),
+      calle: new UntypedFormControl(domicilios.calle),
+      numeroInterior: new UntypedFormControl(domicilios.numeroInterior),
+      numeroExterior: new UntypedFormControl(domicilios.numeroExterior),
+      colonia: new UntypedFormControl(domicilios.colonia),
+      codigoPostal: new UntypedFormControl(domicilios.codigoPostal),
+      estado: new UntypedFormControl(domicilios.estado ?? 'Jalisco'),
+      pais: new UntypedFormControl(domicilios.pais ?? 'México'),
+      ciudad: new UntypedFormControl(domicilios.ciudad),
+      urlMaps: new UntypedFormControl(domicilios.urlMaps)
     })
   }
 
-  creFormContacto(contactos: Partial<ContactoContacto>): FormGroup {
-    return new FormGroup({
-      _id: new FormControl(contactos._id),
-      nombre: new FormControl(contactos.nombre),
-      telefono: new FormArray(
-        contactos.telefono?.map(x => new FormControl(x)) ?? [new FormControl()]
+  creFormContacto(contactos: Partial<ContactoContacto>): UntypedFormGroup {
+    return new UntypedFormGroup({
+      _id: new UntypedFormControl(contactos._id),
+      nombre: new UntypedFormControl(contactos.nombre),
+      telefono: new UntypedFormArray(
+        contactos.telefono?.map(x => new UntypedFormControl(x)) ?? [new UntypedFormControl()]
       ),
-      correo: new FormArray(
-        contactos.correo?.map(x => new FormControl(x, [Validators.email])) ?? [
-          new FormControl('', [Validators.email])
+      correo: new UntypedFormArray(
+        contactos.correo?.map(x => new UntypedFormControl(x, [Validators.email])) ?? [
+          new UntypedFormControl('', [Validators.email])
         ]
       ),
-      puesto: new FormArray(
-        contactos.puesto?.map(x => new FormControl(x)) ?? [new FormControl()]
+      puesto: new UntypedFormArray(
+        contactos.puesto?.map(x => new UntypedFormControl(x)) ?? [new UntypedFormControl()]
       )
     })
   }
 
-  creFormCuentas(cuentas: Partial<ContactoCuenta> = {}): FormGroup {
-    return new FormGroup({
-      _id: new FormControl(cuentas._id),
-      clabe: new FormControl(cuentas.clabe, [this.vs.numberValidator]),
-      cuenta: new FormControl(cuentas.cuenta, [this.vs.numberValidator]),
-      banco: new FormControl(cuentas.banco)
+  creFormCuentas(cuentas: Partial<ContactoCuenta> = {}): UntypedFormGroup {
+    return new UntypedFormGroup({
+      _id: new UntypedFormControl(cuentas._id),
+      clabe: new UntypedFormControl(cuentas.clabe, [this.vs.numberValidator]),
+      cuenta: new UntypedFormControl(cuentas.cuenta, [this.vs.numberValidator]),
+      banco: new UntypedFormControl(cuentas.banco)
     })
   }
 
@@ -246,7 +246,7 @@ export class ContactoCrearEditarComponent implements OnInit {
     )
   }
 
-  eliminar(i: number, arreglo: FormArray) {
+  eliminar(i: number, arreglo: UntypedFormArray) {
     arreglo.removeAt(i)
   }
 
@@ -257,15 +257,15 @@ export class ContactoCrearEditarComponent implements OnInit {
   fa(campoArreglo: string | AbstractControl) {
     return (
       typeof campoArreglo === 'string' ? this.f(campoArreglo) : campoArreglo
-    ) as FormArray
+    ) as UntypedFormArray
   }
 
-  dfa(dummy: AbstractControl, campo: string): FormArray {
-    return dummy.get(campo) as FormArray
+  dfa(dummy: AbstractControl, campo: string): UntypedFormArray {
+    return dummy.get(campo) as UntypedFormArray
   }
 
   addCampoSimple(campo: AbstractControl) {
-    this.fa(campo).push(new FormControl())
+    this.fa(campo).push(new UntypedFormControl())
   }
 
   idModalRutas = Math.random() * 100000 + 'rutas'
@@ -348,7 +348,7 @@ export class ContactoCrearEditarComponent implements OnInit {
       .includes(usuario._id)
     if (!usuarioYaEstaAgregado) {
       this.contacto.usuariosAsignados.push(usuario)
-      this.fa('usuariosAsignados').push(new FormControl(usuario._id))
+      this.fa('usuariosAsignados').push(new UntypedFormControl(usuario._id))
     }
   }
 

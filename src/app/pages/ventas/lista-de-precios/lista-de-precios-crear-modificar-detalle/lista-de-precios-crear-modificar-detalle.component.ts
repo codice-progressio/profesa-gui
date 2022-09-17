@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core'
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators
 } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -30,7 +30,7 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
   esModificar: boolean = false
 
   lista: ListaDePrecios
-  formulario: FormGroup
+  formulario: UntypedFormGroup
 
   etiquetasFiltrandose: string[] = []
   termino: string = ''
@@ -39,7 +39,7 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
 
   paginacion = new Paginacion()
 
-  buscador = new FormControl()
+  buscador = new UntypedFormControl()
   estaCargandoBuscador: BehaviorSubject<boolean>
 
   corte = { inicio: 0, fin: 0 }
@@ -157,19 +157,19 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
   }
 
   crearFormulario(datos: Partial<ListaDePrecios> = {}) {
-    this.formulario = new FormGroup({
-      _id: new FormControl(datos._id),
-      nombre: new FormControl(datos.nombre ?? '', [
+    this.formulario = new UntypedFormGroup({
+      _id: new UntypedFormControl(datos._id),
+      nombre: new UntypedFormControl(datos.nombre ?? '', [
         Validators.required,
         Validators.minLength(1)
       ]),
-      iva: new FormControl(datos.iva ?? 0, [
+      iva: new UntypedFormControl(datos.iva ?? 0, [
         Validators.required,
         Validators.min(0),
         Validators.max(100)
       ]),
-      descripcion: new FormControl(datos.descripcion ?? '', []),
-      skus: new FormArray(datos?.skus?.map(x => this.crearSku(x)) ?? [])
+      descripcion: new UntypedFormControl(datos.descripcion ?? '', []),
+      skus: new UntypedFormArray(datos?.skus?.map(x => this.crearSku(x)) ?? [])
     })
   }
 
@@ -177,13 +177,13 @@ export class ListaDePreciosCrearModificarDetalleComponent implements OnInit {
     return this.formulario.get(c)
   }
   fa(c: string) {
-    return this.formulario.get(c) as FormArray
+    return this.formulario.get(c) as UntypedFormArray
   }
 
   crearSku(x: Partial<SKUListaDePrecios> = {}): any {
-    return new FormGroup({
-      sku: new FormControl(x.sku ?? '', [Validators.required]),
-      precio: new FormControl(x.precio ?? 0, [Validators.required])
+    return new UntypedFormGroup({
+      sku: new UntypedFormControl(x.sku ?? '', [Validators.required]),
+      precio: new UntypedFormControl(x.precio ?? 0, [Validators.required])
     })
   }
 

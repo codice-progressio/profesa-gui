@@ -15,7 +15,7 @@ import { UsuarioService } from '../../services/usuario/usuario.service'
 import { SKU } from '../../models/sku.model'
 import { ManejoDeMensajesService } from '../../services/utilidades/manejo-de-mensajes.service'
 import { SkuService } from '../../services/sku/sku.service'
-import { FormControl } from '@angular/forms'
+import { UntypedFormControl } from '@angular/forms'
 import { ImpresionService, articulo } from '../../services/impresion.service'
 import * as moment from 'moment'
 import {
@@ -194,7 +194,7 @@ export class PuntoDeVentaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   cambio = 0
   dineroRecibido: number[] = []
-  inputEfectivoFC = new FormControl('')
+  inputEfectivoFC = new UntypedFormControl('')
 
   cobrar(valor: string) {
     if (this.cargando) {

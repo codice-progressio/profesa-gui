@@ -7,7 +7,7 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { UntypedFormControl } from '@angular/forms'
 import { BehaviorSubject, ReplaySubject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
 
@@ -46,7 +46,7 @@ export class BuscadorComponent implements OnInit {
     this._cargando = value
   }
 
-  input = new FormControl()
+  input = new UntypedFormControl()
   @ViewChild('myInput') inputEl: ElementRef<HTMLInputElement>
   // @Output() enfoque = EventEmitter<
 

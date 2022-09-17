@@ -4,7 +4,7 @@ import { SkuService } from '../../../services/sku/sku.service'
 import { ManejoDeMensajesService } from '../../../services/utilidades/manejo-de-mensajes.service'
 import { SkuLote, SkuLoteMovimiento } from '../../../models/lote.model'
 import { __String } from 'typescript'
-import { FormControl } from '@angular/forms'
+import { UntypedFormControl } from '@angular/forms'
 
 @Component({
   selector: 'app-sku-entrada',
@@ -14,8 +14,8 @@ import { FormControl } from '@angular/forms'
 export class SkuEntradaComponent implements OnInit {
   @ViewChild('input') input: ElementRef
 
-  entrada = new FormControl()
-  observaciones = new FormControl()
+  entrada = new UntypedFormControl()
+  observaciones = new UntypedFormControl()
 
   private _cargando = false
   public get cargando() {

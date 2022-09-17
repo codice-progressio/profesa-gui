@@ -8,7 +8,7 @@ import {
 } from '@angular/core'
 import { QuestionControlService } from '../question-control.service'
 import { QuestionBase } from '../question-base'
-import { FormGroup } from '@angular/forms'
+import { UntypedFormGroup } from '@angular/forms'
 import { BehaviorSubject, Observable } from 'rxjs'
 
 @Component({
@@ -21,7 +21,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
   @Input() datos: Observable<QuestionBase<string>[]>
   subscription
   @Input() cancelarCB: Function
-  form: FormGroup
+  form: UntypedFormGroup
   payLoad = ''
 
   questions: QuestionBase<string>[] = []

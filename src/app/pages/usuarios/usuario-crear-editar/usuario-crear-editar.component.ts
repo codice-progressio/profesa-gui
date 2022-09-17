@@ -1,6 +1,6 @@
 import { Location } from '@angular/common'
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router'
 import {
   ROLES,
@@ -42,7 +42,7 @@ export class UsuarioCrearEditarComponent implements OnInit {
   roles = ROLES
 
   mostrarFormulario = false
-  formulario: FormGroup
+  formulario: UntypedFormGroup
   usuario: Usuario
   permisos: [string: string]
   permisosOrdenados: string[] = []
@@ -69,25 +69,25 @@ export class UsuarioCrearEditarComponent implements OnInit {
   }
   crearFormulario(usuario: Partial<Usuario>) {
     const campos = {
-      _id: new FormControl(usuario._id),
-      nombre: new FormControl(usuario.nombre, [
+      _id: new UntypedFormControl(usuario._id),
+      nombre: new UntypedFormControl(usuario.nombre, [
         Validators.required,
         Validators.minLength(4)
       ]),
-      email: new FormControl(usuario.email, [
+      email: new UntypedFormControl(usuario.email, [
         Validators.email,
         Validators.required
       ])
     }
 
     const password = {
-      password: new FormControl('', [
+      password: new UntypedFormControl('', [
         Validators.minLength(8),
         Validators.required
       ])
     }
 
-    this.formulario = new FormGroup({
+    this.formulario = new UntypedFormGroup({
       ...campos,
       // Si hay un id agregamos el campo password
       ...(usuario._id ? {} : password)

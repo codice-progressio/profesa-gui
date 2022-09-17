@@ -1,6 +1,6 @@
 import { Location } from '@angular/common'
 import { Component, OnInit, Optional } from '@angular/core'
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms'
+import { UntypedFormGroup, UntypedFormControl, UntypedFormArray, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { SKU } from 'src/app/models/sku.model'
 import { SkuService } from 'src/app/services/sku/sku.service'
@@ -14,7 +14,7 @@ import { ValidacionesService } from 'src/app/services/utilidades/validaciones.se
 })
 export class SkuCrearModificarComponent implements OnInit {
   cargando = false
-  formulario: FormGroup
+  formulario: UntypedFormGroup
   estaEditando = false
 
   constructor(
@@ -60,27 +60,27 @@ export class SkuCrearModificarComponent implements OnInit {
   }
 
   crearFormulario(sku: Partial<SKU>) {
-    this.formulario = new FormGroup({
-      _id: new FormControl(sku?._id),
-      nombreCompleto: new FormControl(sku?.nombreCompleto, [
+    this.formulario = new UntypedFormGroup({
+      _id: new UntypedFormControl(sku?._id),
+      nombreCompleto: new UntypedFormControl(sku?.nombreCompleto, [
         Validators.required,
         Validators.minLength(4)
       ]),
-      unidad: new FormControl(sku?.unidad),
-      descripcion: new FormControl(sku?.descripcion),
-      puedoProducirlo: new FormControl(sku?.puedoProducirlo),
-      puedoComprarlo: new FormControl(sku?.puedoComprarlo),
-      puedoVenderlo: new FormControl(sku?.puedoVenderlo),
-      stockMinimo: new FormControl(sku?.stockMinimo, [Validators.min(0)]),
-      stockMaximo: new FormControl(sku?.stockMaximo, [Validators.min(0)]),
-      etiquetas: new FormArray(
+      unidad: new UntypedFormControl(sku?.unidad),
+      descripcion: new UntypedFormControl(sku?.descripcion),
+      puedoProducirlo: new UntypedFormControl(sku?.puedoProducirlo),
+      puedoComprarlo: new UntypedFormControl(sku?.puedoComprarlo),
+      puedoVenderlo: new UntypedFormControl(sku?.puedoVenderlo),
+      stockMinimo: new UntypedFormControl(sku?.stockMinimo, [Validators.min(0)]),
+      stockMaximo: new UntypedFormControl(sku?.stockMaximo, [Validators.min(0)]),
+      etiquetas: new UntypedFormArray(
         sku.etiquetas?.length > 0
-          ? sku.etiquetas.map(x => new FormControl(x))
+          ? sku.etiquetas.map(x => new UntypedFormControl(x))
           : []
       ),
 
-      costoVenta: new FormControl(sku.costoVenta ?? 0, [Validators.min(0)]), 
-      codigo: new FormControl(sku.codigo)
+      costoVenta: new UntypedFormControl(sku.costoVenta ?? 0, [Validators.min(0)]), 
+      codigo: new UntypedFormControl(sku.codigo)
     })
 
     this.cargando = false
@@ -96,20 +96,20 @@ export class SkuCrearModificarComponent implements OnInit {
       return
     }
 
-    let etiquetasField = this.f('etiquetas') as FormArray
-    etiquetasField.push(new FormControl(etiqueta))
+    let etiquetasField = this.f('etiquetas') as UntypedFormArray
+    etiquetasField.push(new UntypedFormControl(etiqueta))
 
     input.value = ''
     input.focus()
   }
 
   eliminarEtiqueta(i: number) {
-    let etiquetasField = this.f('etiquetas') as FormArray
+    let etiquetasField = this.f('etiquetas') as UntypedFormArray
     etiquetasField.removeAt(i)
   }
 
   fa(campo) {
-    return this.f(campo) as FormArray
+    return this.f(campo) as UntypedFormArray
   }
 
   submit(model: SKU, invalid: boolean) {

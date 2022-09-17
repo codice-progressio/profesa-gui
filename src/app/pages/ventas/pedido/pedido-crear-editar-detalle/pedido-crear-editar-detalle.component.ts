@@ -4,9 +4,9 @@ import { PedidoService } from '../../../../services/pedido.service'
 import { ValidacionesService } from '../../../../services/utilidades/validaciones.service'
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators
 } from '@angular/forms'
 import { ArticuloPedido, Pedido } from '../../../../models/pedido.model'
@@ -71,7 +71,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (value) this.formulario?.disable()
     else this.formulario?.enable()
   }
-  formulario: FormGroup
+  formulario: UntypedFormGroup
   id: string
   esDetalle: boolean
   geo: PosicionDeGeolocalizacion
@@ -163,13 +163,13 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       pedido._id = id
     }
 
-    this.formulario = new FormGroup({
-      contacto: new FormControl(pedido.contacto, [Validators.required]),
-      observaciones: new FormControl(pedido.observaciones),
-      total: new FormControl(pedido.total),
-      iva: new FormControl(pedido.iva),
-      importe: new FormControl(pedido.importe),
-      articulos: new FormArray(
+    this.formulario = new UntypedFormGroup({
+      contacto: new UntypedFormControl(pedido.contacto, [Validators.required]),
+      observaciones: new UntypedFormControl(pedido.observaciones),
+      total: new UntypedFormControl(pedido.total),
+      iva: new UntypedFormControl(pedido.iva),
+      importe: new UntypedFormControl(pedido.importe),
+      articulos: new UntypedFormArray(
         pedido.articulos?.map(x => {
           // Cargamos los articulos en la lista para su descripcion
           this.articulosSeleccionados.push(x.sku)
@@ -178,10 +178,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
         [this.vs.minSelectedCheckboxes(1)]
       ),
 
-      ubicacion: new FormControl(pedido.ubicacion),
-      folio: new FormControl(folio),
-      createdAt: new FormControl(new Date().toISOString()),
-      _id: new FormControl(ultimoId)
+      ubicacion: new UntypedFormControl(pedido.ubicacion),
+      folio: new UntypedFormControl(folio),
+      createdAt: new UntypedFormControl(new Date().toISOString()),
+      _id: new UntypedFormControl(ultimoId)
     })
 
     this.cargando = false
@@ -211,12 +211,12 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   fa(campo: string) {
-    return this.f(campo) as FormArray
+    return this.f(campo) as UntypedFormArray
   }
 
   crearArticulo(articulo: Partial<ArticuloPedido>, editar = true) {
-    return new FormGroup({
-      cantidad: new FormControl(articulo.cantidad || 0, [
+    return new UntypedFormGroup({
+      cantidad: new UntypedFormControl(articulo.cantidad || 0, [
         Validators.required
         // Validators.min(0.01)
       ]),
@@ -225,10 +225,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       // con la lista en caso de que haya.
 
       precio: this.obtenerPrecioDeArticulo(articulo, this.lista),
-      sku: new FormControl(articulo.sku, [Validators.required]),
-      observaciones: new FormControl(articulo.observaciones),
-      editando: new FormControl(editar, []),
-      importe: new FormControl(articulo.importe)
+      sku: new UntypedFormControl(articulo.sku, [Validators.required]),
+      observaciones: new UntypedFormControl(articulo.observaciones),
+      editando: new UntypedFormControl(editar, []),
+      importe: new UntypedFormControl(articulo.importe)
     })
   }
 
@@ -239,9 +239,9 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
     if (lista && articulo.sku?._id) {
       let id = articulo.sku._id
       let dato = lista.skus.find(x => x.sku === id)
-      if (dato) return new FormControl(dato.precio)
+      if (dato) return new UntypedFormControl(dato.precio)
     }
-    return new FormControl(articulo.precio)
+    return new UntypedFormControl(articulo.precio)
   }
 
   terminoContacto: string
@@ -286,7 +286,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   terminoSku: string
   estaCargandoBuscadorSku: BehaviorSubject<boolean>
-  grupo: FormGroup
+  grupo: UntypedFormGroup
 
   sku_modal_abierto = false
   contacto_modal_abierto = false

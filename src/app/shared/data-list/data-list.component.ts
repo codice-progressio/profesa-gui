@@ -8,7 +8,7 @@ import {
   ViewChild,
   ChangeDetectorRef
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { UntypedFormControl } from '@angular/forms'
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators'
 import { Dato } from './dato.model'
 
@@ -155,7 +155,7 @@ export class DataListComponent implements OnInit {
    *
    * @memberof DataListComponent
    */
-  inputBusqueda = new FormControl()
+  inputBusqueda = new UntypedFormControl()
 
   @ViewChild('inputBuscarNativo')
   inputBusquedaFocus: ElementRef

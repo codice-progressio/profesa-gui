@@ -3,7 +3,7 @@ import {
   AbstractControl,
   Validators,
   ValidatorFn,
-  FormArray
+  UntypedFormArray
 } from '@angular/forms'
 
 @Injectable({
@@ -140,7 +140,7 @@ export class ValidacionesService {
    * @memberof ValidacionesService
    */
   minSelectedCheckboxes(min = 1): ValidatorFn {
-    const validator: ValidatorFn = (formArray: FormArray) => {
+    const validator: ValidatorFn = (formArray: UntypedFormArray) => {
       const totalSelected = formArray.controls.length
       return totalSelected >= min ? null : { tamanoMinimo: true, minimo: min }
     }
