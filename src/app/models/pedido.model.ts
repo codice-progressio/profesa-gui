@@ -2,6 +2,7 @@ import { Usuario } from './usuario.model'
 import { Contacto } from './contacto.model'
 import { SKU } from './sku.model'
 import { EstadoDeProceso } from '../componentes-modulares/estado-de-proceso/estado-de-proceso.model'
+import { ListaDePrecios } from './listaDePrecios.model'
 export interface Pedido {
   _id: Number
   eliminado: boolean
@@ -12,6 +13,7 @@ export interface Pedido {
   acciones: PedidoAccion[]
   createdAt: Date | string
   upadtedAt: Date | string
+  listaDePreciosId: string
 
   //UI
   total: number
