@@ -248,6 +248,7 @@ export class OperacionesOffline {
         this.root.estadoCarga(false)
       })
       .catch(err => {
+        console.error('Hay un error en los datos', err)
         ;() => this.root.estadoCarga(false)
       })
   }
@@ -255,7 +256,12 @@ export class OperacionesOffline {
   private obtener_precio_de_lista(sku: SKU, lista: ListaDePrecios) {
     let precio = 0
     let sku_nuevo = lista.skus.find(x => x.sku === sku._id)
-    precio = sku_nuevo.precio
+
+    // Si el sku no esta en la lista de precios se le asigna el precio
+    // de la lista de precios por defecto
+    if (sku_nuevo) precio = sku_nuevo.precio
+    else precio = sku.costoVenta
+
     return precio
   }
 }
