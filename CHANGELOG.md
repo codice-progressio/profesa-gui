@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.10](https://github.com/codice-progressio/profesa-gui/compare/v4.6.9...v4.6.10) (2022-09-18)
+
+
+### Bug Fixes
+
+* Update cdk 12->13 ([4cc104a](https://github.com/codice-progressio/profesa-gui/commit/4cc104a0ff6311d3239e6124f1e756b7f00f3df0))
+* Update cdk 13->14 ([6648d80](https://github.com/codice-progressio/profesa-gui/commit/6648d804de9709a6a15cfb2ce2058ce952332efc))
+
 ### [4.6.9](https://github.com/codice-progressio/profesa-gui/compare/v4.6.8...v4.6.9) (2022-09-17)
 
 
