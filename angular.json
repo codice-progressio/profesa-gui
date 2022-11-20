@@ -120,7 +120,7 @@
     },
     "playground": {
       "projectType": "application",
-      "root": "",
+      "root": "playground",
       "sourceRoot": "src",
       "architect": {
         "build": {
