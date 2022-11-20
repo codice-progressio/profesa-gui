@@ -22,7 +22,6 @@ import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ListaDePreciosService } from '../../../../services/lista-de-precios.service'
 import { ListaDePrecios } from 'src/app/models/listaDePrecios.model'
 import { UbicacionService } from 'src/app/services/ubicacion.service'
-import { PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 import { IndicesIndexedDbService } from 'src/app/services/indices-indexed-db.service'
 import { SKUSeleccionado } from 'src/app/components/almacen/sku-lista/sku-lista.component'
 
@@ -74,7 +73,6 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   formulario: UntypedFormGroup
   id: string
   esDetalle: boolean
-  geo: PosicionDeGeolocalizacion
   mostrarObservaciones = false
 
   ngOnInit(): void {
@@ -83,10 +81,10 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   ubicacion() {
-    this.ubicacionService.geo.subscribe(
-      p => (this.geo = p),
-      err => console.log('error en componente')
-    )
+    // this.ubicacionService.geo.subscribe(
+    //   p => (this.geo = p),
+    //   err => console.log('error en componente')
+    // )
   }
 
   activarProtocoloDetalle() {

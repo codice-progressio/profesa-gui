@@ -8,7 +8,6 @@ import { ExcelService } from 'src/app/services/excel.service'
 import { Usuario } from 'src/app/models/usuario.model'
 import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ParametrosService } from 'src/app/services/parametros.service'
-import { GpsService, PosicionDeGeolocalizacion } from '@codice-progressio/gps'
 import { DatosNube } from './pedido-global-card/pedido-global-card.component'
 import { Component, OnInit, OnDestroy } from '@angular/core'
 
@@ -26,7 +25,6 @@ export class PedidoComponent implements OnInit, OnDestroy {
     private pedidoService: PedidoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private gpsService: GpsService
   ) {}
 
   pedidos: Pedido[] = []
@@ -70,20 +68,9 @@ export class PedidoComponent implements OnInit, OnDestroy {
     this.cargandoBuscador.complete()
   }
 
-  geo: PosicionDeGeolocalizacion = undefined
 
   comprobarGPS() {
-    this.gpsService.posicionActual.subscribe(
-      p => {
-        this.geo = p
-      },
-      err => {
-        this.geo = undefined
-        alert(
-          'No se puede acceder a la ubicación. No podras generar nuevos pedidos'
-        )
-      }
-    )
+  
   }
 
   comprobarUsuario() {

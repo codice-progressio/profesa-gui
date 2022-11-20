@@ -42,7 +42,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
 import { FechaPipe } from '../pipes/fecha.pipe'
 import { QRCodeModule } from 'angularx-qrcode'
 import { ContieneElPermisoPipe } from '../pipes/contiene-el-permiso.pipe'
-import { ZXingScannerModule } from '@zxing/ngx-scanner'
 import { DirectivesModule } from '../directives/directives.module'
 
 @NgModule({
@@ -56,8 +55,6 @@ import { DirectivesModule } from '../directives/directives.module'
     ReactiveFormsModule,
     DragDropModule,
     QRCodeModule,
-
-    ZXingScannerModule,
     DirectivesModule
   ],
   declarations: [

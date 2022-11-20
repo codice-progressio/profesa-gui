@@ -21,7 +21,6 @@ import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { MarkdownModule } from 'ngx-markdown'
 import { ImperiumSicComponent } from './imperium-sic/imperium-sic.component'
 import { RouterModule, Routes } from '@angular/router'
 import { LoginGuardGuard } from './services/guards/login-guard.guard'
@@ -35,7 +34,6 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 import { NgxCsvParserModule } from 'ngx-csv-parser'
 import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
-import { GpsModule } from '@codice-progressio/gps'
 import { EnvServiceProvider } from './services/env.service.provider'
 
 export function tokenGetter() {
@@ -104,7 +102,6 @@ const appRoutes: Routes = [
     HttpClientModule,
     NgxMaskModule.forRoot(),
     SharedModule.forRoot(),
-    MarkdownModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -117,7 +114,6 @@ const appRoutes: Routes = [
       }
     }),
     ModalModule,
-    GpsModule,
     NgxCsvParserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
