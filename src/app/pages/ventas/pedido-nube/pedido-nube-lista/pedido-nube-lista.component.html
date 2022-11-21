@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 mt-2 mt-md-0 col-md-6">
+            <a
+              class="btn btn-primary"
+              href="javascript:void(0)"
+              role="button"
+              routerLink="crear"
+            >
+              <i class="fas fa-plus-circle"></i> Crear
+            </a>
+          </div>
+          <div class="col-12 mt-2 mt-md-0 col-md-6">
+            <codice-buscador
+              (termino)="termino = $event"
+              (escucharCarga)="estaCargandoBuscador = $event"
+            >
+            </codice-buscador>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!cargando; else cargandoTemplate" class="row">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-body table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Folio</th>
+              <th>Contacto</th>
+              <th>Vendedor</th>
+              <th>Importe</th>
+              <th>IVA</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pedido of pedidos">
+              <td class="m-0 p-0">
+                <a
+                  codice-title="Editar"
+                  class="btn btn-primary mt-1"
+                  (click)="modificar(pedido)"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-edit"></i
+                ></a>
+                <a
+                  codice-title="Ver detalle"
+                  class="btn btn-primary mt-1 ml-1"
+                  (click)="verDetalle(pedido)"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-search"></i
+                ></a>
+              </td>
+
+              <td>{{ pedido.folio }}</td>
+              <td>{{ pedido.contacto }}</td>
+              <td>{{ pedido.usuario }}</td>
+              <td>{{ pedido.importe }}</td>
+              <td>{{ pedido.iva }}</td>
+              <td>{{ pedido.total }}</td>
+
+              <td>
+                <a
+                  (click)="eliminar(pedido)"
+                  class="btn btn-danger"
+                  href="javascript:void(0)"
+                  role="button"
+                  ><i class="fas fa-times"></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #cargandoTemplate>
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow text-center">
+        <div class="card-body text-center">
+          <div class="w-25 text-center">
+            <codice-ux-precarga></codice-ux-precarga>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

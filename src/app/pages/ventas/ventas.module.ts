@@ -12,6 +12,11 @@ const routes: Routes = [
       import('./pedido/pedido.module').then(m => m.PedidoModule)
   },
   {
+    path: 'todos-mis-pedidos',
+    loadChildren: () =>
+      import('./pedido-nube/pedido-nube.module').then(m => m.PedidoNubeModule)
+  },
+  {
     path: 'listas-de-precios',
     loadChildren: () =>
       import('./lista-de-precios/lista-de-precios.module').then(
