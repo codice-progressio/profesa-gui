@@ -1,0 +1,18 @@
+.offline_barra {
+top: 50px;
+  width: 40px;
+  height:40px;
+  position: fixed;
+  background-color: red;
+  z-index: 9999;
+  text-align: center;
+}
+
+.offline_barra > span {
+  color: rgb(255, 255, 255);
+}
+
+.offline_barra span svg {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

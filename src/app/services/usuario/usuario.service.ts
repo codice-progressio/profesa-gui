@@ -139,13 +139,18 @@ export class UsuarioService {
   }
 
   logout() {
-    
     let ruta = '/login'
 
-    if (this.usuario.permissions.includes(permisosKeysConfig['menu:configuraciones:parametros'])) 
+    if (
+      this.usuario.permissions.includes(
+        permisosKeysConfig['menu:configuraciones:parametros']
+      )
+    ) {
       ruta = 'offline/pedidos/mis-pedidos'
-    
-    
+      let tk = localStorage.getItem('token')
+      localStorage.setItem('token_offline', tk)
+    }
+
     this.usuario = null
     this.token = ''
     this.menu = [null]
@@ -211,7 +216,6 @@ export class UsuarioService {
       if (storageUsuario) {
         this.usuarioOffline = storageUsuario as Usuario
       } else this.logout()
-
     }
     return this.usuarioOffline
   }

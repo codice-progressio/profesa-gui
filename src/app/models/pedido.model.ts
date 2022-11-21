@@ -5,6 +5,7 @@ import { EstadoDeProceso } from '../componentes-modulares/estado-de-proceso/esta
 import { ListaDePrecios } from './listaDePrecios.model'
 export interface Pedido {
   _id: Number
+  _id_nube: Number
   eliminado: boolean
   contacto: Contacto
   usuario: Usuario

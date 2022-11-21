@@ -49,11 +49,13 @@
   <div class="col-12">
     <app-pedido-global-card
       [todosLosPedidos]="pedidos"
+      [esModoOffline]="esModoOffline()"
       (detalle)="detalle($event)"
       (editar)="editar($event)"
       (eliminar)="eliminar($event)"
       (compartir)="compartir($event)"
       (subirNube)="subirNube($event)"
+      
       
       [terminoDeBusqueda]="terminoDeBusqueda"
       (articulosQueNoSeMuestran)="articulosQueNoSeMuestran = $event"

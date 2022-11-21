@@ -37,8 +37,8 @@ import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/
 import { EnvServiceProvider } from './services/env.service.provider'
 
 export function tokenGetter() {
-  localStorage.getItem('token')
   let token = localStorage.getItem('token')
+  if(!token) token = localStorage.getItem('token_offline')
   return token
 }
 

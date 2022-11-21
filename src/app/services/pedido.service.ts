@@ -43,9 +43,9 @@ export class PedidoService {
     return this.http.get<Pedido>(this.base.concat(`/buscar/id/${id}`))
   }
 
-  crear(modelo: Pedido) {
-    return this.http.post<Pedido>(this.base, modelo)
-  }
+  // crear(modelo: Pedido) {
+  //   return this.http.post<Pedido>(this.base, modelo)
+  // }
 }
 
 class PedidoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {

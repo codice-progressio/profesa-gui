@@ -10,6 +10,8 @@ import { UsuarioService } from 'src/app/services/usuario/usuario.service'
 import { ParametrosService } from 'src/app/services/parametros.service'
 import { DatosNube } from './pedido-global-card/pedido-global-card.component'
 import { Component, OnInit, OnDestroy } from '@angular/core'
+import { EstadoDeConexionService } from 'src/app/services/estado-de-conexion.service'
+import { PedidoNubeService } from 'src/app/services/pedido-nube.service'
 
 @Component({
   selector: 'app-pedido',
@@ -25,13 +27,21 @@ export class PedidoComponent implements OnInit, OnDestroy {
     private pedidoService: PedidoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-  ) {}
+    private estadoDeConexion: EstadoDeConexionService,
+    private pedidoNubeService: PedidoNubeService
+  ) {
+    this.estadoDeConexion.connected$.subscribe(connected => {
+      this.hay_conexion = connected
+    })
+  }
 
   pedidos: Pedido[] = []
   usuario: Usuario
   terminoDeBusqueda = ''
   articulosQueNoSeMuestran = 0
   cargandoBuscador: BehaviorSubject<boolean> = new BehaviorSubject(false)
+
+  hay_conexion = false
 
   private _cargando = false
   public get cargando() {
@@ -68,10 +78,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
     this.cargandoBuscador.complete()
   }
 
-
-  comprobarGPS() {
-  
-  }
+  comprobarGPS() {}
 
   comprobarUsuario() {
     if (!this.usaurioService.usuarioOffline) {
@@ -154,15 +161,24 @@ export class PedidoComponent implements OnInit, OnDestroy {
   }
 
   esModoOffline() {
-    return true
+    return !this.hay_conexion
   }
 
   subirNube(datosNube: DatosNube) {
     this.cargando = true
     datosNube.cargando.next(true)
-    this.pedidoService.crear(datosNube.pedido).subscribe(() => {
-      datosNube.cargando.next(false)
-      this.cargando = false
-    })
+    this.pedidoNubeService.guardar(datosNube.pedido).subscribe(
+      (resp: { pedido: Pedido }) => {
+        let pedido = resp.pedido
+        datosNube.pedido._id_nube = pedido._id
+        datosNube.pedido.sincronizado = true
+        this.pedidoService.offline.guardar(datosNube.pedido).subscribe(() => {})
+
+        console.log(resp)
+        datosNube.cargando.next(false)
+        this.cargando = false
+      },
+      err => (this.cargando = false)
+    )
   }
 }
