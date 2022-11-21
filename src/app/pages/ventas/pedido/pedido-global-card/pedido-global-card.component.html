@@ -1,4 +1,4 @@
-<div *ngFor="let pedido of pedidos" class="card shadow w-100 ">
+<div *ngFor="let pedido of pedidos" class="card shadow w-100">
   <div class="card-body text-center">
     <div class="d-flex justify-content-between">
       <h3 class="card-subtitle mb-2 text-muted font-bold">
@@ -53,44 +53,44 @@
       </ng-template>
     </ng-container>
 
-    <ng-container *ngIf="!pedido?.sincronizado">
-      <hr />
-      <a
-        (click)="detalle(pedido)"
-        class="btn btn-info mr-3"
-        href="javascript:void(0)"
-        role="button"
-      >
-        <i class="fas fa-search"></i
-      ></a>
+    <hr />
+    <a
+      (click)="detalle(pedido)"
+      class="btn btn-info mr-3"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-search"></i
+    ></a>
 
-      <a
-        (click)="editar(pedido)"
-        class="btn btn-primary mr-3"
-        href="javascript:void(0)"
-        role="button"
-      >
-        <i class="fas fa-edit"></i
-      ></a>
+    <a
+      *ngIf="!pedido?.sincronizado"
+      (click)="editar(pedido)"
+      class="btn btn-primary mr-3"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-edit"></i
+    ></a>
 
-      <a
-        (click)="eliminar(pedido)"
-        class="btn btn-danger mr-3"
-        href="javascript:void(0)"
-        role="button"
-      >
-        <i class="fas fa-times"></i
-      ></a>
+    <a
+      *ngIf="!pedido?.sincronizado"
+      (click)="eliminar(pedido)"
+      class="btn btn-danger mr-3"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-times"></i
+    ></a>
 
-      <a
-        (click)="compartir(pedido)"
-        class="btn btn-success"
-        href="javascript:void(0)"
-        role="button"
-      >
-        <i class="fas fa-share-alt"></i>
-      </a>
-    </ng-container>
+    <a
+      (click)="compartir(pedido)"
+      class="btn btn-success"
+      href="javascript:void(0)"
+      role="button"
+    >
+      <i class="fas fa-share-alt"></i>
+    </a>
   </div>
 </div>
 

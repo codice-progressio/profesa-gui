@@ -362,6 +362,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
   }
 
   async submit(modelo: Pedido, invalid: boolean, retornarNavegacion = true) {
+    if(this.esDetalle) return
     this.formulario.markAllAsTouched()
     this.formulario.updateValueAndValidity()
     if (invalid) {

@@ -361,17 +361,17 @@
           =====================================
           -->
 
-        <ng-container *ngIf="!esDetalle && pedido.contacto">
+        <ng-container *ngIf=" pedido.contacto">
           <div
             *ngIf="mostrarBarraSticki()"
             class="col-12 fixed-bottom text-center barra-inferior"
           >
             <div class="row">
-              <div
-                (click)="submit(formulario.value, formulario.invalid)"
-                class="col-3"
+              <div class="col-3"
               >
-                <div class="pseudo-btn-0"></div>
+                <div 
+                [ngStyle]="{'display': esDetalle ? 'none' : 'block'}"
+                (click)="submit(formulario.value, formulario.invalid)" class="pseudo-btn-0"></div>
               </div>
               <div
                 (click)="abrir_total_modal()"
@@ -385,7 +385,9 @@
                   <i class="fas fa-eye"></i>
                 </span>
               </div>
-              <div (click)="agregarArticulo()" class="col-3">
+              <div 
+              [ngStyle]="{'display': esDetalle ? 'none' : 'block'}"
+              (click)="agregarArticulo()" class="col-3">
                 <div class="pseudo-btn-1"></div>
               </div>
             </div>
