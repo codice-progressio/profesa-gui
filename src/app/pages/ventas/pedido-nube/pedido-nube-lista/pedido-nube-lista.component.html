@@ -41,6 +41,7 @@
               <th>Folio</th>
               <th>Contacto</th>
               <th>Vendedor</th>
+              <th>Fecha</th>
               <th>Importe</th>
               <th>IVA</th>
               <th>Total</th>
@@ -74,6 +75,7 @@
                 {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
               </td>
               <td>{{ pedido.usuario.nombre }}</td>
+              <td>{{ pedido.createdAt | date:'short'}}</td>
               <td class="text-nowrap">$ {{ pedido.importe | number:'1.2'}}</td>
               <td class="text-nowrap">$ {{ pedido.iva | number:'1.2'}}</td>
               <td class="text-nowrap">$ {{ pedido.total | number:'1.2'}}</td>
@@ -108,6 +110,7 @@
         <small class="text-mted">Folio:</small>
         {{ pedido.folio_usuario }}
       </h5>
+      {{ pedido.createdAt | date:'short'}}
     </div>
     <hr />
     <div class="card-text">
