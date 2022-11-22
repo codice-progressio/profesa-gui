@@ -26,32 +26,30 @@
   </div>
 </div>
 
-<div
-  *ngIf="!cargando; else cargandoTemplate"
-  class="row d-none d-sm-none d-md-none d-lg-block"
->
-  <div class="col-12">
-    <div class="card shadow">
-      <div class="card-body table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Folio interno</th>
-              <th>Folio</th>
-              <th>Contacto</th>
-              <th>Vendedor</th>
-              <th>Fecha</th>
-              <th>Importe</th>
-              <th>IVA</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let pedido of pedidos">
-              <td class="m-0 p-0">
-                <!-- <a
+<ng-container *ngIf="!cargando; else cargandoTemplate">
+  <div class="row d-none d-sm-none d-md-none d-lg-block">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Folio interno</th>
+                <th>Folio</th>
+                <th>Contacto</th>
+                <th>Vendedor</th>
+                <th>Fecha</th>
+                <th>Importe</th>
+                <th>IVA</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pedido of pedidos">
+                <td class="m-0 p-0">
+                  <!-- <a
                   codice-title="Editar"
                   class="btn btn-primary mt-1"
                   (click)="modificar(pedido)"
@@ -59,100 +57,105 @@
                   role="button"
                   ><i class="fas fa-edit"></i
                 ></a> -->
-                <a
-                  codice-title="Ver detalle"
-                  class="btn btn-primary mt-1 ml-1"
-                  (click)="verDetalle(pedido)"
-                  href="javascript:void(0)"
-                  role="button"
-                  ><i class="fas fa-search"></i
-                ></a>
-              </td>
+                  <a
+                    codice-title="Ver detalle"
+                    class="btn btn-primary mt-1 ml-1"
+                    (click)="verDetalle(pedido)"
+                    href="javascript:void(0)"
+                    role="button"
+                    ><i class="fas fa-search"></i
+                  ></a>
+                </td>
 
-              <td>{{ pedido.folio_interno }}</td>
-              <td>{{ pedido.folio_usuario }}</td>
-              <td>
-                {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
-              </td>
-              <td>{{ pedido.usuario.nombre }}</td>
-              <td>{{ pedido.createdAt | date:'short'}}</td>
-              <td class="text-nowrap">$ {{ pedido.importe | number:'1.2'}}</td>
-              <td class="text-nowrap">$ {{ pedido.iva | number:'1.2'}}</td>
-              <td class="text-nowrap">$ {{ pedido.total | number:'1.2'}}</td>
+                <td>{{ pedido.folio_interno }}</td>
+                <td>{{ pedido.folio_usuario }}</td>
+                <td>
+                  {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
+                </td>
+                <td>{{ pedido.usuario.nombre }}</td>
+                <td>{{ pedido.createdAt | date: 'short' }}</td>
+                <td class="text-nowrap">
+                  $ {{ pedido.importe | number: '1.2' }}
+                </td>
+                <td class="text-nowrap">$ {{ pedido.iva | number: '1.2' }}</td>
+                <td class="text-nowrap">
+                  $ {{ pedido.total | number: '1.2' }}
+                </td>
 
-              <td>
-                <a
-                  (click)="eliminar(pedido)"
-                  class="btn btn-danger"
-                  href="javascript:void(0)"
-                  role="button"
-                  ><i class="fas fa-times"></i
-                ></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td>
+                  <a
+                    (click)="eliminar(pedido)"
+                    class="btn btn-danger"
+                    href="javascript:void(0)"
+                    role="button"
+                    ><i class="fas fa-times"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="card d-block d-sm-block d-md-block d-lg-none"
-  *ngFor="let pedido of pedidos"
->
-  <div class="card-body">
-    <div class="card-title">
-      <h5 class="font-bold">
-        <small class="text-mted">Folio interno:</small>
-        {{ pedido.folio_interno }}
-        <br />
-        <small class="text-mted">Folio:</small>
-        {{ pedido.folio_usuario }}
-      </h5>
-      {{ pedido.createdAt | date:'short'}}
-    </div>
-    <hr />
-    <div class="card-text">
-      <h5 class="font-bold">
-        <div>
-          <small class="text-muted">Contacto:</small> <br />
-          {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
-        </div>
-        <div>
-          <small class="text-muted">Usuario: </small><br />
-          {{ pedido.usuario.nombre }}
-        </div>
-      </h5>
+  <div
+    class="card d-block d-sm-block d-md-block d-lg-none"
+    *ngFor="let pedido of pedidos"
+  >
+    <div class="card-body">
+      <div class="card-title">
+        <h5 class="font-bold">
+          <small class="text-mted">Folio interno:</small>
+          {{ pedido.folio_interno }}
+          <br />
+          <small class="text-mted">Folio:</small>
+          {{ pedido.folio_usuario }}
+        </h5>
+        {{ pedido.createdAt | date: 'short' }}
+      </div>
+      <hr />
+      <div class="card-text">
+        <h5 class="font-bold">
+          <div>
+            <small class="text-muted">Contacto:</small> <br />
+            {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
+          </div>
+          <div>
+            <small class="text-muted">Usuario: </small><br />
+            {{ pedido.usuario.nombre }}
+          </div>
+        </h5>
 
-      <div>Importe: $ {{ pedido.importe | number:'1.2' }}</div>
-      <div>IVA: $ {{ pedido.iva | number:'1.2' }}</div>
-      <h4 class="font-bold">
-        <small class="text-muted">Total:</small><br />
-        $ {{ pedido.total | number:'1.2' }}
-      </h4>
-    </div>
-    <hr />
-    <div class="card-text">
-      <a
-        codice-title="Ver detalle"
-        class="btn btn-primary mr-3"
-        (click)="verDetalle(pedido)"
-        href="javascript:void(0)"
-        role="button"
-        ><i class="fas fa-search"></i
-      ></a>
+        <div>Importe: $ {{ pedido.importe | number: '1.2' }}</div>
+        <div>IVA: $ {{ pedido.iva | number: '1.2' }}</div>
+        <h4 class="font-bold">
+          <small class="text-muted">Total:</small><br />
+          $ {{ pedido.total | number: '1.2' }}
+        </h4>
+      </div>
+      <hr />
+      <div class="card-text">
+        <a
+          codice-title="Ver detalle"
+          class="btn btn-primary mr-3"
+          (click)="verDetalle(pedido)"
+          href="javascript:void(0)"
+          role="button"
+          ><i class="fas fa-search"></i
+        ></a>
 
-      <a
-        (click)="eliminar(pedido)"
-        class="btn btn-danger"
-        href="javascript:void(0)"
-        role="button"
-        ><i class="fas fa-times"></i
-      ></a>
+        <a
+          (click)="eliminar(pedido)"
+          class="btn btn-danger"
+          href="javascript:void(0)"
+          role="button"
+          ><i class="fas fa-times"></i
+        ></a>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
 
 <ng-template #cargandoTemplate>
   <div class="row">

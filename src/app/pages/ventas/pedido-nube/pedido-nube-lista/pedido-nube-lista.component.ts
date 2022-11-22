@@ -22,19 +22,21 @@ export class PedidoNubeListaComponent implements OnInit {
   }
 
   cargarPedidos() {
-    if(this.cargando ) return
-    this.pedidoNubeService.todo().subscribe(resp => {
-
-
-      this.pedidos = resp.pedidos.map(p=> this.obtenerFolioUsuario(p))
-    })
+    if (this.cargando) return
+    this.cargando = true
+    this.pedidoNubeService.todo().subscribe(
+      resp => {
+        this.pedidos = resp.pedidos.map(p => this.obtenerFolioUsuario(p))
+        this.cargando = false
+      },
+      err => (this.cargando = false)
+    )
   }
 
-  obtenerFolioUsuario(p: Pedido): Pedido
-  {
+  obtenerFolioUsuario(p: Pedido): Pedido {
     // Obtenemos el folio de pedidos offline
     const folio = p.folio.split('-').pop().padStart(3, '0')
-    p.folio_usuario = folio    
+    p.folio_usuario = folio
     return p
   }
 
