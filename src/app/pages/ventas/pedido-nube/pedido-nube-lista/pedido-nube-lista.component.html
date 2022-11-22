@@ -5,12 +5,12 @@
         <div class="row">
           <div class="col-12 mt-2 mt-md-0 col-md-6">
             <a
-              class="btn btn-primary"
+              class="btn btn-secondary"
               href="javascript:void(0)"
               role="button"
-              routerLink="crear"
+              (click)="cargarPedidos()"
             >
-              <i class="fas fa-plus-circle"></i> Crear
+              <i class="fas fa-sync" ngClass="{'fa-spin': cargando}"></i>
             </a>
           </div>
           <div class="col-12 mt-2 mt-md-0 col-md-6">
@@ -26,7 +26,10 @@
   </div>
 </div>
 
-<div *ngIf="!cargando; else cargandoTemplate" class="row">
+<div
+  *ngIf="!cargando; else cargandoTemplate"
+  class="row d-none d-sm-none d-md-none d-lg-block"
+>
   <div class="col-12">
     <div class="card shadow">
       <div class="card-body table-responsive">
@@ -34,6 +37,7 @@
           <thead>
             <tr>
               <th></th>
+              <th>Folio interno</th>
               <th>Folio</th>
               <th>Contacto</th>
               <th>Vendedor</th>
@@ -46,14 +50,14 @@
           <tbody>
             <tr *ngFor="let pedido of pedidos">
               <td class="m-0 p-0">
-                <a
+                <!-- <a
                   codice-title="Editar"
                   class="btn btn-primary mt-1"
                   (click)="modificar(pedido)"
                   href="javascript:void(0)"
                   role="button"
                   ><i class="fas fa-edit"></i
-                ></a>
+                ></a> -->
                 <a
                   codice-title="Ver detalle"
                   class="btn btn-primary mt-1 ml-1"
@@ -64,9 +68,12 @@
                 ></a>
               </td>
 
-              <td>{{ pedido.folio }}</td>
-              <td>{{ pedido.contacto }}</td>
-              <td>{{ pedido.usuario }}</td>
+              <td>{{ pedido.folio_interno }}</td>
+              <td>{{ pedido.folio_usuario }}</td>
+              <td>
+                {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
+              </td>
+              <td>{{ pedido.usuario.nombre }}</td>
               <td>{{ pedido.importe }}</td>
               <td>{{ pedido.iva }}</td>
               <td>{{ pedido.total }}</td>
@@ -84,6 +91,62 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="card d-block d-sm-block d-md-block d-lg-none"
+  *ngFor="let pedido of pedidos"
+>
+  <div class="card-body">
+    <div class="card-title">
+      <h5 class="font-bold">
+        <small class="text-mted">Folio interno:</small>
+        {{ pedido.folio_interno }}
+        <br />
+        <small class="text-mted">Folio:</small>
+        {{ pedido.folio_usuario }}
+      </h5>
+    </div>
+    <hr />
+    <div class="card-text">
+      <h5 class="font-bold">
+        <div>
+          <small class="text-muted">Contacto:</small> <br />
+          {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
+        </div>
+        <div>
+          <small class="text-muted">Usuario: </small><br />
+          {{ pedido.usuario.nombre }}
+        </div>
+      </h5>
+
+      <div>Importe: {{ pedido.importe | number }}</div>
+      <div>IVA: {{ pedido.iva | number }}</div>
+      <h4 class="font-bold">
+        <small class="text-muted">Total:</small><br />
+        {{ pedido.total | number }}
+      </h4>
+    </div>
+    <hr />
+    <div class="card-text">
+      <a
+        codice-title="Ver detalle"
+        class="btn btn-primary mr-3"
+        (click)="verDetalle(pedido)"
+        href="javascript:void(0)"
+        role="button"
+        ><i class="fas fa-search"></i
+      ></a>
+
+      <a
+        (click)="eliminar(pedido)"
+        class="btn btn-danger"
+        href="javascript:void(0)"
+        role="button"
+        ><i class="fas fa-times"></i
+      ></a>
     </div>
   </div>
 </div>

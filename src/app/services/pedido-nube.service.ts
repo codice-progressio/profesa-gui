@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs';
 import { Pedido } from '../models/pedido.model'
 import { EnvService } from './env.service'
 
@@ -13,8 +14,8 @@ export class PedidoNubeService {
     this.base = this.envService.URL_BASE('pedido')
   }
 
-  todo() {
-    return this.http.get(this.base)
+  todo():Observable<PedidosTodos> {
+    return this.http.get(this.base) as Observable<PedidosTodos>
   }
 
   buscar_por_id(id: string) {
@@ -32,4 +33,12 @@ export class PedidoNubeService {
   modificar(modelo: Pedido) {
     return this.http.put(this.base, modelo)
   }
+}
+
+
+
+interface PedidosTodos{
+  total: number
+  pedidos: Pedido[]
+
 }

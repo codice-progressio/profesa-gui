@@ -21,6 +21,8 @@ export interface Pedido {
   iva: number
   importe: number
   folio: string //Usuario +  fecha + hora
+  folio_interno: Number 
+  folio_usuario: string
   ubicacion: {
     latitud: number
     longitud: number

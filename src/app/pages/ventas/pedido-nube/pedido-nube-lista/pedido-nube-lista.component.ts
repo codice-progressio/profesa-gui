@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Pedido } from 'src/app/models/pedido.model';
+import { Component, OnInit } from '@angular/core'
+import { BehaviorSubject } from 'rxjs'
+import { Pedido } from 'src/app/models/pedido.model'
+import { PedidoNubeService } from 'src/app/services/pedido-nube.service'
 
 @Component({
   selector: 'app-pedido-nube-lista',
@@ -8,7 +9,7 @@ import { Pedido } from 'src/app/models/pedido.model';
   styleUrls: ['./pedido-nube-lista.component.css']
 })
 export class PedidoNubeListaComponent implements OnInit {
-  constructor() {}
+  constructor(private pedidoNubeService: PedidoNubeService) {}
 
   cargando = false
   termino = ''
@@ -16,7 +17,26 @@ export class PedidoNubeListaComponent implements OnInit {
 
   pedidos: Pedido[] = []
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargarPedidos()
+  }
+
+  cargarPedidos() {
+    if(this.cargando ) return
+    this.pedidoNubeService.todo().subscribe(resp => {
+
+
+      this.pedidos = resp.pedidos.map(p=> this.obtenerFolioUsuario(p))
+    })
+  }
+
+  obtenerFolioUsuario(p: Pedido): Pedido
+  {
+    // Obtenemos el folio de pedidos offline
+    const folio = p.folio.split('-').pop().padStart(3, '0')
+    p.folio_usuario = folio    
+    return p
+  }
 
   modificar(pedido: Pedido) {
     console.log('modificar')
