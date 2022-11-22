@@ -74,9 +74,9 @@
                 {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
               </td>
               <td>{{ pedido.usuario.nombre }}</td>
-              <td>{{ pedido.importe }}</td>
-              <td>{{ pedido.iva }}</td>
-              <td>{{ pedido.total }}</td>
+              <td class="text-nowrap">$ {{ pedido.importe | number:'1.2'}}</td>
+              <td class="text-nowrap">$ {{ pedido.iva | number:'1.2'}}</td>
+              <td class="text-nowrap">$ {{ pedido.total | number:'1.2'}}</td>
 
               <td>
                 <a
@@ -122,11 +122,11 @@
         </div>
       </h5>
 
-      <div>Importe: {{ pedido.importe | number }}</div>
-      <div>IVA: {{ pedido.iva | number }}</div>
+      <div>Importe: $ {{ pedido.importe | number:'1.2' }}</div>
+      <div>IVA: $ {{ pedido.iva | number:'1.2' }}</div>
       <h4 class="font-bold">
         <small class="text-muted">Total:</small><br />
-        {{ pedido.total | number }}
+        $ {{ pedido.total | number:'1.2' }}
       </h4>
     </div>
     <hr />
