@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-2 text-center border bg-dark">
+    <h1 class="font-bold text-white m-0 p-0 text-center">
+      <span class="text-muted">F</span>{{ pedido.folio_interno_display }}
+    </h1>
+    <h6 class="text-center text-white font-bold w-100 d-block">
+      <span class="text-muted">FU</span>{{ pedido.folio_usuario }}
+    </h6>
+    <h6 class="text-center font-bold text-white w-100 d-block">
+      {{ pedido.createdAt | date: 'short' }}
+    </h6>
+  </div>
+
+  <div class="col-10">
+    <div class="row">
+      <div class="col-6">
+        <h3 class="m-0 p-0">
+          [ <span class="text-muted">{{ pedido.contacto.codigo }}</span> ]
+          {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
+          <br />
+        </h3>
+        <h4 class="m-0 p-0">
+          <span class="font-bold">Domicilios:</span>
+          {{ generarDomicilios(pedido.contacto.domicilios) }}
+        </h4>
+        <h4 class="m-0 p-0">
+          <span class="font-bold">Ubicacion:</span>
+          {{ generar_ubicacion(pedido.ubicacion) }}
+        </h4>
+      </div>
+
+      <div class="col-6">
+        RFC: {{ pedido.contacto.rfc }} - IVA:
+        {{ pedido.listaDePreciosId?.iva }} %
+        <br />
+        Lista de precios: {{ pedido.listaDePreciosId?.nombre }}
+        <h4>
+          <span class="font-bold">VENDEDOR:</span> {{ pedido.usuario.nombre }}
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr />
+    <h5 class="font-bold">OBSERVACIONES</h5>
+    {{ pedido.observaciones }}
+    <hr />
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Cantidad</th>
+          <th>Codigo</th>
+          <th>Nombre</th>
+          <th>Observaciones</th>
+          <th>Precio</th>
+          <th>Importe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="pedido.articulos.length === 0">
+          <tr>
+            <td colspan="7" class="text-center">No hay articulos</td>
+          </tr>
+        </ng-container>
+
+        <tr *ngFor="let linea of pedido.articulos; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ linea.cantidad }}</td>
+          <td>{{ linea.sku.codigo }}</td>
+          <td class="text-nowrap">{{ linea.sku.nombreCompleto }}</td>
+          <td>{{ linea.observaciones }}</td>
+          <td class="text-nowrap">$ {{ linea.precio | number: '0.2' }}</td>
+          <td class="text-nowrap">
+            $ {{ linea.cantidad * linea.precio | number: '0.2' }}
+          </td>
+        </tr>
+
+        <ng-container *ngIf="pedido.articulos.length > 0">
+          <tr>
+            <td colspan="6" class="text-right">Importe total</td>
+            <td class="text-nowrap">$ {{ pedido.importe | number: '0.2' }}</td>
+          </tr>
+          <tr>
+            <td colspan="6" class="text-right">IVA</td>
+            <td class="text-nowrap">$ {{ pedido.iva | number: '0.2' }}</td>
+          </tr>
+          <tr>
+            <td colspan="6" class="text-right">Total</td>
+
+            <td class="font-bold text-nowrap">
+              $ {{ pedido.total | number: '0.2' }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { Pedido } from '../models/pedido.model'
 import { EnvService } from './env.service'
 
@@ -14,8 +15,25 @@ export class PedidoNubeService {
     this.base = this.envService.URL_BASE('pedido')
   }
 
-  todo():Observable<PedidosTodos> {
-    return this.http.get(this.base) as Observable<PedidosTodos>
+  todo(): Observable<PedidosTodos> {
+    return this.http.get(this.base).pipe(
+      map((resultado: PedidosTodos) => {
+        resultado.pedidos.map(pedido => {
+          // Agregamos 0 a folio display
+          pedido.folio_interno_display = this.agregar0aFolio(
+            pedido.folio_interno
+          )
+
+          // Agregamos 0 a folio usuario
+          let folio_usuario =  parseInt(pedido.folio.split('-').pop())
+          pedido.folio_usuario = this.agregar0aFolio(folio_usuario)
+
+          return pedido
+        })
+
+        return resultado
+      })
+    ) as Observable<PedidosTodos>
   }
 
   buscar_por_id(id: string) {
@@ -33,12 +51,15 @@ export class PedidoNubeService {
   modificar(modelo: Pedido) {
     return this.http.put(this.base, modelo)
   }
+
+  agregar0aFolio(folio: number) {
+    let folioString = folio.toString()
+    let folioStringConCeros = folioString.padStart(4, '0')
+    return folioStringConCeros
+  }
 }
 
-
-
-interface PedidosTodos{
+interface PedidosTodos {
   total: number
   pedidos: Pedido[]
-
 }

@@ -5,6 +5,7 @@ import { Offline, OfflineBasico, OfflineService } from './offline.service'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { EnvService } from './env.service'
+import { ContactoDomicilio } from '../models/contacto.model'
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class PedidoService {
   base = ''
   offline: PedidoOfflineService<Pedido>
   offline_indice: PedidoIndiceOfflineService<{ _id: number; ultimo: number }>
+
+  helpers = new Helper()
 
   constructor(
     public http: HttpClient,
@@ -46,6 +49,30 @@ export class PedidoService {
   // crear(modelo: Pedido) {
   //   return this.http.post<Pedido>(this.base, modelo)
   // }
+}
+
+class Helper {
+  generarDomicilios(domicilios: ContactoDomicilio[]): string[] {
+    if (!domicilios) return []
+    return domicilios.map(x => {
+      return [
+        x.calle,
+        x.numeroExterior,
+        x.numeroInterior,
+        x.colonia,
+        x.ciudad,
+        x.estado
+      ].join(' ')
+    })
+  }
+
+  generarUbicacion(ubicacion: { latitud?: number; longitud?: number }): string {
+    let url = ubicacion
+      ? `https://google.com/maps?q=${ubicacion.latitud},${ubicacion.longitud}`
+      : 'SIN UBICACION'
+
+    return url
+  }
 }
 
 class PedidoOfflineService<T> extends OfflineBasico<T> implements Offline<T> {

@@ -14,21 +14,22 @@ export interface Pedido {
   acciones: PedidoAccion[]
   createdAt: Date | string
   upadtedAt: Date | string
-  listaDePreciosId: string
+  listaDePreciosId: ListaDePrecios 
 
   //UI
   total: number
   iva: number
   importe: number
   folio: string //Usuario +  fecha + hora
-  folio_interno: Number 
+  folio_interno: number
+  folio_interno_display: string
   folio_usuario: string
   ubicacion: {
     latitud: number
     longitud: number
   }
 
-  sincronizado:boolean
+  sincronizado: boolean
   estado: EstadoDeProceso[]
 }
 

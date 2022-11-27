@@ -65,9 +65,17 @@
                     role="button"
                     ><i class="fas fa-search"></i
                   ></a>
+                  <a
+                    codice-title="Ver detalle"
+                    class="btn btn-outline-secondary mt-1 ml-1"
+                    (click)="imprimir(pedido)"
+                    href="javascript:void(0)"
+                    role="button"
+                    ><i class="fas fa-print"></i
+                  ></a>
                 </td>
 
-                <td>{{ pedido.folio_interno }}</td>
+                <td>{{ pedido.folio_interno_display }}</td>
                 <td>{{ pedido.folio_usuario }}</td>
                 <td>
                   {{ pedido.contacto.nombre || pedido.contacto.razonSocial }}
@@ -107,7 +115,7 @@
       <div class="card-title">
         <h5 class="font-bold">
           <small class="text-mted">Folio interno:</small>
-          {{ pedido.folio_interno }}
+          {{ pedido.folio_interno_display }}
           <br />
           <small class="text-mted">Folio:</small>
           {{ pedido.folio_usuario }}

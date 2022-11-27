@@ -35,6 +35,7 @@ import { NgxCsvParserModule } from 'ngx-csv-parser'
 import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 import { EnvServiceProvider } from './services/env.service.provider'
+import { ImpresionPlantillaGeneralComponent } from './componentes-modulares/impresion/impresion-plantilla-general/impresion-plantilla-general.component';
 
 export function tokenGetter() {
   let token = localStorage.getItem('token')
@@ -59,6 +60,12 @@ const appRoutes: Routes = [
   {
     path: 'usuario/recuperar-contrasena',
     component: RecuperarContrasenaComponent
+  },
+  
+  {
+    path: 'imprimir',
+    component: ImpresionPlantillaGeneralComponent,
+    loadChildren: () => import('./componentes-modulares/impresion/impresion.module').then(m => m.ImpresionModule)
   },
 
   {

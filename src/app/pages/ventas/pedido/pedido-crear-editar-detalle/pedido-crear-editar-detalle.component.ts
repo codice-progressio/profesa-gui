@@ -167,6 +167,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       total: new UntypedFormControl(pedido.total),
       iva: new UntypedFormControl(pedido.iva),
       importe: new UntypedFormControl(pedido.importe),
+      listaDePreciosId: new UntypedFormControl(pedido.listaDePreciosId),
       articulos: new UntypedFormArray(
         pedido.articulos?.map(x => {
           // Cargamos los articulos en la lista para su descripcion
@@ -347,6 +348,7 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
 
   guardadoRapido() {
     // Guardamos los cambios
+    this.formulario.get('listaDePreciosId').setValue(this.lista._id)
     let pedido = this.formulario.value
     let esInvalido = this.formulario.invalid
 

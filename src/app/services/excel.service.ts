@@ -9,6 +9,7 @@ const EXCEL_EXTENSION = '.xlsx'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import { Pedido } from '../models/pedido.model'
+import { PedidoService } from './pedido.service';
 import { UsuarioService } from './usuario/usuario.service'
 
 @Injectable({
@@ -17,7 +18,8 @@ import { UsuarioService } from './usuario/usuario.service'
 export class ExcelService {
   constructor(
     private usuarioService: UsuarioService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe, 
+    private pedidoService: PedidoService
   ) {}
 
   public exportAsExcelFile(json: any[], excelFileName: string): void {
@@ -68,6 +70,7 @@ export class ExcelService {
           'dd/MMMM/yyyy HH:MM'
         )
       ],
+
       [
         'Cliente:',
         pedido.contacto.nombre ?? pedido.contacto.razonSocial,
@@ -76,6 +79,7 @@ export class ExcelService {
         'IVA:',
         pedido.contacto.listaDePrecios.iva
       ],
+
       [
         'Cod. Cliente:',
         pedido.contacto.codigo,
@@ -271,16 +275,6 @@ export class ExcelService {
   generarDomicilios(
     domicilios: import('../models/contacto.model').ContactoDomicilio[]
   ): string[] {
-    if (!domicilios) return []
-    return domicilios.map(x => {
-      return [
-        x.calle,
-        x.numeroExterior,
-        x.numeroInterior,
-        x.colonia,
-        x.ciudad,
-        x.estado
-      ].join(' ')
-    })
+    return this.pedidoService.helpers.generarDomicilios(domicilios)
   }
 }

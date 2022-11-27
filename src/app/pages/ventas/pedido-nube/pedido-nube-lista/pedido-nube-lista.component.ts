@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
 import { Pedido } from 'src/app/models/pedido.model'
+import { ImpresionService } from 'src/app/services/impresion.service';
 import { PedidoNubeService } from 'src/app/services/pedido-nube.service'
 
 @Component({
@@ -9,7 +11,11 @@ import { PedidoNubeService } from 'src/app/services/pedido-nube.service'
   styleUrls: ['./pedido-nube-lista.component.css']
 })
 export class PedidoNubeListaComponent implements OnInit {
-  constructor(private pedidoNubeService: PedidoNubeService) {}
+  constructor(
+    private pedidoNubeService: PedidoNubeService,
+    private router: Router,
+    private impresionService: ImpresionService
+  ) {}
 
   cargando = false
   termino = ''
@@ -26,19 +32,14 @@ export class PedidoNubeListaComponent implements OnInit {
     this.cargando = true
     this.pedidoNubeService.todo().subscribe(
       resp => {
-        this.pedidos = resp.pedidos.map(p => this.obtenerFolioUsuario(p))
+        this.pedidos = resp.pedidos
         this.cargando = false
       },
       err => (this.cargando = false)
     )
   }
 
-  obtenerFolioUsuario(p: Pedido): Pedido {
-    // Obtenemos el folio de pedidos offline
-    const folio = p.folio.split('-').pop().padStart(3, '0')
-    p.folio_usuario = folio
-    return p
-  }
+  
 
   modificar(pedido: Pedido) {
     console.log('modificar')
@@ -47,4 +48,8 @@ export class PedidoNubeListaComponent implements OnInit {
   verDetalle(pedido: Pedido) {}
 
   eliminar(pedido: Pedido) {}
+
+  imprimir(pedido: Pedido) {
+    this.impresionService.imprimirPedido(pedido)
+  }
 }

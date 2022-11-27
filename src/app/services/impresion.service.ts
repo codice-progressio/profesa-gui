@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http'
 import { catchError } from 'rxjs/operators'
 import { throwError } from 'rxjs'
 import { ManejoDeMensajesService } from './utilidades/manejo-de-mensajes.service'
+import { Pedido } from '../models/pedido.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,24 @@ import { ManejoDeMensajesService } from './utilidades/manejo-de-mensajes.service
 export class ImpresionService {
   constructor(
     private msjService: ManejoDeMensajesService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
+
+
+  /**
+   *Almacena el pedido para ser impreso
+   *
+   * @type {(Pedido | undefined)}
+   * @memberof ImpresionService
+   */
+  pedidoNube: Pedido | undefined = undefined
+
+  imprimirPedido(pedido: Pedido) {
+    this.pedidoNube = pedido
+    this.router.navigate(['/imprimir/pedido-nube'])
+  }
+
 
   base = 'http://127.0.0.1:9090/'
 
