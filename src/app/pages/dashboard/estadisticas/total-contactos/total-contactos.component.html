@@ -10,16 +10,10 @@
           {{ eSer.totalContactos | number }}
         </h2>
 
-        <h6 class="text-muted m-t-10 m-b-0 font-10">
-          <a (click)="cargarTotalContactos()" class="text-muted" role="button">
-            <i
-              class="fas fa-sync"
-              [ngClass]="{ 'fa-spin-fast': cargandoTotalContactos }"
-            ></i>
-
-            Actualizar
-          </a>
-        </h6>
+ <app-estadistica-recargar
+          (ejecutar)="cargar()"
+          (esteComponente)="componenteCarga = $event"
+        ></app-estadistica-recargar>
       </div>
     </div>
   </div>

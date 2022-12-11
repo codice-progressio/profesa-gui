@@ -9,10 +9,20 @@ import { SharedModule } from '../shared/shared.module'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { AdministradorComponent } from './parametros/administrador/administrador.component'
 import { ProfileComponent } from './profile/profile.component'
-import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component';
-import { TotalContactosComponent } from './dashboard/estadisticas/total-contactos/total-contactos.component';
-import { TotalSkusComponent } from './dashboard/estadisticas/total-skus/total-skus.component';
+import { AccountsSettingsComponent } from './accounts-settings/accounts-settings.component'
+import { TotalContactosComponent } from './dashboard/estadisticas/total-contactos/total-contactos.component'
+import { TotalSkusComponent } from './dashboard/estadisticas/total-skus/total-skus.component'
 import { CostoInventarioComponent } from './dashboard/estadisticas/costo-inventario/costo-inventario.component'
+import { VentasUltimoMesComponent } from './dashboard/estadisticas/ventas-ultimo-mes/ventas-ultimo-mes.component'
+import { DiezMasVendidosComponent } from './dashboard/estadisticas/diez-mas-vendidos/diez-mas-vendidos.component'
+import { VentasPorVendedorComponent } from './dashboard/estadisticas/ventas-por-vendedor/ventas-por-vendedor.component'
+import { MejorClienteComponent } from './dashboard/estadisticas/mejor-cliente/mejor-cliente.component'
+import { PedidosHoyComponent } from './dashboard/estadisticas/pedidos-hoy/pedidos-hoy.component'
+
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { EstadisticaRecargarComponent } from './dashboard/estadisticas/estadistica-recargar/estadistica-recargar.component';
+import { ModalModule } from '@codice-progressio/modal';
+import { ModalWrapperModule } from '../componentes-modulares/modal-wrapper/modal-wrapper.module';
 
 const pagesRoutes: Routes = [
   //  <!--
@@ -116,12 +126,21 @@ const pagesRoutes: Routes = [
     TotalContactosComponent,
     TotalSkusComponent,
     CostoInventarioComponent,
+    VentasUltimoMesComponent,
+    DiezMasVendidosComponent,
+    VentasPorVendedorComponent,
+    MejorClienteComponent,
+    PedidosHoyComponent,
+    EstadisticaRecargarComponent,
   ],
   exports: [],
   imports: [
     CommonModule,
     SharedModule.forRoot(),
-    RouterModule.forChild(pagesRoutes)
+    RouterModule.forChild(pagesRoutes),
+    NgxChartsModule,
+    ModalModule,
+    ModalWrapperModule
   ],
   providers: []
 })

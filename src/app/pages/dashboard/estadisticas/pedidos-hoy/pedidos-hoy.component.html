@@ -1,0 +1,64 @@
+<div class="card shadow">
+  <app-modal-wrapper
+    (esteComponente)="componenteModal = $event"
+    (cerrado)="cerradoModal()"
+  >
+    <div class="card-header">
+      <div class="row">
+        <div class="col-6 text-nowrap"><i class="fas fa-check"></i> Hoy</div>
+        <div class="col-6 text-right">
+          <a
+            (click)="abrirModal()"
+            class="btn btn-outline-secondary btn-sm"
+            href="javascipt:void(0)"
+            role="button"
+            ><i class="fa fa-search-plus" aria-hidden="true"></i
+          ></a>
+          <app-estadistica-recargar
+            (ejecutar)="cargar()"
+            (esteComponente)="componenteCarga = $event"
+          >
+          </app-estadistica-recargar>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="hoy">
+      <div class="centrar-grafico" style="min-height: 400px">
+        <div class="col-12 centrar-grafico" style="min-height: 400px">
+          <ngx-charts-pie-chart
+            [results]="single"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [legendPosition]="legendPosition"
+            [labels]="showLabels"
+            [doughnut]="isDoughnut"
+            [arcWidth]="arcWidth"
+            [doughnut]="doughnut"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item centrar-grafico">
+          <div class="text-center">
+            <h3 class="font-bold d-inline">
+              $ {{ hoy.vendido | number : '2.2-2' }}
+            </h3>
+            vendidos en
+            <h3 class="font-bold d-inline">{{ hoy.pedidos }}</h3>
+            pedidos realizados hoy por
+            <h3 class="font-bold d-inline">{{ hoy.vendedores }}</h3>
+            vendedores
+          </div>
+        </li>
+        <li class="list-group-item">
+          El producto más solicitado es
+          <h5 class="font-bold d-inline">{{ hoy.masVendido }}</h5>
+        </li>
+      </ul>
+    </ng-container>
+
+    <!-- <div class="card-footer">
+      </div> -->
+  </app-modal-wrapper>
+</div>

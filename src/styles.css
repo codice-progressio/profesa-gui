@@ -393,3 +393,14 @@ body.confirmar-usuario {
     linear-gradient(135deg, #670d10 0%, #092756 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
+
+
+.centrar-grafico {
+    width: 100%;
+    height: calc(100% - 30px);
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}

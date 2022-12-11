@@ -1,27 +1,30 @@
-import { Component, OnInit } from '@angular/core'
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  OnInit
+} from '@angular/core'
 import { EstadisticasService } from 'src/app/services/estadisticas.service'
+import { EstadisticaRecargarComponent } from '../estadistica-recargar/estadistica-recargar.component'
+import { EstadisticaCarga } from '../estadistica-recargar/EstadisticaCarga'
 
 @Component({
   selector: 'app-total-contactos',
   templateUrl: './total-contactos.component.html',
   styleUrls: ['./total-contactos.component.css']
 })
-export class TotalContactosComponent implements OnInit {
-  constructor(public eSer: EstadisticasService) {}
-
-  ngOnInit(): void {
-    this.cargarTotalContactos()
+export class TotalContactosComponent extends EstadisticaCarga {
+  constructor(public eSer: EstadisticasService) {
+    super()
   }
 
-  cargandoTotalContactos = false
-
-  cargarTotalContactos() {
-    this.cargandoTotalContactos = true
+  cargar() {
+    this.componenteCarga.cargando = true
     this.eSer.contarContactos().subscribe(
       total => {
-        this.cargandoTotalContactos = false
+        this.componenteCarga.cargando = false
       },
-      () => (this.cargandoTotalContactos = false)
+      () => (this.componenteCarga.cargando = false)
     )
   }
 }

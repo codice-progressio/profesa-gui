@@ -36,6 +36,7 @@ import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 import { EnvServiceProvider } from './services/env.service.provider'
 import { ImpresionPlantillaGeneralComponent } from './componentes-modulares/impresion/impresion-plantilla-general/impresion-plantilla-general.component';
+import { ModalWrapperModule } from './componentes-modulares/modal-wrapper/modal-wrapper.module';
 
 export function tokenGetter() {
   let token = localStorage.getItem('token')
@@ -121,6 +122,7 @@ const appRoutes: Routes = [
       }
     }),
     ModalModule,
+    // ModalWrapperModule,
     NgxCsvParserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

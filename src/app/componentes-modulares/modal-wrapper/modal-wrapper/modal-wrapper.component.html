@@ -1,0 +1,18 @@
+<!-- Aqui rodeamos el contenido con el modal -->
+<ng-container *ngIf="mostrarModal">
+  <codice-modal [id]="idModal" (cerrado)="modalCerrado()">
+    <ng-container *ngTemplateOutlet="contenido"></ng-container>
+  </codice-modal>
+</ng-container>
+
+
+<!-- Aqui lo mostramos solo el contenido sin manipular -->
+<ng-container *ngIf="!mostrarModal">
+  <ng-container *ngTemplateOutlet="contenido"></ng-container>
+</ng-container>
+
+<ng-template #contenido>
+  <!-- Aquí se renderiza el contenido solo una vez y de esta manera 
+    no se inicializa el componente cada vez que cambiamos de sección. -->
+  <ng-content></ng-content>
+</ng-template>

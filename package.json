@@ -34,6 +34,7 @@
     "@codice-progressio/indexed-db": "^1.0.3",
     "@codice-progressio/input-validaciones": "^1.0.1",
     "@codice-progressio/modal": "^1.0.3",
+    "@swimlane/ngx-charts": "^20.1.0",
     "angularx-qrcode": "^14.0.0",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",

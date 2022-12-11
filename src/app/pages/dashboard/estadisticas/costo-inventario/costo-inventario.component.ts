@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core'
 import { EstadisticasService } from 'src/app/services/estadisticas.service'
-
+import { EstadisticaRecargarComponent } from '../estadistica-recargar/estadistica-recargar.component'
+import { EstadisticaCarga } from '../estadistica-recargar/EstadisticaCarga'
 @Component({
   selector: 'app-costo-inventario',
   templateUrl: './costo-inventario.component.html',
   styleUrls: ['./costo-inventario.component.css']
 })
-export class CostoInventarioComponent implements OnInit {
-  constructor(public eSer: EstadisticasService) {}
-
-  ngOnInit(): void {
-    this.cargarTotalCostoInventario()
+export class CostoInventarioComponent extends EstadisticaCarga {
+  constructor(public eSer: EstadisticasService) {
+    super()
   }
 
-  cargandoTotalCostoInventario = false
-
-  cargarTotalCostoInventario() {
-    this.cargandoTotalCostoInventario = true
+  cargar() {
+    this.componenteCarga.cargando = true
     this.eSer.costoExistencias().subscribe(
       total => {
-        this.cargandoTotalCostoInventario = false
+        this.componenteCarga.cargando = false
       },
-      () => (this.cargandoTotalCostoInventario = false)
+      () => (this.componenteCarga.cargando = false)
     )
   }
 }

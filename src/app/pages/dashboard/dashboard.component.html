@@ -1,13 +1,10 @@
-<div class="row">
-  <div *ngIf="permisoTotalSkus()" class="col-lg-4">
-    <app-total-skus> </app-total-skus>
-  </div>
-
-  <div *ngIf="permisoTotalContactos()" class="col-lg-4">
-    <app-total-contactos> </app-total-contactos>
-  </div>
-
-  <div *ngIf="permisoCostoInventario()" class="col-lg-4">
-    <app-costo-inventario></app-costo-inventario>
-  </div>
+<div class="card-columns">
+  <app-ventas-ultimo-mes></app-ventas-ultimo-mes>
+  <app-total-skus *ngIf="permisoTotalSkus()"> </app-total-skus>
+  <app-total-contactos *ngIf="permisoTotalContactos()"> </app-total-contactos>
+  <app-costo-inventario *ngIf="permisoCostoInventario()"></app-costo-inventario>
+  <app-diez-mas-vendidos></app-diez-mas-vendidos>
+  <app-mejor-cliente></app-mejor-cliente>
+  <app-pedidos-hoy></app-pedidos-hoy>
+  <app-ventas-por-vendedor></app-ventas-por-vendedor>
 </div>

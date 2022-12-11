@@ -1,0 +1,71 @@
+<div class="card shadow">
+  <app-modal-wrapper
+    (esteComponente)="componenteModal = $event"
+    (cerrado)="cerradoModal()"
+  >
+    <div class="card-header">
+      <div class="row">
+        <div class="col-6 text-nowrap">
+          <i class="fas fa-star"></i> Mejor cliente
+        </div>
+        <div class="col-6 text-right d-flex justify-content-end">
+          <a
+            (click)="abrirModal()"
+            class="btn btn-outline-secondary btn-sm"
+            href="javascipt:void(0)"
+            role="button"
+            ><i class="fa fa-search-plus" aria-hidden="true"></i
+          ></a>
+          <app-estadistica-recargar
+            (ejecutar)="cargar()"
+            (esteComponente)="saleComponente($event)"
+          >
+          </app-estadistica-recargar>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="mejorCliente; else sin_datos">
+      <div class="centrar-grafico" style="min-height: 400px">
+        <div class="col-12 centrar-grafico" style="min-height: 400px">
+          <ngx-charts-line-chart
+            [legend]="legend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxis]="xAxis"
+            [yAxis]="yAxis"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [timeline]="timeline"
+            [results]="multi"
+          >
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h1 class="font-bold">{{ mejorCliente.nombre }}</h1>
+          <p>
+            <span class="font-bold font-20"
+              >$ {{ mejorCliente.comprado | number : '2.2-2' }}</span
+            >
+            comprado en
+            <span class="font-bold font-20">{{ mejorCliente.pedidos }}</span>
+            pedidos en los últimos 30 días
+          </p>
+        </li>
+      </ul>
+    </ng-container>
+
+    <ng-template #sin_datos>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <p>No hay datos para mostrar</p>
+        </li>
+      </ul>
+    </ng-template>
+
+    <!-- <div class="card-footer">
+        </div> -->
+  </app-modal-wrapper>
+</div>

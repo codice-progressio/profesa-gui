@@ -1,0 +1,78 @@
+<div class="card shadow">
+  <app-modal-wrapper
+    (esteComponente)="componenteModal = $event"
+    (cerrado)="cerradoModal()"
+  >
+    <div class="card-header">
+      <div class="row">
+        <div class="col-6 text-nowrap">
+          <i class="fas fa-star"></i> Ventas trimestre
+        </div>
+        <div class="col-6 text-right d-flex justify-content-end">
+          <a
+            (click)="abrirModal()"
+            class="btn btn-outline-secondary btn-sm"
+            href="javascipt:void(0)"
+            role="button"
+            ><i class="fa fa-search-plus" aria-hidden="true"></i
+          ></a>
+          <app-estadistica-recargar
+            (ejecutar)="cargar()"
+            (esteComponente)="saleComponente($event)"
+          >
+          </app-estadistica-recargar>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="datos; else sin_datos">
+      <div class="centrar-grafico">
+        <ngx-charts-line-chart
+          [legend]="legend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxis]="xAxis"
+          [yAxis]="yAxis"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [timeline]="timeline"
+          [results]="multi"
+        >
+        </ngx-charts-line-chart>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let item of single">
+          <div class="d-flex justify-content-between">
+            <span>{{ item.name }}</span>
+            <span>$ {{ item.value | number : '2.2-2' }}</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="centrar-grafico">
+        <ngx-charts-pie-chart
+          [results]="single"
+          [gradient]="gradient"
+          [legend]="showLegend"
+          [legendPosition]="legendPosition"
+          [labels]="showLabels"
+          [doughnut]="isDoughnut"
+          [arcWidth]="arcWidth"
+          [doughnut]="doughnut"
+        >
+        </ngx-charts-pie-chart>
+      </div>
+    </ng-container>
+
+    <ng-template #sin_datos>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <p>No hay datos para mostrar</p>
+        </li>
+      </ul>
+    </ng-template>
+
+    <!-- <div class="card-footer">
+        </div> -->
+  </app-modal-wrapper>
+</div>

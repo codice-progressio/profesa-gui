@@ -1,4 +1,4 @@
-<div class="card shadow">
+<div class="card shadow p-3">
     <div class="card-body">
       <div class="d-flex no-block">
         <div class="m-r-20 align-self-center">
@@ -11,16 +11,10 @@
             {{ eSer.totalItems | number }}
           </h2>
 
-          <h6 class="text-muted m-t-10 m-b-0 font-10">
-            <a (click)="cargarTotalItems()" class="text-muted" role="button">
-              <i
-                class="fas fa-sync"
-                [ngClass]="{ 'fa-spin-fast': cargandoTotalSkus }"
-              ></i>
-
-              Actualizar
-            </a>
-          </h6>
+           <app-estadistica-recargar
+          (ejecutar)="cargar()"
+          (esteComponente)="componenteCarga = $event"
+        ></app-estadistica-recargar>
         </div>
       </div>
     </div>
