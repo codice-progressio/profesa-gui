@@ -62,11 +62,11 @@ export class EstadisticasService {
     return this.testMejorCliente(m)
     // return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
   }
+
+  
   hoy() {
     let m = map((res: any) => res as iHoy)
-
-    return this.testHoy(m)
-    // return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
+    return this.http.get(this.base.concat('/hoy')).pipe(m)
   }
 
   ventasPorVendedor() {
