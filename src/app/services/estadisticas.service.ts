@@ -59,11 +59,9 @@ export class EstadisticasService {
   mejorCliente() {
     let m = map((res: any) => res as iMejorCliente)
 
-    return this.testMejorCliente(m)
-    // return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
+    return this.http.get(this.base.concat('/mejor-cliente')).pipe(m)
   }
 
-  
   hoy() {
     let m = map((res: any) => res as iHoy)
     return this.http.get(this.base.concat('/hoy')).pipe(m)
@@ -179,7 +177,7 @@ export interface iLineChart {
    * @type {{value:number, name:string}[]}
    * @memberof iLineChart
    */
-  series: { value: number; name: string }[]
+  series: { value: number; name: string; datosAgrupados?: number }[]
 }
 
 export interface iMejorCliente {
