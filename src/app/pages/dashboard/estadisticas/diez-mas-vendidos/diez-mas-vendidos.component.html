@@ -42,7 +42,7 @@
       <li class="list-group-item" *ngFor="let item of single">
         <div class="d-flex justify-content-between">
           <span>{{ item.name }}</span>
-          <span>$ {{ item.value | number : '2.2-2' }}</span>
+          <span class="text-nowrap p-3">$ {{ item.value | number : '2.2-2' }}</span>
         </div>
       </li>
     </ul>
