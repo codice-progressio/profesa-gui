@@ -37,6 +37,10 @@
           [timeline]="timeline"
           [results]="multi"
         >
+          <ng-template #tooltipTemplate let-model="model">
+            <p>{{ model.name }}</p>
+            <p>${{ model.value | number : '1.2-2' }}</p>
+          </ng-template>
         </ngx-charts-line-chart>
       </div>
 
@@ -60,6 +64,10 @@
           [arcWidth]="arcWidth"
           [doughnut]="doughnut"
         >
+        <ng-template #tooltipTemplate let-model="model">
+          <p>{{ model.name }}</p>
+          ${{ model.value | number : '1.2-2' }}
+        </ng-template>
         </ngx-charts-pie-chart>
       </div>
     </ng-container>

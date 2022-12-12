@@ -36,6 +36,10 @@
         [arcWidth]="arcWidth"
         [doughnut]="doughnut"
       >
+        <ng-template #tooltipTemplate let-model="model">
+          <p>{{ model.name }}</p>
+          <p>${{ model.value | number : '1.2-2' }}</p>
+        </ng-template>
       </ngx-charts-pie-chart>
     </div>
 

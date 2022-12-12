@@ -38,6 +38,10 @@
             [timeline]="timeline"
             [results]="multi"
           >
+            <ng-template #tooltipTemplate let-model="model">
+              <p>{{ model.name }}</p>
+              <p>${{ model.value | number : '1.2-2' }}</p>
+            </ng-template>
           </ngx-charts-line-chart>
         </div>
       </div>
