@@ -371,6 +371,11 @@ export class PedidoCrearEditarDetalleComponent implements OnInit {
       this.notiService.toast.error('Hay errores en el formulario')
       return
     }
+    // Recalculamos los  importes por articulo
+    modelo.articulos.forEach(articulo => {
+      let importe = articulo.cantidad * articulo.precio
+      articulo.importe  = Math.round(importe * 100) / 100
+    })
 
     this.cargando = true
     //Total
