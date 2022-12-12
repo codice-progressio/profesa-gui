@@ -3,8 +3,7 @@ html {
 }
 
 /* No recargar al hacer pull scroll */
-body
-{
+body {
   overscroll-behavior-y: contain;
 }
 
@@ -368,8 +367,8 @@ body.login-usuario {
   padding-top: 40px;
   padding-bottom: 40px;
 
-  background: url('assets/images/background/nuevo-original.jpg') no-repeat center center
-    fixed;
+  background: url('assets/images/background/nuevo-original.jpg') no-repeat
+    center center fixed;
   background-size: cover;
 }
 
@@ -394,13 +393,14 @@ body.confirmar-usuario {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
 
-
 .centrar-grafico {
-    width: 100%;
-    height: calc(100% - 30px);
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+  background-color: #f1f1f1;
+  
+  width: 100%;
+  height: calc(100% - 30px);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
