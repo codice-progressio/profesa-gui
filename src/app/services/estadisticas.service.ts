@@ -52,8 +52,7 @@ export class EstadisticasService {
   diezMasVendidos() {
     let m = map((res: any) => res.datos as iGraficoPie[])
 
-    return this.test(m)
-    // return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
+    return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
   }
 
   mejorCliente() {
