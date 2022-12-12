@@ -44,7 +44,7 @@ export class PedidosHoyComponent extends EstadisticaCarga implements OnInit {
       res => {
         this.componenteCarga.cargando = false
         this.hoy = res
-        this.single = res.grafico
+        this.single = [...res.grafico]
       },
       err => (this.componenteCarga.cargando = false)
     )

@@ -71,9 +71,7 @@ export class EstadisticasService {
 
   ventasPorVendedor() {
     let m = map((res: any) => res as iVentasPorVendedor)
-
-    return this.testVentasPorVendedor(m)
-    // return this.http.get(this.base.concat('/diez-mas-vendidos')).pipe(m)
+    return this.http.get(this.base.concat('/ventas-por-vendedor')).pipe(m)
   }
 
   ventasTrimestre() {

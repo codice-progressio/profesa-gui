@@ -47,7 +47,7 @@ export class VentasPorVendedorComponent
       res => {
         this.componenteCarga.cargando = false
         this.datos = res
-        this.single = res.grafico
+        this.single = [...res.grafico]
       },
       err => (this.componenteCarga.cargando = false)
     )
