@@ -73,7 +73,7 @@ export class EstadisticasService {
 
   ventasTrimestre() {
     let m = map((res: any) => res as iVentasTrimestre)
-    return this.testVentasTrimestre(m)
+    return this.http.get(this.base.concat('/ventas-trimestre')).pipe(m)
   }
 
   testVentasTrimestre(m: OperatorFunction<any, iVentasTrimestre>) {

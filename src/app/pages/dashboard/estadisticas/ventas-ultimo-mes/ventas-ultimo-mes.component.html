@@ -25,7 +25,7 @@
       </div>
     </div>
     <ng-container *ngIf="datos; else sin_datos">
-      <div class="centrar-grafico">
+      <div class="centrar-grafico" style="min-height: 400px;">
         <ngx-charts-line-chart
           [legend]="legend"
           [showXAxisLabel]="showXAxisLabel"
@@ -53,7 +53,7 @@
         </li>
       </ul>
 
-      <div class="centrar-grafico">
+      <div class="centrar-grafico" style="height: auto;" >
         <ngx-charts-pie-chart
           [results]="single"
           [gradient]="gradient"
