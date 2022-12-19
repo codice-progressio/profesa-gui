@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/codice-progressio/profesa-gui/compare/v4.6.10...v4.7.0) (2022-12-19)
+
+
+### Features
+
+* breaking_change: Estaditicas generales ([fbe9afc](https://github.com/codice-progressio/profesa-gui/commit/fbe9afc3811b251283d9e0772de6a1ca5a26f963))
+* Estadisticas - Diez más vendidos ([e9d6197](https://github.com/codice-progressio/profesa-gui/commit/e9d6197ff888d1aa1bc051b95e9eb6e7c953821d))
+* Estadisticas - hoy conectada ([8bb4074](https://github.com/codice-progressio/profesa-gui/commit/8bb4074d9020b3197daa6bc1ac946f40afeebede))
+* Estadisticas - Mejor cliente ([9ff1c93](https://github.com/codice-progressio/profesa-gui/commit/9ff1c93d6e1d5afa79d52585a07b08d47307ac04))
+* Estadisticas - Ventas trimestre ([b7d2018](https://github.com/codice-progressio/profesa-gui/commit/b7d20189e5f64ed9f67b53a07713e7ec152bbdb9))
+* Estado de conexión con ping ([e553a71](https://github.com/codice-progressio/profesa-gui/commit/e553a71adfcbae24e405d6f8c41920425fc93c36))
+* Estructura de pedidos para la nube ([829119e](https://github.com/codice-progressio/profesa-gui/commit/829119e69593a71edeb3b871719a3a9c7a6ecfdc))
+* Lista responsiva de folios ([6262316](https://github.com/codice-progressio/profesa-gui/commit/62623166600b2ced8b88a0c51676ab6ea486c66d))
+* Pedidos en la nube +  impresión ([1f5b1e0](https://github.com/codice-progressio/profesa-gui/commit/1f5b1e02bf2e1dc5126cc63306e93b3ec23b05cf))
+* Registro de pedidos en la nube ([0ad305a](https://github.com/codice-progressio/profesa-gui/commit/0ad305a26bc4666a613b9b5fc1d3cc8aea658285))
+* Ventas por vendedor ([3464e83](https://github.com/codice-progressio/profesa-gui/commit/3464e83b60ed1e6a0de1c5f0b5329febdfc86047))
+
+
+### Bug Fixes
+
+* Actualizada versiones de paquetes incompatibles. ([0e154b8](https://github.com/codice-progressio/profesa-gui/commit/0e154b8abb796c6a985b040d0c278194909a7627))
+* Fondo de graficas ([9dc5b23](https://github.com/codice-progressio/profesa-gui/commit/9dc5b237f6b0449eadb3d3693042b59a17149b09))
+* Formato de numero de tooltip ([8ef03e1](https://github.com/codice-progressio/profesa-gui/commit/8ef03e1a0c6854591d07df153446527657236044))
+* Formato de números ([0a89dfc](https://github.com/codice-progressio/profesa-gui/commit/0a89dfc9b9fdec25a85bea781207bff050416d95))
+* Librerias no necesarias ([78dfd0d](https://github.com/codice-progressio/profesa-gui/commit/78dfd0d433eee15d95a32ffadcc0d47d310ea8ea))
+* No se muestra detalle de importe al abrir pedido sincronizado ([16b230b](https://github.com/codice-progressio/profesa-gui/commit/16b230b3e075b37e2f67d28da478d9e692964a38))
+* No se muestra fecha ([717142c](https://github.com/codice-progressio/profesa-gui/commit/717142c0af1e6110fddef47117a07e1087e3abbe))
+* No se muestra precarga ([079b6cb](https://github.com/codice-progressio/profesa-gui/commit/079b6cb530e803a62607b9f8c6c46b34878570e0))
+* Pedidos - El importe no se calcula en algúnas ocaciones ([04ee937](https://github.com/codice-progressio/profesa-gui/commit/04ee9371afa68cd43b99e03f532b909b1b4a4c77))
+* Removido script innecesario. Librerias no existentes ([cb4cacd](https://github.com/codice-progressio/profesa-gui/commit/cb4cacdacf8548041d745102bbfeb689e50ea20b))
+* Removidos remanentes de librerias ([646fe01](https://github.com/codice-progressio/profesa-gui/commit/646fe0103a3ff8d4847b3cfbb0f53c4544a794d4))
+* Root de proyecto mal ([1f3bf30](https://github.com/codice-progressio/profesa-gui/commit/1f3bf30c00171b2750cd1e694ac0bd6ce5f2d5f5))
+* Seguridad ([a5c654e](https://github.com/codice-progressio/profesa-gui/commit/a5c654ec68a056769275fa21ad7aace53c31ef0a))
+* Signo de pesos 10 mas vendidos salta linea ([5c74d40](https://github.com/codice-progressio/profesa-gui/commit/5c74d403e21fcc5b000509b27a32791f5259ebc5))
+
 ### [4.6.10](https://github.com/codice-progressio/profesa-gui/compare/v4.6.9...v4.6.10) (2022-09-18)
 
 
