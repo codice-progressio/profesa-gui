@@ -11,7 +11,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc",
     "release": "standard-version",
     "playground": "angular-playground --ng-cli-port 5001"
   },
