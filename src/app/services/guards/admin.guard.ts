@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core'
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  Router
-} from '@angular/router'
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router'
 import { UsuarioService } from '../usuario/usuario.service'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
@@ -12,7 +7,7 @@ import permisosKeysConfig from 'src/app/config/permisosKeys.config'
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard implements CanActivate {
+export class AdminGuard  {
   constructor(
     public _usuarioService: UsuarioService,
     public _msj: ManejoDeMensajesService,

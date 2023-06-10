@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core'
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  Router
-} from '@angular/router'
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { UsuarioService } from '../usuario/usuario.service'
 import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.service'
@@ -15,7 +10,7 @@ import { Location } from '@angular/common'
 @Injectable({
   providedIn: 'root'
 })
-export class PermisosGuard implements CanActivate {
+export class PermisosGuard  {
   constructor(
     public _usuarioservice: UsuarioService,
     public msjService: ManejoDeMensajesService,

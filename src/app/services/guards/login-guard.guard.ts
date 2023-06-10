@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { CanActivate, Router } from '@angular/router'
+import { Router } from '@angular/router'
 // Este import tiene que ser así por que si llamamos a service directamente
 // nos da un error extraño en la consola.
 import { UsuarioService } from '../usuario/usuario.service'
@@ -8,7 +8,7 @@ import { ManejoDeMensajesService } from '../utilidades/manejo-de-mensajes.servic
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuardGuard implements CanActivate {
+export class LoginGuardGuard  {
   constructor(public _usuarioService: UsuarioService, public router: Router, public msjService: ManejoDeMensajesService) {}
 
   canActivate(): boolean {
