@@ -96,9 +96,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {
-      useHash: false,
-      relativeLinkResolution: 'legacy'
-    }),
+    useHash: false
+}),
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
       timeOut: 10000,
