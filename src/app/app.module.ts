@@ -16,7 +16,6 @@ import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component'
 import { PagesComponent } from './pages/pages.component'
 import { SharedModule } from './shared/shared.module'
-import { NgxMaskModule } from 'ngx-mask'
 import { JwtModule } from '@auth0/angular-jwt'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -35,12 +34,13 @@ import { NgxCsvParserModule } from 'ngx-csv-parser'
 import { ModalModule } from '@codice-progressio/modal'
 import { PedidosEstructuraOfflineComponent } from './pedidos-estructura-offline/pedidos-estructura-offline.component'
 import { EnvServiceProvider } from './services/env.service.provider'
-import { ImpresionPlantillaGeneralComponent } from './componentes-modulares/impresion/impresion-plantilla-general/impresion-plantilla-general.component';
-import { ModalWrapperModule } from './componentes-modulares/modal-wrapper/modal-wrapper.module';
+import { ImpresionPlantillaGeneralComponent } from './componentes-modulares/impresion/impresion-plantilla-general/impresion-plantilla-general.component'
+import { ModalWrapperModule } from './componentes-modulares/modal-wrapper/modal-wrapper.module'
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 
 export function tokenGetter() {
   let token = localStorage.getItem('token')
-  if(!token) token = localStorage.getItem('token_offline')
+  if (!token) token = localStorage.getItem('token_offline')
   return token
 }
 
@@ -62,11 +62,14 @@ const appRoutes: Routes = [
     path: 'usuario/recuperar-contrasena',
     component: RecuperarContrasenaComponent
   },
-  
+
   {
     path: 'imprimir',
     component: ImpresionPlantillaGeneralComponent,
-    loadChildren: () => import('./componentes-modulares/impresion/impresion.module').then(m => m.ImpresionModule)
+    loadChildren: () =>
+      import('./componentes-modulares/impresion/impresion.module').then(
+        m => m.ImpresionModule
+      )
   },
 
   {
@@ -96,8 +99,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {
-    useHash: false
-}),
+      useHash: false
+    }),
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
       timeOut: 10000,
@@ -106,8 +109,10 @@ const appRoutes: Routes = [
       progressBar: true,
       progressAnimation: 'increasing'
     }),
+
     HttpClientModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskDirective,
+    NgxMaskPipe,
     SharedModule.forRoot(),
     JwtModule.forRoot({
       config: {
@@ -135,7 +140,8 @@ const appRoutes: Routes = [
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: LOCALE_ID, useValue: 'es-MX' },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    EnvServiceProvider
+    EnvServiceProvider,
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })

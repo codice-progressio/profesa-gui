@@ -11,7 +11,7 @@ import { PreLoaderComponent } from '../components/pre-loader/pre-loader.componen
 import { NivelUrgenciaComponent } from '../components/nivel-urgencia/nivel-urgencia.component'
 import { PaginadorComponent } from '../components/paginador/paginador.component'
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component'
-import { NgxMaskModule } from 'ngx-mask'
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 import { Paginador2Component } from '../components/paginador2/paginador2.component'
 import { BotonParaImprecionComponent } from './boton-para-imprecion/boton-para-imprecion.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -50,7 +50,8 @@ import { DirectivesModule } from '../directives/directives.module'
     // CommonModule trae el *ng-for
     CommonModule,
     PipesModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskDirective,
+    NgxMaskPipe,
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,
@@ -94,11 +95,13 @@ import { DirectivesModule } from '../directives/directives.module'
     CargaDeImagenesComponent,
     OrdenadorDeColumnasDirective,
     FormsModule,
-    NgxMaskModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     PipesModule,
     DragDropModule,
     QRCodeModule
-  ]
+  ],
+  providers: [provideNgxMask()]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {

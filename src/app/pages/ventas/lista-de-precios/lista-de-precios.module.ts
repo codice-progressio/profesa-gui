@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { InputValidacionesModule } from '@codice-progressio/input-validaciones'
 import { ModalModule } from '@codice-progressio/modal'
 import { ComponentsModule } from 'src/app/components/components.module'
-import { NgxMaskModule } from 'ngx-mask'
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 import { NgModule } from '@angular/core'
 import { from } from 'rxjs'
 import permisosKeysConfig from 'src/app/config/permisosKeys.config'
@@ -64,7 +64,9 @@ const routes: Routes = [
     InputValidacionesModule,
     ModalModule,
     ComponentsModule,
-    NgxMaskModule
-  ]
+    NgxMaskDirective, NgxMaskPipe
+  ],
+  providers: [provideNgxMask()]
+
 })
 export class ListaDePreciosModule {}

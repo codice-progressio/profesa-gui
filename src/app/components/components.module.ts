@@ -15,7 +15,7 @@ import { SkuSalidaComponent } from './almacen/sku-salida/sku-salida.component'
 import { SkuEntradaComponent } from './almacen/sku-entrada/sku-entrada.component'
 import { SkuEtiquetasComponent } from './almacen/sku-etiquetas/sku-etiquetas.component'
 import { SkuStockMinimoMaximoComponent } from './almacen/sku-stock-minimo-maximo/sku-stock-minimo-maximo.component'
-import { NgxMaskModule } from 'ngx-mask'
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask'
 import { SkuLotesComponent } from './almacen/sku-lotes/sku-lotes.component'
 
 import { EtiquetasEditorComponent } from './etiquetas-editor/etiquetas-editor.component'
@@ -46,8 +46,8 @@ import { ControlRemisionesComponent } from './control-remisiones/control-remisio
     UxModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMaskModule.forChild(),
-    ModalModule
+    ModalModule,
+    NgxMaskDirective, NgxMaskPipe
   ],
   exports: [
     SkuListaComponent,
@@ -65,6 +65,7 @@ import { ControlRemisionesComponent } from './control-remisiones/control-remisio
     SkuLotesComponent,
     EtiquetasEditorComponent,
     ControlRemisionesComponent
-  ]
+  ],
+  providers: [provideNgxMask()]
 })
 export class ComponentsModule {}

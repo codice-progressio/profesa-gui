@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { InputValidacionesModule } from '@codice-progressio/input-validaciones'
 import { ModalModule } from '@codice-progressio/modal'
 import { ComponentsModule } from '../../../components/components.module'
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { PedidoGlobalCardComponent } from './pedido-global-card/pedido-global-card.component'
 
 const routes: Routes = [
@@ -40,7 +40,8 @@ const routes: Routes = [
     InputValidacionesModule,
     ModalModule,
     ComponentsModule,
-    NgxMaskModule,
-  ]
+    NgxMaskDirective, NgxMaskPipe,
+  ],
+  providers: [provideNgxMask()]
 })
 export class PedidoModule {}
