@@ -6,7 +6,7 @@ const fs = require('fs')
 const app = express()
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist'))
+app.use(express.static(__dirname + '/.'))
 
 app.all('/env.js', (req, res) => {
   let buffer = fs.readFileSync(process.env.RUTA_ENV_PROD_JS, 'utf-8').split('\n')
