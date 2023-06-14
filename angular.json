@@ -21,8 +21,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
-              "src/env.prod.js"
+              "src/manifest.webmanifest"
             ],
             "styles": ["src/styles.css", "node_modules/ngx-toastr/toastr.css"],
             "scripts": [],
@@ -53,10 +52,27 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "production-dev": {
+              "budgets": [
                 {
-                  "replace": "src/env.js",
-                  "with": "src/env.prod.js"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.dev.ts"
                 }
               ],
               "optimization": true,

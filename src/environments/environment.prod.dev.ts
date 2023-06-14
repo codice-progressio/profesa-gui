@@ -1,4 +1,4 @@
-const URL_DOMINIO = 'profesa.app:43003'
+const URL_DOMINIO = '127.0.0.1'
 
 export const environment = {
   production: true,

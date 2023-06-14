@@ -82,7 +82,7 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   // Página de error cuando no encuentra una ruta.
-  { path: '**', component: NopagefoundComponent }
+  { path: 'error', component: NopagefoundComponent }
 ]
 
 @NgModule({
