@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.8.0](https://github.com/codice-progressio/profesa-gui/compare/v4.7.0...v4.8.0) (2023-06-17)
+
+
+### Features
+
+* Dockerfile creado ([914aa28](https://github.com/codice-progressio/profesa-gui/commit/914aa28177603c678b87622acd9930efc05c5530))
+
+
+### Bug Fixes
+
+* Env.prod no se muestra ([9aa62e4](https://github.com/codice-progressio/profesa-gui/commit/9aa62e41ded791fb425fd63ede15d79e572c3ae2))
+* env.prod.js no se hashea al generar la pwa ([38fd7b9](https://github.com/codice-progressio/profesa-gui/commit/38fd7b9910e51be68cf5995cc861ad861aac2724))
+* enviroment debe ser estatico ([b2a3a20](https://github.com/codice-progressio/profesa-gui/commit/b2a3a20edfc81df67730e30745733ad5713fd670))
+* Faltaba puerto ([2925ad4](https://github.com/codice-progressio/profesa-gui/commit/2925ad4f0d27b6bea289df6414eb08e9f2b1d371))
+* Ficheros estatícos preparados para docker ([e00edba](https://github.com/codice-progressio/profesa-gui/commit/e00edbab6b38b1ab60917d94e5620af750abbd35))
+* ngsw actualizado para cargar contenido offline ([4acbd7a](https://github.com/codice-progressio/profesa-gui/commit/4acbd7af0493c1ca84f4a3afd6104f71c4c5ca5e))
+* S00018 - Botón que regrese a busqueda ([119229e](https://github.com/codice-progressio/profesa-gui/commit/119229eb10f5d49465c117a856326b1d16417534))
+* Update v15 breakinchange: Angular ([a05de9b](https://github.com/codice-progressio/profesa-gui/commit/a05de9b8a2ec9468aa98f242c5259be69fa134c2))
+* Update v16 breakingchange: Angular ([02d2035](https://github.com/codice-progressio/profesa-gui/commit/02d2035753e1bd6f670fa6259e6a8a3755dd3c4c))
+
 ## [4.7.0](https://github.com/codice-progressio/profesa-gui/compare/v4.6.10...v4.7.0) (2022-12-19)
 
 
