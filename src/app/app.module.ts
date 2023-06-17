@@ -119,7 +119,7 @@ const appRoutes: Routes = [
         tokenGetter: tokenGetter,
         allowedDomains: [
           //Importacion por fuerza
-          window.__env.URL_DOMINIO,
+          environment.URL_DOMINIO,
           'http://localhost:9090',
           'http://127.0.0.1:9090'
         ]

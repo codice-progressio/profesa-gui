@@ -7,6 +7,7 @@
     "start": "node server.js",
     "start-local": "ng serve imperium-sic -o --ssl true --ssl-key ./node_modules/@codice-progressio/easy-https/cert/desarrollo.key --ssl-cert ./node_modules/@codice-progressio/easy-https/cert/desarrollo.crt",
     "build": "ng build imperium-sic --configuration production --output-hashing=all",
+    "build-dev": "ng build imperium-sic --configuration production-dev --output-hashing=all",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

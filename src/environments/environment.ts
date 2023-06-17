@@ -7,7 +7,7 @@ const URL_DOMINIO = '127.0.0.1:3000'
 export const environment = {
   production: false,
   URL_DOMINIO,
-  URL_SERVICIOS: `https://${URL_DOMINIO}`
+  URL_SERVICIOS: `https://${URL_DOMINIO}/api`
 }
 
 /*
