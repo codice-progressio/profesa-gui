@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.1](https://github.com/codice-progressio/profesa-gui/compare/v4.8.0...v4.8.1) (2023-06-19)
+
+
+### Bug Fixes
+
+* Dominio mal ([dc00f48](https://github.com/codice-progressio/profesa-gui/commit/dc00f48e199fcc219b1f810be9a3ab421e86bfda))
+
 ## [4.8.0](https://github.com/codice-progressio/profesa-gui/compare/v4.7.0...v4.8.0) (2023-06-17)
 
 
