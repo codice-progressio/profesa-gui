@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.2](https://github.com/codice-progressio/profesa-gui/compare/v4.8.1...v4.8.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Reestructuracion de lista de skus ([3a31156](https://github.com/codice-progressio/profesa-gui/commit/3a311562308e99be0daa73c5187d2f60c4682a3d))
+
 ### [4.8.1](https://github.com/codice-progressio/profesa-gui/compare/v4.8.0...v4.8.1) (2023-06-19)
 
 
