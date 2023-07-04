@@ -22,6 +22,14 @@ export class SkuListaComponent implements OnInit {
   @Input() lista_de_precios:ListaDePrecios = null
 
   /**
+   * Muestra un pie de pagina del card con los datos
+   * de existencia y stocks.
+   *
+   * @memberof SkuListaComponent
+   */
+  @Input() mostrar_existencias = true
+
+  /**
    *Combinado con soloSeleccionable permite mostrar un Input
    *para agregar emitir una cantidad de manera más rapida.
    *

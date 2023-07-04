@@ -26,6 +26,8 @@ export class BuscadorComponent implements OnInit {
   @Input() encodeURIComponent: boolean = true
   @Input() tiempoDeEspera = 1300
 
+  @Input() mostrar_boton_de_busqueda = true
+
   estaCargando = new BehaviorSubject<boolean>(false)
 
   private _cargando = false

@@ -5,7 +5,7 @@
   *ngIf="!cargando; else precarga"
   class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 card-deck"
 >
-  <div *ngFor="let sku of skus; let i = index" class="col mb-4">
+  <div *ngFor="let sku of skus; let i = index" class="col">
     <div class="card shadow">
       <a
         *ngIf="permitirVerDetalle"
@@ -25,10 +25,7 @@
             <div class="col-12 text-muted">
               $ {{ sku.costoVenta | number: '0.2' }} | {{ sku.unidad }}
             </div>
-            <div class="col-12">
-              <hr />
-              <span class="text-muted">COD:</span> {{ sku.codigo }}
-            </div>
+
           </div>
         </h5>
 
@@ -46,20 +43,25 @@
           </div>
         </div>
 
-        <hr />
+
+        <div class="row">
+          <div class="col-6">
+            <span class="align-middle text-muted">COD:</span> {{ sku.codigo }}
+          </div>
+          <div class="col-6">
+            <a
+              *ngIf="soloSeleccionable"
+              codice-title="Seleccionar este item"
+              class="btn btn-outline-success m-1"
+              href="javascript:void(0)"
+              role="button"
+              (click)="emitirSkuSeleccionado(sku, valor_a_enviar)"
+            >
+              <i class="fas fa-check-double"></i></a>
+          </div>
+        </div>
 
         <div class="w-100 d-flex justify-content-center align-items-center">
-          <a
-            *ngIf="soloSeleccionable"
-            codice-title="Seleccionar este item"
-            class="btn btn-outline-success m-1"
-            href="javascript:void(0)"
-            role="button"
-            (click)="emitirSkuSeleccionado(sku, valor_a_enviar)"
-          >
-            <i class="fas fa-check-double"></i
-          ></a>
-
           <ng-container *ngIf="capturarCantidad">
             <hr />
             <div class="form-group">
@@ -155,7 +157,9 @@
           </div>
         </ng-container>
       </div>
-      <div class="card-footer">
+      <div
+      *ngIf="mostrar_existencias"
+      class="card-footer">
         <small class="text-muted">
           <div class="row">
             <span class="col-4 text-center font-bold">
@@ -183,7 +187,8 @@
               >
             </span>
           </div>
-          <div class="row">
+          <div
+          class="row">
             <span class="col-4 text-center">{{
               sku.stockMinimo | number: '0.0-2'
             }}</span>
